@@ -1,0 +1,92 @@
+# ===========================================
+# BioPlatform - Docker Compose Override (Development)
+# ===========================================
+# Este archivo se carga automáticamente junto con docker-compose.yml
+# Contiene configuraciones específicas para desarrollo local
+
+version: "3.8"
+
+services:
+  # Override para desarrollo - Backend .NET
+  backend-core:
+    build:
+      target: development
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+    volumes:
+      - ./src/Bio.Backend.Core:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+    command:
+      ["dotnet", "watch", "run", "--project", "src/Bio.API/Bio.API.csproj"]
+
+  # Override para desarrollo - Backend AI
+  ai-service:
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=true
+    volumes:
+      - ./src/Bio.Backend.AI:/app
+    command:
+      [
+        "uvicorn",
+        "app.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+      ]
+
+  # Override para desarrollo - Frontend
+  frontend-web:
+    volumes:
+      - ./src/Bio.Frontend.Web:/app
+      - /app/node_modules
+      - /app/.next
+    command: ["npm", "run", "dev"]
+
+  # Adminer - UI para gestionar bases de datos
+  adminer:
+    image: adminer:latest
+    container_name: bioplatform-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - bioplatform-network
+    depends_on:
+      - sqlserver
+      - postgres
+
+  # pgAdmin - UI específica para PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: bioplatform-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@bioplatform.local
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+    ports:
+      - "5050:80"
+    networks:
+      - bioplatform-network
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+  # Seq - Logging centralizado (Serilog)
+  seq:
+    image: datalust/seq:latest
+    container_name: bioplatform-seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:80"
+    networks:
+      - bioplatform-network
+    volumes:
+      - seq_data:/data
+
+volumes:
+  pgadmin_data:
+  seq_data:
