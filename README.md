@@ -3,7 +3,7 @@
 ## Plataforma de Biodiversidad y Biocomercio con IA Generativa
 
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)]()
-[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)]()
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)]()
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)]()
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB)]()
 
@@ -27,7 +27,7 @@ Plataforma digital integral para la identificación, catalogación y aprovechami
 ## Stack Tecnológico
 
 ```
-Backend:    .NET 8 (Clean Architecture) + FastAPI (Python)
+Backend:    .NET 10 (Clean Architecture) + FastAPI (Python)
 Frontend:   Next.js 14 + React Native (Expo)
 Databases:  PostgreSQL (PostGIS) | SQL Server | Redis | MongoDB
 AI/ML:      TensorFlow/PyTorch | LangChain | ChromaDB | OpenAI GPT-4
@@ -41,7 +41,7 @@ DevOps:     Docker | GitHub Actions | Nginx
 ### Requisitos
 
 - Docker Desktop 4.x+
-- .NET 8 SDK
+- .NET 10 SDK
 - Node.js 18+
 - Python 3.11+
 
@@ -101,7 +101,7 @@ bioplatform/
 │   ├── postgres/            # Scripts init PostgreSQL
 │   └── sqlserver/           # Scripts init SQL Server
 ├── src/
-│   ├── Bio.Backend.Core/    # API .NET 8 (Clean Architecture)
+│   ├── Bio.Backend.Core/    # API .NET 10 (Clean Architecture)
 │   ├── Bio.Backend.AI/      # Microservicio Python (FastAPI)
 │   ├── Bio.Frontend.Web/    # Next.js 14
 │   └── Bio.Frontend.Mobile/ # React Native (Expo)

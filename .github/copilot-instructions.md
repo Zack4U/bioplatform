@@ -10,7 +10,7 @@
 
 ## 1. Technological Stack (Immutable)
 
-- **Core Backend:** .NET 8 (C#) using Clean Architecture + CQRS (MediatR).
+- **Core Backend:** .NET 10 (C#) using Clean Architecture + CQRS (MediatR).
 - **AI Microservice:** Python 3.11 with FastAPI (Pydantic, Type Hints).
 - **Frontend Web:** Next.js 14 (App Router), TypeScript, Shadcn/ui, Tailwind, Zustand, React Query.
 - **Frontend Mobile:** React Native (Expo), Vision Camera, WatermelonDB/SQLite (Offline-first).
@@ -81,19 +81,75 @@ The system uses a **Hybrid Database approach**.
 
 ## 5. Folder Structure Reference
 
-Assume the following Monorepo structure when generating file paths:
+Assume the following Monorepo structure when generating file paths or suggesting where to place new files:
 
 ```text
 BioMarketplace-Caldas/
+├── .github/workflows/          # CI/CD Pipelines
+├── infrastructure/             # Docker & Terraform/K8s
+│   ├── docker/                 # Nginx, SQL Init scripts
+│   └── k8s/
 ├── src/
-│   ├── Bio.Backend.Core/           # .NET Solution
-│   │   ├── Bio.Domain/
-│   │   ├── Bio.Application/
-│   │   ├── Bio.Infrastructure/
-│   │   └── Bio.API/
+│   ├── Bio.Backend.Core/           # .NET 8 Solution (Clean Arch)
+│   │   ├── src/
+│   │   │   ├── Bio.Domain/         # Entities, Enums, Repository Interfaces
+│   │   │   ├── Bio.Application/    # CQRS (Commands/Queries), Validators, DTOs
+│   │   │   ├── Bio.Infrastructure/ # EF Core, External Services, Persistence
+│   │   │   └── Bio.API/            # Controllers, DI Setup
+│   │   └── tests/                  # xUnit Tests
 │   ├── Bio.Backend.AI/             # Python FastAPI
-│   │   ├── app/ (api, core, models, services)
-│   ├── Bio.Frontend.Web/           # Next.js
-│   │   ├── src/ (app, components, hooks, lib, store)
-│   └── Bio.Frontend.Mobile/        # React Native
+│   │   ├── app/ (api, core, models, services/vision, services/rag)
+│   │   └── data/ (weights, vector_store)
+│   ├── Bio.Frontend.Web/           # Next.js 14
+│   │   ├── src/ (app, components/ui, components/features, hooks, lib, store)
+│   └── Bio.Frontend.Mobile/        # React Native Expo
+│       ├── src/ (components, navigation, screens, services, database)
+└── docker-compose.yml
 ```
+
+---
+
+## 6. Execution Guidelines
+
+- **Code Generation:** Always provide the full implementation. Do not use placeholders like `// ... rest of code`. If the file is too long, strictly define which methods are being added or modified.
+- **Endpoint Definition:** When asked to create an endpoint, you must define:
+  1.  The **Controller/Router** (C# or Python).
+  2.  The **Command/Query** (Application Layer).
+  3.  The **DTOs/Pydantic Models**.
+- **Safety Check:** Always remind the user to check `.env` variables for secrets. Never hardcode API Keys or connection strings in the generated code.
+- **Diagrams:** If the architectural concept is complex, offer to generate a Mermaid diagram (`graph TD` or `sequenceDiagram`).
+
+---
+
+## 7. Git & Version Control Rules
+
+- **Branching Strategy:**
+  - `main`: Production (Protected).
+  - `develop`: Integration (Default branch).
+  - `feature/BIO-XXX-description`: New features.
+  - `fix/BIO-XXX-description`: Bug fixes.
+- **Commit Convention:** Enforce **Conventional Commits** in all suggestions.
+  - Format: `<type>(<scope>): <description>`
+  - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
+  - _Example:_ `feat(auth): implement jwt token generation`
+
+---
+
+## 8. Testing & Quality Assurance Standards
+
+- **Backend (.NET):**
+  - Maintain **>70% Code Coverage**.
+  - Use **xUnit** for Unit Tests.
+  - Use **Moq** for mocking dependencies in Application layer tests.
+- **Frontend:**
+  - Prioritize testing "Features" and "Hooks" over simple UI components.
+  - Use Cypress/Playwright for E2E critical flows.
+- **AI Service:**
+  - Include validation scripts for model accuracy (ensure metrics are logged).
+
+---
+
+## 9. Specific Constraints & Out-of-Scope
+
+- **DO NOT** generate code for: Logistics/Shipping, Phytosanitary Certification issuance (only registration), or full Accounting systems.
+- **Focus ON:** Biodiversity identification, Cataloging, Marketplace transactions, and RAG-based consulting.

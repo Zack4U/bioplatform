@@ -11,9 +11,9 @@ Esta guía te ayudará a configurar y ejecutar el proyecto desde cero.
 | Herramienta | Versión Mínima | Verificar Instalación |
 |-------------|----------------|----------------------|
 | Docker Desktop | 4.x | `docker --version` |
-| .NET SDK | 8.0 | `dotnet --version` |
-| Node.js | 18.x LTS | `node --version` |
-| Python | 3.11+ | `python --version` |
+| .NET SDK | 10.0 | `dotnet --version` |
+| Node.js | 24.x LTS | `node --version` |
+| Python | 3.14+ | `python --version` |
 | Git | 2.x | `git --version` |
 
 ### Extensiones de VS Code Recomendadas
@@ -144,7 +144,7 @@ docker exec -it bioplatform-redis redis-cli ping
 
 ## 5. Configuración por Microservicio
 
-### 5.1 Backend .NET Core 8 (Bio.Backend.Core)
+### 5.1 Backend .NET 10 (Bio.Backend.Core)
 
 #### Crear la estructura del proyecto
 
