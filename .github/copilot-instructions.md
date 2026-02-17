@@ -10,7 +10,7 @@
 
 ## 1. Technological Stack (Immutable)
 
-- **Core Backend:** .NET 10 (C#) using Clean Architecture + CQRS (MediatR).
+- **Core Backend:** .NET 8 (C#) using Clean Architecture + CQRS (MediatR).
 - **AI Microservice:** Python 3.11 with FastAPI (Pydantic, Type Hints).
 - **Frontend Web:** Next.js 14 (App Router), TypeScript, Shadcn/ui, Tailwind, Zustand, React Query.
 - **Frontend Mobile:** React Native (Expo), Vision Camera, WatermelonDB/SQLite (Offline-first).
@@ -20,6 +20,41 @@
   - **ChromaDB:** Vector store for RAG.
   - **Redis:** Caching & Hangfire.
 - **DevOps:** Docker Compose (Orchestration), GitHub Actions (CI/CD).
+
+---
+
+## 1.1 Common Technical Requirements
+
+### Backend (.NET Core 8+ / 10)
+
+- Implement Clean Architecture / Hexagonal.
+- Use CQRS with MediatR.
+- Apply Repository Pattern and Unit of Work.
+- Validate with FluentValidation and map with AutoMapper (or Mapperly).
+- Unit tests with xUnit (minimum 70% coverage).
+
+### Frontend (Next.js 14 - App Router)
+
+- TypeScript required.
+- State management (Zustand/Redux) and server state (React Query).
+- UI with Shadcn/ui or Material-UI.
+- Forms with React Hook Form + Zod.
+- WCAG 2.1 AA accessibility and responsive design.
+- Do not use Vite for the Next.js web app.
+
+### AI and Data
+
+- Predictive model trained, evaluated, and with documented metrics.
+- Generative AI integration with LLMs (OpenAI, Gemini, etc.).
+- RAG with embeddings and a vector DB (ChromaDB or Pinecone).
+- MLOps pipeline and model versioning (MLflow or DVC).
+
+### Security and DevOps
+
+- Auth: JWT with refresh tokens, RBAC, and 2FA (TOTP).
+- Protection: rate limiting, input sanitization, XSS/SQLi protections.
+- Docker: multi-stage Dockerfiles and Docker Compose.
+- CI/CD: functional pipeline in GitHub Actions or GitLab CI.
 
 ---
 

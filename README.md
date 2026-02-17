@@ -27,7 +27,7 @@ Plataforma digital integral para la identificación, catalogación y aprovechami
 ## Stack Tecnológico
 
 ```
-Backend:    .NET 10 (Clean Architecture) + FastAPI (Python)
+Backend:    .NET 8 (Clean Architecture) + FastAPI (Python)
 Frontend:   Next.js 14 + React Native (Expo)
 Databases:  PostgreSQL (PostGIS) | SQL Server | Redis | MongoDB
 AI/ML:      TensorFlow/PyTorch | LangChain | ChromaDB | OpenAI GPT-4
@@ -36,12 +36,42 @@ DevOps:     Docker | GitHub Actions | Nginx
 
 ---
 
+## Requisitos Técnicos Comunes (Ajustados)
+
+### Backend (.NET Core 8+)
+- Clean Architecture / Hexagonal.
+- CQRS con MediatR.
+- Repository Pattern y Unit of Work.
+- FluentValidation y AutoMapper (o Mapperly).
+- xUnit con cobertura mínima 70%.
+
+### Frontend (Next.js 14 - App Router)
+- TypeScript obligatorio.
+- Estado global (Zustand/Redux) y server state (React Query).
+- UI con Shadcn/ui o Material-UI.
+- Formularios con React Hook Form + Zod.
+- Accesibilidad WCAG 2.1 AA y diseño responsive.
+
+### IA y Datos
+- Modelo predictivo entrenado y evaluado con métricas documentadas.
+- Integración con LLMs (OpenAI, Gemini, etc.).
+- RAG con embeddings y vector DB (ChromaDB o Pinecone).
+- MLOps con MLflow o DVC.
+
+### Seguridad y DevOps
+- JWT con Refresh Tokens, RBAC y 2FA (TOTP).
+- Rate limiting, sanitización de inputs y protección XSS/SQLi.
+- Dockerfile multi-stage y Docker Compose.
+- CI/CD en GitHub Actions o GitLab CI.
+
+---
+
 ## Quick Start
 
 ### Requisitos
 
 - Docker Desktop 4.x+
-- .NET 10 SDK
+- .NET 8 SDK
 - Node.js 18+
 - Python 3.11+
 
@@ -101,7 +131,7 @@ bioplatform/
 │   ├── postgres/            # Scripts init PostgreSQL
 │   └── sqlserver/           # Scripts init SQL Server
 ├── src/
-│   ├── Bio.Backend.Core/    # API .NET 10 (Clean Architecture)
+│   ├── Bio.Backend.Core/    # API .NET 8 (Clean Architecture)
 │   ├── Bio.Backend.AI/      # Microservicio Python (FastAPI)
 │   ├── Bio.Frontend.Web/    # Next.js 14
 │   └── Bio.Frontend.Mobile/ # React Native (Expo)

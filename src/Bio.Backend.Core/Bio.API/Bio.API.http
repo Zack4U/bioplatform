@@ -1,0 +1,6 @@
+@Bio.API_HostAddress = http://localhost:5182
+
+GET {{Bio.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
