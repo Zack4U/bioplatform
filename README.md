@@ -86,12 +86,29 @@ cd bioplatform
 cp .env.example .env
 # Editar .env con tus credenciales (DB, OpenAI, Stripe, etc.)
 
-# 3. Levantar servicios
-docker-compose up -d --build
+# 3. Setup inicial (restaurar dependencias)
+# Windows:
+.\setup.ps1
 
-# 4. Verificar servicios
-docker-compose ps
+# macOS/Linux:
+bash setup.sh
 ```
+
+### Ejecutar Servicios Locales
+
+**Recomendación:** Usa el script bash que abre una terminal por cada servicio.
+
+```bash
+# macOS/Linux/Git Bash en Windows:
+bash run.sh           # Levanta todo (docker + core + ai + web)
+bash run.sh core ai   # Levanta solo backend y AI
+```
+
+**Servicios disponibles:** `docker`, `core`, `ai`, `web`, `mobile`, `all`
+
+Ver [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) para más detalles.
+
+### Verificar Servicios (Alternativo)
 
 ### Puertos
 
@@ -100,18 +117,24 @@ docker-compose ps
 | Frontend Web | http://localhost:3000 |
 | Backend API | http://localhost:5000 |
 | AI Service | http://localhost:8000 |
+| ChromaDB (Vector Store) | http://localhost:8001 |
 | PostgreSQL | localhost:5432 |
 | SQL Server | localhost:1433 |
 | Redis | localhost:6379 |
-| Adminer (DB UI) | http://localhost:8080 |
+| Adminer (DB UI) | http://localhost:8090 |
 | pgAdmin | http://localhost:5050 |
+| Seq (Logs) | http://localhost:5341 |
 
 ---
 
-## Documentación
+## Documentación y Guías
 
 | Documento | Descripción |
 |-----------|-------------|
+| [DEVELOPMENT.md](./DEVELOPMENT.md) | Guía completa para desarrollo local |
+| [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) | Uso de scripts de ejecución (run.sh / run.ps1) |
+| [SETUP_SUMMARY.md](./SETUP_SUMMARY.md) | Resumen visual del setup |
+| [CHANGELOG_DOCKER.md](./CHANGELOG_DOCKER.md) | Cambios en estrategia Docker |
 | [Getting Started](.docs/GETTING_STARTED.md) | Guía completa de configuración inicial |
 | [Requirements](.docs/bioplatform/01-Requirements.md) | Requerimientos funcionales y técnicos |
 | [Guidelines](.docs/bioplatform/02-Guidelines%20.md) | Lineamientos generales del proyecto |
@@ -119,6 +142,8 @@ docker-compose ps
 | [Dev Guidelines](.docs/bioplatform/05-Dev_Guidelines.md) | Estándares de desarrollo |
 
 ---
+
+## Documentación Original
 
 ## Estructura del Proyecto
 
