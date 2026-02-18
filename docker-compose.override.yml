@@ -2,56 +2,17 @@
 # BioPlatform - Docker Compose Override (Development)
 # ===========================================
 # Este archivo se carga automáticamente junto con docker-compose.yml
-# Contiene configuraciones específicas para desarrollo local
+# Agrega herramientas UI para gestionar la infraestructura en desarrollo
 
 version: "3.8"
 
 services:
-  # Override para desarrollo - Backend .NET
-  backend-core:
-    build:
-      target: development
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - DOTNET_USE_POLLING_FILE_WATCHER=true
-    volumes:
-      - ./src/Bio.Backend.Core:/app
-      - ~/.nuget/packages:/root/.nuget/packages:ro
-    command:
-      ["dotnet", "watch", "run", "--project", "src/Bio.API/Bio.API.csproj"]
-
-  # Override para desarrollo - Backend AI
-  ai-service:
-    environment:
-      - ENVIRONMENT=development
-      - DEBUG=true
-    volumes:
-      - ./src/Bio.Backend.AI:/app
-    command:
-      [
-        "uvicorn",
-        "app.main:app",
-        "--reload",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000",
-      ]
-
-  # Override para desarrollo - Frontend
-  frontend-web:
-    volumes:
-      - ./src/Bio.Frontend.Web:/app
-      - /app/node_modules
-      - /app/.next
-    command: ["npm", "run", "dev"]
-
-  # Adminer - UI para gestionar bases de datos
+  # Adminer - UI para SQL Server y PostgreSQL
   adminer:
     image: adminer:latest
     container_name: bioplatform-adminer
     ports:
-      - "8080:8080"
+      - "8090:8080"
     networks:
       - bioplatform-network
     depends_on:

@@ -1,0 +1,197 @@
+# ===========================================
+# BioPlatform Caldas - Docker Compose (Producción)
+# ===========================================
+# USO: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# 
+# Incluye TODOS los servicios compilados y optimizados para producción
+
+version: "3.8"
+
+services:
+  # ===========================================
+  # INFRAESTRUCTURA (igual que desarrollo)
+  # ===========================================
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: bioplatform-sqlserver-prod
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_SQL_PASSWORD}
+      - MSSQL_PID=Standard
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - bioplatform-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: always
+
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: bioplatform-postgres-prod
+    environment:
+      - POSTGRES_USER=${DB_PG_USER}
+      - POSTGRES_PASSWORD=${DB_PG_PASSWORD}
+      - POSTGRES_DB=${DB_PG_DATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bioplatform-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_PG_USER} -d ${DB_PG_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: bioplatform-redis-prod
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - bioplatform-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: bioplatform-chromadb-prod
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - bioplatform-network
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+    restart: always
+
+  # ===========================================
+  # BACKEND SERVICES (compilados)
+  # ===========================================
+
+  backend-core:
+    build:
+      context: ./src/Bio.Backend.Core
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: bioplatform-backend-core-prod
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__SqlServer=${DB_CONNECTION_STRING_SQL}
+      - ConnectionStrings__PostgreSQL=${DB_CONNECTION_STRING_PG}
+      - ConnectionStrings__Redis=${REDIS_CONNECTION_STRING}
+      - Jwt__Secret=${JWT_SECRET}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+      - Jwt__ExpirationMinutes=${JWT_EXPIRATION_MINUTES}
+      - OpenAI__ApiKey=${OPENAI_API_KEY}
+      - Stripe__SecretKey=${STRIPE_SECRET_KEY}
+    ports:
+      - "5000:5000"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - bioplatform-network
+    restart: always
+
+  ai-service:
+    build:
+      context: ./src/Bio.Backend.AI
+      dockerfile: Dockerfile
+    container_name: bioplatform-ai-service-prod
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://${DB_PG_USER}:${DB_PG_PASSWORD}@postgres:5432/${DB_PG_DATABASE}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL}
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bioplatform-network
+    restart: always
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  # ===========================================
+  # FRONTEND SERVICES (compilados)
+  # ===========================================
+
+  frontend-web:
+    build:
+      context: ./src/Bio.Frontend.Web
+      dockerfile: Dockerfile
+    container_name: bioplatform-frontend-web-prod
+    environment:
+      - NEXT_PUBLIC_API_URL=/api
+      - NEXT_PUBLIC_AI_API_URL=http://ai-service:8000/api
+      - NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${STRIPE_PUBLIC_KEY}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend-core
+      - ai-service
+    networks:
+      - bioplatform-network
+    restart: always
+
+  # NOTA: Frontend Mobile (React Native + Expo) corre SIEMPRE localmente
+  # No se incluye en Docker porque Expo requiere metro bundler activo
+  # Ver: DEVELOPMENT.md para instrucciones de ejecución local
+
+  # ===========================================
+  # REVERSE PROXY (Producción)
+  # ===========================================
+
+  nginx:
+    image: nginx:alpine
+    container_name: bioplatform-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend-core
+      - ai-service
+      - frontend-web
+    networks:
+      - bioplatform-network
+    restart: always
+
+networks:
+  bioplatform-network:
+    driver: bridge
+
+volumes:
+  sqlserver_data:
+  postgres_data:
+  redis_data:
+  chroma_data:
