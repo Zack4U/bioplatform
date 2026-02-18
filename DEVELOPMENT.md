@@ -218,10 +218,7 @@ const AI_API_URL = __DEV__
 | **Adminer** | http://localhost:8090 | Gestionar SQL Server + PostgreSQL |
 | **Seq** | http://localhost:5341 | Ver logs centralizados |
 
-**Credenciales por defecto:**
-- pgAdmin: `admin@bioplatform.dev` / `admin123`
-- Adminer: `sa` / (la contraseña del `.env`)
-- Seq: acceso público
+- Credenciales: En las variables de entorno (.env)
 
 ---
 
