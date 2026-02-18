@@ -115,7 +115,7 @@ Ver [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) para más detalles.
 | Servicio | Puerto |
 |----------|--------|
 | Frontend Web | http://localhost:3000 |
-| Backend API | http://localhost:5000 |
+| Backend API | http://localhost:5050 |
 | AI Service | http://localhost:8000 |
 | ChromaDB (Vector Store) | http://localhost:8001 |
 | PostgreSQL | localhost:5432 |

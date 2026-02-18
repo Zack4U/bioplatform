@@ -17,14 +17,47 @@
 ┌─────────────────────────────────────────────────────────────┐
 │ Local (Desarrollo)                                            │
 ├─────────────────────────────────────────────────────────────┤
-│ 🖥️  Backend .NET (5000)    🐍 AI Service (8000)             │
+│ 🖥️  Backend .NET (5050)    🐍 AI Service (8000)             │
 │ ⚛️  Frontend Web (3000)     📱 Frontend Mobile (Expo)        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 1. Configuración Inicial
+## ⚡ Guía Rápida (Script Automático)
+
+Si solo quieres **iniciar todo de una vez**, ejecuta:
+
+```bash
+# Desde la raíz del proyecto
+bash run.sh
+
+# O especifica servicios individuales:
+bash run.sh docker        # Solo Docker (infraestructura)
+bash run.sh core          # Solo Backend .NET
+bash run.sh ai            # Solo AI Service
+bash run.sh web           # Solo Frontend Web
+bash run.sh core ai web   # Backend + AI + Frontend Web
+bash run.sh all           # TODO
+```
+
+**Resultado esperado:**
+- ✅ Docker levanta en terminal dedicada
+- ✅ Backend corre en `http://localhost:5050` (con Swagger)
+- ✅ AI Service en `http://localhost:8000` (con Docs)
+- ✅ Frontend Web en `http://localhost:3000`
+- ✅ pgAdmin en `http://localhost:5050` (BD UI)
+
+> ⚠️ **IMPORTANTE:** El script **SOLO levanta servios**, no configura nada.
+> - Primero debes copiar `.env.example` → `.env`
+> - Luego editar `.env` con tus API keys y credenciales
+> - Ver sección "1. Configuración Inicial" más abajo
+
+> **Nota:** El script abre servicios en **ventanas/terminales independientes**. En Windows usa **Git Bash**, no CMD.
+
+---
+
+## 1. Configuración Inicial (Detallado)
 
 ### 1.1 Variables de Entorno
 
@@ -74,10 +107,10 @@ cd src/Bio.Backend.Core
 dotnet restore
 
 # Ejecuta en watch mode (recompila automáticamente)
-dotnet watch run --project src/Bio.API/Bio.API.csproj
+dotnet watch run --project Bio.API/Bio.API.csproj
 
-# Esperado: http://localhost:5000
-# Swagger: http://localhost:5000/swagger
+# Esperado: http://localhost:5050
+# Swagger: http://localhost:5050/swagger
 ```
 
 **Requisitos:**
@@ -163,7 +196,7 @@ npx expo start
 En `src/Bio.Frontend.Mobile/src/config/api.ts` (o similar):
 ```typescript
 const API_URL = __DEV__ 
-  ? 'http://YOUR_LOCAL_IP:5000/api'  // Cambia YOUR_LOCAL_IP por tu IP
+  ? 'http://YOUR_LOCAL_IP:5050/api'  // Cambia YOUR_LOCAL_IP por tu IP
   : 'https://api.bioplatform.com/api';
 
 const AI_API_URL = __DEV__
@@ -218,7 +251,7 @@ $ npx expo start
 
 # 2. Accede a:
 # - Frontend Web: http://localhost:3000
-# - Backend API: http://localhost:5000
+# - Backend API: http://localhost:5050
 # - AI Service: http://localhost:8000
 # - Mobile App: Abre iOS/Android emulator o escanea QR en tu teléfono
 # - Base de Datos: pgAdmin http://localhost:5050
@@ -306,10 +339,10 @@ docker-compose ps
 docker-compose restart postgres
 ```
 
-### "Port 5000 already in use"
+### "Port 5050 already in use"
 ```bash
 # Busca qué está usando el puerto
-lsof -i :5000  # macOS/Linux
+lsof -i :5050  # macOS/Linux
 netstat -ano | findstr :5000  # Windows
 
 # O usa otro puerto

@@ -169,7 +169,7 @@ done
 echo ""
 echo -e "${YELLOW}📍 URLs de Acceso:${NC}"
 echo -e "   Frontend Web:   http://localhost:3000"
-echo -e "   Backend API:    http://localhost:5000"
+echo -e "   Backend API:    http://localhost:5050"
 echo -e "   AI Service:     http://localhost:8000"
 echo ""
 
