@@ -219,7 +219,7 @@ const AI_API_URL = __DEV__
 | **Seq** | http://localhost:5341 | Ver logs centralizados |
 
 **Credenciales por defecto:**
-- pgAdmin: `admin@bioplatform.local` / `admin123`
+- pgAdmin: `admin@bioplatform.dev` / `admin123`
 - Adminer: `sa` / (la contraseña del `.env`)
 - Seq: acceso público
 

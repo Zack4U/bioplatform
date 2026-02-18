@@ -102,7 +102,7 @@ function start_service() {
     case ${SERVICE,,} in
         docker|infra)
             echo -e "${YELLOW}🐳 Infraestructura (Docker Compose)${NC}"
-            open_terminal "docker" "." "docker-compose -f docker-compose.dev.yml up -d"
+            open_terminal "docker" "." "docker-compose up -d"
             echo -e "${GREEN}✓ Docker levantado${NC}"
         ;;
         
