@@ -42,7 +42,7 @@
 
 # **2\. Requisitos Técnicos Comunes**
 
-## **2.1 Backend (.NET 10+)**
+## **2.1 Backend (.NET 8+)**
 
 * \[ \] Implementación de Clean Architecture / Hexagonal.  
 * \[ \] Uso de CQRS con MediatR.  

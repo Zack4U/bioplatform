@@ -60,7 +60,7 @@ Desarrollar una plataforma digital integral que facilite la identificación, cat
 
 ### **Fase 2: Infraestructura (Semanas 3-4)**
 
-* \[ \] Backend .NET 10: Clean Architecture  
+* \[ \] Backend .NET 8: Clean Architecture  
 * \[ \] Base de datos PostgreSQL (especies) y SQL Server (transacciones)  
 * \[ \] Frontend Next.js: arquitectura de componentes  
 * \[ \] Configuración Docker multi-contenedor  
@@ -180,7 +180,7 @@ Desarrollar una plataforma digital integral que facilite la identificación, cat
 
 **Backend**
 
-* .NET 10 con Clean Architecture  
+* .NET 8 con Clean Architecture  
 * MediatR para CQRS  
 * Entity Framework Core  
 * FastAPI (Python) para microservicio de IA  

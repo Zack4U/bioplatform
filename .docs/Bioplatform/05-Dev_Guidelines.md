@@ -98,7 +98,7 @@ BioMarketplace-Caldas/
 │  
 ├── src/                            \# Código Fuente de todos los servicios  
 │   │  
-│   ├── Bio.Backend.Core/           \# \[SOLUCIÓN .NET 10 \- CLEAN ARCHITECTURE\]  
+│   ├── Bio.Backend.Core/           \# \[SOLUCIÓN .NET 8 \- CLEAN ARCHITECTURE\]  
 │   │   ├── src/  
 │   │   │   ├── Bio.Domain/         \# Reglas de negocio puras, Entidades, Value Objects  
 │   │   │   ├── Bio.Application/    \# Casos de uso, CQRS (Commands/Queries), Interfaces  
@@ -147,7 +147,7 @@ BioMarketplace-Caldas/
 ├── docker-compose.override.yml     \# Configuración local (puertos expuestos)  
 └── README.md
 
-# **4\. Backend: .NET 10 (Clean Architecture)**
+# **4\. Backend: .NET 8 (Clean Architecture)**
 
 ## **4.1. Estructura de Solución**
 
