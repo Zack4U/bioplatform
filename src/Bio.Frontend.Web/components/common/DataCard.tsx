@@ -48,6 +48,7 @@ export function DataCard({
         <Card
             className={cn(
                 "group flex flex-col overflow-hidden transition-all",
+                image && "pt-0",
                 isInteractive &&
                     "cursor-pointer hover:shadow-md hover:border-primary/30",
                 className,

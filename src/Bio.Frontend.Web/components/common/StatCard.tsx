@@ -32,52 +32,52 @@ export function StatCard({
     const isPositive = trend && trend.value >= 0;
 
     return (
-        <Card className={cn("gap-0", className)}>
-            <CardContent className="flex flex-col gap-2 pt-5">
-                <div className="flex items-center justify-between">
+        <Card className={cn("gap-2", className)}>
+            <CardContent className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 flex-col gap-1">
                     <span className="text-sm font-medium text-muted-foreground">
                         {label}
                     </span>
-                    {icon && (
-                        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary/10 text-primary">
-                            {icon}
-                        </div>
-                    )}
-                </div>
-                <div className="flex items-end gap-2">
-                    <span className="text-2xl font-bold tracking-tight">
-                        {value}
-                    </span>
-                    {trend && (
-                        <span
-                            className={cn(
-                                "mb-0.5 flex items-center gap-0.5 text-xs font-medium",
-                                isPositive
-                                    ? "text-success"
-                                    : "text-destructive",
-                            )}
-                        >
-                            {isPositive ? (
-                                <TrendingUp
-                                    className="h-3.5 w-3.5"
-                                    aria-hidden="true"
-                                />
-                            ) : (
-                                <TrendingDown
-                                    className="h-3.5 w-3.5"
-                                    aria-hidden="true"
-                                />
-                            )}
-                            {Math.abs(trend.value)}%
-                            {trend.label && (
-                                <span className="text-muted-foreground">
-                                    {" "}
-                                    {trend.label}
-                                </span>
-                            )}
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold tracking-tight">
+                            {value}
                         </span>
-                    )}
+                        {trend && (
+                            <span
+                                className={cn(
+                                    "flex items-center gap-0.5 text-xs font-medium",
+                                    isPositive
+                                        ? "text-success"
+                                        : "text-destructive",
+                                )}
+                            >
+                                {isPositive ? (
+                                    <TrendingUp
+                                        className="h-3.5 w-3.5"
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    <TrendingDown
+                                        className="h-3.5 w-3.5"
+                                        aria-hidden="true"
+                                    />
+                                )}
+                                {Math.abs(trend.value)}%
+                                {trend.label && (
+                                    <span className="text-muted-foreground">
+                                        {" "}
+                                        {trend.label}
+                                    </span>
+                                )}
+                            </span>
+                        )}
+                    </div>
                 </div>
+                {icon && (
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                        {icon}
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

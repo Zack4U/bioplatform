@@ -8,6 +8,8 @@ export interface Taxonomy {
     id: number;
     kingdom: string;
     phylum: string | null;
+    className: string | null;
+    orderName: string | null;
     family: string | null;
     genus: string;
 }
@@ -17,12 +19,16 @@ export interface Species {
     id: string;
     taxonomyId: number;
     taxonomy?: Taxonomy;
+    slug: string;
     scientificName: string;
     commonName: string | null;
     description: string | null;
     ecologicalInfo: string | null;
     traditionalUses: string | null;
+    economicPotential: string | null;
+    conservationStatus: string | null;
     isSensitive: boolean;
+    thumbnailUrl: string | null;
     images?: SpeciesImage[];
     distributions?: GeographicDistribution[];
     createdAt: string;
@@ -37,6 +43,7 @@ export interface SpeciesImage {
     imageUrl: string;
     metadata: Record<string, unknown> | null;
     isValidatedByExpert: boolean;
+    usedForTraining: boolean;
     licenseType: string;
 }
 
@@ -50,11 +57,13 @@ export interface GeographicDistribution {
     /** Longitude — masked if species.isSensitive is true */
     longitude: number | null;
     altitude: number | null;
+    ecosystemType: string | null;
 }
 
 /** SpeciesListItem — lightweight DTO for lists/cards (avoids over-fetching) */
 export interface SpeciesListItem {
     id: string;
+    slug: string;
     scientificName: string;
     commonName: string | null;
     family: string | null;
