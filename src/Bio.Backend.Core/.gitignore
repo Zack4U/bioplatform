@@ -1,0 +1,26 @@
+# ===========================================
+# .NET / C# — Bio.Backend.Core
+# ===========================================
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Tt]est[Rr]esults/
+TestResults/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.sln.doccache
+.vs/
+*.csproj.user
+project.lock.json
+*.nuget.props
+*.nuget.targets
+*.nupkg
+**/packages/*
+!**/packages/build/
+*.snupkg
+publish/
+artifacts/
+.fake

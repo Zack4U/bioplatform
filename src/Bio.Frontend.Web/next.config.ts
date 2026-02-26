@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "**.amazonaws.com", // AWS S3
             },
+            {
+                protocol: "https",
+                hostname: "images.unsplash.com", // Mock/placeholder images
+            },
+            {
+                protocol: "https",
+                hostname: "res.cloudinary.com", // Cloudinary CDN
+            },
         ],
     },
 
@@ -20,6 +28,12 @@ const nextConfig: NextConfig = {
 
     /* Powered by header disabled for security */
     poweredByHeader: false,
+
+    /* Environment variables exposed to the browser */
+    env: {
+        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:
+            process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    },
 };
 
 export default nextConfig;
