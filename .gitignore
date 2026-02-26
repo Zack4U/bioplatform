@@ -102,6 +102,7 @@ data/processed/
 *.secret
 secrets/
 !.env.example
+src/Bio.Backend.Core/Bio.API/appsettings.Development.json
 
 # ===========================================
 # IDE / Editors
