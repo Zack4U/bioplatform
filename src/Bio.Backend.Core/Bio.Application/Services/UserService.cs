@@ -1,7 +1,7 @@
 using Bio.Application.DTOs;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
-using Bio.Backend.Core.Bio.Infrastructure.Persistence;
+using FluentValidation;
 
 namespace Bio.Application.Services;
 
@@ -24,18 +24,21 @@ public interface IUserService
 /// </summary>
 public class UserService : IUserService
 {
-    private readonly BioDbContext _context;
+    private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IValidator<UserCreateDTO> _validator;
 
     /// <summary>
     /// Initializes a new instance of <see cref="UserService"/>.
     /// </summary>
-    /// <param name="context">Database context.</param>
+    /// <param name="userRepository">User repository.</param>
     /// <param name="passwordHasher">Password hashing service for security.</param>
-    public UserService(BioDbContext context, IPasswordHasher passwordHasher)
+    /// <param name="validator">Validator for user creation data.</param>
+    public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IValidator<UserCreateDTO> validator)
     {
-        _context = context;
+        _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _validator = validator;
     }
 
     /// <summary>
@@ -45,6 +48,20 @@ public class UserService : IUserService
     /// <returns>DTO with the data of the created user (Id, Name, Email, etc.).</returns>
     public async Task<UserResponseDTO> CreateUserAsync(UserCreateDTO userCreateDTO)
     {
+        // 0. Validation
+        var validationResult = await _validator.ValidateAsync(userCreateDTO);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+
+        // 0. Check if user already exists
+        var existingUser = await _userRepository.GetByEmailAsync(userCreateDTO.Email);
+        if (existingUser != null)
+        {
+            throw new InvalidOperationException($"User with email {userCreateDTO.Email} already exists.");
+        }
+
         // 1. Generate hash and salt using the security service
         var (hash, salt) = _passwordHasher.HashPassword(userCreateDTO.Password);
 
@@ -61,8 +78,8 @@ public class UserService : IUserService
         };
 
         // 3. Save to the database
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await _userRepository.AddAsync(user);
+        await _userRepository.SaveChangesAsync();
 
         // 4. Return only public information (without hashes)
         return new UserResponseDTO
