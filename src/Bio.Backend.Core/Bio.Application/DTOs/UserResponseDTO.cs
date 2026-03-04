@@ -25,6 +25,12 @@ public class UserResponseDTO
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
+    /// User's phone number.
+    /// </summary>
+    /// <example>+573001234567</example>
+    public string? PhoneNumber { get; set; }
+
+    /// <summary>
     /// The date and time when the user account was created.
     /// </summary>
     public DateTime CreatedAt { get; set; }

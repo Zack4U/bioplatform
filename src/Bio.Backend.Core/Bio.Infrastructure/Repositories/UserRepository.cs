@@ -40,6 +40,25 @@ public class UserRepository : IUserRepository
     }
 
     /// <summary>
+    /// Asynchronously retrieves all users from the database.
+    /// </summary>
+    /// <returns>A collection of all user entities.</returns>
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await _context.Users.ToListAsync();
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves a user by their unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the user.</param>
+    /// <returns>The user entity with the specified ID, or null if not found.</returns>
+    public async Task<User?> GetByIdAsync(Guid id)
+    {
+        return await _context.Users.FindAsync(id);
+    }
+
+    /// <summary>
     /// Asynchronously retrieves a user by their email address.
     /// </summary>
     /// <param name="email">The email to search for.</param>

@@ -32,6 +32,63 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserResponseDTO>> CreateUser(UserCreateDTO userCreateDTO)
     {
         var response = await _userService.CreateUserAsync(userCreateDTO);
-        return CreatedAtAction(nameof(CreateUser), new { id = response.Id }, response);
+        return CreatedAtAction(nameof(GetUserById), new { id = response.Id }, response);
+    }
+
+    /// <summary>
+    /// Retrieves all registered users.
+    /// </summary>
+    /// <returns>A list of user DTOs.</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<UserResponseDTO>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAllUsers()
+    {
+        var users = await _userService.GetAllUsersAsync();
+        return Ok(users);
+    }
+
+    /// <summary>
+    /// Retrieves a user by their unique identifier.
+    /// </summary>
+    /// <param name="id">The user's unique ID.</param>
+    /// <returns>The user DTO if found; otherwise, 404.</returns>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserResponseDTO>> GetUserById(Guid id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
+
+    /// <summary>
+    /// Retrieves a user by their email address.
+    /// </summary>
+    /// <param name="email">The email to search for.</param>
+    /// <returns>The user DTO if found; otherwise, 404.</returns>
+    [HttpGet("email/{email}")]
+    [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserResponseDTO>> GetUserByEmail(string email)
+    {
+        var user = await _userService.GetUserByEmailAsync(email);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
+
+    /// <summary>
+    /// Retrieves a user by their phone number.
+    /// </summary>
+    /// <param name="phoneNumber">The phone number to search for.</param>
+    /// <returns>The user DTO if found; otherwise, 404.</returns>
+    [HttpGet("phone/{phoneNumber}")]
+    [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserResponseDTO>> GetUserByPhoneNumber(string phoneNumber)
+    {
+        var user = await _userService.GetUserByPhoneNumberAsync(phoneNumber);
+        if (user == null) return NotFound();
+        return Ok(user);
     }
 }

@@ -152,18 +152,20 @@ public class UserServiceTests
     /// correctly trigger a <see cref="ValidationException"/>.
     /// </summary>
     [Theory]
-    [InlineData("", "john@example.com", "Password123", "Full name is required.")]
-    [InlineData("John Doe", "invalid-email", "Password123", "Email format is invalid.")]
-    [InlineData("John Doe", "john@example.com", "short", "Password must be at least 8 characters long.")]
+    [InlineData("", "john@example.com", "Password123", "123456", "Full name is required.")]
+    [InlineData("John Doe", "invalid-email", "Password123", "123456", "Email format is invalid.")]
+    [InlineData("John Doe", "john@example.com", "short", "123456", "Password must be at least 8 characters long.")]
+    [InlineData("John Doe", "john@example.com", "Password123", "", "Phone number is required.")]
     public async Task CreateUserAsync_WithInvalidData_ShouldThrowValidationException(
-        string fullName, string email, string password, string expectedError)
+        string fullName, string email, string password, string phoneNumber, string expectedError)
     {
         // Arrange
         var userCreateDTO = new UserCreateDTO
         {
             FullName = fullName,
             Email = email,
-            Password = password
+            Password = password,
+            PhoneNumber = phoneNumber
         };
 
         SetupValidatorResult(false, propertyName: "TestProperty", errorMessage: expectedError);
@@ -177,5 +179,101 @@ public class UserServiceTests
 
         // Verify that business logic was NOT executed
         _userRepositoryMock.Verify(repo => repo.GetByEmailAsync(It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task GetAllUsersAsync_ShouldReturnAllUsers()
+    {
+        // Arrange
+        var users = new List<User>
+        {
+            new User { Id = Guid.NewGuid(), FullName = "User 1", Email = "user1@example.com" },
+            new User { Id = Guid.NewGuid(), FullName = "User 2", Email = "user2@example.com" }
+        };
+
+        _userRepositoryMock
+            .Setup(repo => repo.GetAllAsync())
+            .ReturnsAsync(users);
+
+        // Act
+        var result = await _userService.GetAllUsersAsync();
+
+        // Assert
+        result.Should().HaveCount(2);
+        result.Should().Contain(u => u.Email == "user1@example.com");
+        result.Should().Contain(u => u.Email == "user2@example.com");
+    }
+
+    [Fact]
+    public async Task GetUserByIdAsync_WhenUserExists_ShouldReturnUser()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new User { Id = userId, FullName = "Test User", Email = "test@example.com" };
+
+        _userRepositoryMock
+            .Setup(repo => repo.GetByIdAsync(userId))
+            .ReturnsAsync(user);
+
+        // Act
+        var result = await _userService.GetUserByIdAsync(userId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.Id.Should().Be(userId);
+        result.Email.Should().Be(user.Email);
+    }
+
+    [Fact]
+    public async Task GetUserByIdAsync_WhenUserDoesNotExist_ShouldReturnNull()
+    {
+        // Arrange
+        _userRepositoryMock
+            .Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.GetUserByIdAsync(Guid.NewGuid());
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetUserByEmailAsync_WhenUserExists_ShouldReturnUser()
+    {
+        // Arrange
+        var email = "test@example.com";
+        var user = new User { Id = Guid.NewGuid(), FullName = "Test User", Email = email };
+
+        _userRepositoryMock
+            .Setup(repo => repo.GetByEmailAsync(email))
+            .ReturnsAsync(user);
+
+        // Act
+        var result = await _userService.GetUserByEmailAsync(email);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.Email.Should().Be(email);
+    }
+
+    [Fact]
+    public async Task GetUserByPhoneNumberAsync_WhenUserExists_ShouldReturnUser()
+    {
+        // Arrange
+        var phone = "1234567890";
+        var user = new User { Id = Guid.NewGuid(), FullName = "Test User", Email = "test@example.com", PhoneNumber = phone };
+
+        _userRepositoryMock
+            .Setup(repo => repo.GetByPhoneNumberAsync(phone))
+            .ReturnsAsync(user);
+
+        // Act
+        var result = await _userService.GetUserByPhoneNumberAsync(phone);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.PhoneNumber.Should().Be(phone);
     }
 }

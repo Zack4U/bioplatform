@@ -18,6 +18,16 @@ public interface IUserRepository
     Task SaveChangesAsync();
 
     /// <summary>
+    /// Retrieves all users from the repository.
+    /// </summary>
+    Task<IEnumerable<User>> GetAllAsync();
+
+    /// <summary>
+    /// Retrieves a user by their unique identifier.
+    /// </summary>
+    Task<User?> GetByIdAsync(Guid id);
+
+    /// <summary>
     /// Retrieves a user by their email address.
     /// </summary>
     Task<User?> GetByEmailAsync(string email);

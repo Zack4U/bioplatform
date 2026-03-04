@@ -16,6 +16,33 @@ public interface IUserService
     /// <param name="userCreateDTO">User creation data.</param>
     /// <returns>Information of the created user without sensitive data.</returns>
     Task<UserResponseDTO> CreateUserAsync(UserCreateDTO userCreateDTO);
+
+    /// <summary>
+    /// Retrieves all registered users in the system.
+    /// </summary>
+    /// <returns>A collection of users without sensitive information.</returns>
+    Task<IEnumerable<UserResponseDTO>> GetAllUsersAsync();
+
+    /// <summary>
+    /// Retrieves a user by their unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the user.</param>
+    /// <returns>The user information or null if not found.</returns>
+    Task<UserResponseDTO?> GetUserByIdAsync(Guid id);
+
+    /// <summary>
+    /// Retrieves a user by their email address.
+    /// </summary>
+    /// <param name="email">The email to search for.</param>
+    /// <returns>The user information or null if not found.</returns>
+    Task<UserResponseDTO?> GetUserByEmailAsync(string email);
+
+    /// <summary>
+    /// Retrieves a user by their phone number.
+    /// </summary>
+    /// <param name="phoneNumber">The phone number to search for.</param>
+    /// <returns>The user information or null if not found.</returns>
+    Task<UserResponseDTO?> GetUserByPhoneNumberAsync(string phoneNumber);
 }
 
 /// <summary>
@@ -91,11 +118,56 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();
 
         // 4. Return only public information (without hashes)
+        return MapToResponseDTO(user);
+    }
+
+    /// <summary>
+    /// Retrieves all users and maps them to public DTOs.
+    /// </summary>
+    public async Task<IEnumerable<UserResponseDTO>> GetAllUsersAsync()
+    {
+        var users = await _userRepository.GetAllAsync();
+        return users.Select(MapToResponseDTO);
+    }
+
+    /// <summary>
+    /// Finds a user by ID and maps them to a public DTO.
+    /// </summary>
+    public async Task<UserResponseDTO?> GetUserByIdAsync(Guid id)
+    {
+        var user = await _userRepository.GetByIdAsync(id);
+        return user != null ? MapToResponseDTO(user) : null;
+    }
+
+    /// <summary>
+    /// Finds a user by email and maps them to a public DTO.
+    /// </summary>
+    public async Task<UserResponseDTO?> GetUserByEmailAsync(string email)
+    {
+        var user = await _userRepository.GetByEmailAsync(email);
+        return user != null ? MapToResponseDTO(user) : null;
+    }
+
+    /// <summary>
+    /// Finds a user by phone number and maps them to a public DTO.
+    /// </summary>
+    public async Task<UserResponseDTO?> GetUserByPhoneNumberAsync(string phoneNumber)
+    {
+        var user = await _userRepository.GetByPhoneNumberAsync(phoneNumber);
+        return user != null ? MapToResponseDTO(user) : null;
+    }
+
+    /// <summary>
+    /// Helper method to centralize the mapping from User entity to UserResponseDTO.
+    /// </summary>
+    private static UserResponseDTO MapToResponseDTO(User user)
+    {
         return new UserResponseDTO
         {
             Id = user.Id,
             FullName = user.FullName,
             Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
             CreatedAt = user.CreatedAt
         };
     }

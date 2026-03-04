@@ -24,9 +24,10 @@ public class UserCreateDTO
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
-    /// Contact phone number (optional).
+    /// Contact phone number.
     /// </summary>
     /// <example>+573001234567</example>
+    [Required(ErrorMessage = "Phone number is required.")]
     [Phone(ErrorMessage = "Phone format is invalid.")]
     public string PhoneNumber { get; set; } = string.Empty;
 
