@@ -24,3 +24,10 @@ project.lock.json
 publish/
 artifacts/
 .fake
+
+# ===========================================
+# Secretos y configuración local
+# ===========================================
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json

@@ -76,9 +76,11 @@ export interface SpeciesListItem {
 export interface SpeciesSearchParams {
     query?: string;
     kingdom?: string;
+    phylum?: string;
     family?: string;
-    municipality?: string;
+    genus?: string;
     isSensitive?: boolean;
+    conservationStatus?: string;
     page?: number;
     pageSize?: number;
     sortBy?: "scientificName" | "commonName" | "createdAt";

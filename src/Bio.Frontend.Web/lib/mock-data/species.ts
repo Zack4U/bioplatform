@@ -711,16 +711,20 @@ export const MOCK_KINGDOMS = [
     ...new Set(MOCK_SPECIES.map((s) => s.taxonomy?.kingdom ?? "")),
 ].filter(Boolean);
 
+export const MOCK_PHYLUMS = [
+    ...new Set(MOCK_SPECIES.map((s) => s.taxonomy?.phylum ?? "")),
+].filter(Boolean);
+
 export const MOCK_FAMILIES = [
     ...new Set(MOCK_SPECIES.map((s) => s.taxonomy?.family ?? "")),
 ].filter(Boolean);
 
-export const MOCK_MUNICIPALITIES = [
-    ...new Set(
-        MOCK_SPECIES.flatMap(
-            (s) => s.distributions?.map((d) => d.municipality) ?? [],
-        ),
-    ),
+export const MOCK_GENERA = [
+    ...new Set(MOCK_SPECIES.map((s) => s.taxonomy?.genus ?? "")),
+].filter(Boolean);
+
+export const MOCK_CONSERVATION_STATUSES = [
+    ...new Set(MOCK_SPECIES.map((s) => s.conservationStatus ?? "")),
 ].filter(Boolean);
 
 /* ─── Simulated API functions ───────────────────────────────────────────── */
@@ -742,9 +746,11 @@ export async function fetchSpeciesList(
     const {
         query,
         kingdom,
+        phylum,
         family,
-        municipality,
+        genus,
         isSensitive,
+        conservationStatus,
         page = 1,
         pageSize = 12,
         sortBy = "scientificName",
@@ -771,21 +777,31 @@ export async function fetchSpeciesList(
         filtered = filtered.filter((s) => s.taxonomy?.kingdom === kingdom);
     }
 
+    // Phylum filter
+    if (phylum) {
+        filtered = filtered.filter((s) => s.taxonomy?.phylum === phylum);
+    }
+
     // Family filter
     if (family) {
         filtered = filtered.filter((s) => s.taxonomy?.family === family);
     }
 
-    // Municipality filter
-    if (municipality) {
-        filtered = filtered.filter((s) =>
-            s.distributions?.some((d) => d.municipality === municipality),
-        );
+    // Genus filter
+    if (genus) {
+        filtered = filtered.filter((s) => s.taxonomy?.genus === genus);
     }
 
     // Sensitivity filter
     if (isSensitive !== undefined) {
         filtered = filtered.filter((s) => s.isSensitive === isSensitive);
+    }
+
+    // Conservation status filter
+    if (conservationStatus) {
+        filtered = filtered.filter(
+            (s) => s.conservationStatus === conservationStatus,
+        );
     }
 
     // Sort

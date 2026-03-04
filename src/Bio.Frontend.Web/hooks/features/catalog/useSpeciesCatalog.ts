@@ -22,9 +22,11 @@
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 import {
     fetchSpeciesList,
+    MOCK_CONSERVATION_STATUSES,
     MOCK_FAMILIES,
+    MOCK_GENERA,
     MOCK_KINGDOMS,
-    MOCK_MUNICIPALITIES,
+    MOCK_PHYLUMS,
 } from "@/lib/mock-data/species";
 import type { PaginatedResponse } from "@/types";
 import type { SpeciesListItem, SpeciesSearchParams } from "@/types/species";
@@ -90,9 +92,11 @@ export const SORT_OPTIONS: SortOption[] = [
 const PARAM_MAP = {
     query: "q",
     kingdom: "reino",
+    phylum: "filo",
     family: "familia",
-    municipality: "municipio",
+    genus: "genero",
     isSensitive: "sensible",
+    conservationStatus: "estado",
     page: "pagina",
     sortBy: "ordenar",
     sortOrder: "dir",
@@ -110,15 +114,21 @@ function urlToSearchParams(urlParams: URLSearchParams): SpeciesSearchParams {
     const kingdom = urlParams.get(PARAM_MAP.kingdom);
     if (kingdom) params.kingdom = kingdom;
 
+    const phylum = urlParams.get(PARAM_MAP.phylum);
+    if (phylum) params.phylum = phylum;
+
     const family = urlParams.get(PARAM_MAP.family);
     if (family) params.family = family;
 
-    const municipality = urlParams.get(PARAM_MAP.municipality);
-    if (municipality) params.municipality = municipality;
+    const genus = urlParams.get(PARAM_MAP.genus);
+    if (genus) params.genus = genus;
 
     const sensitive = urlParams.get(PARAM_MAP.isSensitive);
     if (sensitive === "true") params.isSensitive = true;
     else if (sensitive === "false") params.isSensitive = false;
+
+    const conservationStatus = urlParams.get(PARAM_MAP.conservationStatus);
+    if (conservationStatus) params.conservationStatus = conservationStatus;
 
     const page = urlParams.get(PARAM_MAP.page);
     params.page = page ? Math.max(1, parseInt(page, 10) || 1) : 1;
@@ -153,11 +163,13 @@ function searchParamsToUrl(
 
     if (params.query) urlParams.set(PARAM_MAP.query, params.query);
     if (params.kingdom) urlParams.set(PARAM_MAP.kingdom, params.kingdom);
+    if (params.phylum) urlParams.set(PARAM_MAP.phylum, params.phylum);
     if (params.family) urlParams.set(PARAM_MAP.family, params.family);
-    if (params.municipality)
-        urlParams.set(PARAM_MAP.municipality, params.municipality);
+    if (params.genus) urlParams.set(PARAM_MAP.genus, params.genus);
     if (params.isSensitive !== undefined)
         urlParams.set(PARAM_MAP.isSensitive, String(params.isSensitive));
+    if (params.conservationStatus)
+        urlParams.set(PARAM_MAP.conservationStatus, params.conservationStatus);
     if (params.page && params.page > 1)
         urlParams.set(PARAM_MAP.page, String(params.page));
     if (params.sortBy && params.sortBy !== "scientificName")
@@ -231,9 +243,11 @@ export function useSpeciesCatalog() {
     const activeFilterCount = useMemo(() => {
         let count = 0;
         if (searchParams.kingdom) count++;
+        if (searchParams.phylum) count++;
         if (searchParams.family) count++;
-        if (searchParams.municipality) count++;
+        if (searchParams.genus) count++;
         if (searchParams.isSensitive !== undefined) count++;
+        if (searchParams.conservationStatus) count++;
         return count;
     }, [searchParams]);
 
@@ -243,12 +257,22 @@ export function useSpeciesCatalog() {
 
     const filterOptions = useMemo(
         () => ({
-            kingdoms: MOCK_KINGDOMS.map((k) => ({ label: k, value: k })),
-            families: MOCK_FAMILIES.map((f) => ({ label: f, value: f })),
-            municipalities: MOCK_MUNICIPALITIES.map((m) => ({
-                label: m,
-                value: m,
-            })),
+            kingdoms: MOCK_KINGDOMS.map((k) => ({ label: k, value: k })).sort(
+                (a, b) => a.label.localeCompare(b.label, "es"),
+            ),
+            phylums: MOCK_PHYLUMS.map((p) => ({ label: p, value: p })).sort(
+                (a, b) => a.label.localeCompare(b.label, "es"),
+            ),
+            families: MOCK_FAMILIES.map((f) => ({ label: f, value: f })).sort(
+                (a, b) => a.label.localeCompare(b.label, "es"),
+            ),
+            genera: MOCK_GENERA.map((g) => ({ label: g, value: g })).sort(
+                (a, b) => a.label.localeCompare(b.label, "es"),
+            ),
+            conservationStatuses: MOCK_CONSERVATION_STATUSES.map((s) => ({
+                label: s,
+                value: s,
+            })).sort((a, b) => a.label.localeCompare(b.label, "es")),
         }),
         [],
     );

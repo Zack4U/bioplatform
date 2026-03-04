@@ -115,7 +115,7 @@ export function SpeciesCard({
                 </div>
 
                 {/* ── Content ──────────────────────────────────────────── */}
-                <div className="flex flex-1 flex-col">
+                <div className="flex flex-1 flex-col py-4">
                     <CardHeader
                         className={cn("gap-1", isListView ? "pb-2" : "pb-2")}
                     >
