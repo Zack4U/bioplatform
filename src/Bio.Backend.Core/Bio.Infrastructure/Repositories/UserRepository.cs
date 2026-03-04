@@ -1,0 +1,51 @@
+using Bio.Backend.Core.Bio.Infrastructure.Persistence;
+using Bio.Domain.Entities;
+using Bio.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace Bio.Backend.Core.Bio.Infrastructure.Repositories;
+
+/// <summary>
+/// Implementation of the user repository using Entity Framework Core.
+/// Handles the persistence of user data to the database.
+/// </summary>
+public class UserRepository : IUserRepository
+{
+    private readonly BioDbContext _context;
+
+    /// <summary>
+    /// Initializes a new instance of <see cref="UserRepository"/>.
+    /// </summary>
+    /// <param name="context">The database context.</param>
+    public UserRepository(BioDbContext context)
+    {
+        _context = context;
+    }
+
+    /// <summary>
+    /// Asynchronously adds a new user to the database.
+    /// </summary>
+    /// <param name="user">The user entity to add.</param>
+    public async Task AddAsync(User user)
+    {
+        await _context.Users.AddAsync(user);
+    }
+
+    /// <summary>
+    /// Asynchronously saves all changes made in this context to the database.
+    /// </summary>
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves a user by their email address.
+    /// </summary>
+    /// <param name="email">The email to search for.</param>
+    /// <returns>The user entity with the specified email, or null if not found.</returns>
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
+}
