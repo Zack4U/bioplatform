@@ -52,6 +52,13 @@ public interface IUserService
     /// <param name="dto">The update data.</param>
     /// <returns>The updated user, or null if the user was not found.</returns>
     Task<UserResponseDTO?> UpdateUserAsync(Guid id, UserUpdateDTO dto);
+
+    /// <summary>
+    /// Deletes a user by their unique identifier.
+    /// </summary>
+    /// <param name="id">The user's ID.</param>
+    /// <returns>True if deleted; false if user was not found.</returns>
+    Task<bool> DeleteUserAsync(Guid id);
 }
 
 /// <summary>
@@ -180,7 +187,8 @@ public class UserService : IUserService
             FullName = user.FullName,
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
-            CreatedAt = user.CreatedAt
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt
         };
     }
 
@@ -218,5 +226,18 @@ public class UserService : IUserService
         await _userRepository.SaveChangesAsync();
 
         return MapToResponseDTO(user);
+    }
+
+    /// <summary>
+    /// Deletes a user by ID. Returns false if the user was not found.
+    /// </summary>
+    public async Task<bool> DeleteUserAsync(Guid id)
+    {
+        var user = await _userRepository.GetByIdAsync(id);
+        if (user == null) return false;
+
+        await _userRepository.DeleteAsync(user);
+        await _userRepository.SaveChangesAsync();
+        return true;
     }
 }

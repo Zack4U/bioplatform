@@ -93,4 +93,14 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber && u.Id != excludeId);
     }
+
+    /// <summary>
+    /// Asynchronously removes a user from the database.
+    /// </summary>
+    /// <param name="user">The user entity to remove.</param>
+    public Task DeleteAsync(User user)
+    {
+        _context.Users.Remove(user);
+        return Task.CompletedTask;
+    }
 }

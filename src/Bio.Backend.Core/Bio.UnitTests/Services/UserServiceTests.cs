@@ -360,4 +360,37 @@ public class UserServiceTests
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
+
+    [Fact]
+    public async Task DeleteUserAsync_WhenUserExists_ShouldDeleteAndReturnTrue()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new User { Id = userId, FullName = "Test", Email = "test@example.com" };
+
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
+        _userRepositoryMock.Setup(r => r.DeleteAsync(user)).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _userService.DeleteUserAsync(userId);
+
+        // Assert
+        result.Should().BeTrue();
+        _userRepositoryMock.Verify(r => r.DeleteAsync(user), Times.Once);
+        _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteUserAsync_WhenUserDoesNotExist_ShouldReturnFalse()
+    {
+        // Arrange
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.DeleteUserAsync(Guid.NewGuid());
+
+        // Assert
+        result.Should().BeFalse();
+        _userRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<User>()), Times.Never);
+    }
 }

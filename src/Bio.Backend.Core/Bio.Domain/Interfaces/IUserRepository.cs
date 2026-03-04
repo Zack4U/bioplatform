@@ -48,4 +48,10 @@ public interface IUserRepository
     /// Used during update to allow a user to keep their own phone.
     /// </summary>
     Task<User?> GetByPhoneNumberExcludingIdAsync(string phoneNumber, Guid excludeId);
+
+    /// <summary>
+    /// Removes a user from the repository by their unique identifier.
+    /// </summary>
+    /// <param name="user">The user entity to remove.</param>
+    Task DeleteAsync(User user);
 }

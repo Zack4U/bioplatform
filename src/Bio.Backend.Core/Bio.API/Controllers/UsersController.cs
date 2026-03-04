@@ -111,4 +111,21 @@ public class UsersController : ControllerBase
         if (user == null) return NotFound();
         return Ok(user);
     }
+
+    /// <summary>
+    /// Deletes a user by their unique identifier.
+    /// </summary>
+    /// <param name="id">The unique ID of the user to delete.</param>
+    /// <returns>204 No Content if deleted; 404 if not found.</returns>
+    /// <response code="204">User successfully deleted.</response>
+    /// <response code="404">If the user was not found.</response>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        var deleted = await _userService.DeleteUserAsync(id);
+        if (!deleted) return NotFound();
+        return NoContent();
+    }
 }

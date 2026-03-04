@@ -34,4 +34,9 @@ public class UserResponseDTO
     /// The date and time when the user account was created.
     /// </summary>
     public DateTime CreatedAt { get; set; }
+
+    /// <summary>
+    /// The date and time when the user account was updated.
+    /// </summary>
+    public DateTime? UpdatedAt { get; set; }
 }
