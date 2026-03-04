@@ -679,17 +679,6 @@ const MOCK_SPECIES: Species[] = [
     },
 ];
 
-/* ─── Helper: slugify ───────────────────────────────────────────────────── */
-
-function slugify(text: string): string {
-    return text
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
-}
-
 /* ─── Helper: convert full Species → SpeciesListItem ────────────────────── */
 
 function toListItem(species: Species): SpeciesListItem {

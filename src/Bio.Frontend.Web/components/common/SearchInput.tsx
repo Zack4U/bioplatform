@@ -39,12 +39,10 @@ export function SearchInput({
     const [internalValue, setInternalValue] = useState(controlledValue ?? "");
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Sync controlled value
-    useEffect(() => {
-        if (controlledValue !== undefined) {
-            setInternalValue(controlledValue);
-        }
-    }, [controlledValue]);
+    // Sync controlled value — derive state instead of using effect
+    if (controlledValue !== undefined && controlledValue !== internalValue) {
+        setInternalValue(controlledValue);
+    }
 
     const handleChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
