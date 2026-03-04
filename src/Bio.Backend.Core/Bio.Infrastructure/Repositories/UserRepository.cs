@@ -77,4 +77,20 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
     }
+
+    /// <summary>
+    /// Checks if another user (not the one being updated) already has the given email.
+    /// </summary>
+    public async Task<User?> GetByEmailExcludingIdAsync(string email, Guid excludeId)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Id != excludeId);
+    }
+
+    /// <summary>
+    /// Checks if another user (not the one being updated) already has the given phone number.
+    /// </summary>
+    public async Task<User?> GetByPhoneNumberExcludingIdAsync(string phoneNumber, Guid excludeId)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber && u.Id != excludeId);
+    }
 }

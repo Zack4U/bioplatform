@@ -43,6 +43,15 @@ public interface IUserService
     /// <param name="phoneNumber">The phone number to search for.</param>
     /// <returns>The user information or null if not found.</returns>
     Task<UserResponseDTO?> GetUserByPhoneNumberAsync(string phoneNumber);
+
+    /// <summary>
+    /// Updates an existing user's profile (FullName, Email, PhoneNumber).
+    /// Validates uniqueness of email and phone against other users.
+    /// </summary>
+    /// <param name="id">The user's ID.</param>
+    /// <param name="dto">The update data.</param>
+    /// <returns>The updated user, or null if the user was not found.</returns>
+    Task<UserResponseDTO?> UpdateUserAsync(Guid id, UserUpdateDTO dto);
 }
 
 /// <summary>
@@ -54,6 +63,7 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IValidator<UserCreateDTO> _validator;
+    private readonly IValidator<UserUpdateDTO> _updateValidator;
 
     /// <summary>
     /// Initializes a new instance of <see cref="UserService"/>.
@@ -61,11 +71,13 @@ public class UserService : IUserService
     /// <param name="userRepository">User repository.</param>
     /// <param name="passwordHasher">Password hashing service for security.</param>
     /// <param name="validator">Validator for user creation data.</param>
-    public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IValidator<UserCreateDTO> validator)
+    /// <param name="updateValidator">Validator for user update data.</param>
+    public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IValidator<UserCreateDTO> validator, IValidator<UserUpdateDTO> updateValidator)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _validator = validator;
+        _updateValidator = updateValidator;
     }
 
     /// <summary>
@@ -170,5 +182,41 @@ public class UserService : IUserService
             PhoneNumber = user.PhoneNumber,
             CreatedAt = user.CreatedAt
         };
+    }
+
+    /// <summary>
+    /// Updates a user's FullName, Email, and PhoneNumber.
+    /// Validates uniqueness of email and phone excluding the current user.
+    /// </summary>
+    public async Task<UserResponseDTO?> UpdateUserAsync(Guid id, UserUpdateDTO dto)
+    {
+        // 1. Validate DTO format
+        var validationResult = await _updateValidator.ValidateAsync(dto);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
+        // 2. Retrieve the user to update
+        var user = await _userRepository.GetByIdAsync(id);
+        if (user == null) return null;
+
+        // 3. Check uniqueness of email (excluding self)
+        var emailConflict = await _userRepository.GetByEmailExcludingIdAsync(dto.Email, id);
+        if (emailConflict != null)
+            throw new InvalidOperationException($"User with email {dto.Email} already exists.");
+
+        // 4. Check uniqueness of phone (excluding self)
+        var phoneConflict = await _userRepository.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, id);
+        if (phoneConflict != null)
+            throw new InvalidOperationException($"User with phone number {dto.PhoneNumber} already exists.");
+
+        // 5. Apply changes
+        user.FullName = dto.FullName;
+        user.Email = dto.Email;
+        user.PhoneNumber = dto.PhoneNumber;
+        user.UpdatedAt = DateTime.UtcNow;
+
+        await _userRepository.SaveChangesAsync();
+
+        return MapToResponseDTO(user);
     }
 }

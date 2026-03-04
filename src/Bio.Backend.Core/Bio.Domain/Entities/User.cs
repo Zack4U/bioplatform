@@ -40,4 +40,9 @@ public class User
     /// Timestamp of when the account was created.
     /// </summary>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
+    /// Timestamp of the last profile update.
+    /// </summary>
+    public DateTime? UpdatedAt { get; set; }
 }

@@ -91,4 +91,24 @@ public class UsersController : ControllerBase
         if (user == null) return NotFound();
         return Ok(user);
     }
+
+    /// <summary>
+    /// Updates an existing user's FullName, Email, and PhoneNumber.
+    /// </summary>
+    /// <param name="id">The unique ID of the user to update.</param>
+    /// <param name="userUpdateDTO">New profile data.</param>
+    /// <returns>The updated user DTO if found; otherwise, 404.</returns>
+    /// <response code="200">Returns the updated user.</response>
+    /// <response code="400">If the data is invalid or email/phone is already in use by another user.</response>
+    /// <response code="404">If the user was not found.</response>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UserResponseDTO>> UpdateUser(Guid id, UserUpdateDTO userUpdateDTO)
+    {
+        var user = await _userService.UpdateUserAsync(id, userUpdateDTO);
+        if (user == null) return NotFound();
+        return Ok(user);
+    }
 }

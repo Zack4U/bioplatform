@@ -18,6 +18,7 @@ public class UserServiceTests
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IPasswordHasher> _passwordHasherMock;
     private readonly Mock<IValidator<UserCreateDTO>> _validatorMock;
+    private readonly Mock<IValidator<UserUpdateDTO>> _updateValidatorMock;
     private readonly UserService _userService;
 
     /// <summary>
@@ -28,7 +29,8 @@ public class UserServiceTests
         _userRepositoryMock = new Mock<IUserRepository>();
         _passwordHasherMock = new Mock<IPasswordHasher>();
         _validatorMock = new Mock<IValidator<UserCreateDTO>>();
-        _userService = new UserService(_userRepositoryMock.Object, _passwordHasherMock.Object, _validatorMock.Object);
+        _updateValidatorMock = new Mock<IValidator<UserUpdateDTO>>();
+        _userService = new UserService(_userRepositoryMock.Object, _passwordHasherMock.Object, _validatorMock.Object, _updateValidatorMock.Object);
     }
 
     /// <summary>
@@ -275,5 +277,87 @@ public class UserServiceTests
         // Assert
         result.Should().NotBeNull();
         result!.PhoneNumber.Should().Be(phone);
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_WhenUserExists_ShouldUpdateAndReturnUser()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var existingUser = new User { Id = userId, FullName = "Old Name", Email = "old@example.com", PhoneNumber = "111" };
+        var dto = new UserUpdateDTO { FullName = "New Name", Email = "new@example.com", PhoneNumber = "222" };
+
+        _updateValidatorMock
+            .Setup(v => v.ValidateAsync(dto, default))
+            .ReturnsAsync(new FluentValidation.Results.ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
+        _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, userId)).ReturnsAsync((User?)null);
+        _userRepositoryMock.Setup(r => r.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, userId)).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.UpdateUserAsync(userId, dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.FullName.Should().Be("New Name");
+        result.Email.Should().Be("new@example.com");
+        result.PhoneNumber.Should().Be("222");
+        _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_WhenUserDoesNotExist_ShouldReturnNull()
+    {
+        // Arrange
+        var dto = new UserUpdateDTO { FullName = "X", Email = "x@example.com", PhoneNumber = "123" };
+        _updateValidatorMock
+            .Setup(v => v.ValidateAsync(dto, default))
+            .ReturnsAsync(new FluentValidation.Results.ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.UpdateUserAsync(Guid.NewGuid(), dto);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_WithDuplicateEmail_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var existingUser = new User { Id = userId, FullName = "A", Email = "a@example.com", PhoneNumber = "1" };
+        var dto = new UserUpdateDTO { FullName = "A", Email = "taken@example.com", PhoneNumber = "1" };
+
+        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, default)).ReturnsAsync(new FluentValidation.Results.ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
+        _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, userId)).ReturnsAsync(new User { Email = dto.Email });
+
+        // Act
+        Func<Task<UserResponseDTO?>> act = () => _userService.UpdateUserAsync(userId, dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_WithDuplicatePhone_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var existingUser = new User { Id = userId, FullName = "A", Email = "a@example.com", PhoneNumber = "1" };
+        var dto = new UserUpdateDTO { FullName = "A", Email = "a@example.com", PhoneNumber = "taken" };
+
+        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, default)).ReturnsAsync(new FluentValidation.Results.ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
+        _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, userId)).ReturnsAsync((User?)null);
+        _userRepositoryMock.Setup(r => r.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, userId)).ReturnsAsync(new User { PhoneNumber = dto.PhoneNumber });
+
+        // Act
+        Func<Task<UserResponseDTO?>> act = () => _userService.UpdateUserAsync(userId, dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>();
     }
 }

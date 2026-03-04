@@ -36,4 +36,16 @@ public interface IUserRepository
     /// Retrieves a user by their phone number.
     /// </summary>
     Task<User?> GetByPhoneNumberAsync(string phoneNumber);
+
+    /// <summary>
+    /// Checks if another user (excluding a given ID) already has the specified email.
+    /// Used during update to allow a user to keep their own email.
+    /// </summary>
+    Task<User?> GetByEmailExcludingIdAsync(string email, Guid excludeId);
+
+    /// <summary>
+    /// Checks if another user (excluding a given ID) already has the specified phone number.
+    /// Used during update to allow a user to keep their own phone.
+    /// </summary>
+    Task<User?> GetByPhoneNumberExcludingIdAsync(string phoneNumber, Guid excludeId);
 }
