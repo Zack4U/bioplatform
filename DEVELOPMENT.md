@@ -79,6 +79,12 @@ docker-compose ps
 
 # Ver logs en tiempo real
 docker-compose logs -f
+
+# Detener servicios
+docker-compose down
+
+# Detener servicios y eliminar volúmenes
+docker-compose down -v
 ```
 
 **Esperado:**
