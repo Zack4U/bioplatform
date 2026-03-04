@@ -48,4 +48,14 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
+
+    /// <summary>
+    /// Asynchronously retrieves a user by their phone number.
+    /// </summary>
+    /// <param name="phoneNumber">The phone number to search for.</param>
+    /// <returns>The user entity with the specified phone number, or null if not found.</returns>
+    public async Task<User?> GetByPhoneNumberAsync(string phoneNumber)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+    }
 }

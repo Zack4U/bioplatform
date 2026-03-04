@@ -32,6 +32,11 @@ public class BioDbContext : DbContext
 
             // Ensures that no duplicate emails exist
             entity.HasIndex(e => e.Email).IsUnique();
+
+            // Ensures that no duplicate phone numbers exist, ignoring nulls and empty strings
+            entity.HasIndex(u => u.PhoneNumber)
+                .IsUnique()
+                .HasFilter("[PhoneNumber] IS NOT NULL AND [PhoneNumber] <> ''");
         });
     }
 }

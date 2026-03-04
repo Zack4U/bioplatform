@@ -21,4 +21,9 @@ public interface IUserRepository
     /// Retrieves a user by their email address.
     /// </summary>
     Task<User?> GetByEmailAsync(string email);
+
+    /// <summary>
+    /// Retrieves a user by their phone number.
+    /// </summary>
+    Task<User?> GetByPhoneNumberAsync(string phoneNumber);
 }

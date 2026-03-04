@@ -62,6 +62,15 @@ public class UserService : IUserService
             throw new InvalidOperationException($"User with email {userCreateDTO.Email} already exists.");
         }
 
+        if (!string.IsNullOrEmpty(userCreateDTO.PhoneNumber))
+        {
+            var existingUserByPhone = await _userRepository.GetByPhoneNumberAsync(userCreateDTO.PhoneNumber);
+            if (existingUserByPhone != null)
+            {
+                throw new InvalidOperationException($"User with phone number {userCreateDTO.PhoneNumber} already exists.");
+            }
+        }
+
         // 1. Generate hash and salt using the security service
         var (hash, salt) = _passwordHasher.HashPassword(userCreateDTO.Password);
 

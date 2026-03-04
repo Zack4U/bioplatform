@@ -114,6 +114,40 @@ public class UserServiceTests
     }
 
     /// <summary>
+    /// Verifies that attempting to create a user with an already registered phone number
+    /// throws an <see cref="InvalidOperationException"/>.
+    /// </summary>
+    [Fact]
+    public async Task CreateUserAsync_WithDuplicatePhoneNumber_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var userCreateDTO = new UserCreateDTO
+        {
+            FullName = "Existing Phone",
+            Email = "new@example.com",
+            Password = "SomePassword123",
+            PhoneNumber = "1234567890"
+        };
+
+        SetupValidatorResult(true);
+
+        _userRepositoryMock
+            .Setup(repo => repo.GetByEmailAsync(userCreateDTO.Email))
+            .ReturnsAsync((User?)null);
+
+        _userRepositoryMock
+            .Setup(repo => repo.GetByPhoneNumberAsync(userCreateDTO.PhoneNumber))
+            .ReturnsAsync(new User { PhoneNumber = userCreateDTO.PhoneNumber });
+
+        // Act
+        Func<Task<UserResponseDTO>> act = () => _userService.CreateUserAsync(userCreateDTO);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"User with phone number {userCreateDTO.PhoneNumber} already exists.");
+    }
+
+    /// <summary>
     /// Verifies that various invalid inputs (empty fields, bad formats)
     /// correctly trigger a <see cref="ValidationException"/>.
     /// </summary>
