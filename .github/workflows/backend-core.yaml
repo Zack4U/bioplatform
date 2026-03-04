@@ -43,7 +43,8 @@ jobs:
           --verbosity normal \
           --collect:"XPlat Code Coverage" \
           --results-directory ./TestResults \
-          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura \
+             DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[Bio.API]Program"
 
     - name: Install ReportGenerator
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
