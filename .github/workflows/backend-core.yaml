@@ -50,6 +50,15 @@ jobs:
 
     - name: Generate Coverage Report & Enforce Threshold
       run: |
+        # Check if any coverage files were generated
+        COVERAGE_FILES=$(find ./TestResults -name "coverage.cobertura.xml" 2>/dev/null)
+        if [ -z "$COVERAGE_FILES" ]; then
+          echo "::warning::No coverage files found. Ensure test projects reference coverlet.collector."
+          echo "Line Coverage: 0%"
+          echo "::error::Code coverage 0% is below the 70% threshold (no coverage files generated)"
+          exit 1
+        fi
+
         reportgenerator \
           -reports:"./TestResults/**/coverage.cobertura.xml" \
           -targetdir:"./TestResults/CoverageReport" \
