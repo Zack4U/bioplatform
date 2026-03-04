@@ -97,6 +97,20 @@ bash run.sh all
 
 ---
 
+## 🧪 Ejecutar Tests
+
+```bash
+# Ejecutar todos los tests con descripción
+dotnet test --logger "console;verbosity=detailed" src/Bio.Backend.Core/Bio.UnitTests/Bio.UnitTests.csproj
+```
+
+```bash
+# Ejecutar todos los tests sin descripción
+dotnet test src/Bio.Backend.Core/Bio.UnitTests/Bio.UnitTests.csproj
+```
+
+---
+
 ## macOS / Linux
 
 ### Requisito: tmux (opcional pero recomendado)
