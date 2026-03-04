@@ -1,0 +1,45 @@
+name: Docker Compose Validation
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'docker-compose.yml'
+      - 'docker-compose.override.yml'
+      - 'docker-compose.prod.yml'
+      - 'docker/**'
+      - 'src/**/Dockerfile'
+      - 'src/**/DockerFile'
+  pull_request:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'docker-compose.yml'
+      - 'docker-compose.override.yml'
+      - 'docker-compose.prod.yml'
+      - 'docker/**'
+      - 'src/**/Dockerfile'
+      - 'src/**/DockerFile'
+
+jobs:
+  validate:
+    name: Validate Docker Configuration
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Validate docker-compose.yml syntax
+      run: docker compose -f docker-compose.yml config --quiet
+
+    - name: Validate docker-compose.override.yml syntax
+      run: docker compose -f docker-compose.yml -f docker-compose.override.yml config --quiet
+
+    - name: Validate docker-compose.prod.yml syntax
+      run: docker compose -f docker-compose.yml -f docker-compose.prod.yml config --quiet
+
+    - name: Lint Dockerfiles with Hadolint
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+        recursive: true
+        ignore: DL3008,DL3013 # Allow unpinned apt/pip versions

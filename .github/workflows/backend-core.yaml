@@ -1,0 +1,84 @@
+name: Backend Core (.NET 8) CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'src/Bio.Backend.Core/**'
+  pull_request:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'src/Bio.Backend.Core/**'
+
+jobs:
+  build-and-test:
+    name: Build, Lint and Test .NET
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/Bio.Backend.Core
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore Bio.Backend.Core.sln
+
+    - name: Check Code Format
+      run: dotnet format Bio.Backend.Core.sln --verify-no-changes --verbosity diagnostic
+
+    - name: Build
+      run: dotnet build Bio.Backend.Core.sln --no-restore -c Release -warnaserror
+
+    - name: Test & Coverage (>70%)
+      run: |
+        dotnet test Bio.Backend.Core.sln \
+          --no-build -c Release \
+          --verbosity normal \
+          --collect:"XPlat Code Coverage" \
+          --results-directory ./TestResults \
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+    - name: Generate Coverage Report & Enforce Threshold
+      run: |
+        # Check if any coverage files were generated
+        COVERAGE_FILES=$(find ./TestResults -name "coverage.cobertura.xml" 2>/dev/null)
+        if [ -z "$COVERAGE_FILES" ]; then
+          echo "::warning::No coverage files found. Ensure test projects reference coverlet.collector."
+          echo "Line Coverage: 0%"
+          echo "::error::Code coverage 0% is below the 70% threshold (no coverage files generated)"
+          exit 1
+        fi
+
+        reportgenerator \
+          -reports:"./TestResults/**/coverage.cobertura.xml" \
+          -targetdir:"./TestResults/CoverageReport" \
+          -reporttypes:"TextSummary"
+
+        # Show coverage summary
+        cat ./TestResults/CoverageReport/Summary.txt
+
+        # Enforce minimum 70% line coverage
+        LINE_COVERAGE=$(grep -oP 'Line coverage: \K[0-9.]+' ./TestResults/CoverageReport/Summary.txt || echo "0")
+        echo "Line Coverage: ${LINE_COVERAGE}%"
+        if (( $(echo "$LINE_COVERAGE < 70" | bc -l) )); then
+          echo "::error::Code coverage ${LINE_COVERAGE}% is below the 70% threshold"
+          exit 1
+        fi
+
+    - name: Upload Coverage Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-backend
+        path: ./src/Bio.Backend.Core/TestResults/CoverageReport/
+        retention-days: 14

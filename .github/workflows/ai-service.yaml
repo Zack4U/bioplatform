@@ -1,0 +1,63 @@
+name: AI Service (Python) CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'src/Bio.Backend.AI/**'
+  pull_request:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'src/Bio.Backend.AI/**'
+
+jobs:
+  lint-and-test:
+    name: Lint, Type-Check and Test Python
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/Bio.Backend.AI
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest pytest-cov mypy
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Lint with flake8 (strict)
+      run: |
+        # Fail on syntax errors and undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Fail on all warnings (enforce clean code)
+        flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Type Check with mypy
+      run: |
+        mypy app/ --ignore-missing-imports --disallow-untyped-defs || true
+        # Note: starts as warning-only; remove '|| true' once all type hints are in place
+
+    - name: Run PyTest with Coverage
+      run: |
+        pytest tests/ \
+          --cov=app \
+          --cov-report=term-missing \
+          --cov-report=xml:coverage.xml \
+          --cov-fail-under=60
+
+    - name: Upload Coverage Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-ai
+        path: ./src/Bio.Backend.AI/coverage.xml
+        retention-days: 14

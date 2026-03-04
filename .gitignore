@@ -16,6 +16,8 @@
 *.secret
 secrets/
 !.env.example
+secrets.env
+variables.env
 
 # ===========================================
 # IDE / Editors
