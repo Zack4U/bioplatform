@@ -47,8 +47,8 @@ public class UsersControllerTests
     public async Task GetAllUsers_ShouldReturnOkWithUsers()
     {
         // Arrange
-        var users = new List<UserResponseDTO> 
-        { 
+        var users = new List<UserResponseDTO>
+        {
             new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test1" },
             new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test2" }
         };
@@ -136,7 +136,7 @@ public class UsersControllerTests
         var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
         okResult.Value.Should().BeEquivalentTo(user);
     }
-    
+
     [Fact]
     public async Task GetUserByPhoneNumber_NonExisting_ShouldReturnNotFound()
     {
@@ -157,7 +157,7 @@ public class UsersControllerTests
         var id = Guid.NewGuid();
         var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "updated@example.com", PhoneNumber = "999" };
         var responseDto = new UserResponseDTO { Id = id, FullName = updateDto.FullName, Email = updateDto.Email, PhoneNumber = updateDto.PhoneNumber };
-        
+
         _userServiceMock.Setup(s => s.UpdateUserAsync(id, updateDto)).ReturnsAsync(responseDto);
 
         // Act
@@ -174,7 +174,7 @@ public class UsersControllerTests
         // Arrange
         var id = Guid.NewGuid();
         var updateDto = new UserUpdateDTO { FullName = "Updated" };
-        
+
         _userServiceMock.Setup(s => s.UpdateUserAsync(id, updateDto)).ReturnsAsync((UserResponseDTO?)null);
 
         // Act
