@@ -16,7 +16,6 @@ Salida:
 
 import csv
 import json
-import os
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -24,7 +23,7 @@ from pathlib import Path
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent                          # Bio.Backend.AI/
-DATASET_DIR = PROJECT_ROOT / "dataset-metadata"
+DATASET_DIR = PROJECT_ROOT / "data" / "dataset_metadata"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
 
 OCCURRENCE_FILE = DATASET_DIR / "occurrence.txt"

@@ -29,13 +29,11 @@ Salida:
 import argparse
 import hashlib
 import json
-import os
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from io import BytesIO
 from pathlib import Path
-from typing import Optional
 
 import requests
 from PIL import Image
@@ -122,7 +120,7 @@ def download_single_image(
 
             return True, "downloaded"
 
-        except requests.exceptions.HTTPError as e:
+        except requests.exceptions.HTTPError:
             if response.status_code == 404:
                 return False, f"404_not_found: {download_url}"
             if attempt < RETRY_COUNT - 1:

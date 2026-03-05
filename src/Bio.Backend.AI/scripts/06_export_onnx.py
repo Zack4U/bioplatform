@@ -30,6 +30,17 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 
 
+class _DropoutLinear(nn.Linear):
+    """nn.Linear with preceding dropout – subclasses Linear for type safety."""
+
+    def __init__(self, in_features: int, out_features: int, dropout: float = 0.3) -> None:
+        super().__init__(in_features, out_features)
+        self._drop = nn.Dropout(p=dropout)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:  # type: ignore[override]
+        return super().forward(self._drop(x))
+
+
 def main() -> None:
     config_path = WEIGHTS_DIR / "training_config.json"
     weights_path = WEIGHTS_DIR / "best_model.pth"
@@ -48,12 +59,24 @@ def main() -> None:
     # Build model
     if model_name == "efficientnet_b0":
         model = models.efficientnet_b0(weights=None)
-        in_features = model.classifier[1].in_features
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features: int = orig_layer.in_features
         model.classifier = nn.Sequential(nn.Dropout(0.3), nn.Linear(in_features, num_classes))
+    elif model_name == "efficientnet_b2":
+        model = models.efficientnet_b2(weights=None)
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features = orig_layer.in_features
+        model.classifier = nn.Sequential(nn.Dropout(0.4), nn.Linear(in_features, num_classes))
     elif model_name == "resnet50":
         model = models.resnet50(weights=None)
         in_features = model.fc.in_features
-        model.fc = nn.Sequential(nn.Dropout(0.3), nn.Linear(in_features, num_classes))
+        model.fc = _DropoutLinear(in_features, num_classes, dropout=0.3)
+    elif model_name == "resnet101":
+        model = models.resnet101(weights=None)
+        in_features = model.fc.in_features
+        model.fc = _DropoutLinear(in_features, num_classes, dropout=0.3)
     else:
         print(f"[ERROR] ONNX export not implemented for {model_name}")
         sys.exit(1)
@@ -66,7 +89,7 @@ def main() -> None:
     onnx_path = WEIGHTS_DIR / "model.onnx"
 
     torch.onnx.export(
-        model, dummy_input, str(onnx_path),
+        model, (dummy_input,), str(onnx_path),
         export_params=True,
         opset_version=17,
         do_constant_folding=True,

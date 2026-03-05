@@ -48,20 +48,15 @@ WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 EVAL_DIR = PROJECT_ROOT / "data" / "evaluation"
 
 
-def load_model(
-    config: dict,
-    weights_path: Path,
-    device: torch.device,
-) -> nn.Module:
-    """Load model architecture and weights."""
-    # Lazy import to reuse build_model
-    sys.path.insert(0, str(SCRIPT_DIR))
-    from train_cnn_module import build_model
-    model = build_model(config["model_name"], config["num_classes"], pretrained=False)
-    model.load_state_dict(torch.load(weights_path, map_location=device, weights_only=True))
-    model = model.to(device)
-    model.eval()
-    return model
+class _DropoutLinear(nn.Linear):
+    """nn.Linear with preceding dropout – subclasses Linear for type safety."""
+
+    def __init__(self, in_features: int, out_features: int, dropout: float = 0.3) -> None:
+        super().__init__(in_features, out_features)
+        self._drop = nn.Dropout(p=dropout)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:  # type: ignore[override]
+        return super().forward(self._drop(x))
 
 
 def build_model_from_config(config: dict, weights_path: Path, device: torch.device) -> nn.Module:
@@ -73,14 +68,18 @@ def build_model_from_config(config: dict, weights_path: Path, device: torch.devi
 
     if model_name == "efficientnet_b0":
         model = models.efficientnet_b0(weights=None)
-        in_features = model.classifier[1].in_features
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features: int = orig_layer.in_features
         model.classifier = nn.Sequential(
             nn.Dropout(p=0.3),
             nn.Linear(in_features, num_classes),
         )
     elif model_name == "efficientnet_b2":
         model = models.efficientnet_b2(weights=None)
-        in_features = model.classifier[1].in_features
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features = orig_layer.in_features
         model.classifier = nn.Sequential(
             nn.Dropout(p=0.4),
             nn.Linear(in_features, num_classes),
@@ -88,17 +87,11 @@ def build_model_from_config(config: dict, weights_path: Path, device: torch.devi
     elif model_name == "resnet50":
         model = models.resnet50(weights=None)
         in_features = model.fc.in_features
-        model.fc = nn.Sequential(
-            nn.Dropout(p=0.3),
-            nn.Linear(in_features, num_classes),
-        )
+        model.fc = _DropoutLinear(in_features, num_classes, dropout=0.3)
     elif model_name == "resnet101":
         model = models.resnet101(weights=None)
         in_features = model.fc.in_features
-        model.fc = nn.Sequential(
-            nn.Dropout(p=0.3),
-            nn.Linear(in_features, num_classes),
-        )
+        model.fc = _DropoutLinear(in_features, num_classes, dropout=0.3)
     else:
         raise ValueError(f"Unsupported model: {model_name}")
 
@@ -226,16 +219,16 @@ def generate_classification_report(metrics: dict) -> str:
     """Generate a formatted classification report string."""
     lines = []
     lines.append(f"{'=' * 80}")
-    lines.append(f"  CLASSIFICATION REPORT - BioPlatform Caldas CNN")
+    lines.append("  CLASSIFICATION REPORT - BioPlatform Caldas CNN")
     lines.append(f"{'=' * 80}")
-    lines.append(f"")
+    lines.append("")
     lines.append(f"  Overall Accuracy:   {metrics['accuracy']:.4f} ({metrics['accuracy'] * 100:.1f}%)")
 
     top_k_key = [k for k in metrics if k.startswith("top_")][0]
     lines.append(f"  {top_k_key.replace('_', ' ').title()}: {metrics[top_k_key]:.4f} ({metrics[top_k_key] * 100:.1f}%)")
     lines.append(f"  Total Test Samples: {metrics['total_samples']:,}")
     lines.append(f"  Number of Classes:  {metrics['num_classes']}")
-    lines.append(f"")
+    lines.append("")
     lines.append(f"{'─' * 80}")
     lines.append(f"  {'Species':<40s} {'Precision':>10s} {'Recall':>10s} {'F1':>10s} {'Support':>10s}")
     lines.append(f"{'─' * 80}")
@@ -376,7 +369,7 @@ def main() -> None:
         sys.exit(1)
 
     print(f"\n{'=' * 60}")
-    print(f"  MODEL EVALUATION - BioPlatform Caldas CNN")
+    print("  MODEL EVALUATION - BioPlatform Caldas CNN")
     print(f"{'=' * 60}")
     print(f"  Model:   {config['model_name']}")
     print(f"  Classes: {config['num_classes']}")
@@ -412,11 +405,11 @@ def main() -> None:
     print(f"  Test images: {len(test_dataset):,}")
 
     # ── Evaluate ───────────────────────────────────────────────────
-    print(f"\n  Running evaluation...")
+    print("\n  Running evaluation...")
     results = evaluate_model(model, test_loader, device, config["num_classes"], args.top_k)
 
     # ── Compute metrics ────────────────────────────────────────────
-    print(f"  Computing metrics...")
+    print("  Computing metrics...")
     metrics = compute_metrics(
         results["labels"],
         results["predictions"],
@@ -445,7 +438,7 @@ def main() -> None:
         writer.writerow(["species", "precision", "recall", "f1_score", "support"])
         for name, m in sorted(metrics["per_class"].items()):
             writer.writerow([name, m["precision"], m["recall"], m["f1_score"], m["support"]])
-    print(f"  → Per-class CSV saved")
+    print("  → Per-class CSV saved")
 
     # Confusion matrix
     plot_confusion_matrix(
@@ -465,7 +458,7 @@ def main() -> None:
     # ── Final Summary ──────────────────────────────────────────────
     top_k_key = [k for k in metrics if k.startswith("top_")][0]
     print(f"\n{'=' * 60}")
-    print(f"  EVALUATION COMPLETE")
+    print("  EVALUATION COMPLETE")
     print(f"{'=' * 60}")
     print(f"  Accuracy:    {metrics['accuracy']:.4f} ({metrics['accuracy'] * 100:.1f}%)")
     print(f"  {top_k_key}: {metrics[top_k_key]:.4f} ({metrics[top_k_key] * 100:.1f}%)")

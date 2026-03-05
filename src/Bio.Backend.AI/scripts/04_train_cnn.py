@@ -34,7 +34,6 @@ Salida:
 
 import argparse
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -60,6 +59,17 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
+
+
+class _DropoutLinear(nn.Linear):
+    """nn.Linear with preceding dropout – subclasses Linear for type safety."""
+
+    def __init__(self, in_features: int, out_features: int, dropout: float = 0.3) -> None:
+        super().__init__(in_features, out_features)
+        self._drop = nn.Dropout(p=dropout)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:  # type: ignore[override]
+        return super().forward(self._drop(x))
 
 
 # ── Data Augmentation & Transforms ────────────────────────────────
@@ -113,7 +123,9 @@ def build_model(
     if model_name == "efficientnet_b0":
         weights = models.EfficientNet_B0_Weights.IMAGENET1K_V1 if pretrained else None
         model = models.efficientnet_b0(weights=weights)
-        in_features = model.classifier[1].in_features
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features: int = orig_layer.in_features
         model.classifier = nn.Sequential(
             nn.Dropout(p=0.3),
             nn.Linear(in_features, num_classes),
@@ -122,7 +134,9 @@ def build_model(
     elif model_name == "efficientnet_b2":
         weights = models.EfficientNet_B2_Weights.IMAGENET1K_V1 if pretrained else None
         model = models.efficientnet_b2(weights=weights)
-        in_features = model.classifier[1].in_features
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features = orig_layer.in_features
         model.classifier = nn.Sequential(
             nn.Dropout(p=0.4),
             nn.Linear(in_features, num_classes),
@@ -132,19 +146,13 @@ def build_model(
         weights = models.ResNet50_Weights.IMAGENET1K_V2 if pretrained else None
         model = models.resnet50(weights=weights)
         in_features = model.fc.in_features
-        model.fc = nn.Sequential(
-            nn.Dropout(p=0.3),
-            nn.Linear(in_features, num_classes),
-        )
+        model.fc = _DropoutLinear(in_features, num_classes, dropout=0.3)
 
     elif model_name == "resnet101":
         weights = models.ResNet101_Weights.IMAGENET1K_V2 if pretrained else None
         model = models.resnet101(weights=weights)
         in_features = model.fc.in_features
-        model.fc = nn.Sequential(
-            nn.Dropout(p=0.3),
-            nn.Linear(in_features, num_classes),
-        )
+        model.fc = _DropoutLinear(in_features, num_classes, dropout=0.3)
 
     else:
         raise ValueError(f"Unsupported model: {model_name}. "
@@ -156,8 +164,11 @@ def build_model(
 def freeze_backbone(model: nn.Module, model_name: str) -> None:
     """Freeze all layers except the classification head."""
     if "efficientnet" in model_name:
-        for param in model.features.parameters():
-            param.requires_grad = False
+        # EfficientNet backbone is in 'features' attribute
+        features = getattr(model, "features", None)
+        if features is not None:
+            for param in features.parameters():
+                param.requires_grad = False
     elif "resnet" in model_name:
         for name, param in model.named_parameters():
             if "fc" not in name:
@@ -180,7 +191,7 @@ def get_weighted_sampler(dataset: datasets.ImageFolder) -> WeightedRandomSampler
     sample_weights = class_weights[targets]
 
     return WeightedRandomSampler(
-        weights=sample_weights,
+        weights=sample_weights.tolist(),
         num_samples=len(sample_weights),
         replacement=True,
     )
@@ -279,12 +290,12 @@ def main() -> None:
     # ── Setup ──────────────────────────────────────────────────────
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"\n{'=' * 60}")
-    print(f"  CNN TRAINING PIPELINE - BioPlatform Caldas")
+    print("  CNN TRAINING PIPELINE - BioPlatform Caldas")
     print(f"{'=' * 60}")
     print(f"  Device:     {device}")
     if device.type == "cuda":
         print(f"  GPU:        {torch.cuda.get_device_name(0)}")
-        print(f"  VRAM:       {torch.cuda.get_device_properties(0).total_mem / 1e9:.1f} GB")
+        print(f"  VRAM:       {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
     print(f"  Model:      {args.model}")
     print(f"  Image size: {args.image_size}px")
     print(f"  Batch size: {args.batch_size}")
@@ -361,7 +372,7 @@ def main() -> None:
     start_time = time.time()
 
     print(f"\n{'─' * 50}")
-    print(f"  Phase 1: Training classifier head (backbone frozen)")
+    print("  Phase 1: Training classifier head (backbone frozen)")
     print(f"  Epochs: 1-{args.freeze_epochs}")
     print(f"{'─' * 50}")
 
@@ -391,7 +402,7 @@ def main() -> None:
 
     # ── Phase 2: Fine-tune Entire Model ────────────────────────────
     print(f"\n{'─' * 50}")
-    print(f"  Phase 2: Fine-tuning full model (backbone unfrozen)")
+    print("  Phase 2: Fine-tuning full model (backbone unfrozen)")
     print(f"  Epochs: {args.freeze_epochs + 1}-{args.epochs}")
     print(f"{'─' * 50}")
 
@@ -478,14 +489,14 @@ def main() -> None:
 
     # ── Summary ────────────────────────────────────────────────────
     print(f"\n{'=' * 60}")
-    print(f"  TRAINING COMPLETE")
+    print("  TRAINING COMPLETE")
     print(f"{'=' * 60}")
     print(f"  Best Val Accuracy: {best_val_acc:.4f} ({best_val_acc * 100:.1f}%)")
     print(f"  Total Epochs:      {len(history)}")
     print(f"  Training Time:     {elapsed / 60:.1f} minutes")
     print(f"  Model saved:       {WEIGHTS_DIR / 'best_model.pth'}")
     print(f"  Config saved:      {WEIGHTS_DIR / 'training_config.json'}")
-    print(f"\n  Next: python scripts/05_evaluate_model.py")
+    print("\n  Next: python scripts/05_evaluate_model.py")
 
 
 if __name__ == "__main__":

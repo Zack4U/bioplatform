@@ -35,7 +35,6 @@ Salida:
 
 import argparse
 import json
-import os
 import random
 import shutil
 import sys
@@ -135,24 +134,35 @@ def split_dataset(
     species_images: dict[str, list[Path]],
     min_images: int,
     seed: int,
+    max_species: int = 0,
     train_ratio: float = 0.80,
     val_ratio: float = 0.10,
 ) -> tuple[dict, dict, dict]:
     """
     Stratified split: cada especie se divide individualmente en train/val/test.
+    If max_species > 0, only the top N species (by image count) are kept.
     Returns three dicts: { species_name: [paths] }
     """
     random.seed(seed)
+
+    # Sort by image count descending so --max-species takes the richest ones
+    sorted_species = sorted(
+        species_images.items(), key=lambda kv: len(kv[1]), reverse=True
+    )
 
     train_split: dict[str, list[Path]] = {}
     val_split: dict[str, list[Path]] = {}
     test_split: dict[str, list[Path]] = {}
     skipped: list[str] = []
+    included = 0
 
-    for species_name, images in sorted(species_images.items()):
+    for species_name, images in sorted_species:
         if len(images) < min_images:
             skipped.append(species_name)
             continue
+
+        if max_species > 0 and included >= max_species:
+            break
 
         # Shuffle images
         shuffled = images.copy()
@@ -169,6 +179,7 @@ def split_dataset(
         train_split[species_name] = shuffled[:n_train]
         val_split[species_name] = shuffled[n_train:n_train + n_val]
         test_split[species_name] = shuffled[n_train + n_val:]
+        included += 1
 
     if skipped:
         print(f"[INFO] Skipped {len(skipped)} species with <{min_images} images")
@@ -224,6 +235,10 @@ def main() -> None:
         help="Random seed for reproducible splits (default: 42)"
     )
     parser.add_argument(
+        "--max-species", type=int, default=0,
+        help="Limit to top N species by image count (0 = all, default: 0)"
+    )
+    parser.add_argument(
         "--clean", action="store_true",
         help="Remove existing processed directory before organizing"
     )
@@ -246,7 +261,11 @@ def main() -> None:
 
     # 2. Split dataset
     print(f"\n[STEP 2/4] Splitting dataset (min {args.min_images} imgs/species)...")
-    train, val, test = split_dataset(species_images, args.min_images, args.seed)
+    if args.max_species > 0:
+        print(f"  → Limiting to top {args.max_species} species (test mode)")
+    train, val, test = split_dataset(
+        species_images, args.min_images, args.seed, max_species=args.max_species
+    )
     num_classes = len(train)
     print(f"  → {num_classes} classes included in final dataset")
     print(f"  → Train: {sum(len(v) for v in train.values()):,} images")
@@ -254,7 +273,7 @@ def main() -> None:
     print(f"  → Test:  {sum(len(v) for v in test.values()):,} images")
 
     # 3. Copy and validate
-    print(f"\n[STEP 3/4] Copying and validating images...")
+    print("\n[STEP 3/4] Copying and validating images...")
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
     total_copied = 0
@@ -269,7 +288,7 @@ def main() -> None:
     print(f"  → Total corrupted: {total_corrupted:,}")
 
     # 4. Generate metadata files
-    print(f"\n[STEP 4/4] Generating metadata files...")
+    print("\n[STEP 4/4] Generating metadata files...")
 
     # Class mapping: species_name → class_idx (sorted alphabetically)
     class_names = sorted(train.keys())
@@ -301,7 +320,7 @@ def main() -> None:
 
     with open(PROCESSED_DIR / "class_info.json", "w", encoding="utf-8") as f:
         json.dump(class_info, f, ensure_ascii=False, indent=2)
-    print(f"  → class_info.json (taxonomy + counts per class)")
+    print("  → class_info.json (taxonomy + counts per class)")
 
     # Dataset statistics
     dataset_stats = {
@@ -336,7 +355,7 @@ def main() -> None:
 
     with open(PROCESSED_DIR / "dataset_stats.json", "w", encoding="utf-8") as f:
         json.dump(dataset_stats, f, ensure_ascii=False, indent=2)
-    print(f"  → dataset_stats.json")
+    print("  → dataset_stats.json")
 
     # Print final summary
     print("\n" + "=" * 60)
@@ -347,7 +366,7 @@ def main() -> None:
     print(f"  Val imgs:    {dataset_stats['splits']['val']['total_images']:,}")
     print(f"  Test imgs:   {dataset_stats['splits']['test']['total_images']:,}")
     print(f"  Output dir:  {PROCESSED_DIR}")
-    print(f"\n  Ready for training! Use: python scripts/04_train_cnn.py")
+    print("\n  Ready for training! Use: python scripts/04_train_cnn.py")
 
 
 if __name__ == "__main__":
