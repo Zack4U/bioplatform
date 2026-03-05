@@ -1,11 +1,2 @@
 When using this dataset please use the following citation and pay attention to the rights documented in rights.txt:
-Observation.org (2025). Observation.org, Nature data from around the World. Occurrence dataset https://doi.org/10.15468/5nilie accessed via GBIF.org on 2026-02-17.
-Vellinga W (2026). Xeno-canto - Soundscapes from around the world. Xeno-canto Foundation for Nature Sounds. Occurrence dataset https://doi.org/10.15468/9u3zaq accessed via GBIF.org on 2026-02-17.
-Vellinga W (2026). Xeno-canto - Orthoptera sounds from around the world. Xeno-canto Foundation for Nature Sounds. Occurrence dataset https://doi.org/10.15468/76yp6j accessed via GBIF.org on 2026-02-17.
-Larrivée M, McFarland K, Zhang X, Prudic K, Solis R, Bunsen M, Kerr J (2026). eButterfly Surveys. Version 1.1374. Vermont Center for Ecostudies. Sampling event dataset https://doi.org/10.15468/ykxm8x accessed via GBIF.org on 2026-02-17.
-naturgucker.de. NABU|naturgucker. Occurrence dataset https://doi.org/10.15468/uc1apo accessed via GBIF.org on 2026-02-17.
-Vellinga W (2026). Xeno-canto - Bird sounds from around the world. Xeno-canto Foundation for Nature Sounds. Occurrence dataset https://doi.org/10.15468/qv0ksn accessed via GBIF.org on 2026-02-17.
-Questagame (2026). Earth Guardians Weekly Feed. Occurrence dataset https://doi.org/10.15468/slqqt8 accessed via GBIF.org on 2026-02-17.
-iNaturalist contributors, iNaturalist (2026). iNaturalist Research-grade Observations. iNaturalist.org. Occurrence dataset https://doi.org/10.15468/ab3s5x accessed via GBIF.org on 2026-02-17.
-AFFOUARD A, JOLY A, LOMBARDO J, CHAMP J, GOEAU H, CHOUET M, GRESSE H, BONNET P (2025). Pl@ntNet observations. Version 1.9. Pl@ntNet. Occurrence dataset https://doi.org/10.15468/gtebaa accessed via GBIF.org on 2026-02-17.
-Vellinga W (2026). Xeno-canto - Anura sounds from around the world. Xeno-canto Foundation for Nature Sounds. Occurrence dataset https://doi.org/10.15468/64yeuj accessed via GBIF.org on 2026-02-17.
+iNaturalist contributors, iNaturalist (2026). iNaturalist Research-grade Observations. iNaturalist.org. Occurrence dataset https://doi.org/10.15468/ab3s5x accessed via GBIF.org on 2026-03-05.

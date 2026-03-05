@@ -7,15 +7,16 @@
 3. [Estructura del Pipeline](#3-estructura-del-pipeline)
 4. [Paso 1: Análisis del Dataset](#4-paso-1-análisis-del-dataset)
 5. [Paso 2: Descarga de Imágenes](#5-paso-2-descarga-de-imágenes)
-6. [Paso 3: Organización del Dataset](#6-paso-3-organización-del-dataset)
-7. [Paso 3.5: Prueba Rápida del Pipeline (Opcional)](#7-paso-35-prueba-rápida-del-pipeline-opcional)
-8. [Paso 4: Entrenamiento del Modelo](#8-paso-4-entrenamiento-del-modelo)
-9. [Paso 5: Evaluación](#9-paso-5-evaluación)
-10. [Paso 6: Integración con FastAPI](#10-paso-6-integración-con-fastapi)
-11. [Paso 7: Uso del Endpoint de Clasificación](#11-paso-7-uso-del-endpoint-de-clasificación)
-12. [Arquitectura de la CNN](#12-arquitectura-de-la-cnn)
-13. [Troubleshooting](#13-troubleshooting)
-14. [Métricas y Documentación](#14-métricas-y-documentación)
+6. [Paso 3: Organización del Dataset](#7-paso-3-organización-del-dataset)
+7. [Paso 3.5: Prueba Rápida del Pipeline (Opcional)](#8-paso-35-prueba-rápida-del-pipeline-opcional)
+8. [Paso 4: Entrenamiento del Modelo](#9-paso-4-entrenamiento-del-modelo)
+9.  [Paso 5: Evaluación](#10-paso-5-evaluación)
+10. [Paso 5.5: Auditoría Visual del Modelo](#11-paso-55-auditoría-visual-del-modelo)
+11. [Paso 6: Integración con FastAPI](#12-paso-6-integración-con-fastapi)
+12. [Paso 7: Uso del Endpoint de Clasificación](#13-paso-7-uso-del-endpoint-de-clasificación)
+13. [Arquitectura de la CNN](#14-arquitectura-de-la-cnn)
+14. [Troubleshooting](#15-troubleshooting)
+15. [Métricas y Documentación](#16-métricas-y-documentación)
 
 ---
 
@@ -268,7 +269,7 @@ data/raw_images/
 
 ---
 
-## 6. Paso 3: Organización del Dataset
+## 7. Paso 3: Organización del Dataset
 
 Divide las imágenes descargadas en splits `train/val/test` con validación.
 
@@ -336,7 +337,7 @@ data/processed/
 
 ---
 
-## 7. Paso 3.5: Prueba Rápida del Pipeline (Opcional)
+## 8. Paso 3.5: Prueba Rápida del Pipeline (Opcional)
 
 Antes de entrenar con las ~800 especies completas, se recomienda hacer una **prueba de punta a punta** con un subconjunto pequeño para validar que todo funciona correctamente.
 
@@ -395,9 +396,9 @@ python scripts/04_train_cnn.py
 
 ---
 
-## 8. Paso 4: Entrenamiento del Modelo
+## 9. Paso 4: Entrenamiento del Modelo
 
-### 8.1 Entrenamiento Estándar
+### 9.1 Entrenamiento Estándar
 
 ```bash
 # EfficientNet-B0 (recomendado, rápido y preciso)
@@ -421,7 +422,7 @@ python scripts/04_train_cnn.py \
   --patience 10
 ```
 
-### 8.2 Estrategia de Transfer Learning (2 Fases)
+### 9.2 Estrategia de Transfer Learning (2 Fases)
 
 El entrenamiento usa una estrategia de **Transfer Learning en 2 fases**:
 
@@ -437,7 +438,7 @@ El entrenamiento usa una estrategia de **Transfer Learning en 2 fases**:
 - El modelo ajusta las features del backbone para especies específicas
 - Early Stopping si no mejora en 10 epochs
 
-### 8.3 Parámetros del Entrenamiento
+### 9.3 Parámetros del Entrenamiento
 
 | Parámetro | Default | Descripción |
 |---|---|---|
@@ -451,7 +452,7 @@ El entrenamiento usa una estrategia de **Transfer Learning en 2 fases**:
 | `--image-size` | 224 | Tamaño de entrada (224 para EfficientNet/ResNet) |
 | `--label-smoothing` | 0.1 | Label smoothing para regularización |
 
-### 8.4 Data Augmentation
+### 9.4 Data Augmentation
 
 El pipeline aplica las siguientes transformaciones durante entrenamiento:
 
@@ -470,12 +471,12 @@ Val/Test:
   → Resize(256) → CenterCrop(224) → Normalize(ImageNet)
 ```
 
-### 8.5 Manejo de Desbalance de Clases
+### 9.5 Manejo de Desbalance de Clases
 
 - **WeightedRandomSampler**: sobremuestrea clases minoritarias
 - **Label Smoothing**: 0.1 para evitar sobreconfianza
 
-### 8.6 Salida del Entrenamiento
+### 9.6 Salida del Entrenamiento
 
 ```
 data/weights/
@@ -485,7 +486,7 @@ data/weights/
 └── training_history.json    # Loss y accuracy por época
 ```
 
-### 8.7 Tiempos Estimados
+### 9.7 Tiempos Estimados
 
 | GPU | ~300 clases / 50 epochs | ~150 clases / 50 epochs |
 |---|---|---|
@@ -495,7 +496,7 @@ data/weights/
 
 ---
 
-## 9. Paso 5: Evaluación
+## 10. Paso 5: Evaluación
 
 ```bash
 python scripts/05_evaluate_model.py --top-k 5
@@ -526,7 +527,67 @@ python scripts/05_evaluate_model.py --top-k 5
 
 ---
 
-## 10. Paso 6: Integración con FastAPI
+## 11. Paso 5.5: Auditoría Visual del Modelo
+
+Después de evaluar el modelo con métricas, se puede hacer una **auditoría visual interactiva** para probar manualmente con imágenes reales.
+
+### Ejecutar
+
+```bash
+# Abrir auditor en el navegador (puerto 8501)
+python scripts/model_auditor.py
+
+# Con puerto personalizado
+python scripts/model_auditor.py --port 9000
+
+# Usar pesos específicos
+python scripts/model_auditor.py --weights final_model.pth
+
+# Sin abrir navegador automáticamente
+python scripts/model_auditor.py --no-browser
+```
+
+### Parámetros
+
+| Parámetro | Default | Descripción |
+|---|---|---|
+| `--port` | `8501` | Puerto del servidor local |
+| `--weights` | `best_model.pth` | Archivo de pesos en `data/weights/` |
+| `--no-browser` | `false` | No abrir navegador automáticamente |
+
+### Interfaz
+
+La aplicación tiene 3 pantallas:
+
+1. **Subir Imagen** — Drag & drop o selección de archivo (JPG, PNG, WEBP)
+2. **Analizando** — Animación de progreso mientras ejecuta la inferencia
+3. **Resultados** — Muestra:
+   - **Top 1**: Nombre de especie, nombre científico completo, confianza (%), badge de estado IUCN, grid de taxonomía (Reino, Filo, Clase, Orden, Familia, Género)
+   - **4 Alternativas**: Tarjetas compactas con confianza y taxonomía
+
+### Endpoints del Auditor
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `GET` | `/` | Interfaz web |
+| `POST` | `/api/classify` | Clasificar imagen (multipart form) |
+| `GET` | `/api/health` | Info del modelo cargado |
+
+### ¿Qué buscar en la auditoría?
+
+| Señal | Significado | Acción |
+|---|---|---|
+| Confianza top-1 > 70% | Modelo seguro de su predicción | ✅ Buen rendimiento |
+| Confianza top-1 30-70% | Modelo indeciso | ⚠️ Revisar si necesita más épocas o datos |
+| Confianza top-1 < 30% | Muy baja para ser útil | ❌ Revisar calidad del dataset, re-entrenar |
+| Top-1 incorrecto pero top-5 correcto | El modelo aprendió features, falta ajuste fino | Re-entrenar con más épocas y menor label smoothing |
+| Alternativas del mismo género | Normal si especies visualmente similares | Considerar más imágenes de esas especies |
+
+> **Nota:** El auditor carga el modelo directamente (no necesita que la API de FastAPI esté corriendo). Usa la clase `SpeciesClassifier` del servicio de vision.
+
+---
+
+## 12. Paso 6: Integración con FastAPI
 
 ### Arquitectura del Servicio
 
@@ -564,9 +625,9 @@ Al iniciar, el modelo se carga automáticamente en el evento `lifespan`.
 
 ---
 
-## 11. Paso 7: Uso del Endpoint de Clasificación
+## 13. Paso 7: Uso del Endpoint de Clasificación
 
-### 11.1 Con cURL
+### 13.1 Con cURL
 
 ```bash
 curl -X POST "http://localhost:8000/api/v1/classify?top_k=5" \
@@ -574,7 +635,7 @@ curl -X POST "http://localhost:8000/api/v1/classify?top_k=5" \
   -H "accept: application/json"
 ```
 
-### 11.2 Con Python
+### 13.2 Con Python
 
 ```python
 import requests
@@ -591,7 +652,7 @@ for pred in result["predictions"]:
     print(f"     Familia: {pred['taxonomy']['family']}")
 ```
 
-### 11.3 Respuesta de Ejemplo
+### 13.3 Respuesta de Ejemplo
 
 ```json
 {
@@ -622,7 +683,7 @@ for pred in result["predictions"]:
 }
 ```
 
-### 11.4 Desde el Frontend (React/Next.js)
+### 13.4 Desde el Frontend (React/Next.js)
 
 ```typescript
 // services/aiService.ts
@@ -665,7 +726,7 @@ export async function classifySpeciesImage(
 
 ---
 
-## 12. Arquitectura de la CNN
+## 14. Arquitectura de la CNN
 
 ### EfficientNet-B0 (Modelo por defecto)
 
@@ -699,7 +760,7 @@ Input Image (224×224×3)
 
 ---
 
-## 13. Troubleshooting
+## 15. Troubleshooting
 
 ### Error: CUDA out of memory
 ```bash
@@ -723,6 +784,13 @@ python scripts/03_organize_dataset.py --clean
 3. **Más epochs**: `--epochs 80 --patience 15`
 4. **Modelo más grande**: `--model efficientnet_b2`
 
+### Confianza baja (<40%) a pesar de accuracy alta
+Causas probables:
+1. **Label smoothing muy alto**: Reducir `--label-smoothing 0.05` (default 0.1)
+2. **Pocas épocas**: Dejar que entrene completo con `--epochs 50 --patience 15`
+3. **Imágenes contaminadas**: Ejecutar `python scripts/filter_bad_images.py --mode report` para detectar waveforms/espectrogramas en el dataset
+4. **Especies visualmente similares**: Normal si hay muchas del mismo género
+
 ### Modelo no carga en FastAPI
 ```
 WARNING: CNN model weights not found
@@ -736,7 +804,7 @@ python scripts/02_download_images.py --resume
 
 ---
 
-## 14. Métricas y Documentación
+## 16. Métricas y Documentación
 
 ### Para la Entrega del Proyecto
 
@@ -751,7 +819,9 @@ Los siguientes archivos se generan automáticamente para documentación:
 | Historial de entrenamiento | `training_history.json` | `data/weights/` |
 | Distribución del dataset | `dataset_stats.json` | `data/processed/` |
 | Análisis taxonómico | `species_summary.csv` | `data/dataset_analysis/` |
+| Reporte filtrado imágenes | `non_photo_suspects.json` | `data/dataset_analysis/` |
 | Swagger API Docs | `/docs` | http://localhost:8000/docs |
+| Model Auditor UI | `model_auditor.py` | http://localhost:8501 |
 
 ### Commit Convention
 
@@ -780,6 +850,10 @@ python scripts/01_analyze_dataset.py
 # 2. Descargar imágenes (esto toma horas)
 python scripts/02_download_images.py --min-images 10 --max-per-species 150 --workers 6
 
+# 2.5 Filtrar imágenes no-fotográficas (waveforms, espectrogramas)
+python scripts/filter_bad_images.py --mode report
+python scripts/filter_bad_images.py --mode quarantine --target both
+
 # 3. Organizar en train/val/test
 python scripts/03_organize_dataset.py --min-images 10
 
@@ -795,6 +869,9 @@ python scripts/04_train_cnn.py --model efficientnet_b0 --epochs 50 --batch-size 
 
 # 5. Evaluar
 python scripts/05_evaluate_model.py
+
+# 5.5 (Opcional) Auditoría visual interactiva
+python scripts/model_auditor.py
 
 # 6. Iniciar API
 uvicorn app.main:app --reload --port 8000
