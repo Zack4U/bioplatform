@@ -20,9 +20,14 @@ builder.Services.AddDbContext<BioDbContext>(options =>
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+
 builder.Services.AddScoped<IValidator<UserCreateDTO>, UserCreateValidator>();
 builder.Services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidator>();
+builder.Services.AddScoped<IValidator<RoleCreateDTO>, RoleCreateValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
