@@ -34,7 +34,13 @@ public interface IRoleRepository
     Task<IEnumerable<Role>> GetAllAsync();
 
     /// <summary>
-    /// Persists changes to the repository.
+    /// Deletes a role from the repository.
+    /// </summary>
+    /// <param name="role">The role entity to delete.</param>
+    Task DeleteAsync(Role role);
+
+    /// <summary>
+    /// Asynchronously saves all changes made in this context to the database.
     /// </summary>
     Task SaveChangesAsync();
 }

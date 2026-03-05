@@ -26,6 +26,12 @@ public interface IRoleService
     Task<RoleResponseDTO> UpdateRoleAsync(Guid id, RoleUpdateDTO dto);
 
     /// <summary>
+    /// Deletes an existing security role.
+    /// </summary>
+    /// <param name="id">The unique identifier of the role to delete.</param>
+    Task DeleteRoleAsync(Guid id);
+
+    /// <summary>
     /// Retrieves all roles.
     /// </summary>
     /// <returns>A collection of roles.</returns>
@@ -120,6 +126,18 @@ public class RoleService : IRoleService
         await _roleRepository.SaveChangesAsync();
 
         return MapToResponseDTO(role);
+    }
+
+    public async Task DeleteRoleAsync(Guid id)
+    {
+        var role = await _roleRepository.GetByIdAsync(id);
+        if (role == null)
+        {
+            throw new KeyNotFoundException($"Role with ID '{id}' not found.");
+        }
+
+        await _roleRepository.DeleteAsync(role);
+        await _roleRepository.SaveChangesAsync();
     }
 
     /// <summary>

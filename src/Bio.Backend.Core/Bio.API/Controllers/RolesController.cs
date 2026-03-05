@@ -103,6 +103,29 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
+    /// Deletes an existing security role.
+    /// </summary>
+    /// <param name="id">The unique identifier of the role to delete.</param>
+    /// <returns>No content if successful or 404 if not found.</returns>
+    /// <response code="204">If the role was successfully deleted.</response>
+    /// <response code="404">If the role is not found.</response>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteRole(Guid id)
+    {
+        try
+        {
+            await _roleService.DeleteRoleAsync(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    /// <summary>
     /// Retrieves a security role by its unique name.
     /// </summary>
     /// <param name="name">The name of the role.</param>

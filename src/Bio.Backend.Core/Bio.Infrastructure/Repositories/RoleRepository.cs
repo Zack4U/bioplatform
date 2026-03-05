@@ -64,6 +64,16 @@ public class RoleRepository : IRoleRepository
     }
 
     /// <summary>
+    /// Asynchronously deletes a role from the database.
+    /// </summary>
+    /// <param name="role">The role entity to delete.</param>
+    public Task DeleteAsync(Role role)
+    {
+        _context.Roles.Remove(role);
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
     /// Asynchronously saves all changes made in this context to the database.
     /// </summary>
     public async Task SaveChangesAsync()
