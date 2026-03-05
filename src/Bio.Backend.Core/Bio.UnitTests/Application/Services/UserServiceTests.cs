@@ -50,10 +50,10 @@ public class UserServiceTests
 
         _createValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
-        
+
         _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email))
             .ReturnsAsync((User?)null);
-            
+
         _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(dto.PhoneNumber))
             .ReturnsAsync((User?)null);
 
@@ -126,7 +126,7 @@ public class UserServiceTests
 
         _userRepositoryMock.Setup(r => r.GetByIdAsync(userId))
             .ReturnsAsync(user);
-            
+
         _userRepositoryMock.Setup(r => r.DeleteAsync(user))
             .Returns(Task.CompletedTask);
 

@@ -68,7 +68,7 @@ public class UserRepositoryTests : IDisposable
             PasswordHash = "hash",
             Salt = "salt"
         };
-        
+
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
 
@@ -93,7 +93,7 @@ public class UserRepositoryTests : IDisposable
             PasswordHash = "hash",
             Salt = "salt"
         };
-        
+
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
 
@@ -117,7 +117,7 @@ public class UserRepositoryTests : IDisposable
             PasswordHash = "hash",
             Salt = "salt"
         };
-        
+
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
 
