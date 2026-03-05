@@ -14,14 +14,20 @@ Responsabilidades:
     - Manejar errores de forma robusta
 """
 
+from __future__ import annotations
+
 import json
 import logging
 from io import BytesIO
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional
 
 import numpy as np
 from PIL import Image
+
+if TYPE_CHECKING:
+    import torch
+    import torch.nn as nn
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +37,24 @@ APP_DIR = SERVICE_DIR.parent.parent          # app/
 PROJECT_ROOT = APP_DIR.parent                # Bio.Backend.AI/
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+
+
+class _DropoutLinear:
+    """Factory that builds an nn.Linear subclass with preceding dropout at runtime."""
+
+    @staticmethod
+    def build(in_features: int, out_features: int, dropout: float = 0.3) -> nn.Linear:
+        import torch.nn as nn
+
+        class _Impl(nn.Linear):
+            def __init__(self, inf: int, outf: int, drop: float) -> None:
+                super().__init__(inf, outf)
+                self._drop = nn.Dropout(p=drop)
+
+            def forward(self, x: torch.Tensor) -> torch.Tensor:  # type: ignore[override]
+                return super().forward(self._drop(x))
+
+        return _Impl(in_features, out_features, dropout)
 
 
 class SpeciesClassifier:
@@ -44,12 +68,12 @@ class SpeciesClassifier:
     """
 
     def __init__(self) -> None:
-        self.model = None
-        self.config: dict = {}
+        self.model: nn.Module | None = None
+        self.config: dict[str, Any] = {}
         self.class_names: list[str] = []
-        self.class_info: dict = {}
-        self.device = None
-        self.transform = None
+        self.class_info: dict[str, Any] = {}
+        self.device: torch.device | None = None
+        self.transform: Callable[..., torch.Tensor] | None = None
         self._loaded = False
 
     @property
@@ -96,14 +120,18 @@ class SpeciesClassifier:
         # Build model architecture
         if model_name == "efficientnet_b0":
             model = models.efficientnet_b0(weights=None)
-            in_features = model.classifier[1].in_features
+            orig_layer = model.classifier[1]
+            assert isinstance(orig_layer, nn.Linear)
+            in_features: int = orig_layer.in_features
             model.classifier = nn.Sequential(
                 nn.Dropout(p=0.3),
                 nn.Linear(in_features, num_classes),
             )
         elif model_name == "efficientnet_b2":
             model = models.efficientnet_b2(weights=None)
-            in_features = model.classifier[1].in_features
+            orig_layer = model.classifier[1]
+            assert isinstance(orig_layer, nn.Linear)
+            in_features = orig_layer.in_features
             model.classifier = nn.Sequential(
                 nn.Dropout(p=0.4),
                 nn.Linear(in_features, num_classes),
@@ -111,17 +139,11 @@ class SpeciesClassifier:
         elif model_name == "resnet50":
             model = models.resnet50(weights=None)
             in_features = model.fc.in_features
-            model.fc = nn.Sequential(
-                nn.Dropout(p=0.3),
-                nn.Linear(in_features, num_classes),
-            )
+            model.fc = _DropoutLinear.build(in_features, num_classes, dropout=0.3)
         elif model_name == "resnet101":
             model = models.resnet101(weights=None)
             in_features = model.fc.in_features
-            model.fc = nn.Sequential(
-                nn.Dropout(p=0.3),
-                nn.Linear(in_features, num_classes),
-            )
+            model.fc = _DropoutLinear.build(in_features, num_classes, dropout=0.3)
         else:
             raise ValueError(f"Unsupported model: {model_name}")
 
@@ -159,9 +181,8 @@ class SpeciesClassifier:
         self._loaded = True
         logger.info(f"Model loaded successfully. {num_classes} classes, device={self.device}")
 
-    def preprocess_image(self, image_bytes: bytes) -> "torch.Tensor":
+    def preprocess_image(self, image_bytes: bytes) -> torch.Tensor:
         """Convert raw image bytes to a preprocessed tensor."""
-        import torch
 
         img = Image.open(BytesIO(image_bytes))
 
@@ -170,7 +191,10 @@ class SpeciesClassifier:
             img = img.convert("RGB")
 
         # Apply transforms
-        tensor = self.transform(img)
+        if self.transform is None:
+            raise RuntimeError("Model not loaded. Call load_model() first.")
+
+        tensor: torch.Tensor = self.transform(img)
 
         # Add batch dimension: (C, H, W) → (1, C, H, W)
         return tensor.unsqueeze(0)
@@ -213,6 +237,9 @@ class SpeciesClassifier:
         input_tensor = self.preprocess_image(image_bytes).to(self.device)
 
         # Inference
+        if self.model is None:
+            raise RuntimeError("Model not loaded. Call load_model() first.")
+
         with torch.no_grad():
             outputs = self.model(input_tensor)
             probabilities = torch.softmax(outputs, dim=1)
@@ -227,13 +254,16 @@ class SpeciesClassifier:
             if confidence < confidence_threshold:
                 continue
 
-            species_name = self.class_names[idx] if idx < len(self.class_names) else f"class_{idx}"
+            raw_name = self.class_names[idx] if idx < len(self.class_names) else f"class_{idx}"
+            # Display name: replace underscores with spaces
+            species_name = raw_name.replace("_", " ")
 
-            # Get taxonomy info
+            # Get taxonomy info – try both "Name Name" and "Name_Name" keys
             taxonomy = {}
-            if species_name in self.class_info:
-                info = self.class_info[species_name]
+            info = self.class_info.get(species_name) or self.class_info.get(raw_name) or {}
+            if info:
                 taxonomy = {
+                    "scientific_name": info.get("scientific_name", ""),
                     "kingdom": info.get("kingdom", ""),
                     "phylum": info.get("phylum", ""),
                     "class": info.get("class", ""),

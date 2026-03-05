@@ -30,6 +30,7 @@ tiktoken==0.5.2
 # --- Tools & Utilities ---
 tqdm==4.66.1 
 aiofiles==23.2.1  
+matplotlib==3.10.8
 
 # --- Testing ---
 pytest==8.0.0

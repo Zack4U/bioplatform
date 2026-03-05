@@ -73,4 +73,6 @@ Thumbs.db
 logs/
 
 # ─── Miscellaneous ─────────────────────────────────────────────────────────
-dataset*
+data/raw*
+data/processed*
+data/dataset_analysis*
