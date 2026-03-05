@@ -1,4 +1,4 @@
- namespace Bio.Domain.Entities;
+namespace Bio.Domain.Entities;
 
 /// <summary>
 /// Domain entity representing a registered user in the BioPlatform.

@@ -23,7 +23,7 @@ public class PasswordHasher : IPasswordHasher
     {
         // 1. Generate a secure random salt (16 bytes)
         byte[] salt = RandomNumberGenerator.GetBytes(SaltSize);
-        
+
         // 2. Derive a 32-byte key from the password and salt using PBKDF2
         byte[] hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, HashAlgorithm, KeySize);
 
@@ -43,7 +43,7 @@ public class PasswordHasher : IPasswordHasher
         // 1. Convert the stored Base64 strings back to bytes
         byte[] saltBytes = Convert.FromBase64String(salt);
         byte[] hashBytes = Convert.FromBase64String(hash);
-        
+
         // 2. Re-calculate the hash for the provided password using the same salt and iterations
         byte[] newHash = Rfc2898DeriveBytes.Pbkdf2(password, saltBytes, Iterations, HashAlgorithm, KeySize);
 
