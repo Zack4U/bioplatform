@@ -129,4 +129,114 @@ public class UserRepositoryTests : IDisposable
         var deletedUser = await _context.Users.FindAsync(user.Id);
         deletedUser.Should().BeNull();
     }
+
+    [Fact]
+    public async Task GetAllAsync_ShouldReturnAllUsers()
+    {
+        // Arrange
+        await _context.Users.AddAsync(new User { Id = Guid.NewGuid(), Email = "u1@test.com" });
+        await _context.Users.AddAsync(new User { Id = Guid.NewGuid(), Email = "u2@test.com" });
+        await _context.SaveChangesAsync();
+
+        // Act
+        var result = await _repository.GetAllAsync();
+
+        // Assert
+        result.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task GetByPhoneNumberAsync_ExistingPhone_ShouldReturnUser()
+    {
+        // Arrange
+        var phone = "12345";
+        var user = new User { Id = Guid.NewGuid(), Email = "t@t.com", PhoneNumber = phone };
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
+
+        // Act
+        var result = await _repository.GetByPhoneNumberAsync(phone);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.PhoneNumber.Should().Be(phone);
+    }
+
+    [Fact]
+    public async Task GetByPhoneNumberAsync_NonExistingPhone_ShouldReturnNull()
+    {
+        // Act
+        var result = await _repository.GetByPhoneNumberAsync("999");
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetByEmailExcludingIdAsync_ExistingOtherUser_ShouldReturnUser()
+    {
+        // Arrange
+        var email = "other@test.com";
+        var otherId = Guid.NewGuid();
+        var currentId = Guid.NewGuid();
+        await _context.Users.AddAsync(new User { Id = otherId, Email = email });
+        await _context.SaveChangesAsync();
+
+        // Act
+        var result = await _repository.GetByEmailExcludingIdAsync(email, currentId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.Id.Should().Be(otherId);
+    }
+
+    [Fact]
+    public async Task GetByEmailExcludingIdAsync_SameUser_ShouldReturnNull()
+    {
+        // Arrange
+        var email = "same@test.com";
+        var id = Guid.NewGuid();
+        await _context.Users.AddAsync(new User { Id = id, Email = email });
+        await _context.SaveChangesAsync();
+
+        // Act
+        var result = await _repository.GetByEmailExcludingIdAsync(email, id);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetByPhoneNumberExcludingIdAsync_ExistingOtherUser_ShouldReturnUser()
+    {
+        // Arrange
+        var phone = "555";
+        var otherId = Guid.NewGuid();
+        var currentId = Guid.NewGuid();
+        await _context.Users.AddAsync(new User { Id = otherId, Email = "o@o.com", PhoneNumber = phone });
+        await _context.SaveChangesAsync();
+
+        // Act
+        var result = await _repository.GetByPhoneNumberExcludingIdAsync(phone, currentId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.Id.Should().Be(otherId);
+    }
+
+    [Fact]
+    public async Task GetByPhoneNumberExcludingIdAsync_SameUser_ShouldReturnNull()
+    {
+        // Arrange
+        var phone = "555";
+        var id = Guid.NewGuid();
+        await _context.Users.AddAsync(new User { Id = id, Email = "s@s.com", PhoneNumber = phone });
+        await _context.SaveChangesAsync();
+
+        // Act
+        var result = await _repository.GetByPhoneNumberExcludingIdAsync(phone, id);
+
+        // Assert
+        result.Should().BeNull();
+    }
 }

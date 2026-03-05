@@ -141,4 +141,201 @@ public class UserServiceTests
         _userRepositoryMock.Verify(r => r.DeleteAsync(user), Times.Once);
         _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
     }
+
+    [Fact]
+    public async Task CreateUserAsync_ExistingPhoneNumber_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var dto = new UserCreateDTO { Email = "new@example.com", PhoneNumber = "123456", FullName = "Test" };
+        var existingUser = new User { PhoneNumber = "123456" };
+
+        _createValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((User?)null);
+        _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(dto.PhoneNumber)).ReturnsAsync(existingUser);
+
+        // Act
+        Func<Task> act = async () => await _userService.CreateUserAsync(dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"User with phone number {dto.PhoneNumber} already exists.");
+    }
+
+    [Fact]
+    public async Task GetAllUsersAsync_ShouldReturnAllUsers()
+    {
+        // Arrange
+        var users = new List<User> { new User { FullName = "U1" }, new User { FullName = "U2" } };
+        _userRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(users);
+
+        // Act
+        var result = await _userService.GetAllUsersAsync();
+
+        // Assert
+        result.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task GetUserByIdAsync_NotExisting_ShouldReturnNull()
+    {
+        // Arrange
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.GetUserByIdAsync(Guid.NewGuid());
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetUserByEmailAsync_Existing_ShouldReturnUser()
+    {
+        // Arrange
+        var email = "test@test.com";
+        _userRepositoryMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(new User { Email = email });
+
+        // Act
+        var result = await _userService.GetUserByEmailAsync(email);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.Email.Should().Be(email);
+    }
+
+    [Fact]
+    public async Task GetUserByEmailAsync_NotExisting_ShouldReturnNull()
+    {
+        // Arrange
+        _userRepositoryMock.Setup(r => r.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.GetUserByEmailAsync("not@found.com");
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetUserByPhoneNumberAsync_Existing_ShouldReturnUser()
+    {
+        // Arrange
+        var phone = "12345";
+        _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(phone)).ReturnsAsync(new User { PhoneNumber = phone });
+
+        // Act
+        var result = await _userService.GetUserByPhoneNumberAsync(phone);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.PhoneNumber.Should().Be(phone);
+    }
+
+    [Fact]
+    public async Task GetUserByPhoneNumberAsync_NotExisting_ShouldReturnNull()
+    {
+        // Arrange
+        _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(It.IsAny<string>())).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.GetUserByPhoneNumberAsync("000");
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_ValidData_ShouldUpdateAndReturnUser()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var dto = new UserUpdateDTO { FullName = "New Name", Email = "new@test.com", PhoneNumber = "999" };
+        var user = new User { Id = id, FullName = "Old", Email = "old@test.com" };
+
+        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(user);
+        _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, id)).ReturnsAsync((User?)null);
+        _userRepositoryMock.Setup(r => r.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, id)).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.UpdateUserAsync(id, dto);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.FullName.Should().Be(dto.FullName);
+        user.FullName.Should().Be(dto.FullName);
+        _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_UserNotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var dto = new UserUpdateDTO { FullName = "New" };
+        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.UpdateUserAsync(id, dto);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_EmailConflict_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var dto = new UserUpdateDTO { Email = "conflict@test.com" };
+        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(new User { Id = id });
+        _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, id)).ReturnsAsync(new User { Id = Guid.NewGuid() });
+
+        // Act
+        Func<Task> act = async () => await _userService.UpdateUserAsync(id, dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"User with email {dto.Email} already exists.");
+    }
+
+    [Fact]
+    public async Task UpdateUserAsync_PhoneConflict_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var dto = new UserUpdateDTO { PhoneNumber = "999" };
+        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(new User { Id = id });
+        _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(It.IsAny<string>(), id)).ReturnsAsync((User?)null);
+        _userRepositoryMock.Setup(r => r.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, id)).ReturnsAsync(new User { Id = Guid.NewGuid() });
+
+        // Act
+        Func<Task> act = async () => await _userService.UpdateUserAsync(id, dto);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"User with phone number {dto.PhoneNumber} already exists.");
+    }
+
+    [Fact]
+    public async Task DeleteUserAsync_UserNotFound_ShouldReturnFalse()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((User?)null);
+
+        // Act
+        var result = await _userService.DeleteUserAsync(id);
+
+        // Assert
+        result.Should().BeFalse();
+    }
 }

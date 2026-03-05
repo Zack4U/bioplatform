@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Bio.Application\Bio.Application.csproj" />
     <ProjectReference Include="..\Bio.Domain\Bio.Domain.csproj" />
     <ProjectReference Include="..\Bio.Infrastructure\Bio.Infrastructure.csproj" />
+    <ProjectReference Include="..\Bio.API\Bio.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
