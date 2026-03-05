@@ -13,6 +13,11 @@ public interface IRoleRepository
     Task AddAsync(Role role);
 
     /// <summary>
+    /// Retrieves a role by its unique identifier.
+    /// </summary>
+    Task<Role?> GetByIdAsync(Guid id);
+
+    /// <summary>
     /// Retrieves a role by its unique name.
     /// </summary>
     Task<Role?> GetByNameAsync(string name);

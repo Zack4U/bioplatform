@@ -22,6 +22,20 @@ public interface IRoleService
     /// </summary>
     /// <returns>A collection of roles.</returns>
     Task<IEnumerable<RoleResponseDTO>> GetAllRolesAsync();
+
+    /// <summary>
+    /// Retrieves a role by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the role.</param>
+    /// <returns>The role information or null if not found.</returns>
+    Task<RoleResponseDTO?> GetRoleByIdAsync(Guid id);
+
+    /// <summary>
+    /// Retrieves a role by its unique name.
+    /// </summary>
+    /// <param name="name">The name of the role.</param>
+    /// <returns>The role information or null if not found.</returns>
+    Task<RoleResponseDTO?> GetRoleByNameAsync(string name);
 }
 
 /// <summary>
@@ -82,6 +96,25 @@ public class RoleService : IRoleService
     {
         var roles = await _roleRepository.GetAllAsync();
         return roles.Select(MapToResponseDTO);
+    }
+
+    /// <summary>
+    /// Retrieves a role by its unique identifier.
+    /// </summary>
+    public async Task<RoleResponseDTO?> GetRoleByIdAsync(Guid id)
+    {
+        var role = await _roleRepository.GetByIdAsync(id);
+        return role != null ? MapToResponseDTO(role) : null;
+    }
+
+    /// <summary>
+    /// Retrieves a role by its unique name (case-insensitive).
+    /// </summary>
+    public async Task<RoleResponseDTO?> GetRoleByNameAsync(string name)
+    {
+        var normalizedName = name.Trim().ToUpperInvariant();
+        var role = await _roleRepository.GetByNameAsync(normalizedName);
+        return role != null ? MapToResponseDTO(role) : null;
     }
 
     /// <summary>

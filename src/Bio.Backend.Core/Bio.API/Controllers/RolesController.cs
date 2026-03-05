@@ -56,4 +56,34 @@ public class RolesController : ControllerBase
         var roles = await _roleService.GetAllRolesAsync();
         return Ok(roles);
     }
+
+    /// <summary>
+    /// Retrieves a security role by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the role.</param>
+    /// <returns>The role information or 404 if not found.</returns>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RoleResponseDTO>> GetRoleById(Guid id)
+    {
+        var role = await _roleService.GetRoleByIdAsync(id);
+        if (role == null) return NotFound();
+        return Ok(role);
+    }
+
+    /// <summary>
+    /// Retrieves a security role by its unique name.
+    /// </summary>
+    /// <param name="name">The name of the role.</param>
+    /// <returns>The role information or 404 if not found.</returns>
+    [HttpGet("name/{name}")]
+    [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RoleResponseDTO>> GetRoleByName(string name)
+    {
+        var role = await _roleService.GetRoleByNameAsync(name);
+        if (role == null) return NotFound();
+        return Ok(role);
+    }
 }
