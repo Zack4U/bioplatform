@@ -73,6 +73,36 @@ public class RolesController : ControllerBase
     }
 
     /// <summary>
+    /// Updates an existing security role.
+    /// </summary>
+    /// <param name="id">The unique identifier of the role to update.</param>
+    /// <param name="dto">The update data.</param>
+    /// <returns>The updated role information.</returns>
+    /// <response code="200">Returns the updated role.</response>
+    /// <response code="400">If the data is invalid or the name is already taken.</response>
+    /// <response code="44">If the role is not found.</response>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<RoleResponseDTO>> UpdateRole(Guid id, RoleUpdateDTO dto)
+    {
+        try
+        {
+            var response = await _roleService.UpdateRoleAsync(id, dto);
+            return Ok(response);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    /// <summary>
     /// Retrieves a security role by its unique name.
     /// </summary>
     /// <param name="name">The name of the role.</param>

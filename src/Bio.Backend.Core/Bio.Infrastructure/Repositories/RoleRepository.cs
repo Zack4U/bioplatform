@@ -47,6 +47,14 @@ public class RoleRepository : IRoleRepository
     }
 
     /// <summary>
+    /// Asynchronously retrieves a role by its unique name, excluding a specified ID.
+    /// </summary>
+    public async Task<Role?> GetByNameExcludingIdAsync(string name, Guid id)
+    {
+        return await _context.Roles.FirstOrDefaultAsync(r => r.Name == name && r.Id != id);
+    }
+
+    /// <summary>
     /// Asynchronously retrieves all roles from the database.
     /// </summary>
     /// <returns>A collection of all role entities.</returns>

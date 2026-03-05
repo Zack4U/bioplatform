@@ -23,6 +23,12 @@ public interface IRoleRepository
     Task<Role?> GetByNameAsync(string name);
 
     /// <summary>
+    /// Retrieves a role by its unique name, excluding a specified ID.
+    /// Useful for verifying name uniqueness during updates.
+    /// </summary>
+    Task<Role?> GetByNameExcludingIdAsync(string name, Guid id);
+
+    /// <summary>
     /// Retrieves all roles.
     /// </summary>
     Task<IEnumerable<Role>> GetAllAsync();

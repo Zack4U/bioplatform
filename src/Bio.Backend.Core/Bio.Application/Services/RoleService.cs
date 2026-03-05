@@ -18,6 +18,14 @@ public interface IRoleService
     Task<RoleResponseDTO> CreateRoleAsync(RoleCreateDTO dto);
 
     /// <summary>
+    /// Updates an existing security role.
+    /// </summary>
+    /// <param name="id">The unique identifier of the role to update.</param>
+    /// <param name="dto">The update data.</param>
+    /// <returns>The updated role information.</returns>
+    Task<RoleResponseDTO> UpdateRoleAsync(Guid id, RoleUpdateDTO dto);
+
+    /// <summary>
     /// Retrieves all roles.
     /// </summary>
     /// <returns>A collection of roles.</returns>
@@ -85,6 +93,32 @@ public class RoleService : IRoleService
         await _roleRepository.SaveChangesAsync();
 
         // 6. Map to Response DTO
+        return MapToResponseDTO(role);
+    }
+
+    public async Task<RoleResponseDTO> UpdateRoleAsync(Guid id, RoleUpdateDTO dto)
+    {
+        var role = await _roleRepository.GetByIdAsync(id);
+        if (role == null)
+        {
+            throw new KeyNotFoundException($"Role with ID '{id}' not found.");
+        }
+
+        var normalizedName = dto.Name.Trim().ToUpperInvariant();
+
+        // Check if the new name is already taken by ANOTHER role
+        var existingWithSameName = await _roleRepository.GetByNameExcludingIdAsync(normalizedName, id);
+        if (existingWithSameName != null)
+        {
+            throw new InvalidOperationException($"Another role with name '{normalizedName}' already exists.");
+        }
+
+        role.Name = normalizedName;
+        role.Description = dto.Description;
+        role.UpdatedAt = DateTime.UtcNow;
+
+        await _roleRepository.SaveChangesAsync();
+
         return MapToResponseDTO(role);
     }
 
