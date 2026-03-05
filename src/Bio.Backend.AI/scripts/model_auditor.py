@@ -77,6 +77,27 @@ async def health():
     }
 
 
+@api.get("/api/species")
+async def species_list():
+    """Return trained species grouped by kingdom, sorted A-Z."""
+    clf = _get_classifier()
+    groups: dict[str, list[dict]] = {}
+    for name, info in sorted(clf.class_info.items()):
+        kingdom = info.get("kingdom", "Desconocido")
+        entry = {
+            "name": name,
+            "scientific_name": info.get("scientific_name", name),
+            "family": info.get("family", ""),
+            "order": info.get("order", ""),
+            "class": info.get("class", ""),
+            "genus": info.get("genus", ""),
+            "iucn_status": info.get("iucn_status", ""),
+            "train_count": info.get("train_count", 0),
+        }
+        groups.setdefault(kingdom, []).append(entry)
+    return {"groups": groups, "total": clf.num_classes}
+
+
 # ── Embedded HTML ──────────────────────────────────────────────────
 
 AUDITOR_HTML = r"""<!DOCTYPE html>
@@ -101,9 +122,26 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
   body{font-family:'Inter',sans-serif;background:var(--c-bg);color:#e2e8f0;min-height:100vh;}
 
   /* upload zone */
-  .upload-zone{border:2px dashed #374151;border-radius:1rem;padding:3rem 2rem;text-align:center;transition:all .25s;cursor:pointer;background:var(--c-surface);}
+  .upload-zone{border:2px dashed #374151;border-radius:1rem;padding:2.5rem 1.5rem;text-align:center;transition:all .25s;cursor:pointer;background:var(--c-surface);}
   .upload-zone:hover,.upload-zone.drag-over{border-color:var(--c-emerald);background:rgba(16,185,129,.06);}
   .upload-zone.drag-over{box-shadow:0 0 40px rgba(16,185,129,.12);}
+
+  /* species panel */
+  .species-panel{background:var(--c-surface);border:1px solid var(--c-border);border-radius:1rem;overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 160px);}
+  .species-panel-header{padding:.75rem 1rem;border-bottom:1px solid var(--c-border);background:var(--c-surface-2);}
+  .species-list{overflow-y:auto;flex:1;padding:.5rem;}
+  .species-group-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#10b981;padding:.6rem .75rem .3rem;}
+  .species-item{display:flex;align-items:center;gap:.6rem;padding:.5rem .75rem;border-radius:.6rem;transition:background .15s;}
+  .species-item:hover{background:var(--c-surface-2);}
+  .species-item .sp-name{font-size:.8rem;font-weight:600;color:#e2e8f0;font-style:italic;}
+  .species-item .sp-family{font-size:.65rem;color:#64748b;}
+  .species-item .sp-count{font-size:.6rem;color:#475569;margin-left:auto;white-space:nowrap;}
+  .iucn-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .iucn-LC{background:#10b981;}
+  .iucn-NT{background:#f59e0b;}
+  .iucn-VU{background:#f59e0b;}
+  .iucn-EN{background:#ef4444;}
+  .iucn-CR{background:#ef4444;}
 
   /* preview image */
   .preview-img{max-height:220px;border-radius:.75rem;object-fit:cover;box-shadow:0 4px 24px rgba(0,0,0,.4);}
@@ -173,39 +211,55 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
 <!-- ═══ Main Content ═══ -->
 <main class="flex-1 flex items-center justify-center p-6">
 
-  <!-- SCREEN 1: Upload -->
-  <section id="screenUpload" class="screen active flex-col items-center w-full max-w-xl animate-in">
-    <h1 class="text-2xl font-bold mb-1">Auditoría del Modelo CNN</h1>
-    <p class="text-gray-400 text-sm mb-8">Sube una imagen para clasificar la especie con el modelo entrenado</p>
+  <!-- SCREEN 1: Upload (two-panel) -->
+  <section id="screenUpload" class="screen active w-full animate-in" style="max-width:64rem;flex-direction:row;gap:1.25rem;align-items:stretch">
 
-    <div id="dropZone" class="upload-zone w-full flex flex-col items-center gap-4" onclick="document.getElementById('fileInput').click()">
-      <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:rgba(16,185,129,.1)">
-        <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="1.5">
-          <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
-          <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
-        </svg>
+    <!-- Left panel: trained species -->
+    <div class="species-panel" style="flex:0 0 320px;min-width:280px">
+      <div class="species-panel-header flex items-center justify-between">
+        <div>
+          <p class="font-semibold text-sm">Especies entrenadas</p>
+          <p class="text-[.65rem] text-gray-500 mt-0.5" id="speciesCount">Cargando…</p>
+        </div>
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
       </div>
-      <div>
-        <p class="font-semibold text-sm">Arrastra una imagen aquí</p>
-        <p class="text-gray-500 text-xs mt-1">o haz clic para seleccionar · JPG, PNG, WEBP</p>
+      <div class="species-list" id="speciesList">
+        <div class="flex items-center justify-center py-8 text-gray-500 text-xs">Cargando especies…</div>
       </div>
-      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="hidden"/>
     </div>
 
-    <div id="previewContainer" class="hidden mt-6 flex flex-col items-center gap-4 animate-in">
-      <img id="previewImg" class="preview-img" alt="Preview"/>
-      <div class="flex items-center gap-3">
-        <span id="fileName" class="text-xs text-gray-400"></span>
-        <span id="fileSize" class="text-xs text-gray-600"></span>
+    <!-- Right panel: upload -->
+    <div class="flex-1 flex flex-col items-center justify-center">
+      <h1 class="text-2xl font-bold mb-1">Auditoría del Modelo CNN</h1>
+      <p class="text-gray-400 text-sm mb-8">Sube una imagen para clasificar la especie con el modelo entrenado</p>
+
+      <div id="dropZone" class="upload-zone w-full flex flex-col items-center gap-4" onclick="document.getElementById('fileInput').click()">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:rgba(16,185,129,.1)">
+          <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="1.5">
+            <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+            <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
+          </svg>
+        </div>
+        <div>
+          <p class="font-semibold text-sm">Arrastra una imagen aquí</p>
+          <p class="text-gray-500 text-xs mt-1">o haz clic para seleccionar · JPG, PNG, WEBP</p>
+        </div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="hidden"/>
       </div>
-      <button id="btnClassify" class="mt-1 px-6 py-2.5 rounded-xl font-semibold text-sm text-white transition-all hover:scale-[1.03] active:scale-[.98]"
-              style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 15px rgba(16,185,129,.3)">
-        <span class="flex items-center gap-2">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
-          Clasificar Especie
-        </span>
-      </button>
+
+      <div id="previewContainer" class="hidden mt-6 flex flex-col items-center gap-3 animate-in">
+        <img id="previewImg" class="preview-img" alt="Preview"/>
+        <div class="flex items-center gap-3">
+          <span id="fileName" class="text-xs text-gray-400"></span>
+          <span id="fileSize" class="text-xs text-gray-600"></span>
+        </div>
+        <p class="text-xs text-emerald-400 mt-1 flex items-center gap-1">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Clasificando automáticamente…
+        </p>
+      </div>
     </div>
+
   </section>
 
   <!-- SCREEN 2: Analyzing -->
@@ -259,6 +313,8 @@ function handleFile(file) {
   document.getElementById('fileName').textContent = file.name;
   document.getElementById('fileSize').textContent = `${(file.size/1024).toFixed(0)} KB`;
   previewCtn.classList.remove('hidden');
+  // Auto-classify after brief preview
+  setTimeout(() => startClassification(), 600);
 }
 
 fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
@@ -268,7 +324,7 @@ dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-ove
 dropZone.addEventListener('drop', e => {e.preventDefault(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]);});
 
 // ── Classify ──────────────────────────────────────────────────────
-document.getElementById('btnClassify').addEventListener('click', async () => {
+async function startClassification() {
   if (!selectedFile) return;
   showScreen('analyzing');
 
@@ -296,7 +352,7 @@ document.getElementById('btnClassify').addEventListener('click', async () => {
     alert('Error: ' + err.message);
     showScreen('upload');
   }
-});
+}
 
 // ── Render Results ────────────────────────────────────────────────
 function confColor(c) {
@@ -423,17 +479,50 @@ function resetAudit() {
   showScreen('upload');
 }
 
-// ── Load model info on startup ───────────────────────────────────
+// ── Load model info + species list on startup ───────────────────
 (async () => {
   try {
-    const res = await fetch('/api/health');
-    const d = await res.json();
+    const [healthRes, speciesRes] = await Promise.all([
+      fetch('/api/health'),
+      fetch('/api/species'),
+    ]);
+    const d = await healthRes.json();
     document.getElementById('navModelBadge').classList.remove('hidden');
     document.getElementById('navModel').textContent = d.model;
     document.getElementById('navClasses').textContent = d.num_classes + ' clases · ' + d.device;
     document.getElementById('footerDevice').textContent = d.device;
+
+    const sp = await speciesRes.json();
+    renderSpeciesList(sp);
   } catch(_){}
 })();
+
+function renderSpeciesList(data) {
+  const ctn = document.getElementById('speciesList');
+  document.getElementById('speciesCount').textContent = data.total + ' especies entrenadas';
+  const iucnDots = {LC:'iucn-LC',NT:'iucn-NT',VU:'iucn-VU',EN:'iucn-EN',CR:'iucn-CR'};
+  let html = '';
+  const groups = data.groups || {};
+  const kingdomIcons = {Animalia:'🐾',Plantae:'🌿',Fungi:'🍄'};
+  for (const [kingdom, species] of Object.entries(groups)) {
+    const icon = kingdomIcons[kingdom] || '🔬';
+    html += `<div class="species-group-title">${icon} ${kingdom} (${species.length})</div>`;
+    for (const sp of species) {
+      const dot = sp.iucn_status && iucnDots[sp.iucn_status]
+        ? `<span class="iucn-dot ${iucnDots[sp.iucn_status]}" title="${sp.iucn_status}"></span>` : '';
+      html += `
+        <div class="species-item">
+          ${dot}
+          <div style="min-width:0">
+            <div class="sp-name">${fmtSpecies(sp.name)}</div>
+            <div class="sp-family">${sp.family}${sp.order ? ' · '+sp.order : ''}</div>
+          </div>
+          <span class="sp-count">${sp.train_count} imgs</span>
+        </div>`;
+    }
+  }
+  ctn.innerHTML = html;
+}
 </script>
 </body>
 </html>
