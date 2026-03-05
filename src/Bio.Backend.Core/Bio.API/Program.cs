@@ -1,8 +1,28 @@
+using Microsoft.EntityFrameworkCore;
+using Bio.Domain.Interfaces;
+using Bio.Backend.Core.Bio.Infrastructure.Persistence;
+using Bio.Backend.Core.Bio.Infrastructure.Repositories;
+using Bio.Backend.Core.Bio.Infrastructure.Services;
+using Bio.Application.Services;
+using Bio.Application.DTOs;
+using Bio.Application.Validators;
+using FluentValidation;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// Register BioPlatform Services
+builder.Services.AddDbContext<BioDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IValidator<UserCreateDTO>, UserCreateValidator>();
+builder.Services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

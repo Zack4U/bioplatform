@@ -38,6 +38,7 @@ BEGIN
         PasswordHash NVARCHAR(MAX) NOT NULL,
         FullName NVARCHAR(150) NOT NULL,
         PhoneNumber NVARCHAR(20),
+        Salt NVARCHAR(MAX) NOT NULL,
         IsVerified BIT DEFAULT 0,
         TwoFactorSecret NVARCHAR(100),
         TwoFactorEnabled BIT DEFAULT 0,
@@ -255,13 +256,20 @@ END
 GO
 
 -- Crear usuario administrador por defecto (password: Admin@123456)
--- Hash generado con BCrypt
+-- Hash generado con PBKDF2 (SHA256, 100k iteraciones)
 IF NOT EXISTS (SELECT * FROM Users WHERE Email = 'admin@bioplatform.co')
 BEGIN
     DECLARE @AdminId UNIQUEIDENTIFIER = NEWID();
     
-    INSERT INTO Users (Id, Email, PasswordHash, FullName, IsVerified, IsActive)
-    VALUES (@AdminId, 'admin@bioplatform.co', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4.SQkFfJ6Z6K.Hs.', 'System Administrator', 1, 1);
+    INSERT INTO Users (Id, Email, PasswordHash, Salt, FullName, IsVerified, IsActive)
+    VALUES (
+        @AdminId, 
+        'admin@bioplatform.co', 
+        'K2hT8LiqQ2TQJCgIbOZ9OfS6hP9Ne2OpXSbAGhb8xio=', 
+        'KM2/iYDUxm60UVB2xu7MTw==', 
+        'System Administrator', 
+        1, 
+        1);
     
     INSERT INTO UserRoles (UserId, RoleId)
     SELECT @AdminId, Id FROM Roles WHERE Name = 'Admin';
