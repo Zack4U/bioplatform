@@ -1,0 +1,20 @@
+Dataset: Observation.org, Nature data from around the World 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Xeno-canto - Soundscapes from around the world 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Xeno-canto - Orthoptera sounds from around the world 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: eButterfly Surveys 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: NABU|naturgucker 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Xeno-canto - Bird sounds from around the world 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Earth Guardians Weekly Feed 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: iNaturalist Research-grade Observations 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Pl@ntNet observations 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Xeno-canto - Anura sounds from around the world 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
