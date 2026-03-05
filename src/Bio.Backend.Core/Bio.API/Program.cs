@@ -21,9 +21,11 @@ builder.Services.AddDbContext<BioDbContext>(options =>
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 
 builder.Services.AddScoped<IValidator<UserCreateDTO>, UserCreateValidator>();
 builder.Services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidator>();

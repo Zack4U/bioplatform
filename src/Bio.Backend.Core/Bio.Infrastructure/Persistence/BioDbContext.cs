@@ -18,6 +18,9 @@ public class BioDbContext : DbContext
     /// Collection of registered users in the system.
     public DbSet<User> Users { get; set; }
 
+    /// Collection of user-role assignments.
+    public DbSet<UserRole> UserRoles { get; set; }
+
     /// Configures the data model and mapping rules using Fluent API.
     /// Executed when the model for the context is being initialized.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,6 +51,11 @@ public class BioDbContext : DbContext
 
             // Ensures that no duplicate role names exist
             entity.HasIndex(e => e.Name).IsUnique();
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(ur => new { ur.UserId, ur.RoleId });
         });
     }
 }
