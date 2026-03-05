@@ -10,14 +10,14 @@
 ├─────────────────────────────────────────────────────────────┤
 │ ✅ SQL Server (1433)       ✅ PostgreSQL (5432)             │
 │ ✅ Redis (6379)            ✅ ChromaDB (8001)               │
-│ ✅ MongoDB (27017)         ✅ pgAdmin (5050)                │
+│ ✅ MongoDB (27017)         ✅ pgAdmin (5050)                 │
 │ ✅ Adminer (8090)          ✅ Seq (5341)                    │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
 │ Local (Desarrollo)                                            │
 ├─────────────────────────────────────────────────────────────┤
-│ 🖥️  Backend .NET (5050)    🐍 AI Service (8000)             │
+│ 🖥️  Backend .NET (5070)    🐍 AI Service (8000)             │
 │ ⚛️  Frontend Web (3000)     📱 Frontend Mobile (Expo)        │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -43,7 +43,7 @@ bash run.sh all           # TODO
 
 **Resultado esperado:**
 - ✅ Docker levanta en terminal dedicada
-- ✅ Backend corre en `http://localhost:5050` (con Swagger)
+- ✅ Backend corre en `http://localhost:5070` (con Swagger)
 - ✅ AI Service en `http://localhost:8000` (con Docs)
 - ✅ Frontend Web en `http://localhost:3000`
 - ✅ pgAdmin en `http://localhost:5050` (BD UI)
@@ -115,8 +115,8 @@ dotnet restore
 # Ejecuta en watch mode (recompila automáticamente)
 dotnet watch run --project Bio.API/Bio.API.csproj
 
-# Esperado: http://localhost:5050
-# Swagger: http://localhost:5050/swagger
+# Esperado: http://localhost:5070
+# Swagger: http://localhost:5070/swagger
 ```
 
 **Requisitos:**
@@ -202,7 +202,7 @@ npx expo start
 En `src/Bio.Frontend.Mobile/src/config/api.ts` (o similar):
 ```typescript
 const API_URL = __DEV__ 
-  ? 'http://YOUR_LOCAL_IP:5050/api'  // Cambia YOUR_LOCAL_IP por tu IP
+  ? 'http://YOUR_LOCAL_IP:5070/api'  // Cambia YOUR_LOCAL_IP por tu IP
   : 'https://api.bioplatform.com/api';
 
 const AI_API_URL = __DEV__
@@ -254,7 +254,7 @@ $ npx expo start
 
 # 2. Accede a:
 # - Frontend Web: http://localhost:3000
-# - Backend API: http://localhost:5050
+# - Backend API: http://localhost:5070
 # - AI Service: http://localhost:8000
 # - Mobile App: Abre iOS/Android emulator o escanea QR en tu teléfono
 # - Base de Datos: pgAdmin http://localhost:5050
@@ -342,14 +342,14 @@ docker-compose ps
 docker-compose restart postgres
 ```
 
-### "Port 5050 already in use"
+### "Port 5070 already in use"
 ```bash
 # Busca qué está usando el puerto
-lsof -i :5050  # macOS/Linux
-netstat -ano | findstr :5000  # Windows
+lsof -i :5070  # macOS/Linux
+netstat -ano | findstr :5070  # Windows
 
 # O usa otro puerto
-dotnet watch run --project src/Bio.API/Bio.API.csproj -- --urls=http://+:5001
+dotnet watch run --project src/Bio.API/Bio.API.csproj -- --urls=http://+:5080
 ```
 
 ### "Module not found" en Python

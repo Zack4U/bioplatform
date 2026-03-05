@@ -11,7 +11,7 @@ Usamos un único script bash (`run.sh`) para ejecutar todos los servicios de for
 
 **Servicios disponibles:**
 - `docker` / `infra`: Infraestructura (Docker Compose)
-- `core`: Backend .NET (port 5050)
+- `core`: Backend .NET (port 5070)
 - `ai`: AI Service Python (port 8000)
 - `web`: Frontend Web Next.js (port 3000)
 - `mobile`: Frontend Mobile Expo (port 19000)
@@ -67,7 +67,7 @@ Cada servicio se abre en una **nueva ventana (bash) independiente**:
 │ Docker Compose          │  (bash: docker-compose up -d)
 └─────────────────────────┘
 ┌─────────────────────────┐
-│ Backend .NET (5050)     │  (bash: dotnet watch run)
+│ Backend .NET (5070)     │  (bash: dotnet watch run)
 └─────────────────────────┘
 ┌─────────────────────────┐
 │ AI Service (8000)       │  (bash: uvicorn app.main:app --reload)
@@ -247,7 +247,7 @@ tmux attach -t bioplatform
 | Servicio | URL | Estado |
 |---|---|---|
 | **Frontend Web** | http://localhost:3000 | Abierto en navegador |
-| **Backend API** | http://localhost:5050 | Disponible con Swagger |
+| **Backend API** | http://localhost:5070 | Disponible con Swagger |
 | **AI Service** | http://localhost:8000 | Disponible con Docs |
 | **pgAdmin** | http://localhost:5050 | UI de PostgreSQL |
 | **Adminer** | http://localhost:8090 | UI de SQL Server |
@@ -271,9 +271,9 @@ Si un puerto está en uso:
 
 **Git Bash / macOS / Linux:**
 ```bash
-# Buscar proceso usando puerto 5050
-netstat -ano | grep :5050  # Linux/Git Bash
-lsof -i :5050             # macOS
+# Buscar proceso usando puerto 5070
+netstat -ano | grep :5070  # Linux/Git Bash
+lsof -i :5070             # macOS
 
 # Matar el proceso
 kill <PID>

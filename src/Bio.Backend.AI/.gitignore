@@ -1,0 +1,73 @@
+# ─── Python ─────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ─── Virtual environments ───────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ─── Distribution / packaging ──────────────────────────────────────────────
+dist/
+build/
+*.egg-info/
+*.egg
+*.whl
+
+# ─── Byte-compiled / optimized ─────────────────────────────────────────────
+*.pyc
+*.pyo
+
+# ─── Linting & formatting cache ────────────────────────────────────────────
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ─── IDE / editor ──────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── Environment variables ─────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── ML model weights (large binaries) ─────────────────────────────────────
+data/weights/*.pt
+data/weights/*.pth
+data/weights/*.onnx
+data/weights/*.h5
+data/weights/*.bin
+data/weights/*.safetensors
+!data/weights/.gitkeep
+
+# ─── Vector store (generated embeddings) ───────────────────────────────────
+data/vector_store/*.parquet
+data/vector_store/*.bin
+data/vector_store/chroma/
+!data/vector_store/.gitkeep
+
+# ─── Jupyter notebooks checkpoints ─────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ─── MLflow / DVC artifacts ────────────────────────────────────────────────
+mlruns/
+mlflow.db
+.dvc/cache/
+.dvc/tmp/
+
+# ─── OS files ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Logs ──────────────────────────────────────────────────────────────────
+*.log
+logs/
