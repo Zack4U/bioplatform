@@ -216,4 +216,51 @@ public class UserRoleServiceTests
         result.First().UserEmail.Should().Be("user1@example.com");
         _userRoleRepositoryMock.Verify(r => r.GetByRoleIdWithDetailsAsync(roleId), Times.Once);
     }
+
+    /// <summary>
+    /// Verifies that an existing role assignment is successfully removed.
+    /// </summary>
+    [Fact]
+    public async Task UnassignRoleAsync_ExistingAssignment_ShouldRemoveRole()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var roleId = Guid.NewGuid();
+        var userRole = new UserRole { UserId = userId, RoleId = roleId };
+
+        _userRoleRepositoryMock.Setup(r => r.GetByIdsAsync(userId, roleId)).ReturnsAsync(userRole);
+        _userRoleRepositoryMock.Setup(r => r.DeleteAsync(userRole)).Returns(Task.CompletedTask);
+        _userRoleRepositoryMock.Setup(r => r.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+        // Act
+        await _userRoleService.UnassignRoleAsync(userId, roleId);
+
+        // Assert
+        _userRoleRepositoryMock.Verify(r => r.GetByIdsAsync(userId, roleId), Times.Once);
+        _userRoleRepositoryMock.Verify(r => r.DeleteAsync(userRole), Times.Once);
+        _userRoleRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+    }
+
+    /// <summary>
+    /// Verifies that a <see cref="KeyNotFoundException"/> is thrown when attempt is made 
+    /// to unassign a role that is not associated with the user.
+    /// </summary>
+    [Fact]
+    public async Task UnassignRoleAsync_NonExistingAssignment_ShouldThrowKeyNotFoundException()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var roleId = Guid.NewGuid();
+
+        _userRoleRepositoryMock.Setup(r => r.GetByIdsAsync(userId, roleId)).ReturnsAsync((UserRole?)null);
+
+        // Act
+        Func<Task> act = async () => await _userRoleService.UnassignRoleAsync(userId, roleId);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>()
+            .WithMessage($"Assignment for User {userId} and Role {roleId} not found.");
+        _userRoleRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<UserRole>()), Times.Never);
+        _userRoleRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
+    }
 }

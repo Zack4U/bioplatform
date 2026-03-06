@@ -20,4 +20,14 @@ public class UserRole
     /// Timestamp of when the role was assigned.
     /// </summary>
     public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
+    /// Navigation property to the associated user.
+    /// </summary>
+    public virtual User User { get; set; } = null!;
+
+    /// <summary>
+    /// Navigation property to the associated role.
+    /// </summary>
+    public virtual Role Role { get; set; } = null!;
 }

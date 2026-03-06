@@ -119,6 +119,24 @@ public class UserRoleService : IUserRoleService
     }
 
     /// <summary>
+    /// Unassigns a security role from a user.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="roleId">The unique identifier of the role.</param>
+    /// <exception cref="KeyNotFoundException">Thrown when the assignment does not exist.</exception>
+    public async Task UnassignRoleAsync(Guid userId, Guid roleId)
+    {
+        var userRole = await _userRoleRepository.GetByIdsAsync(userId, roleId);
+        if (userRole == null)
+        {
+            throw new KeyNotFoundException($"Assignment for User {userId} and Role {roleId} not found.");
+        }
+
+        await _userRoleRepository.DeleteAsync(userRole);
+        await _userRoleRepository.SaveChangesAsync();
+    }
+
+    /// <summary>
     /// Maps internal domain detail models to application layer DTOs.
     /// </summary>
     /// <param name="details">The collection of domain details to map.</param>

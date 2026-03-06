@@ -39,4 +39,11 @@ public interface IUserRoleService
     /// <param name="roleId">The unique identifier of the role.</param>
     /// <returns>A list of users with that role ID.</returns>
     Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByRoleIdAsync(Guid roleId);
+
+    /// <summary>
+    /// Unassigns a role from a user.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="roleId">The unique identifier of the role.</param>
+    Task UnassignRoleAsync(Guid userId, Guid roleId);
 }

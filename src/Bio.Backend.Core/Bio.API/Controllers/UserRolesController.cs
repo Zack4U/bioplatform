@@ -99,4 +99,28 @@ public class UserRolesController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+
+    /// <summary>
+    /// Unassigns a security role from a user.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="roleId">The unique identifier of the role.</param>
+    /// <returns>204 No Content if successfully unassigned.</returns>
+    /// <response code="204">Role successfully unassigned.</response>
+    /// <response code="404">If the assignment was not found.</response>
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId)
+    {
+        try
+        {
+            await _userRoleService.UnassignRoleAsync(userId, roleId);
+            return NoContent();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+    }
 }

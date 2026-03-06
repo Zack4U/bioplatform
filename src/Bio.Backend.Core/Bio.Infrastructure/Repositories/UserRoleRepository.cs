@@ -97,12 +97,31 @@ public class UserRoleRepository : IUserRoleRepository
     }
 
     /// <summary>
+    /// Retrieves a specific user-role assignment by IDs.
+    /// </summary>
+    public async Task<UserRole?> GetByIdsAsync(Guid userId, Guid roleId)
+    {
+        return await _context.Set<UserRole>()
+            .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
+    }
+
+    /// <summary>
     /// Adds a new user-role assignment to the context.
     /// </summary>
     /// <param name="userRole">The assignment entity to add.</param>
     public async Task AddAsync(UserRole userRole)
     {
         await _context.Set<UserRole>().AddAsync(userRole);
+    }
+
+    /// <summary>
+    /// Removes a user-role assignment from the context.
+    /// </summary>
+    /// <param name="userRole">The assignment entity to remove.</param>
+    public async Task DeleteAsync(UserRole userRole)
+    {
+        _context.Set<UserRole>().Remove(userRole);
+        await Task.CompletedTask;
     }
 
     /// <summary>

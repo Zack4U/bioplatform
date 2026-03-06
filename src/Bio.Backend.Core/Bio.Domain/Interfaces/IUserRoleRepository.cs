@@ -39,9 +39,19 @@ public interface IUserRoleRepository
     Task<bool> ExistsAsync(Guid userId, Guid roleId);
 
     /// <summary>
+    /// Retrieves a specific user-role assignment by IDs.
+    /// </summary>
+    Task<UserRole?> GetByIdsAsync(Guid userId, Guid roleId);
+
+    /// <summary>
     /// Adds a new user-role assignment.
     /// </summary>
     Task AddAsync(UserRole userRole);
+
+    /// <summary>
+    /// Removes a user-role assignment from the database.
+    /// </summary>
+    Task DeleteAsync(UserRole userRole);
 
     /// <summary>
     /// Persists changes to the database.
