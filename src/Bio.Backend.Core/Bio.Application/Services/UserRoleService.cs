@@ -1,13 +1,11 @@
 using Bio.Application.DTOs;
 using Bio.Application.Interfaces;
 using Bio.Domain.Entities;
+using Bio.Domain.ReadModels;
 using Bio.Domain.Interfaces;
 
 namespace Bio.Application.Services;
 
-/// <summary>
-/// Implementation of independent user-role service.
-/// </summary>
 /// <summary>
 /// Service implementation for managing user-role assignments.
 /// Handles business logic and validation for associating users with security roles.

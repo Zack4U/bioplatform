@@ -2,6 +2,7 @@ using Bio.Application.DTOs;
 using Bio.Application.Services;
 using Bio.Application.Interfaces;
 using Bio.Domain.Entities;
+using Bio.Domain.ReadModels;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;

@@ -12,6 +12,10 @@ public class RoleRepository : IRoleRepository
 {
     private readonly BioDbContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="RoleRepository"/>.
+    /// </summary>
+    /// <param name="context">The database context.</param>
     public RoleRepository(BioDbContext context)
     {
         _context = context;

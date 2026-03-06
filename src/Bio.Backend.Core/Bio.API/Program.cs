@@ -6,7 +6,6 @@ using Bio.Backend.Core.Bio.Infrastructure.Services;
 using Bio.Application.Services;
 using Bio.Application.Interfaces;
 using Bio.Application.DTOs;
-using Bio.Application.Validators;
 using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,10 +27,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 
-builder.Services.AddScoped<IValidator<UserCreateDTO>, UserCreateValidator>();
-builder.Services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidator>();
-builder.Services.AddScoped<IValidator<RoleCreateDTO>, RoleCreateValidator>();
-builder.Services.AddScoped<IValidator<RoleUpdateDTO>, RoleUpdateValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

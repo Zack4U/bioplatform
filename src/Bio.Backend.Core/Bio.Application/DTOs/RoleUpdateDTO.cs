@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Bio.Application.DTOs;
 
 /// <summary>

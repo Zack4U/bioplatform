@@ -2,7 +2,6 @@ using Bio.Application.DTOs;
 using Bio.Application.Interfaces;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
-using FluentValidation;
 
 namespace Bio.Application.Services;
 
@@ -12,34 +11,29 @@ namespace Bio.Application.Services;
 public class RoleService : IRoleService
 {
     private readonly IRoleRepository _roleRepository;
-    private readonly IValidator<RoleCreateDTO> _validator;
 
-    public RoleService(IRoleRepository roleRepository, IValidator<RoleCreateDTO> validator)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RoleService"/> class.
+    /// </summary>
+    /// <param name="roleRepository">The repository for role data.</param>
+    public RoleService(IRoleRepository roleRepository)
     {
         _roleRepository = roleRepository;
-        _validator = validator;
     }
 
     public async Task<RoleResponseDTO> CreateRoleAsync(RoleCreateDTO dto)
     {
-        // 1. Validation
-        var validationResult = await _validator.ValidateAsync(dto);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationException(validationResult.Errors);
-        }
-
-        // 2. Normalization (Uppercase as requested)
+        // 1. Normalization (Uppercase as requested)
         var normalizedName = dto.Name.Trim().ToUpperInvariant();
 
-        // 3. Check uniqueness
+        // 2. Check uniqueness
         var existingRole = await _roleRepository.GetByNameAsync(normalizedName);
         if (existingRole != null)
         {
             throw new InvalidOperationException($"Role with name '{normalizedName}' already exists.");
         }
 
-        // 4. Map to Entity
+        // 3. Map to Entity
         var role = new Role
         {
             Id = Guid.NewGuid(),
@@ -48,11 +42,11 @@ public class RoleService : IRoleService
             CreatedAt = DateTime.UtcNow
         };
 
-        // 5. Save to database
+        // 4. Save to database
         await _roleRepository.AddAsync(role);
         await _roleRepository.SaveChangesAsync();
 
-        // 6. Map to Response DTO
+        // 5. Map to Response DTO
         return MapToResponseDTO(role);
     }
 

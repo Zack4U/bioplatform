@@ -1,5 +1,6 @@
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Domain.Entities;
+using Bio.Domain.ReadModels;
 using Bio.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

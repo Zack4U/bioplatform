@@ -21,6 +21,7 @@ public class UserCreateDTO
     /// <example>juan.perez@ejemplo.com</example>
     [Required(ErrorMessage = "Email is required.")]
     [EmailAddress(ErrorMessage = "Email format is invalid.")]
+    [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters.")]
     public string Email { get; set; } = string.Empty;
 
     /// <summary>

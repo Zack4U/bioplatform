@@ -47,7 +47,7 @@ public class BioDbContext : DbContext
         modelBuilder.Entity<Role>(entity =>
         {
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.Description); // Removes MaxLength constraint, maps to NVARCHAR(MAX)
+            entity.Property(e => e.Description).HasMaxLength(2000);
 
             // Ensures that no duplicate role names exist
             entity.HasIndex(e => e.Name).IsUnique();

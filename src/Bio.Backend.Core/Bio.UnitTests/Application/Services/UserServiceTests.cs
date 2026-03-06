@@ -4,8 +4,6 @@ using Bio.Application.Services;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
-using FluentValidation;
-using FluentValidation.Results;
 using Moq;
 using Xunit;
 
@@ -19,22 +17,16 @@ public class UserServiceTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IPasswordHasher> _passwordHasherMock;
-    private readonly Mock<IValidator<UserCreateDTO>> _createValidatorMock;
-    private readonly Mock<IValidator<UserUpdateDTO>> _updateValidatorMock;
     private readonly UserService _userService;
 
     public UserServiceTests()
     {
         _userRepositoryMock = new Mock<IUserRepository>();
         _passwordHasherMock = new Mock<IPasswordHasher>();
-        _createValidatorMock = new Mock<IValidator<UserCreateDTO>>();
-        _updateValidatorMock = new Mock<IValidator<UserUpdateDTO>>();
 
         _userService = new UserService(
             _userRepositoryMock.Object,
-            _passwordHasherMock.Object,
-            _createValidatorMock.Object,
-            _updateValidatorMock.Object);
+            _passwordHasherMock.Object);
     }
 
     [Fact]
@@ -49,8 +41,7 @@ public class UserServiceTests
             PhoneNumber = "1234567890"
         };
 
-        _createValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
+
 
         _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email))
             .ReturnsAsync((User?)null);
@@ -85,8 +76,7 @@ public class UserServiceTests
         var dto = new UserCreateDTO { Email = "existing@example.com", FullName = "Test" };
         var existingUser = new User { Email = "existing@example.com" };
 
-        _createValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
+
 
         _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email))
             .ReturnsAsync(existingUser);
@@ -150,8 +140,6 @@ public class UserServiceTests
         var dto = new UserCreateDTO { Email = "new@example.com", PhoneNumber = "123456", FullName = "Test" };
         var existingUser = new User { PhoneNumber = "123456" };
 
-        _createValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
         _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((User?)null);
         _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(dto.PhoneNumber)).ReturnsAsync(existingUser);
 
@@ -254,8 +242,6 @@ public class UserServiceTests
         var dto = new UserUpdateDTO { FullName = "New Name", Email = "new@test.com", PhoneNumber = "999" };
         var user = new User { Id = id, FullName = "Old", Email = "old@test.com" };
 
-        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
         _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(user);
         _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, id)).ReturnsAsync((User?)null);
         _userRepositoryMock.Setup(r => r.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, id)).ReturnsAsync((User?)null);
@@ -276,8 +262,6 @@ public class UserServiceTests
         // Arrange
         var id = Guid.NewGuid();
         var dto = new UserUpdateDTO { FullName = "New" };
-        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
         _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((User?)null);
 
         // Act
@@ -293,8 +277,6 @@ public class UserServiceTests
         // Arrange
         var id = Guid.NewGuid();
         var dto = new UserUpdateDTO { Email = "conflict@test.com" };
-        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
         _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(new User { Id = id });
         _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, id)).ReturnsAsync(new User { Id = Guid.NewGuid() });
 
@@ -312,8 +294,6 @@ public class UserServiceTests
         // Arrange
         var id = Guid.NewGuid();
         var dto = new UserUpdateDTO { PhoneNumber = "999" };
-        _updateValidatorMock.Setup(v => v.ValidateAsync(dto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
         _userRepositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(new User { Id = id });
         _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(It.IsAny<string>(), id)).ReturnsAsync((User?)null);
         _userRepositoryMock.Setup(r => r.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, id)).ReturnsAsync(new User { Id = Guid.NewGuid() });
