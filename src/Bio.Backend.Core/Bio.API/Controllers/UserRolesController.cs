@@ -20,6 +20,58 @@ public class UserRolesController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves all user-role assignments with full details (names).
+    /// </summary>
+    /// <returns>A list of assignments.</returns>
+    /// <response code="200">List of assignments retrieved.</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<UserRoleReadDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAssignments()
+    {
+        var assignments = await _userRoleService.GetAllAssignmentsAsync();
+        return Ok(assignments);
+    }
+
+    /// <summary>
+    /// Retrieves all roles assigned to a specific user.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <returns>A list of roles assigned to that user.</returns>
+    [HttpGet("user/{userId:guid}")]
+    [ProducesResponseType(typeof(IEnumerable<UserRoleReadDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetByUser(Guid userId)
+    {
+        var assignments = await _userRoleService.GetAssignmentsByUserIdAsync(userId);
+        return Ok(assignments);
+    }
+
+    /// <summary>
+    /// Retrieves all users assigned to a specific role name.
+    /// </summary>
+    /// <param name="roleName">The name of the role.</param>
+    /// <returns>A list of user-role assignments for that role.</returns>
+    [HttpGet("role/{roleName}")]
+    [ProducesResponseType(typeof(IEnumerable<UserRoleReadDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetByRole(string roleName)
+    {
+        var assignments = await _userRoleService.GetAssignmentsByRoleNameAsync(roleName);
+        return Ok(assignments);
+    }
+
+    /// <summary>
+    /// Retrieves all users assigned to a specific role ID.
+    /// </summary>
+    /// <param name="roleId">The unique identifier of the role.</param>
+    /// <returns>A list of user-role assignments for that role ID.</returns>
+    [HttpGet("role-id/{roleId:guid}")]
+    [ProducesResponseType(typeof(IEnumerable<UserRoleReadDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetByRoleId(Guid roleId)
+    {
+        var assignments = await _userRoleService.GetAssignmentsByRoleIdAsync(roleId);
+        return Ok(assignments);
+    }
+
+    /// <summary>
     /// Assigns a security role to a user.
     /// </summary>
     /// <param name="dto">The assignment data containing UserId and RoleId.</param>

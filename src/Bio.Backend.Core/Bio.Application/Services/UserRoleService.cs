@@ -7,12 +7,22 @@ namespace Bio.Application.Services;
 /// <summary>
 /// Implementation of independent user-role service.
 /// </summary>
+/// <summary>
+/// Service implementation for managing user-role assignments.
+/// Handles business logic and validation for associating users with security roles.
+/// </summary>
 public class UserRoleService : IUserRoleService
 {
     private readonly IUserRoleRepository _userRoleRepository;
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserRoleService"/> class.
+    /// </summary>
+    /// <param name="userRoleRepository">The repository for user-role assignments.</param>
+    /// <param name="userRepository">The repository for user data.</param>
+    /// <param name="roleRepository">The repository for security roles.</param>
     public UserRoleService(
         IUserRoleRepository userRoleRepository,
         IUserRepository userRepository,
@@ -23,6 +33,13 @@ public class UserRoleService : IUserRoleService
         _roleRepository = roleRepository;
     }
 
+    /// <summary>
+    /// Assigns a security role to a user.
+    /// Validates that both user and role exist and that the assignment doesn't already exist.
+    /// </summary>
+    /// <param name="dto">The data transfer object containing the User ID and Role ID.</param>
+    /// <exception cref="KeyNotFoundException">Thrown when the user or role does not exist.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the role is already assigned to the user.</exception>
     public async Task AssignRoleAsync(UserRoleCreateDTO dto)
     {
         // 1. Validate User existence
@@ -56,5 +73,65 @@ public class UserRoleService : IUserRoleService
 
         await _userRoleRepository.AddAsync(userRole);
         await _userRoleRepository.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Retrieves all existing user-role assignments with full details (user and role names).
+    /// </summary>
+    /// <returns>A collection of <see cref="UserRoleReadDTO"/> representing all assignments.</returns>
+    public async Task<IEnumerable<UserRoleReadDTO>> GetAllAssignmentsAsync()
+    {
+        var details = await _userRoleRepository.GetAllWithDetailsAsync();
+        return MapToDTO(details);
+    }
+
+    /// <summary>
+    /// Retrieves all roles assigned to a specific user, including role names.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <returns>A collection of <see cref="UserRoleReadDTO"/> for the specified user.</returns>
+    public async Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByUserIdAsync(Guid userId)
+    {
+        var details = await _userRoleRepository.GetByUserIdWithDetailsAsync(userId);
+        return MapToDTO(details);
+    }
+
+    /// <summary>
+    /// Retrieves all users assigned to a specific role name.
+    /// </summary>
+    /// <param name="roleName">The name of the security role.</param>
+    /// <returns>A collection of <see cref="UserRoleReadDTO"/> assigned to the role.</returns>
+    public async Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByRoleNameAsync(string roleName)
+    {
+        var details = await _userRoleRepository.GetByRoleNameWithDetailsAsync(roleName);
+        return MapToDTO(details);
+    }
+
+    /// <summary>
+    /// Retrieves all users assigned to a specific role identifier.
+    /// </summary>
+    /// <param name="roleId">The unique identifier of the security role.</param>
+    /// <returns>A collection of <see cref="UserRoleReadDTO"/> assigned to the role ID.</returns>
+    public async Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByRoleIdAsync(Guid roleId)
+    {
+        var details = await _userRoleRepository.GetByRoleIdWithDetailsAsync(roleId);
+        return MapToDTO(details);
+    }
+
+    /// <summary>
+    /// Maps internal domain detail models to application layer DTOs.
+    /// </summary>
+    /// <param name="details">The collection of domain details to map.</param>
+    /// <returns>A collection of mapped <see cref="UserRoleReadDTO"/> objects.</returns>
+    private static IEnumerable<UserRoleReadDTO> MapToDTO(IEnumerable<UserRoleDetail> details)
+    {
+        return details.Select(d => new UserRoleReadDTO
+        {
+            UserId = d.UserId,
+            UserEmail = d.UserEmail,
+            RoleId = d.RoleId,
+            RoleName = d.RoleName,
+            AssignedAt = d.AssignedAt
+        });
     }
 }

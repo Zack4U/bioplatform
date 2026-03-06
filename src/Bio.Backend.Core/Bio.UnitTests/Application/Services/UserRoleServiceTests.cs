@@ -118,4 +118,102 @@ public class UserRoleServiceTests
         await act.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage($"Role 'ADMIN' is already assigned to user 'User'.");
     }
+
+    /// <summary>
+    /// Verifies that all user-role assignments are retrieved with their details.
+    /// </summary>
+    [Fact]
+    public async Task GetAllAssignmentsAsync_ShouldReturnAssignments()
+    {
+        // Arrange
+        var assignments = new List<UserRoleDetail>
+        {
+            new UserRoleDetail { UserId = Guid.NewGuid(), UserEmail = "user1@example.com", RoleId = Guid.NewGuid(), RoleName = "ADMIN" },
+            new UserRoleDetail { UserId = Guid.NewGuid(), UserEmail = "user2@example.com", RoleId = Guid.NewGuid(), RoleName = "USER" }
+        };
+
+        _userRoleRepositoryMock.Setup(r => r.GetAllWithDetailsAsync()).ReturnsAsync(assignments);
+
+        // Act
+        var result = await _userRoleService.GetAllAssignmentsAsync();
+
+        // Assert
+        result.Should().HaveCount(2);
+        var first = result.First();
+        first.UserEmail.Should().Be("user1@example.com");
+        first.RoleName.Should().Be("ADMIN");
+        _userRoleRepositoryMock.Verify(r => r.GetAllWithDetailsAsync(), Times.Once);
+    }
+
+    /// <summary>
+    /// Verifies that roles assigned to a specific user are correctly retrieved.
+    /// </summary>
+    [Fact]
+    public async Task GetAssignmentsByUserIdAsync_ShouldReturnAssignments()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var assignments = new List<UserRoleDetail>
+        {
+            new UserRoleDetail { UserId = userId, UserEmail = "user1@example.com", RoleId = Guid.NewGuid(), RoleName = "ADMIN" }
+        };
+
+        _userRoleRepositoryMock.Setup(r => r.GetByUserIdWithDetailsAsync(userId)).ReturnsAsync(assignments);
+
+        // Act
+        var result = await _userRoleService.GetAssignmentsByUserIdAsync(userId);
+
+        // Assert
+        result.Should().HaveCount(1);
+        result.First().UserEmail.Should().Be("user1@example.com");
+        _userRoleRepositoryMock.Verify(r => r.GetByUserIdWithDetailsAsync(userId), Times.Once);
+    }
+
+    /// <summary>
+    /// Verifies that users assigned to a specific role name are correctly retrieved.
+    /// </summary>
+    [Fact]
+    public async Task GetAssignmentsByRoleNameAsync_ShouldReturnAssignments()
+    {
+        // Arrange
+        var roleName = "ADMIN";
+        var assignments = new List<UserRoleDetail>
+        {
+            new UserRoleDetail { UserId = Guid.NewGuid(), UserEmail = "user1@example.com", RoleId = Guid.NewGuid(), RoleName = roleName }
+        };
+
+        _userRoleRepositoryMock.Setup(r => r.GetByRoleNameWithDetailsAsync(roleName)).ReturnsAsync(assignments);
+
+        // Act
+        var result = await _userRoleService.GetAssignmentsByRoleNameAsync(roleName);
+
+        // Assert
+        result.Should().HaveCount(1);
+        result.First().UserEmail.Should().Be("user1@example.com");
+        _userRoleRepositoryMock.Verify(r => r.GetByRoleNameWithDetailsAsync(roleName), Times.Once);
+    }
+
+    /// <summary>
+    /// Verifies that users assigned to a specific role ID are correctly retrieved.
+    /// </summary>
+    [Fact]
+    public async Task GetAssignmentsByRoleIdAsync_ShouldReturnAssignments()
+    {
+        // Arrange
+        var roleId = Guid.NewGuid();
+        var assignments = new List<UserRoleDetail>
+        {
+            new UserRoleDetail { UserId = Guid.NewGuid(), UserEmail = "user1@example.com", RoleId = roleId, RoleName = "ADMIN" }
+        };
+
+        _userRoleRepositoryMock.Setup(r => r.GetByRoleIdWithDetailsAsync(roleId)).ReturnsAsync(assignments);
+
+        // Act
+        var result = await _userRoleService.GetAssignmentsByRoleIdAsync(roleId);
+
+        // Assert
+        result.Should().HaveCount(1);
+        result.First().UserEmail.Should().Be("user1@example.com");
+        _userRoleRepositoryMock.Verify(r => r.GetByRoleIdWithDetailsAsync(roleId), Times.Once);
+    }
 }
