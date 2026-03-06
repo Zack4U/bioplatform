@@ -160,6 +160,7 @@ public class UserRoleServiceTests
             new UserRoleDetail { UserId = userId, UserEmail = "user1@example.com", RoleId = Guid.NewGuid(), RoleName = "ADMIN" }
         };
 
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(new User { Id = userId });
         _userRoleRepositoryMock.Setup(r => r.GetByUserIdWithDetailsAsync(userId)).ReturnsAsync(assignments);
 
         // Act
@@ -169,6 +170,23 @@ public class UserRoleServiceTests
         result.Should().HaveCount(1);
         result.First().UserEmail.Should().Be("user1@example.com");
         _userRoleRepositoryMock.Verify(r => r.GetByUserIdWithDetailsAsync(userId), Times.Once);
+    }
+
+    /// <summary>
+    /// Verifies that a <see cref="KeyNotFoundException"/> is thrown when querying assignments for a non-existent user.
+    /// </summary>
+    [Fact]
+    public async Task GetAssignmentsByUserIdAsync_UserNotFound_ShouldThrowKeyNotFoundException()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync((User?)null);
+
+        // Act
+        Func<Task> act = async () => await _userRoleService.GetAssignmentsByUserIdAsync(userId);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 
     /// <summary>
@@ -184,6 +202,7 @@ public class UserRoleServiceTests
             new UserRoleDetail { UserId = Guid.NewGuid(), UserEmail = "user1@example.com", RoleId = Guid.NewGuid(), RoleName = roleName }
         };
 
+        _roleRepositoryMock.Setup(r => r.GetByNameAsync(roleName)).ReturnsAsync(new Role { Name = roleName });
         _userRoleRepositoryMock.Setup(r => r.GetByRoleNameWithDetailsAsync(roleName)).ReturnsAsync(assignments);
 
         // Act
@@ -193,6 +212,23 @@ public class UserRoleServiceTests
         result.Should().HaveCount(1);
         result.First().UserEmail.Should().Be("user1@example.com");
         _userRoleRepositoryMock.Verify(r => r.GetByRoleNameWithDetailsAsync(roleName), Times.Once);
+    }
+
+    /// <summary>
+    /// Verifies that a <see cref="KeyNotFoundException"/> is thrown when querying assignments for a non-existent role name.
+    /// </summary>
+    [Fact]
+    public async Task GetAssignmentsByRoleNameAsync_RoleNotFound_ShouldThrowKeyNotFoundException()
+    {
+        // Arrange
+        var roleName = "NON_EXISTENT";
+        _roleRepositoryMock.Setup(r => r.GetByNameAsync(roleName)).ReturnsAsync((Role?)null);
+
+        // Act
+        Func<Task> act = async () => await _userRoleService.GetAssignmentsByRoleNameAsync(roleName);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 
     /// <summary>
@@ -208,6 +244,7 @@ public class UserRoleServiceTests
             new UserRoleDetail { UserId = Guid.NewGuid(), UserEmail = "user1@example.com", RoleId = roleId, RoleName = "ADMIN" }
         };
 
+        _roleRepositoryMock.Setup(r => r.GetByIdAsync(roleId)).ReturnsAsync(new Role { Id = roleId, Name = "ADMIN" });
         _userRoleRepositoryMock.Setup(r => r.GetByRoleIdWithDetailsAsync(roleId)).ReturnsAsync(assignments);
 
         // Act
@@ -217,6 +254,23 @@ public class UserRoleServiceTests
         result.Should().HaveCount(1);
         result.First().UserEmail.Should().Be("user1@example.com");
         _userRoleRepositoryMock.Verify(r => r.GetByRoleIdWithDetailsAsync(roleId), Times.Once);
+    }
+
+    /// <summary>
+    /// Verifies that a <see cref="KeyNotFoundException"/> is thrown when querying assignments for a non-existent role ID.
+    /// </summary>
+    [Fact]
+    public async Task GetAssignmentsByRoleIdAsync_RoleNotFound_ShouldThrowKeyNotFoundException()
+    {
+        // Arrange
+        var roleId = Guid.NewGuid();
+        _roleRepositoryMock.Setup(r => r.GetByIdAsync(roleId)).ReturnsAsync((Role?)null);
+
+        // Act
+        Func<Task> act = async () => await _userRoleService.GetAssignmentsByRoleIdAsync(roleId);
+
+        // Assert
+        await act.Should().ThrowAsync<KeyNotFoundException>();
     }
 
     /// <summary>

@@ -40,11 +40,8 @@ public class UserRolesController : ControllerBase
     /// <returns>A list of roles assigned to that user.</returns>
     [HttpGet("user/{userId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByUser(Guid userId)
-    {
-        var assignments = await _userRoleService.GetAssignmentsByUserIdAsync(userId);
-        return Ok(assignments);
-    }
+    public async Task<IActionResult> GetByUser(Guid userId) =>
+        await HandleExceptionsAsync(async () => Ok(await _userRoleService.GetAssignmentsByUserIdAsync(userId)));
 
     /// <summary>
     /// Retrieves all users assigned to a specific role name.
@@ -53,11 +50,8 @@ public class UserRolesController : ControllerBase
     /// <returns>A list of user-role assignments for that role.</returns>
     [HttpGet("role/{roleName}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByRole(string roleName)
-    {
-        var assignments = await _userRoleService.GetAssignmentsByRoleNameAsync(roleName);
-        return Ok(assignments);
-    }
+    public async Task<IActionResult> GetByRole(string roleName) =>
+        await HandleExceptionsAsync(async () => Ok(await _userRoleService.GetAssignmentsByRoleNameAsync(roleName)));
 
     /// <summary>
     /// Retrieves all users assigned to a specific role ID.
@@ -66,11 +60,8 @@ public class UserRolesController : ControllerBase
     /// <returns>A list of user-role assignments for that role ID.</returns>
     [HttpGet("role-id/{roleId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByRoleId(Guid roleId)
-    {
-        var assignments = await _userRoleService.GetAssignmentsByRoleIdAsync(roleId);
-        return Ok(assignments);
-    }
+    public async Task<IActionResult> GetByRoleId(Guid roleId) =>
+        await HandleExceptionsAsync(async () => Ok(await _userRoleService.GetAssignmentsByRoleIdAsync(roleId)));
 
     /// <summary>
     /// Assigns a security role to a user.
@@ -80,26 +71,11 @@ public class UserRolesController : ControllerBase
     /// <response code="204">Role successfully assigned.</response>
     /// <response code="400">If the role is already assigned or validation fails.</response>
     /// <response code="404">If the user or role was not found.</response>
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> AssignRole([FromBody] UserRoleCreateDTO dto)
-    {
-        try
-        {
+    public async Task<IActionResult> AssignRole([FromBody] UserRoleCreateDTO dto) =>
+        await HandleExceptionsAsync(async () => {
             await _userRoleService.AssignRoleAsync(dto);
             return NoContent();
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
-    }
+        });
 
     /// <summary>
     /// Unassigns a security role from a user.
@@ -109,19 +85,25 @@ public class UserRolesController : ControllerBase
     /// <returns>204 No Content if successfully unassigned.</returns>
     /// <response code="204">Role successfully unassigned.</response>
     /// <response code="404">If the assignment was not found.</response>
-    [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId)
+    public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId) =>
+        await HandleExceptionsAsync(async () => {
+            await _userRoleService.UnassignRoleAsync(userId, roleId);
+            return NoContent();
+        });
+
+    private async Task<IActionResult> HandleExceptionsAsync(Func<Task<IActionResult>> action)
     {
         try
         {
-            await _userRoleService.UnassignRoleAsync(userId, roleId);
-            return NoContent();
+            return await action();
         }
         catch (KeyNotFoundException ex)
         {
             return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 }

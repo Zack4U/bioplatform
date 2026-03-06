@@ -29,7 +29,7 @@ public class UserRolesControllerTests
     public class GetAssignments : UserRolesControllerTests
     {
         /// <summary>
-        /// Verifies that retrieving all assignments returns a 200 OK response.
+        /// Verifies that obtaining the global list of all assignments responds with a 200 OK.
         /// </summary>
         [Fact]
         public async Task ShouldReturnOkWithAssignments()
@@ -75,11 +75,28 @@ public class UserRolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that if the user does not exist or has no roles, it returns a 200 OK
-        /// response with an empty list (current system behavior).
+        /// Verifies that if the user does not exist, it returns a 404 Not Found response.
         /// </summary>
         [Fact]
-        public async Task NonExistingUser_ShouldReturnEmptyList()
+        public async Task NonExistingUser_ShouldReturnNotFound()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            _userRoleServiceMock.Setup(s => s.GetAssignmentsByUserIdAsync(userId))
+                .ThrowsAsync(new KeyNotFoundException("User not found."));
+
+            // Act
+            var result = await _userRolesController.GetByUser(userId);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+        }
+
+        /// <summary>
+        /// Verifies that if the user exists but has no roles, it returns a 200 OK response with an empty list.
+        /// </summary>
+        [Fact]
+        public async Task UserExistsWithoutRoles_ShouldReturnEmptyList()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -121,14 +138,31 @@ public class UserRolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that if the role name does not exist or has no users, it returns a 200 OK
-        /// response with an empty list (current system behavior).
+        /// Verifies that if the role name does not exist, it returns a 404 Not Found response.
         /// </summary>
         [Fact]
-        public async Task NonExistingRole_ShouldReturnEmptyList()
+        public async Task NonExistingRole_ShouldReturnNotFound()
         {
             // Arrange
             var roleName = "NON_EXISTENT";
+            _userRoleServiceMock.Setup(s => s.GetAssignmentsByRoleNameAsync(roleName))
+                .ThrowsAsync(new KeyNotFoundException("Role not found."));
+
+            // Act
+            var result = await _userRolesController.GetByRole(roleName);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+        }
+
+        /// <summary>
+        /// Verifies that if the role exists but has no users, it returns a 200 OK response with an empty list.
+        /// </summary>
+        [Fact]
+        public async Task RoleExistsWithoutUsers_ShouldReturnEmptyList()
+        {
+            // Arrange
+            var roleName = "EMPTY_ROLE";
             _userRoleServiceMock.Setup(s => s.GetAssignmentsByRoleNameAsync(roleName))
                 .ReturnsAsync(new List<UserRoleResponseDTO>());
 
@@ -167,11 +201,28 @@ public class UserRolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that if the role ID does not exist or has no users, it returns a 200 OK
-        /// response with an empty list (current system behavior).
+        /// Verifies that if the role ID does not exist, it returns a 404 Not Found response.
         /// </summary>
         [Fact]
-        public async Task NonExistingRoleId_ShouldReturnEmptyList()
+        public async Task NonExistingRoleId_ShouldReturnNotFound()
+        {
+            // Arrange
+            var roleId = Guid.NewGuid();
+            _userRoleServiceMock.Setup(s => s.GetAssignmentsByRoleIdAsync(roleId))
+                .ThrowsAsync(new KeyNotFoundException("Role not found."));
+
+            // Act
+            var result = await _userRolesController.GetByRoleId(roleId);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+        }
+
+        /// <summary>
+        /// Verifies that if the role ID exists but has no users, it returns a 200 OK response with an empty list.
+        /// </summary>
+        [Fact]
+        public async Task RoleIdExistsWithoutUsers_ShouldReturnEmptyList()
         {
             // Arrange
             var roleId = Guid.NewGuid();
@@ -226,15 +277,33 @@ public class UserRolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that if the user or role is not found, it returns a 404 Not Found.
+        /// Verifies that if the user is not found, it returns a 404 Not Found response.
         /// </summary>
         [Fact]
-        public async Task EntityNotFound_ShouldReturnNotFound()
+        public async Task UserNotFound_ShouldReturnNotFound()
         {
             // Arrange
             var dto = new UserRoleCreateDTO { UserId = Guid.NewGuid(), RoleId = Guid.NewGuid() };
             _userRoleServiceMock.Setup(s => s.AssignRoleAsync(dto))
                 .ThrowsAsync(new KeyNotFoundException("User not found."));
+
+            // Act
+            var result = await _userRolesController.AssignRole(dto);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+        }
+
+        /// <summary>
+        /// Verifies that if the role is not found, it returns a 404 Not Found response.
+        /// </summary>
+        [Fact]
+        public async Task RoleNotFound_ShouldReturnNotFound()
+        {
+            // Arrange
+            var dto = new UserRoleCreateDTO { UserId = Guid.NewGuid(), RoleId = Guid.NewGuid() };
+            _userRoleServiceMock.Setup(s => s.AssignRoleAsync(dto))
+                .ThrowsAsync(new KeyNotFoundException("Role not found."));
 
             // Act
             var result = await _userRolesController.AssignRole(dto);

@@ -41,28 +41,15 @@ public class UserRoleService : IUserRoleService
     /// <exception cref="InvalidOperationException">Thrown when the role is already assigned to the user.</exception>
     public async Task AssignRoleAsync(UserRoleCreateDTO dto)
     {
-        // 1. Validate User existence
-        var user = await _userRepository.GetByIdAsync(dto.UserId);
-        if (user == null)
-        {
-            throw new KeyNotFoundException($"User with ID {dto.UserId} not found.");
-        }
+        var user = await EnsureUserExistsAsync(dto.UserId);
+        var role = await EnsureRoleExistsAsync(dto.RoleId);
 
-        // 2. Validate Role existence
-        var role = await _roleRepository.GetByIdAsync(dto.RoleId);
-        if (role == null)
-        {
-            throw new KeyNotFoundException($"Role with ID {dto.RoleId} not found.");
-        }
-
-        // 3. Prevent duplicate assignment
         var alreadyExists = await _userRoleRepository.ExistsAsync(dto.UserId, dto.RoleId);
         if (alreadyExists)
         {
             throw new InvalidOperationException($"Role '{role.Name}' is already assigned to user '{user.FullName}'.");
         }
 
-        // 4. Create assignment
         var userRole = new UserRole
         {
             UserId = dto.UserId,
@@ -91,6 +78,7 @@ public class UserRoleService : IUserRoleService
     /// <returns>A collection of <see cref="UserRoleResponseDTO"/> for the specified user.</returns>
     public async Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByUserIdAsync(Guid userId)
     {
+        await EnsureUserExistsAsync(userId);
         var details = await _userRoleRepository.GetByUserIdWithDetailsAsync(userId);
         return MapToDTO(details);
     }
@@ -102,6 +90,7 @@ public class UserRoleService : IUserRoleService
     /// <returns>A collection of <see cref="UserRoleResponseDTO"/> assigned to the role.</returns>
     public async Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByRoleNameAsync(string roleName)
     {
+        await EnsureRoleExistsAsync(roleName);
         var details = await _userRoleRepository.GetByRoleNameWithDetailsAsync(roleName);
         return MapToDTO(details);
     }
@@ -113,6 +102,7 @@ public class UserRoleService : IUserRoleService
     /// <returns>A collection of <see cref="UserRoleResponseDTO"/> assigned to the role ID.</returns>
     public async Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByRoleIdAsync(Guid roleId)
     {
+        await EnsureRoleExistsAsync(roleId);
         var details = await _userRoleRepository.GetByRoleIdWithDetailsAsync(roleId);
         return MapToDTO(details);
     }
@@ -150,5 +140,35 @@ public class UserRoleService : IUserRoleService
             RoleName = d.RoleName,
             AssignedAt = d.AssignedAt
         });
+    }
+
+    private async Task<User> EnsureUserExistsAsync(Guid userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new KeyNotFoundException($"User with ID {userId} not found.");
+        }
+        return user;
+    }
+
+    private async Task<Role> EnsureRoleExistsAsync(Guid roleId)
+    {
+        var role = await _roleRepository.GetByIdAsync(roleId);
+        if (role == null)
+        {
+            throw new KeyNotFoundException($"Role with ID {roleId} not found.");
+        }
+        return role;
+    }
+
+    private async Task<Role> EnsureRoleExistsAsync(string roleName)
+    {
+        var role = await _roleRepository.GetByNameAsync(roleName);
+        if (role == null)
+        {
+            throw new KeyNotFoundException($"Role '{roleName}' not found.");
+        }
+        return role;
     }
 }
