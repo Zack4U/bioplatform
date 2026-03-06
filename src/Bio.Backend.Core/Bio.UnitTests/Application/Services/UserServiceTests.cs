@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Application.Interfaces;
 using Bio.Application.Services;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;

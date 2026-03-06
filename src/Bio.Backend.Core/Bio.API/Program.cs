@@ -4,6 +4,7 @@ using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Bio.Backend.Core.Bio.Infrastructure.Services;
 using Bio.Application.Services;
+using Bio.Application.Interfaces;
 using Bio.Application.DTOs;
 using Bio.Application.Validators;
 using FluentValidation;

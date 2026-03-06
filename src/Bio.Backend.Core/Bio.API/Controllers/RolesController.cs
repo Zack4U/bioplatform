@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Bio.Application.DTOs;
 using Bio.Application.Services;
+using Bio.Application.Interfaces;
 
 namespace Bio.API.Controllers;
 

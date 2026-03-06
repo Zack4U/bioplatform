@@ -1,6 +1,6 @@
 using Bio.Application.DTOs;
 
-namespace Bio.Application.Services;
+namespace Bio.Application.Interfaces;
 
 /// <summary>
 /// Service interface for independent user-role management.
@@ -17,28 +17,28 @@ public interface IUserRoleService
     /// Retrieves all existing user-role assignments with full details.
     /// </summary>
     /// <returns>A list of assignment details.</returns>
-    Task<IEnumerable<UserRoleReadDTO>> GetAllAssignmentsAsync();
+    Task<IEnumerable<UserRoleResponseDTO>> GetAllAssignmentsAsync();
 
     /// <summary>
     /// Retrieves all roles assigned to a specific user.
     /// </summary>
     /// <param name="userId">The user's unique identifier.</param>
     /// <returns>A list of roles assigned to the user.</returns>
-    Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByUserIdAsync(Guid userId);
+    Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByUserIdAsync(Guid userId);
 
     /// <summary>
     /// Retrieves all users assigned to a specific role.
     /// </summary>
     /// <param name="roleName">The name of the role.</param>
     /// <returns>A list of users with that role.</returns>
-    Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByRoleNameAsync(string roleName);
+    Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByRoleNameAsync(string roleName);
 
     /// <summary>
     /// Retrieves all users assigned to a specific role ID.
     /// </summary>
     /// <param name="roleId">The unique identifier of the role.</param>
     /// <returns>A list of users with that role ID.</returns>
-    Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByRoleIdAsync(Guid roleId);
+    Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByRoleIdAsync(Guid roleId);
 
     /// <summary>
     /// Unassigns a role from a user.

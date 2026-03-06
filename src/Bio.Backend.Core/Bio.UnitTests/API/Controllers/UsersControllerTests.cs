@@ -1,6 +1,7 @@
 using Bio.API.Controllers;
 using Bio.Application.DTOs;
 using Bio.Application.Services;
+using Bio.Application.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

@@ -11,7 +11,6 @@ public class UserUpdateDTO
     /// <summary>
     /// Full name of the user.
     /// </summary>
-    /// <example>Juan Pérez</example>
     [Required(ErrorMessage = "Full name is required.")]
     [StringLength(150, ErrorMessage = "Name cannot exceed 150 characters.")]
     public string FullName { get; set; } = string.Empty;
@@ -19,7 +18,6 @@ public class UserUpdateDTO
     /// <summary>
     /// Institutional or personal email. Must be unique.
     /// </summary>
-    /// <example>juan.perez@ejemplo.com</example>
     [Required(ErrorMessage = "Email is required.")]
     [EmailAddress(ErrorMessage = "Email format is invalid.")]
     public string Email { get; set; } = string.Empty;
@@ -27,7 +25,6 @@ public class UserUpdateDTO
     /// <summary>
     /// Contact phone number.
     /// </summary>
-    /// <example>+573001234567</example>
     [Required(ErrorMessage = "Phone number is required.")]
     [Phone(ErrorMessage = "Phone format is invalid.")]
     public string PhoneNumber { get; set; } = string.Empty;

@@ -1,9 +1,9 @@
 namespace Bio.Application.DTOs;
 
 /// <summary>
-/// Data transfer object for reading user-role assignment details.
+/// Data transfer object for user-role assignment details.
 /// </summary>
-public class UserRoleReadDTO
+public class UserRoleResponseDTO
 {
     /// <summary>
     /// The unique identifier of the user.

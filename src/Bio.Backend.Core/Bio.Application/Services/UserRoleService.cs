@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Application.Interfaces;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
 
@@ -78,8 +79,8 @@ public class UserRoleService : IUserRoleService
     /// <summary>
     /// Retrieves all existing user-role assignments with full details (user and role names).
     /// </summary>
-    /// <returns>A collection of <see cref="UserRoleReadDTO"/> representing all assignments.</returns>
-    public async Task<IEnumerable<UserRoleReadDTO>> GetAllAssignmentsAsync()
+    /// <returns>A collection of <see cref="UserRoleResponseDTO"/> representing all assignments.</returns>
+    public async Task<IEnumerable<UserRoleResponseDTO>> GetAllAssignmentsAsync()
     {
         var details = await _userRoleRepository.GetAllWithDetailsAsync();
         return MapToDTO(details);
@@ -89,8 +90,8 @@ public class UserRoleService : IUserRoleService
     /// Retrieves all roles assigned to a specific user, including role names.
     /// </summary>
     /// <param name="userId">The unique identifier of the user.</param>
-    /// <returns>A collection of <see cref="UserRoleReadDTO"/> for the specified user.</returns>
-    public async Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByUserIdAsync(Guid userId)
+    /// <returns>A collection of <see cref="UserRoleResponseDTO"/> for the specified user.</returns>
+    public async Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByUserIdAsync(Guid userId)
     {
         var details = await _userRoleRepository.GetByUserIdWithDetailsAsync(userId);
         return MapToDTO(details);
@@ -100,8 +101,8 @@ public class UserRoleService : IUserRoleService
     /// Retrieves all users assigned to a specific role name.
     /// </summary>
     /// <param name="roleName">The name of the security role.</param>
-    /// <returns>A collection of <see cref="UserRoleReadDTO"/> assigned to the role.</returns>
-    public async Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByRoleNameAsync(string roleName)
+    /// <returns>A collection of <see cref="UserRoleResponseDTO"/> assigned to the role.</returns>
+    public async Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByRoleNameAsync(string roleName)
     {
         var details = await _userRoleRepository.GetByRoleNameWithDetailsAsync(roleName);
         return MapToDTO(details);
@@ -111,8 +112,8 @@ public class UserRoleService : IUserRoleService
     /// Retrieves all users assigned to a specific role identifier.
     /// </summary>
     /// <param name="roleId">The unique identifier of the security role.</param>
-    /// <returns>A collection of <see cref="UserRoleReadDTO"/> assigned to the role ID.</returns>
-    public async Task<IEnumerable<UserRoleReadDTO>> GetAssignmentsByRoleIdAsync(Guid roleId)
+    /// <returns>A collection of <see cref="UserRoleResponseDTO"/> assigned to the role ID.</returns>
+    public async Task<IEnumerable<UserRoleResponseDTO>> GetAssignmentsByRoleIdAsync(Guid roleId)
     {
         var details = await _userRoleRepository.GetByRoleIdWithDetailsAsync(roleId);
         return MapToDTO(details);
@@ -140,10 +141,10 @@ public class UserRoleService : IUserRoleService
     /// Maps internal domain detail models to application layer DTOs.
     /// </summary>
     /// <param name="details">The collection of domain details to map.</param>
-    /// <returns>A collection of mapped <see cref="UserRoleReadDTO"/> objects.</returns>
-    private static IEnumerable<UserRoleReadDTO> MapToDTO(IEnumerable<UserRoleDetail> details)
+    /// <returns>A collection of mapped <see cref="UserRoleResponseDTO"/> objects.</returns>
+    private static IEnumerable<UserRoleResponseDTO> MapToDTO(IEnumerable<UserRoleDetail> details)
     {
-        return details.Select(d => new UserRoleReadDTO
+        return details.Select(d => new UserRoleResponseDTO
         {
             UserId = d.UserId,
             UserEmail = d.UserEmail,
