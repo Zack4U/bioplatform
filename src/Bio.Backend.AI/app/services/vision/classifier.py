@@ -107,7 +107,7 @@ class SpeciesClassifier:
         if not config_path.exists():
             raise FileNotFoundError(f"Training config not found: {config_path}")
 
-        with open(config_path) as f:
+        with open(config_path, encoding="utf-8") as f:
             self.config = json.load(f)
 
         self.class_names = self.config.get("class_names", [])
@@ -175,7 +175,7 @@ class SpeciesClassifier:
         # Load class info (taxonomy) if available
         class_info_path = PROCESSED_DIR / "class_info.json"
         if class_info_path.exists():
-            with open(class_info_path) as f:
+            with open(class_info_path, encoding="utf-8") as f:
                 self.class_info = json.load(f)
 
         self._loaded = True

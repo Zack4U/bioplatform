@@ -197,6 +197,42 @@ def get_weighted_sampler(dataset: datasets.ImageFolder) -> WeightedRandomSampler
     )
 
 
+# ── Mixup Augmentation ────────────────────────────────────────────
+
+def mixup_data(
+    x: torch.Tensor,
+    y: torch.Tensor,
+    alpha: float = 0.2,
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, float]:
+    """
+    Mixup: linear interpolation of input pairs.
+    Reduces overfitting significantly on large-class problems.
+    Returns mixed_x, y_a, y_b, lam.
+    """
+    if alpha > 0:
+        lam = np.random.beta(alpha, alpha)
+    else:
+        lam = 1.0
+
+    batch_size = x.size(0)
+    index = torch.randperm(batch_size, device=x.device)
+
+    mixed_x = lam * x + (1 - lam) * x[index]
+    y_a, y_b = y, y[index]
+    return mixed_x, y_a, y_b, lam
+
+
+def mixup_criterion(
+    criterion: nn.Module,
+    pred: torch.Tensor,
+    y_a: torch.Tensor,
+    y_b: torch.Tensor,
+    lam: float,
+) -> torch.Tensor:
+    """Compute loss for mixup-augmented batch."""
+    return lam * criterion(pred, y_a) + (1 - lam) * criterion(pred, y_b)
+
+
 # ── Training Loop ─────────────────────────────────────────────────
 
 def train_one_epoch(
@@ -206,27 +242,43 @@ def train_one_epoch(
     optimizer: optim.Optimizer,
     device: torch.device,
     epoch: int,
+    *,
+    mixup_alpha: float = 0.0,
+    max_grad_norm: float = 1.0,
 ) -> tuple[float, float]:
-    """Train for one epoch. Returns (avg_loss, accuracy)."""
+    """Train for one epoch with optional Mixup. Returns (avg_loss, accuracy)."""
     model.train()
     running_loss = 0.0
     correct = 0
     total = 0
+    use_mixup = mixup_alpha > 0
 
     pbar = tqdm(loader, desc=f"  Train Epoch {epoch}", leave=False)
     for inputs, labels in pbar:
         inputs, labels = inputs.to(device), labels.to(device)
 
         optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
+
+        if use_mixup:
+            mixed_inputs, y_a, y_b, lam = mixup_data(inputs, labels, mixup_alpha)
+            outputs = model(mixed_inputs)
+            loss = mixup_criterion(criterion, outputs, y_a, y_b, lam)
+            # For accuracy tracking, use original labels with lam threshold
+            _, predicted = outputs.max(1)
+            correct += (lam * predicted.eq(y_a).sum().item()
+                        + (1 - lam) * predicted.eq(y_b).sum().item())
+        else:
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            _, predicted = outputs.max(1)
+            correct += predicted.eq(labels).sum().item()
+
         loss.backward()
+        nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
         optimizer.step()
 
         running_loss += loss.item() * inputs.size(0)
-        _, predicted = outputs.max(1)
         total += labels.size(0)
-        correct += predicted.eq(labels).sum().item()
 
         pbar.set_postfix(loss=f"{loss.item():.4f}", acc=f"{100.0 * correct / total:.1f}%")
 
@@ -285,6 +337,12 @@ def main() -> None:
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--label-smoothing", type=float, default=0.1)
+    parser.add_argument("--mixup-alpha", type=float, default=0.2,
+                        help="Mixup alpha (0 = disabled, 0.2 recommended)")
+    parser.add_argument("--warmup-epochs", type=int, default=3,
+                        help="Linear warmup epochs during fine-tuning")
+    parser.add_argument("--max-grad-norm", type=float, default=1.0,
+                        help="Max gradient norm for clipping")
     args = parser.parse_args()
 
     # ── Setup ──────────────────────────────────────────────────────
@@ -301,6 +359,8 @@ def main() -> None:
     print(f"  Batch size: {args.batch_size}")
     print(f"  Epochs:     {args.epochs} (freeze: {args.freeze_epochs})")
     print(f"  LR:         {args.lr} → {args.unfreeze_lr} (after unfreeze)")
+    print(f"  Mixup:      alpha={args.mixup_alpha}")
+    print(f"  Warmup:     {args.warmup_epochs} epochs")
     print(f"{'=' * 60}\n")
 
     # ── Verify data ────────────────────────────────────────────────
@@ -314,7 +374,7 @@ def main() -> None:
     # ── Load class mapping ─────────────────────────────────────────
     class_mapping_path = PROCESSED_DIR / "class_mapping.json"
     if class_mapping_path.exists():
-        with open(class_mapping_path) as f:
+        with open(class_mapping_path, encoding="utf-8") as f:
             class_mapping = json.load(f)
         num_classes = len(class_mapping)
     else:
@@ -378,7 +438,8 @@ def main() -> None:
 
     for epoch in range(1, args.freeze_epochs + 1):
         train_loss, train_acc = train_one_epoch(
-            model, train_loader, criterion, optimizer, device, epoch
+            model, train_loader, criterion, optimizer, device, epoch,
+            max_grad_norm=args.max_grad_norm,
         )
         val_loss, val_acc = validate(model, val_loader, criterion, device)
 
@@ -412,15 +473,25 @@ def main() -> None:
         lr=args.unfreeze_lr, weight_decay=args.weight_decay,
     )
 
-    # Cosine Annealing LR Scheduler
+    # Cosine Annealing LR Scheduler with Linear Warmup
     remaining_epochs = args.epochs - args.freeze_epochs
-    scheduler = optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, T_max=remaining_epochs, eta_min=1e-6,
+    cosine_scheduler = optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, T_max=remaining_epochs - args.warmup_epochs, eta_min=1e-6,
+    )
+    warmup_scheduler = optim.lr_scheduler.LinearLR(
+        optimizer, start_factor=0.1, total_iters=args.warmup_epochs,
+    )
+    scheduler = optim.lr_scheduler.SequentialLR(
+        optimizer,
+        schedulers=[warmup_scheduler, cosine_scheduler],
+        milestones=[args.warmup_epochs],
     )
 
     for epoch in range(args.freeze_epochs + 1, args.epochs + 1):
         train_loss, train_acc = train_one_epoch(
-            model, train_loader, criterion, optimizer, device, epoch
+            model, train_loader, criterion, optimizer, device, epoch,
+            mixup_alpha=args.mixup_alpha,
+            max_grad_norm=args.max_grad_norm,
         )
         val_loss, val_acc = validate(model, val_loader, criterion, device)
         scheduler.step()
@@ -480,11 +551,11 @@ def main() -> None:
         "imagenet_mean": [0.485, 0.456, 0.406],
         "imagenet_std": [0.229, 0.224, 0.225],
     }
-    with open(WEIGHTS_DIR / "training_config.json", "w") as f:
-        json.dump(config, f, indent=2)
+    with open(WEIGHTS_DIR / "training_config.json", "w", encoding="utf-8") as f:
+        json.dump(config, f, indent=2, ensure_ascii=False)
 
     # Save training history
-    with open(WEIGHTS_DIR / "training_history.json", "w") as f:
+    with open(WEIGHTS_DIR / "training_history.json", "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
     # ── Summary ────────────────────────────────────────────────────

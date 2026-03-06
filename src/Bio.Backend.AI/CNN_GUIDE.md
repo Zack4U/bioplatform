@@ -7,16 +7,20 @@
 3. [Estructura del Pipeline](#3-estructura-del-pipeline)
 4. [Paso 1: Análisis del Dataset](#4-paso-1-análisis-del-dataset)
 5. [Paso 2: Descarga de Imágenes](#5-paso-2-descarga-de-imágenes)
-6. [Paso 3: Organización del Dataset](#7-paso-3-organización-del-dataset)
-7. [Paso 3.5: Prueba Rápida del Pipeline (Opcional)](#8-paso-35-prueba-rápida-del-pipeline-opcional)
-8. [Paso 4: Entrenamiento del Modelo](#9-paso-4-entrenamiento-del-modelo)
-9.  [Paso 5: Evaluación](#10-paso-5-evaluación)
-10. [Paso 5.5: Auditoría Visual del Modelo](#11-paso-55-auditoría-visual-del-modelo)
-11. [Paso 6: Integración con FastAPI](#12-paso-6-integración-con-fastapi)
-12. [Paso 7: Uso del Endpoint de Clasificación](#13-paso-7-uso-del-endpoint-de-clasificación)
-13. [Arquitectura de la CNN](#14-arquitectura-de-la-cnn)
-14. [Troubleshooting](#15-troubleshooting)
-15. [Métricas y Documentación](#16-métricas-y-documentación)
+6. [Paso 2.5: Descargar Imágenes Suplementarias desde iNaturalist](#6-paso-25-descargar-imágenes-suplementarias-desde-inaturalist-opcional)
+   - 6a. [Eliminar Imágenes Augmentadas (02e)](#6a-paso-25b-eliminar-imágenes-augmentadas-02e)
+   - 6b. [Reporte de Imágenes Descargadas (02c)](#6b-paso-26-reporte-de-imágenes-descargadas)
+   - 6c. [Augmentation Offline Masiva (02d)](#6c-paso-27-augmentation-offline-masiva)
+7. [Paso 3: Organización del Dataset](#7-paso-3-organización-del-dataset)
+8. [Paso 3.5: Prueba Rápida del Pipeline (Opcional)](#8-paso-35-prueba-rápida-del-pipeline-opcional)
+9. [Paso 4: Entrenamiento del Modelo](#9-paso-4-entrenamiento-del-modelo)
+10. [Paso 5: Evaluación](#10-paso-5-evaluación)
+11. [Paso 5.5: Auditoría Visual del Modelo](#11-paso-55-auditoría-visual-del-modelo)
+12. [Paso 6: Integración con FastAPI](#12-paso-6-integración-con-fastapi)
+13. [Paso 7: Uso del Endpoint de Clasificación](#13-paso-7-uso-del-endpoint-de-clasificación)
+14. [Arquitectura de la CNN](#14-arquitectura-de-la-cnn)
+15. [Troubleshooting](#15-troubleshooting)
+16. [Métricas y Documentación](#16-métricas-y-documentación)
 
 ---
 
@@ -110,6 +114,10 @@ Bio.Backend.AI/
 ├── scripts/                          # Pipeline de entrenamiento
 │   ├── 01_analyze_dataset.py         # Analizar GBIF data
 │   ├── 02_download_images.py         # Descargar imágenes
+│   ├── 02b_supplement_images.py      # Descargar de iNaturalist API
+│   ├── 02c_raw_images_summary.py     # Reporte de raw_images descargadas
+│   ├── 02d_offline_augment.py        # Augmentation offline masiva
+│   ├── 02e_clean_augmented.py        # Eliminar imágenes augmentadas
 │   ├── 03_organize_dataset.py        # Split train/val/test
 │   ├── 04_train_cnn.py              # Entrenar modelo
 │   ├── 05_evaluate_model.py         # Evaluar métricas
@@ -266,6 +274,265 @@ data/raw_images/
 - ~250 especies × ~100 imgs = ~25,000 imágenes ≈ **2-4 horas**
 
 > **Tip:** Si la descarga falla, usa `--resume` para continuar donde se quedó.
+
+---
+
+## 6. Paso 2.5: Descargar Imágenes Suplementarias desde iNaturalist (Opcional)
+
+Muchas especies tienen pocas imágenes en el export GBIF. Este script descarga fotos adicionales desde la API v1 de iNaturalist.
+
+Funciona en **2 fases**:
+1. **Phase 1 — API queries** (secuencial): Consulta iNaturalist respetando rate limit (~1.1s/req) y recolecta URLs de fotos.
+2. **Phase 2 — Downloads** (paralelo): Descarga todas las fotos recolectadas con `--workers` hilos simultáneos.
+
+> **Importante:** Este script SOLO descarga de la API. NO hace augmentation offline. Para augmentation, usa `02d_offline_augment.py` (sección 6c).
+> Solo procesa especies que ya existen en `data/raw_images/` (ignorando las del JSON que nunca se descargaron).
+
+**Filtros de la API:**
+- `quality_grade=research` — Solo observaciones verificadas
+- `photos=true` — Solo con fotos
+- `captive=false` — Solo observaciones silvestres
+- **Sin filtro geográfico** — Las especies base ya son de Caldas
+
+### Ejecutar
+
+```bash
+# Descargar hasta 50 imgs por especie (default)
+python scripts/02b_supplement_images.py
+
+# Ver qué se descargaría sin hacerlo
+python scripts/02b_supplement_images.py --dry-run
+
+# Ajustar máximo de descarga
+python scripts/02b_supplement_images.py --max-images 40
+
+# Limitar a las primeras 5 especies (para pruebas)
+python scripts/02b_supplement_images.py --max-species 5
+
+# Ver detalles de cada petición API
+python scripts/02b_supplement_images.py --max-species 5 --verbose
+```
+
+### Parámetros
+
+| Parámetro | Default | Descripción |
+|---|---|---|
+| `--max-images` | 50 | Máximo de imágenes totales por especie (existentes + descargadas) |
+| `--min-existing` | 3 | Mínimo de imágenes existentes para intentar suplementar |
+| `--image-size` | 512 | Tamaño de imagen al descargar de API |
+| `--max-species` | 0 (todas) | Limitar cantidad de especies a procesar |
+| `--workers` | 6 | Hilos paralelos para descarga (Phase 2) |
+| `--verbose` | false | Mostrar detalles de cada petición API |
+| `--dry-run` | false | Solo mostrar qué se haría |
+
+### Reporte generado
+
+Al finalizar, se guarda `data/dataset_analysis/supplement_report.json` con:
+
+| Campo | Descripción |
+|---|---|
+| `run_started` / `run_finished` | Timestamps UTC de inicio y fin |
+| `duration_seconds` | Duración total en segundos |
+| `parameters` | Todos los parámetros usados en la ejecución |
+| `results[]` | Detalle por especie: `species`, `kingdom`, `initial`, `photos_found`, `downloaded`, `failed`, `final` |
+| `summary` | Totales: `total_downloaded`, `total_failed`, `total_no_results`, `final_distribution` |
+| `kingdom_breakdown` | Stats por reino: `processed`, `downloaded`, `no_results` |
+
+Ejemplo de salida en consola:
+
+```
+  DOWNLOAD COMPLETE
+  ============================================================
+  Candidates processed:     569
+  Images downloaded:        3420
+  Downloads failed:         12
+  Species with no results:  45
+  Final distribution:       {'<20': 84, '20-29': 210, '30-49': 175, '50+': 100}
+
+  Per-kingdom breakdown:
+    Animalia        │ processed:  320 │ downloaded:  2100 │ no_results:   20
+    Plantae         │ processed:  200 │ downloaded:  1100 │ no_results:   18
+    Fungi           │ processed:   49 │ downloaded:   220 │ no_results:    7
+```
+
+### Notas importantes
+
+- La API de iNaturalist tiene rate limit de ~60 req/min. El script respeta esto automáticamente (~1.1 req/seg).
+- Las imágenes descargadas tienen prefijo `api_` para distinguirlas de las originales GBIF.
+- Después de descargar, sigue el pipeline:
+
+```bash
+# 1. (Opcional) Augmentar offline
+python scripts/02d_offline_augment.py --target 50
+
+# 2. Re-organizar dataset
+python scripts/03_organize_dataset.py --min-images 10 --clean
+```
+
+---
+
+## 6a. Paso 2.5b: Eliminar Imágenes Augmentadas (02e)
+
+Escanea `data/raw_images/` y elimina todas las imágenes generadas por augmentation offline (archivos con `_aug_` en el nombre). Útil para limpiar antes de re-descargar o re-augmentar.
+
+### Ejecutar
+
+```bash
+# Ver qué se eliminaría (sin borrar)
+python scripts/02e_clean_augmented.py --dry-run
+
+# Eliminar todas las augmentadas
+python scripts/02e_clean_augmented.py
+
+# Solo un reino específico
+python scripts/02e_clean_augmented.py --kingdom Plantae
+```
+
+### Parámetros
+
+| Parámetro | Default | Descripción |
+|---|---|---|
+| `--dry-run` | false | Solo mostrar qué se eliminaría |
+| `--kingdom` | (todos) | Filtrar por reino específico |
+
+---
+
+## 6b. Paso 2.6: Reporte de Imágenes Descargadas
+
+Escanea `data/raw_images/` y genera un informe completo del estado actual de las imágenes descargadas.
+
+### Ejecutar
+
+```bash
+# Reporte completo (ordenado por cantidad desc)
+python scripts/02c_raw_images_summary.py
+
+# Ordenar por nombre de especie
+python scripts/02c_raw_images_summary.py --sort name
+
+# Ordenar ascendente (menos imágenes primero)
+python scripts/02c_raw_images_summary.py --sort count_asc
+
+# Filtrar solo por un reino
+python scripts/02c_raw_images_summary.py --kingdom Plantae
+
+# Cambiar umbral de "apta para entrenar"
+python scripts/02c_raw_images_summary.py --min-images 10
+```
+
+### Parámetros
+
+| Parámetro | Default | Descripción |
+|---|---|---|
+| `--min-images` | 20 | Umbral para marcar especie como "apta" (✓/✗ en el reporte) |
+| `--sort` | count_desc | Orden: `name`, `count_asc`, `count_desc`, `kingdom` |
+| `--kingdom` | (todas) | Filtrar por reino (ej: Plantae, Animalia, Fungi) |
+
+### Salida generada
+
+| Archivo | Formato | Contenido |
+|---|---|---|
+| `data/dataset_analysis/raw_images_summary.json` | JSON | Reporte completo con totales, distribución por rango y reino, top/bottom 10, y lista detallada por especie |
+| `data/dataset_analysis/raw_images_summary.txt` | Texto | Tabla legible con ✓/✗ por especie, lista completa con conteos originales vs augmentadas |
+
+### Ejemplo de consola
+
+```
+  Total especies:          1,323
+  Total imágenes:          48,750
+    ├─ Originales:         35,200
+    └─ Augmentadas:        13,550
+  Umbral entrenamiento:    20
+    ├─ Aptas (≥20):        756
+    └─ No aptas (<20):     567
+
+  Distribución por rango:
+      1-9:   412  ████████████████
+    10-19:   155  ██████
+    20-49:   408  ████████████████
+    50-99:   248  █████████
+     100+:   100  ████
+
+  Distribución por reino:
+    Animalia        │ spp:   680 │ imgs:  28500 │ orig:  22000 │ aug:   6500 │ ≥20:   420
+    Plantae         │ spp:   530 │ imgs:  17200 │ orig:  11500 │ aug:   5700 │ ≥20:   290
+    Fungi           │ spp:   113 │ imgs:   3050 │ orig:   1700 │ aug:   1350 │ ≥20:    46
+```
+
+---
+
+## 6c. Paso 2.7: Augmentation Offline Masiva
+
+Genera copias aumentadas para todas las especies que no alcancen un mínimo de imágenes. A diferencia de `02b_supplement_images.py` (que combina API + augmentation), este script es **100% offline** — no consulta APIs externas.
+
+### ¿Cuándo usar cada script?
+
+| Script | Caso de uso |
+|---|---|
+| `02b_supplement_images.py` | Descargar imágenes nuevas de iNaturalist (solo descarga, sin augmentation) |
+| `02d_offline_augment.py` | Solo augmentation: rellenar todas las especies hasta un target sin internet |
+| `02e_clean_augmented.py` | Eliminar todas las imágenes `_aug_` antes de re-augmentar |
+
+### Ejecutar
+
+```bash
+# Completar a 50 imágenes por especie (default)
+python scripts/02d_offline_augment.py
+
+# Completar a 30 imágenes
+python scripts/02d_offline_augment.py --target 30
+
+# Solo especies con al menos 5 originales
+python scripts/02d_offline_augment.py --min-existing 5
+
+# Limpiar augmentaciones previas y re-generar
+python scripts/02d_offline_augment.py --clean
+
+# Máximo 5 copias por original (más variantes)
+python scripts/02d_offline_augment.py --max-per-original 5
+
+# Solo preview
+python scripts/02d_offline_augment.py --dry-run
+```
+
+### Parámetros
+
+| Parámetro | Default | Descripción |
+|---|---|---|
+| `--target` | 50 | Total de imágenes deseado por especie |
+| `--min-existing` | 3 | Mínimo de imágenes originales para intentar augmentar |
+| `--max-per-original` | 3 | Máximo de copias augmentadas por imagen original |
+| `--max-species` | 0 (todas) | Limitar cantidad de especies a procesar |
+| `--clean` | false | Eliminar augmentaciones previas antes de generar nuevas |
+| `--dry-run` | false | Solo mostrar qué se haría |
+
+### Variantes de augmentation
+
+| Variante | Transformación |
+|---|---|
+| 0, 4 | Flip horizontal + brillo (0.7–1.3) |
+| 1, 5 | Rotación ±20° + contraste (0.7–1.4) |
+| 2, 6 | Color jitter (0.7–1.4) + blur suave |
+| 3, 7 | Crop central 80-92% + resize + flip aleatorio |
+| Todas | + Sharpness aleatorio (60% probabilidad) |
+
+### Reporte generado
+
+Guarda `data/dataset_analysis/augmentation_report.json` con:
+
+| Campo | Descripción |
+|---|---|
+| `parameters` | Parámetros de la ejecución |
+| `results[]` | Detalle por especie: `original_count`, `before`, `cleaned`, `augmented`, `final`, `reached_target` |
+| `summary` | Totales: `total_augmented`, `total_cleaned`, `rescued_species`, `rescue_rate_pct` |
+| `kingdom_breakdown` | Stats por reino |
+
+### Notas importantes
+
+- Las copias se nombran `{original}_aug_NNN.jpg` para distinguirlas.
+- Con `--clean` se eliminan todas las `_aug_` previas antes de re-generar, garantizando un estado limpio.
+- Si una especie tiene 10 originales y `--max-per-original 3`, puede generar hasta 30 copias augmentadas (total: 40). Si necesita 50, no llegará — usa `--max-per-original 5` para más headroom.
+- Orden de procesamiento: **las que menos imágenes tienen van primero**.
 
 ---
 
@@ -451,6 +718,9 @@ El entrenamiento usa una estrategia de **Transfer Learning en 2 fases**:
 | `--patience` | 10 | Early stopping patience |
 | `--image-size` | 224 | Tamaño de entrada (224 para EfficientNet/ResNet) |
 | `--label-smoothing` | 0.1 | Label smoothing para regularización |
+| `--mixup-alpha` | 0.2 | Alpha para Mixup augmentation (0 = desactivado) |
+| `--warmup-epochs` | 3 | Epochs de warmup lineal durante fine-tuning |
+| `--max-grad-norm` | 1.0 | Norma máxima del gradiente para clipping |
 
 ### 9.4 Data Augmentation
 
@@ -471,12 +741,28 @@ Val/Test:
   → Resize(256) → CenterCrop(224) → Normalize(ImageNet)
 ```
 
-### 9.5 Manejo de Desbalance de Clases
+### 9.5 Mixup Augmentation (Nuevo)
+
+**Mixup** interpola linealmente pares de imágenes y sus etiquetas durante el entrenamiento, lo que actúa como un regularizador muy efectivo para clasificación con muchas clases.
+
+```
+Mixup(α=0.2):
+  λ ~ Beta(α, α)
+  x̃ = λ·x_i + (1-λ)·x_j
+  ỹ = λ·y_i + (1-λ)·y_j
+```
+
+- Se aplica **solo en Phase 2** (fine-tuning), no al entrenar el head.
+- Reduce el gap de overfitting ~3-5% típicamente.
+- El accuracy de entrenamiento reportado será más bajo (normal, es por el mixing).
+- Desactivar con `--mixup-alpha 0` si se desea entrenamiento tradicional.
+
+### 9.6 Manejo de Desbalance de Clases
 
 - **WeightedRandomSampler**: sobremuestrea clases minoritarias
 - **Label Smoothing**: 0.1 para evitar sobreconfianza
 
-### 9.6 Salida del Entrenamiento
+### 9.7 Salida del Entrenamiento
 
 ```
 data/weights/
@@ -486,13 +772,67 @@ data/weights/
 └── training_history.json    # Loss y accuracy por época
 ```
 
-### 9.7 Tiempos Estimados
+### 9.8 Tiempos Estimados
 
 | GPU | ~300 clases / 50 epochs | ~150 clases / 50 epochs |
 |---|---|---|
 | RTX 3060 (12GB) | ~2-3 horas | ~1-2 horas |
 | RTX 4070 | ~1-2 horas | ~45 min |
 | CPU (i7) | ~12-20 horas | ~6-10 horas |
+
+### 9.9 Receta Avanzada: Alcanzar >85% de Accuracy
+
+Si el modelo se estanca en ~80-82% de val_accuracy, estos son los pasos para superar el 85%.
+
+#### Diagnóstico Típico
+
+| Síntoma | Causa | Solución |
+|---|---|---|
+| Train ~97%, Val ~82% | Overfitting severo (gap ~15%) | Mixup + modelo más grande |
+| Val accuracy plana últimas 15 epochs | Learning rate demasiado bajo | Warmup + LR más agresivo |
+| B0 con 700+ clases | Modelo demasiado pequeño | Usar EfficientNet-B2 |
+
+#### Comando Recomendado
+
+```bash
+python scripts/04_train_cnn.py \
+  --model efficientnet_b2 \
+  --image-size 260 \
+  --batch-size 64 \
+  --epochs 100 \
+  --lr 0.001 \
+  --freeze-epochs 7 \
+  --unfreeze-lr 0.00005 \
+  --mixup-alpha 0.2 \
+  --warmup-epochs 3 \
+  --max-grad-norm 1.0 \
+  --label-smoothing 0.1 \
+  --patience 15 \
+  --workers 8
+```
+
+#### Justificación de cada cambio
+
+| Cambio | Por qué |
+|---|---|
+| **EfficientNet-B2** en vez de B0 | Más capacidad (9.1M params, resolución nativa 260px). B0 es insuficiente para 700+ clases. |
+| **image-size 260** | Resolución nativa de B2. Más detalle para discriminar especies similares. |
+| **Mixup α=0.2** | Regularización en el espacio de datos. Reduce gap train/val ~3-5%. |
+| **unfreeze-lr 5e-5** (antes 1e-4) | LR más conservador preserva mejor las features de ImageNet al descongelar. |
+| **Warmup 3 epochs** | Transición suave al fine-tuning completo. Evita saltos bruscos de loss. |
+| **patience 15** | Mixup converge más lento pero mejor. Más paciencia evita early-stopping prematuro. |
+| **epochs 60** | Más tiempo para que Mixup muestre efecto completo. |
+
+#### Efecto esperado vs B0 estándar
+
+| Métrica | B0 (estándar) | B2 + Mixup + Warmup |
+|---|---|---|
+| Train Accuracy | ~97% | ~92-94% (esperado, Mixup lo baja) |
+| Val Accuracy | ~82% | **~85-88%** |
+| Gap Train/Val | ~15% | ~5-8% |
+| Tiempo entrenamiento | ~1 hora | ~2-3 horas |
+
+> **Nota:** Si aún no alcanza 85%, considerar: (1) agregar más imágenes por clase, (2) eliminar clases con <15 imágenes, (3) usar `efficientnet_b3` con `--image-size 300`.
 
 ---
 
@@ -784,6 +1124,13 @@ python scripts/03_organize_dataset.py --clean
 3. **Más epochs**: `--epochs 80 --patience 15`
 4. **Modelo más grande**: `--model efficientnet_b2`
 
+### Accuracy estancada ~80-82% (no llega a 85%)
+Ver sección **9.9 Receta Avanzada** arriba. Resumen rápido:
+1. **Cambiar a B2**: `--model efficientnet_b2 --image-size 260`
+2. **Activar Mixup**: `--mixup-alpha 0.2`
+3. **Reducir unfreeze LR**: `--unfreeze-lr 5e-5`
+4. **Más paciencia**: `--patience 15 --epochs 60`
+
 ### Confianza baja (<40%) a pesar de accuracy alta
 Causas probables:
 1. **Label smoothing muy alto**: Reducir `--label-smoothing 0.05` (default 0.1)
@@ -820,6 +1167,9 @@ Los siguientes archivos se generan automáticamente para documentación:
 | Distribución del dataset | `dataset_stats.json` | `data/processed/` |
 | Análisis taxonómico | `species_summary.csv` | `data/dataset_analysis/` |
 | Reporte filtrado imágenes | `non_photo_suspects.json` | `data/dataset_analysis/` |
+| Reporte raw_images | `raw_images_summary.json/.txt` | `data/dataset_analysis/` |
+| Reporte augmentation | `augmentation_report.json` | `data/dataset_analysis/` |
+| Reporte suplementación | `supplement_report.json` | `data/dataset_analysis/` |
 | Swagger API Docs | `/docs` | http://localhost:8000/docs |
 | Model Auditor UI | `model_auditor.py` | http://localhost:8501 |
 
@@ -854,6 +1204,18 @@ python scripts/02_download_images.py --min-images 10 --max-per-species 150 --wor
 python scripts/filter_bad_images.py --mode report
 python scripts/filter_bad_images.py --mode quarantine --target both
 
+# 2.6 (Opcional) Suplementar especies con pocas imágenes
+python scripts/02b_supplement_images.py --dry-run               # ver preview
+python scripts/02b_supplement_images.py                         # ejecutar (target=20, max=50)
+
+# 2.7 Ver reporte de imágenes descargadas
+python scripts/02c_raw_images_summary.py                        # reporte completo
+python scripts/02c_raw_images_summary.py --sort count_asc       # ver las más escasas primero
+
+# 2.8 (Opcional) Augmentation offline masiva
+python scripts/02d_offline_augment.py --dry-run                 # preview
+python scripts/02d_offline_augment.py --target 50               # completar a 50 imgs/especie
+
 # 3. Organizar en train/val/test
 python scripts/03_organize_dataset.py --min-images 10
 
@@ -865,7 +1227,11 @@ python scripts/05_evaluate_model.py
 python scripts/03_organize_dataset.py --min-images 10 --clean
 
 # 4. Entrenar (GPU recomendada)
+# Estándar:
 python scripts/04_train_cnn.py --model efficientnet_b0 --epochs 50 --batch-size 32
+# Avanzado (para >85% de accuracy):
+python scripts/04_train_cnn.py --model efficientnet_b2 --epochs 60 --batch-size 32 \
+  --image-size 260 --unfreeze-lr 5e-5 --mixup-alpha 0.2 --warmup-epochs 3 --patience 15
 
 # 5. Evaluar
 python scripts/05_evaluate_model.py

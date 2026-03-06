@@ -90,6 +90,7 @@ async def species_list():
             "family": info.get("family", ""),
             "order": info.get("order", ""),
             "class": info.get("class", ""),
+            "phylum": info.get("phylum", ""),
             "genus": info.get("genus", ""),
             "iucn_status": info.get("iucn_status", ""),
             "train_count": info.get("train_count", 0),
@@ -131,6 +132,14 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
   .species-panel-header{padding:.75rem 1rem;border-bottom:1px solid var(--c-border);background:var(--c-surface-2);}
   .species-list{overflow-y:auto;flex:1;padding:.5rem;}
   .species-group-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#10b981;padding:.6rem .75rem .3rem;}
+
+  /* kingdom column */
+  .kingdom-col{flex:1;min-width:240px;display:flex;flex-direction:column;border-right:1px solid var(--c-border);overflow:hidden;}
+  .kingdom-col:last-child{border-right:none;}
+  .kingdom-col-header{padding:.6rem 1rem;border-bottom:1px solid var(--c-border);background:var(--c-surface-2);display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+  .kingdom-col-list{overflow-y:auto;flex:1;padding:.4rem;}
+  .kingdom-col-count{font-size:.6rem;color:#64748b;margin-left:auto;background:var(--c-surface);padding:.1rem .45rem;border-radius:9999px;}
+
   .species-item{display:flex;align-items:center;gap:.6rem;padding:.5rem .75rem;border-radius:.6rem;transition:background .15s;}
   .species-item:hover{background:var(--c-surface-2);}
   .species-item .sp-name{font-size:.8rem;font-weight:600;color:#e2e8f0;font-style:italic;}
@@ -209,45 +218,72 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
 </nav>
 
 <!-- ═══ Main Content ═══ -->
-<main class="flex-1 flex items-center justify-center p-6">
+<main class="flex-1 flex items-stretch p-0" style="overflow:hidden;">
 
-  <!-- SCREEN 1: Upload (two-panel) -->
-  <section id="screenUpload" class="screen active w-full animate-in" style="max-width:64rem;flex-direction:row;gap:1.25rem;align-items:stretch">
+  <!-- SCREEN 1: Upload (full-width kingdom columns + upload bar) -->
+  <section id="screenUpload" class="screen active w-full animate-in" style="flex-direction:column;height:calc(100vh - 100px);">
 
-    <!-- Left panel: trained species -->
-    <div class="species-panel" style="flex:0 0 320px;min-width:280px">
-      <div class="species-panel-header flex items-center justify-between">
-        <div>
-          <p class="font-semibold text-sm">Especies entrenadas</p>
-          <p class="text-[.65rem] text-gray-500 mt-0.5" id="speciesCount">Cargando…</p>
-        </div>
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
+    <!-- Top toolbar: title + search + sort + upload -->
+    <div class="flex items-center gap-3 px-4 py-3 flex-shrink-0 flex-wrap" style="border-bottom:1px solid var(--c-border);background:var(--c-surface);">
+      <div class="flex items-center gap-2 mr-auto">
+        <p class="font-semibold text-sm whitespace-nowrap">Especies entrenadas</p>
+        <span class="text-[.65rem] text-gray-500 whitespace-nowrap" id="speciesCount">Cargando…</span>
       </div>
-      <div class="species-list" id="speciesList">
-        <div class="flex items-center justify-center py-8 text-gray-500 text-xs">Cargando especies…</div>
+
+      <!-- Search -->
+      <div class="relative" style="min-width:200px;max-width:320px;flex:1;">
+        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input id="speciesSearch" type="text" placeholder="Buscar especie, familia, género…"
+          class="w-full text-xs rounded-lg py-1.5 pl-8 pr-3 outline-none focus:ring-1 focus:ring-emerald-500"
+          style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#e2e8f0;"
+        />
       </div>
+
+      <!-- Sort -->
+      <select id="speciesSort"
+        class="text-xs rounded-lg py-1.5 px-2 outline-none cursor-pointer focus:ring-1 focus:ring-emerald-500"
+        style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#e2e8f0;">
+        <option value="name">Ordenar: Nombre</option>
+        <option value="scientific_name">Nombre científico</option>
+        <option value="family">Familia</option>
+        <option value="order">Orden</option>
+        <option value="phylum">Filo</option>
+        <option value="train_count_desc">Imágenes ↓</option>
+        <option value="train_count_asc">Imágenes ↑</option>
+      </select>
+
+      <!-- Upload button -->
+      <button onclick="document.getElementById('fileInput').click()"
+        class="flex items-center gap-1.5 text-xs font-semibold px-4 py-1.5 rounded-lg transition whitespace-nowrap"
+        style="background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;"
+        onmouseenter="this.style.opacity='0.85'" onmouseleave="this.style.opacity='1'">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
+        Clasificar imagen
+      </button>
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="hidden"/>
     </div>
 
-    <!-- Right panel: upload -->
-    <div class="flex-1 flex flex-col items-center justify-center">
-      <h1 class="text-2xl font-bold mb-1">Auditoría del Modelo CNN</h1>
-      <p class="text-gray-400 text-sm mb-8">Sube una imagen para clasificar la especie con el modelo entrenado</p>
+    <!-- Kingdom columns row -->
+    <div id="kingdomColumns" class="flex flex-1 min-h-0 overflow-hidden">
+      <div class="flex items-center justify-center w-full text-gray-500 text-xs py-8">Cargando especies…</div>
+    </div>
 
-      <div id="dropZone" class="upload-zone w-full flex flex-col items-center gap-4" onclick="document.getElementById('fileInput').click()">
+    <!-- Hidden drag zone overlay + preview -->
+    <div id="dropZone" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background:rgba(12,15,22,.85);backdrop-filter:blur(4px);">
+      <div class="upload-zone flex flex-col items-center gap-4 p-10" style="max-width:420px;">
         <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:rgba(16,185,129,.1)">
           <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="1.5">
             <path d="M12 16V4m0 0l-4 4m4-4l4 4"/>
             <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
           </svg>
         </div>
-        <div>
-          <p class="font-semibold text-sm">Arrastra una imagen aquí</p>
-          <p class="text-gray-500 text-xs mt-1">o haz clic para seleccionar · JPG, PNG, WEBP</p>
-        </div>
-        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="hidden"/>
+        <p class="font-semibold text-sm">Suelta la imagen aquí</p>
+        <p class="text-gray-500 text-xs">JPG, PNG, WEBP</p>
       </div>
+    </div>
 
-      <div id="previewContainer" class="hidden mt-6 flex flex-col items-center gap-3 animate-in">
+    <div id="previewContainer" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background:rgba(12,15,22,.9);backdrop-filter:blur(6px);">
+      <div class="flex flex-col items-center gap-3 animate-in">
         <img id="previewImg" class="preview-img" alt="Preview"/>
         <div class="flex items-center gap-3">
           <span id="fileName" class="text-xs text-gray-400"></span>
@@ -263,7 +299,7 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
   </section>
 
   <!-- SCREEN 2: Analyzing -->
-  <section id="screenAnalyzing" class="screen flex-col items-center justify-center gap-6">
+  <section id="screenAnalyzing" class="screen flex-col items-center justify-center gap-6" style="width:100%;">
     <div class="relative flex items-center justify-center" style="width:120px;height:120px">
       <div class="pulse-ring"></div>
       <div class="pulse-ring"></div>
@@ -277,7 +313,7 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
   </section>
 
   <!-- SCREEN 3: Results -->
-  <section id="screenResults" class="screen flex-col items-center w-full max-w-3xl">
+  <section id="screenResults" class="screen flex-col items-center w-full overflow-y-auto p-6" style="max-width:100%;">
     <!-- populated by JS -->
   </section>
 
@@ -312,6 +348,7 @@ function handleFile(file) {
   previewImg.src = url;
   document.getElementById('fileName').textContent = file.name;
   document.getElementById('fileSize').textContent = `${(file.size/1024).toFixed(0)} KB`;
+  dropZone.classList.add('hidden');
   previewCtn.classList.remove('hidden');
   // Auto-classify after brief preview
   setTimeout(() => startClassification(), 600);
@@ -319,9 +356,12 @@ function handleFile(file) {
 
 fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
 
-dropZone.addEventListener('dragover', e => {e.preventDefault(); dropZone.classList.add('drag-over');});
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-dropZone.addEventListener('drop', e => {e.preventDefault(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]);});
+// Global drag-drop: show overlay when dragging a file anywhere
+document.addEventListener('dragover', e => {e.preventDefault(); dropZone.classList.remove('hidden');});
+document.addEventListener('dragleave', e => {
+  if (e.relatedTarget === null || !document.body.contains(e.relatedTarget)) dropZone.classList.add('hidden');
+});
+dropZone.addEventListener('drop', e => {e.preventDefault(); handleFile(e.dataTransfer.files[0]);});
 
 // ── Classify ──────────────────────────────────────────────────────
 async function startClassification() {
@@ -475,8 +515,105 @@ function resetAudit() {
   selectedFile = null;
   previewImg.src = '';
   previewCtn.classList.add('hidden');
+  dropZone.classList.add('hidden');
   fileInput.value = '';
   showScreen('upload');
+}
+
+// ── Species Data Store ──────────────────────────────────────────
+let _speciesData = null;  // raw data from API
+let _currentSort = 'name';
+let _currentSearch = '';
+
+// ── Search & Sort handlers ──────────────────────────────────────
+document.getElementById('speciesSearch').addEventListener('input', e => {
+  _currentSearch = e.target.value.trim().toLowerCase();
+  renderKingdomColumns();
+});
+document.getElementById('speciesSort').addEventListener('change', e => {
+  _currentSort = e.target.value;
+  renderKingdomColumns();
+});
+
+function sortSpecies(list, key) {
+  const copy = [...list];
+  if (key === 'train_count_desc') return copy.sort((a, b) => b.train_count - a.train_count);
+  if (key === 'train_count_asc')  return copy.sort((a, b) => a.train_count - b.train_count);
+  return copy.sort((a, b) => (a[key] || '').localeCompare(b[key] || ''));
+}
+
+function filterSpecies(list, q) {
+  if (!q) return list;
+  return list.filter(sp => {
+    const hay = [sp.name, sp.scientific_name, sp.family, sp.order, sp.genus, sp.class, sp.phylum].join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+}
+
+function renderKingdomColumns() {
+  if (!_speciesData) return;
+  const ctn = document.getElementById('kingdomColumns');
+  const groups = _speciesData.groups || {};
+  const kingdomIcons = {Animalia:'🐾', Plantae:'🌿', Fungi:'🍄', Chromista:'🔬', Protozoa:'🦠'};
+  const kingdomColors = {Animalia:'#f59e0b', Plantae:'#10b981', Fungi:'#a78bfa', Chromista:'#38bdf8', Protozoa:'#fb7185'};
+  const iucnDots = {LC:'iucn-LC', NT:'iucn-NT', VU:'iucn-VU', EN:'iucn-EN', CR:'iucn-CR'};
+
+  // Sort kingdoms: Animalia, Plantae, Fungi, then rest
+  const order = ['Animalia','Plantae','Fungi'];
+  const sortedKeys = Object.keys(groups).sort((a, b) => {
+    const ia = order.indexOf(a), ib = order.indexOf(b);
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.localeCompare(b);
+  });
+
+  let html = '';
+  let totalVisible = 0;
+
+  for (const kingdom of sortedKeys) {
+    const filtered = filterSpecies(groups[kingdom] || [], _currentSearch);
+    const sorted = sortSpecies(filtered, _currentSort);
+    totalVisible += sorted.length;
+    const icon = kingdomIcons[kingdom] || '🔬';
+    const color = kingdomColors[kingdom] || '#94a3b8';
+
+    html += `<div class="kingdom-col">`;
+    html += `<div class="kingdom-col-header">
+      <span style="font-size:1rem">${icon}</span>
+      <span class="font-semibold text-xs" style="color:${color}">${kingdom}</span>
+      <span class="kingdom-col-count">${sorted.length}</span>
+    </div>`;
+    html += `<div class="kingdom-col-list">`;
+
+    if (sorted.length === 0) {
+      html += `<div class="flex items-center justify-center py-6 text-gray-600 text-xs">Sin resultados</div>`;
+    }
+
+    for (const sp of sorted) {
+      const dot = sp.iucn_status && iucnDots[sp.iucn_status]
+        ? `<span class="iucn-dot ${iucnDots[sp.iucn_status]}" title="${sp.iucn_status}"></span>` : '';
+      const sortLabel = _currentSort === 'family' ? sp.family
+        : _currentSort === 'order' ? sp.order
+        : _currentSort === 'phylum' ? (sp.phylum || '')
+        : _currentSort === 'scientific_name' ? (sp.scientific_name || sp.name)
+        : sp.family + (sp.order ? ' · ' + sp.order : '');
+      html += `
+        <div class="species-item">
+          ${dot}
+          <div style="min-width:0;overflow:hidden">
+            <div class="sp-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${fmtSpecies(sp.name)}</div>
+            <div class="sp-family" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sortLabel}</div>
+          </div>
+          <span class="sp-count">${sp.train_count} imgs</span>
+        </div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  ctn.innerHTML = html;
+  document.getElementById('speciesCount').textContent = `${totalVisible} de ${_speciesData.total} especies`;
 }
 
 // ── Load model info + species list on startup ───────────────────
@@ -492,37 +629,10 @@ function resetAudit() {
     document.getElementById('navClasses').textContent = d.num_classes + ' clases · ' + d.device;
     document.getElementById('footerDevice').textContent = d.device;
 
-    const sp = await speciesRes.json();
-    renderSpeciesList(sp);
+    _speciesData = await speciesRes.json();
+    renderKingdomColumns();
   } catch(_){}
 })();
-
-function renderSpeciesList(data) {
-  const ctn = document.getElementById('speciesList');
-  document.getElementById('speciesCount').textContent = data.total + ' especies entrenadas';
-  const iucnDots = {LC:'iucn-LC',NT:'iucn-NT',VU:'iucn-VU',EN:'iucn-EN',CR:'iucn-CR'};
-  let html = '';
-  const groups = data.groups || {};
-  const kingdomIcons = {Animalia:'🐾',Plantae:'🌿',Fungi:'🍄'};
-  for (const [kingdom, species] of Object.entries(groups)) {
-    const icon = kingdomIcons[kingdom] || '🔬';
-    html += `<div class="species-group-title">${icon} ${kingdom} (${species.length})</div>`;
-    for (const sp of species) {
-      const dot = sp.iucn_status && iucnDots[sp.iucn_status]
-        ? `<span class="iucn-dot ${iucnDots[sp.iucn_status]}" title="${sp.iucn_status}"></span>` : '';
-      html += `
-        <div class="species-item">
-          ${dot}
-          <div style="min-width:0">
-            <div class="sp-name">${fmtSpecies(sp.name)}</div>
-            <div class="sp-family">${sp.family}${sp.order ? ' · '+sp.order : ''}</div>
-          </div>
-          <span class="sp-count">${sp.train_count} imgs</span>
-        </div>`;
-    }
-  }
-  ctn.innerHTML = html;
-}
 </script>
 </body>
 </html>
