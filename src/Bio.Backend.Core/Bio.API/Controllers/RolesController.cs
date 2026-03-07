@@ -47,7 +47,9 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Retrieves all security roles.
     /// </summary>
-    /// <returns>A list of roles.</returns>
+    /// <returns>The list of roles.</returns>
+    /// <response code="200">Returns the list of roles.</response>
+    /// <response code="404">No roles found.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RoleResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllRoles()
@@ -60,8 +62,10 @@ public class RolesController : ControllerBase
     /// <summary>
     /// Retrieves a security role by its unique identifier.
     /// </summary>
+    /// <returns>The role information.</returns>
     /// <param name="id">The unique identifier of the role.</param>
-    /// <returns>The role information or 404 if not found.</returns>
+    /// <response code="200">Returns the role information.</response>
+    /// <response code="404">If the role is not found.</response>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -130,6 +134,11 @@ public class RolesController : ControllerBase
         return Ok(role);
     }
 
+    /// <summary>
+    /// Handles exceptions that may occur during API operations.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <returns>The result of the action.</returns>
     private async Task<IActionResult> HandleExceptionsAsync(Func<Task<IActionResult>> action)
     {
         try

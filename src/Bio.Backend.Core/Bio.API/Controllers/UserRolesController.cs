@@ -115,6 +115,11 @@ public class UserRolesController : ControllerBase
             return NoContent();
         });
 
+    /// <summary>
+    /// Handles exceptions that may occur during API operations.
+    /// </summary>
+    /// <param name="action">The action to execute.</param>
+    /// <returns>The result of the action.</returns>
     private async Task<IActionResult> HandleExceptionsAsync(Func<Task<IActionResult>> action)
     {
         try
