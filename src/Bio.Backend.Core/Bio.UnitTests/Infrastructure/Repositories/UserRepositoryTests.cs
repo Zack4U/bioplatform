@@ -36,14 +36,7 @@ public class UserRepositoryTests : IDisposable
     public async Task AddAsync_ShouldAddUserToDatabase()
     {
         // Arrange
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            FullName = "John Doe",
-            Email = "john@example.com",
-            PasswordHash = "hash",
-            Salt = "salt"
-        };
+        var user = new User(Guid.NewGuid(), "John Doe", "john@example.com", "hash", "salt");
 
         // Act
         await _repository.AddAsync(user);
@@ -60,14 +53,7 @@ public class UserRepositoryTests : IDisposable
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var user = new User
-        {
-            Id = userId,
-            FullName = "Jane Doe",
-            Email = "jane@example.com",
-            PasswordHash = "hash",
-            Salt = "salt"
-        };
+        var user = new User(userId, "Jane Doe", "jane@example.com", "hash", "salt");
 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
@@ -85,14 +71,7 @@ public class UserRepositoryTests : IDisposable
     {
         // Arrange
         var email = "test@example.com";
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            FullName = "Test",
-            Email = email,
-            PasswordHash = "hash",
-            Salt = "salt"
-        };
+        var user = new User(Guid.NewGuid(), "Test", email, "hash", "salt");
 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
@@ -109,14 +88,7 @@ public class UserRepositoryTests : IDisposable
     public async Task DeleteAsync_ExistingUser_ShouldRemoveFromDatabase()
     {
         // Arrange
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            FullName = "Delete Me",
-            Email = "delete@example.com",
-            PasswordHash = "hash",
-            Salt = "salt"
-        };
+        var user = new User(Guid.NewGuid(), "Delete Me", "delete@example.com", "hash", "salt");
 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
@@ -134,8 +106,8 @@ public class UserRepositoryTests : IDisposable
     public async Task GetAllAsync_ShouldReturnAllUsers()
     {
         // Arrange
-        await _context.Users.AddAsync(new User { Id = Guid.NewGuid(), Email = "u1@test.com" });
-        await _context.Users.AddAsync(new User { Id = Guid.NewGuid(), Email = "u2@test.com" });
+        await _context.Users.AddAsync(new User(Guid.NewGuid(), "U1", "u1@test.com", "h", "s"));
+        await _context.Users.AddAsync(new User(Guid.NewGuid(), "U2", "u2@test.com", "h", "s"));
         await _context.SaveChangesAsync();
 
         // Act
@@ -150,7 +122,7 @@ public class UserRepositoryTests : IDisposable
     {
         // Arrange
         var phone = "12345";
-        var user = new User { Id = Guid.NewGuid(), Email = "t@t.com", PhoneNumber = phone };
+        var user = new User(Guid.NewGuid(), "T", "t@t.com", "h", "s", phone);
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
 
@@ -179,7 +151,7 @@ public class UserRepositoryTests : IDisposable
         var email = "other@test.com";
         var otherId = Guid.NewGuid();
         var currentId = Guid.NewGuid();
-        await _context.Users.AddAsync(new User { Id = otherId, Email = email });
+        await _context.Users.AddAsync(new User(otherId, "Other", email, "h", "s"));
         await _context.SaveChangesAsync();
 
         // Act
@@ -196,7 +168,7 @@ public class UserRepositoryTests : IDisposable
         // Arrange
         var email = "same@test.com";
         var id = Guid.NewGuid();
-        await _context.Users.AddAsync(new User { Id = id, Email = email });
+        await _context.Users.AddAsync(new User(id, "Same", email, "h", "s"));
         await _context.SaveChangesAsync();
 
         // Act
@@ -213,7 +185,7 @@ public class UserRepositoryTests : IDisposable
         var phone = "555";
         var otherId = Guid.NewGuid();
         var currentId = Guid.NewGuid();
-        await _context.Users.AddAsync(new User { Id = otherId, Email = "o@o.com", PhoneNumber = phone });
+        await _context.Users.AddAsync(new User(otherId, "O", "o@o.com", "h", "s", phone));
         await _context.SaveChangesAsync();
 
         // Act
@@ -230,7 +202,7 @@ public class UserRepositoryTests : IDisposable
         // Arrange
         var phone = "555";
         var id = Guid.NewGuid();
-        await _context.Users.AddAsync(new User { Id = id, Email = "s@s.com", PhoneNumber = phone });
+        await _context.Users.AddAsync(new User(id, "S", "s@s.com", "h", "s", phone));
         await _context.SaveChangesAsync();
 
         // Act
