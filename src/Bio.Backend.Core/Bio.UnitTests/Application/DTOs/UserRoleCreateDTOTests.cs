@@ -9,12 +9,18 @@ namespace Bio.UnitTests.Application.DTOs;
 /// </summary>
 public class UserRoleCreateDTOTests
 {
+    /// <summary>
+    /// Creates a valid UserRoleCreateDTO instance for testing purposes.
+    /// </summary>
     private UserRoleCreateDTO CreateValidDTO() => new()
     {
         UserId = Guid.NewGuid(),
         RoleId = Guid.NewGuid()
     };
 
+    /// <summary>
+    /// Verifies that a valid UserRoleCreateDTO instance does not have any validation errors.
+    /// </summary>
     [Fact]
     public void ValidDTO_ShouldNotHaveValidationErrors()
     {
@@ -28,21 +34,59 @@ public class UserRoleCreateDTOTests
         results.Should().BeEmpty();
     }
 
+    /// <summary>
+    /// Verifies that a UserRoleCreateDTO with a missing user ID has validation errors.
+    /// </summary>
     [Fact]
     public void MissingUserId_ShouldHaveValidationError()
     {
         // Arrange
         var dto = CreateValidDTO();
-        dto.UserId = Guid.Empty; // Guid.Empty is still a Guid, but if [Required] is applied to a non-nullable Guid, it might not catch it as "missing" in the same way as a string. However, Guid.Empty is often considered "missing" in business logic.
+        dto.UserId = null;
         
         // Act
         var results = ValidationHelper.Validate(dto);
 
         // Assert
-        // In .NET DataAnnotations, [Required] on a Guid (Value Type) only fails if it's null (if Guid?). 
-        // For non-nullable Guid, it defaults to Guid.Empty and usually PASSES [Required].
-        // To catch Guid.Empty, we would need a custom validator or just test that it's valid if Guid.Empty is allowed by the attribute.
-        // Let's check the current behavior.
-        results.Should().BeEmpty(); 
+        results.Should().Contain(r => r.ErrorMessage == "User ID is required.");
+    }
+
+    /// <summary>
+    /// Verifies that a UserRoleCreateDTO with a missing role ID has validation errors.
+    /// </summary>
+    [Fact]
+    public void MissingRoleId_ShouldHaveValidationError()
+    {
+        // Arrange
+        var dto = CreateValidDTO();
+        dto.RoleId = null;
+
+        // Act
+        var results = ValidationHelper.Validate(dto);
+
+        // Assert
+        results.Should().Contain(r => r.ErrorMessage == "Role ID is required.");
+    }
+
+    /// <summary>
+    /// Verifies that a UserRoleCreateDTO with both missing user and role IDs has multiple validation errors.
+    /// </summary>
+    [Fact]
+    public void BothIdsMissing_ShouldHaveValidationErrors()
+    {
+        // Arrange
+        var dto = new UserRoleCreateDTO
+        {
+            UserId = null,
+            RoleId = null
+        };
+
+        // Act
+        var results = ValidationHelper.Validate(dto);
+
+        // Assert
+        results.Should().HaveCount(2);
+        results.Should().Contain(r => r.ErrorMessage == "User ID is required.");
+        results.Should().Contain(r => r.ErrorMessage == "Role ID is required.");
     }
 }

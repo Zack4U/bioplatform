@@ -28,5 +28,6 @@ public class UserUpdateDTO
     /// </summary>
     [Required(ErrorMessage = "Phone number is required.")]
     [Phone(ErrorMessage = "Phone format is invalid.")]
+    [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
     public string PhoneNumber { get; set; } = string.Empty;
 }
