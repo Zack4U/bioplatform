@@ -1,3 +1,4 @@
+using Bio.API.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Bio.Domain.Interfaces;
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
@@ -29,6 +30,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
