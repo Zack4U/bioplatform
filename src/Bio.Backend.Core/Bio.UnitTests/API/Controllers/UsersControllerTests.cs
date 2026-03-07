@@ -23,9 +23,15 @@ namespace Bio.UnitTests.API.Controllers;
 /// </summary>
 public class UsersControllerTests
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UsersControllerTests"/> class.
+    /// </summary>
     private readonly Mock<IMediator> _mediatorMock;
     private readonly UsersController _usersController;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UsersControllerTests"/> class.
+    /// </summary>
     public UsersControllerTests()
     {
         _mediatorMock = new Mock<IMediator>();
@@ -34,6 +40,9 @@ public class UsersControllerTests
 
     public class CreateUser : UsersControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ValidData_ShouldReturnCreated()
         {
@@ -53,6 +62,9 @@ public class UsersControllerTests
             createdResult.Value.Should().Be(responseDto);
         }
 
+        /// <summary>
+        /// Verifies that a duplicate email user creation request returns a 409 Conflict response.
+        /// </summary>
         [Fact]
         public async Task DuplicateEmail_ShouldReturnConflict()
         {
@@ -68,10 +80,51 @@ public class UsersControllerTests
             var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
             conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
         }
+
+        /// <summary>
+        /// Verifies that a duplicate phone number user creation request returns a 409 Conflict response.
+        /// </summary>
+        [Fact]
+        public async Task DuplicatePhone_ShouldReturnConflict()
+        {
+            // Arrange
+            var dto = new UserCreateDTO { FullName = "Test", Email = "test@test.com", Password = "Pass123!", PhoneNumber = "555555" };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
+                .ThrowsAsync(new ConflictException("User with phone number already exists."));
+
+            // Act
+            var result = await _usersController.CreateUser(dto);
+
+            // Assert
+            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
+            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+        }
+
+        /// <summary>
+        /// Verifies that a request with both duplicate email and phone number returns a 409 Conflict response.
+        /// </summary>
+        [Fact]
+        public async Task BothEmailAndPhoneDuplicate_ShouldReturnConflict()
+        {
+            // Arrange
+            var dto = new UserCreateDTO { FullName = "Test", Email = "dup@test.com", Password = "Pass123!", PhoneNumber = "555" };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
+                .ThrowsAsync(new ConflictException("User with email or phone already exists."));
+
+            // Act
+            var result = await _usersController.CreateUser(dto);
+
+            // Assert
+            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
+            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+        }
     }
 
     public class GetAllUsers : UsersControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user get request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ShouldReturnOkWithUsers()
         {
@@ -95,6 +148,9 @@ public class UsersControllerTests
 
     public class GetUserById : UsersControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user id get request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ExistingUser_ShouldReturnOk()
         {
@@ -112,6 +168,9 @@ public class UsersControllerTests
             okResult.Value.Should().BeEquivalentTo(user);
         }
 
+        /// <summary>
+        /// Verifies that a non-existing user id get request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExistingUser_ShouldReturnNotFound()
         {
@@ -130,6 +189,9 @@ public class UsersControllerTests
 
     public class GetUserByEmail : UsersControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user email get request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ExistingUser_ShouldReturnOk()
         {
@@ -147,6 +209,9 @@ public class UsersControllerTests
             okResult.Value.Should().BeEquivalentTo(user);
         }
 
+        /// <summary>
+        /// Verifies that a non-existing user email get request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExisting_ShouldReturnNotFound()
         {
@@ -164,6 +229,9 @@ public class UsersControllerTests
 
     public class GetUserByPhoneNumber : UsersControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user phone number get request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ExistingUser_ShouldReturnOk()
         {
@@ -181,6 +249,9 @@ public class UsersControllerTests
             okResult.Value.Should().BeEquivalentTo(user);
         }
 
+        /// <summary>
+        /// Verifies that a non-existing user phone number get request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExisting_ShouldReturnNotFound()
         {
@@ -198,6 +269,9 @@ public class UsersControllerTests
 
     public class UpdateUser : UsersControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user update request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ExistingUser_ShouldReturnOk()
         {
@@ -217,6 +291,9 @@ public class UsersControllerTests
             okResult.Value.Should().BeEquivalentTo(responseDto);
         }
 
+        /// <summary>
+        /// Verifies that a non-existing user update request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExistingUser_ShouldReturnNotFound()
         {
@@ -233,6 +310,9 @@ public class UsersControllerTests
             result.Should().BeOfType<NotFoundResult>();
         }
 
+        /// <summary>
+        /// Verifies that a duplicate email user update request returns a 409 Conflict response.
+        /// </summary>
         [Fact]
         public async Task DuplicateEmail_ShouldReturnConflict()
         {
@@ -249,10 +329,53 @@ public class UsersControllerTests
             var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
             conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
         }
+
+        /// <summary>
+        /// Verifies that a duplicate phone number user update request returns a 409 Conflict response.
+        /// </summary>
+        [Fact]
+        public async Task DuplicatePhone_ShouldReturnConflict()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "u@test.com", PhoneNumber = "555" };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
+                .ThrowsAsync(new ConflictException("Phone number already exists."));
+
+            // Act
+            var result = await _usersController.UpdateUser(id, updateDto);
+
+            // Assert
+            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
+            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+        }
+
+        /// <summary>
+        /// Verifies that an update request with both duplicate email and phone number returns a 409 Conflict response.
+        /// </summary>
+        [Fact]
+        public async Task BothEmailAndPhoneDuplicate_ShouldReturnConflict()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "dup@test.com", PhoneNumber = "555" };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
+                .ThrowsAsync(new ConflictException("Email or Phone already exists."));
+
+            // Act
+            var result = await _usersController.UpdateUser(id, updateDto);
+
+            // Assert
+            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
+            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+        }
     }
 
     public class DeleteUser : UsersControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user delete request returns a 204 No Content response.
+        /// </summary>
         [Fact]
         public async Task ExistingUser_ShouldReturnNoContent()
         {
@@ -268,6 +391,9 @@ public class UsersControllerTests
             result.Should().BeOfType<NoContentResult>();
         }
 
+        /// <summary>
+        /// Verifies that a non-existing user delete request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExistingUser_ShouldReturnNotFound()
         {

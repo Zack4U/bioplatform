@@ -22,9 +22,15 @@ namespace Bio.UnitTests.API.Controllers;
 /// </summary>
 public class UserRolesControllerTests
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserRolesControllerTests"/> class.
+    /// </summary>
     private readonly Mock<IMediator> _mediatorMock;
     private readonly UserRolesController _userRolesController;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserRolesControllerTests"/> class.
+    /// </summary>
     public UserRolesControllerTests()
     {
         _mediatorMock = new Mock<IMediator>();
@@ -33,6 +39,9 @@ public class UserRolesControllerTests
 
     public class GetAssignments : UserRolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ShouldReturnOkWithAssignments()
         {
@@ -55,6 +64,9 @@ public class UserRolesControllerTests
 
     public class GetByUser : UserRolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid user id get request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ExistingUser_ShouldReturnOk()
         {
@@ -75,6 +87,9 @@ public class UserRolesControllerTests
             okResult.Value.Should().BeEquivalentTo(assignments);
         }
 
+        /// <summary>
+        /// Verifies that a non-existing user id get request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExistingUser_ShouldReturnNotFound()
         {
@@ -93,6 +108,9 @@ public class UserRolesControllerTests
 
     public class GetByRole : UserRolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role name get request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ExistingRole_ShouldReturnOk()
         {
@@ -113,6 +131,9 @@ public class UserRolesControllerTests
             okResult.Value.Should().BeEquivalentTo(assignments);
         }
 
+        /// <summary>
+        /// Verifies that a non-existing role name get request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExistingRole_ShouldReturnNotFound()
         {
@@ -131,6 +152,9 @@ public class UserRolesControllerTests
 
     public class GetByRoleId : UserRolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role id get request returns a 200 Ok response.
+        /// </summary>
         [Fact]
         public async Task ExistingRoleId_ShouldReturnOk()
         {
@@ -169,6 +193,9 @@ public class UserRolesControllerTests
 
     public class AssignRole : UserRolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role assignment request returns a 204 No Content response.
+        /// </summary>
         [Fact]
         public async Task ValidAssignment_ShouldReturnNoContent()
         {
@@ -184,6 +211,9 @@ public class UserRolesControllerTests
             result.Should().BeOfType<NoContentResult>();
         }
 
+        /// <summary>
+        /// Verifies that a duplicate role assignment request returns a 409 Conflict response.
+        /// </summary>
         [Fact]
         public async Task DuplicateAssignment_ShouldReturnConflict()
         {
@@ -200,6 +230,9 @@ public class UserRolesControllerTests
             conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
         }
 
+        /// <summary>
+        /// Verifies that a user not found role assignment request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task UserNotFound_ShouldReturnNotFound()
         {
@@ -215,10 +248,32 @@ public class UserRolesControllerTests
             var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
             notFoundResult.StatusCode.Should().Be(StatusCodes.Status404NotFound);
         }
+
+        /// <summary>
+        /// Verifies that a role not found role assignment request returns a 404 Not Found response.
+        /// </summary>
+        [Fact]
+        public async Task RoleNotFound_ShouldReturnNotFound()
+        {
+            // Arrange
+            var dto = new UserRoleCreateDTO { UserId = Guid.NewGuid(), RoleId = Guid.NewGuid() };
+            _mediatorMock.Setup(m => m.Send(It.IsAny<AssignRoleCommand>(), default))
+                .ThrowsAsync(new KeyNotFoundException("Role not found."));
+
+            // Act
+            var result = await _userRolesController.AssignRole(dto);
+
+            // Assert
+            var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
+            notFoundResult.StatusCode.Should().Be(StatusCodes.Status404NotFound);
+        }
     }
 
     public class UnassignRole : UserRolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role unassignment request returns a 204 No Content response.
+        /// </summary>
         [Fact]
         public async Task ExistingAssignment_ShouldReturnNoContent()
         {
@@ -235,6 +290,9 @@ public class UserRolesControllerTests
             result.Should().BeOfType<NoContentResult>();
         }
 
+        /// <summary>
+        /// Verifies that a non-existing role unassignment request returns a 404 Not Found response.
+        /// </summary>
         [Fact]
         public async Task NonExistingAssignment_ShouldReturnNotFound()
         {

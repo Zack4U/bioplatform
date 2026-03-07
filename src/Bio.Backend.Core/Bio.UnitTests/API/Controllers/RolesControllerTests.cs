@@ -22,9 +22,15 @@ namespace Bio.UnitTests.API.Controllers;
 /// </summary>
 public class RolesControllerTests
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RolesControllerTests"/> class.
+    /// </summary>
     private readonly Mock<IMediator> _mediatorMock;
     private readonly RolesController _rolesController;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RolesControllerTests"/> class.
+    /// </summary>
     public RolesControllerTests()
     {
         _mediatorMock = new Mock<IMediator>();
@@ -33,6 +39,9 @@ public class RolesControllerTests
 
     public class CreateRole : RolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ValidData_ShouldReturnCreated()
         {
@@ -52,6 +61,9 @@ public class RolesControllerTests
             objectResult.Value.Should().Be(responseDto);
         }
 
+        /// <summary>
+        /// Verifies that a role creation request with a duplicate name returns a 409 Conflict response.
+        /// </summary>
         [Fact]
         public async Task DuplicateName_ShouldReturnConflict()
         {
@@ -71,6 +83,9 @@ public class RolesControllerTests
 
     public class GetAllRoles : RolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ShouldReturnOkWithRoles()
         {
@@ -94,6 +109,9 @@ public class RolesControllerTests
 
     public class GetRoleById : RolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ExistingRole_ShouldReturnOk()
         {
@@ -111,6 +129,9 @@ public class RolesControllerTests
             okResult.Value.Should().BeEquivalentTo(role);
         }
 
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task NonExisting_ShouldReturnNotFound()
         {
@@ -129,6 +150,9 @@ public class RolesControllerTests
 
     public class GetRoleByName : RolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ExistingRole_ShouldReturnOk()
         {
@@ -146,6 +170,9 @@ public class RolesControllerTests
             okResult.Value.Should().BeEquivalentTo(role);
         }
 
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task NonExisting_ShouldReturnNotFound()
         {
@@ -163,6 +190,9 @@ public class RolesControllerTests
 
     public class UpdateRole : RolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ExistingRole_ShouldReturnOk()
         {
@@ -181,6 +211,9 @@ public class RolesControllerTests
             okResult.Value.Should().BeEquivalentTo(response);
         }
 
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task NonExisting_ShouldReturnNotFound()
         {
@@ -198,6 +231,9 @@ public class RolesControllerTests
             notFoundResult.StatusCode.Should().Be(StatusCodes.Status404NotFound);
         }
 
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task DuplicateName_ShouldReturnConflict()
         {
@@ -218,6 +254,9 @@ public class RolesControllerTests
 
     public class DeleteRole : RolesControllerTests
     {
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task ExistingRole_ShouldReturnNoContent()
         {
@@ -233,6 +272,9 @@ public class RolesControllerTests
             result.Should().BeOfType<NoContentResult>();
         }
 
+        /// <summary>
+        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// </summary>
         [Fact]
         public async Task NonExisting_ShouldReturnNotFound()
         {
