@@ -23,13 +23,13 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserResponse
         // Uniqueness checks
         var emailConflict = await _userRepository.GetByEmailExcludingIdAsync(request.Dto.Email, request.Id);
         if (emailConflict != null)
-            throw new InvalidOperationException($"User with email {request.Dto.Email} already exists.");
+            throw new Bio.Domain.Exceptions.ConflictException($"User with email {request.Dto.Email} already exists.");
 
         if (!string.IsNullOrEmpty(request.Dto.PhoneNumber))
         {
             var phoneConflict = await _userRepository.GetByPhoneNumberExcludingIdAsync(request.Dto.PhoneNumber, request.Id);
             if (phoneConflict != null)
-                throw new InvalidOperationException($"User with phone number {request.Dto.PhoneNumber} already exists.");
+                throw new Bio.Domain.Exceptions.ConflictException($"User with phone number {request.Dto.PhoneNumber} already exists.");
         }
 
         // Domain Logic

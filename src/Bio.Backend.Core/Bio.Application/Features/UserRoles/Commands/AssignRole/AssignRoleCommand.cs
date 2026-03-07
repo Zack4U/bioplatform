@@ -45,7 +45,7 @@ public class AssignRoleHandler : IRequestHandler<AssignRoleCommand>
         var alreadyExists = await _userRoleRepository.ExistsAsync(dto.UserId, dto.RoleId);
         if (alreadyExists)
         {
-            throw new InvalidOperationException($"Role '{role.Name}' is already assigned to user '{user.FullName}'.");
+            throw new Bio.Domain.Exceptions.ConflictException($"Role '{role.Name}' is already assigned to user '{user.FullName}'.");
         }
 
         // 4. Create via Domain Constructor

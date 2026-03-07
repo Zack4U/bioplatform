@@ -31,23 +31,18 @@ public class RolesController : ControllerBase
     /// <param name="dto">Role creation data.</param>
     /// <returns>The newly created role.</returns>
     /// <response code="201">Returns the newly created role.</response>
-    /// <response code="400">If the data is invalid or the role name already exists.</response>
+    /// <response code="400">If the data is invalid (validation fails).</response>
+    /// <response code="409">If a role with the same name already exists.</response>
     [HttpPost]
     [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<RoleResponseDTO>> CreateRole(RoleCreateDTO dto)
-    {
-        try
-        {
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CreateRole(RoleCreateDTO dto) =>
+        await HandleExceptionsAsync(async () => {
             var command = new CreateRoleCommand(dto);
             var response = await _mediator.Send(command);
             return StatusCode(StatusCodes.Status201Created, response);
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
-    }
+        });
 
     /// <summary>
     /// Retrieves all security roles.
@@ -55,7 +50,7 @@ public class RolesController : ControllerBase
     /// <returns>A list of roles.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RoleResponseDTO>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<RoleResponseDTO>>> GetAllRoles()
+    public async Task<IActionResult> GetAllRoles()
     {
         var query = new GetAllRolesQuery();
         var roles = await _mediator.Send(query);
@@ -70,7 +65,7 @@ public class RolesController : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<RoleResponseDTO>> GetRoleById(Guid id)
+    public async Task<IActionResult> GetRoleById(Guid id)
     {
         var query = new GetRoleByIdQuery(id);
         var role = await _mediator.Send(query);
@@ -85,29 +80,20 @@ public class RolesController : ControllerBase
     /// <param name="dto">The update data.</param>
     /// <returns>The updated role information.</returns>
     /// <response code="200">Returns the updated role.</response>
-    /// <response code="400">If the data is invalid or the name is already taken.</response>
+    /// <response code="400">If the data is invalid.</response>
     /// <response code="404">If the role is not found.</response>
+    /// <response code="409">If the name is already taken by another role.</response>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<RoleResponseDTO>> UpdateRole(Guid id, RoleUpdateDTO dto)
-    {
-        try
-        {
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> UpdateRole(Guid id, RoleUpdateDTO dto) =>
+        await HandleExceptionsAsync(async () => {
             var command = new UpdateRoleCommand(id, dto);
             var response = await _mediator.Send(command);
             return Ok(response);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
-    }
+        });
 
     /// <summary>
     /// Deletes an existing security role.
@@ -119,19 +105,12 @@ public class RolesController : ControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteRole(Guid id)
-    {
-        try
-        {
+    public async Task<IActionResult> DeleteRole(Guid id) =>
+        await HandleExceptionsAsync(async () => {
             var command = new DeleteRoleCommand(id);
             await _mediator.Send(command);
             return NoContent();
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-    }
+        });
 
     /// <summary>
     /// Retrieves a security role by its unique name.
@@ -141,11 +120,31 @@ public class RolesController : ControllerBase
     [HttpGet("name/{name}")]
     [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<RoleResponseDTO>> GetRoleByName(string name)
+    public async Task<IActionResult> GetRoleByName(string name)
     {
         var query = new GetRoleByNameQuery(name);
         var role = await _mediator.Send(query);
         if (role == null) return NotFound();
         return Ok(role);
+    }
+
+    private async Task<IActionResult> HandleExceptionsAsync(Func<Task<IActionResult>> action)
+    {
+        try
+        {
+            return await action();
+        }
+        catch (Bio.Domain.Exceptions.ConflictException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+        catch (Bio.Domain.Exceptions.ValidationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
     }
 }

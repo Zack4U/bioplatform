@@ -24,7 +24,7 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, RoleResponse
         var existingRole = await _roleRepository.GetByNameAsync(normalizedName);
         if (existingRole != null)
         {
-            throw new InvalidOperationException($"Role with name '{normalizedName}' already exists.");
+            throw new Bio.Domain.Exceptions.ConflictException($"Role with name '{normalizedName}' already exists.");
         }
 
         var role = new Role(Guid.NewGuid(), normalizedName, dto.Description);

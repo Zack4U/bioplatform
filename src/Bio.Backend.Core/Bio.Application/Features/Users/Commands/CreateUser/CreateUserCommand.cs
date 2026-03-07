@@ -25,13 +25,13 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
         // 1. Check uniqueness
         var existingEmail = await _userRepository.GetByEmailAsync(dto.Email);
         if (existingEmail != null)
-            throw new InvalidOperationException($"User with email {dto.Email} already exists.");
+            throw new Bio.Domain.Exceptions.ConflictException($"User with email {dto.Email} already exists.");
 
         if (!string.IsNullOrEmpty(dto.PhoneNumber))
         {
             var existingPhone = await _userRepository.GetByPhoneNumberAsync(dto.PhoneNumber);
             if (existingPhone != null)
-                throw new InvalidOperationException($"User with phone number {dto.PhoneNumber} already exists.");
+                throw new Bio.Domain.Exceptions.ConflictException($"User with phone number {dto.PhoneNumber} already exists.");
         }
 
         // 2. Hash Password
