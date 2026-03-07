@@ -28,7 +28,7 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, RoleResponse
         var existingWithSameName = await _roleRepository.GetByNameExcludingIdAsync(normalizedName, request.Id);
         if (existingWithSameName != null)
         {
-            throw new InvalidOperationException($"Another role with name '{normalizedName}' already exists.");
+            throw new Bio.Domain.Exceptions.ConflictException($"Another role with name '{normalizedName}' already exists.");
         }
 
         role.Update(normalizedName, request.Dto.Description);
