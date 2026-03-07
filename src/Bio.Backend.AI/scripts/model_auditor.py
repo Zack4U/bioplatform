@@ -16,6 +16,7 @@ Requisitos (ya incluidos en el venv del proyecto):
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 import webbrowser
 from pathlib import Path
@@ -36,6 +37,67 @@ api = FastAPI(title="Bio Model Auditor", docs_url=None, redoc_url=None)
 
 _classifier: SpeciesClassifier | None = None
 _weights_path: Path | None = None
+_min_f1: float = 0.0
+_allowed_species: set[str] | None = None  # None = no filter
+_species_f1: dict[str, float] = {}  # species_name -> f1_score (both forms)
+_species_stats: tuple[int, int] = (0, 0)  # (passing, total_evaluated)
+_f1_warn_threshold: float = 0.65  # warn if species F1 < this
+
+
+def _load_env_f1_threshold() -> float:
+    """Read BIO_MIN_F1_THRESHOLD from .env if present."""
+    # Try project-level .env
+    for env_path in [
+        PROJECT_ROOT / ".env",
+        PROJECT_ROOT.parent.parent / ".env",  # monorepo root
+    ]:
+        if env_path.exists():
+            with open(env_path, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith("BIO_MIN_F1_THRESHOLD="):
+                        try:
+                            return float(line.split("=", 1)[1].strip())
+                        except ValueError:
+                            pass
+    # Fallback to environment variable
+    val = os.environ.get("BIO_MIN_F1_THRESHOLD")
+    if val:
+        try:
+            return float(val)
+        except ValueError:
+            pass
+    return 0.65
+
+
+def _load_species_f1_data(min_f1: float) -> tuple[set[str] | None, dict[str, float]]:
+    """Load evaluation metrics. Returns (allowed_set_or_None, f1_scores_dict)."""
+    global _species_stats
+    eval_path = PROJECT_ROOT / "data" / "evaluation" / "evaluation_metrics.json"
+    if not eval_path.exists():
+        print(f"  [WARN] evaluation_metrics.json not found, F1 filter disabled.")
+        return None, {}
+    import json as _json
+    with open(eval_path, encoding="utf-8") as f:
+        metrics = _json.load(f)
+    per_class = metrics.get("per_class", {})
+    total_evaluated = len(per_class)
+
+    # Build F1 lookup (both underscore and space forms)
+    f1_scores: dict[str, float] = {}
+    allowed: set[str] = set()
+    for name, m in per_class.items():
+        f1 = m.get("f1_score", 0.0)
+        f1_scores[name] = f1
+        f1_scores[name.replace("_", " ")] = f1
+        if min_f1 > 0.0 and f1 >= min_f1:
+            allowed.add(name)
+            allowed.add(name.replace("_", " "))
+
+    passing = len(allowed) // 2 if allowed else 0
+    _species_stats = (passing, total_evaluated)
+
+    return (allowed if min_f1 > 0.0 else None), f1_scores
 
 
 def _get_classifier() -> SpeciesClassifier:
@@ -58,6 +120,27 @@ async def classify(file: UploadFile = File(...)):
     try:
         image_bytes = await file.read()
         result = _get_classifier().classify(image_bytes, top_k=5)
+        # Filter by F1 threshold
+        if _allowed_species is not None:
+            result["predictions"] = [
+                p for p in result["predictions"]
+                if p["species"] in _allowed_species
+            ]
+            # Re-rank after filtering
+            for i, p in enumerate(result["predictions"], start=1):
+                p["rank"] = i
+        # Add low-F1 warning per prediction
+        for p in result["predictions"]:
+            sp_name = p["species"]
+            f1 = _species_f1.get(sp_name)
+            if f1 is not None and f1 < _f1_warn_threshold:
+                p["low_f1_warning"] = True
+                p["f1_score"] = round(f1, 4)
+            else:
+                p["low_f1_warning"] = False
+                if f1 is not None:
+                    p["f1_score"] = round(f1, 4)
+        result["f1_warn_threshold"] = _f1_warn_threshold
         return JSONResponse(content=result)
     except Exception as exc:
         return JSONResponse(
@@ -83,7 +166,11 @@ async def species_list():
     clf = _get_classifier()
     groups: dict[str, list[dict]] = {}
     for name, info in sorted(clf.class_info.items()):
+        # Filter by F1 threshold
+        if _allowed_species is not None and name not in _allowed_species:
+            continue
         kingdom = info.get("kingdom", "Desconocido")
+        f1 = _species_f1.get(name)
         entry = {
             "name": name,
             "scientific_name": info.get("scientific_name", name),
@@ -94,9 +181,12 @@ async def species_list():
             "genus": info.get("genus", ""),
             "iucn_status": info.get("iucn_status", ""),
             "train_count": info.get("train_count", 0),
+            "f1_score": round(f1, 4) if f1 is not None else None,
+            "low_f1": f1 is not None and f1 < _f1_warn_threshold,
         }
         groups.setdefault(kingdom, []).append(entry)
-    return {"groups": groups, "total": clf.num_classes}
+    total = sum(len(v) for v in groups.values())
+    return {"groups": groups, "total": total, "f1_warn_threshold": _f1_warn_threshold}
 
 
 # ── Embedded HTML ──────────────────────────────────────────────────
@@ -250,6 +340,8 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
         <option value="phylum">Filo</option>
         <option value="train_count_desc">Imágenes ↓</option>
         <option value="train_count_asc">Imágenes ↑</option>
+        <option value="f1_desc">F1-score ↓</option>
+        <option value="f1_asc">F1-score ↑</option>
       </select>
 
       <!-- Upload button -->
@@ -398,7 +490,15 @@ async function startClassification() {
 function confColor(c) {
   if (c >= .7) return '#10b981';
   if (c >= .4) return '#f59e0b';
-  return '#ef4444';
+  return '#ef4444';}
+
+function lowF1Warning(pred, threshold) {
+  if (!pred.low_f1_warning) return '';
+  const f1Pct = pred.f1_score != null ? (pred.f1_score * 100).toFixed(1) + '%' : '?';
+  return `<div class="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg text-xs" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fbbf24">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01M12 3l9.66 16.5H2.34L12 3z"/></svg>
+    <span><b>Baja confiabilidad:</b> F1 del modelo para esta especie es ${f1Pct} (umbral: ${(threshold*100).toFixed(0)}%). La identificaci\u00f3n puede no ser precisa.</span>
+  </div>`;
 }
 
 function confBadgeClass(c) {
@@ -447,6 +547,7 @@ function renderResults(data) {
   const preds = data.predictions || [];
   const top = preds[0];
   const alts = preds.slice(1);
+  const warnThreshold = data.f1_warn_threshold || 0.65;
 
   let html = `
     <div class="w-full animate-in" style="animation-delay:.05s">
@@ -480,6 +581,7 @@ function renderResults(data) {
             <span class="text-2xl font-extrabold" style="color:${confColor(top.confidence)}">${pct}%</span>
             <div class="conf-bar flex-1"><div class="conf-bar-fill" style="width:${pct}%;background:${confColor(top.confidence)}"></div></div>
           </div>
+          ${lowF1Warning(top, warnThreshold)}
         </div>
       </div>
       ${taxonomyHTML(top.taxonomy, false)}
@@ -502,6 +604,7 @@ function renderResults(data) {
         </div>
         <p class="font-semibold text-sm"><em>${fmtSpecies(p.species)}</em></p>
         <div class="conf-bar mt-2"><div class="conf-bar-fill" style="width:${pct}%;background:${confColor(p.confidence)}"></div></div>
+        ${lowF1Warning(p, warnThreshold)}
         <div class="mt-2 flex flex-wrap">${taxonomyHTML(p.taxonomy, true)}</div>
       </div>`;
     });
@@ -539,6 +642,8 @@ function sortSpecies(list, key) {
   const copy = [...list];
   if (key === 'train_count_desc') return copy.sort((a, b) => b.train_count - a.train_count);
   if (key === 'train_count_asc')  return copy.sort((a, b) => a.train_count - b.train_count);
+  if (key === 'f1_desc') return copy.sort((a, b) => (b.f1_score ?? -1) - (a.f1_score ?? -1));
+  if (key === 'f1_asc')  return copy.sort((a, b) => (a.f1_score ?? 999) - (b.f1_score ?? 999));
   return copy.sort((a, b) => (a[key] || '').localeCompare(b[key] || ''));
 }
 
@@ -597,12 +702,16 @@ function renderKingdomColumns() {
         : _currentSort === 'order' ? sp.order
         : _currentSort === 'phylum' ? (sp.phylum || '')
         : _currentSort === 'scientific_name' ? (sp.scientific_name || sp.name)
+        : (_currentSort === 'f1_desc' || _currentSort === 'f1_asc') ? (sp.f1_score != null ? 'F1: ' + (sp.f1_score * 100).toFixed(1) + '%' : 'F1: N/A')
         : sp.family + (sp.order ? ' · ' + sp.order : '');
+      const f1Badge = sp.low_f1
+        ? `<span class="badge badge-amber" style="font-size:.55rem;padding:.1rem .35rem" title="F1: ${sp.f1_score != null ? (sp.f1_score*100).toFixed(1)+'%' : '?'}">⚠ F1 bajo</span>`
+        : '';
       html += `
         <div class="species-item">
           ${dot}
           <div style="min-width:0;overflow:hidden">
-            <div class="sp-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${fmtSpecies(sp.name)}</div>
+            <div class="sp-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${fmtSpecies(sp.name)} ${f1Badge}</div>
             <div class="sp-family" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sortLabel}</div>
           </div>
           <span class="sp-count">${sp.train_count} imgs</span>
@@ -657,17 +766,36 @@ def main() -> None:
         "--no-browser", action="store_true",
         help="No abrir el navegador automáticamente",
     )
+    parser.add_argument(
+        "--min-f1", type=float, default=0.0,
+        help="Umbral mínimo de F1-score para filtrar especies (e.g. 0.7). "
+             "Usa evaluation_metrics.json para excluir especies por debajo del umbral.",
+    )
     args = parser.parse_args()
 
-    global _weights_path
+    global _weights_path, _min_f1, _allowed_species, _species_f1, _f1_warn_threshold
     if args.weights:
         _weights_path = PROJECT_ROOT / "data" / "weights" / args.weights
+
+    _f1_warn_threshold = _load_env_f1_threshold()
+    _min_f1 = args.min_f1
+    _allowed_species, _species_f1 = _load_species_f1_data(_min_f1)
 
     url = f"http://localhost:{args.port}"
     print(f"\n  🧬 BioAudit – Model Auditor")
     print(f"  ───────────────────────────")
     print(f"  URL:      {url}")
     print(f"  Weights:  {_weights_path or 'data/weights/best_model.pth (default)'}")
+
+    if _allowed_species is not None:
+        passing, total_eval = _species_stats
+        print(f"  Filtro:   F1 >= {_min_f1:.2f}")
+        print(f"  Especies: {passing} de {total_eval} evaluadas pasan el umbral")
+    else:
+        print(f"  Filtro:   ninguno (todas las especies habilitadas)")
+
+    print(f"  Aviso F1: especies con F1 < {_f1_warn_threshold:.2f} mostrarán advertencia")
+    print(f"            (configurable: BIO_MIN_F1_THRESHOLD en .env)")
     print(f"  Ctrl+C para detener\n")
 
     if not args.no_browser:

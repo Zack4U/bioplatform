@@ -81,8 +81,11 @@ def build_model_from_config(config: dict, weights_path: Path, device: torch.devi
         assert isinstance(orig_layer, nn.Linear)
         in_features = orig_layer.in_features
         model.classifier = nn.Sequential(
+            nn.Linear(in_features, 512),
+            nn.BatchNorm1d(512),
+            nn.ReLU(inplace=True),
             nn.Dropout(p=0.4),
-            nn.Linear(in_features, num_classes),
+            nn.Linear(512, num_classes),
         )
     elif model_name == "resnet50":
         model = models.resnet50(weights=None)
@@ -215,6 +218,39 @@ def compute_metrics(
     }
 
 
+def _group_species_by_f1(per_class: dict) -> list[tuple[str, list[tuple[str, dict]]]]:
+    """
+    Group species into F1-score tiers and sort each group A-Z.
+    F1 combines Precision and Recall, giving a more balanced metric.
+    Returns list of (tier_label, [(species_name, metrics), ...]) from highest to lowest tier.
+    """
+    tiers: dict[str, list[tuple[str, dict]]] = {
+        ">= 0.9":   [],
+        ">= 0.7 & < 0.9": [],
+        ">= 0.5 & < 0.7": [],
+        "< 0.5":    [],
+    }
+
+    for name, m in per_class.items():
+        f1 = m["f1_score"]
+        if f1 >= 0.9:
+            tiers[">= 0.9"].append((name, m))
+        elif f1 >= 0.7:
+            tiers[">= 0.7 & < 0.9"].append((name, m))
+        elif f1 >= 0.5:
+            tiers[">= 0.5 & < 0.7"].append((name, m))
+        else:
+            tiers["< 0.5"].append((name, m))
+
+    # Sort each group alphabetically by species name
+    for key in tiers:
+        tiers[key].sort(key=lambda x: x[0])
+
+    # Return in order from highest to lowest tier
+    order = [">= 0.9", ">= 0.7 & < 0.9", ">= 0.5 & < 0.7", "< 0.5"]
+    return [(label, tiers[label]) for label in order]
+
+
 def generate_classification_report(metrics: dict) -> str:
     """Generate a formatted classification report string."""
     lines = []
@@ -228,17 +264,37 @@ def generate_classification_report(metrics: dict) -> str:
     lines.append(f"  {top_k_key.replace('_', ' ').title()}: {metrics[top_k_key]:.4f} ({metrics[top_k_key] * 100:.1f}%)")
     lines.append(f"  Total Test Samples: {metrics['total_samples']:,}")
     lines.append(f"  Number of Classes:  {metrics['num_classes']}")
+
+    # ── F1-score threshold summary ─────────────────────────────────
+    grouped = _group_species_by_f1(metrics["per_class"])
+
     lines.append("")
     lines.append(f"{'─' * 80}")
-    lines.append(f"  {'Species':<40s} {'Precision':>10s} {'Recall':>10s} {'F1':>10s} {'Support':>10s}")
+    lines.append("  F1-SCORE THRESHOLD SUMMARY  (F1 = harmonic mean of Precision & Recall)")
+    lines.append(f"{'─' * 80}")
+    for label, species_list in grouped:
+        lines.append(f"  F1 {label:<20s} = {len(species_list):>5d} species")
     lines.append(f"{'─' * 80}")
 
-    for name, m in sorted(metrics["per_class"].items()):
-        lines.append(
-            f"  {name:<40s} {m['precision']:>10.4f} {m['recall']:>10.4f} "
-            f"{m['f1_score']:>10.4f} {m['support']:>10d}"
-        )
+    # ── Detailed per-species by F1 group ───────────────────────────
+    header = f"  {'Species':<40s} {'Precision':>10s} {'Recall':>10s} {'F1':>10s} {'Support':>10s}"
 
+    for label, species_list in grouped:
+        if not species_list:
+            continue
+        lines.append("")
+        lines.append(f"{'─' * 80}")
+        lines.append(f"  ▸ F1 {label}  ({len(species_list)} species)")
+        lines.append(f"{'─' * 80}")
+        lines.append(header)
+        lines.append(f"{'─' * 80}")
+        for name, m in species_list:
+            lines.append(
+                f"  {name:<40s} {m['precision']:>10.4f} {m['recall']:>10.4f} "
+                f"{m['f1_score']:>10.4f} {m['support']:>10d}"
+            )
+
+    # ── Averages ───────────────────────────────────────────────────
     lines.append(f"{'─' * 80}")
     ma = metrics["macro_avg"]
     wa = metrics["weighted_avg"]
@@ -289,7 +345,7 @@ def plot_confusion_matrix(
                 pairs.append((class_names[i], class_names[j], cm_norm[i, j], cm[i, j]))
 
         # Save as text
-        with open(output_path.with_suffix(".txt"), "w") as f:
+        with open(output_path.with_suffix(".txt"), "w", encoding="utf-8") as f:
             f.write("Top 20 Most Confused Species Pairs:\n")
             f.write(f"{'True Species':<40s} {'Predicted As':<40s} {'Rate':>8s} {'Count':>6s}\n")
             f.write("─" * 94 + "\n")

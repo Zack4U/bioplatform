@@ -133,8 +133,11 @@ class SpeciesClassifier:
             assert isinstance(orig_layer, nn.Linear)
             in_features = orig_layer.in_features
             model.classifier = nn.Sequential(
+                nn.Linear(in_features, 512),
+                nn.BatchNorm1d(512),
+                nn.ReLU(inplace=True),
                 nn.Dropout(p=0.4),
-                nn.Linear(in_features, num_classes),
+                nn.Linear(512, num_classes),
             )
         elif model_name == "resnet50":
             model = models.resnet50(weights=None)

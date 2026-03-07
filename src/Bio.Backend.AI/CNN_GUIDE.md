@@ -719,8 +719,12 @@ El entrenamiento usa una estrategia de **Transfer Learning en 2 fases**:
 | `--image-size` | 224 | Tamaño de entrada (224 para EfficientNet/ResNet) |
 | `--label-smoothing` | 0.1 | Label smoothing para regularización |
 | `--mixup-alpha` | 0.2 | Alpha para Mixup augmentation (0 = desactivado) |
+| `--cutmix-alpha` | 0.0 | Alpha para CutMix augmentation (0 = desactivado, 1.0 recomendado) |
 | `--warmup-epochs` | 3 | Epochs de warmup lineal durante fine-tuning |
 | `--max-grad-norm` | 1.0 | Norma máxima del gradiente para clipping |
+| `--lr-decay-factor` | 1.0 | Factor de decay por capa (1.0 = uniforme, 0.85 recomendado) |
+| `--swa-start` | 0 | Epoch para iniciar SWA (0 = desactivado) |
+| `--swa-lr` | 1e-5 | Learning rate para SWA |
 
 ### 9.4 Data Augmentation
 
@@ -732,16 +736,32 @@ Train:
   → RandomHorizontalFlip(p=0.5)             # Volteo horizontal
   → RandomVerticalFlip(p=0.1)               # Volteo vertical (leve)
   → RandomRotation(±15°)                    # Rotación leve
-  → ColorJitter(brightness, contrast, sat)   # Variación de color
+  → ColorJitter(brightness, contrast, sat, hue=0.02)  # Variación de color (hue bajo para preservar colores)
   → RandomAffine(translate=0.1)             # Traslación
-  → RandomGrayscale(p=0.05)                 # Escala de grises
   → RandomErasing(p=0.1)                    # Borrado aleatorio
 
 Val/Test:
   → Resize(256) → CenterCrop(224) → Normalize(ImageNet)
 ```
 
-### 9.5 Mixup Augmentation (Nuevo)
+### 9.5 CutMix Augmentation (Nuevo v3)
+
+**CutMix** recorta un parche rectangular de una imagen y lo pega en otra del batch, combinando las etiquetas proporcionalmente al área del parche. A diferencia de Mixup, **preserva texturas y colores locales intactos**.
+
+```
+CutMix(α=1.0):
+  λ ~ Beta(α, α)
+  ratio = sqrt(1 - λ)
+  Recortar parche de (ratio × H) × (ratio × W) de imagen j
+  Pegar en imagen i → area_ratio = parche / total
+  ỹ = area_ratio·y_j + (1-area_ratio)·y_i
+```
+
+- **Ideal para biodiversidad**: no mezcla colores globalmente como Mixup.
+- Si ambos CutMix y Mixup están activos, se elige uno al azar por batch (50/50).
+- Activar con `--cutmix-alpha 1.0` (recomendado para especies color-dependientes).
+
+### 9.6 Mixup Augmentation
 
 **Mixup** interpola linealmente pares de imágenes y sus etiquetas durante el entrenamiento, lo que actúa como un regularizador muy efectivo para clasificación con muchas clases.
 
@@ -757,22 +777,47 @@ Mixup(α=0.2):
 - El accuracy de entrenamiento reportado será más bajo (normal, es por el mixing).
 - Desactivar con `--mixup-alpha 0` si se desea entrenamiento tradicional.
 
-### 9.6 Manejo de Desbalance de Clases
+### 9.7 Layer-wise Learning Rate Decay (Nuevo v3)
+
+**Discriminative fine-tuning**: las capas tempranas del backbone (detectoras de bordes, texturas, colores) reciben un LR más bajo que las capas finales. Esto preserva las features de ImageNet en las capas bajas mientras permite que las capas altas se adapten a las 719 especies.
+
+```
+Capa 0 (entrada):  LR = base_lr × decay^N
+Capa 1:            LR = base_lr × decay^(N-1)
+...
+Capa N (final):    LR = base_lr × decay^1
+Classifier head:   LR = base_lr
+```
+
+- Activar con `--lr-decay-factor 0.85` (0.85 recomendado, 1.0 = uniforme/desactivado).
+- Solo disponible para modelos EfficientNet.
+
+### 9.8 Stochastic Weight Averaging - SWA (Nuevo v3)
+
+**SWA** promedia los pesos del modelo durante los últimos N epochs del entrenamiento. Esto encuentra un punto más plano en el loss landscape que generaliza mejor, reduciendo la varianza de predicciones en especies volátiles.
+
+- Activar con `--swa-start 70` (epoch en que inicia SWA).
+- LR de SWA: `--swa-lr 1e-5` (constante durante SWA).
+- Genera `swa_model.pth` adicional. Si mejora la val accuracy, se guarda como `best_model.pth`.
+- Ideal cuando el modelo oscila en un plateau sin mejorar.
+
+### 9.9 Manejo de Desbalance de Clases
 
 - **WeightedRandomSampler**: sobremuestrea clases minoritarias
 - **Label Smoothing**: 0.1 para evitar sobreconfianza
 
-### 9.7 Salida del Entrenamiento
+### 9.10 Salida del Entrenamiento
 
 ```
 data/weights/
 ├── best_model.pth           # Mejores pesos (por val_accuracy)
 ├── final_model.pth          # Pesos al final del entrenamiento
+├── swa_model.pth            # Pesos SWA (si --swa-start > 0)
 ├── training_config.json     # Configuración completa
 └── training_history.json    # Loss y accuracy por época
 ```
 
-### 9.8 Tiempos Estimados
+### 9.11 Tiempos Estimados
 
 | GPU | ~300 clases / 50 epochs | ~150 clases / 50 epochs |
 |---|---|---|
@@ -780,7 +825,7 @@ data/weights/
 | RTX 4070 | ~1-2 horas | ~45 min |
 | CPU (i7) | ~12-20 horas | ~6-10 horas |
 
-### 9.9 Receta Avanzada: Alcanzar >85% de Accuracy
+### 9.12 Receta Avanzada: Alcanzar >85% de Accuracy
 
 Si el modelo se estanca en ~80-82% de val_accuracy, estos son los pasos para superar el 85%.
 
@@ -794,6 +839,30 @@ Si el modelo se estanca en ~80-82% de val_accuracy, estos son los pasos para sup
 
 #### Comando Recomendado
 
+1. Opcion A (v3 — CutMix + Layer-wise LR + SWA, recomendado):
+```bash
+python scripts/04_train_cnn.py \
+  --model efficientnet_b2 \
+  --image-size 260 \
+  --batch-size 64 \
+  --epochs 100 \
+  --lr 0.001 \
+  --freeze-epochs 7 \
+  --unfreeze-lr 0.0001 \
+  --cutmix-alpha 1.0 \
+  --mixup-alpha 0.1 \
+  --warmup-epochs 5 \
+  --max-grad-norm 1.0 \
+  --label-smoothing 0.1 \
+  --weight-decay 0.0001 \
+  --lr-decay-factor 0.85 \
+  --patience 20 \
+  --swa-start 70 \
+  --swa-lr 1e-5 \
+  --workers 8
+```
+
+2. Opcion B (v3 — CutMix + Mixup combinados):
 ```bash
 python scripts/04_train_cnn.py \
   --model efficientnet_b2 \
@@ -803,7 +872,30 @@ python scripts/04_train_cnn.py \
   --lr 0.001 \
   --freeze-epochs 7 \
   --unfreeze-lr 0.00005 \
+  --cutmix-alpha 1.0 \
   --mixup-alpha 0.2 \
+  --warmup-epochs 3 \
+  --max-grad-norm 1.0 \
+  --label-smoothing 0.1 \
+  --weight-decay 0.001 \
+  --lr-decay-factor 0.85 \
+  --patience 20 \
+  --swa-start 70 \
+  --swa-lr 1e-5 \
+  --workers 8
+```
+
+3. Opcion C (v2 legacy — Sin Mixup para referencia):
+```bash
+python scripts/04_train_cnn.py \
+  --model efficientnet_b2 \
+  --image-size 260 \
+  --batch-size 64 \
+  --epochs 100 \
+  --lr 0.001 \
+  --freeze-epochs 7 \
+  --unfreeze-lr 0.00005 \
+  --mixup-alpha 0.0 \
   --warmup-epochs 3 \
   --max-grad-norm 1.0 \
   --label-smoothing 0.1 \
@@ -811,30 +903,37 @@ python scripts/04_train_cnn.py \
   --workers 8
 ```
 
-#### Justificación de cada cambio
+#### Justificación de cada cambio (v3)
 
 | Cambio | Por qué |
 |---|---|
+| **CutMix α=1.0** en vez de Mixup | CutMix preserva colores/texturas locales. Ideal para biodiversidad donde color es discriminante. |
+| **Mixup α=0.2** (alternado con CutMix) | Cada batch elige CutMix o Mixup al azar (50/50). Más diversidad de regularización. |
 | **EfficientNet-B2** en vez de B0 | Más capacidad (9.1M params, resolución nativa 260px). B0 es insuficiente para 700+ clases. |
 | **image-size 260** | Resolución nativa de B2. Más detalle para discriminar especies similares. |
-| **Mixup α=0.2** | Regularización en el espacio de datos. Reduce gap train/val ~3-5%. |
-| **unfreeze-lr 5e-5** (antes 1e-4) | LR más conservador preserva mejor las features de ImageNet al descongelar. |
-| **Warmup 3 epochs** | Transición suave al fine-tuning completo. Evita saltos bruscos de loss. |
-| **patience 15** | Mixup converge más lento pero mejor. Más paciencia evita early-stopping prematuro. |
-| **epochs 60** | Más tiempo para que Mixup muestre efecto completo. |
+| **lr-decay-factor 0.85** | Capas tempranas (color/textura) reciben LR bajo, preservando features de ImageNet. Capas finales se adaptan más. |
+| **unfreeze-lr 0.0001** (antes 5e-5) | Subido para que con decay=0.85 los bloques tempranos reciban ~2.5e-5 (funcional). Con 5e-5 sería ~1.2e-5, prácticamente cero. |
+| **weight-decay 0.0001** (se mantiene) | 0.001 era demasiado agresivo para transfer learning — podía destruir features de ImageNet en el backbone. |
+| **warmup-epochs 5** (antes 3) | Más warmup para suavizar la transición con el LR más alto de 0.0001. |
+| **SWA start=70** | Promedia pesos en la zona de plateau (epochs 70-100). Evalúa SWA cada 5 epochs. No activa early stopping durante SWA. |
+| **patience 20** (antes 15) | SWA + CutMix convergen más lento. Más paciencia evita early-stopping prematuro. |
+| **Sin RandomGrayscale** | Eliminado: destruye señales de color críticas para biodiversidad (loros, mariposas, flores). |
+| **hue=0.02** (antes 0.05) | Reduce distorsión de color. Evita confundir rojo→naranja en especies color-dependientes. |
+| **Classifier head mejorado** (B2) | Linear→BN→ReLU→Dropout→Linear. Más capacidad representacional para 719 clases. |
 
-#### Efecto esperado vs B0 estándar
+#### Efecto esperado v3 vs v2
 
-| Métrica | B0 (estándar) | B2 + Mixup + Warmup |
+| Métrica | v2 (actual) | v3 (estimado) |
 |---|---|---|
-| Train Accuracy | ~97% | ~92-94% (esperado, Mixup lo baja) |
-| Val Accuracy | ~82% | **~85-88%** |
-| Gap Train/Val | ~15% | ~5-8% |
+| Train Accuracy | ~99% | ~93-95% (CutMix lo normaliza) |
+| Val Accuracy | ~87.9% | **~89-91%** |
+| Test Accuracy | ~86.7% | **~88-90%** |
+| Gap Train/Val | ~11% | ~5-7% |
+| Especies degradadas | 178 | ~80-100 |
+| Tier ≥0.90 | 309 | ~340-370 |
 | Tiempo entrenamiento | ~1 hora | ~2-3 horas |
 
-> **Nota:** Si aún no alcanza 85%, considerar: (1) agregar más imágenes por clase, (2) eliminar clases con <15 imágenes, (3) usar `efficientnet_b3` con `--image-size 300`.
-
----
+> **Nota:** Si aún no alcanza 88%, considerar: (1) agregar más imágenes por clase, (2) eliminar clases con <15 imágenes, (3) usar `efficientnet_b3` con `--image-size 300`, (4) activar CutMix + Mixup combinados (Opción B).
 
 ## 10. Paso 5: Evaluación
 

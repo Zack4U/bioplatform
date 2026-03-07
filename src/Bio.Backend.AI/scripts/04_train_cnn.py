@@ -44,6 +44,7 @@ try:
     import torch
     import torch.nn as nn
     import torch.optim as optim
+    from torch.optim.swa_utils import AveragedModel, SWALR, update_bn
     from torch.utils.data import DataLoader, WeightedRandomSampler
     from torchvision import datasets, models, transforms
 except ImportError:
@@ -90,10 +91,9 @@ def get_transforms(image_size: int = 224) -> dict[str, transforms.Compose]:
         transforms.RandomVerticalFlip(p=0.1),
         transforms.RandomRotation(degrees=15),
         transforms.ColorJitter(
-            brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1
+            brightness=0.2, contrast=0.15, saturation=0.1, hue=0.02
         ),
         transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
-        transforms.RandomGrayscale(p=0.05),
         transforms.ToTensor(),
         transforms.Normalize(imagenet_mean, imagenet_std),
         transforms.RandomErasing(p=0.1),
@@ -138,8 +138,11 @@ def build_model(
         assert isinstance(orig_layer, nn.Linear)
         in_features = orig_layer.in_features
         model.classifier = nn.Sequential(
+            nn.Linear(in_features, 512),
+            nn.BatchNorm1d(512),
+            nn.ReLU(inplace=True),
             nn.Dropout(p=0.4),
-            nn.Linear(in_features, num_classes),
+            nn.Linear(512, num_classes),
         )
 
     elif model_name == "resnet50":
@@ -179,6 +182,35 @@ def unfreeze_backbone(model: nn.Module) -> None:
     """Unfreeze all layers for fine-tuning."""
     for param in model.parameters():
         param.requires_grad = True
+
+
+def _get_layerwise_lr_groups(
+    model: nn.Module,
+    base_lr: float,
+    decay_factor: float,
+    weight_decay: float,
+) -> list[dict]:
+    """
+    Discriminative fine-tuning: earlier backbone layers get lower LR.
+    The classifier head gets the full base_lr, each preceding block is
+    multiplied by decay_factor.
+    """
+    features = list(model.features.children())  # type: ignore[union-attr]
+    num_blocks = len(features)
+    groups = []
+    for i, block in enumerate(features):
+        block_lr = base_lr * (decay_factor ** (num_blocks - i))
+        groups.append({
+            "params": list(block.parameters()),
+            "lr": block_lr,
+            "weight_decay": weight_decay,
+        })
+    groups.append({
+        "params": list(model.classifier.parameters()),  # type: ignore[union-attr]
+        "lr": base_lr,
+        "weight_decay": weight_decay,
+    })
+    return groups
 
 
 # ── Weighted Sampler for Class Imbalance ──────────────────────────
@@ -222,6 +254,48 @@ def mixup_data(
     return mixed_x, y_a, y_b, lam
 
 
+# ── CutMix Augmentation ──────────────────────────────────────────
+
+def cutmix_data(
+    x: torch.Tensor,
+    y: torch.Tensor,
+    alpha: float = 1.0,
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, float]:
+    """
+    CutMix: cut and paste rectangular patches between image pairs.
+    Preserves local textures and colors better than Mixup.
+    Returns mixed_x, y_a, y_b, lam.
+    """
+    if alpha > 0:
+        lam = np.random.beta(alpha, alpha)
+    else:
+        lam = 1.0
+
+    batch_size = x.size(0)
+    index = torch.randperm(batch_size, device=x.device)
+
+    _, _, h, w = x.shape
+    cut_ratio = np.sqrt(1.0 - lam)
+    cut_h = int(h * cut_ratio)
+    cut_w = int(w * cut_ratio)
+
+    cy = np.random.randint(h)
+    cx = np.random.randint(w)
+    y1 = np.clip(cy - cut_h // 2, 0, h)
+    y2 = np.clip(cy + cut_h // 2, 0, h)
+    x1 = np.clip(cx - cut_w // 2, 0, w)
+    x2 = np.clip(cx + cut_w // 2, 0, w)
+
+    mixed_x = x.clone()
+    mixed_x[:, :, y1:y2, x1:x2] = x[index, :, y1:y2, x1:x2]
+
+    # Adjust lambda to actual patch area ratio
+    lam = 1.0 - ((y2 - y1) * (x2 - x1)) / (h * w)
+
+    y_a, y_b = y, y[index]
+    return mixed_x, y_a, y_b, lam
+
+
 def mixup_criterion(
     criterion: nn.Module,
     pred: torch.Tensor,
@@ -229,7 +303,7 @@ def mixup_criterion(
     y_b: torch.Tensor,
     lam: float,
 ) -> torch.Tensor:
-    """Compute loss for mixup-augmented batch."""
+    """Compute loss for mixup/cutmix-augmented batch."""
     return lam * criterion(pred, y_a) + (1 - lam) * criterion(pred, y_b)
 
 
@@ -244,14 +318,16 @@ def train_one_epoch(
     epoch: int,
     *,
     mixup_alpha: float = 0.0,
+    cutmix_alpha: float = 0.0,
     max_grad_norm: float = 1.0,
 ) -> tuple[float, float]:
-    """Train for one epoch with optional Mixup. Returns (avg_loss, accuracy)."""
+    """Train for one epoch with optional Mixup/CutMix. Returns (avg_loss, accuracy)."""
     model.train()
     running_loss = 0.0
     correct = 0
     total = 0
     use_mixup = mixup_alpha > 0
+    use_cutmix = cutmix_alpha > 0
 
     pbar = tqdm(loader, desc=f"  Train Epoch {epoch}", leave=False)
     for inputs, labels in pbar:
@@ -259,8 +335,18 @@ def train_one_epoch(
 
         optimizer.zero_grad()
 
-        if use_mixup:
-            mixed_inputs, y_a, y_b, lam = mixup_data(inputs, labels, mixup_alpha)
+        if use_cutmix or use_mixup:
+            # If both enabled, randomly choose one per batch (50/50)
+            if use_cutmix and use_mixup:
+                if np.random.rand() < 0.5:
+                    mixed_inputs, y_a, y_b, lam = cutmix_data(inputs, labels, cutmix_alpha)
+                else:
+                    mixed_inputs, y_a, y_b, lam = mixup_data(inputs, labels, mixup_alpha)
+            elif use_cutmix:
+                mixed_inputs, y_a, y_b, lam = cutmix_data(inputs, labels, cutmix_alpha)
+            else:
+                mixed_inputs, y_a, y_b, lam = mixup_data(inputs, labels, mixup_alpha)
+
             outputs = model(mixed_inputs)
             loss = mixup_criterion(criterion, outputs, y_a, y_b, lam)
             # For accuracy tracking, use original labels with lam threshold
@@ -339,10 +425,18 @@ def main() -> None:
     parser.add_argument("--label-smoothing", type=float, default=0.1)
     parser.add_argument("--mixup-alpha", type=float, default=0.2,
                         help="Mixup alpha (0 = disabled, 0.2 recommended)")
+    parser.add_argument("--cutmix-alpha", type=float, default=0.0,
+                        help="CutMix alpha (0 = disabled, 1.0 recommended for biodiversity)")
     parser.add_argument("--warmup-epochs", type=int, default=3,
                         help="Linear warmup epochs during fine-tuning")
     parser.add_argument("--max-grad-norm", type=float, default=1.0,
                         help="Max gradient norm for clipping")
+    parser.add_argument("--lr-decay-factor", type=float, default=1.0,
+                        help="Layer-wise LR decay factor (1.0 = uniform, 0.85 recommended)")
+    parser.add_argument("--swa-start", type=int, default=0,
+                        help="Epoch to start SWA (0 = disabled, e.g. 70)")
+    parser.add_argument("--swa-lr", type=float, default=1e-5,
+                        help="SWA learning rate")
     args = parser.parse_args()
 
     # ── Setup ──────────────────────────────────────────────────────
@@ -360,7 +454,11 @@ def main() -> None:
     print(f"  Epochs:     {args.epochs} (freeze: {args.freeze_epochs})")
     print(f"  LR:         {args.lr} → {args.unfreeze_lr} (after unfreeze)")
     print(f"  Mixup:      alpha={args.mixup_alpha}")
+    print(f"  CutMix:     alpha={args.cutmix_alpha}")
     print(f"  Warmup:     {args.warmup_epochs} epochs")
+    print(f"  LR Decay:   {args.lr_decay_factor}")
+    if args.swa_start > 0:
+        print(f"  SWA:        start={args.swa_start}, lr={args.swa_lr}")
     print(f"{'=' * 60}\n")
 
     # ── Verify data ────────────────────────────────────────────────
@@ -468,10 +566,27 @@ def main() -> None:
     print(f"{'─' * 50}")
 
     unfreeze_backbone(model)
-    optimizer = optim.AdamW(
-        model.parameters(),
-        lr=args.unfreeze_lr, weight_decay=args.weight_decay,
-    )
+
+    # Layer-wise LR decay: earlier layers get lower LR
+    if args.lr_decay_factor < 1.0 and "efficientnet" in args.model:
+        param_groups = _get_layerwise_lr_groups(
+            model, args.unfreeze_lr, args.lr_decay_factor, args.weight_decay,
+        )
+        optimizer = optim.AdamW(param_groups)
+        print(f"  [INFO] Layer-wise LR decay: {len(param_groups)} groups, "
+              f"decay={args.lr_decay_factor}")
+    else:
+        optimizer = optim.AdamW(
+            model.parameters(),
+            lr=args.unfreeze_lr, weight_decay=args.weight_decay,
+        )
+
+    # SWA setup (initialized before loop, activated after swa_start)
+    swa_model = None
+    swa_scheduler = None
+    if args.swa_start > 0:
+        swa_model = AveragedModel(model)
+        swa_scheduler = SWALR(optimizer, swa_lr=args.swa_lr)
 
     # Cosine Annealing LR Scheduler with Linear Warmup
     remaining_epochs = args.epochs - args.freeze_epochs
@@ -491,15 +606,25 @@ def main() -> None:
         train_loss, train_acc = train_one_epoch(
             model, train_loader, criterion, optimizer, device, epoch,
             mixup_alpha=args.mixup_alpha,
+            cutmix_alpha=args.cutmix_alpha,
             max_grad_norm=args.max_grad_norm,
         )
         val_loss, val_acc = validate(model, val_loader, criterion, device)
-        scheduler.step()
+
+        # SWA: switch scheduler after swa_start epoch
+        in_swa_phase = swa_model is not None and epoch >= args.swa_start
+        if in_swa_phase:
+            assert swa_model is not None
+            assert swa_scheduler is not None
+            swa_model.update_parameters(model)
+            swa_scheduler.step()
+        else:
+            scheduler.step()
 
         current_lr = optimizer.param_groups[0]["lr"]
         epoch_data = {
             "epoch": epoch,
-            "phase": "finetune",
+            "phase": "swa" if in_swa_phase else "finetune",
             "train_loss": round(train_loss, 4),
             "train_acc": round(train_acc, 4),
             "val_loss": round(val_loss, 4),
@@ -509,23 +634,59 @@ def main() -> None:
         history.append(epoch_data)
 
         improved = ""
-        if val_acc > best_val_acc:
-            best_val_acc = val_acc
+        if in_swa_phase:
+            # During SWA: don't count patience (base model won't improve,
+            # SWA model is evaluated periodically and at the end)
             patience_counter = 0
-            torch.save(model.state_dict(), WEIGHTS_DIR / "best_model.pth")
-            improved = " ★ BEST"
+
+            # Evaluate SWA model every 5 epochs for early feedback
+            if epoch % 5 == 0:
+                assert swa_model is not None
+                update_bn(train_loader, swa_model, device=device)
+                swa_val_loss, swa_val_acc = validate(
+                    swa_model, val_loader, criterion, device,
+                )
+                if swa_val_acc > best_val_acc:
+                    best_val_acc = swa_val_acc
+                    torch.save(
+                        swa_model.module.state_dict(),
+                        WEIGHTS_DIR / "best_model.pth",
+                    )
+                    improved = f" ★ SWA BEST ({swa_val_acc:.4f})"
+                else:
+                    improved = f" (SWA: {swa_val_acc:.4f})"
         else:
-            patience_counter += 1
+            if val_acc > best_val_acc:
+                best_val_acc = val_acc
+                patience_counter = 0
+                torch.save(model.state_dict(), WEIGHTS_DIR / "best_model.pth")
+                improved = " ★ BEST"
+            else:
+                patience_counter += 1
 
         print(f"  Epoch {epoch:3d} │ "
               f"Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} │ "
               f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f} │ "
               f"LR: {current_lr:.2e}{improved}")
 
-        # Early stopping
-        if patience_counter >= args.patience:
+        # Early stopping (only active before SWA phase)
+        if not in_swa_phase and patience_counter >= args.patience:
             print(f"\n  ⏹ Early stopping at epoch {epoch} (patience={args.patience})")
             break
+
+    # ── Finalize SWA model ──────────────────────────────────────────
+    if swa_model is not None:
+        print("\n  [INFO] Updating SWA BatchNorm statistics...")
+        update_bn(train_loader, swa_model, device=device)
+        # Evaluate SWA model
+        swa_val_loss, swa_val_acc = validate(swa_model, val_loader, criterion, device)
+        print(f"  [INFO] SWA Val Accuracy: {swa_val_acc:.4f} ({swa_val_acc * 100:.1f}%)")
+        if swa_val_acc > best_val_acc:
+            best_val_acc = swa_val_acc
+            # SWA averaged model wraps the module, extract inner state_dict
+            torch.save(swa_model.module.state_dict(), WEIGHTS_DIR / "best_model.pth")
+            print("  [INFO] SWA model is BETTER → saved as best_model.pth ★")
+        torch.save(swa_model.module.state_dict(), WEIGHTS_DIR / "swa_model.pth")
 
     # ── Save final model and metadata ──────────────────────────────
     elapsed = time.time() - start_time
@@ -544,6 +705,11 @@ def main() -> None:
         "best_val_accuracy": round(best_val_acc, 4),
         "label_smoothing": args.label_smoothing,
         "weight_decay": args.weight_decay,
+        "mixup_alpha": args.mixup_alpha,
+        "cutmix_alpha": args.cutmix_alpha,
+        "lr_decay_factor": args.lr_decay_factor,
+        "swa_start": args.swa_start,
+        "swa_lr": args.swa_lr,
         "training_time_seconds": round(elapsed),
         "device": str(device),
         "pytorch_version": torch.__version__,
