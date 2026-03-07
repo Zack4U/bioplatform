@@ -117,6 +117,8 @@ public class RolesController : ControllerBase
     /// </summary>
     /// <param name="name">The name of the role.</param>
     /// <returns>The role information or 404 if not found.</returns>
+    /// <response code="200">Returns the role information.</response>
+    /// <response code="404">If the role is not found.</response>
     [HttpGet("name/{name}")]
     [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

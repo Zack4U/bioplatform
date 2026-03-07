@@ -49,6 +49,7 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <returns>A list of user DTOs.</returns>
     /// <response code="200">Returns the list of users.</response>
+    /// <response code="404">No users found.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<UserResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllUsers()
