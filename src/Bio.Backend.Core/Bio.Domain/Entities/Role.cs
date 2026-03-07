@@ -37,6 +37,7 @@ public class Role
 
     public Role(Guid id, string name, string? description = null)
     {
+        if (id == Guid.Empty) throw new ArgumentException("Role ID cannot be empty.", nameof(id));
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Role name is required.", nameof(name));
         
         Id = id;
