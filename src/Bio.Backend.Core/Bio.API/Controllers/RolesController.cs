@@ -1,23 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Bio.Application.DTOs;
-using Bio.Application.Services;
-using Bio.Application.Interfaces;
+using Bio.Application.Features.Roles.Commands.CreateRole;
+using Bio.Application.Features.Roles.Commands.DeleteRole;
+using Bio.Application.Features.Roles.Commands.UpdateRole;
+using Bio.Application.Features.Roles.Queries.GetAllRoles;
+using Bio.Application.Features.Roles.Queries.GetRoleById;
+using Bio.Application.Features.Roles.Queries.GetRoleByName;
+using MediatR;
 
 namespace Bio.API.Controllers;
 
 /// <summary>
-/// Controller for managing security roles.
+/// Controller for managing security roles using MediatR.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
 public class RolesController : ControllerBase
 {
-    private readonly IRoleService _roleService;
+    private readonly IMediator _mediator;
 
-    public RolesController(IRoleService roleService)
+    public RolesController(IMediator mediator)
     {
-        _roleService = roleService;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -34,10 +39,8 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var response = await _roleService.CreateRoleAsync(dto);
-            // We don't have GetRoleById yet but we can use the location header if needed.
-            // For now, just returning CreatedAtAction (assuming we might adding GetById later)
-            // or just status 201 with the object.
+            var command = new CreateRoleCommand(dto);
+            var response = await _mediator.Send(command);
             return StatusCode(StatusCodes.Status201Created, response);
         }
         catch (InvalidOperationException ex)
@@ -54,7 +57,8 @@ public class RolesController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<RoleResponseDTO>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RoleResponseDTO>>> GetAllRoles()
     {
-        var roles = await _roleService.GetAllRolesAsync();
+        var query = new GetAllRolesQuery();
+        var roles = await _mediator.Send(query);
         return Ok(roles);
     }
 
@@ -68,7 +72,8 @@ public class RolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RoleResponseDTO>> GetRoleById(Guid id)
     {
-        var role = await _roleService.GetRoleByIdAsync(id);
+        var query = new GetRoleByIdQuery(id);
+        var role = await _mediator.Send(query);
         if (role == null) return NotFound();
         return Ok(role);
     }
@@ -81,7 +86,7 @@ public class RolesController : ControllerBase
     /// <returns>The updated role information.</returns>
     /// <response code="200">Returns the updated role.</response>
     /// <response code="400">If the data is invalid or the name is already taken.</response>
-    /// <response code="44">If the role is not found.</response>
+    /// <response code="404">If the role is not found.</response>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(RoleResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -90,7 +95,8 @@ public class RolesController : ControllerBase
     {
         try
         {
-            var response = await _roleService.UpdateRoleAsync(id, dto);
+            var command = new UpdateRoleCommand(id, dto);
+            var response = await _mediator.Send(command);
             return Ok(response);
         }
         catch (KeyNotFoundException ex)
@@ -117,7 +123,8 @@ public class RolesController : ControllerBase
     {
         try
         {
-            await _roleService.DeleteRoleAsync(id);
+            var command = new DeleteRoleCommand(id);
+            await _mediator.Send(command);
             return NoContent();
         }
         catch (KeyNotFoundException ex)
@@ -136,7 +143,8 @@ public class RolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RoleResponseDTO>> GetRoleByName(string name)
     {
-        var role = await _roleService.GetRoleByNameAsync(name);
+        var query = new GetRoleByNameQuery(name);
+        var role = await _mediator.Send(query);
         if (role == null) return NotFound();
         return Ok(role);
     }

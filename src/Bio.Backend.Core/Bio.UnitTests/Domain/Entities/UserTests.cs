@@ -17,61 +17,73 @@ public class UserTests
     public class Initialization
     {
         /// <summary>
-        /// Verifies that a new User instance is initialized with the correct default values.
+        /// Verifies that a new User instance is initialized with the correct values via constructor.
         /// </summary>
         [Fact]
-        public void ShouldSetDefaultValues()
+        public void ShouldInitializeWithCorrectValues()
         {
+            // Arrange
+            var id = Guid.NewGuid();
+            var fullName = "John Doe";
+            var email = "john.doe@example.com";
+            var passwordHash = "hash";
+            var salt = "salt";
+            var phone = "+123456789";
+
             // Act
-            var user = new User();
+            var user = new User(id, fullName, email, passwordHash, salt, phone);
 
             // Assert
-            user.Id.Should().BeEmpty();
-            user.FullName.Should().BeEmpty();
-            user.Email.Should().BeEmpty();
-            user.PasswordHash.Should().BeEmpty();
-            user.PhoneNumber.Should().BeNull();
-            user.Salt.Should().BeEmpty();
+            user.Id.Should().Be(id);
+            user.FullName.Should().Be(fullName);
+            user.Email.Should().Be(email.ToLowerInvariant());
+            user.PasswordHash.Should().Be(passwordHash);
+            user.Salt.Should().Be(salt);
+            user.PhoneNumber.Should().Be(phone);
             user.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
             user.UpdatedAt.Should().BeNull();
+        }
+
+        /// <summary>
+        /// Verifies that domain invariants are enforced (e.g., name is required).
+        /// </summary>
+        [Fact]
+        public void ShouldThrowExceptionWhenNameIsEmpty()
+        {
+            // Act
+            Action act = () => new User(Guid.NewGuid(), "", "email@test.com", "h", "s");
+
+            // Assert
+            act.Should().Throw<ArgumentException>().WithMessage("*Full name is required.*");
         }
     }
 
     /// <summary>
-    /// Tests for setting and updating properties of the User entity.
+    /// Tests for updating properties via domain methods.
     /// </summary>
-    public class SetProperties
+    public class DomainMethods
     {
         /// <summary>
-        /// Verifies that the properties of the User entity can be updated correctly.
+        /// Verifies that the UpdateProfile method correctly updates the entity and the UpdatedAt timestamp.
         /// </summary>
         [Fact]
-        public void ShouldUpdateValues()
+        public void UpdateProfile_ShouldChangeValuesAndSetTimestamp()
         {
             // Arrange
-            var user = new User();
-            var id = Guid.NewGuid();
-            var updatedAt = DateTime.UtcNow;
+            var user = new User(Guid.NewGuid(), "Old Name", "old@email.com", "h", "s");
+            var newName = "New Name";
+            var newEmail = "NEW@EMAIL.COM";
+            var newPhone = "+987654321";
 
             // Act
-            user.Id = id;
-            user.FullName = "John Doe";
-            user.Email = "john.doe@example.com";
-            user.PasswordHash = "hashed_password";
-            user.PhoneNumber = "+1234567890";
-            user.Salt = "random_salt";
-            user.CreatedAt = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            user.UpdatedAt = updatedAt;
+            user.UpdateProfile(newName, newEmail, newPhone);
 
             // Assert
-            user.Id.Should().Be(id);
-            user.FullName.Should().Be("John Doe");
-            user.Email.Should().Be("john.doe@example.com");
-            user.PasswordHash.Should().Be("hashed_password");
-            user.PhoneNumber.Should().Be("+1234567890");
-            user.Salt.Should().Be("random_salt");
-            user.CreatedAt.Should().Be(new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            user.UpdatedAt.Should().Be(updatedAt);
+            user.FullName.Should().Be(newName);
+            user.Email.Should().Be(newEmail.ToLowerInvariant());
+            user.PhoneNumber.Should().Be(newPhone);
+            user.UpdatedAt.Should().NotBeNull();
+            user.UpdatedAt.Value.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         }
     }
 }

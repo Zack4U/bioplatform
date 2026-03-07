@@ -1,23 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Bio.Application.DTOs;
-using Bio.Application.Services;
-using Bio.Application.Interfaces;
+using Bio.Application.Features.UserRoles.Commands.AssignRole;
+using Bio.Application.Features.UserRoles.Commands.UnassignRole;
+using Bio.Application.Features.UserRoles.Queries.GetAllUserRoles;
+using Bio.Application.Features.UserRoles.Queries.GetUserRolesByRoleId;
+using Bio.Application.Features.UserRoles.Queries.GetUserRolesByRoleName;
+using Bio.Application.Features.UserRoles.Queries.GetUserRolesByUserId;
+using MediatR;
 
 namespace Bio.API.Controllers;
 
 /// <summary>
-/// Dedicated controller for independent user-role management.
+/// Dedicated controller for independent user-role management using MediatR.
 /// </summary>
 [ApiController]
 [Route("api/user-roles")]
 [Produces("application/json")]
 public class UserRolesController : ControllerBase
 {
-    private readonly IUserRoleService _userRoleService;
+    private readonly IMediator _mediator;
 
-    public UserRolesController(IUserRoleService userRoleService)
+    public UserRolesController(IMediator mediator)
     {
-        _userRoleService = userRoleService;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -29,7 +34,8 @@ public class UserRolesController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAssignments()
     {
-        var assignments = await _userRoleService.GetAllAssignmentsAsync();
+        var query = new GetAllUserRolesQuery();
+        var assignments = await _mediator.Send(query);
         return Ok(assignments);
     }
 
@@ -41,7 +47,7 @@ public class UserRolesController : ControllerBase
     [HttpGet("user/{userId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetByUser(Guid userId) =>
-        await HandleExceptionsAsync(async () => Ok(await _userRoleService.GetAssignmentsByUserIdAsync(userId)));
+        await HandleExceptionsAsync(async () => Ok(await _mediator.Send(new GetUserRolesByUserIdQuery(userId))));
 
     /// <summary>
     /// Retrieves all users assigned to a specific role name.
@@ -51,7 +57,7 @@ public class UserRolesController : ControllerBase
     [HttpGet("role/{roleName}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetByRole(string roleName) =>
-        await HandleExceptionsAsync(async () => Ok(await _userRoleService.GetAssignmentsByRoleNameAsync(roleName)));
+        await HandleExceptionsAsync(async () => Ok(await _mediator.Send(new GetUserRolesByRoleNameQuery(roleName))));
 
     /// <summary>
     /// Retrieves all users assigned to a specific role ID.
@@ -61,7 +67,7 @@ public class UserRolesController : ControllerBase
     [HttpGet("role-id/{roleId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetByRoleId(Guid roleId) =>
-        await HandleExceptionsAsync(async () => Ok(await _userRoleService.GetAssignmentsByRoleIdAsync(roleId)));
+        await HandleExceptionsAsync(async () => Ok(await _mediator.Send(new GetUserRolesByRoleIdQuery(roleId))));
 
     /// <summary>
     /// Assigns a security role to a user.
@@ -71,9 +77,10 @@ public class UserRolesController : ControllerBase
     /// <response code="204">Role successfully assigned.</response>
     /// <response code="400">If the role is already assigned or validation fails.</response>
     /// <response code="404">If the user or role was not found.</response>
+    [HttpPost]
     public async Task<IActionResult> AssignRole([FromBody] UserRoleCreateDTO dto) =>
         await HandleExceptionsAsync(async () => {
-            await _userRoleService.AssignRoleAsync(dto);
+            await _mediator.Send(new AssignRoleCommand(dto));
             return NoContent();
         });
 
@@ -85,9 +92,10 @@ public class UserRolesController : ControllerBase
     /// <returns>204 No Content if successfully unassigned.</returns>
     /// <response code="204">Role successfully unassigned.</response>
     /// <response code="404">If the assignment was not found.</response>
+    [HttpDelete("user/{userId:guid}/role/{roleId:guid}")]
     public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId) =>
         await HandleExceptionsAsync(async () => {
-            await _userRoleService.UnassignRoleAsync(userId, roleId);
+            await _mediator.Send(new UnassignRoleCommand(userId, roleId));
             return NoContent();
         });
 

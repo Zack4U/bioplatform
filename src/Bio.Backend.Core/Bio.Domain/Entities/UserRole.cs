@@ -2,32 +2,42 @@ namespace Bio.Domain.Entities;
 
 /// <summary>
 /// Domain entity representing the assignment of a role to a user.
-/// This is treated as an independent link between User and Role.
+/// Follows DDD principles with state protected by constructor.
 /// </summary>
 public class UserRole
 {
     /// <summary>
     /// Identifier of the associated user.
     /// </summary>
-    public Guid UserId { get; set; }
+    public Guid UserId { get; private set; }
 
     /// <summary>
     /// Identifier of the associated role.
     /// </summary>
-    public Guid RoleId { get; set; }
+    public Guid RoleId { get; private set; }
 
     /// <summary>
     /// Timestamp of when the role was assigned.
     /// </summary>
-    public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
+    public DateTime AssignedAt { get; private set; } = DateTime.UtcNow;
 
     /// <summary>
     /// Navigation property to the associated user.
     /// </summary>
-    public virtual User User { get; set; } = null!;
+    public virtual User User { get; private set; } = null!;
 
     /// <summary>
     /// Navigation property to the associated role.
     /// </summary>
-    public virtual Role Role { get; set; } = null!;
+    public virtual Role Role { get; private set; } = null!;
+
+    // Required for EF Core
+    private UserRole() { }
+
+    public UserRole(Guid userId, Guid roleId)
+    {
+        UserId = userId;
+        RoleId = roleId;
+        AssignedAt = DateTime.UtcNow;
+    }
 }

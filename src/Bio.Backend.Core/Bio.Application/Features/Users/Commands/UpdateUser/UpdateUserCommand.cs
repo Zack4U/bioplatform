@@ -1,0 +1,50 @@
+using Bio.Application.DTOs;
+using Bio.Domain.Interfaces;
+using MediatR;
+
+namespace Bio.Application.Features.Users.Commands.UpdateUser;
+
+public record UpdateUserCommand(Guid Id, UserUpdateDTO Dto) : IRequest<UserResponseDTO?>;
+
+public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserResponseDTO?>
+{
+    private readonly IUserRepository _userRepository;
+
+    public UpdateUserHandler(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+
+    public async Task<UserResponseDTO?> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    {
+        var user = await _userRepository.GetByIdAsync(request.Id);
+        if (user == null) return null;
+
+        // Uniqueness checks
+        var emailConflict = await _userRepository.GetByEmailExcludingIdAsync(request.Dto.Email, request.Id);
+        if (emailConflict != null)
+            throw new InvalidOperationException($"User with email {request.Dto.Email} already exists.");
+
+        if (!string.IsNullOrEmpty(request.Dto.PhoneNumber))
+        {
+            var phoneConflict = await _userRepository.GetByPhoneNumberExcludingIdAsync(request.Dto.PhoneNumber, request.Id);
+            if (phoneConflict != null)
+                throw new InvalidOperationException($"User with phone number {request.Dto.PhoneNumber} already exists.");
+        }
+
+        // Domain Logic
+        user.UpdateProfile(request.Dto.FullName, request.Dto.Email, request.Dto.PhoneNumber);
+
+        await _userRepository.SaveChangesAsync();
+
+        return new UserResponseDTO
+        {
+            Id = user.Id,
+            FullName = user.FullName,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt
+        };
+    }
+}
