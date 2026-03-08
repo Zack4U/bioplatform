@@ -554,7 +554,11 @@ def main() -> None:
     print(f"  Duration:                 {report['duration_seconds']}s")
     print("\n  Per-kingdom breakdown:")
     for k, v in sorted(kingdom_stats.items()):
-        print(f"    {k:15s} │ processed: {v['processed']:4d} │ downloaded: {v['downloaded']:5d} │ no_results: {v['no_results']:4d}")
+        print(
+            f"    {k:15s} │ processed: {v['processed']:4d} "
+            f"│ downloaded: {v['downloaded']:5d} "
+            f"│ no_results: {v['no_results']:4d}"
+        )
     print(f"\n  Report saved: {REPORT_FILE}")
     print("\n  Next steps:")
     print("  1. Augment offline: python scripts/02d_offline_augment.py --target 50")

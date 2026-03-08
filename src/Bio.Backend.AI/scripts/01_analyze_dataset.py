@@ -208,7 +208,8 @@ def generate_report(species_list: list[dict]) -> str:
         "─" * 40,
         "APTITUD PARA CNN (mín. imágenes por especie):",
         "─" * 40,
-        f"  ≥10 imágenes: {len(species_with_enough):4d} especies ({sum(sp['image_count'] for sp in species_with_enough):,} imgs)",
+        f"  ≥10 imágenes: {len(species_with_enough):4d} especies "
+        f"({sum(sp['image_count'] for sp in species_with_enough):,} imgs)",
         f"  ≥20 imágenes: {len(species_20plus):4d} especies ({sum(sp['image_count'] for sp in species_20plus):,} imgs)",
         f"  ≥50 imágenes: {len(species_50plus):4d} especies ({sum(sp['image_count'] for sp in species_50plus):,} imgs)",
         "",

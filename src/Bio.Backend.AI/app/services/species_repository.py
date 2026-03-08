@@ -17,6 +17,8 @@ from uuid import UUID
 
 import sqlalchemy as sa
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.database import get_db_session
 
 logger = logging.getLogger(__name__)
@@ -126,7 +128,7 @@ async def get_species_by_id(species_id: UUID) -> Optional[dict[str, Any]]:
 
 
 async def _get_distributions(
-    session,
+    session: AsyncSession,
     species_id: UUID,
     *,
     is_sensitive: bool = False,

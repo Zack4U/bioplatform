@@ -57,6 +57,49 @@ class _DropoutLinear:
         return _Impl(in_features, out_features, dropout)
 
 
+def _build_model_arch(model_name: str, num_classes: int) -> "nn.Module":
+    """Build the model architecture for the given model name."""
+    import torch.nn as nn
+    from torchvision import models
+
+    if model_name == "efficientnet_b0":
+        model = models.efficientnet_b0(weights=None)
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features: int = orig_layer.in_features
+        model.classifier = nn.Sequential(
+            nn.Dropout(p=0.3),
+            nn.Linear(in_features, num_classes),
+        )
+    elif model_name == "efficientnet_b2":
+        model = models.efficientnet_b2(weights=None)
+        orig_layer = model.classifier[1]
+        assert isinstance(orig_layer, nn.Linear)
+        in_features = orig_layer.in_features
+        model.classifier = nn.Sequential(
+            nn.Linear(in_features, 512),
+            nn.BatchNorm1d(512),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=0.4),
+            nn.Linear(512, num_classes),
+        )
+    elif model_name == "resnet50":
+        model = models.resnet50(weights=None)
+        in_features = model.fc.in_features
+        model.fc = _DropoutLinear.build(
+            in_features, num_classes, dropout=0.3,
+        )
+    elif model_name == "resnet101":
+        model = models.resnet101(weights=None)
+        in_features = model.fc.in_features
+        model.fc = _DropoutLinear.build(
+            in_features, num_classes, dropout=0.3,
+        )
+    else:
+        raise ValueError(f"Unsupported model: {model_name}")
+    return model
+
+
 class SpeciesClassifier:
     """
     CNN-based species classifier for BioPlatform Caldas.
@@ -91,8 +134,7 @@ class SpeciesClassifier:
         """
         try:
             import torch
-            import torch.nn as nn
-            from torchvision import models, transforms
+            from torchvision import transforms
         except ImportError as e:
             raise RuntimeError(
                 "PyTorch not installed. Run: pip install torch torchvision"
@@ -118,37 +160,7 @@ class SpeciesClassifier:
         logger.info(f"Loading model: {model_name} ({num_classes} classes)")
 
         # Build model architecture
-        if model_name == "efficientnet_b0":
-            model = models.efficientnet_b0(weights=None)
-            orig_layer = model.classifier[1]
-            assert isinstance(orig_layer, nn.Linear)
-            in_features: int = orig_layer.in_features
-            model.classifier = nn.Sequential(
-                nn.Dropout(p=0.3),
-                nn.Linear(in_features, num_classes),
-            )
-        elif model_name == "efficientnet_b2":
-            model = models.efficientnet_b2(weights=None)
-            orig_layer = model.classifier[1]
-            assert isinstance(orig_layer, nn.Linear)
-            in_features = orig_layer.in_features
-            model.classifier = nn.Sequential(
-                nn.Linear(in_features, 512),
-                nn.BatchNorm1d(512),
-                nn.ReLU(inplace=True),
-                nn.Dropout(p=0.4),
-                nn.Linear(512, num_classes),
-            )
-        elif model_name == "resnet50":
-            model = models.resnet50(weights=None)
-            in_features = model.fc.in_features
-            model.fc = _DropoutLinear.build(in_features, num_classes, dropout=0.3)
-        elif model_name == "resnet101":
-            model = models.resnet101(weights=None)
-            in_features = model.fc.in_features
-            model.fc = _DropoutLinear.build(in_features, num_classes, dropout=0.3)
-        else:
-            raise ValueError(f"Unsupported model: {model_name}")
+        model = _build_model_arch(model_name, num_classes)
 
         # Load weights
         if weights_path is None:

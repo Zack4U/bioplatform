@@ -229,7 +229,12 @@ def main() -> None:
 
     print("  Distribución por reino:")
     for k, v in sorted(kingdom_stats.items()):
-        print(f"    {k:15s} │ spp: {v['species']:5d} │ imgs: {v['total_images']:7d} │ orig: {v['original']:7d} │ aug: {v['augmented']:6d} │ ≥{args.min_images}: {v['above_threshold']:5d}")
+        print(
+            f"    {k:15s} │ spp: {v['species']:5d} "
+            f"│ imgs: {v['total_images']:7d} │ orig: {v['original']:7d} "
+            f"│ aug: {v['augmented']:6d} "
+            f"│ ≥{args.min_images}: {v['above_threshold']:5d}"
+        )
     print()
 
     print("  Top 10 (más imágenes):")
@@ -300,10 +305,19 @@ def main() -> None:
 
         f.write("DISTRIBUCIÓN POR REINO\n")
         f.write(f"{'-' * 90}\n")
-        f.write(f"{'Reino':15s} │ {'Especies':>8s} │ {'Imágenes':>8s} │ {'Original':>8s} │ {'Augment':>8s} │ {'≥' + str(args.min_images):>6s}\n")
+        header = (
+            f"{'Reino':15s} │ {'Especies':>8s} │ {'Imágenes':>8s} "
+            f"│ {'Original':>8s} │ {'Augment':>8s} "
+            f"│ {'≥' + str(args.min_images):>6s}\n"
+        )
+        f.write(header)
         f.write(f"{'-' * 90}\n")
         for k, v in sorted(kingdom_stats.items()):
-            f.write(f"{k:15s} │ {v['species']:8d} │ {v['total_images']:8d} │ {v['original']:8d} │ {v['augmented']:8d} │ {v['above_threshold']:6d}\n")
+            f.write(
+                f"{k:15s} │ {v['species']:8d} │ {v['total_images']:8d} "
+                f"│ {v['original']:8d} │ {v['augmented']:8d} "
+                f"│ {v['above_threshold']:6d}\n"
+            )
         f.write("\n")
 
         f.write(f"DETALLE POR ESPECIE (ordenado por: {args.sort})\n")
@@ -312,7 +326,11 @@ def main() -> None:
         f.write(f"{'-' * 90}\n")
         for i, sp in enumerate(all_species, 1):
             marker = "✓" if sp["total_images"] >= args.min_images else "✗"
-            f.write(f"{i:5d} │ {sp['species']:45s} │ {sp['kingdom']:12s} │ {sp['total_images']:6d} │ {sp['original_images']:6d} │ {sp['augmented_images']:5d} {marker}\n")
+            f.write(
+                f"{i:5d} │ {sp['species']:45s} │ {sp['kingdom']:12s} "
+                f"│ {sp['total_images']:6d} │ {sp['original_images']:6d} "
+                f"│ {sp['augmented_images']:5d} {marker}\n"
+            )
 
     # ── Done ──────────────────────────────────────────────────────
     print(f"\n{'=' * 65}")

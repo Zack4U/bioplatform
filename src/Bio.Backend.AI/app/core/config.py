@@ -48,12 +48,11 @@ class Settings(BaseSettings):
 
     # ── OpenAI (for future RAG) ────────────────────────────────
     openai_api_key: Optional[str] = None
-    
+
     # ── AWS (for future S3 storage) ─────────────────────────────
     aws_access_key_id: Optional[str] = None
     aws_secret_access_key: Optional[str] = None
     aws_region: Optional[str] = None
-    
 
     @property
     def pg_dsn(self) -> str:

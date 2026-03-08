@@ -37,6 +37,7 @@ DEFAULT_OUTPUT = PROJECT_ROOT / "data" / "comparation" / "report"
 
 # ── Helpers ────────────────────────────────────────────────────────
 
+
 def _load_json(path: Path) -> dict:
     with open(path, encoding="utf-8") as f:
         return json.load(f)

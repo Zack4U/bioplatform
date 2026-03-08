@@ -1,6 +1,8 @@
 import logging
 
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from typing import Any
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -18,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Startup/Shutdown lifecycle: load CNN model and check DB on startup."""
     settings = get_settings()
 
@@ -89,7 +91,7 @@ app.include_router(classify_router)
 
 
 @app.get("/health", tags=["Infrastructure"])
-async def health():
+async def health() -> dict[str, Any]:
     """
     Health check endpoint for Docker / load balancer probes.
     Reports CNN model status and PostgreSQL connectivity.
@@ -110,7 +112,7 @@ async def health():
 
 
 @app.get("/", tags=["Infrastructure"])
-async def root():
+async def root() -> dict[str, Any]:
     return {
         "message": "BioPlatform AI Service",
         "docs": "/docs",

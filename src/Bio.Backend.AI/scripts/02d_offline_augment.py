@@ -341,7 +341,11 @@ def main() -> None:
             cap = min(c["needed"], c["original_count"] * args.max_per_original)
             reachable = c["effective_total"] + cap
             marker = "✓" if reachable >= args.target else f"→{reachable}"
-            print(f"    {c['species']:40s} │ orig: {c['original_count']:3d} │ curr: {c['effective_total']:3d} │ need: {c['needed']:3d} │ {marker}")
+            print(
+                f"    {c['species']:40s} │ orig: {c['original_count']:3d} "
+                f"│ curr: {c['effective_total']:3d} "
+                f"│ need: {c['needed']:3d} │ {marker}"
+            )
         if len(candidates) > 30:
             print(f"    ... and {len(candidates) - 30} more")
         return

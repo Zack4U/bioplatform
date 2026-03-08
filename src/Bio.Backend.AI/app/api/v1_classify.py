@@ -33,6 +33,63 @@ MAX_FILE_SIZE = 10 * 1024 * 1024
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/jpg"}
 
 
+def _validate_upload(file: UploadFile, image_bytes: bytes) -> None:
+    """Validate uploaded file type and size. Raises HTTPException on failure."""
+    if file.content_type and file.content_type not in ALLOWED_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                f"Invalid file type: {file.content_type}. "
+                f"Allowed: {', '.join(ALLOWED_TYPES)}"
+            ),
+        )
+    if len(image_bytes) > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=(
+                f"File too large ({len(image_bytes)} bytes). "
+                f"Maximum: {MAX_FILE_SIZE} bytes."
+            ),
+        )
+    if len(image_bytes) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Empty file received.",
+        )
+
+
+async def _build_predictions(
+    raw_predictions: list[dict],
+    f1_threshold: float,
+) -> list[SpeciesPrediction]:
+    """Enrich raw CNN predictions with DB data and low-confidence alerts."""
+    predictions: list[SpeciesPrediction] = []
+    for p in raw_predictions:
+        species_name = p["species"]
+        taxonomy = TaxonomyInfo(**p.get("taxonomy", {}))
+        species_data = await _enrich_from_db(species_name)
+
+        low_conf_alert = None
+        if p["confidence"] < f1_threshold:
+            low_conf_alert = (
+                f"Low confidence ({p['confidence']:.1%}). "
+                f"Below reliability threshold ({f1_threshold:.0%}). "
+                "This prediction may not be accurate."
+            )
+
+        predictions.append(
+            SpeciesPrediction(
+                species=species_name,
+                confidence=p["confidence"],
+                rank=p["rank"],
+                low_confidence_alert=low_conf_alert,
+                taxonomy=taxonomy,
+                species_data=species_data,
+            )
+        )
+    return predictions
+
+
 async def _enrich_from_db(species_name: str) -> SpeciesDbInfo:
     """
     Lookup a species in PostgreSQL and return enriched data.
@@ -124,26 +181,9 @@ async def classify_species(
             detail="Model not loaded yet. Please wait for initialization.",
         )
 
-    # Validate file type
-    if file.content_type and file.content_type not in ALLOWED_TYPES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid file type: {file.content_type}. Allowed: {', '.join(ALLOWED_TYPES)}",
-        )
-
-    # Read and validate file size
+    # Read and validate file
     image_bytes = await file.read()
-    if len(image_bytes) > MAX_FILE_SIZE:
-        raise HTTPException(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            detail=f"File too large ({len(image_bytes)} bytes). Maximum: {MAX_FILE_SIZE} bytes.",
-        )
-
-    if len(image_bytes) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Empty file received.",
-        )
+    _validate_upload(file, image_bytes)
 
     # Classify
     start_time = time.monotonic()
@@ -167,31 +207,9 @@ async def classify_species(
     f1_threshold = get_settings().bio_min_f1_threshold
 
     # Enrich top predictions with DB data
-    predictions: list[SpeciesPrediction] = []
-    for p in result["predictions"]:
-        species_name = p["species"]
-        taxonomy = TaxonomyInfo(**p.get("taxonomy", {}))
-        species_data = await _enrich_from_db(species_name)
-
-        # Low-confidence alert per prediction
-        low_conf_alert = None
-        if p["confidence"] < f1_threshold:
-            low_conf_alert = (
-                f"Low confidence ({p['confidence']:.1%}). "
-                f"Below reliability threshold ({f1_threshold:.0%}). "
-                "This prediction may not be accurate."
-            )
-
-        predictions.append(
-            SpeciesPrediction(
-                species=species_name,
-                confidence=p["confidence"],
-                rank=p["rank"],
-                low_confidence_alert=low_conf_alert,
-                taxonomy=taxonomy,
-                species_data=species_data,
-            )
-        )
+    predictions = await _build_predictions(
+        result["predictions"], f1_threshold,
+    )
 
     # Global alert if even the top-1 prediction is below threshold
     global_alert = None
