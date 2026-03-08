@@ -25,7 +25,7 @@ class TestGetEngine:
             patch("app.core.database.get_settings") as mock_settings,
             patch("app.core.database.create_async_engine") as mock_create,
         ):
-            mock_settings.return_value.pg_dsn = "postgresql+asyncpg://u:p@h:5432/db"
+            mock_settings.return_value.pg_dsn = "postgresql+asyncpg://u:p@h:5433/db"
             mock_settings.return_value.debug = False
             result = _get_engine()
             mock_create.assert_called_once()

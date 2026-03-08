@@ -24,7 +24,7 @@ def mock_settings():
         debug=True,
         log_level="DEBUG",
         pg_host="testhost",
-        pg_port=5432,
+        pg_port=5433,
         pg_user="testuser",
         pg_password="testpass",
         pg_database="testdb",

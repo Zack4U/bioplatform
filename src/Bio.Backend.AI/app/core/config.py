@@ -34,7 +34,7 @@ class Settings(BaseSettings):
 
     # ── PostgreSQL (BioCommerce_Scientific) ────────────────────
     pg_host: str = "localhost"
-    pg_port: int = 5432
+    pg_port: int = 5433
     pg_user: str = "postgres"
     pg_password: str = "postgres"
     pg_database: str = "biocommerce_scientific"

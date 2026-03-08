@@ -15,7 +15,7 @@ class TestSettings:
         assert s.debug is False
         assert s.log_level == "INFO"
         assert s.pg_host == "localhost"
-        assert s.pg_port == 5432
+        assert s.pg_port == 5433
         assert s.pg_user == "postgres"
         assert s.pg_password == "postgres"
         assert s.pg_database == "biocommerce_scientific"

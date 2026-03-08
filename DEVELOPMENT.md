@@ -8,7 +8,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │ Docker (Infraestructura)                                      │
 ├─────────────────────────────────────────────────────────────┤
-│ ✅ SQL Server (1433)       ✅ PostgreSQL (5432)             │
+│ ✅ SQL Server (1433)       ✅ PostgreSQL (5433)             │
 │ ✅ Redis (6379)            ✅ ChromaDB (8001)               │
 │ ✅ MongoDB (27017)         ✅ pgAdmin (5050)                 │
 │ ✅ Adminer (8090)          ✅ Seq (5341)                    │
@@ -42,6 +42,7 @@ bash run.sh all           # TODO
 ```
 
 **Resultado esperado:**
+
 - ✅ Docker levanta en terminal dedicada
 - ✅ Backend corre en `http://localhost:5070` (con Swagger)
 - ✅ AI Service en `http://localhost:8000` (con Docs)
@@ -49,6 +50,7 @@ bash run.sh all           # TODO
 - ✅ pgAdmin en `http://localhost:5050` (BD UI)
 
 > ⚠️ **IMPORTANTE:** El script **SOLO levanta servios**, no configura nada.
+>
 > - Primero debes copiar `.env.example` → `.env`
 > - Luego editar `.env` con tus API keys y credenciales
 > - Ver sección "1. Configuración Inicial" más abajo
@@ -82,6 +84,7 @@ docker-compose logs -f
 ```
 
 **Esperado:**
+
 ```
 STATUS              NAMES
 healthy             bioplatform-sqlserver
@@ -114,6 +117,7 @@ dotnet watch run --project Bio.API/Bio.API.csproj
 ```
 
 **Requisitos:**
+
 - .NET 8 SDK instalado
 - Variables de conexión a BD en appsettings
 
@@ -145,6 +149,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 **Requisitos:**
+
 - Python 3.11+
 - Variables: `DATABASE_URL`, `OPENAI_API_KEY`, etc.
 
@@ -166,6 +171,7 @@ npm run dev
 ```
 
 **Requisitos:**
+
 - Node 20+
 - Variables: `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_AI_API_URL`
 
@@ -194,17 +200,19 @@ npx expo start
 **Conexión a Backend desde Mobile:**
 
 En `src/Bio.Frontend.Mobile/src/config/api.ts` (o similar):
+
 ```typescript
-const API_URL = __DEV__ 
-  ? 'http://YOUR_LOCAL_IP:5070/api'  // Cambia YOUR_LOCAL_IP por tu IP
-  : 'https://api.bioplatform.com/api';
+const API_URL = __DEV__
+    ? "http://YOUR_LOCAL_IP:5070/api" // Cambia YOUR_LOCAL_IP por tu IP
+    : "https://api.bioplatform.com/api";
 
 const AI_API_URL = __DEV__
-  ? 'http://YOUR_LOCAL_IP:8000/api'
-  : 'https://ai.bioplatform.com/api';
+    ? "http://YOUR_LOCAL_IP:8000/api"
+    : "https://ai.bioplatform.com/api";
 ```
 
 **Requisitos:**
+
 - Node 20+
 - Expo CLI: `npm install -g expo-cli`
 - iOS Simulator (macOS) o Android Emulator
@@ -212,11 +220,11 @@ const AI_API_URL = __DEV__
 
 ## 3. Herramientas de Gestión (Docker)
 
-| Herramienta | URL | Propósito |
-|---|---|---|
-| **pgAdmin** | http://localhost:5050 | Gestionar PostgreSQL |
+| Herramienta | URL                   | Propósito                         |
+| ----------- | --------------------- | --------------------------------- |
+| **pgAdmin** | http://localhost:5050 | Gestionar PostgreSQL              |
 | **Adminer** | http://localhost:8090 | Gestionar SQL Server + PostgreSQL |
-| **Seq** | http://localhost:5341 | Ver logs centralizados |
+| **Seq**     | http://localhost:5341 | Ver logs centralizados            |
 
 - Credenciales: En las variables de entorno (.env)
 
@@ -255,7 +263,9 @@ $ npx expo start
 ```
 
 ### Nota sobre Mobile Development
+
 El frontend Mobile **siempre corre localmente** (nunca en Docker) porque:
+
 - Expo requiere metro bundler activo para hot reload
 - La app conecta al backend via HTTP (no requiere Docker)
 - Los cambios se ven instantáneamente en emulador/físico
@@ -267,15 +277,17 @@ El frontend Mobile **siempre corre localmente** (nunca en Docker) porque:
 ### 5.1 Conexión desde Local
 
 **PostgreSQL:**
+
 ```
 Host: localhost
-Port: 5432
+Port: 5433
 User: postgres
 Password: postgres123 (del .env)
 Database: bioplatform_dev
 ```
 
 **SQL Server:**
+
 ```
 Server: localhost,1433
 User: sa
@@ -286,6 +298,7 @@ Database: bioplatform
 ### 5.2 Migraciones
 
 **EF Core (.NET):**
+
 ```bash
 cd src/Bio.Backend.Core
 
@@ -327,7 +340,8 @@ docker-compose down -v
 
 ## 7. Troubleshooting
 
-### "Cannot connect to localhost:5432"
+### "Cannot connect to localhost:5433"
+
 ```bash
 # Verifica que Docker está corriendo
 docker-compose ps
@@ -337,6 +351,7 @@ docker-compose restart postgres
 ```
 
 ### "Port 5070 already in use"
+
 ```bash
 # Busca qué está usando el puerto
 lsof -i :5070  # macOS/Linux
@@ -347,6 +362,7 @@ dotnet watch run --project src/Bio.API/Bio.API.csproj -- --urls=http://+:5080
 ```
 
 ### "Module not found" en Python
+
 ```bash
 # Asegúrate de tener el venv activado
 source venv/bin/activate  # Linux/macOS

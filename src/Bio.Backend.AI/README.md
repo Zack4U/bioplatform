@@ -97,13 +97,13 @@ cp .env.example .env
 
 Key variables:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PG_HOST` | PostgreSQL host | `localhost` |
-| `PG_PORT` | PostgreSQL port | `5432` |
-| `PG_USER` | Database user | `postgres` |
-| `PG_PASSWORD` | Database password | — |
-| `PG_DATABASE` | Database name | `biocommerce_scientific` |
+| Variable             | Description        | Default                       |
+| -------------------- | ------------------ | ----------------------------- |
+| `PG_HOST`            | PostgreSQL host    | `localhost`                   |
+| `PG_PORT`            | PostgreSQL port    | `5433`                        |
+| `PG_USER`            | Database user      | `postgres`                    |
+| `PG_PASSWORD`        | Database password  | —                             |
+| `PG_DATABASE`        | Database name      | `biocommerce_scientific`      |
 | `MODEL_WEIGHTS_PATH` | Path to model file | `data/weights/best_model.pth` |
 
 ### 5. Run the Service
@@ -135,22 +135,24 @@ curl http://localhost:8000/api/v1/model-info
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/` | Service info and available endpoints |
-| `GET` | `/health` | Health check (model + database status) |
-| `GET` | `/docs` | Swagger UI (interactive API docs) |
-| `POST` | `/api/v1/classify` | Classify a species image (top-K predictions) |
-| `GET` | `/api/v1/model-info` | CNN model metadata and class list |
+| Method | Path                 | Description                                  |
+| ------ | -------------------- | -------------------------------------------- |
+| `GET`  | `/`                  | Service info and available endpoints         |
+| `GET`  | `/health`            | Health check (model + database status)       |
+| `GET`  | `/docs`              | Swagger UI (interactive API docs)            |
+| `POST` | `/api/v1/classify`   | Classify a species image (top-K predictions) |
+| `GET`  | `/api/v1/model-info` | CNN model metadata and class list            |
 
 ### POST /api/v1/classify
 
 **Parameters:**
+
 - `file` (form): Image file (JPEG, PNG, WebP). Max 10 MB.
 - `top_k` (query): Number of predictions (1-20, default: 5).
 - `confidence_threshold` (query): Min confidence (0.0-1.0, default: 0.01).
 
 **Response:** Each prediction includes:
+
 - CNN confidence score and taxonomy (from `class_info.json`)
 - **Enriched species data from PostgreSQL** (description, ecology, conservation status, geographic distributions)
 - If the species is not in the DB → `species_data.found_in_db = false` with an alert message
