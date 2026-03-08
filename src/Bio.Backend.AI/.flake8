@@ -1,0 +1,10 @@
+[flake8]
+max-line-length = 127
+max-complexity = 10
+
+per-file-ignores =
+    # Embedded HTML template contains long lines that cannot be wrapped
+    scripts/model_auditor.py:E501
+    # Data-pipeline scripts have inherently complex main() functions
+    # due to sequential multi-branch processing logic
+    scripts/*.py:C901

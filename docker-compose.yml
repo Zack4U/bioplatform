@@ -13,114 +13,118 @@
 version: "3.8"
 
 services:
-  # ===========================================
-  # INFRAESTRUCTURA - Solo en Docker
-  # ===========================================
+    # ===========================================
+    # INFRAESTRUCTURA - Solo en Docker
+    # ===========================================
 
-  # SQL Server - Transacciones, Identity, Marketplace
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: bioplatform-sqlserver
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=${DB_SQL_PASSWORD}
-      - MSSQL_PID=Developer
-    ports:
-      - "1433:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql
-      - ./docker/sqlserver/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - bioplatform-network
-    healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -Q "SELECT 1" || exit 1
-      interval: 10s
-      timeout: 5s
-      retries: 10
+    # SQL Server - Transacciones, Identity, Marketplace
+    sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        container_name: bioplatform-sqlserver
+        environment:
+            - ACCEPT_EULA=Y
+            - MSSQL_SA_PASSWORD=${DB_SQL_PASSWORD}
+            - MSSQL_PID=Developer
+        ports:
+            - "1433:1433"
+        volumes:
+            - sqlserver_data:/var/opt/mssql
+            - ./docker/sqlserver/init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - bioplatform-network
+        healthcheck:
+            test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -Q "SELECT 1" || exit 1
+            interval: 10s
+            timeout: 5s
+            retries: 10
 
-  # PostgreSQL - Catálogo científico, GIS, AI Metadata
-  postgres:
-    image: postgis/postgis:16-3.4
-    container_name: bioplatform-postgres
-    environment:
-      - POSTGRES_USER=${DB_PG_USER}
-      - POSTGRES_PASSWORD=${DB_PG_PASSWORD}
-      - POSTGRES_DB=${DB_PG_DATABASE}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - bioplatform-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_PG_USER} -d ${DB_PG_DATABASE}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # PostgreSQL - Catálogo científico, GIS, AI Metadata
+    postgres:
+        image: postgis/postgis:16-3.4
+        container_name: bioplatform-postgres
+        environment:
+            - POSTGRES_USER=${DB_PG_USER}
+            - POSTGRES_PASSWORD=${DB_PG_PASSWORD}
+            - POSTGRES_DB=${DB_PG_DATABASE}
+        ports:
+            - "5433:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+        networks:
+            - bioplatform-network
+        healthcheck:
+            test:
+                [
+                    "CMD-SHELL",
+                    "pg_isready -U ${DB_PG_USER} -d ${DB_PG_DATABASE}",
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  # Redis - Caché
-  redis:
-    image: redis:7-alpine
-    container_name: bioplatform-redis
-    command: redis-server --appendonly yes
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - bioplatform-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    # Redis - Caché
+    redis:
+        image: redis:7-alpine
+        container_name: bioplatform-redis
+        command: redis-server --appendonly yes
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis_data:/data
+        networks:
+            - bioplatform-network
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
-  # ChromaDB - Vector Store para RAG
-  chromadb:
-    image: chromadb/chroma:latest
-    container_name: bioplatform-chromadb
-    ports:
-      - "8001:8000"
-    volumes:
-      - chroma_data:/chroma/chroma
-    networks:
-      - bioplatform-network
-    environment:
-      - ANONYMIZED_TELEMETRY=false
+    # ChromaDB - Vector Store para RAG
+    chromadb:
+        image: chromadb/chroma:latest
+        container_name: bioplatform-chromadb
+        ports:
+            - "8001:8000"
+        volumes:
+            - chroma_data:/chroma/chroma
+        networks:
+            - bioplatform-network
+        environment:
+            - ANONYMIZED_TELEMETRY=false
 
-  # MongoDB - Logs (Opcional)
-  mongodb:
-    image: mongo:7
-    container_name: bioplatform-mongodb
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - bioplatform-network
-    profiles:
-      - full # Solo se levanta con: docker-compose --profile full up
+    # MongoDB - Logs (Opcional)
+    mongodb:
+        image: mongo:7
+        container_name: bioplatform-mongodb
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+            - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongodb_data:/data/db
+        networks:
+            - bioplatform-network
+        profiles:
+            - full # Solo se levanta con: docker-compose --profile full up
 
 # ===========================================
 # NETWORKS
 # ===========================================
 networks:
-  bioplatform-network:
-    driver: bridge
+    bioplatform-network:
+        driver: bridge
 
 # ===========================================
 # VOLUMES
 # ===========================================
 volumes:
-  sqlserver_data:
-  postgres_data:
-  redis_data:
-  mongodb_data:
-  chroma_data:
-  ai_models:
-  ai_vectorstore:
+    sqlserver_data:
+    postgres_data:
+    redis_data:
+    mongodb_data:
+    chroma_data:
+    ai_models:
+    ai_vectorstore:

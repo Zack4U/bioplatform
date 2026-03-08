@@ -1,0 +1,23 @@
+Top 20 Most Confused Species Pairs:
+True Species                             Predicted As                                 Rate  Count
+──────────────────────────────────────────────────────────────────────────────────────────────
+Diglossa_humeralis                       Diglossa_lafresnayii                      60.00%      3
+Myiozetetes_cayanensis                   Pitangus_sulphuratus                      42.86%      3
+Mimus_gilvus                             Serpophaga_cinerea                        40.00%      2
+Nasua_olivacea                           Dasyprocta_punctata                       40.00%      2
+Tyrannus_savana                          Zenaida_auriculata                        40.00%      2
+Gaiadendron_punctatum                    Baccharis_latifolia                       40.00%      2
+Patagioenas_fasciata                     Patagioenas_cayennensis                   40.00%      2
+Opaon_varicolor                          Paramastax_rosenbergi                     40.00%      2
+Fuchsia_petiolaris                       Fuchsia_nigricans                         40.00%      2
+Boana_platanera                          Boana_pugnax                              40.00%      2
+Anthracothorax_nigricollis               Chaetocercus_mulsant                      40.00%      2
+Catamenia_homochroa                      Catamenia_inornata                        40.00%      2
+Heliconius_eleuchia                      Heliconius_cydno                          40.00%      2
+Ardea_alba                               Egretta_thula                             40.00%      2
+Pristimantis_thectopternus               Pristimantis_achatinus                    40.00%      2
+Columbina_talpacoti                      Zenaida_auriculata                        30.00%      3
+Golofa_porteri                           Golofa_eacus                              22.22%      2
+Metallura_tyrianthina                    Heliangelus_exortis                       22.22%      2
+Leucopternis_princeps                    Cacicus_chrysonotus                       20.00%      1
+Ampelion_rufaxilla                       Herpetotheres_cachinnans                  20.00%      1
