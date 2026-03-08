@@ -54,8 +54,8 @@ data/weights/*.safetensors
 
 ```bash
 # Instalar DVC con el backend de tu elección
-pip install dvc dvc-gdrive      # Google Drive (más simple para equipos pequeños)
-# pip install dvc dvc-s3        # Amazon S3
+# pip install dvc dvc-gdrive      # Google Drive (más simple para equipos pequeños)
+pip install dvc dvc-s3        # Amazon S3
 # pip install dvc dvc-azure     # Azure Blob Storage
 # pip install dvc dvc-gcs       # Google Cloud Storage
 ```
@@ -70,13 +70,17 @@ dvc init
 
 # Configurar almacenamiento remoto
 # Opción A: Google Drive (carpeta compartida del equipo)
-dvc remote add -d storage gdrive://<ID_DE_CARPETA_COMPARTIDA>
+# dvc remote add -d storage gdrive://<ID_DE_CARPETA_COMPARTIDA>
 
-# Opción B: Amazon S3
-# dvc remote add -d storage s3://bioplatform-models/weights
+# Opción B: Amazon S3 (Recomendado)
+dvc remote add -d storage s3://bioplatform-private/dvc-storage
 
 # Opción C: Azure Blob
 # dvc remote add -d storage azure://bioplatform/models
+
+# Configurar credenciales
+dvc remote modify --local s3-remote access_key_id TU_ACCESS_KEY_AQUI
+dvc remote modify --local s3-remote secret_access_key TU_SECRET_KEY_AQUI
 
 # Confirmar la configuración en Git
 git add .dvc/ .dvcignore
