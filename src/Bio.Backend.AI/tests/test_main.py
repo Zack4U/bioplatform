@@ -70,3 +70,39 @@ class TestAppMetadata:
         schema = resp.json()
         assert "info" in schema
         assert schema["info"]["title"] == "Test AI Service"
+
+
+class TestLifespan:
+    """Test lifespan startup/shutdown coverage."""
+
+    @pytest.mark.asyncio
+    async def test_lifespan_startup_shutdown(self, mock_settings):
+        from unittest.mock import AsyncMock, patch, MagicMock
+        from app.main import lifespan, app
+
+        mock_clf = MagicMock()
+        mock_clf.load_model.side_effect = FileNotFoundError("no weights")
+        mock_clf.num_classes = 0
+
+        with (
+            patch(
+                "app.core.config.get_settings",
+                return_value=mock_settings,
+            ),
+            patch(
+                "app.services.vision.classifier.get_classifier",
+                return_value=mock_clf,
+            ),
+            patch(
+                "app.core.database.check_db_connection",
+                new_callable=AsyncMock,
+                return_value=False,
+            ),
+            patch(
+                "app.core.database.dispose_engine",
+                new_callable=AsyncMock,
+            ) as mock_dispose,
+        ):
+            async with lifespan(app):
+                pass  # startup and shutdown executed
+            mock_dispose.assert_called_once()
