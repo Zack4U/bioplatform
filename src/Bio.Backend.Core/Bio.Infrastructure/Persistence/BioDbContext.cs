@@ -33,6 +33,8 @@ public class BioDbContext : DbContext
             // Integrity and length rules for fields
             entity.Property(e => e.FullName).IsRequired().HasMaxLength(150);
             entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.Salt).IsRequired().HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
 
             // Ensures that no duplicate emails exist
