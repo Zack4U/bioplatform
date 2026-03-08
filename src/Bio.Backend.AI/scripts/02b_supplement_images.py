@@ -294,7 +294,7 @@ def main() -> None:
     print(f"\n{'=' * 60}")
     print("  SUPPLEMENT IMAGES (API Download) – BioPlatform Caldas")
     print(f"{'=' * 60}")
-    print(f"  API:            iNaturalist v1 (research-grade)")
+    print("  API:            iNaturalist v1 (research-grade)")
     print(f"  Max images:     {args.max_images} total per species")
     print(f"  Min existing:   {args.min_existing}")
     print(f"  Image size:     {args.image_size}px")
@@ -552,14 +552,14 @@ def main() -> None:
     print(f"  Species with no results:  {total_no_results}")
     print(f"  Final distribution:       {final_dist}")
     print(f"  Duration:                 {report['duration_seconds']}s")
-    print(f"\n  Per-kingdom breakdown:")
+    print("\n  Per-kingdom breakdown:")
     for k, v in sorted(kingdom_stats.items()):
         print(f"    {k:15s} │ processed: {v['processed']:4d} │ downloaded: {v['downloaded']:5d} │ no_results: {v['no_results']:4d}")
     print(f"\n  Report saved: {REPORT_FILE}")
-    print(f"\n  Next steps:")
-    print(f"  1. Augment offline: python scripts/02d_offline_augment.py --target 50")
+    print("\n  Next steps:")
+    print("  1. Augment offline: python scripts/02d_offline_augment.py --target 50")
     print(f"  2. Re-organize:    python scripts/03_organize_dataset.py --min-images {args.min_existing} --clean")
-    print(f"  3. Re-train:       python scripts/04_train_cnn.py --model efficientnet_b2 ...")
+    print("  3. Re-train:       python scripts/04_train_cnn.py --model efficientnet_b2 ...")
 
 
 if __name__ == "__main__":

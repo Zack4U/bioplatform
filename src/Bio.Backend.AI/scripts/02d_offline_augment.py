@@ -453,14 +453,14 @@ def main() -> None:
     print(f"  Species rescued (≥{args.target}):  {rescued} / {len(candidates)} ({report['summary']['rescue_rate_pct']}%)")
     print(f"  Not rescued:              {len(candidates) - rescued}")
     print(f"  Duration:                 {report['duration_seconds']}s")
-    print(f"\n  Per-kingdom breakdown:")
+    print("\n  Per-kingdom breakdown:")
     for k, v in sorted(kingdom_stats.items()):
         print(f"    {k:15s} │ processed: {v['processed']:4d} │ rescued: {v['rescued']:4d} │ augmented: {v['augmented']:6d}")
     print(f"\n  Report saved: {REPORT_FILE}")
-    print(f"\n  Next steps:")
-    print(f"  1. Verify:      python scripts/02c_raw_images_summary.py")
-    print(f"  2. Re-organize: python scripts/03_organize_dataset.py --min-images 10 --clean")
-    print(f"  3. Re-train:    python scripts/04_train_cnn.py --model efficientnet_b2 ...")
+    print("\n  Next steps:")
+    print("  1. Verify:      python scripts/02c_raw_images_summary.py")
+    print("  2. Re-organize: python scripts/03_organize_dataset.py --min-images 10 --clean")
+    print("  3. Re-train:    python scripts/04_train_cnn.py --model efficientnet_b2 ...")
     print()
 
 

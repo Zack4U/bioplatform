@@ -26,11 +26,11 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent          # Bio.Backend.AI/
 sys.path.insert(0, str(PROJECT_ROOT))
 
-import uvicorn
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import HTMLResponse, JSONResponse
+import uvicorn  # noqa: E402
+from fastapi import FastAPI, File, UploadFile  # noqa: E402
+from fastapi.responses import HTMLResponse, JSONResponse  # noqa: E402
 
-from app.services.vision.classifier import SpeciesClassifier
+from app.services.vision.classifier import SpeciesClassifier  # noqa: E402
 
 # ── FastAPI app ────────────────────────────────────────────────────
 api = FastAPI(title="Bio Model Auditor", docs_url=None, redoc_url=None)
@@ -75,7 +75,7 @@ def _load_species_f1_data(min_f1: float) -> tuple[set[str] | None, dict[str, flo
     global _species_stats
     eval_path = PROJECT_ROOT / "data" / "evaluation" / "evaluation_metrics.json"
     if not eval_path.exists():
-        print(f"  [WARN] evaluation_metrics.json not found, F1 filter disabled.")
+        print("  [WARN] evaluation_metrics.json not found, F1 filter disabled.")
         return None, {}
     import json as _json
     with open(eval_path, encoding="utf-8") as f:
@@ -782,8 +782,8 @@ def main() -> None:
     _allowed_species, _species_f1 = _load_species_f1_data(_min_f1)
 
     url = f"http://localhost:{args.port}"
-    print(f"\n  🧬 BioAudit – Model Auditor")
-    print(f"  ───────────────────────────")
+    print("\n  🧬 BioAudit – Model Auditor")
+    print("  ───────────────────────────")
     print(f"  URL:      {url}")
     print(f"  Weights:  {_weights_path or 'data/weights/best_model.pth (default)'}")
 
@@ -792,11 +792,11 @@ def main() -> None:
         print(f"  Filtro:   F1 >= {_min_f1:.2f}")
         print(f"  Especies: {passing} de {total_eval} evaluadas pasan el umbral")
     else:
-        print(f"  Filtro:   ninguno (todas las especies habilitadas)")
+        print("  Filtro:   ninguno (todas las especies habilitadas)")
 
     print(f"  Aviso F1: especies con F1 < {_f1_warn_threshold:.2f} mostrarán advertencia")
-    print(f"            (configurable: BIO_MIN_F1_THRESHOLD en .env)")
-    print(f"  Ctrl+C para detener\n")
+    print("            (configurable: BIO_MIN_F1_THRESHOLD en .env)")
+    print("  Ctrl+C para detener\n")
 
     if not args.no_browser:
         import threading

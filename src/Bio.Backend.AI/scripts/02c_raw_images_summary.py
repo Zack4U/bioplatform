@@ -283,7 +283,7 @@ def main() -> None:
 
     # Text report (human-readable)
     with open(REPORT_TXT, "w", encoding="utf-8") as f:
-        f.write(f"RAW IMAGES SUMMARY – BioPlatform Caldas\n")
+        f.write("RAW IMAGES SUMMARY – BioPlatform Caldas\n")
         f.write(f"Generated: {run_ts.strftime('%Y-%m-%d %H:%M:%S UTC')}\n")
         f.write(f"{'=' * 90}\n\n")
         f.write(f"Total especies:     {total_species:,}\n")
@@ -292,19 +292,19 @@ def main() -> None:
         f.write(f"Aptas (≥{args.min_images}):       {above_threshold:,}\n")
         f.write(f"No aptas (<{args.min_images}):     {below_threshold:,}\n\n")
 
-        f.write(f"DISTRIBUCIÓN POR RANGO\n")
+        f.write("DISTRIBUCIÓN POR RANGO\n")
         f.write(f"{'-' * 40}\n")
         for rng, cnt in ranges.items():
             f.write(f"  {rng:>6s}: {cnt:5d}\n")
-        f.write(f"\n")
+        f.write("\n")
 
-        f.write(f"DISTRIBUCIÓN POR REINO\n")
+        f.write("DISTRIBUCIÓN POR REINO\n")
         f.write(f"{'-' * 90}\n")
         f.write(f"{'Reino':15s} │ {'Especies':>8s} │ {'Imágenes':>8s} │ {'Original':>8s} │ {'Augment':>8s} │ {'≥' + str(args.min_images):>6s}\n")
         f.write(f"{'-' * 90}\n")
         for k, v in sorted(kingdom_stats.items()):
             f.write(f"{k:15s} │ {v['species']:8d} │ {v['total_images']:8d} │ {v['original']:8d} │ {v['augmented']:8d} │ {v['above_threshold']:6d}\n")
-        f.write(f"\n")
+        f.write("\n")
 
         f.write(f"DETALLE POR ESPECIE (ordenado por: {args.sort})\n")
         f.write(f"{'-' * 90}\n")
@@ -316,7 +316,7 @@ def main() -> None:
 
     # ── Done ──────────────────────────────────────────────────────
     print(f"\n{'=' * 65}")
-    print(f"  Reports saved:")
+    print("  Reports saved:")
     print(f"    JSON: {REPORT_JSON}")
     print(f"    TXT:  {REPORT_TXT}")
     print(f"{'=' * 65}\n")

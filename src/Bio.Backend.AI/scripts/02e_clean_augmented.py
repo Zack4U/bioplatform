@@ -114,7 +114,7 @@ def main() -> None:
         print(f"    {k:15s} │ {cnt:6,} files")
 
     # Top species with most augmented
-    print(f"\n  Top species with most augmented images:")
+    print("\n  Top species with most augmented images:")
     top = sorted(species_counts.items(), key=lambda x: x[1], reverse=True)[:15]
     for sp, cnt in top:
         print(f"    {sp:40s} │ {cnt:4d}")
@@ -149,13 +149,13 @@ def main() -> None:
         json.dump(report, f, indent=2, ensure_ascii=False)
 
     print(f"\n{'=' * 60}")
-    print(f"  CLEANUP COMPLETE")
+    print("  CLEANUP COMPLETE")
     print(f"{'=' * 60}")
     print(f"  Deleted:          {deleted:,}")
     print(f"  Errors:           {errors}")
     print(f"  Species affected: {affected_species}")
     print(f"  Report saved:     {REPORT_FILE}")
-    print(f"\n  Next: python scripts/02c_raw_images_summary.py  (verify)")
+    print("\n  Next: python scripts/02c_raw_images_summary.py  (verify)")
     print()
 
 
