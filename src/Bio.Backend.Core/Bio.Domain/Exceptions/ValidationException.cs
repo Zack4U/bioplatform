@@ -6,5 +6,9 @@ namespace Bio.Domain.Exceptions;
 /// </summary>
 public class ValidationException : Exception
 {
-    public ValidationException(string message) : base(message) { }
+    public ValidationException(string message) : base(message) 
+    {
+        if (string.IsNullOrWhiteSpace(message))
+            throw new ArgumentException("Exception message cannot be empty.", nameof(message));
+    }
 }

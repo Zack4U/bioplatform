@@ -6,5 +6,9 @@ namespace Bio.Domain.Exceptions;
 /// </summary>
 public class ConflictException : Exception
 {
-    public ConflictException(string message) : base(message) { }
+    public ConflictException(string message) : base(message) 
+    {
+        if (string.IsNullOrWhiteSpace(message))
+            throw new ArgumentException("Exception message cannot be empty.", nameof(message));
+    }
 }
