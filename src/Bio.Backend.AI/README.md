@@ -70,7 +70,13 @@ Model weights are **not stored in Git** (too large). Choose one method:
 
 ```bash
 # Option A: DVC (recommended for team)
-pip install dvc dvc-gdrive
+pip install dvc dvc-s3
+
+# Configurar credenciales
+dvc remote modify --local s3-remote access_key_id TU_ACCESS_KEY_AQUI
+dvc remote modify --local s3-remote secret_access_key TU_SECRET_KEY_AQUI
+
+# Descargar modelo
 dvc pull
 
 # Option B: Download script (URL or auto-detect)
