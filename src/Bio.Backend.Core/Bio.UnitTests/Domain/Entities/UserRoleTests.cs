@@ -16,10 +16,10 @@ public class UserRoleTests
     public class Initialization
     {
         /// <summary>
-        /// Verifies that a UserRole is initialized with the correct UserId, RoleId, and AssignedAt timestamp.
+        /// Verifies that a UserRole is initialized with the correctly assigned UserId.
         /// </summary>
         [Fact]
-        public void ShouldInitializeWithCorrectValues()
+        public void ShouldSetUserId_WhenCreated()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -30,7 +30,39 @@ public class UserRoleTests
 
             // Assert
             userRole.UserId.Should().Be(userId);
+        }
+
+        /// <summary>
+        /// Verifies that a UserRole is initialized with the correctly assigned RoleId.
+        /// </summary>
+        [Fact]
+        public void ShouldSetRoleId_WhenCreated()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var roleId = Guid.NewGuid();
+
+            // Act
+            var userRole = new UserRole(userId, roleId);
+
+            // Assert
             userRole.RoleId.Should().Be(roleId);
+        }
+
+        /// <summary>
+        /// Verifies that a UserRole is initialized with the AssignedAt timestamp set to the current UTC time.
+        /// </summary>
+        [Fact]
+        public void ShouldSetAssignedAt_WhenCreated()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var roleId = Guid.NewGuid();
+
+            // Act
+            var userRole = new UserRole(userId, roleId);
+
+            // Assert
             userRole.AssignedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         }
 
@@ -89,6 +121,65 @@ public class UserRoleTests
             // Assert
             assignment1.UserId.Should().Be(assignment2.UserId);
             assignment1.RoleId.Should().NotBe(assignment2.RoleId);
+        }
+
+        /// <summary>
+        /// Verifies that the same role can be assigned to two different users, creating two distinct entities.
+        /// </summary>
+        [Fact]
+        public void ShouldAllowSameRole_WithDifferentUsers()
+        {
+            // Arrange
+            var roleId = Guid.NewGuid();
+            var userId1 = Guid.NewGuid();
+            var userId2 = Guid.NewGuid();
+
+            // Act
+            var assignment1 = new UserRole(userId1, roleId);
+            var assignment2 = new UserRole(userId2, roleId);
+
+            // Assert
+            assignment1.RoleId.Should().Be(assignment2.RoleId);
+            assignment1.UserId.Should().NotBe(assignment2.UserId);
+        }
+
+        /// <summary>
+        /// Verifies that an ArgumentException is thrown when the user ID is empty.
+        /// </summary>
+        [Fact]
+        public void ShouldThrowException_When_UserIdIsEmpty()
+        {
+            // Act
+            Action act = () => new UserRole(Guid.Empty, Guid.NewGuid());
+
+            // Assert
+            act.Should().Throw<ArgumentException>().WithMessage("*User ID cannot be empty.*");
+        }
+
+        /// <summary>
+        /// Verifies that an ArgumentException is thrown when the role ID is empty.
+        /// </summary>
+        [Fact]
+        public void ShouldThrowException_When_RoleIdIsEmpty()
+        {
+            // Act
+            Action act = () => new UserRole(Guid.NewGuid(), Guid.Empty);
+
+            // Assert
+            act.Should().Throw<ArgumentException>().WithMessage("*Role ID cannot be empty.*");
+        }
+
+        /// <summary>
+        /// Verifies that an ArgumentException is thrown when both the user ID and role ID are empty.
+        /// </summary>
+        [Fact]
+        public void ShouldThrowException_When_UserIdAndRoleIdAreEmpty()
+        {
+            // Act
+            Action act = () => new UserRole(Guid.Empty, Guid.Empty);
+
+            // Assert
+            act.Should().Throw<ArgumentException>().WithMessage("*User ID cannot be empty.*"); // As UserId is validated first
         }
     }
 }

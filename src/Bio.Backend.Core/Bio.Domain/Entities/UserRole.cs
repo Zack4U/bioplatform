@@ -36,6 +36,9 @@ public class UserRole
 
     public UserRole(Guid userId, Guid roleId)
     {
+        if (userId == Guid.Empty) throw new ArgumentException("User ID cannot be empty.", nameof(userId));
+        if (roleId == Guid.Empty) throw new ArgumentException("Role ID cannot be empty.", nameof(roleId));
+
         UserId = userId;
         RoleId = roleId;
         AssignedAt = DateTime.UtcNow;

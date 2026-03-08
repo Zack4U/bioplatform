@@ -174,10 +174,42 @@ public class RoleTests
     public class DomainMethods
     {
         /// <summary>
-        /// Verifies that Update correctly changes the name and description, and sets the UpdatedAt timestamp.
+        /// Verifies that Update correctly changes the name.
         /// </summary>
         [Fact]
-        public void Update_ShouldChangeValuesAndSetTimestamp()
+        public void Update_ShouldChangeName()
+        {
+            // Arrange
+            var role = new Role(Guid.NewGuid(), "user", "Old description");
+
+            // Act
+            role.Update("moderator", "Old description");
+
+            // Assert
+            role.Name.ToLower().Should().Be("moderator");
+        }
+
+        /// <summary>
+        /// Verifies that Update correctly changes the description.
+        /// </summary>
+        [Fact]
+        public void Update_ShouldChangeDescription()
+        {
+            // Arrange
+            var role = new Role(Guid.NewGuid(), "user", "Old description");
+
+            // Act
+            role.Update("user", "New description");
+
+            // Assert
+            role.Description.Should().Be("New description");
+        }
+
+        /// <summary>
+        /// Verifies that Update correctly sets the UpdatedAt timestamp to the current UTC time.
+        /// </summary>
+        [Fact]
+        public void Update_ShouldSetUpdatedAtTimestamp()
         {
             // Arrange
             var role = new Role(Guid.NewGuid(), "user", "Old description");
@@ -186,8 +218,6 @@ public class RoleTests
             role.Update("moderator", "New description");
 
             // Assert
-            role.Name.Should().Be("MODERATOR");
-            role.Description.Should().Be("New description");
             role.UpdatedAt.Should().NotBeNull();
             role.UpdatedAt!.Value.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         }

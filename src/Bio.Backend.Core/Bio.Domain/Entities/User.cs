@@ -54,6 +54,7 @@ public class User
     /// </summary>
     public User(Guid id, string fullName, string email, string passwordHash, string salt, string? phoneNumber = null)
     {
+        if (id == Guid.Empty) throw new ArgumentException("User ID cannot be empty.", nameof(id));
         if (string.IsNullOrWhiteSpace(fullName)) throw new ArgumentException("Full name is required.", nameof(fullName));
         if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("Email is required.", nameof(email));
 
