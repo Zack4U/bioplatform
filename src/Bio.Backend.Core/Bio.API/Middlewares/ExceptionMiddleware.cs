@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Bio.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 
 namespace Bio.API.Middlewares;
 
@@ -43,6 +44,8 @@ public class ExceptionMiddleware
             ValidationException => (int)HttpStatusCode.BadRequest,
             KeyNotFoundException => (int)HttpStatusCode.NotFound,
             ConflictException => (int)HttpStatusCode.Conflict,
+            InvalidCredentialException => (int)HttpStatusCode.Unauthorized,
+            SecurityException => (int)HttpStatusCode.Unauthorized,
             _ => (int)HttpStatusCode.InternalServerError
         };
 
@@ -73,6 +76,7 @@ public class ExceptionMiddleware
             (int)HttpStatusCode.BadRequest => "Bad Request",
             (int)HttpStatusCode.NotFound => "Not Found",
             (int)HttpStatusCode.Conflict => "Conflict",
+            (int)HttpStatusCode.Unauthorized => "Unauthorized",
             _ => "Internal Server Error"
         };
     }

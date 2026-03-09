@@ -50,7 +50,6 @@ public class RolesController : ControllerBase
     /// </summary>
     /// <returns>The list of roles.</returns>
     /// <response code="200">Returns the list of roles.</response>
-    /// <response code="404">No roles found.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<RoleResponseDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllRoles()

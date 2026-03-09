@@ -21,10 +21,25 @@ public class BioDbContext : DbContext
     /// Collection of user-role assignments.
     public DbSet<UserRole> UserRoles { get; set; }
 
+    /// Collection of refresh tokens for authentication.
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     /// Configures the data model and mapping rules using Fluent API.
     /// Executed when the model for the context is being initialized.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Token).IsRequired().HasMaxLength(500);
+            entity.HasIndex(e => e.Token).IsUnique();
+
+            entity.HasOne(rt => rt.User)
+                .WithMany()
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             // Define the primary key
