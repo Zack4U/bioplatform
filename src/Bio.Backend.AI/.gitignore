@@ -77,6 +77,6 @@ coverage.xml
 data/raw*
 data/processed*
 #data/dataset_analysis*
-data/evaluation*
+#data/evaluation*
 #data/comparation
 *.rar
