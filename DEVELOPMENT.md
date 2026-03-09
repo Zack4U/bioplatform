@@ -61,6 +61,8 @@ bash run.sh all           # TODO
 
 ## 1. Configuración Inicial (Detallado)
 
+> 🔐 **Nota sobre Contraseñas:** En entornos locales de desarrollo, las contraseñas base para bases de datos (SQL Server, Postgres) definidas en infraestructura suelen ser `DevPassword123!` o `postgres123`. Verifica que coincidan con tu archivo `.env` antes de correr migraciones.
+
 ### 1.1 Variables de Entorno
 
 ```bash
@@ -282,40 +284,45 @@ El frontend Mobile **siempre corre localmente** (nunca en Docker) porque:
 
 ### 5.1 Conexión desde Local
 
-**PostgreSQL:**
+**PostgreSQL (Scientific/AI):**
 
-```
+```text
 Host: localhost
 Port: 5433
 User: postgres
-Password: postgres123 (del .env)
-Database: bioplatform_dev
+Password: DevPassword123! (del .env)
+Database: BioCommerce_Scientific
 ```
 
-**SQL Server:**
+**SQL Server (Transactional):**
 
-```
+```text
 Server: localhost,1433
 User: sa
-Password: YourStrong@Password123 (del .env)
-Database: bioplatform
+Password: DevPassword123! (del .env)
+Database: BioCommerce_Transactional
 ```
 
 ### 5.2 Migraciones
 
 **EF Core (.NET):**
 
+Recuerda que la plataforma usa **dos contextos** separados (Clean Architecture). Debes aplicar migraciones a ambos:
+
 ```bash
 cd src/Bio.Backend.Core
 
-# Ver estado de migraciones
-dotnet ef migrations list
+# 1. Instalar la herramienta EF Core (si no la tienes):
+dotnet tool install --global dotnet-ef
 
-# Aplicar migraciones
-dotnet ef database update
+# 2. Aplicar BD Transaccional (SQL Server):
+dotnet ef database update --context BioDbContext -p Bio.Infrastructure -s Bio.API
 
-# Crear nueva migración
-dotnet ef migrations add MigrationName
+# 3. Aplicar BD Científica (PostgreSQL):
+dotnet ef database update --context ScientificDbContext -p Bio.Infrastructure -s Bio.API
+
+# Opciones de creación de migraciones:
+# dotnet ef migrations add <Name> --context BioDbContext -p Bio.Infrastructure -s Bio.API
 ```
 
 ### 5.3 Reset de Base de Datos

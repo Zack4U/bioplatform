@@ -29,7 +29,6 @@ services:
             - "1433:1433"
         volumes:
             - sqlserver_data:/var/opt/mssql
-            - ./docker/sqlserver/init.sql:/docker-entrypoint-initdb.d/init.sql
         networks:
             - bioplatform-network
         healthcheck:
@@ -50,7 +49,6 @@ services:
             - "5433:5432"
         volumes:
             - postgres_data:/var/lib/postgresql/data
-            - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
         networks:
             - bioplatform-network
         healthcheck:

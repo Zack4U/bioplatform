@@ -18,6 +18,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<BioDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<ScientificDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("ScientificConnection"), 
+        o => o.UseNetTopologySuite()));
+
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
