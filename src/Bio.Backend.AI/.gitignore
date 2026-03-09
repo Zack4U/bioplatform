@@ -75,7 +75,9 @@ coverage.xml
 
 # ─── Miscellaneous ─────────────────────────────────────────────────────────
 data/raw*
-data/processed*
+data/processed/test*
+data/processed/train*
+data/processed/val*
 #data/dataset_analysis*
 #data/evaluation*
 #data/comparation
