@@ -39,7 +39,7 @@ public class Role
     {
         if (id == Guid.Empty) throw new ArgumentException("Role ID cannot be empty.", nameof(id));
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Role name is required.", nameof(name));
-        
+
         Id = id;
         Name = name.Trim().ToUpperInvariant();
         Description = description?.Trim();
@@ -49,7 +49,7 @@ public class Role
     public void Update(string name, string? description)
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Role name cannot be empty.", nameof(name));
-        
+
         Name = name.Trim().ToUpperInvariant();
         Description = description?.Trim();
         UpdatedAt = DateTime.UtcNow;

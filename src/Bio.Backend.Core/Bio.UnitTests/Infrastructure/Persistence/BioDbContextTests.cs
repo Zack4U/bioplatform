@@ -288,49 +288,49 @@ public class BioDbContextTests
         /// Tests that User.FullName must have an explicit MaxLength.
         /// </summary>
         [Fact]
-        public void User_FullName_MustHaveExplicitMaxLength() => 
+        public void User_FullName_MustHaveExplicitMaxLength() =>
             AssertStringPropertyHasMaxLength(typeof(User), nameof(User.FullName));
 
         /// <summary>
         /// Tests that User.Email must have an explicit MaxLength.
         /// </summary>
         [Fact]
-        public void User_Email_MustHaveExplicitMaxLength() => 
+        public void User_Email_MustHaveExplicitMaxLength() =>
             AssertStringPropertyHasMaxLength(typeof(User), nameof(User.Email));
 
         /// <summary>
         /// Tests that User.PasswordHash must have an explicit MaxLength.
         /// </summary>
         [Fact]
-        public void User_PasswordHash_MustHaveExplicitMaxLength() => 
+        public void User_PasswordHash_MustHaveExplicitMaxLength() =>
             AssertStringPropertyHasMaxLength(typeof(User), nameof(User.PasswordHash));
 
         /// <summary>
         /// Tests that User.Salt must have an explicit MaxLength.
         /// </summary>
         [Fact]
-        public void User_Salt_MustHaveExplicitMaxLength() => 
+        public void User_Salt_MustHaveExplicitMaxLength() =>
             AssertStringPropertyHasMaxLength(typeof(User), nameof(User.Salt));
 
         /// <summary>
         /// Tests that User.PhoneNumber must have an explicit MaxLength.
         /// </summary>
         [Fact]
-        public void User_PhoneNumber_MustHaveExplicitMaxLength() => 
+        public void User_PhoneNumber_MustHaveExplicitMaxLength() =>
             AssertStringPropertyHasMaxLength(typeof(User), nameof(User.PhoneNumber));
 
         /// <summary>
         /// Tests that Role.Name must have an explicit MaxLength.
         /// </summary>
         [Fact]
-        public void Role_Name_MustHaveExplicitMaxLength() => 
+        public void Role_Name_MustHaveExplicitMaxLength() =>
             AssertStringPropertyHasMaxLength(typeof(Role), nameof(Role.Name));
 
         /// <summary>
         /// Tests that Role.Description must have an explicit MaxLength.
         /// </summary>
         [Fact]
-        public void Role_Description_MustHaveExplicitMaxLength() => 
+        public void Role_Description_MustHaveExplicitMaxLength() =>
             AssertStringPropertyHasMaxLength(typeof(Role), nameof(Role.Description));
 
         private void AssertPrimaryKeyPropertyIsNotNullable(Type entityType, string propertyName)
@@ -349,28 +349,28 @@ public class BioDbContextTests
         /// Tests that User.Id (Primary Key) is not nullable.
         /// </summary>
         [Fact]
-        public void User_Id_PK_ShouldNotBeNullable() => 
+        public void User_Id_PK_ShouldNotBeNullable() =>
             AssertPrimaryKeyPropertyIsNotNullable(typeof(User), nameof(User.Id));
 
         /// <summary>
         /// Tests that Role.Id (Primary Key) is not nullable.
         /// </summary>
         [Fact]
-        public void Role_Id_PK_ShouldNotBeNullable() => 
+        public void Role_Id_PK_ShouldNotBeNullable() =>
             AssertPrimaryKeyPropertyIsNotNullable(typeof(Role), nameof(Role.Id));
 
         /// <summary>
         /// Tests that UserRole.UserId (Composite PK) is not nullable.
         /// </summary>
         [Fact]
-        public void UserRole_UserId_PK_ShouldNotBeNullable() => 
+        public void UserRole_UserId_PK_ShouldNotBeNullable() =>
             AssertPrimaryKeyPropertyIsNotNullable(typeof(UserRole), nameof(UserRole.UserId));
 
         /// <summary>
         /// Tests that UserRole.RoleId (Composite PK) is not nullable.
         /// </summary>
         [Fact]
-        public void UserRole_RoleId_PK_ShouldNotBeNullable() => 
+        public void UserRole_RoleId_PK_ShouldNotBeNullable() =>
             AssertPrimaryKeyPropertyIsNotNullable(typeof(UserRole), nameof(UserRole.RoleId));
     }
 }

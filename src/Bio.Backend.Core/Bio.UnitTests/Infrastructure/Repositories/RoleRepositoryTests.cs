@@ -49,7 +49,7 @@ public class RoleRepositoryTests : IDisposable
             options = new DbContextOptionsBuilder<BioDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            
+
             _context = new BioDbContext(options);
         }
 
@@ -70,7 +70,7 @@ public class RoleRepositoryTests : IDisposable
         {
             _context.Database.EnsureDeleted();
         }
-        
+
         _context.Dispose();
         GC.SuppressFinalize(this);
     }
@@ -137,7 +137,7 @@ public class RoleRepositoryTests : IDisposable
             var newRepository = new RoleRepository(newContext);
 
             await newRepository.AddAsync(role2);
-            
+
             // Assert
             await Assert.ThrowsAsync<DbUpdateException>(() => newRepository.SaveChangesAsync());
         }
@@ -158,7 +158,7 @@ public class RoleRepositoryTests : IDisposable
 
             // Act
             await _repository.AddAsync(role2);
-            
+
             // Assert
             await Assert.ThrowsAsync<DbUpdateException>(() => _repository.SaveChangesAsync());
         }

@@ -49,7 +49,7 @@ public class UserRepositoryTests : IDisposable
             options = new DbContextOptionsBuilder<BioDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            
+
             _context = new BioDbContext(options);
         }
 
@@ -70,7 +70,7 @@ public class UserRepositoryTests : IDisposable
         {
             _context.Database.EnsureDeleted();
         }
-        
+
         _context.Dispose();
         GC.SuppressFinalize(this);
     }
@@ -138,7 +138,7 @@ public class UserRepositoryTests : IDisposable
             var newRepository = new UserRepository(newContext);
 
             await newRepository.AddAsync(user2);
-            
+
             // Assert
             await Assert.ThrowsAsync<DbUpdateException>(() => newRepository.SaveChangesAsync());
         }
@@ -159,7 +159,7 @@ public class UserRepositoryTests : IDisposable
 
             // Act
             await _repository.AddAsync(user2);
-            
+
             // Assert
             await Assert.ThrowsAsync<DbUpdateException>(() => _repository.SaveChangesAsync());
         }
@@ -180,7 +180,7 @@ public class UserRepositoryTests : IDisposable
 
             // Act
             await _repository.AddAsync(user2);
-            
+
             // Assert
             await Assert.ThrowsAsync<DbUpdateException>(() => _repository.SaveChangesAsync());
         }

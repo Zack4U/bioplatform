@@ -39,7 +39,8 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CreateUser(UserCreateDTO userCreateDTO) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             var response = await _mediator.Send(new CreateUserCommand(userCreateDTO));
             return CreatedAtAction(nameof(GetUserById), new { id = response.Id }, response);
         });
@@ -125,7 +126,8 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> UpdateUser(Guid id, UserUpdateDTO userUpdateDTO) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             var user = await _mediator.Send(new UpdateUserCommand(id, userUpdateDTO));
             if (user == null) return NotFound();
             return Ok(user);
@@ -142,7 +144,8 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser(Guid id) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             var deleted = await _mediator.Send(new DeleteUserCommand(id));
             if (!deleted) return NotFound();
             return NoContent();

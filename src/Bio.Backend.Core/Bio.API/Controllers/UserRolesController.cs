@@ -93,7 +93,8 @@ public class UserRolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> AssignRole([FromBody] UserRoleCreateDTO dto) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             await _mediator.Send(new AssignRoleCommand(dto));
             return NoContent();
         });
@@ -110,7 +111,8 @@ public class UserRolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             await _mediator.Send(new UnassignRoleCommand(userId, roleId));
             return NoContent();
         });

@@ -43,7 +43,7 @@ public class UserRoleCreateDTOTests
         // Arrange
         var dto = CreateValidDTO();
         dto.UserId = null;
-        
+
         // Act
         var results = ValidationHelper.Validate(dto);
 

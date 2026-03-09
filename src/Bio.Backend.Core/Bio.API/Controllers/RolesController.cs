@@ -38,7 +38,8 @@ public class RolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CreateRole(RoleCreateDTO dto) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             var command = new CreateRoleCommand(dto);
             var response = await _mediator.Send(command);
             return StatusCode(StatusCodes.Status201Created, response);
@@ -93,7 +94,8 @@ public class RolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> UpdateRole(Guid id, RoleUpdateDTO dto) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             var command = new UpdateRoleCommand(id, dto);
             var response = await _mediator.Send(command);
             return Ok(response);
@@ -110,7 +112,8 @@ public class RolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteRole(Guid id) =>
-        await HandleExceptionsAsync(async () => {
+        await HandleExceptionsAsync(async () =>
+        {
             var command = new DeleteRoleCommand(id);
             await _mediator.Send(command);
             return NoContent();

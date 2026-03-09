@@ -30,7 +30,7 @@ public class ExceptionMiddlewareTests
     {
         _loggerMock = new Mock<ILogger<ExceptionMiddleware>>();
         _httpContext = new DefaultHttpContext();
-        
+
         // Ensure the response body is readable stream for assertions
         _httpContext.Response.Body = new MemoryStream();
     }
@@ -54,10 +54,10 @@ public class ExceptionMiddlewareTests
         _httpContext.Response.Body.Seek(0, SeekOrigin.Begin);
         using var reader = new StreamReader(_httpContext.Response.Body);
         var responseBody = await reader.ReadToEndAsync();
-        
-        return JsonSerializer.Deserialize<ProblemDetails>(responseBody, new JsonSerializerOptions 
-        { 
-            PropertyNameCaseInsensitive = true 
+
+        return JsonSerializer.Deserialize<ProblemDetails>(responseBody, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
         });
     }
 
@@ -186,7 +186,7 @@ public class ExceptionMiddlewareTests
             problemDetails.Should().NotBeNull();
             problemDetails!.Status.Should().Be((int)HttpStatusCode.InternalServerError);
             problemDetails.Title.Should().Be("Internal Server Error");
-            
+
             // Critical check: the sensitive message should NOT be exposed in the Detail property
             problemDetails.Detail.Should().Be("An unexpected error occurred while processing your request.");
             problemDetails.Detail.Should().NotBe(sensitiveMessage);

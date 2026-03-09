@@ -48,7 +48,7 @@ public class UserRoleRepositoryTests : IDisposable
             options = new DbContextOptionsBuilder<BioDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            
+
             _context = new BioDbContext(options);
         }
 
@@ -69,7 +69,7 @@ public class UserRoleRepositoryTests : IDisposable
         {
             _context.Database.EnsureDeleted();
         }
-        
+
         _context.Dispose();
         GC.SuppressFinalize(this);
     }
