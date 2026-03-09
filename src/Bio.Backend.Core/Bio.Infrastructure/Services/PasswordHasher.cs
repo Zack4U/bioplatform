@@ -21,6 +21,9 @@ public class PasswordHasher : IPasswordHasher
     /// <returns>A tuple containing the Base64 encoded hash and the Base64 encoded salt.</returns>
     public (string Hash, string Salt) HashPassword(string password)
     {
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ArgumentException("Password cannot be null or empty.", nameof(password));
+
         // 1. Generate a secure random salt (16 bytes)
         byte[] salt = RandomNumberGenerator.GetBytes(SaltSize);
 
@@ -40,6 +43,9 @@ public class PasswordHasher : IPasswordHasher
     /// <returns>True if the password is valid; otherwise, false.</returns>
     public bool VerifyPassword(string password, string hash, string salt)
     {
+        if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hash) || string.IsNullOrWhiteSpace(salt))
+            return false;
+
         // 1. Convert the stored Base64 strings back to bytes
         byte[] saltBytes = Convert.FromBase64String(salt);
         byte[] hashBytes = Convert.FromBase64String(hash);
