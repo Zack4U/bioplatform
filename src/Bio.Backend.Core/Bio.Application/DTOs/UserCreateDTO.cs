@@ -21,6 +21,7 @@ public class UserCreateDTO
     /// <example>juan.perez@ejemplo.com</example>
     [Required(ErrorMessage = "Email is required.")]
     [EmailAddress(ErrorMessage = "Email format is invalid.")]
+    [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters.")]
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
@@ -29,6 +30,7 @@ public class UserCreateDTO
     /// <example>+573001234567</example>
     [Required(ErrorMessage = "Phone number is required.")]
     [Phone(ErrorMessage = "Phone format is invalid.")]
+    [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
     public string PhoneNumber { get; set; } = string.Empty;
 
     /// <summary>

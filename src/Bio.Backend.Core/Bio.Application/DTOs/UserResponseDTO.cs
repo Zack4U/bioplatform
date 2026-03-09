@@ -9,25 +9,21 @@ public class UserResponseDTO
     /// <summary>
     /// Unique identifier for the user.
     /// </summary>
-    /// <example>f47ac10b-58cc-4372-a567-0e02b2c3d479</example>
     public Guid Id { get; set; }
 
     /// <summary>
     /// Full name of the user.
     /// </summary>
-    /// <example>Juan Pérez</example>
     public string FullName { get; set; } = string.Empty;
 
     /// <summary>
     /// User's registered email address.
     /// </summary>
-    /// <example>juan.perez@example.com</example>
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
     /// User's phone number.
     /// </summary>
-    /// <example>+573001234567</example>
     public string? PhoneNumber { get; set; }
 
     /// <summary>
