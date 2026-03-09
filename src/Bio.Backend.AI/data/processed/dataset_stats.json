@@ -1,0 +1,4336 @@
+{
+  "num_classes": 719,
+  "min_images_threshold": 50,
+  "random_seed": 42,
+  "splits": {
+    "train": {
+      "total_images": 34225,
+      "num_classes": 719
+    },
+    "val": {
+      "total_images": 4232,
+      "num_classes": 719
+    },
+    "test": {
+      "total_images": 4386,
+      "num_classes": 719
+    }
+  },
+  "corrupted_removed": 0,
+  "images_per_class": {
+    "Abracris flavolineata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Achlyodes pallida": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Acropternis orthonyx": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Actinote neleus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Actinote stratonice": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Adelomyia melanogenys": {
+      "train": 92,
+      "val": 11,
+      "test": 12,
+      "total": 115
+    },
+    "Adhemarius sexoculata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aechmea angustifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aglaeactis cupripennis": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Aglaiocercus coelestis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aglaiocercus kingii": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Aiouea montana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Alouatta seniculus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Altinote ozomene": {
+      "train": 45,
+      "val": 5,
+      "test": 7,
+      "total": 57
+    },
+    "Amanita muscaria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Amastus aconia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Amastus coccinator": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Amastus episcotosia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Amastus thalassina": {
+      "train": 58,
+      "val": 7,
+      "test": 8,
+      "total": 73
+    },
+    "Amazilia tzacatl": {
+      "train": 67,
+      "val": 8,
+      "test": 9,
+      "total": 84
+    },
+    "Amazona mercenaria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ampelioides tschudii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ampelion rubrocristatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ampelion rufaxilla": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anartia amathea": {
+      "train": 92,
+      "val": 11,
+      "test": 13,
+      "total": 116
+    },
+    "Anartia jatrophae": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ancognatha scarabaeoides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ancognatha vulgaris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Andesanthus lepidotus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Andigena hypoglauca": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Andigena nigrirostris": {
+      "train": 105,
+      "val": 13,
+      "test": 14,
+      "total": 132
+    },
+    "Andinia pilosella": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Andinobates daleswansoni": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anisognathus igniventris": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Anisognathus lacrymosus": {
+      "train": 115,
+      "val": 14,
+      "test": 15,
+      "total": 144
+    },
+    "Anisognathus somptuosus": {
+      "train": 109,
+      "val": 13,
+      "test": 15,
+      "total": 137
+    },
+    "Anolis antonii": {
+      "train": 60,
+      "val": 7,
+      "test": 8,
+      "total": 75
+    },
+    "Anolis quimbaya": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anolis ventrimaculatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anteos clorinde": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anthanassa drusilla": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anthoptus epictetus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anthracothorax nigricollis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Anthurium caramantae": {
+      "train": 44,
+      "val": 5,
+      "test": 6,
+      "total": 55
+    },
+    "Anthurium crystallinum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aotus griseimembra": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aotus lemurinus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aphelandra runcinata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Apis mellifera": {
+      "train": 91,
+      "val": 11,
+      "test": 12,
+      "total": 114
+    },
+    "Ara severus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Araneus granadensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aratinga pertinax": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aratinga wagleri": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Araucaria columnaris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Archonias flisa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ardea alba": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ardea cocoi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Argiope argentata": {
+      "train": 47,
+      "val": 5,
+      "test": 7,
+      "total": 59
+    },
+    "Aristolochia cordiflora": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Arremon assimilis": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Arremon brunneinucha": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Arundina graminifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ascalapha odorata": {
+      "train": 59,
+      "val": 7,
+      "test": 8,
+      "total": 74
+    },
+    "Asclepias curassavica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Asio stygius": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Atlapetes albinucha": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Atlapetes flaviceps": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Atlapetes pallidinucha": {
+      "train": 55,
+      "val": 6,
+      "test": 8,
+      "total": 69
+    },
+    "Atlapetes schistaceus": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Atractus lehmanni": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Atractus obesus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Atta cephalotes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Aulacorhynchus albivitta": {
+      "train": 81,
+      "val": 10,
+      "test": 11,
+      "total": 102
+    },
+    "Aulacorhynchus haematopygus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Baccharis latifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bangsia melanochlamys": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Basileuterus culicivorus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Basiliscus galeritus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Begonia lehmannii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Begonia maurandiae": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Begonia umbellata": {
+      "train": 48,
+      "val": 6,
+      "test": 6,
+      "total": 60
+    },
+    "Begonia urticae": {
+      "train": 92,
+      "val": 11,
+      "test": 12,
+      "total": 115
+    },
+    "Bellucia pentamera": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Besleria cinnabarina": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Boana platanera": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Boana pugnax": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bocconia frutescens": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Boissonneaua flavescens": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Boissonneaua jardini": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bolborhynchus ferrugineifrons": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bolitoglossa lozanoi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bombus funebris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bombus hortulanus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bombus pauloensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bombus rubicundus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bothriechis schlegelii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Bubulcus ibis": {
+      "train": 41,
+      "val": 5,
+      "test": 6,
+      "total": 52
+    },
+    "Burmeistera bullatifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Busarellus nigricollis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Buteo albicaudatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Buteo brachyurus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Buteo platypterus": {
+      "train": 68,
+      "val": 8,
+      "test": 10,
+      "total": 86
+    },
+    "Buthraupis montana": {
+      "train": 72,
+      "val": 9,
+      "test": 10,
+      "total": 91
+    },
+    "Butorides striata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cacicus chrysonotus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Caiman crocodilus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Caligo atreus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Caligo oileus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Callianthe megapotamica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Callianthe picta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Calliphlox mitchellii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Campephilus pollens": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Capito hypoleucus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Capsicum dimorphum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Caracara plancus": {
+      "train": 53,
+      "val": 6,
+      "test": 8,
+      "total": 67
+    },
+    "Cardellina canadensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Castilia eranites": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Castilleja arvensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Castilleja fissifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Catamblyrhynchus diadema": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Catamenia homochroa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Catamenia inornata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Catasetum tabulare": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Catasticta prioneris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cathartes aura": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Catharus fuscater": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Catharus ustulatus": {
+      "train": 44,
+      "val": 5,
+      "test": 6,
+      "total": 55
+    },
+    "Cecropia angustifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cecropia telealba": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Centropogon ferrugineus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Centropogon foetidus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Centropogon leucophyllus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cerdocyon thous": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ceroxylon quindiuense": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Certhiaxis cinnamomeus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chaetocercus mulsant": {
+      "train": 96,
+      "val": 12,
+      "test": 12,
+      "total": 120
+    },
+    "Chaetogastra gracilis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chaetogastra grossa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chaetogastra mollis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chalcostigma herrani": {
+      "train": 90,
+      "val": 11,
+      "test": 12,
+      "total": 113
+    },
+    "Chalybura buffonii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chamaedorea linearis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chamaedorea pinnatifrons": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chamaepetes goudotii": {
+      "train": 105,
+      "val": 13,
+      "test": 14,
+      "total": 132
+    },
+    "Chauna chavaria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chironius monticola": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chloroceryle americana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chlorophanes spiza": {
+      "train": 71,
+      "val": 8,
+      "test": 10,
+      "total": 89
+    },
+    "Chlorornis riefferii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chlorospingus flavopectus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chlorostilbon melanorhynchus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chlosyne lacinia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Choeradodis rhombicollis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chrysomus icterocephalus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Chrysso nigriceps": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cinclodes excelsior": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cinclus leucocephalus": {
+      "train": 72,
+      "val": 9,
+      "test": 9,
+      "total": 90
+    },
+    "Cinnycerthia olivascens": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cistothorus platensis": {
+      "train": 41,
+      "val": 5,
+      "test": 6,
+      "total": 52
+    },
+    "Clathrus archeri": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Clelia equatoriana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cnemathraupis eximia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cnemoscopus rubrirostris": {
+      "train": 41,
+      "val": 5,
+      "test": 6,
+      "total": 52
+    },
+    "Coeligena coeligena": {
+      "train": 70,
+      "val": 8,
+      "test": 10,
+      "total": 88
+    },
+    "Coeligena lutetiae": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Coeligena torquata": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Coeligena wilsoni": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Coereba flaveola": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Colaptes punctigula": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Colaptes rivolii": {
+      "train": 81,
+      "val": 10,
+      "test": 11,
+      "total": 102
+    },
+    "Colaptes rubiginosus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Colibri coruscans": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Colibri cyanotus": {
+      "train": 83,
+      "val": 10,
+      "test": 11,
+      "total": 104
+    },
+    "Colobura dirce": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Colonia colonus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Columbina talpacoti": {
+      "train": 68,
+      "val": 8,
+      "test": 10,
+      "total": 86
+    },
+    "Columnea ceticeps": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Columnea fuscihirta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Columnea strigosa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Comparettia falcata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Conchylodes bryophilalis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Conirostrum albifrons": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Conirostrum sitticolor": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Consul panariste": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Coprinellus disseminatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Corades chelonis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Coragyps atratus": {
+      "train": 84,
+      "val": 10,
+      "test": 12,
+      "total": 106
+    },
+    "Cornu aspersum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Crassocephalum crepidioides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Crocosmia crocosmiiflora": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Crotophaga ani": {
+      "train": 54,
+      "val": 6,
+      "test": 8,
+      "total": 68
+    },
+    "Crypturellus soui": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cupiennius coccineus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyanocorax affinis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyanocorax yncas": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyanolyca armillata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyanopepla micans": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cybdelis mnasylus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyclarhis nigrirostris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyclocephala lunulata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyrtochilum annulare": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyrtochilum diceratum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyrtochilum divaricatum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyrtochilum halteratum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyrtochilum murinum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyrtochilum scabiosum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Cyrtochilum tricostatum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Danaus plexippus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dasyprocta punctata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dendrobates truncatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dendrocincla fuliginosa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dendropsophus columbianus": {
+      "train": 72,
+      "val": 9,
+      "test": 10,
+      "total": 91
+    },
+    "Diabrotica decempunctata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Diaethria clymena": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Didelphis marsupialis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Diglossa albilatera": {
+      "train": 68,
+      "val": 8,
+      "test": 10,
+      "total": 86
+    },
+    "Diglossa cyanea": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Diglossa humeralis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Diglossa lafresnayii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dione glycera": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dipsas sanctijoannis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Donacobius atricapilla": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Doxocopa cyane": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dracula iricolor": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dryas iulia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Drymonia lanceolata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dryocopus lineatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Dubusia taeniata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Egretta thula": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eira barbara": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Elaenia flavogaster": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Elaenia frantzii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Elanoides forficatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Elleanthus aurantiacus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Elysius atrata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Endrosis sarcitrella": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ensifera ensifera": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Epidendrum cleistocoleum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Epidendrum cottoniiflorum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Epidendrum cylindrostachys": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Epidendrum fimbriatum": {
+      "train": 75,
+      "val": 9,
+      "test": 10,
+      "total": 94
+    },
+    "Epidendrum melinanthum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Epidendrum porphyreum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Epidendrum posadarum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Epiphile chrysites": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Epiphile epimenes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Equisetum bogotense": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Erato vulcanica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eresia clio": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Erinnyis ello": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eriocnemis derbyi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eriocnemis mosquera": {
+      "train": 56,
+      "val": 7,
+      "test": 8,
+      "total": 71
+    },
+    "Eriophora edax": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eryphanis lycomedon": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Erythrolamprus bizona": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Erythrolamprus epinephalus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Erythrolamprus epinephelus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Espadarana prosoblepon": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Espeletia hartwegiana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eubucco bourcierii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eudocima procus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eueides procula": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eulaema cingulata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eulaema meriana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Eulaema polychroma": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Euphonia cyanocephala": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Euphonia laniirostris": {
+      "train": 83,
+      "val": 10,
+      "test": 11,
+      "total": 104
+    },
+    "Euphonia xanthogaster": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Euphorbia hirta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Euptychoides saturnus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Euryglottis aper": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Falco sparverius": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Florisuga mellivora": {
+      "train": 51,
+      "val": 6,
+      "test": 7,
+      "total": 64
+    },
+    "Fluvicola pica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Forpus conspicillatus": {
+      "train": 66,
+      "val": 8,
+      "test": 9,
+      "total": 83
+    },
+    "Fuchsia boliviana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Fuchsia nigricans": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Fuchsia petiolaris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Gaiadendron punctatum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Galium hypocarpium": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Gallinula chloropus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Gasteracantha cancriformis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Gaultheria myrsinoides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Gentiana sedifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Geonoma undata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Geospizopsis unicolor": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Geranoaetus melanoleucus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Glossoloma schultzei": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Golofa eacus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Golofa porteri": {
+      "train": 60,
+      "val": 7,
+      "test": 9,
+      "total": 76
+    },
+    "Gonatodes albogularis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Gonora hyelosioides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Grallaria alvarezi": {
+      "train": 42,
+      "val": 5,
+      "test": 6,
+      "total": 53
+    },
+    "Grallaria milleri": {
+      "train": 118,
+      "val": 14,
+      "test": 16,
+      "total": 148
+    },
+    "Grallaria nuchalis": {
+      "train": 57,
+      "val": 7,
+      "test": 8,
+      "total": 72
+    },
+    "Grallaria quitensis": {
+      "train": 48,
+      "val": 6,
+      "test": 7,
+      "total": 61
+    },
+    "Grallaria ruficapilla": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Grallaria rufocinerea": {
+      "train": 106,
+      "val": 13,
+      "test": 14,
+      "total": 133
+    },
+    "Grallaria saturata": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Grallaricula lineifrons": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Grallaricula nana": {
+      "train": 87,
+      "val": 10,
+      "test": 12,
+      "total": 109
+    },
+    "Graphita griphe": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Guzmania multiflora": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Guzmania triangularis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Gymnetis pantherina": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hafferia immaculata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Halictus ligatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hapalopsittaca amazonina": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Harmonia axyridis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hedychium coronarium": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliangelus exortis": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Heliconia bihai": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconia burleana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconia griggsiana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconia latispatha": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconius charithonia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconius clysonymus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconius cydno": {
+      "train": 41,
+      "val": 5,
+      "test": 6,
+      "total": 52
+    },
+    "Heliconius doris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconius eleuchia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliconius erato": {
+      "train": 44,
+      "val": 5,
+      "test": 7,
+      "total": 56
+    },
+    "Heliodoxa imperatrix": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heliodoxa rubinoides": {
+      "train": 85,
+      "val": 10,
+      "test": 12,
+      "total": 107
+    },
+    "Heliomaster longirostris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hellmayrea gularis": {
+      "train": 45,
+      "val": 5,
+      "test": 7,
+      "total": 57
+    },
+    "Hemidactylus frenatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hemithraupis guira": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hermeuptychia harmonia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Herpetotheres cachinnans": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Herpothallon rubrocinctum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heterogomphus mniszechi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Heterogomphus schoenherri": {
+      "train": 46,
+      "val": 5,
+      "test": 7,
+      "total": 58
+    },
+    "Hylophilus semibrunneus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hypanartia kefersteini": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hypanartia lethe": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Hypopyrrhus pyrohypogaster": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Icterus chrysater": {
+      "train": 56,
+      "val": 7,
+      "test": 8,
+      "total": 71
+    },
+    "Icterus nigrogularis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Iguana iguana": {
+      "train": 55,
+      "val": 6,
+      "test": 8,
+      "total": 69
+    },
+    "Imantodes cenchoa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Impatiens walleriana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ipomoea batatas": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ipomoea indica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ipomoea purpurea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Iridosornis porphyrocephalus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Iridosornis rufivertex": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ithomia iphianassa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Jacana jacana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Janatella fellula": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Juglans neotropica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Junonia evarete": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Kinosternon leucostomum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Kleinothraupis atropileus": {
+      "train": 43,
+      "val": 5,
+      "test": 6,
+      "total": 54
+    },
+    "Kohleria affinis": {
+      "train": 55,
+      "val": 6,
+      "test": 8,
+      "total": 69
+    },
+    "Kohleria inaequalis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Kohleria spicata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Kohleria warszewiczii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Kukulcania hibernalis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lafresnaya lafresnayi": {
+      "train": 71,
+      "val": 8,
+      "test": 10,
+      "total": 89
+    },
+    "Langucys nigropuncta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lasiophila prosymna": {
+      "train": 51,
+      "val": 6,
+      "test": 7,
+      "total": 64
+    },
+    "Lentinus flexipes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lepanthes dunstervilleorum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lepanthes gargantua": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lepanthes jardinensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lepanthes mucronata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lepanthes tachirensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lepidocolaptes lacrymiger": {
+      "train": 62,
+      "val": 7,
+      "test": 9,
+      "total": 78
+    },
+    "Lepidocolaptes souleyetii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Leptodeira ornata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Leptophobia aripa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Leptopogon rufipectus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Leptosittaca branickii": {
+      "train": 40,
+      "val": 5,
+      "test": 6,
+      "total": 51
+    },
+    "Leptotila plumbeiceps": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Leuconotopicus fumigatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Leucopternis princeps": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Leuenbergeria bleo": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Linothele sericata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lipaugus fuscocinereus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lissachatina fulica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lycomedes hirtipes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Lycorea cleobaea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Macara alydda": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Machaeropterus deliciosus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Machaeropterus striolatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Machetornis rixosa": {
+      "train": 44,
+      "val": 5,
+      "test": 6,
+      "total": 55
+    },
+    "Magnolia yarumalensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Malacoptila mystacalis": {
+      "train": 61,
+      "val": 7,
+      "test": 9,
+      "total": 77
+    },
+    "Malaveria rodriguezi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Manacus manacus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Manacus vitellinus": {
+      "train": 56,
+      "val": 7,
+      "test": 7,
+      "total": 70
+    },
+    "Manduca rustica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Margarornis squamiger": {
+      "train": 59,
+      "val": 7,
+      "test": 8,
+      "total": 74
+    },
+    "Markia hystrix": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Marpesia berania": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Marpesia corinna": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Maruca vitrata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Masdevallia amanda": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Masdevallia heteroptera": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Masdevallia hortensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Masdevallia picturata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Maxillaria acuminata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Maxillaria embreei": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Maxillaria lepidota": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mechanitis polymnia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mecocerculus leucophrys": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mecocerculus stictopterus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Megaceryle torquata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Megascops choliba": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Megaskepasma erythrochlamys": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Melanchroia chephise": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Melanerpes formicivorus": {
+      "train": 96,
+      "val": 12,
+      "test": 12,
+      "total": 120
+    },
+    "Melanerpes pulcher": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Melanerpes rubricapillus": {
+      "train": 76,
+      "val": 9,
+      "test": 10,
+      "total": 95
+    },
+    "Melanis pixe": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Melipona nigrescens": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Memphis lyceus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Menemerus bivittatus": {
+      "train": 48,
+      "val": 6,
+      "test": 6,
+      "total": 60
+    },
+    "Merganetta armata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mesothen nomia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Metallura tyrianthina": {
+      "train": 64,
+      "val": 8,
+      "test": 9,
+      "total": 81
+    },
+    "Metallura williami": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Miconia aeruginosa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Miconia asperrima": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Miconia salicifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Miconia trichocalyx": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Micrathena lucasi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Micrurus mipartitus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mimoniades nurscia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mimus gilvus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mionectes oleagineus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mniotilta varia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Molothrus bonariensis": {
+      "train": 69,
+      "val": 8,
+      "test": 10,
+      "total": 87
+    },
+    "Momordica charantia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Momotus aequatorialis": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Monochaetum multiflorum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Morella pubescens": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Morpho sulkowskyi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Muntingia calabura": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Musa velutina": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Mutisia clematis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myadestes ralloides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myiarchus cephalotes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myioborus miniatus": {
+      "train": 56,
+      "val": 7,
+      "test": 8,
+      "total": 71
+    },
+    "Myioborus ornatus": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Myiodynastes hemichrysus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myiodynastes maculatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myiotheretes striaticollis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myiothlypis coronata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myiothlypis fulvicauda": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myiothlypis nigrocristata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Myiozetetes cayanensis": {
+      "train": 45,
+      "val": 5,
+      "test": 7,
+      "total": 57
+    },
+    "Mythimna unipuncta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Nasua olivacea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Necyria bellona": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Nertera granadensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Notiochelidon cyanoleuca": {
+      "train": 59,
+      "val": 7,
+      "test": 8,
+      "total": 74
+    },
+    "Notiochelidon murina": {
+      "train": 45,
+      "val": 5,
+      "test": 7,
+      "total": 57
+    },
+    "Nyctibius griseus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Nycticorax nycticorax": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Nymphargus grandisonae": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ochthoeca cinnamomeiventris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ochthoeca diadema": {
+      "train": 90,
+      "val": 11,
+      "test": 12,
+      "total": 113
+    },
+    "Ochthoeca frontalis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ochthoeca fumicolor": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ochthoeca rufipectoralis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ocreatus underwoodii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Odontomachus erythrocephalus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ognorhynchus icterotis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Oncidium cultratum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Oncidium lehmannii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Oncidium luteopurpureum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Oncidium ornithorhynchum": {
+      "train": 49,
+      "val": 6,
+      "test": 7,
+      "total": 62
+    },
+    "Opaon varicolor": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Opsiphanes quiteria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Oressinoma typhla": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ortalis columbiana": {
+      "train": 43,
+      "val": 5,
+      "test": 6,
+      "total": 54
+    },
+    "Orthrosanthus chimboracensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Oxypogon stuebelii": {
+      "train": 44,
+      "val": 5,
+      "test": 7,
+      "total": 56
+    },
+    "Oxyrhopus petolarius": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Oxysternon conspicillatum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pachyramphus polychopterus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pachystachys lutea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Palicourea angustifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Palicourea colorata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pandion haliaetus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pantherodes pardalaria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Papilio polyxenes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Paramastax poecilosoma": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Paramastax rosenbergi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Parataygetis lineata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pareuptychia hesione": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pareuptychia metaleuca": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Parides erithalion": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora adenopoda": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora alata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora alnifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora antioquiensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora apoda": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora capsularis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora cisnana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora coriacea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora cumbalensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora cuspidifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora maliformis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora mixta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora suberosa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora tribolophylla": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Passiflora vitifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Patagioenas cayennensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Patagioenas fasciata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pedaliodes peucestas": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pedaliodes phaedra": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pelecinus polyturator": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Penelope montagnii": {
+      "train": 107,
+      "val": 13,
+      "test": 14,
+      "total": 134
+    },
+    "Peperomia rotundifolia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Perisama bonplandii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Perisama humboldtii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Perisama lebasii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Perisama oppelii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Persicaria capitata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Persicaria nepalensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Phaethornis guy": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Phalacrocorax brasilianus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pharomachrus auriceps": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pheucticus ludovicianus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pheugopedius sclateri": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Phimosus infuscatus": {
+      "train": 88,
+      "val": 11,
+      "test": 11,
+      "total": 110
+    },
+    "Phobetron hipparchia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pholidobolus celsiae": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Phoneutria depilata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Phytolacca bogotensis": {
+      "train": 41,
+      "val": 5,
+      "test": 6,
+      "total": 52
+    },
+    "Phytolacca rivinoides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Phytolacca rugosa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Piaya cayana": {
+      "train": 46,
+      "val": 5,
+      "test": 7,
+      "total": 58
+    },
+    "Picumnus granadensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pionus chalcopterus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pionus menstruus": {
+      "train": 71,
+      "val": 8,
+      "test": 10,
+      "total": 89
+    },
+    "Piper lanceifolium": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Piper peltatum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pipra erythrocephala": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pipreola arcuata": {
+      "train": 74,
+      "val": 9,
+      "test": 10,
+      "total": 93
+    },
+    "Pipreola jucunda": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pipreola riefferii": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Piranga flava": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Piranga rubra": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Pitangus sulphuratus": {
+      "train": 87,
+      "val": 10,
+      "test": 12,
+      "total": 109
+    },
+    "Pleroma urvilleanum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pleurothallis cordata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pleurothallis matudana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pleurothallis phalangifera": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pleurothallis pulvinaris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pleurothallis tetragona": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Podotricha judith": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Poecilotriccus ruficeps": {
+      "train": 91,
+      "val": 11,
+      "test": 12,
+      "total": 114
+    },
+    "Polistes carnifex": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Polistes erythrocephalus": {
+      "train": 75,
+      "val": 9,
+      "test": 10,
+      "total": 94
+    },
+    "Ponthieva fertilis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Porphyrio martinica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Porphyrobaphe iris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Potentilla indica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Potos flavus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pristimantis achatinus": {
+      "train": 49,
+      "val": 6,
+      "test": 7,
+      "total": 62
+    },
+    "Pristimantis thectopternus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Prosthechea hartwegii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Psalidognathus modestus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Psarocolius angustifrons": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pseudocolaptes boissonneautii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pseudohaetera hypaesia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pseudosphinx tetrio": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pseudovates brevicornis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pteroglossus torquatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pterophanes cyanopterus": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Pterostemma antioquiense": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pulsatrix perspicillata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pycnopalpa bicordata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Pyrocephalus rubinus": {
+      "train": 62,
+      "val": 7,
+      "test": 9,
+      "total": 78
+    },
+    "Pyrrhomyias cinnamomeus": {
+      "train": 105,
+      "val": 13,
+      "test": 14,
+      "total": 132
+    },
+    "Pythonides jovianus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Quercus humboldtii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Quiscalus lugubris": {
+      "train": 45,
+      "val": 5,
+      "test": 7,
+      "total": 57
+    },
+    "Quiscalus mexicanus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Racinaea tetrantha": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ramphastos citreolaemus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ramphocelus dimidiatus": {
+      "train": 57,
+      "val": 7,
+      "test": 8,
+      "total": 72
+    },
+    "Ramphocelus flammigerus": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Ramphomicron microrhynchum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Raphiocera ornata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Renealmia cernua": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Retrophyllum rospigliosii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rhetus arcius": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rhetus dysonii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rhinella horribilis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rhipsalis baccifera": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rhodobaenus augustinus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rhytidochrota risaraldae": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Ricinus communis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rodriguezia lanceolata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rubus nubigenus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rupicola peruvianus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Rupornis magnirostris": {
+      "train": 101,
+      "val": 12,
+      "test": 14,
+      "total": 127
+    },
+    "Saguinus leucopus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Saltator atripennis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Saltator cinctus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Saltator striatipectus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Salvia scutellarioides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Saucerottia saucerottei": {
+      "train": 75,
+      "val": 9,
+      "test": 10,
+      "total": 94
+    },
+    "Sayornis nigricans": {
+      "train": 62,
+      "val": 7,
+      "test": 9,
+      "total": 78
+    },
+    "Scaphyglottis aurea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Schistes albogularis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sciurus granatensis": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Sciurus pucheranii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sechium edule": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Senecio niveoaureus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sericoptera mahometaria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sericossypha albocristata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Serpocaulon levigatum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Serpophaga cinerea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Setophaga aestiva": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Setophaga castanea": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Setophaga fusca": {
+      "train": 118,
+      "val": 14,
+      "test": 16,
+      "total": 148
+    },
+    "Setophaga pitiayumi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sibovia prodigiosa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sicalis flaveola": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Siproeta epaphus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Siproeta stelenes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Solanum quitoense": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Solanum vestissimum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sphacelodes vulneraria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sphenopsis frontalis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sphenopsis melanotis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Spilotes pullatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Spinus psaltria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Spinus xanthogastrus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Spizaetus tyrannus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sporathraupis cyanocephala": {
+      "train": 85,
+      "val": 10,
+      "test": 12,
+      "total": 107
+    },
+    "Sporophila crassirostris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sporophila intermedia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sporophila luctuosa": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sporophila minuta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sporophila nigricollis": {
+      "train": 44,
+      "val": 5,
+      "test": 6,
+      "total": 55
+    },
+    "Stagmatoptera septentrionalis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Stelgidopteryx ruficollis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Stilpnia cyanicollis": {
+      "train": 60,
+      "val": 7,
+      "test": 9,
+      "total": 76
+    },
+    "Stilpnia heinei": {
+      "train": 63,
+      "val": 7,
+      "test": 9,
+      "total": 79
+    },
+    "Stilpnia vitriolina": {
+      "train": 117,
+      "val": 14,
+      "test": 16,
+      "total": 147
+    },
+    "Streptoprocne zonaris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Streptosolen jamesonii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Sylvilagus andinus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Synallaxis azarae": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Synoeca septentrionalis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tachyphonus rufus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tangara arthus": {
+      "train": 48,
+      "val": 6,
+      "test": 7,
+      "total": 61
+    },
+    "Tangara gyrola": {
+      "train": 82,
+      "val": 10,
+      "test": 11,
+      "total": 103
+    },
+    "Tangara icterocephala": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tangara labradorides": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tangara nigroviridis": {
+      "train": 44,
+      "val": 5,
+      "test": 7,
+      "total": 56
+    },
+    "Tangara vassorii": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tangara xanthocephala": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tantilla melanocephala": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tegosa anieta": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tersina viridis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tetragonisca angustula": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Thalurania colombica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Thamnophilus multistriatus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Theobroma cacao": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Thlypopsis superciliaris": {
+      "train": 48,
+      "val": 6,
+      "test": 7,
+      "total": 61
+    },
+    "Thraupis episcopus": {
+      "train": 103,
+      "val": 12,
+      "test": 14,
+      "total": 129
+    },
+    "Thraupis palmarum": {
+      "train": 77,
+      "val": 9,
+      "test": 11,
+      "total": 97
+    },
+    "Thunbergia alata": {
+      "train": 73,
+      "val": 9,
+      "test": 10,
+      "total": 92
+    },
+    "Thysania zenobia": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tiaris olivaceus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tigrisoma lineatum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tillandsia biflora": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tillandsia complanata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tillandsia fendleri": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tithorea tarricina": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tityra semifasciata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tityus forcipula": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Todirostrum cinereum": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tournefortiopsis crispiflora": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Trichonephila clavipes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Trifolium pratense": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Trifolium repens": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Trigona fulviventris": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tringa solitaria": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Troglodytes musculus": {
+      "train": 49,
+      "val": 6,
+      "test": 7,
+      "total": 62
+    },
+    "Troglodytes solstitialis": {
+      "train": 64,
+      "val": 8,
+      "test": 8,
+      "total": 80
+    },
+    "Trogon personatus": {
+      "train": 67,
+      "val": 8,
+      "test": 9,
+      "total": 84
+    },
+    "Turdus fuscater": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Turdus grayi": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Turdus ignobilis": {
+      "train": 80,
+      "val": 10,
+      "test": 11,
+      "total": 101
+    },
+    "Turnera subulata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Tyrannus melancholicus": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Tyrannus savana": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Urania fulgens": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Uranomitra franciae": {
+      "train": 52,
+      "val": 6,
+      "test": 7,
+      "total": 65
+    },
+    "Uropsalis lyra": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Urosticte benjamini": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Vallea stipularis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Vanellus chilensis": {
+      "train": 66,
+      "val": 8,
+      "test": 9,
+      "total": 83
+    },
+    "Vanessa braziliensis": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Vanessa carye": {
+      "train": 66,
+      "val": 8,
+      "test": 9,
+      "total": 83
+    },
+    "Veniliornis dignus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Vireo leucophrys": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Volatinia jacarina": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Voyria tenella": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Vultur gryphus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Wercklea ferox": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Xenops rutilans": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Xiphocolaptes promeropirhynchus": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Xylocopa fimbriata": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Zantedeschia aethiopica": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Zelus longipes": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Zenaida auriculata": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    },
+    "Zentrygon frenata": {
+      "train": 57,
+      "val": 7,
+      "test": 8,
+      "total": 72
+    },
+    "Zimmerius chrysops": {
+      "train": 40,
+      "val": 5,
+      "test": 5,
+      "total": 50
+    },
+    "Zingiber spectabile": {
+      "train": 65,
+      "val": 8,
+      "test": 9,
+      "total": 82
+    },
+    "Zonotrichia capensis": {
+      "train": 120,
+      "val": 15,
+      "test": 15,
+      "total": 150
+    }
+  }
+}

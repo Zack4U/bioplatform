@@ -1,95 +1,9 @@
 # ===========================================
-# BioPlatform - Git Ignore
+# BioPlatform - Root Git Ignore
 # ===========================================
-
+# Only global rules here. Language/framework-specific
+# rules live in each sub-project .gitignore.
 # ===========================================
-# .NET / C#
-# ===========================================
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
-[Tt]est[Rr]esults/
-*.user
-*.userosscache
-*.suo
-*.sln.docstates
-*.sln.doccache
-.vs/
-*.csproj.user
-project.lock.json
-*.nuget.props
-*.nuget.targets
-*.nupkg
-**/packages/*
-!**/packages/build/
-*.snupkg
-
-# ===========================================
-# Node.js / Next.js / React Native
-# ===========================================
-node_modules/
-.next/
-out/
-build/
-dist/
-.expo/
-*.tgz
-.yarn-integrity
-.npm
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-
-# ===========================================
-# Python
-# ===========================================
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-develop-eggs/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-venv/
-.venv/
-ENV/
-env/
-.ipynb_checkpoints
-
-# ===========================================
-# AI / Machine Learning
-# ===========================================
-*.h5
-*.hdf5
-*.pt
-*.pth
-*.onnx
-*.pb
-*.tflite
-!**/models_weights/.gitkeep
-vector_store/
-chroma_data/
-*.faiss
-datasets/
-data/raw/
-data/processed/
-*.csv
-*.parquet
-!**/seeds/*.csv
 
 # ===========================================
 # Environment Files
@@ -102,7 +16,8 @@ data/processed/
 *.secret
 secrets/
 !.env.example
-src/Bio.Backend.Core/Bio.API/appsettings.Development.json
+secrets.env
+variables.env
 
 # ===========================================
 # IDE / Editors
@@ -147,12 +62,10 @@ docker/nginx/ssl/*
 !docker/nginx/ssl/.gitkeep
 
 # ===========================================
-# Testing
+# Testing (global)
 # ===========================================
 coverage/
 *.lcov
-.nyc_output/
-TestResults/
 
 # ===========================================
 # Temporary Files
@@ -164,7 +77,5 @@ TestResults/
 .cache/
 tmp/
 temp/
-publish/
-artifacts/
 
-.fake
+.gemini

@@ -27,7 +27,7 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     ports:
-      - "5050:80"
+      - "5060:80"
     networks:
       - bioplatform-network
     depends_on:

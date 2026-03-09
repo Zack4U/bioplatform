@@ -1,0 +1,88 @@
+{
+  "global_metrics": {
+    "accuracy": {
+      "v1": 0.8673,
+      "v2": 0.8739,
+      "delta": 0.0066,
+      "winner": "v2 ✓"
+    },
+    "top_5_accuracy": {
+      "v1": 0.9505,
+      "v2": 0.9514,
+      "delta": 0.0009,
+      "winner": "="
+    },
+    "macro_avg": {
+      "precision": {
+        "v1": 0.8785,
+        "v2": 0.888,
+        "delta": 0.0095,
+        "winner": "v2 ✓"
+      },
+      "recall": {
+        "v1": 0.8577,
+        "v2": 0.8662,
+        "delta": 0.0085,
+        "winner": "v2 ✓"
+      },
+      "f1_score": {
+        "v1": 0.8553,
+        "v2": 0.8652,
+        "delta": 0.0099,
+        "winner": "v2 ✓"
+      }
+    },
+    "weighted_avg": {
+      "precision": {
+        "v1": 0.883,
+        "v2": 0.8918,
+        "delta": 0.0088,
+        "winner": "v2 ✓"
+      },
+      "recall": {
+        "v1": 0.8673,
+        "v2": 0.8739,
+        "delta": 0.0066,
+        "winner": "v2 ✓"
+      },
+      "f1_score": {
+        "v1": 0.8639,
+        "v2": 0.8726,
+        "delta": 0.0087,
+        "winner": "v2 ✓"
+      }
+    }
+  },
+  "misclassified": {
+    "total_v1": 50,
+    "total_v2": 50,
+    "delta": 0
+  },
+  "tier_distribution": {
+    "v1": {
+      ">=0.90": 309,
+      "0.70-0.89": 326,
+      "0.50-0.69": 73,
+      "<0.50": 11
+    },
+    "v2": {
+      ">=0.90": 337,
+      "0.70-0.89": 300,
+      "0.50-0.69": 71,
+      "<0.50": 11
+    }
+  },
+  "tier_migrations_count": {
+    "improved": 109,
+    "degraded": 86
+  },
+  "per_species_summary": {
+    "total_compared": 719,
+    "improved": 240,
+    "degraded": 195,
+    "unchanged": 284,
+    "avg_f1_delta": 0.009956,
+    "new_in_v2": 0,
+    "removed_in_v2": 0
+  }
+}

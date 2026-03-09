@@ -1,0 +1,439 @@
+{
+  "run_started": "2026-03-06T01:57:16.501583+00:00",
+  "parameters": {
+    "max_images": 50,
+    "min_existing": 10,
+    "image_size": 512
+  },
+  "candidates": 36,
+  "results": [
+    {
+      "species": "Dacrymyces spathularius",
+      "scientific_name": "Dacrymyces spathularius (Schwein.) Alvarenga",
+      "kingdom": "Fungi",
+      "family": "Dacrymycetaceae",
+      "initial": 10,
+      "photos_found": 0,
+      "downloaded": 0,
+      "failed": 0,
+      "final": 10
+    },
+    {
+      "species": "Limenitis corcyra",
+      "scientific_name": "Adelpha corcyra Hewitson, 1847",
+      "kingdom": "Animalia",
+      "family": "Nymphalidae",
+      "initial": 10,
+      "photos_found": 0,
+      "downloaded": 0,
+      "failed": 0,
+      "final": 10
+    },
+    {
+      "species": "Monstera pinnatipartita",
+      "scientific_name": "Monstera pinnatipartita Schott",
+      "kingdom": "Plantae",
+      "family": "Araceae",
+      "initial": 12,
+      "photos_found": 0,
+      "downloaded": 0,
+      "failed": 0,
+      "final": 12
+    },
+    {
+      "species": "Psilocybe cubensis",
+      "scientific_name": "Psilocybe cubensis (Earle) Singer",
+      "kingdom": "Fungi",
+      "family": "Hymenogastraceae",
+      "initial": 12,
+      "photos_found": 0,
+      "downloaded": 0,
+      "failed": 0,
+      "final": 12
+    },
+    {
+      "species": "Pedaliodes pausia",
+      "scientific_name": "Pedaliodes baccara Thieme, 1905",
+      "kingdom": "Animalia",
+      "family": "Nymphalidae",
+      "initial": 19,
+      "photos_found": 0,
+      "downloaded": 0,
+      "failed": 0,
+      "final": 19
+    },
+    {
+      "species": "Magdalenasaura adercum",
+      "scientific_name": "Magdalenasaura adercum Fang, Vázquez-Restrepo & Daza, 2020",
+      "kingdom": "Animalia",
+      "family": "Gymnophthalmidae",
+      "initial": 20,
+      "photos_found": 10,
+      "downloaded": 10,
+      "failed": 0,
+      "final": 20
+    },
+    {
+      "species": "Lepanthes licrophora",
+      "scientific_name": "Lepanthes licrophora Luer & B.T.Larsen",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 21,
+      "photos_found": 11,
+      "downloaded": 11,
+      "failed": 0,
+      "final": 21
+    },
+    {
+      "species": "Lepanthes helgae",
+      "scientific_name": "Lepanthes helgae Luer & R.Escobar",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 22,
+      "photos_found": 11,
+      "downloaded": 11,
+      "failed": 0,
+      "final": 22
+    },
+    {
+      "species": "Linothele sericata",
+      "scientific_name": "Linothele sericata (Karsch, 1879)",
+      "kingdom": "Animalia",
+      "family": "Dipluridae",
+      "initial": 24,
+      "photos_found": 26,
+      "downloaded": 26,
+      "failed": 0,
+      "final": 50
+    },
+    {
+      "species": "Limenitis alala",
+      "scientific_name": "Adelpha alala Hewitson, 1847",
+      "kingdom": "Animalia",
+      "family": "Nymphalidae",
+      "initial": 24,
+      "photos_found": 0,
+      "downloaded": 0,
+      "failed": 0,
+      "final": 24
+    },
+    {
+      "species": "Pleurothallis gracilicolumna",
+      "scientific_name": "Pleurothallis gracilicolumna Mark Wilson",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 24,
+      "photos_found": 12,
+      "downloaded": 12,
+      "failed": 0,
+      "final": 24
+    },
+    {
+      "species": "Pristimantis tribulosus",
+      "scientific_name": "Pristimantis tribulosus (Lynch & Rueda-Almonacid, 1997)",
+      "kingdom": "Animalia",
+      "family": "Craugastoridae",
+      "initial": 24,
+      "photos_found": 14,
+      "downloaded": 14,
+      "failed": 0,
+      "final": 24
+    },
+    {
+      "species": "Gunnera magnifica",
+      "scientific_name": "Gunnera magnifica H.St.John",
+      "kingdom": "Plantae",
+      "family": "Gunneraceae",
+      "initial": 26,
+      "photos_found": 15,
+      "downloaded": 15,
+      "failed": 0,
+      "final": 26
+    },
+    {
+      "species": "Lepanthes volvox",
+      "scientific_name": "Lepanthes volvox Luer & R.Escobar",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 27,
+      "photos_found": 15,
+      "downloaded": 15,
+      "failed": 0,
+      "final": 27
+    },
+    {
+      "species": "Anolis antioquiae",
+      "scientific_name": "Anolis antioquiae Williams, 1985",
+      "kingdom": "Animalia",
+      "family": "Dactyloidae",
+      "initial": 28,
+      "photos_found": 17,
+      "downloaded": 17,
+      "failed": 0,
+      "final": 28
+    },
+    {
+      "species": "Ombrophytum villamariensis",
+      "scientific_name": "Ombrophytum villamariensis S.Guzm.-Guzm.",
+      "kingdom": "Plantae",
+      "family": "Balanophoraceae",
+      "initial": 30,
+      "photos_found": 16,
+      "downloaded": 16,
+      "failed": 0,
+      "final": 30
+    },
+    {
+      "species": "Lepanthes silverstonei",
+      "scientific_name": "Lepanthes silverstonei Luer",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 31,
+      "photos_found": 19,
+      "downloaded": 19,
+      "failed": 0,
+      "final": 31
+    },
+    {
+      "species": "Masdevallia macrura",
+      "scientific_name": "Masdevallia macrura Rchb.f.",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 32,
+      "photos_found": 17,
+      "downloaded": 17,
+      "failed": 0,
+      "final": 32
+    },
+    {
+      "species": "Masdevallia ignea",
+      "scientific_name": "Masdevallia ignea Rchb.f.",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 32,
+      "photos_found": 18,
+      "downloaded": 18,
+      "failed": 0,
+      "final": 32
+    },
+    {
+      "species": "Onega fassli",
+      "scientific_name": "Onega fassli Young, 1977",
+      "kingdom": "Animalia",
+      "family": "Cicadellidae",
+      "initial": 32,
+      "photos_found": 18,
+      "downloaded": 18,
+      "failed": 0,
+      "final": 32
+    },
+    {
+      "species": "Automeris cryptica",
+      "scientific_name": "Automeris cryptica Dognin, 1911",
+      "kingdom": "Animalia",
+      "family": "Saturniidae",
+      "initial": 33,
+      "photos_found": 17,
+      "downloaded": 17,
+      "failed": 0,
+      "final": 33
+    },
+    {
+      "species": "Mesothen albilimbata",
+      "scientific_name": "Mesothen albilimbata Dognin, 1912",
+      "kingdom": "Animalia",
+      "family": "Erebidae",
+      "initial": 34,
+      "photos_found": 16,
+      "downloaded": 16,
+      "failed": 0,
+      "final": 34
+    },
+    {
+      "species": "Lepanthes pachoi",
+      "scientific_name": "Lepanthes pachoi Luer & R.Escobar",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 35,
+      "photos_found": 15,
+      "downloaded": 15,
+      "failed": 0,
+      "final": 35
+    },
+    {
+      "species": "Cholus nitidicollis",
+      "scientific_name": "Cholus nitidicollis F.P.Pascoe, 1872",
+      "kingdom": "Animalia",
+      "family": "Curculionidae",
+      "initial": 36,
+      "photos_found": 14,
+      "downloaded": 14,
+      "failed": 0,
+      "final": 36
+    },
+    {
+      "species": "Lepanthes rhombipetala",
+      "scientific_name": "Lepanthes rhombipetala Schltr.",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 36,
+      "photos_found": 14,
+      "downloaded": 14,
+      "failed": 0,
+      "final": 36
+    },
+    {
+      "species": "Fuchsia hartwegii",
+      "scientific_name": "Fuchsia hartwegii Benth.",
+      "kingdom": "Plantae",
+      "family": "Onagraceae",
+      "initial": 36,
+      "photos_found": 14,
+      "downloaded": 14,
+      "failed": 0,
+      "final": 36
+    },
+    {
+      "species": "Fernandezia debedoutii",
+      "scientific_name": "Fernandezia debedoutii (P.Ortiz) M.W.Chase",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 38,
+      "photos_found": 12,
+      "downloaded": 12,
+      "failed": 0,
+      "final": 38
+    },
+    {
+      "species": "Caladium lindenii",
+      "scientific_name": "Phyllotaenium lindenii André",
+      "kingdom": "Plantae",
+      "family": "Araceae",
+      "initial": 39,
+      "photos_found": 11,
+      "downloaded": 11,
+      "failed": 0,
+      "final": 39
+    },
+    {
+      "species": "Plebeia franki",
+      "scientific_name": "Plebeia franki (Friese, 1900)",
+      "kingdom": "Animalia",
+      "family": "Apidae",
+      "initial": 39,
+      "photos_found": 11,
+      "downloaded": 11,
+      "failed": 0,
+      "final": 39
+    },
+    {
+      "species": "Lepanthes guttula-sanguinis",
+      "scientific_name": "Lepanthes guttula-sanguinis Luer & R.Escobar",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 40,
+      "photos_found": 10,
+      "downloaded": 10,
+      "failed": 0,
+      "final": 40
+    },
+    {
+      "species": "Nymphargus chami",
+      "scientific_name": "Nymphargus chami (Ruiz-Carranza & Lynch, 1995)",
+      "kingdom": "Animalia",
+      "family": "Centrolenidae",
+      "initial": 41,
+      "photos_found": 9,
+      "downloaded": 9,
+      "failed": 0,
+      "final": 41
+    },
+    {
+      "species": "Masdevallia parvula",
+      "scientific_name": "Masdevallia parvula Schltr.",
+      "kingdom": "Plantae",
+      "family": "Orchidaceae",
+      "initial": 42,
+      "photos_found": 8,
+      "downloaded": 8,
+      "failed": 0,
+      "final": 42
+    },
+    {
+      "species": "Corades cybele",
+      "scientific_name": "Corades cybele Butler, 1866",
+      "kingdom": "Animalia",
+      "family": "Nymphalidae",
+      "initial": 45,
+      "photos_found": 5,
+      "downloaded": 5,
+      "failed": 0,
+      "final": 45
+    },
+    {
+      "species": "Maeota ibargueni",
+      "scientific_name": "Maeota ibargueni Galvis, 2014",
+      "kingdom": "Animalia",
+      "family": "Salticidae",
+      "initial": 47,
+      "photos_found": 3,
+      "downloaded": 3,
+      "failed": 0,
+      "final": 47
+    },
+    {
+      "species": "Dismorphia crisia",
+      "scientific_name": "Dismorphia crisia foedora (Lucas, 1852)",
+      "kingdom": "Animalia",
+      "family": "Pieridae",
+      "initial": 48,
+      "photos_found": 2,
+      "downloaded": 2,
+      "failed": 0,
+      "final": 48
+    },
+    {
+      "species": "Hyloscirtus larinopygion",
+      "scientific_name": "Hyloscirtus larinopygion (Duellman, 1973)",
+      "kingdom": "Animalia",
+      "family": "Hylidae",
+      "initial": 49,
+      "photos_found": 1,
+      "downloaded": 1,
+      "failed": 0,
+      "final": 49
+    }
+  ],
+  "run_finished": "2026-03-06T01:59:38.367270+00:00",
+  "duration_seconds": 141.9,
+  "summary": {
+    "total_downloaded": 381,
+    "total_failed": 0,
+    "total_no_results": 6,
+    "total_candidates": 36,
+    "success_rate_pct": 83.3,
+    "final_distribution": {
+      "<20": 5,
+      "20-29": 9,
+      "30-49": 21,
+      "50+": 1
+    }
+  },
+  "kingdom_breakdown": {
+    "Fungi": {
+      "processed": 2,
+      "downloaded": 0,
+      "no_results": 2
+    },
+    "Animalia": {
+      "processed": 17,
+      "downloaded": 163,
+      "no_results": 3
+    },
+    "Plantae": {
+      "processed": 17,
+      "downloaded": 218,
+      "no_results": 1
+    }
+  }
+}

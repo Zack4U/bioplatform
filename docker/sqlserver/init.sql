@@ -21,10 +21,11 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Roles')
 BEGIN
     CREATE TABLE Roles (
-        Id INT IDENTITY(1,1) PRIMARY KEY,
-        Name NVARCHAR(50) NOT NULL UNIQUE,
-        Description NVARCHAR(200),
-        CreatedAt DATETIME2 DEFAULT GETUTCDATE()
+        Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+        Name NVARCHAR(100) NOT NULL UNIQUE,
+        Description NVARCHAR(MAX),
+        CreatedAt DATETIME2 DEFAULT GETUTCDATE(),
+        UpdatedAt DATETIME2 DEFAULT GETUTCDATE()
     );
 END
 GO
@@ -38,6 +39,7 @@ BEGIN
         PasswordHash NVARCHAR(MAX) NOT NULL,
         FullName NVARCHAR(150) NOT NULL,
         PhoneNumber NVARCHAR(20),
+        Salt NVARCHAR(MAX) NOT NULL,
         IsVerified BIT DEFAULT 0,
         TwoFactorSecret NVARCHAR(100),
         TwoFactorEnabled BIT DEFAULT 0,
@@ -56,7 +58,7 @@ IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'UserRoles')
 BEGIN
     CREATE TABLE UserRoles (
         UserId UNIQUEIDENTIFIER NOT NULL,
-        RoleId INT NOT NULL,
+        RoleId UNIQUEIDENTIFIER NOT NULL,
         AssignedAt DATETIME2 DEFAULT GETUTCDATE(),
         PRIMARY KEY (UserId, RoleId),
         FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
@@ -255,13 +257,20 @@ END
 GO
 
 -- Crear usuario administrador por defecto (password: Admin@123456)
--- Hash generado con BCrypt
+-- Hash generado con PBKDF2 (SHA256, 100k iteraciones)
 IF NOT EXISTS (SELECT * FROM Users WHERE Email = 'admin@bioplatform.co')
 BEGIN
     DECLARE @AdminId UNIQUEIDENTIFIER = NEWID();
     
-    INSERT INTO Users (Id, Email, PasswordHash, FullName, IsVerified, IsActive)
-    VALUES (@AdminId, 'admin@bioplatform.co', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4.SQkFfJ6Z6K.Hs.', 'System Administrator', 1, 1);
+    INSERT INTO Users (Id, Email, PasswordHash, Salt, FullName, IsVerified, IsActive)
+    VALUES (
+        @AdminId, 
+        'admin@bioplatform.co', 
+        'K2hT8LiqQ2TQJCgIbOZ9OfS6hP9Ne2OpXSbAGhb8xio=', 
+        'KM2/iYDUxm60UVB2xu7MTw==', 
+        'System Administrator', 
+        1, 
+        1);
     
     INSERT INTO UserRoles (UserId, RoleId)
     SELECT @AdminId, Id FROM Roles WHERE Name = 'Admin';
