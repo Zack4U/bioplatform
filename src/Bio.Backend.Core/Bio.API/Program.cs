@@ -19,7 +19,7 @@ builder.Services.AddDbContext<BioDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<ScientificDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ScientificConnection"), 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("ScientificConnection"),
         o => o.UseNetTopologySuite()));
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

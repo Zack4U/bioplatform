@@ -26,7 +26,7 @@ public class ScientificDbContext : DbContext
     {
         // Enforce snake_case for PostgreSQL tables automatically using EF Core conventions
         // or explicitly configure them. For now, we rely on standard conventions.
-        
+
         modelBuilder.Entity<Taxonomy>(entity =>
         {
             entity.HasKey(e => e.Id);
