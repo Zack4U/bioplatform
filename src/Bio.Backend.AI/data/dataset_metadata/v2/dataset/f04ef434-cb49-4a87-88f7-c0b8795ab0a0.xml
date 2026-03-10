@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="f04ef434-cb49-4a87-88f7-c0b8795ab0a0"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/mjsrtb</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=chec_biodiversidad_dorada</alternateIdentifier>
+        <title>Caracterización biológica asociada a la Nueva Subestación Dorada Norte, Caldas</title>
+        <creator>
+            <individualName>
+                <givenName>Francisco Andrés</givenName>
+                <surName>Rivera Molina</surName>
+            </individualName>
+            <organizationName>Andina de Energía S.A.S.</organizationName>
+            <positionName>Biólogo - Área Ambiental</positionName>
+            <address>
+                <deliveryPoint>Calle 105 # 18a - 20</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Cundinamarca</administrativeArea>
+                <postalCode>110111</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>frivera@andienergia.com.co</electronicMailAddress>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Francisco Andrés</givenName>
+                <surName>Rivera Molina</surName>
+            </individualName>
+            <organizationName>Andina de Energía S.A.S.</organizationName>
+            <positionName>Biólogo - Área Ambiental</positionName>
+            <address>
+                <deliveryPoint>Calle 105 # 18a - 20</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Cundinamarca</administrativeArea>
+                <postalCode>110111</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>frivera@andienergia.com.co</electronicMailAddress>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Carlos Mauricio</givenName>
+                <surName>Quintero</surName>
+            </individualName>
+            <organizationName>Andina de Energía S.A.S.</organizationName>
+            <positionName>Representante legal</positionName>
+            <address>
+                <deliveryPoint>Calle 105 # 18a - 20</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Cundinamarca</administrativeArea>
+                <postalCode>110111</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+576120700 ext. 143</phone>
+            <electronicMailAddress>cmq@andienergia.com.co</electronicMailAddress>
+            <role>USER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <surName>Andina de Energia S.A.S. (ANDIENERGIA)</surName>
+            </individualName>
+            <organizationName>Andina de Energia S.A.S. (ANDIENERGIA)</organizationName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <onlineUrl>https://andienergia.com.co/</onlineUrl>
+            <role>AUTHOR</role>
+        </associatedParty>
+        <pubDate>
+                2024-04-05
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            El presente recurso, contiene la información asociada a 2.433 registros biológicos de los reinos Animalia, Fungi y Plantae, recolectados a partir de la caracterizaciones bióticas (fauna y flora) llevados a cabo durante los meses de abril y mayo del 2022, en el municipio de La Dorada, Caldas. En el desarrollo de los tramites asociados al Estudios de Impacto Ambiental, acorde a los lineamientos establecidos en los TDR ANLA, así como los definidos por la Corporación Autónoma Regional CORPOCALDAS, con el permiso de recolección para Estudios Ambientales Resolución No. 02328 de diciembre de 2021.
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>permiso de recolección</keyword>
+            <keyword>Fauna</keyword>
+            <keyword>flora</keyword>
+            <keyword>estudio de impacto ambiental</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>PERMISO_COLECTA</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=chec_biodiversidad_dorada</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El muestreo se llevó a cabo en el municipio de La Dorada, departamento de Caldas.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-74.739</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.682</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.486</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.417</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2022-04-01
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2022-05-26
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El presente conjunto de datos cuenta con 2.433 registros biologicos, distribuidos en los reinos Animalia, Fungi y Plantae. 672 registros biológicos pertenecientes al reino Plantae, distribuidos en 3 filos, 4 clases, 25 órdenes, 48 familias, 126 géneros y 127 especies. Del total, un 68.7% fue identificado a nivel de especie, un 31% a género y el porcentaje restante, a niveles taxonómicos superiores.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Bryophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Magnoliophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Marchantiophyta</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>831 registros biológicos pertenecientes al reino Fungi, distribuidos en 1 filo, 4 clases, 7 órdenes, 12 familias, 25 géneros y 36 especies. Del total, un 60% fue identificado a nivel de especie y un 39% a género.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Ascomycota</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>930 registros biológicos pertenecientes al reino Animalia, distribuidos en 1 filo, 4 clases, 33 órdenes, 72 familias, 154 géneros y 178 especies. Del total, un 97% fue identificado a nivel de especie y un 2.7% a género.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Amphibia</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Aves</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Mammalia</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Reptilia</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Wilfrido</givenName>
+                <surName>Segura Coronel</surName>
+            </individualName>
+            <organizationName>Andina de Energía S.A.S.</organizationName>
+            <positionName>Director de Proyectos - Área Ambiental</positionName>
+            <address>
+                <deliveryPoint>Calle 105 # 18a - 20</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Cundinamarca</administrativeArea>
+                <postalCode>110111</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>wsegura@andienergia.com.co</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>La caracterización florística, se baso en primera instancia en la verificación y validación de información secundaria existente de la zona con un enfoque hacía la flora presente en el área de influencia del proyecto, teniendo en cuenta publicaciones, acuerdos, normas, entre otros. Procedimiento de recolección: Previo al inicio de las actividades de campo se realizó una salida al área de influencia con el fin de hacer un reconocimiento in situ de las coberturas objeto de muestreo, lo cual nos permite percibir y dimensionar los posibles escenarios y dificultades para tener en cuenta. En el proceso de recolección de la información, se partio de la identificación de las coberturas de la tierra que fueron objeto de caracterización de flora, proceso realizado en oficina, una vez éstas se identificaron, se procede a realizar el cálculo de la intensidad de muestreo (5%), la cual es tomada para el área total de cada cobertura a caracterizar que hace parte del área de influencia biótica, una vez determinada la intensidad de muestreo, se procede a calcular el área (ha) a caracterizar, obtenida el área (ha) a caracterizar, procedemos a determinar y calcular el número total de parcelas a establecer por cada una de las cobertura de la tierra.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>La metodología utilizada, se basa en lo realizado por Gentry (1993), adaptado y ajustado por Andina de Energía SAS; en donde se establecieron parcelas de forma semitemporal, con un área de 1.000 m2 (0,1 ha) y dimensiones de 20 m de ancho por 50 m de longitud, en cada parcela de muestreo se tomaron datos cualitativos como estado fitosanitario, usos, nombre común, vulgar o local; y datos cuantitativos como CAP, distancia al eje, diámetro de copa, altura total, altura comercial, altura de reiteración</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Las parcelas de muestreo fueron marcadas en cada una de sus esquinas con estacas pintadas en su punta con color rojo, y fueron georreferenciadas (punto inicial y punto final de cada parcela), se toman datos de altitud, pendiente, localización.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Para cada parcela se definen las siguientes categorías de muestreo: Fustales: para los individuos con diámetro a la altura del pecho (DAP) mayor o igual a 10 cm ó 31,5 cm de circunferencia a la altura del pecho (CAP), se establecen parcelas de 50 m de largo por 20 m de ancho, registrando allí todos los individuos que se consideran fustales, en donde se tienen en cuenta las siguientes variables: altura total, altura comercial, altura de reiteración, CAP, estado fitosanitario, diámetro de copa, usos, entre otros. Latizales: para los individuos denominados latizales, aquellos que presentan diámetros a la altura del pecho (DAP) mayores o iguales a 2,5 cm y menores a 10 cm, se establecen subparcelas de 5m x 5m. En ellas se registran e identifican todos los individuos, se toman datos como CAP, altura total, estado fitosanitario, usos, entre otros. Brinzales: para los individuos con diámetros inferiores a 2,5 cm, se establecen subparcelas de 2 m de largo por 2m de ancho, registrando allí todos los individuos que se considera, pueden alcanzar a ser un verdadero “árbol” (Pinelo, 2004). Adicionalmente se registran, especies de helechos, hierbas, etc., considerados de importancia y alto valor para evaluar la riqueza florística del lugar de estudio (ISA – JAUM, 2001), sólo en caso de que se identifiquen herbazales en el área de estudio del proyecto.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>El material se procesará de tal forma que permita posteriormente la inclusión en herbarios nacionales con reconocimiento internacional (COL, JAUM, HUA, MEDEL, etc.). De cada ejemplar se colecto por lo menos tres duplicados, y para casos especiales, este número puede ser mayor, 5 a 6 ejemplares, como es el caso de: Especies poco comunes en estado reproductivo (con Flores y/o Frutos); Especies denominadas como “raras” (elevado valor biológico o ecológico), Especies que se sospecha sean nuevas para la ciencia o nuevos reportes geográficos.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Para el levantamiento de la información primaria se tuvo en cuenta: Número del árbol, Nombre común o local, Registro fotográfico de la muestra colectada, Identificación de la cobertura asociada, Localización (vereda, municipio, corregimiento, m.s.n.m., georreferenciación, entre otras)</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Una vez culminadas las actividades de campo en lo referente a caracterización de flora, en oficina se procedio a la trascripción de la información de las planillas de campo, en esta etapa se realizó la verificación de los datos cualitativos y cuantitativos, además se realizó el ajuste de nombres científicos de cada de las especies arbóreas identificadas en campo, esto teniendo en cuenta la identificación taxonómica entregada por el herbario</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Herpetofauna: El monitoreo se llevo a cabo mediante la inspección por encuentro visual (VES) por tiempo limitado (Crump y Scott, 1994; Angulo et al., 2006); esta técnica consiste en recorridos por un área en busca de individuos que se encuentren asociados a la vegetación, borde de las charcas, quebradas, caminos, o bajo piedras y troncos del camino por un tiempo restringido (Heyer 1994). Este método de búsqueda libre y captura se llevará a cabo en transectos de 100 metros, durante 8 horas diarias y durante cuatro días en cada punto de muestreo. Los muestreos de inspección por encuentro visual (VES) se desarrollarán durante diferentes horas del día: en las horas de la mañana, tarde y noche. Por sus especificaciones, esta técnica pretende abarcar la mayor cantidad de microhábitats disponibles tanto para anfibios como para reptiles. Específicamente para facilitar el registro de las especies de reptiles (serpientes) encontradas, se utilizarán ganchos y pinzas herpetológicas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Aves: Captura con redes de niebla: El muestreo relacionado con la avifauna presente se llevo a cabo de acuerdo con la metodología planteada por Córdoba, Álvarez y Rebolledo (2004) y por Ralph et al. (1997).  La captura de individuos se realizó con 10 redes de niebla de 12 m de longitud x 2.5 m de alto y ojo de malla de 40 mm. Las redes fueron instaladas durante cuatro días en cada punto de muestreo entre las 6:00 - 10:00 am y entre las 15:30 - 18:30 pm. Las redes se ubicaron de tal manera que su revisión no tardarse más de 10 o 15 minutos, de esta forma se evita el exceso de estrés, se logra un rápido registro de los especímenes y de igual manera se evita su manipulación excesiva. Se realizaron registros fotográficos de cada individuo, para posteriormente ser liberados. En los horarios de inactividad, las redes se cerraron para evitar accidentes con animales silvestres y domésticos. 
+Registros directos visuales:Se establecieron transectos con una longitud aproximada de 500 m cada uno, en los cuales se realizó registro directo visual y auditivo mediante uso de binoculares (10x50 y 8x42), conteos por puntos intensivos de observación y conteos por puntos de observación (cada 100 m) con media hora de permanencia en cada punto (Córdoba, Álvarez y Rebolledo 2004; Ralph et al. 1997). Se utilizaron guías y textos de aves como: Guía de Campo de las Aves de Colombia (McMullan et al., 2014.) y Guía de loros, pericos y guacamayas neotropicales (Rodríguez et al., 2005) facilitando de esta forma la identificación de las especies in situ.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Mamíferos:Para el monitoreo de la mastofauna presente en el Área de Influencia se implementaron métodos independientes y complementarios entre sí. Registros visuales: Entre las 9:00 am y las 12:00 pm y entre las 3:00 pm y las 10:00 pm horas se realizaron registros mediante observaciones directas, presencia de huellas, rastros, vocalizaciones, madrigueras y fotografía de pieles. Inspección por transectos: Para el estudio de mamíferos terrestres medianos y grandes, en cada cobertura, se recorrerán transectos de 100 metros, en estos lugares se harán observaciones directas de los mamíferos y se revisarán la existencia de huellas, rastros, heces y/o cualquier otro tipo de evidencia de la presencia de individuos de este grupo taxonómico. Muestreo de pequeños mamíferos no voladores:Se llevaron a cabo durante cuatro días por punto de muestreo mediante la ubicación de 50 trampas Sherman (38 cm x 10.5 cm x 12 cm) y 10 trampas tomahawk (30 cm x 25 cm x 70 cm). Se empleo como cebo una mezcla de mantequilla de maní, sardinas, avena en hojuelas, esencia de vainilla y concentrado para perros. Las trampas estuvieron habilitadas durante 24 horas. Fototrampeo:En cada punto de muestreo se instalaron 2 cámaras trampa con su respectivo cebo, las cuales estarán habilitadas 24 horas, durante 4 días, en lugares estratégicos como árboles cercanos a cuerpos de agua, sectores con huellas o corredores visibles de fauna silvestre. Muestreo de mamíferos voladores:Se utilizaron 10 redes de niebla de 12m x 2,5m con ojo de malla de 40 mm. Estas se abrieron entre las 18:00 - 23:00 pm. Este procedimiento será efectuado durante tres noches en cada punto de muestreo.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Entrevistas: Para complementar la información de los monitoreos de campo, se realizaron entrevistas a habitantes del área de influencia, en donde se hará uso de guías con imágenes a color de la fauna potencial.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>El proyecto Nueva Subestación Dorada Norte 115/33/13,2 KV, se encuentra localizado en el municipio de La Dorada, en el departamento de Caldas; en jurisdicción de la Corporación Autónoma Regional de Caldas – CORPOCALDAS.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>La caracterización florística, se basará en primera instancia en la verificación y validación de información secundaria existente de la zona con un enfoque hacía la flora presente en el área de influencia del proyecto, teniendo en cuenta publicaciones, acuerdos, normas, entre otros.
+ 
+La caracterización de la fauna silvestre en el área de influencia del proyecto se llevará a cabo en la totalidad de coberturas vegetales naturales y antrópicas que lleguen a representar una fuente de recursos para estos grupos. Los puntos de muestreo se seleccionarán con la ayuda del mapa de coberturas junto con recorridos de reconocimiento en campo, lo anterior con el fin de cubrir todas las coberturas existentes que ofrezcan hábitats apropiados para la fauna silvestre en el área del proyecto. 
+
+Los métodos a utilizar e intensidades específicas para el muestreo en campo de cada grupo taxonómico (mamíferos, aves, reptiles y anfibios), son los autorizados por la Autoridad Nacional de Licencias Ambientales (ANLA) mediante la Resolución 02328 del 20 de diciembre de 2021, por la cual se le otorgó a ANDINA DE ENERGÍA S.A.S. el permiso de estudio para la recolección de especímenes de especies silvestres de diversidad biológica con fines de elaboración de estudios ambientales, los cuales se describen a continuación. Así mismo se contemplará lo estipulado en la metodología general para la elaboración y presentación de estudios ambientales expedida mediante la Resolución 1402 de 2018.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>La toma de datos a partir de las actividades de caracterización biótica de los diferentes componentes que lo conforman (Fauna, Flora, Flora epífita), se llevó a cabo con los profesionales con las experiencias requeridas en su currículum, además que son los informados ante la Autoridad Nacional de Licencias Ambientales - ANLA - en el informe de inicio de actividades, conforme a las obligaciones establecidas en el permiso de recolección para EIA&apos;s en la Resolución No. 02328 de diciembre de 2021.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project id="DON">
+                <title>Nueva Subestación Dorada Norte 115 / 33 / 13.2 kV</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Wilfrido</givenName>
+                    <surName>Segura Coronel</surName>
+                    </individualName>
+                    <role>PRINCIPAL_INVESTIGATOR</role>
+                </personnel>
+                <abstract>
+                    <para>Caracterizaciones bióticas (fauna y flora) en el desarrollo de los tramites asociados al Estudios de Impacto Ambiental, acorde a los lineamientos establecidos en los TDR-ANLA, así como los definidos por la Corporación Autónoma Regional CORPOCALDAS, con el permiso de recolección para Estudios Ambientales Resolución No. 02328 de diciembre de 2021.</para>
+                </abstract>
+                <funding>
+                    <para>Central Hidroeléctrica de Caldas</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El proyecto Nueva Subestación Dorada Norte 115/33/13,2 KV, se encuentra localizado en el municipio de La Dorada, en el departamento de Caldas; en jurisdicción de la Corporación Autónoma Regional de Caldas – CORPOCALDAS.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>La caracterización florística, se basará en primera instancia en la verificación y validación de información secundaria existente de la zona con un enfoque hacía la flora presente en el área de influencia del proyecto, teniendo en cuenta publicaciones, acuerdos, normas, entre otros.
+ 
+Las actividades de caracterización florística se realizaron en el marco de la Resolución 02328 del 20 de diciembre de 2021, por medio de la cual la Autoridad Nacional de Licencias Ambientales - ANLA  otorgó a Andina de Energía S.A.S. el “Permiso de Estudio Para la recolección de Especímenes de Especies Silvestre de la Diversidad Biológica con Fines de Elaboración de Estudios Ambientales”, además de los lineamientos establecidos en los Términos de Referencia para La Elaboración del Estudio de Impacto Ambiental – EIA “Proyectos de Sistemas de Transmisión de Energía Eléctrica - TdR-17” con base en la Resolución 0075 del 18 de enero de 2018 por medio de la cual se adoptan los términos de referencia para la elaboración del estudio de impacto ambiental, para proyectos de Sistemas de Transmisión de Energía Eléctrica y se toman otras determinaciones y la Metodología general para la elaboración y presentación de estudios ambientales (MAVDT, 2018) y su modificación acorde a la Resolución 1415 de 2012 para el componente geográfico, además de lo establecido en la Resolución 2182 del 23 de diciembre de 2016 la cual tiene por objeto modificar y consolidar el Modelo de Almacenamiento Geográfico para la evaluación de estudios ambientales (Diagnóstico Ambiental de Alternativas – DAA y Estudio de Impacto Ambiental – EIA), y el seguimiento al Plan de Manejo Ambiental Específico - PMAE y los Informes de Cumplimiento Ambiental – ICA, para los trámites de que trata el Capítulo 3 - Licencias Ambientales, Sección 1 del Decreto 1076 de 2015 o la norma que los modifique o sustituya.
+
+a.Procedimiento de recolección
+ 
+Previo al inicio de las actividades de campo se hace necesario realizar una salida al área de influencia con el fin de hacer un reconocimiento in situ de las coberturas objeto de muestreo, lo cual nos permite percibir y dimensionar los posibles escenarios y dificultades para tener en cuenta.
+ 
+En el proceso de recolección de la información, se partirá de la identificación de las coberturas de la tierra que serán objeto de caracterización de flora, proceso realizado en oficina, una vez éstas sean identificadas, se procederá a realizar el cálculo de la intensidad de muestreo (5%), la cual es tomada para el área total de cada cobertura a caracterizar que hace parte del área de influencia biótica, una vez determinada la intensidad de muestreo, se procede a calcular el área (ha) a caracterizar, obtenida el área (ha) a caracterizar, procedemos a determinar y calcular el número total de parcelas a establecer por cada una de las cobertura de la tierra.
+ 
+La metodología utilizada, se basa en lo realizado por Gentry (1993), adaptado y ajustado por Andina de Energía SAS; en donde se establecerán parcelas de forma semitemporal, con un área de 1.000 m2 (0,1 ha) y dimensiones de 20 m de ancho por 50 m de longitud, en cada parcela de muestreo se tomarán datos cualitativos como estado fitosanitario, usos, nombre común, vulgar o local; y datos cuantitativos como CAP, distancia al eje, diámetro de copa, altura total, altura comercial, altura de reiteración.
+
+Las parcelas de muestreo serán marcadas en cada una de sus esquinas con estacas pintadas en su punta con color rojo, y serán georreferenciadas (punto inicial y punto final de cada parcela), se toman datos de altitud, pendiente, localización.
+ 
+Para cada parcela se definen las siguientes categorías de muestreo:
+ 
+•Fustales: para los individuos con diámetro a la altura del pecho (DAP) mayor o igual a 10 cm ó 31,5 cm de circunferencia a la altura del pecho (CAP), se establecen parcelas de 50 m de largo por 20 m de ancho, registrando allí todos los individuos que se consideran fustales, en donde se tienen en cuenta las siguientes variables: altura total, altura comercial, altura de reiteración, CAP, estado fitosanitario, diámetro de copa, usos, entre otros.
+ 
+•Latizales: para los individuos denominados latizales, aquellos que presentan diámetros a la altura del pecho (DAP) mayores o iguales a 2,5 cm y menores a 10 cm, se establecen subparcelas de 5m x 5m. En ellas se registran e identifican todos los individuos, se toman datos como CAP, altura total, estado fitosanitario, usos, entre otros.
+ 
+•Brinzales: para los individuos con diámetros inferiores a 2,5 cm, se establecen subparcelas de 2 m de largo por 2m de ancho, registrando allí todos los individuos que se considera, pueden alcanzar a ser un verdadero “árbol” (Pinelo, 2004). Adicionalmente se registran, especies de helechos, hierbas, etc., considerados de importancia y alto valor para evaluar la riqueza florística del lugar de estudio (ISA – JAUM, 2001), sólo en caso de que se identifiquen herbazales en el área de estudio del proyecto.
+
+
+Proceso de identificación, colección y manejo del material para la clasificación taxonómica.  
+
+Este proceso se refiere a la forma en la que se realizó la identificación, colección y manejo del material colectado en campo para la clasificación taxonómica. Se colectará la información dendrológica mínima (presencia de exudados, olores, etc.) e información sobre la utilización de las especies por parte de personas de la región. 
+ 
+Es fundamental dejar registrada en forma organizada la mayor cantidad de información posible para evitar visitas posteriores (ISA – JAUM, 2001).
+ 
+En la planeación y desarrollo de la identificación y caracterización de las especies forestales se basará en la normatividad nacional ambiental vigente, así como en el marco de la Resolución 02328 del 20 de diciembre de 2021, por medio de la cual la Autoridad Nacional de Licencias Ambientales - ANLA otorgó a Andina de Energía SAS el Permiso de Estudio Para la recolección de Especímenes de Especies Silvestre de la Diversidad Biológica con Fines de Elaboración de Estudios Ambientales.
+ 
+La Colección de muestras botánicas, se basa en colecciones botánicas sistemáticas, realizadas con las técnicas tradicionales de herborización, y numeradas ascendentemente. El material se procesará de tal forma que permita posteriormente la inclusión en herbarios nacionales con reconocimiento internacional (COL, JAUM, HUA, MEDEL, etc.). De cada ejemplar se colectará por lo menos tres duplicados, y para casos especiales, este número puede ser mayor, 5 a 6 ejemplares, como es el caso de:
+ 
+•Especies poco comunes en estado reproductivo (con Flores y/o Frutos);
+•Especies denominadas como “raras” (elevado valor biológico o ecológico)
+•Especies que se sospecha sean nuevas para la ciencia o nuevos reportes geográficos.
+ 
+Para casos de especies demasiado comunes y/o muy frecuentes dentro del área del inventario forestal, y a criterio del especialista, sean similares, será suficiente colectar un ejemplar por individuo o incluso una muestra. (Convenio ISA – JAUM, 2001) .
+ 
+Para el empacado o prensado de las muestras, se utilizará papel periódico, el cual será rotulado con lápices de cera o N° 6B, en la parte central del extremo inferior de la hoja y por medio de un código, el cual contiene el consecutivo numérico definido para los fustales y el número de parcela y consecutivo del individuo para los individuos latizales y brinzales.
+ 
+Cada día de trabajo se amarrarán paquetes con papel periódico, que deben ser empacados en bolsas plásticas individuales para colección (30 x 40 cm) de calibre grueso (4 milésimas por cara) y preservadas con alcohol industrial al 80% y bolsas individuales para preservación (50 x 70 cm) de calibre grueso (7 milésimas por cara), de a dos o tres paquetes por bolsa, la cual a su vez debe ir igualmente rotulada con información del proyecto, utilizando marcador indeleble (ISA – JAUM, 2001) .
+ 
+Las muestras colectadas serán etiquetadas con fecha de recolección, nombre del recolector, municipio, vereda, altitud, número de árbol (GPS), en lo posible nombre común, entre otros.
+ 
+Después de realizada esta actividad se procederá a su embalaje con dirección al herbario definido para su posterior análisis, en este proceso se tiene en cuenta la fecha de salida, quien lo envía, quien recibe, medio de transporte, planilla, guía de encomienda, estado de entrega, estado de recibo, entre otros.
+ 
+Este seguimiento se hará en el área del proyecto por parte del Ingeniero forestal a cargo del inventario y la toma de la colección botánica, y una vez llegue a su destino, Andina de Energía SAS designará una persona que se encargará de su recepción y posterior entrega al herbario.
+ 
+El herbario seleccionado recibirá el material, lo procesará, identificará y posteriormente entregará un certificado en donde se registra el listado de los individuos fustales, latizales y brinzales con su respectivo nombre científico, de acuerdo con los resultados taxonómicos.
+ 
+Para el levantamiento de la información primaria se tendrá en cuenta:
+1.Número del árbol
+2.Nombre común o local
+3.Registro fotográfico de la muestra colectada
+4.Identificación de la cobertura asociada
+5.Localización (vereda, municipio, corregimiento, m.s.n.m., georreferenciación, entre otras)
+
+FLORA EPÍFITA VASCULAR Y NO VASCULAR
+
+El tamaño de las parcelas a establecer y la cantidad de forófitos a registrar y analizar, se definirá según la metodología propuesta por Gradstein et al. (2003) , quien establece que por cada hectárea de cada unidad de cobertura que conforma el área de influencia se toman 8 forófitos; para el caso de esta caracterización se proponen los mismos 8 forófitos, pero estos serán tomados en cada una de las parcelas establecidas para cada una de las unidades de cobertura de la tierra asociadas, coberturas objeto de caracterización; estas actividades de registro se llevaran a cabo en forma de zigzag.
+
+Una vez establecidas las parcelas de muestreo, las cuales se delimitarán con estacas pintadas de color rojo en la punta, se procede a su georreferenciación, análisis y registro de las flora epífita vascular y no vascular en los sustratos cortícola (en el caso que la cobertura objeto de muestreo presente árboles con DAP ≥10 cm); terrestre (en todas las coberturas), saprófitos (en donde haya presencia de material orgánico en descomposición colonizado por vegetación epífita) y litófilo (en donde haya presencia de rocas en el área de la parcela). 
+ESPECIES DE HÁBITO CORTÍCOLA
+ 
+Definidas como aquellas especies epífitas vasculares que se localizan en la corteza de los árboles, son contadas como individuos genéticos, donde algunas de las especies de crecimiento modular o clonal se cuentan por colonias distinguibles y separadas, las otras especies como individuos, cualquiera de las anteriores implica una sola unidad de registro (Calderón 2010).
+ 
+Para ejecutar el muestreo se aplicará la zonificación del forófito propuesta por Johansson (1974), modificada por Ter Steege &amp; Cornelissen (1989), muestreando las zonas denominadas 1. base, 2a. tronco húmedo, 2b. tronco seco y 3. base de las primeras ramificaciones, respectivamente.
+
+Para las epífitas no vasculares se utilizará una plantilla en acetato de 400 cm2 (Iwatsuki 1960) y se registran los datos de cobertura de cada espécimen encontrado. En el caso del sustrato cortícola, la plantilla se ubicará en las cuatro caras del árbol (teniendo en cuenta los cuatro puntos cardinales) en dos estratos inferiores, es decir, en la base y tronco (hasta los 2 metros). 
+ 
+El registro de plantas en el dosel se realizó mediante el uso de binóculos y cámaras fotográficas de alto alcance para definir el estrato donde estén ubicados los especímenes, en el caso de árboles con alturas mayores a 4 metros, se definirán referencias visuales tales como cicatrices, manchas y ramas distintivas, las cuales indicarán el estrato del dosel (copa inferior, media y externa), cada estrato representa 1/3 parte del dosel.
+ 
+Para el caso de los árboles con menor altura los especímenes serán registrados y señalizados con alfileres y fotografiados sobre el forófito, además se llevará a cabo la colecta de las morfoespecies cada vez que se identifica uno diferente, los cuales serán colectados bajo las respectivas medidas de prensado y embalado, para ser remitidas al herbario para su posterior determinación taxonómica. 
+ 
+Cada muestra no vascular será introducida en bolsas de papel, debidamente marcadas con el código asignado por el profesional colector.
+ 
+El proceso se complementará con registro fotográfico de cada espécimen, en donde se considerarán detalles como hábito, hojas flor y fruto (de estar presentes); información de importancia relevante en el momento de la determinación taxonómica para cada uno de los niveles y complejidad taxonómica de los grupos.
+ 
+ESPECIES DE HÁBITO RUPÍCOLA, SAPRÓFITO Y TERRESTRE: 
+ 
+Hacen referencia a aquellas especies epífitas cuyo crecimiento se desarrolla sobre rocas, material orgánico en descomposición y suelo, respectivamente. Para realizar este muestreo, se tomarán dos puntos aleatoriamente dentro de cada parcela de caracterización, donde las epífitas vasculares se cuentan por unidad y a las epífitas no vasculares se les tomará la cobertura de cada morfoespecie que se localice dentro del cuadrante de 400 cm2.
+
+Recolección y manejo del material botánico: La recolecta de material botánico se realiza cada vez que se registre una especie epífita nueva, escogiendo el espécimen que presentará las mejores condiciones para facilitar su determinación. Se utilizarán desjarretaderas, tijeras y cinceles para facilitar la extracción de la muestra. 
+ 
+Cada muestra será empacada en bolsas de papel con su respectiva etiqueta. Las muestras de epífitas vasculares que incluyan flor, se embalarán en bolsas herméticas con una mezcla de alcohol (80%) y glicerina (20%).
+
+PROCESAMIENTO Y ANÁLISIS DE INFORMACIÓN
+ 
+Una vez culminadas las actividades de campo en lo referente a caracterización de flora, en oficina se procederá a la trascripción de la información de las planillas de campo, en esta etapa se realizó la verificación de los datos cualitativos y cuantitativos, además se realizó el ajuste de nombres científicos de cada de las especies arbóreas identificadas en campo, esto teniendo en cuenta la identificación taxonómica entregada por el herbario.
+ 
+Con base a lo anterior se procederá al análisis de la información tomada en campo para cada una de las parcelas de muestreo establecidas, teniendo como base cada unidad de cobertura de la tierra caracterizada; se evaluarán aspectos como: área basal, cociente de mezcla, composición florística, estructura vertical, estructura horizontal, abundancia, dominancia, frecuencia, Índice de Valor de Importancia – IVI, distribución diamétrica, distribución altimétrica, estado sucesional, grado de sociabilidad, análisis de regeneración natural, índices de diversidad y riqueza, entre otros.
+ 
+MEMORIAS DE CÁLCULO Y GRADO DE INCERTIDUMBRE
+ 
+Para el análisis de los datos se tendrá cuenta con una hoja de cálculo en donde se tiene la estructura, formulas y demás necesarios para los respectivos análisis, esta es presentada para cada unidad de cobertura analizada y evaluada.
+ 
+El grado de incertidumbre depende de la intensidad de muestreo y la cantidad de parcelas establecidas.
+ 
+El análisis de riqueza y abundancia de plantas de hábitos terrestres, rupícolas y epifíticos incorporará los cálculos y análisis de abundancia y riqueza generales y para cada uno de los tipos de cobertura/ecosistemas considerados en el estudio. La abundancia de epífitas será estimada como la cobertura de las especies más representativas presentes en el tronco principal del forófito.
+
+En el caso de las plantas no vasculares, se determinará la presencia/ausencia, así como la frecuencia sobre los forófitos muestreados y en los sustratos suelo y tierra. Para las vasculares se trabajará con datos de abundancia, es decir la cantidad de especímenes registrados para cada una de las especies. 
+
+La estimación del esfuerzo de muestreo en cada cobertura de la tierra se verificará por medio de curvas de acumulación de especies, utilizando el software EstimateS (Versión 9.1.0), basada en la relación especies versus parcelas de muestreo, utilizando los estimadores Bootstrap para las plantas no vasculares y Chao 1 para las vasculares.
+
+La caracterización de la fauna silvestre en el área de influencia del proyecto se llevará a cabo en la totalidad de coberturas vegetales naturales y antrópicas que lleguen a representar una fuente de recursos para estos grupos. Los puntos de muestreo se seleccionarán con la ayuda del mapa de coberturas junto con recorridos de reconocimiento en campo, lo anterior con el fin de cubrir todas las coberturas existentes que ofrezcan hábitats apropiados para la fauna silvestre en el área del proyecto. 
+
+Los métodos a utilizar e intensidades específicas para el muestreo en campo de cada grupo taxonómico (mamíferos, aves, reptiles y anfibios), son los autorizados por la Autoridad Nacional de Licencias Ambientales (ANLA) mediante la Resolución 02328 del 20 de diciembre de 2021, por la cual se le otorgó a ANDINA DE ENERGÍA S.A.S. el permiso de estudio para la recolección de especímenes de especies silvestres de diversidad biológica con fines de elaboración de estudios ambientales, los cuales se describen a continuación. Así mismo se contemplará lo estipulado en la metodología general para la elaboración y presentación de estudios ambientales expedida mediante la Resolución 1402 de 2018.
+
+Los datos de información para cada uno de los grupos serán tomados en los formatos establecidos para dicho fin. 
+
+•Herpetofauna
+
+El monitoreo se llevará a cabo mediante la inspección por encuentro visual (VES) por tiempo limitado (Crump y Scott, 1994; Angulo et al., 2006); esta técnica consiste en recorridos por un área en busca de individuos que se encuentren asociados a la vegetación, borde de las charcas, quebradas, caminos, o bajo piedras y troncos del camino por un tiempo restringido (Heyer 1994).  Este método de búsqueda libre y captura se llevará a cabo en transectos de 100 metros, durante 8 horas diarias y durante cuatro días en cada punto de muestreo. 
+
+Los muestreos de inspección por encuentro visual (VES) se desarrollarán durante diferentes horas del día: en las horas de la mañana, tarde y noche. Por sus especificaciones, esta técnica pretende abarcar la mayor cantidad de microhábitats disponibles tanto para anfibios como para reptiles. Específicamente para facilitar el registro de las especies de reptiles (serpientes) encontradas, se utilizarán ganchos y pinzas herpetológicas.
+
+•Aves
+Captura con redes de niebla
+
+El muestreo relacionado con la avifauna presente se llevará a cabo de acuerdo con la metodología planteada por Córdoba, Álvarez y Rebolledo (2004) y por Ralph et al. (1997). 
+
+La captura de individuos se realizó con 10 redes de niebla de 12 m de longitud x 2.5 m de alto y ojo de malla de 40 mm. Las redes estarán instaladas durante cuatro días en cada punto de muestreo entre las 6:00 - 10:00 am y entre las 15:30 - 18:30 pm.
+
+Las redes se ubicarán de tal manera que su revisión no tardarse más de 10 o 15 minutos, de esta forma se evita el exceso de estrés, se logra un rápido registro de los especímenes y de igual manera se evita su manipulación excesiva.
+
+Se realizaron registros fotográficos de cada individuo, para posteriormente ser liberados. En los horarios de inactividad, las redes se cerraron para evitar accidentes con animales silvestres y domésticos. 
+
+Registros directos visuales 
+
+Se establecerán transectos con una longitud aproximada de 500 m cada uno, en los cuales se realizó registro directo visual y auditivo mediante uso de binoculares (10x50 y 8x42), conteos por puntos intensivos de observación y conteos por puntos de observación (cada 100 m) con media hora de permanencia en cada punto (Córdoba, Álvarez y Rebolledo 2004; Ralph et al. 1997).
+
+Se utilizarán guías y textos de aves como: Guía de Campo de las Aves de Colombia (McMullan et al., 2014.) y Guía de loros, pericos y guacamayas neotropicales (Rodríguez et al., 2005) facilitando de esta forma la identificación de las especies in situ. 
+
+•Mamíferos
+
+Para el monitoreo de la mastofauna presente en el Área de Influencia se implementarán métodos independientes y complementarios entre sí:
+Registros visuales
+Entre las 9:00 am y las 12:00 pm y entre las 3:00 pm y las 10:00 pm horas se realizaron registros mediante observaciones directas, presencia de huellas, rastros, vocalizaciones, madrigueras y fotografía de pieles.
+
+Inspección por transectos
+
+Para el estudio de mamíferos terrestres medianos y grandes, en cada cobertura, se recorrerán transectos de 100 metros, en estos lugares se harán observaciones directas de los mamíferos y se revisarán la existencia de huellas, rastros, heces y/o cualquier otro tipo de evidencia de la presencia de individuos de este grupo taxonómico.
+
+Muestreo de pequeños mamíferos no voladores
+Se llevará a cabo durante cuatro días por punto de muestreo mediante la ubicación de 50 trampas Sherman (38 cm x 10.5 cm x 12 cm) y 10 trampas tomahawk (30 cm x 25 cm x 70 cm). Se empleará como cebo una mezcla de mantequilla de maní, sardinas, avena en hojuelas, esencia de vainilla y concentrado para perros. Las trampas estarán habilitadas durante 24 horas.
+
+Fototrampeo
+En cada punto de muestreo se instalarán 2 cámaras trampa con su respectivo cebo, las cuales estarán habilitadas 24 horas, durante 4 días, en lugares estratégicos como árboles cercanos a cuerpos de agua, sectores con huellas o corredores visibles de fauna silvestre.
+
+Muestreo de mamíferos voladores
+Se utilizarán 10 redes de niebla de 12m x 2,5m con ojo de malla de 40 mm. Estas se abrirán entre las 18:00 - 23:00 pm. Este procedimiento será efectuado durante tres noches en cada punto de muestreo.
+
+Entrevistas
+Para complementar la información de los monitoreos de campo, se realizaron entrevistas a habitantes del área de influencia, en donde se hará uso de guías con imágenes a color de la fauna potencial. 
+
+FASE DE ANÁLISIS
+•Representatividad del muestreo 
+En oficina, se realizaron las curvas de acumulación de especies para cada grupo y por cada cobertura y se hallarán los respectivos índices de biodiversidad para cada grupo de fauna, entre los que se encuentran el índice de dominancia, índice de Simpson, índice de Shannon, índice de Margalef y el índice de equidad de Pielou. Estos índices son de gran utilidad para establecer la relación de la fauna con las coberturas vegetales asociadas en el área de estudio del proyecto.
+
+Las tendencias poblacionales serán relacionadas con ayuda de la herramienta de la Unión Internacional para la Conservación de la Naturaleza, en donde se establece la tendencia de la población para cada especie y se notifica si las poblaciones están creciendo, decreciendo o estables.
+
+Con el objeto de determinar la representatividad del muestreo, lo que permite dimensionar el alcance de los resultados y conclusiones del estudio, se realizó la predicción de la riqueza específica como una función de la acumulación de especies, al relacionar los valores observados de la riqueza con los valores esperados a partir de estimadores paramétricos o no paramétricos. Para estimar los valores esperados de riqueza se utilizará el programa EstimateS 9.1.0, y se tendrá como referencia el Capítulo 7, Anexo 7.2 del Manual de Métodos para el Desarrollo de Inventarios de Biodiversidad (Villareal et al. 2006), para revisar lo concerniente al procesamiento de datos.
+
+Asimismo, se analizará la estructura para cada uno de los grupos en estudio, con base en atributos de composición, riqueza y abundancia de cada taxón para cada una de las unidades de cobertura presentes en el área de estudio. La diversidad local será cuantificada a partir de índices de riqueza y dominancia como el de dominancia de Simpson, de diversidad de Shannon-Weiner, o el de Margalef. En lo que respecta al recambio de especies entre comunidades se utilizaron índices como el de Bray-Curtis, de similitud de Jaccard o el de complementariedad.
+
+•Índices de riqueza y dominancia
+Índice de Shannon-Weaver. Este índice expresa la uniformidad de los valores de importancia a través de todas las especies de la muestra (Peet 1974, Magurran 1988). Adquiere valores entre cero, cuando hay una sola especie, y el logaritmo de S, cuando todas las especies están representadas por el mismo número de individuos (Magurran 1988). Este cálculo se realizó con base en todos los especímenes presentes en las coberturas muestreadas.
+
+Donde, 
+
+P i = Abundancia proporcional de la especie i, lo cual implica tener el número de individuos de la especie i dividido entre el número total de individuos de la muestra.
+
+Índice de Simpson (1-D). Mide la probabilidad de que dos individuos seleccionados aleatoriamente de una muestra pertenezcan a la misma especie (o a la misma categoría).
+
+Donde, 
+P i = Abundancia proporcional de la especie i, lo cual implica tener el número de individuos de la especie i dividido entre el número total de individuos de la muestra.
+
+El rango del índice de Simpson (1-D) va de 0 a 1, así:
+– Cuanto más se acerca el valor de D a 1, mayor es la diversidad del hábitat.
+– Cuanto más se acerca el valor de D a 0, menor es la diversidad del hábitat.
+
+Índice de Margalef: es una medida utilizada en ecología para estimar la biodiversidad de una comunidad con base en la distribución numérica de los individuos de las diferentes especies en función del número de individuos existentes en la muestra analizada. Valores inferiores a 2 son considerados como relacionados con zonas de baja diversidad (en general resultado de efectos antropogénicos) y valores superiores a 5,0 son considerados como indicativos de alta biodiversidad. (Margalef. R, 1995).
+
+Donde,
+S = número de especies
+N = número total de individuos
+
+•Índice de similitud de Jaccard
+El Coeficiente de Similitud de Jaccard se utiliza para expresar el grado en el que dos muestras son semejantes por las especies presentes en ellas, por lo que son una medida inversa de la diversidad, que se refiere al cambio de especies entre estaciones (Pielou 1975, Magurran 1988). El intervalo de valores para el índice de Jaccard va de 0, cuando no hay especies compartidas entre las estaciones, hasta 1, cuando dos estaciones tienen la misma composición de especies.
+Donde, 
+a = número de especies en el sitio A.
+b= número de especies en el sitio B.
+c= número de especies presentes en ambos sitios A y B, es decir que están compartidas.
+
+Para la obtención de los índices de riqueza y dominancia y el coeficiente de similitud de Jaccard se utilizará el software Past3. Los resultados serán presentados en el capítulo 5.2 Caracterización del Medio Biótico.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:22Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/mjsrtb">Rivera Molina F A (2024). Caracterización biológica asociada a la Nueva Subestación Dorada Norte, Caldas. Central Hidroeléctrica de Caldas S.A E.S.P. Occurrence dataset https://doi.org/10.15472/mjsrtb accessed via GBIF.org on 2026-03-09.</citation>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-chec.png</resourceLogoUrl>
+                <collection>
+                    <parentCollectionIdentifier>HUC</parentCollectionIdentifier>
+                    <collectionIdentifier>https://scientific-collections.gbif.org/collection/5505d416-0a15-41d3-92dc-143982d9e9c2</collectionIdentifier>
+                    <collectionName>Herbario Universidad de Córdoba</collectionName>
+                </collection>
+                <specimenPreservationMethod>DRIED</specimenPreservationMethod>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

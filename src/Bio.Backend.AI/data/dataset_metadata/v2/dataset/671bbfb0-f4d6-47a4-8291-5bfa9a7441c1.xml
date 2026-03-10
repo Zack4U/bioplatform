@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="671bbfb0-f4d6-47a4-8291-5bfa9a7441c1"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/qultmk</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=isagen_rio-manso</alternateIdentifier>
+        <title>Hidrobiológicos e ictiofauna del Río Manso, 2024</title>
+        <creator>
+            <individualName>
+                <givenName>Clara María</givenName>
+                <surName>Pérez Gallego</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Profesional Ambiental Biótica</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6843</phone>
+            <electronicMailAddress>cperez@isagen.com.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Gladys</givenName>
+                <surName>Reinoso-Flórez</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Supervisora del Proyecto, Lcda. Biología y Química</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <electronicMailAddress>greinoso@ut.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-2002-1645</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Sergio</givenName>
+                <surName>Losada-Prado</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Coordinador, Lcdo. Biología y Química</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <userId directory="http://orcid.org/">0000-0001-6916-3893</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Francisco Antonio</givenName>
+                <surName>Villa-Navarro</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Coordinador, Biólogo</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <userId directory="http://orcid.org/">0000-0001-5913-188X</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Paula Alejandra</givenName>
+                <surName>Sanabria Aviles</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Macroinvertebrados, Est. Biología</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6932</phone>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Giovany</givenName>
+                <surName>Guevara Cardona</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Coordinador, Biólogo</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <userId directory="http://orcid.org/">0000-0002-2373-1805</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Mayra Geraldine</givenName>
+                <surName>Rojas-Céspedes</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Coordinadora técnica, Bióloga</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <userId directory="http://orcid.org/">0000-0003-3592-0483</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jhonatan Alexander</givenName>
+                <surName>Ospina Rodríguez</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Macroinvertebrados, Biólogo</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <userId directory="http://orcid.org/">0009-0005-4883-7306</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jenyfer Alexandra</givenName>
+                <surName>Rico Cárdenas</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Ficoperifiton, Bióloga</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <userId directory="http://orcid.org/">0009-0008-1931-8285</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Harold Stevens</givenName>
+                <surName>Flórez Herrera</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Ictiofauna, Biólogo</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Clara María</givenName>
+                <surName>Pérez Gallego</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Profesional Ambiental Biótica</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6843</phone>
+            <electronicMailAddress>cperez@isagen.com.co</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6932</phone>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <surName>Universidad del Tolima</surName>
+            </individualName>
+            <organizationName>UT</organizationName>
+            <positionName>Investigador</positionName>
+            <address>
+                <deliveryPoint>Calle 42 #1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <onlineUrl>https://www.ut.edu.co/</onlineUrl>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>GIZ-UT</givenName>
+                <surName>Grupo de investigación en Zoología de la Universidad del Tolima</surName>
+            </individualName>
+            <organizationName>Universidad del Tolima</organizationName>
+            <positionName>Curador</positionName>
+            <address>
+                <deliveryPoint>Calle 42# 1</deliveryPoint>
+                <city>Ibagué</city>
+                <administrativeArea>Tolima</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(608) 2771212</phone>
+            <role>CURATOR</role>
+        </associatedParty>
+        <pubDate>
+                2025-03-17
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>Esta base de datos contiene 996 registros de hidrobiota, incluyendo ictiofauna, ficoperifiton y macroinvertebrados. Los datos fueron recopilados a partir del monitoreo realizado en el río Manso, llevado a cabo en los meses de mayo y agosto del 2024.</para><para>La georreferenciación de los sitios de captura se realizó de acuerdo con los puntos autorizados en el Plan de Seguimiento y Monitoreo del Trasvase del río Manso al Embalse de la Central Miel I, establecido en la Resolución 01324 de junio de 2022 de la Autoridad Nacional de Licencias Ambientales (ANLA). La clasificación taxonómica de los registros fue verificada y estandarizada conforme a los criterios de GBIF y AlgaeBase.</para><para>Durante el monitoreo se registraron 150 taxones, distribuidos en 35 órdenes, 86 familias y 122 géneros. La identificación de los organismos y el análisis de las muestras fueron realizados por profesionales de la Universidad del Tolima.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Río Manso</keyword>
+            <keyword>Trasvase Manso</keyword>
+            <keyword>Ficoperifiton</keyword>
+            <keyword>Macroinvertebrados</keyword>
+            <keyword>Peces</keyword>
+            <keyword>ISAGEN</keyword>
+            <keyword>Central Hidroeléctrica Miel I</keyword>
+            <keyword>Ictiofauna</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <additionalInfo>
+            <para>Este conjunto de datos fue publicado con el respaldo del proyecto CESP “OpenPSD – Engage and Promote the Private Sector in Open Biodiversity Data Publication (ID CESP2019-004)”, en alianza con la Asociación Nacional de Empresarios de Colombia (ANDI) a través de su iniciativa “Biodiversidad y Desarrollo” (Datos abiertos sobre biodiversidad desde el sector empresarial). Expresamos nuestro agradecimiento por la colaboración y el incentivo brindado para la difusión de datos desde el sector empresarial.</para>
+        </additionalInfo>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=isagen_rio-manso</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El monitoreo se realizó en la cuenca del río Manso, en los municipios de Samaná y Norcasia, Caldas.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-180</westBoundingCoordinate>
+                    <eastBoundingCoordinate>180</eastBoundingCoordinate>
+                    <northBoundingCoordinate>90</northBoundingCoordinate>
+                    <southBoundingCoordinate>-90</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2024-05-17
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2024-08-03
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Se obtuvieron 526 registros de ficoperifiton distribuidos en 16 órdenes, 24 familias y 29 géneros. El 100% de los registros fue identificado hasta nivel de género.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Fragilariaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Fragilariaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cymbellaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Gomphonemataceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Melosiraceae</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>En cuanto a macroinvertebrados, se obtuvieron 363 registros, pertenecientes a 14 órdenes, 47 familias y 65 géneros. De estos, el 10% fue identificado hasta nivel de familia, el 13% hasta subfamilia, y el 77% restante hasta nivel de género.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Elmidae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Chironomidae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Baetidae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Leptohyphidae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Leptophlebiidae</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Por su parte, la ictiofauna presentó 107 registros, clasificados en 5 órdenes, 15 familias y 28 géneros. Del total, el 2% se identificó hasta familia, el 3% hasta género, y el 95% hasta nivel de especie.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Blenniiformes</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Characiformes</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Gymnotiformes</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Siluriformes</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Synbranchiformes</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Clara María</givenName>
+                <surName>Pérez Gallego</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Profesional Ambiental Biótica</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6843</phone>
+            <electronicMailAddress>cperez@isagen.com.co</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>El muestreo de ficoperifiton se realizó mediante la metodología de raspado en diferentes sustratos sumergidos, incluyendo cantos rodados, rocas, hojarasca y troncos, dentro de un trayecto lineal de 150 metros. Como unidad de área, se emplearon cuadrantes de 10 cm² hasta alcanzar un total de 200 cm². Las muestras recolectadas fueron almacenadas en frascos ámbar y fijadas con solución de Transeau. La identificación de los organismos se llevó a cabo mediante claves taxonómicas específicas, ilustraciones y bases de datos en línea especializadas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>El muestreo de macroinvertebrados acuáticos se realizó utilizando una red Surber y siguiendo la metodología propuesta por Duarte y Reinoso (2020). En cada estación se tomaron seis réplicas en dos tipos de sustrato: roca y arena. Las muestras fueron almacenadas en frascos plásticos y fijadas con formol al 10% para su posterior análisis en el Laboratorio del Grupo de Investigación en Zoología de la Universidad del Tolima (GIZ-UT). Para su procesamiento, las muestras fueron lavadas, filtradas con tamices y los organismos separados con la ayuda de un estereoscopio Motic SMZ-168. La determinación taxonómica se realizó empleando diferentes claves, entre ellas Domínguez et al. (2009), Gutiérrez y Díaz (2015) y Hamada et al. (2018).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>El muestreo de ictiofauna se llevó a cabo a lo largo de un transecto de 100 metros de longitud y ancho variable, con un esfuerzo de muestreo de una hora por estación. Se utilizó la metodología de electropesca complementada con redes de arrastre de 5 metros de largo por 1,5 metros de altura, con un tamaño de malla de 0,05 metros, las cuales se dispusieron aguas abajo del paso del equipo de electropesca. Adicionalmente, se realizaron 30 lances con atarrayas de tamaños de malla de 1, 3 y 6 cm. Algunos individuos fueron colectados y preservados en etanol al 70% para su posterior determinación taxonómica.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Los monitoreos se realizaron en ocho estaciones ubicadas en los municipios de Samaná y Norcasia, en el departamento de Caldas. Estas estaciones se encuentran dentro del valle hidrogeográfico del río La Miel, en la cuenca del río Manso, un afluente de la cuenca mayor del río Magdalena. Las altitudes de los puntos de muestreo varían entre los 654 y 194 msnm.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Los monitoreos se llevaron a cabo de forma semestral, en los meses de mayo y agosto, en ocho estaciones ubicadas en la zona media y baja del río Manso.
+
+Para el monitoreo de ficoperifiton, se recolectaron muestras de sustratos naturales sumergidos en el cuerpo de agua, las cuales fueron fijadas y posteriormente analizadas en el laboratorio para su identificación y cuantificación.
+
+El muestreo de macroinvertebrados acuáticos se realizó mediante una red Surber, siguiendo la metodología propuesta por Duarte y Reinoso (2020). Los organismos recolectados fueron fijados y procesados para su determinación taxonómica.
+
+Para la evaluación de la comunidad de peces, se empleó el método de electropesca complementado con redes de arrastre. Algunos individuos fueron preservados para su posterior identificación ex situ</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Los taxones fueron identificados por profesionales de la Universidad del Tolima (UT), determinando los individuos hasta el nivel taxonómico más detallado posible mediante el uso de claves especializadas para cada grupo.
+
+La validación de los nombres científicos se realizó utilizando la herramienta Data Validator del GBIF y bases de datos especializadas como AlgaeBase.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:22Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/qultmk">Pérez Gallego C M, Reinoso-Flórez G, Losada-Prado S, Villa-Navarro F A, Sanabria Aviles P A, Carvajal-Toro S, Guevara Cardona G, Rojas-Céspedes M G, Ospina Rodríguez J A, Rico Cárdenas J A, Flórez Herrera H S (2025). Hidrobiológicos e ictiofauna del Río Manso, 2024. Isagen S.A. E.S.P.. Occurrence dataset https://doi.org/10.15472/qultmk accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Bellinger, E. G. y Sigee, D. C. (2010). Freshwater algae: identification and use as bioindicators. Phycological Society of America,47, 436-438.</citation>
+                <citation>Bicudo, C. y Menezes, M. (2006). Gêneros de Algas de Águas Continentais do Brasil: Chave para identificação e descrições. RiMa.</citation>
+                <citation identifier="http://www.algaebase.org.">Guiry, M.D. y Guiry, G.M. (2023). AlgaeBase. World-wide electronic publication, National University of Ireland, Galway.</citation>
+                <citation identifier=" https://doi.org/10.2307/48772343">Hincapié-Montoya, D. M., González-Rodríguez, L. M., y González-Córdoba, M. (2023). Estado actual del conocimiento de los coleópteros acuáticos en Colombia. Caldasia, 45(3), 360–376.</citation>
+                <citation identifier=" https://doi.org/10.18257/raccefyn.1184">Hoyos, D., y Dias, L. (2020). Taxonomic contribution to the Chironominae subfamily in Caldas: New records, taxonomic keys, and diagnosis. Revista de La Academia Colombiana de Ciencias Exactas, Fisicas y Naturales, 44(171), 507–521.</citation>
+                <citation>Martínez-Cuesta, L.M. y Mosquera-Murillo, Z. (2022). Variación espacial de la comunidad de algas del perifiton en quebradas de la cuenca del río San Juan, Chocó, Colombia. Revista de la Academia Colombiana de Ciencias Exactas Físicas y Naturales 46(178):192-205.</citation>
+                <citation>Montoya-Moreno, Y., y Aguirre, N. (2013). Estado del arte del conocimiento sobre perifiton en Colombia. Revista Gestión y Ambiente Vol. 16 (3): 91-117.</citation>
+                <citation>Morelli, E., y Verdi, A. (2014). Diversidad de macroinvertebrados acuáticos en cursos de agua dulce con vegetación ribereña nativa de Uruguay. Revista Mexicana de Biodiversidad, 85(4), 1160–1170.</citation>
+                <citation>Vásquez-Ramos, J. M., y Reinoso Flores, G. (2012). Estructura de la fauna béntica en corrientes de los Andes colombianos. Revista Colombiana de Entomología, 38(2), 351–358.</citation>
+                </bibliography>
+                <resourceLogoUrl>https://ipt.biodiversidad.co/sib/logo.do?r=isagen_bosques_solares</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

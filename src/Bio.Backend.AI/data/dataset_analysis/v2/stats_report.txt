@@ -1,0 +1,104 @@
+======================================================================
+  ANÁLISIS DEL DATASET DE BIODIVERSIDAD DE CALDAS
+  GBIF Darwin Core Archive - iNaturalist Research-Grade
+======================================================================
+
+Total de especies únicas:          2,499
+Total de registros de ocurrencia:   44,351
+Total de imágenes disponibles:      7,773
+Promedio imágenes/especie:          3.1
+
+────────────────────────────────────────
+DISTRIBUCIÓN POR REINO:
+────────────────────────────────────────
+  Plantae              → 2499 especies,   7773 imágenes
+
+────────────────────────────────────────
+TOP 10 CLASES POR # DE ESPECIES:
+────────────────────────────────────────
+  Magnoliopsida             → 1655 especies
+  Liliopsida                →  549 especies
+  Polypodiopsida            →  150 especies
+  Bryopsida                 →   74 especies
+  Jungermanniopsida         →   28 especies
+  Lycopodiopsida            →   24 especies
+  Pinopsida                 →    6 especies
+  Marchantiopsida           →    4 especies
+  Polytrichopsida           →    4 especies
+  Cycadopsida               →    2 especies
+
+────────────────────────────────────────
+TOP 15 FAMILIAS POR # DE ESPECIES:
+────────────────────────────────────────
+  Orchidaceae               →  253 especies
+  Asteraceae                →  148 especies
+  Fabaceae                  →  138 especies
+  Melastomataceae           →  112 especies
+  Rubiaceae                 →  100 especies
+  Solanaceae                →   68 especies
+  Piperaceae                →   50 especies
+  Poaceae                   →   48 especies
+  Araceae                   →   47 especies
+  Euphorbiaceae             →   42 especies
+  Malvaceae                 →   39 especies
+  Bromeliaceae              →   39 especies
+  Moraceae                  →   39 especies
+  Arecaceae                 →   38 especies
+  Gesneriaceae              →   36 especies
+
+────────────────────────────────────────
+APTITUD PARA CNN (mín. imágenes por especie):
+────────────────────────────────────────
+  ≥10 imágenes:  215 especies (4,866 imgs)
+  ≥20 imágenes:   73 especies (2,943 imgs)
+  ≥50 imágenes:   16 especies (1,258 imgs)
+
+────────────────────────────────────────
+TOP 20 ESPECIES CON MÁS IMÁGENES:
+────────────────────────────────────────
+  Senecio niveoaureus                           │   183 imgs │ Asteraceae           │ Plantae
+  Begonia urticae                               │   117 imgs │ Begoniaceae          │ Plantae
+  Epidendrum fimbriatum                         │    97 imgs │ Orchidaceae          │ Plantae
+  Thunbergia alata                              │    94 imgs │ Acanthaceae          │ Plantae
+  Zingiber spectabile                           │    82 imgs │ Zingiberaceae        │ Plantae
+  Gaultheria myrsinoides                        │    77 imgs │ Ericaceae            │ Plantae
+  Castilleja fissifolia                         │    75 imgs │ Orobanchaceae        │ Plantae
+  Oncidium ornithorhynchum                      │    72 imgs │ Orchidaceae          │ Plantae
+  Kohleria affinis                              │    71 imgs │ Gesneriaceae         │ Plantae
+  Espeletia hartwegiana                         │    62 imgs │ Asteraceae           │ Plantae
+  Begonia umbellata                             │    60 imgs │ Begoniaceae          │ Plantae
+  Anthurium caramantae                          │    58 imgs │ Araceae              │ Plantae
+  Chaetogastra grossa                           │    53 imgs │ Melastomataceae      │ Plantae
+  Ceroxylon quindiuense                         │    53 imgs │ Arecaceae            │ Plantae
+  Phytolacca bogotensis                         │    52 imgs │ Phytolaccaceae       │ Plantae
+  Persicaria capitata                           │    52 imgs │ Polygonaceae         │ Plantae
+  Plantago rigida                               │    47 imgs │ Plantaginaceae       │ Plantae
+  Crocosmia crocosmiiflora                      │    45 imgs │ Iridaceae            │ Plantae
+  Kohleria spicata                              │    44 imgs │ Gesneriaceae         │ Plantae
+  Passiflora quimbayensis                       │    43 imgs │ Passifloraceae       │ Plantae
+
+────────────────────────────────────────
+ESPECIES CON POCAS IMÁGENES (Top 20 con <5):
+────────────────────────────────────────
+  Lepanthes acutissima                          │  4 imgs │ Orchidaceae
+  Tigridia pavonia                              │  4 imgs │ Iridaceae
+  Voyria pittieri                               │  4 imgs │ Gentianaceae
+  Monticalia gelida                             │  4 imgs │ Asteraceae
+  Lepanthes dodsonii                            │  4 imgs │ Orchidaceae
+  Hemerocallis fulva                            │  4 imgs │ Asphodelaceae
+  Monticalia vaccinioides                       │  4 imgs │ Asteraceae
+  Tabebuia rosea                                │  4 imgs │ Bignoniaceae
+  Psidium guajava                               │  4 imgs │ Myrtaceae
+  Heliconia wagneriana                          │  4 imgs │ Heliconiaceae
+  Cynoglossum amabile                           │  4 imgs │ Boraginaceae
+  Erechtites valerianifolius                    │  4 imgs │ Asteraceae
+  Glossoloma ichthyoderma                       │  4 imgs │ Gesneriaceae
+  Erechtites albiflorus                         │  4 imgs │ Asteraceae
+  Brachyotum strigosum                          │  4 imgs │ Melastomataceae
+  Meriania heptamera                            │  4 imgs │ Melastomataceae
+  Cavendishia bracteata                         │  4 imgs │ Ericaceae
+  Miconia codonostigma                          │  4 imgs │ Melastomataceae
+  Borago officinalis                            │  4 imgs │ Boraginaceae
+  Araucaria heterophylla                        │  4 imgs │ Araucariaceae
+
+  Total con <5 imágenes: 2047 especies

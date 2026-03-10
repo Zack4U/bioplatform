@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="f582cb50-5bdf-458b-bd5e-35b871974179"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/ar2058</alternateIdentifier>
+        <alternateIdentifier>f582cb50-5bdf-458b-bd5e-35b871974179</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=ucaldas_patrimonio_biocultural_caldas</alternateIdentifier>
+        <title>Inventario de fauna y flora en el departamento de Caldas en el marco del proyecto Magdalena Caldense patrimonio biocultural</title>
+        <creator>
+            <individualName>
+                <givenName>Vanessa</givenName>
+                <surName>Serna-Botero</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Coordinadora de estudios biológicos y SIG</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>vanessa.serna@ucaldas.edu.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Kelly Johana</givenName>
+                <surName>Molina</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional SIG (2)</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>johanambetancourt@gmail.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Wilton César</givenName>
+                <surName>Aguiar Gómez</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional peces</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>wiltonaguiargomez@gmail.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>María Fernanda</givenName>
+                <surName>Loaiza López</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional herpetofauna</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>mafeloa15@gmail.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Kelly Johana</givenName>
+                <surName>Orozco Patiño</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional aves</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>kelly.orozco@ucaldas.edu.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Diego Alejandro</givenName>
+                <surName>Torres Arboleda</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional mamíferos</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>dtorresarboleda@gmail.com</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0001-8115-2070</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Andrés Felipe</givenName>
+                <surName>Bohórquez Osorio</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional flora</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>andresfelipebo@gmail.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Michael Roger</givenName>
+                <surName>Piratova Silva</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional SIG (1)</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>mrpiratovas@unal.edu.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Manuela</givenName>
+                <surName>Morales Torres</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Profesional de apoyo coordinación de estudios biológicos y SIG</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>manuela.morales@ucaldas.edu.co</electronicMailAddress>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Vanessa</givenName>
+                <surName>Serna-Botero</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Coordinadora de estudios biológicos y SIG</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>vanessa.serna@ucaldas.edu.co</electronicMailAddress>
+        </metadataProvider>
+        <pubDate>
+                2024-02-12
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>En el marco del proyecto Magdalena Caldense patrimonio biocultural se planteó una metodología de trabajo en la que se analizó, recopiló y sistematizó el conocimiento actual de la biodiversidad, de patrimonio y de paisaje, para crear una estructura holística en la que estén cubiertas las demandas de las comunidades y los intereses de los agentes externos que quieran involucrarse en esta generación y fortalecimiento de la cadena de valor de la subregión del Magdalena en Caldas. Este trabajo fue complementado con inventarios biológicos en campo en las zonas detectadas con vacíos de información para la Subregión del Oriente de Caldas.</para>
+<para>Este conjunto de datos consta de 1291 registros biológicos que se tomaron a través de diferentes técnicas de muestreo dependiendo el grupo biológico: observaciones ad hoc, encuentros visuales (VES), cámaras trampa y diferentes artes de pesca. Los datos fueron tomados desde agosto del 2023 hasta octubre de ese mismo año en los municipios de La Dorada y Victoria (Caldas). En términos generales se reportan 20 especies de peces, 17 de anfibios, 19 reptiles, 179 aves, 30 de mamíferos, y 27 de plantas vasculares.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>desarrollo sostenible.</keyword>
+            <keyword>patrimonio biocultural</keyword>
+            <keyword>Magdalena centro caldense</keyword>
+            <keyword>biodiversidad</keyword>
+            <keyword>Apropiación social del conocimiento</keyword>
+            <keyword>turismo científico de naturaleza</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>PERMISO_COLECTA</keyword>
+            <keywordThesaurus>SiB_Colombia</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-4.0.html</url>
+            <identifier>CC-BY-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=ucaldas_patrimonio_biocultural_caldas</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El Magdalena caldense, ubicado al Oriente del departamento, ocupa las estribaciones orientales de la cordillera central y las tierras bajas del valle interandino del Magdalena. Los datos fueron tomados en los municipios de La Dorada y Victoria del departamento de Caldas.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-74.943</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.7</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.711</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.326</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2023-08-09
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2023-10-19
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>47 registros biológicos de flora vascular, los individuos fueron identificados hasta el mayor nivel posible, en algunos se llegó al nivel de especie (57.4%), sin embargo otros quedaron a nivel de familia (4.2%) y género (38.2%).</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Equisetopsida</taxonRankValue>
+                    <commonName>Plantas</commonName>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>1244 registros biológicos de fauna vertebrada, en su mayoría fueron identificados al nivel de especie (95.4%), no obstante en algunos se pudo llegar solo a nivel de género (4.6%).</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Actinopterygii</taxonRankValue>
+                    <commonName>Peces óseos</commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Amphibia</taxonRankValue>
+                    <commonName>Anfibios</commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Reptilia</taxonRankValue>
+                    <commonName>Reptiles</commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Aves</taxonRankValue>
+                    <commonName>Aves</commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Mammalia</taxonRankValue>
+                    <commonName>Mamíferos</commonName>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Vanessa</givenName>
+                <surName>Serna-Botero</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Coordinadora de estudios biológicos y SIG</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>vanessa.serna@ucaldas.edu.co</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Muestreo flora: se realizaron recorridos libres por caminos, vegetaciones secundarias y bosques. Se colectaron tres ejemplares fértiles por spp. en todos los hábitos de crecimiento.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Muestreo peces: Se emplearon diferentes métodos de muestreo según las características de los cuerpos de agua: Atarraya (2m Diametro): 40 lances. Nasa de 30 x 30cm: 10-30m en las orillas, diversos tipos de sustratos. Red de arrastre de 4mX1.5m (0,5cm malla): 3 arrastres entre 30 a 50m contracorriente.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Muestreo anfibios y reptiles: se empleo el método de búsqueda libre con relevamiento por encuentros visuales (VES) por tres horas en el día y tres en la noche.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Muestreo aves: a diario se realizaron uno o dos transectos a velocidad constante, entre 600m y 5km longitud, complementados con puntos de observación en las lagunas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Muestreo mamíferos: para el municipio de La Dorada el esfuerzo fue de 543 cámaras-noche y para el de Victoria fue de 802 cámaras-noche. Esta metodología fue complementada con recorridos libres en horas de la mañana, al atardecer y en la noche en búsqueda de rastros, cuevas y actividad.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Este estudio fue realizado en el Magdalena centro caldense, y aquí se publican los resultados del inventario biológico realizado en zonas con vacíos de información detectados. La toma de datos de biodiversidad se llevó a cabo en los municipios de Victoria y La Dorada, Caldas. A continuación se citan las localidades visitadas por municipio: 
+- La Dorada: Vereda La Atarraya, Laguna Palogrande, Jardín Botánico del Magdalena, Charca de Guarinocito.
+- Victoria: Bosques de Bellavista, Doña Juana Baja, El Aguador, La Cantera de Mármol.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>El esfuerzo de muestreo fue de seis días por municipio para un total de 12 días en el área de estudio para todos los grupos biológicos, a excepción de los mamíferos. Para este grupo se empleó el método de cámaras trampa, con un esfuerzo de muestreo de entre 18 y 21 días/cámara, 30 cámaras/sitio.
+
+Todos los organismos capturados fueron fotografiados, medidos y georreferenciados con GPS Garmin (WGS 84). Cuando se considero adecuado se realizaron colectas de individuos siguiendo los protocolos recomendados según el grupo biológico (seco o líquido), y posteriormente depositados en las colecciones del Museo de Historia Natural de la Universidad de Caldas y Herbario FAUC de la Universidad de Caldas. La información fue sistematizada en bases de datos en Excel siguiendo el estándar Darwin Core.</para>
+                </samplingDescription>
+            </sampling>
+        </methods>
+
+            <project >
+                <title>IDENTIFICACIÓN Y APROPIACIÓN DEL PATRIMONIO BIOCULTURAL A TRAVÉS DE UNA ESTRATEGIA COLABORATIVA PARA LA GENERACIÓN DE VALOR EN EL SECTOR DE LA BIOECONOMÍA EN LA SUBREGIÓN DEL MAGDALENA DEL DEPARTAMENTO DE CALDAS</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Alejandro</givenName>
+                    <surName>Ceballos Márquez</surName>
+                    </individualName>
+                    <role>PRINCIPAL_INVESTIGATOR</role>
+                </personnel>
+                <abstract>
+                    <para>Por medio de este proyecto se propone un reconocimiento y apropiación del patrimonio biocultural de la subregión del Magdalena en el departamento de Caldas, logrando constituir y fortalecer distintas áreas de la bioeconomía de esta subregión. Para llevar a cabo tan ambicioso proyecto se entienden los antecedentes regionales en conocimiento de la biodiversidad de Samaná, Norcasia, Victoria y La Dorada, que se caracterizan por la escasa identificación de la cadena de valor que el patrimonio biocultural tiene, por lo cual se articulan las necesidades regionales enfocadas a los Objetivos de Desarrollo Sostenible de las Naciones Unidas y las propuestas innovadoras que surgen en conexión a los activos de la región.
+
+Con todo eso se planteó una metodología de trabajo en la que se analizó, recopiló y sistematizó el conocimiento actual de la biodiversidad, de patrimonio y de paisaje, para crear una estructura holística en la que estén cubiertas las demandas de las comunidades y los intereses de los agentes externos que quieran involucrarse en esta generación y fortalecimiento de la cadena de valor de la subregión del Magdalena en Caldas. Este trabajo fue complementado con inventarios biológicos en campo en las zonas detectadas con vacíos de información para la  Subregión del Oriente de Caldas.
+
+Los muestreos en campo y se llevaron a cabo de la mano de la comunidad local y, en consecuencia, se espera construir una identidad frente al patrimonio biocultural, para así propiciar una mejoría en la economía de la subregión e interiorizar los nuevos códigos culturales, creados con base a las tradiciones preexistentes de usos de los recursos naturales que no han sido difundidas con el empuje que la apropiación social del conocimiento puede brindar.</para>
+                </abstract>
+                <funding>
+                    <para>Sistema general de regalías del Ministerio de Ciencias, Tecnología e Innovación de Colombia.</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El Magdalena caldense, ubicado al Oriente del departamento, ocupa las estribaciones orientales de la cordillera central y las tierras bajas del valle interandino del Magdalena. Tiene una superficie de 2173 km2 (217300 Ha) y alberga una población de 118281 individuos, distribuidos en los municipios de La Dorada, Norcasia, Victoria y Samaná (Galvis-Aponte &amp; Quintero-Fragozo, 2017). El 70% de la población vive en espacios urbanos frente a un 30% de población rural. Los sectores económicos más importantes están representados por la ganadería extensiva, la pesca, la minería y cultivos agrícolas de diversa índole como aguacate, cacao, caucho, y café, entre otros. 
+La geomorfología de la zona contiene una gama de relieves que abarcan desde los valles quebrados con altas pendientes en las zonas altas de los municipios de Samaná y Norcasia, hasta los amplios valles fluviales en las riberas del río Magdalena. Las estribaciones de la cordillera están fuertemente influenciadas por la actividad volcánica expresándose claramente en los volcanes de San Diego y El Escondido, así como por múltiples fuentes termales en el municipio de Samaná; la geomorfología de las zonas bajas está dominadas por la actividad fluvial.
+Cuatro cuencas hidrográficas componen la región y vierten sus aguas sobre el río Magdalena: cuenca del Samaná Sur, cuenca de La Miel, cuenca del Guarino y la cuenca de los ríos afluentes directos al Magdalena. La precipitación promedio anual varía de 1501 mm a 7000 mm generando una gran variedad de ecosistemas acuáticos como lagunas, humedales, ciénagas, embalses, arroyos, quebradas y ríos (Cormagdalena-Ideam 2007). 
+Los remanentes de bosques presentes en la zona corresponden mayormente al bosque húmedo tropical y en menor medida por bosque seco según el sistema de clasificación de Holdrige (1967). Con una de las tasas de deforestación más altas del mundo, las coberturas boscosas de la Cuenca del Magdalena no superan el 10% de su superficie original (Vásquez- Valderrama et al., 2017), y el 78% de la superficie se encuentra en estado crítico por la erosión derivada de la deforestación (Restrepo, 2015), lo cual indica procesos avanzados de desertificación y la pérdida de áreas fértiles aptas para la agricultura.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:23Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/ar2058">Serna-Botero V, Molina K J, Aguiar Gómez W C, Loaiza López M F, Orozco Patiño K J, Torres Arboleda D A, Bohórquez Osorio A F, Piratova Silva M R, Morales Torres M (2024). Inventario de fauna y flora en el departamento de Caldas en el marco del proyecto Magdalena Caldense patrimonio biocultural. Version 1.1. Universidad de Caldas. Occurrence dataset https://doi.org/10.15472/ar2058 accessed via GBIF.org on 2026-03-09.</citation>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-ucaldas.png</resourceLogoUrl>
+                <collection>
+                    <parentCollectionIdentifier>MHN-UCa</parentCollectionIdentifier>
+                    <collectionIdentifier>https://scientific-collections.gbif.org/collection/9f622db9-9b44-4cf3-a1e9-6778c46a6c50</collectionIdentifier>
+                    <collectionName>Colección de Vertebrados e Invertebrados de la Universidad de Caldas</collectionName>
+                </collection>
+                <collection>
+                    <parentCollectionIdentifier>FAUC</parentCollectionIdentifier>
+                    <collectionIdentifier>https://scientific-collections.gbif.org/collection/7b15ec63-6c38-46df-abf7-400dbd62993d</collectionIdentifier>
+                    <collectionName>Herbario de la Universidad de Caldas</collectionName>
+                </collection>
+                <specimenPreservationMethod>ALCOHOL</specimenPreservationMethod>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

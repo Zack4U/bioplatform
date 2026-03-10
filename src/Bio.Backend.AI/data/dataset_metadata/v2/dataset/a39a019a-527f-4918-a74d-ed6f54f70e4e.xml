@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="a39a019a-527f-4918-a74d-ed6f54f70e4e"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/sha1qw</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=isagen_guarino_flora</alternateIdentifier>
+        <title>Flora en zonas de influencia del trasvase Guarinó, 2023</title>
+        <creator>
+            <individualName>
+                <givenName>Huber Alexander</givenName>
+                <surName>Vanegas</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Ingeniero forestal</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6844</phone>
+            <electronicMailAddress>hvanegas@isagen.com.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Diana</givenName>
+                <surName>Sánchez Granada</surName>
+            </individualName>
+            <organizationName>Faunativa</organizationName>
+            <positionName>Seguimiento técnico</positionName>
+            <address>
+                <deliveryPoint>Cra. 76 45e – 14</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(604) 547 1092</phone>
+            <electronicMailAddress>info@faunativa.com.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Wilmar Andrés</givenName>
+                <surName>Múnera Puerta</surName>
+            </individualName>
+            <organizationName>Faunativa</organizationName>
+            <positionName>Seguimiento técnico</positionName>
+            <address>
+                <deliveryPoint>Cra. 76 45e – 14</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(604) 547 1092</phone>
+            <electronicMailAddress>info@faunativa.com.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0002-2314-7588</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6932</phone>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Brayan</givenName>
+                <surName>Giraldo Buitrago</surName>
+            </individualName>
+            <organizationName>Faunativa</organizationName>
+            <positionName>Técnico en Recursos Forestales</positionName>
+            <address>
+                <deliveryPoint>Cra. 76 45e – 14</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(604) 547 1092</phone>
+            <electronicMailAddress>info@faunativa.com.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Rubén</givenName>
+                <surName>Torres Restrepo</surName>
+            </individualName>
+            <organizationName>Faunativa</organizationName>
+            <positionName>Ingeniero Forestal</positionName>
+            <address>
+                <deliveryPoint>Cra. 76 45e – 14</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(604) 547 1092</phone>
+            <electronicMailAddress>info@faunativa.com.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Yeison</givenName>
+                <surName>Londoño-Echeverri</surName>
+            </individualName>
+            <organizationName>Herbario, Universidad de Antioquia</organizationName>
+            <positionName>Profesional de herbario y taxonomía</positionName>
+            <address>
+                <deliveryPoint>Calle 67 Nº 53-108</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>ylondono@unal.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0001-5169-598X</userId>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6932</phone>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Huber Alexander</givenName>
+                <surName>Vanegas</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Ingeniero forestal</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6844</phone>
+            <electronicMailAddress>hvanegas@isagen.com.co</electronicMailAddress>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <surName>Faunativa</surName>
+            </individualName>
+            <organizationName>Faunativa</organizationName>
+            <positionName>Contratista</positionName>
+            <address>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(604) 547 1092</phone>
+            <electronicMailAddress>info@faunativa.com.co</electronicMailAddress>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Herbario (HUA)</givenName>
+                <surName>Universidad de Antioquia</surName>
+            </individualName>
+            <organizationName>Universidad de Antioquia</organizationName>
+            <positionName>Proveedor de contenido</positionName>
+            <address>
+                <deliveryPoint>Calle 67 No. 53 – 108</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(604) 219-56-14</phone>
+            <electronicMailAddress>herbario@udea.edu.co</electronicMailAddress>
+            <role>CURATOR</role>
+        </associatedParty>
+        <pubDate>
+                2025-01-21
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>Esta base de datos cuenta con un total de 426 registros de flora, obtenidos a partir de monitoreos realizados en zonas aledañas al trasvase Guarinó de la Central Hidroeléctrica Miel I. Los datos fueron recolectados mediante el monitoreo de 3 parcelas, cada una de ellas con coberturas diferenciadas; Bosque denso, rastrojo alto y rastrojo bajo. El monitoreo se llevó a cabo en el mes de septiembre del año 2023.</para><para>Las parcelas y el monitoreo están establecidos de acuerdo con la resolución 1333 del 2022, emitida por la autoridad nacional de licencias ambientales (ANLA). La clasificación taxonómica de los registros sigue los estándares del Royal Botanic Gardens y el Global Biodiversity Information Facility (GBIF).</para><para>Durante el monitoreo se registraron un total de 75 taxones, de los cuales 63 fueron identificados a nivel de especie, representando 52 géneros, 32 familias, 21 órdenes y 1 clase.</para><para>Las familias más diversas fueron Piperaceae, con 8 taxones, y Fabaceae y Melastomataceae, con 7 taxones cada una. En términos de abundancia, Euphorbiaceae destacó con 75 individuos. Los muestreos fueron realizados por un equipo de profesionales botánicos de Faunativa.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Flora</keyword>
+            <keyword>Caldas</keyword>
+            <keyword>ISAGEN</keyword>
+            <keyword>Trasvase Guarinó</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>PERMISO_COLECTA</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <additionalInfo>
+            <para>Este conjunto de datos fue publicado con el respaldo del proyecto CESP “OpenPSD – Engage and Promote the Private Sector in Open Biodiversity Data Publication (ID CESP2019-004)”, en alianza con la Asociación Nacional de Empresarios de Colombia (ANDI) a través de su iniciativa “Biodiversidad y Desarrollo” (Datos abiertos sobre biodiversidad desde el sector empresarial). Expresamos nuestro agradecimiento por la colaboración y el incentivo brindado para la difusión de datos desde el sector empresarial.</para>
+        </additionalInfo>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=isagen_guarino_flora</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>Los muestreos se realizaron en el municipio de Victoria, ubicado en el departamento de Caldas, en los límites con el departamento de Tolima.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-74.95</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.943</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.316</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.314</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2023-09-07
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2023-09-22
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Este recurso incluye un total de 426 registros de flora distribuidos en, 21 órdenes, 32 familias, 52 géneros y 63 especies. Del total, el 86% de los registros está identificado a nivel de especie y el 14% restante a nivel de género.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Piperaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Fabaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Melastomataceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Euphorbiaceae</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Huber Alexander</givenName>
+                <surName>Vanegas</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Ingeniero forestal</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6844</phone>
+            <electronicMailAddress>hvanegas@isagen.com.co</electronicMailAddress>
+        </contact>
+        <contact>
+            <individualName>
+                <givenName>Clara María</givenName>
+                <surName>Pérez Gallego</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Profesional Ambiental Biótica</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6843</phone>
+            <electronicMailAddress>cperez@isagen.com.co</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Las parcelas de 0.1 ha fueron establecidas siguiendo la metodología propuesta por Gentry (1982) conocida como RAP (Rapid Assessment Plot). Esta metodología consiste en delimitar cinco transectos rectangulares de 4 m x 50 m, cubriendo un área total de 0.1 ha. En cada transecto se censaron y midieron todos los individuos fustales con un diámetro a la altura del pecho (DAP), medido a 1.3 m del suelo, mayor o igual a 1 cm.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Cada transecto incluye además una subparcela inicial de 5 m x 4 m (20 m²), donde se censaron los brinzales y latizales. Los individuos censados se clasificaron en tres categorías diamétricas: los fustales, con un DAP mayor o igual a 10 cm; los latizales, con un DAP entre 5 cm y menos de 10 cm; y los brinzales, con un DAP entre 1 cm y menos de 5 cm, y una altura mayor o igual a 1.3 m.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Los fustales fueron censados en toda la extensión de cada parcela (20 m x 50 m), mientras que la vegetación correspondiente a la regeneración, es decir, brinzales y latizales, se midió únicamente dentro de las subparcelas de 5 m x 4 m al inicio de cada transecto.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Durante el muestreo, se identificaron todos los individuos clasificados como nuevos ingresos. En algunos casos, fue posible homologarlos con individuos previamente registrados en remediciones anteriores. Para aquellos árboles y arbustos que no pudieron ser homologados, se realizó su respectiva colecta botánica. Además, se recolectaron algunos individuos ya incluidos en el muestreo para corregir su identificación taxonómica.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Las muestras colectadas fueron herborizadas siguiendo protocolos establecidos para el manejo adecuado del material botánico. Posteriormente, la identificación llevo a cabo en el Herbario de la Universidad de Antioquia (HUA).</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Las tres parcelas monitoreadas se encuentran en el municipio de Victoria, Caldas, a altitudes entre 750 y 850 msnm. Estas abarcan tres tipos de coberturas vegetales: rastrojo bajo, rastrojo alto y bosque denso, clasificaciones establecidas según la metodología CORINE Land Cover adaptada para Colombia.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Para los monitoreos, se establecieron parcelas permanentes de 0.1 ha, siguiendo la metodología RAP (Rapid Assessment Plot) en tres predios cercanos al trasvase Guarinó. Los muestreos se realizaron en septiembre de 2023.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>El monitoreo fue realizado por un equipo de profesionales botánicos, conformado por ingenieros forestales y biólogos de la consultora Faunativa. Los individuos previamente identificados fueron registrados conservando su clasificación inicial; sin embargo, en casos donde se revisó la taxonomía o se encontraron nuevos especímenes, se aplicaron técnicas de herborización, y las muestras fueron enviadas al Herbario de la Universidad de Antioquia (HUA) para su posterior determinación. La validación de los nombres científicos se llevó a cabo utilizando la herramienta Data Validator del GBIF y la base de datos del Royal Botanic Gardens.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:25Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/sha1qw">Vanegas H A, Sánchez Granada D, Múnera Puerta W A, Carvajal-Toro S, Giraldo Buitrago B, Torres Restrepo R, Londoño-Echeverri Y (2025). Flora en zonas de influencia del trasvase Guarinó, 2023. Isagen S.A. E.S.P.. Occurrence dataset https://doi.org/10.15472/sha1qw accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation identifier="https://www.tropicos.org/home">Tropicos.org. Missouri Botanical Garden.</citation>
+                <citation identifier="https://plants.jstor.org/">Global Plants on JSTOR. plants.jstor.org.</citation>
+                </bibliography>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-isagen.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

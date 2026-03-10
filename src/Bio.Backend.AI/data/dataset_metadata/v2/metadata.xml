@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="3b17e21f-28cc-494f-925f-29b249e645f9"  system="http://gbif.org" scope="system"
+xml:lang="en">
+    <dataset>
+        <title>GBIF Occurrence Download 0024310-260226173443078</title>
+        <creator>
+            <individualName>
+                <surName>GBIF Download Service</surName>
+            </individualName>
+            <electronicMailAddress>support@gbif.org</electronicMailAddress>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <surName>GBIF Download Service</surName>
+            </individualName>
+            <electronicMailAddress>support@gbif.org</electronicMailAddress>
+        </metadataProvider>
+        <pubDate>
+                2026-03-09
+        </pubDate>
+        <language>ENGLISH</language>
+        <abstract>
+            A dataset containing all occurrences available in GBIF matching the query:
+{
+  "and" : [
+    "BasisOfRecord is Human Observation",
+    "GadmGid is COL.8_2",
+    "OccurrenceStatus is Present",
+    "TaxonKey is Plantae"
+  ]
+}
+The dataset includes records from the following constituent datasets. The full metadata for each constituent is also included in this archive:
+672 records from Caracterización biológica asociada a la Nueva Subestación Dorada Norte, Caldas
+387 records from Estructura Ecológica de la Subregión Norte de Caldas, Contrato para actividades científicas y tecnológicas No. 222-2018 entre Corpocaldas y WCS
+54 records from Hidrobiológicos e ictiofauna del Río Manso, 2024
+35 records from Caracterización de los grupos hidrobiológicos e ictiofauna asociados al Estudio Ambiental Marmato Profundo
+3759 records from Fauna y Flora en zonas de influencia del Trasvase Manso, 2024
+51 records from NABU|naturgucker
+1055 records from Flora asociada al programa de monitoreo y restauración del 2017 en el Parque Nacional Natural Selva de Forencia
+47 records from Inventario de fauna y flora en el departamento de Caldas en el marco del proyecto Magdalena Caldense patrimonio biocultural
+566 records from Registros de la Caracterización de vegetación y flora del POMCA de la SZH Cuenca del Río Tapias y Otros Directos al Cauca
+2962 records from Estudios bióticos: Plantas, anfibios, mamíferos, aves y edafofauna epígea (coleópteros y arácnidos), en el complejo de páramo Los Nevados
+1096 records from Diagnóstico y Propuesta de Manejo de la Flora Arbórea y Arbustiva Urbana del Municipio de Viterbo - Caldas
+1 records from Registros biológicos de especies de plantas del Bosque Seco en Colombia presentes en el Herbario JBGP
+780 records from ICN - Universidad Nacional de Colombia
+323 records from Inventario florístico del bosque Monteleón (Manizales, Caldas)
+10914 records from Biodiversidad asociada al proyecto Parque Solar Fotovoltaico Tepuy
+34 records from Compilación de datos de campo provenientes del levantamiento del Inventario Forestal Nacional (2015-2017), datos sin validar
+6 records from Estudio de la estructura genética espacial de la palma Elaeis oleifera
+914 records from Caracterización florística y estructural de bosques altoandinos en Riosucio, Caldas
+902 records from Monitoreo de Gustavia romeroi en zonas de influencia de la Central Hidroeléctrica Miel I, 2023
+7 records from Estudio de Impacto Ambiental (EIA) Para La Modificación de la Licencia Ambiental para la Construcción de la Estación de Compresión de Gas Palestina
+191 records from Pl@ntNet observations
+48 records from Recolección de frutos para evaluar su potencial de germinación en tres estados de maduración (inmaduro, intermedio y maduro)
+17 records from Observation.org, Nature data from around the World
+573 records from Estudios bióticos: Plantas, edafofauna epígea, anfibios y aves de los Complejos de Páramos de Sonsón y Urrao
+435 records from Pl@ntNet automatically identified occurrences
+15 records from Monitoreos hidrobiológicos asociados al proyecto Parque Solar Fotovoltaico Tepuy
+17488 records from Flora en zonas de influencia de la Central Hidroeléctrica Miel I. 2020
+4 records from Caracterización de Magnolias del departamento de Antioquia
+639 records from Composición y estructura del bosque seco tropical en Caldas
+317 records from Registros biológicos del Corredor de Conservación de Bosques Andinos en el departamento de Caldas
+426 records from Flora en zonas de influencia del trasvase Guarinó, 2023
+3625 records from iNaturalist Research-grade Observations
+
+        </abstract>
+        <contact>
+            <individualName>
+                <surName>GBIF Download Service</surName>
+            </individualName>
+            <electronicMailAddress>support@gbif.org</electronicMailAddress>
+        </contact>
+
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:26Z</dateStamp>
+                <citation identifier="0024310-260226173443078">GBIF Occurrence Download 0024310-260226173443078</citation>
+                <physical>
+                    <objectName>Darwin Core Archive</objectName>
+                    <characterEncoding>UTF-8</characterEncoding>
+                    <dataFormat>
+                        <externallyDefinedFormat>
+                            <formatName>Darwin Core Archive</formatName>
+                        </externallyDefinedFormat>
+                    </dataFormat>
+                    <distribution>
+                        <online>
+                            <url function="download">https://api.gbif.org/v1/occurrence/download/request/0024310-260226173443078.zip</url>
+                        </online>
+                    </distribution>
+                </physical>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

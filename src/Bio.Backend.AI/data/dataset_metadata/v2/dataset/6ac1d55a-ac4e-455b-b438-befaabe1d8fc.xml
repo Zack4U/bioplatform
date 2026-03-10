@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="6ac1d55a-ac4e-455b-b438-befaabe1d8fc"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/orqixi</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=flora_viterbo</alternateIdentifier>
+        <title>Diagnóstico y Propuesta de Manejo de la Flora Arbórea y Arbustiva Urbana del Municipio de Viterbo - Caldas</title>
+        <creator>
+            <individualName>
+                <givenName>.CORPOCALDAS</givenName>
+                <surName>Corporación Autónoma Regional de Caldas</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Profesional especializado</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>.</givenName>
+                <surName>Fundación Biodiversa Manizales</surName>
+            </individualName>
+            <organizationName>Fundación Biodiversa</organizationName>
+            <positionName>Coordinador General</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>funbiodiversamanizales@gmail.com</electronicMailAddress>
+            <onlineUrl>http://fundacionbiodiversa.blogspot.com/</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Manuela</givenName>
+                <surName>Morales-Torres</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Pasante</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>manuela.1711422190@ucaldas.edu.co</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Fabian Guillermo</givenName>
+                <surName>Gaviria-Ortiz</surName>
+            </individualName>
+            <organizationName>Corpocaldas</organizationName>
+            <positionName>Profesional especilizado</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409 ext 166</phone>
+            <electronicMailAddress>fabiangaviria@corpocaldas.gov.co</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Corpocaldas</givenName>
+                <surName>Geoambiental</surName>
+            </individualName>
+            <organizationName>Corpocaldas</organizationName>
+            <positionName>Subdirección de planificación ambiental del territorio</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>CORPOCALDAS</givenName>
+                <surName>Corporación Autonoma regional de Caldas</surName>
+            </individualName>
+            <organizationName>Corpocaldas</organizationName>
+            <positionName>Subdirección de planificación ambiental del territorio</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+            <role>USER</role>
+        </associatedParty>
+        <pubDate>
+                2019-06-06
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            Se realizó el diagnóstico y propuesta de manejo de la vegetación arbórea y arbustiva en las áreas urbanas y suburbanas del municipio de Viterbo. En la fase de diagnóstico, se midieron, localizaron e identificaron todos los individuos, determinando además, su estado de desarrollo, estado fitosanitario, e identificando los principales conflictos que generan en la infraestructura de la ciudad.
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Viterbo</keyword>
+            <keyword>Urbano</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-4.0.html</url>
+            <identifier>CC-BY-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=flora_viterbo</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>Zona Urbana, Viterbo, Caldas, Colombia</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-75.891</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-75.851</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.084</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.04</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2008-03-01
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2008-03-31
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Flora arbórea y arbustiva</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Fabales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Arecales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Myrtales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Lamiales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Malpighiales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Sapindales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Gentianales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Rosales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Oxalidales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Malvales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Cycadales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Pinales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Magnoliales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Solanales</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>notPlanned</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Corpocaldas</givenName>
+                <surName>Geoambiental</surName>
+            </individualName>
+            <organizationName>Corpocaldas</organizationName>
+            <positionName>Profesional especializado</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Para la correcta identificación taxonómica fue necesaria la recolección de muestras botánicas y su respectivo registro fotográfico. La identificación se hizo en el herbario FAUC de la Universidad de Caldas, contando con la colaboración de algunos especialistas y el apoyo de claves taxonómicas y bibliografía especializada. Posterior a la identificación de las especies y utilizando bibliografía especializada se consultó para cada una la siguiente información:características fisiológicas y morfológicas relevantes; origen y procedencia; altura y diámetro potencial.
+
+Conceptos y parámetros empleados en los formularios:
+Estado de desarrollo de los individuos: referido a la edad o estado de madurez de cada individuo. Se emplearon las siguientes categorías.
+Juvenil: aquellos individuos que aun no han alcanzado su estado de madurez y su altura o talla potencial.
+Adultos: aquellos individuos que han alcanzado la madurez sexual y por lo tanto pueden estar en estados de floración y fructificación.
+Senescente: Árboles viejos, que han perdido su vigorosidad y están cercanos a su etapa final de vida.
+Condición o estado fitosanitario: Para establecer la condición o el estado fitosanitario de cada uno de los individuos, se definieron tres categorías: Bueno, Regular y Malo:
+Bueno: para árboles vigorosos que no aparentan daños de insectos, enfermedades, o daños mecánicos y que conservan la forma representativa de su especie. Necesitan poco o ningún manejo.
+Regular: para aquellos individuos con una condición y un vigor medio. Pueden necesitar poda correctiva o de limpieza. Su forma no es muy característica de la especie y puede presentar daños menores de insectos, enfermedades, plantas parásitas o problemas fisiológicos.
+Malo: Estado general de decadencia. Presenta daños severos por causas mecánicas, por insectos, o enfermedades, pero la muerte no es inminente. Puede requerir reparaciones mayores o renovación a corto o mediano plazo.
+Principales problemas identificados en los árboles: durante el diagnóstico y análisis de la información recolectada, se identificaron los principales problemas en los árboles, los cuales fueron agrupados en 5 categorías:
+Ataque de patógenos/insectos: Aquellos árboles que presentaban ataques evidentes de insectos (ácaros, arrieras) y/o diferentes agentes patógenos reflejados directamente en su condición fisiológica.
+Descopado, desmoche o “topping”: Esta tal vez una de las prácticas más lesivas que se pueden hacer a un árbol. En este caso se ha eliminado todo el follaje, con corte de ramas estructurales de la copa generalmente porque interfiere con las construcciones o con las líneas de energía eléctrica.
+Presencia de epífitas: Las epífitas son plantas que crecen encima de los árboles pero no se alimentan directamente de él, sin embargo cuando hay proliferación excesiva de estas, se reduce la cantidad de luz en el follaje, se acumula agua, polvo y detritos que afectan el intercambio gaseoso y crean ambientes propicios para el ataque de hongos e insectos. De este tipo de plantas las más frecuentes fueron las barbas de viejo (Tillandsia usneoides), las bromelias (Tillandsia recurava) y diferentes especies de orquídeas, helechos y musgos.
+Presencia de parásitas (Loranthaceas): Las parásitas viven a expensas de su hospedero invadiendo total o parcialmente su follaje. Su presencia genera poco crecimiento, muerte de ramas, la formación de agallas, y de llegar a ser muy abundantes, implican la muerte del árbol.
+Tronco en mal estado: aquellos árboles que presentaban heridas naturales o generadas por el hombre y que no tiene suficiente vigor para cicatrizar.
+Tipos de conflictos generados por los árboles: Generalmente por una inadecuada planificación y selección incorrecta de las especies, se ocasionan distintos tipos de conflictos con la infraestructura urbana. Los tipos de conflictos encontrados se agruparon en 5 categorías.
+Espacio reducido con relación al tamaño de la copa: es quizás uno de los conflictos más comunes y se relaciona con una incorrecta elección de la especie de acuerdo con su tamaño ocasionando problemas en las edificaciones y en algunos casos el exceso de sombra.
+Interferencia con cables eléctricos: Si bien se relaciona con la categoría anterior, el principal problema es la interferencia directa con los cables de energía generando riesgos para la población. En esta categoría se incluyeron tanto los individuos que actualmente generan interferencia con el cableado, como aquellos que por su condición natural podrían estar generando problemas en el futuro.
+Levantamiento del pavimento - raíces superficiales: específicamente para aquellas especies que por sus características morfológicas presentan raíces superficiales que fracturan y levantan el pavimento.
+Obstrucción peatonal/vehicular: aquellas especies que por el tamaño y forma de la copa, obstaculizan la movilidad de los peatones y vehículos en andenes y avenidas respectivamente.
+Riesgo de volcamiento/caída de ramas: aquellos individuos viejos, poco vigorosos y con troncos en mal estado, que generan un riesgo constante para los transeúntes.
+
+Base de datos y espacialización de la información:
+Toda la información recopilada, se digitalizó en el programa Microsoft Office Excel 2007 obteniendo una base de datos con la información organizada y sistematizada asignando un número o código único para cada individuo. La base de datos comprendía la siguiente información: Código o número único; familia; nombre científico; nombre local; hábito de crecimiento; características relevantes de la especies; diámetro actual; diámetro potencial; altura actual; altura potencial; procedencia; origen; tipo de copa; estado de desarrollo; estado fitosanitario; barrio; dirección; coordenadas en X y en Y; tipo de espacio; condición del espacio; problemas del árbol; tipo de conflicto; necesidades de manejo.
+Para la espacialización, se migraron las tablas de información desde Excel a bases de datos de tipo DBF mediante Visual FoxPro (Versión 9.0) y posteriormente se incorporaron como temas a ArcGis 9.2.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>El muestreo se realizó en la zona urbana del municpio de Viterbo, departamento de Caldas, Colombia</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Para obtener la información requerida en la base de datos, se recorrieron en su totalidad las áreas urbanas y suburbanas del municipio presentadas en el Esquema de Ordenamiento Territorial 2000-2006. En ellas se identificaron y diagnosticaron los árboles y arbustos existentes recopilando para cada individuo la siguiente información: nombre científico; nombre común; hábito de crecimiento; diámetro; altura, tipo de copa; valoración del estado fitosanitario; estado de desarrollo; problemas del individuo, tipo de conflicto que estuviese generando; y su localización exacta referida al barrio, dirección y el tipo y condición del espacio</para>
+                </samplingDescription>
+            </sampling>
+        </methods>
+
+            <project >
+                <title>DIAGNÓSTICO Y PROPUESTA DE MANEJO DE LA FLORA ARBÓREA Y ARBUSTIVA URBANA DEL MUNICIPIO DE VITERBO – CALDAS</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Dorancé</givenName>
+                    <surName>Rincón Poveda</surName>
+                    </individualName>
+                    <role>ADMINISTRATIVE_POINT_OF_CONTACT</role>
+                </personnel>
+                <abstract>
+                    <para>Se realizó el diagnóstico y propuesta de manejo de la vegetación arbórea y arbustiva en las áreas urbanas y suburbanas del municipio de Viterbo. En la fase de diagnóstico, se midieron, localizaron e identificaron todos los individuos, determinando además, su estado de desarrollo, estado fitosanitario, e identificando los principales conflictos que generan en la infraestructura de la ciudad.</para>
+                </abstract>
+                <funding>
+                    <para>CONVENIO No C – 116 – 2007 suscrito entre la Corporación Autónoma Regional de Caldas - CORPOCALDAS y la empresa Fundación Biodiversa S.A.S</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El municipio de Viterbo se ubica en el Occidente del departamento de Caldas está situado sobre el valle del río Risaralda a una altitud de 998 m. Los muestreos fueron realizados en la zona urbana del municipio.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:23Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/orqixi">Corporación Autónoma Regional de Caldas ., Fundación Biodiversa Manizales ., Morales-Torres M, Gaviria-Ortiz F G, Geoambiental C (2019). Diagnóstico y Propuesta de Manejo de la Flora Arbórea y Arbustiva Urbana del Municipio de Viterbo - Caldas. Corpocaldas - Corporación Autónoma Regional de Caldas. Occurrence dataset https://doi.org/10.15472/orqixi accessed via GBIF.org on 2026-03-09.</citation>
+                <resourceLogoUrl>https://s3.amazonaws.com/sib-resources/images/logos-socios/portal-sib/logo-corpocaldas.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

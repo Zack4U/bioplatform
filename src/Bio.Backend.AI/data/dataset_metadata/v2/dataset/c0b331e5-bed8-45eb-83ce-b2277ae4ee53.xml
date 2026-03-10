@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="c0b331e5-bed8-45eb-83ce-b2277ae4ee53"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/czdjvq</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/iavh/resource?r=plantae_bs-corpocaldas_2021</alternateIdentifier>
+        <title>Composición y estructura del bosque seco tropical en Caldas</title>
+        <creator>
+            <individualName>
+                <givenName>Adelaida</givenName>
+                <surName>Londoño</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <positionName>Coordinadora de Proyectos</positionName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>adelaida.londono@ingeobosque.org</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Alejandro</givenName>
+                <surName>Camargo</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>alejandro.camargo@ingeobosque.org</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Aura</givenName>
+                <surName>Aguirre</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <positionName>Bióloga</positionName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>aaguirred@unal.edu.co</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Diego</givenName>
+                <surName>David</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <positionName>Ingeniero Forestal</positionName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>diego.david@ingeobosque.org</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Alberto</givenName>
+                <surName>Quintana</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <positionName>Auxiliar</positionName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>aquintanar@unal.edu.co</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Laura</givenName>
+                <surName>Florez</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <positionName>Directora Ejecutiva</positionName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>laura.florez@ingeobosque.org</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <surName>Ingeobosque</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>info@ingeobosque.org</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <surName>Ingeobosque</surName>
+            </individualName>
+            <organizationName>Corporación Científica Ingeobosque</organizationName>
+            <address>
+                <deliveryPoint>Carrera 77 # 38-58 oficina 102</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5056792</phone>
+            <electronicMailAddress>info@ingeobosque.org</electronicMailAddress>
+            <onlineUrl>http://www.ingeobosque.org</onlineUrl>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Andres</givenName>
+                <surName>Bohorquez</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Ingeniero Agrónomo</positionName>
+            <address>
+                <deliveryPoint>Calle 65 # 26-10</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>8781500</phone>
+            <onlineUrl>https://www.ucaldas.edu.co/</onlineUrl>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Jhon</givenName>
+                <surName>Nieto</surName>
+            </individualName>
+            <organizationName>Instituto de Investigación de Recursos Biológicos Alexander von Humboldt</organizationName>
+            <positionName>Ingeniero Forestal</positionName>
+            <address>
+                <deliveryPoint>Avenida Paseo Bolívar # 16-20</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3202767</phone>
+            <electronicMailAddress>jnieto@humboldt.org.co</electronicMailAddress>
+            <onlineUrl>http://www.humboldt.org.co/investigacion/ecosistemas-estrategicos/bosque-seco</onlineUrl>
+            <role>AUTHOR</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Franklin</givenName>
+                <surName>Dussan</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Profesional especializado</positionName>
+            <address>
+                <deliveryPoint>Calle 21 # 23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>8841409</phone>
+            <electronicMailAddress>franklindussan@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co</onlineUrl>
+            <role>AUTHOR</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <surName>Infraestructura Institucional de Datos</surName>
+            </individualName>
+            <organizationName>Instituto de Investigación de Recursos Biológicos Alexander von Humboldt</organizationName>
+            <address>
+                <deliveryPoint>Avenida Paseo Bolívar # 16-20</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3202767</phone>
+            <electronicMailAddress>i2d@humboldt.org.co</electronicMailAddress>
+            <onlineUrl>http://www.humboldt.org.co</onlineUrl>
+            <role>CUSTODIAN_STEWARD</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Roy</givenName>
+                <surName>González</surName>
+            </individualName>
+            <organizationName>Instituto de Investigación de Recursos Biológicos Alexander von Humboldt</organizationName>
+            <positionName>Investigador Adjunto</positionName>
+            <address>
+                <deliveryPoint>Avenida Paseo Bolívar # 16-20</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3202767</phone>
+            <electronicMailAddress>rgonzalez@humboldt.org.co</electronicMailAddress>
+            <onlineUrl>http://www.humboldt.org.co</onlineUrl>
+            <role>PRINCIPAL_INVESTIGATOR</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <surName>CORPOCALDAS</surName>
+            </individualName>
+            <organizationName>Corporación autónoma regional de Caldas</organizationName>
+            <address>
+                <deliveryPoint>Calle 21 # 23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>8841409</phone>
+            <electronicMailAddress>corpocaldas@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co</onlineUrl>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <pubDate>
+                2021-09-08
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            En el marco del convenio 21-20-267-220CE, entre el Instituto de Investigación de Recursos Biológicos Alexander von Humboldt y la Corporación Científica Ingeobosque, que tiene por objeto aunar esfuerzos técnicos, administrativos y financieros entre el Instituto Alexander Von Humboldt y la Corporación Científica Ingeobosque para el realizar el inventario florístico de las coberturas de bosque seco tropical en la jurisdicción de CORPOCALDAS. En el marco del Convenio 260 -2020 (20-267 numeración Instituto Humboldt). Esta información tiene el conjunto de datos con la información taxonómica y estructural de las 35 parcelas temporales de vegetación de 0,01 ha correspondientes al inventario florístico de las áreas de bosque seco tropical de la jurisdicción de CORPOCALDAS. 
+Se tomaron datos estructurales dasométricos tales como DAP, altura y posición espacial para todos los individuos vegetales con diámetro superior a 2,5 cm, y altura de 1,3 m. En total se reportaron 639 individuos para un total de 782 medidas asociadas a las ramas de los individuos arbóreos.
+        </abstract>
+        <keywordSet>
+            <keyword>composición</keyword>
+            <keyword>taxonomía</keyword>
+            <keyword>bosque seco</keyword>
+            <keyword>Ingeobosque</keyword>
+            <keyword>DAP</keyword>
+            <keyword>altura</keyword>
+            <keyword>bosque seco tropical</keyword>
+            <keyword>CORPOCALDAS</keyword>
+            <keyword>parcelas temporales</keyword>
+            <keyword>estructura</keyword>
+            <keywordThesaurus>N/A</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="information">http://ipt.biodiversidad.co/iavh/resource?r=plantae_bs-corpocaldas_2021</url>
+            </online>
+        </distribution>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/iavh/archive.do?r=plantae_bs-corpocaldas_2021</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>Departamento de Caldas, cobertura de bosque seco en la jurisdicción de CORPOCALDAS.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-75.675</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.651</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.688</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.19</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2021-07-01
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2021-08-31
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Se identificaron las especies siguiendo el sistema de clasificación APG IV. Se registraron 639 individuos, y 782 ramets, identificados en 152 especies, clasificados en 38 familias; en 35 parcelas temporales de bosque seco en el departamento de Caldas. Entre las familias con mayor abundancia de especies están Fabaceae (20), Rubiaceae (16), Malvaceae (9), Moraceae (9), Salicaceae (8), Sapindaceae (6), Urticaceae (6 especies), Arecaceae (5 especies), Euphorbiaceae (5), Lauraceae (5), Meliaceae (5), Myrtaceae (5), Annonaceae (4), Bignoniaceae (4) y, Rutaceae (4).</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>ANACARDIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>ANNONACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>APOCYNACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>ARECACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>BIGNONIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>BIXACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>BURSERACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>CANNABACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>CAPPARACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>CHRYSOBALANACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>CLUSIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>COMBRETACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>CORDIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>ERYTHROXYLACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>EUPHORBIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>FABACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>LAMIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>LAURACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>LECYTHIDACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>MALPIGHIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>MALVACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>MELASTOMATACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>MELIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>MORACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>MYRTACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>NYCTAGINACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>PICRAMNIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>PIPERACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>POLYGONACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>RANUNCULACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>RUBIACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>RUTACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>SALICACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>SAPINDACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>SAPOTACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>ULMACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>URTICACEAE</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>VIOLACEAE</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <purpose><para>Definir la locación y el estado de conservación de fragmentos de bosque seco tropical en la jurisdicción de Corpocaldas permitirá fortalecer el conocimiento ecosistémico y espacial del ecosistemas, además de promover la conservación del mismo; para obtener la cartografía a escala 1:25.000 del bosque seco tropical de Corpocaldas, que contará con un proceso de reconocimiento y verificación de coberturas en campo, con inventarios de vegetación asociados.</para></purpose>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Fabián</givenName>
+                <surName>Garzón</surName>
+            </individualName>
+            <organizationName>Instituto de Investigación de Recursos Biólogicos Alexander von Humboldt</organizationName>
+            <positionName>Investigador</positionName>
+            <address>
+                <deliveryPoint>Avenida Paseo Bolívar # 16-20</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3202767</phone>
+            <electronicMailAddress>fgarzon@humboldt.org.co</electronicMailAddress>
+            <onlineUrl>http://www.humboldt.org.co</onlineUrl>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Fase 1: Para el reconocimiento y validación de los ecosistemas secos en el departamento de Caldas se definieron 35 puntos estratégicos de muestreo distribuidos los diferentes nodos de bosque seco tropical a través de la predicción de modelos bioclimáticos dentro del área de estudio.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Fase 2: Se reconocieron en campo 35 puntos estratégicos de muestreo de los 48 nodos definidos a través de modelos espaciales. Posteriormente se realizó el levantamiento florístico en 35 fragmentos de bosque seco tropical, distribuidos en 20 parcelas de muestreo en el valle del río Magdalena y 15 en el cañón del río Cauca. Para la recolección de datos en campo se adaptó el formato de la memoria técnica de verificación del mapa de bosque seco tropical en Colombia (González-M, et al., 2014) con el fin de registrar información clave de la posición de cada punto visitado. Asimismo, se registró información relevante del estado de los fragmentos de los bosque seco, su estado sucesional y de conservación. Cada parcela temporal midió 0,01 ha (10 x 10 metros), se tomaron datos a los individuos leñosos como su altura y el diámetro a la altura del pecho (DAP) mayor a 2,5 cm. Adicionalmente, se colectaron muestras botánicas con el fin de conocer la identidad taxonómica de cada uno de los individuos.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>MEDICIÓN DE LOS INDIVIDUOS. Se midieron los individuos leñosos, incluidas lianas, con diámetro mayor a 2,5 centímetros a la altura del pecho (a un punto óptimo de medición de 1,30 m de altura). El orden de medición se realizó en forma de zigzag, iniciando en el individuo más cercano al punto inicial de la parcela (Punto X = 0 m, Y = 0 m), y continuando con los individuos que se encontraron a la derecha.
+Cuando se presentaban características en tallo como nudos, bifurcaciones, cicatrices, raíces aéreas o tabulares y/o malformaciones, se tomó el dato a una altura más alta. Se midieron ramets que superaban los 2,5 cm de diámetro en individuos con bifurcaciones por debajo de 1,3 m. En árboles inclinados, se realizó la medición en el ángulo de menor medida; en árboles ubicados en terrenos inclinados se midió en la parte superior de la pendiente; para árboles caídos o lianas, se realizó la medición desde la raíz hasta 1,3 m. Con respecto a la altura, se utilizó un clinómetro para la medición de la altura total de los individuos vegetales dentro de la parcela.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>COLECTA BOTÁNICA. Se colectó un ejemplar por individuo en cada parcela, siguiendo las técnicas y métodos estándar de colecta de material vegetal; para individuos fértiles, se tomaron tres réplicas. Para los datos de los especímenes, se hicieron anotaciones de la fecha y lugar de colecta, coordenadas, colectores y número de colección, diámetro a la altura del pecho y altura total, nombre común y descripción de caracteres que se pierden durante el secado, tales como hábito, aroma, color, presencia de exudado, características de la corteza y presencia de bambas o raíces fúlcreas.
+Las muestras prensadas fueron enviadas al Herbario Jardín Botánico Joaquín Antonio Uribe (JAUM), en la ciudad de Medellín.  Una vez allí, se hizo el proceso de secado e identificación. El material fértil será depositado en los herbarios Federico Meden Bogotá (FMB), Jardín Botánico Joaquín Antonio Uribe (JAUM) y Universidad de Caldas (FAUC).</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>El departamento de Caldas delimita con los departamentos de Antioquia, Boyacá, Cundinamarca, Tolima y Risaralda, cuenta con una superficie total de 7.888 km² representando el 0,69 % del territorio colombiano. Se enmarcaron fragmentos de ecosistema de bosque seco tropical en nueve municipios en la jurisdicción del departamento de Caldas, identificados previamente con base a IAvH-Minambiente (2014) y modelos bioclimáticos potenciales realizados por el Instituto de Investigación de Recursos Biológicos en el marco del convenio. 
+Los bosques secos tropicales fueron definidos por su dominancia de especies arbóreas caducifolias o semi-caducifolias (es decir, con adaptaciones morfológicas, fisiológicas y funcionales contra la sequía), temperatura media anual mayor a 17°C, precipitación anual por debajo de 2000 mm, condiciones edáficas variables, y un periodo anual de sequía de 3 a 6 meses con precipitación menor a 100 mm/mes (González-M, et al., 2018, 2014; Pizano &amp; García, 2014).</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>El diseño y establecimiento de las parcelas temporales se propuso con base en las técnicas y métodos para el proceso montaje y medición de vegetación en parcelas publicado por Vallejo et al. (2005); se realizaron las labores de implementación de estas parcelas y se tomaron los datos de cada individuo vegetal localizado al interior de la misma.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Se realizó una revisión de los datos tomados en campo a partir del chequeo directo de los individuos localizados en las parcelas, donde se revisaron los valores de DAP, altura y posición espacial.
+Se realizó la identificación en el herbario JAUM perteneciente al Jardín Botánico Joaquín Antonio Uribe de Medellín. Se usó como sistema de clasificación para la identificación de plantas APG IV.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project >
+                <title>Composición y estructura de parcelas temporales de bosque seco en las coberturas de bosque seco del departamento de Caldas</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Roy</givenName>
+                    <surName>Gonzalez</surName>
+                    </individualName>
+                    <role>PRINCIPAL_INVESTIGATOR</role>
+                </personnel>
+                <abstract>
+                    <para></para>
+                </abstract>
+                <funding>
+                    <para>Convenio de cooperación No. 20-267 entre el INSTITUTO DE INVESTIGACION DE RECURSOS BIOLÓGICOS ALEXANDER VON HUMBOLDT y la Corporación Autónoma Regional de Caldas- CORPOCALDAS.
+Convenio No. 21-20-267-220CE, entre el INSTITUTO DE INVESTIGACION DE RECURSOS BIOLÓGICOS ALEXANDER VON HUMBOLDT y la Corporación Científica Ingeobosque.</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El área de estudio comprende ecosistemas de bosque seco tropical en el departamento de Caldas, específicamente en los municipios de Aguadas, Filadelfia, La Dorada, La Merced, Neira, Pácora, Riosucio, Supía, y Victoria.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>El propósito principal del Convenio 260 -2020 (20-267 numeración Instituto Humboldt) entre el Instituto de Investigación de Recursos Biológicos, la Corporación Autónoma Regional de Caldas - CORPOCALDAS y la Corporación Científica Ingeobosque, tuvo como objeto  aunar esfuerzos técnicos, administrativos, económicos y financieros para fortalecer el conocimiento y la conservación del bosque seco tropical en la jurisdicción de CORPOCALDAS, a partir del establecimiento de 35 parcelas temporales en áreas de bosque seco del departamento de Caldas.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:25Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/czdjvq">Londoño A, Ingeobosque, Camargo A, Aguirre A, David D, Quintana A, Florez L (2021). Composición y estructura del bosque seco tropical en Caldas. Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. Sampling event dataset https://doi.org/10.15472/czdjvq accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation identifier="(González-M, et al., 2014)">González-M., R. Isaacs, P., García, H. y Pizano, C. (2014). Memoria técnica para la verificación en campo del mapa de bosque seco tropical en Colombia. Escala 1:100.000. Instituto de Investigaciones de Recursos Biológicos “Alexander von Humboldt”– Ministerio de Ambiente y Desarrollo Sostenible. Bogotá, Colombia. 29p.</citation>
+                <citation identifier="(González-M, et al., 2018)">González-M, R., H. García, P. Isaacs, H. Cuadros, R. López-Camacho, N. Rodríguez, K. Pérez, F. Mijares, A. Castaño-Naranjo, R. Jurado, Á. Idárraga-Piedrahíta, A.Rojas, H. Vergara, y C. Pizano. (2018). Disentangling the environmental heterogeneity, floristic distinctiveness and current threats of tropical dry forests in Colombia. Environmental Research Letters 13:45007.</citation>
+                <citation identifier="IAvH-Minambiente (2014)">IAvH-Minambiente. (2014). Mapa de cobertura de bosque seco tropical en Colombia a escala 1:100.000. Bogotá: IAvH- Minambiente. 1 pl. Haston, E., Richardson, J.E. Stevens, P.E. Chase M.W. Harris D.J. (2009).</citation>
+                <citation identifier="(Pizano &amp; García, 2014)">Pizano, C., y García, H. (2014). El Bosque Seco Tropical en Colombia. Instituto Alexander von Humboldt. Bogotá. D.C., Colombia. 349 pp.</citation>
+                <citation identifier="Vallejo et al. (2005)">Vallejo, M. Londoño, A. López, R. Galeano, G. Álvarez, E. Devia, W. (2005). Establecimiento de parcelas permanentes en bosques de Colombia. Instituto de Investigación de Recursos Biológicos Alexander Von Humboldt. Bogotá D. C., Colombia. 310 pp.</citation>
+                </bibliography>
+                <physical>
+                    <objectName>Composición y estructura del bosque seco tropical en Caldas</objectName>
+                    <characterEncoding>utf-8</characterEncoding>
+                    <dataFormat>
+                        <externallyDefinedFormat>
+                            <formatName>txt</formatName>
+                        </externallyDefinedFormat>
+                    </dataFormat>
+                    <distribution>
+                        <online>
+                            <url function="download">http://i2d.humboldt.org.co/ceiba/resource.do?r=plantae_bs-corpocaldas_2021</url>
+                        </online>
+                    </distribution>
+                </physical>
+                <resourceLogoUrl>https://statics.sibcolombia.net/sib-resources/images/logos-socios/500px/iavh.jpg</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

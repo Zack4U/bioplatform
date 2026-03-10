@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="149e4cb2-065a-43d1-b463-96830f91e377"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/u0vz3m</alternateIdentifier>
+        <alternateIdentifier>149e4cb2-065a-43d1-b463-96830f91e377</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=smurfit_riosucio_caldas</alternateIdentifier>
+        <shortName>Caracterización florística y estructural de bosques altoandinos en Riosucio, Caldas</shortName>
+        <title>Caracterización florística y estructural de bosques altoandinos en Riosucio, Caldas</title>
+        <creator>
+            <individualName>
+                <salutation>Sra.</salutation>
+                <givenName>Carmen Elena</givenName>
+                <surName>Sanchez Arias</surName>
+            </individualName>
+            <organizationName>Universidad Industrial de Santander</organizationName>
+            <address>
+                <city>MÁLAGA</city>
+                <administrativeArea>SANTANDER</administrativeArea>
+                <postalCode>682011</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <salutation>Sra.</salutation>
+                <givenName>Katherin Juliana</givenName>
+                <surName>Esteban Martínez</surName>
+            </individualName>
+            <organizationName>Universidad Industrial de Santander</organizationName>
+            <address>
+                <city>MÁLAGA</city>
+                <administrativeArea>SANTANDER</administrativeArea>
+                <postalCode>682011</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <salutation>Sr.</salutation>
+                <givenName>Diego</givenName>
+                <surName>Suescún Carvajal</surName>
+            </individualName>
+            <organizationName>Universidad Industrial de Santander</organizationName>
+            <address>
+                <city>MÁLAGA</city>
+                <administrativeArea>SANTANDER</administrativeArea>
+                <postalCode>682011</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <salutation>Sr.</salutation>
+                <givenName>Andrés David</givenName>
+                <surName>Rojas Hurtado</surName>
+            </individualName>
+            <organizationName>Universidad Industrial de Santander</organizationName>
+            <address>
+                <city>MÁLAGA</city>
+                <administrativeArea>SANTANDER</administrativeArea>
+                <postalCode>682011</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <surName>Universidad Industrial de Santander</surName>
+            </individualName>
+            <organizationName>Universidad Industrial de Santander</organizationName>
+            <address>
+                <city>MÁLAGA</city>
+                <administrativeArea>SANTANDER</administrativeArea>
+                <postalCode>682011</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Wilmar</givenName>
+                <surName>López</surName>
+            </individualName>
+            <organizationName>Smurfit Westrock</organizationName>
+            <address>
+                <city>Yumbo</city>
+                <administrativeArea>Valle del Cauca</administrativeArea>
+                <postalCode>760001</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>wilmar.lopez@smurfitwestrock.co</electronicMailAddress>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Wilmar</givenName>
+                <surName>López</surName>
+            </individualName>
+            <organizationName>Smurfit Westrock</organizationName>
+            <address>
+                <city>Yumbo</city>
+                <administrativeArea>Valle del Cauca</administrativeArea>
+                <postalCode>760001</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>wilmar.lopez@smurfitwestrock.co</electronicMailAddress>
+            <role>CUSTODIAN_STEWARD</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <salutation>Sr.</salutation>
+                <givenName>Diego</givenName>
+                <surName>Suescún Carvajal</surName>
+            </individualName>
+            <organizationName>Universidad Industrial de Santander</organizationName>
+            <address>
+                <city>MÁLAGA</city>
+                <administrativeArea>SANTANDER</administrativeArea>
+                <postalCode>682011</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <role>PRINCIPAL_INVESTIGATOR</role>
+        </associatedParty>
+        <pubDate>
+                2025-12-31
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            
+            Esta investigación se realizó en los bosques del núcleo forestal de Riosucio-Caldas, de la zona norte del patrimonio biológico en conservación, administrado por la División Forestal de Smurfit Westrock Cartón de Colombia S.A. Para determinar la composición florística y estructural, en julio de 2024 se establecieron tres muestreos rápidos de vegetación (RAP), cada uno correspondiente a 10 transectos de 50x2 m distribuidos al azar, donde se censaron todas las plantas cuyo tallo tuviera un diámetro a la altura del pecho (DAP) mayor o igual a 2,5 cm. En total se registraron 914 individuos (311 árboles en el dosel y 603 en el sotobosque), distribuidos en 58 familias. Se resaltan las familias Rubiaceae, Lauraceae y Melastomataceae como las familias más diversas en especies, y la presencia de géneros como Magnolia y Cyathea y otras especies con endemismo y actualmente amenazadas. La alta riqueza y  diversidad de especies en estos ecosistemas resalta la necesidad de mantener y mejorar los mecanismos de conservación, resaltando la importancia de un mayor monitoreo en el tiempo mediante el establecimiento de parcelas permanentes y declaración de áreas protegidas por su alto valor de conservación, para así disminuir las presiones antrópicas.
+        
+        </abstract>
+        <keywordSet>
+            <keyword>Biomasa aérea</keyword>
+            <keyword>diversidad</keyword>
+            <keyword>servicios ecosistémicos</keyword>
+            <keyword>especies endémicas</keyword>
+            <keywordThesaurus>NA</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the <ulink url="http://creativecommons.org/publicdomain/zero/1.0/legalcode"><citetitle>Public Domain (CC0 1.0)</citetitle></ulink>. Users may copy, modify, distribute and use the work, including for commercial purposes, without restriction.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Zero v1.0 Universal</licenseName>
+            <url>https://spdx.org/licenses/CC0-1.0.html</url>
+            <identifier>CC0-1.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=smurfit_riosucio_caldas</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El estudio se realizó en el Municipio de Riosucio perteneciente al sector Nor-Occidental del departamento de Caldas, sobre la vertiente Oriental de la Cordillera Occidental de Colombia, ubicado en el núcleo forestal de Riosucio, de la zona norte del patrimonio biológico en conservación, administrado por la División Forestal de Smurfit Westrock - Cartón de Colombia S.A. El área de estudio se presenta en la zona de vida de bosque húmedo y muy húmedo montano bajo (bh-MB y bmh-MB), con pendientes superiores al 50%. La topografía de esta zona es ondulada, con altitudes de hasta 3301 m s. n. m., temperaturas que oscilan en un rango de 11,9 a 24,0°C, y precipitaciones entre 1039,6 y 3120,5 mm (Corporación para el Desarrollo Ambiental Colombiano). Los predios del área de estudio corresponden a diferentes fincas de propiedad de la empresa Smurfit Westrock Cartón de Colombia S.A.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-75.818467</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-75.754715</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.447734</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.386992</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Se registraron 210 especies arbóreas representadas en 58 familias, 91 géneros y 914 individuos; las especies más representativas fueron Wettinia kalbreyeri (Burret) R.Bernal, Cyathea aff meridensis H. Karst., y Palicourea andina C.M. Taylor con 88, 60 y 36 individuos, respectivamente. Del total de especies registradas, 23 están clasificadas a nivel de filo como NN o Indeterminadas, esto debido a que algunos individuos se encontraban sin hojas o casi muertos, sin rebrote, otros muy altos, etc., por estas características de algunos individuos no se pudieron identificar</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Pentaphylacaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Clusiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Calophyllaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Polygalaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Styracaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Marcgraviaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Gentianaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lamiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Actinidiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Monimiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Malvaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Araliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Crossosomatales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Myrtaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Chloranthales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Dipsacales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Tracheophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Asterales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Scrophulariaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Metteniusaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Aquifoliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Burseraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Aquifoliales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Sapindaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Meliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cordiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Acanthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Staphyleaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Plantae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Arecales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Rutaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Ericales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Huerteales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cunoniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Elaeocarpaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Solanales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Arecaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lecythidaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Magnoliopsida</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Sabiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Piperaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Myristicaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Solanaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Laurales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Gesneriaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Polypodiopsida</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Malpighiales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Phyllanthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Myrtales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Melastomataceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Dipentodontaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Ericaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Siparunaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Liliopsida</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Malvales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Rubiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Boraginales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Fabaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Lamiales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Urticaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Proteaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Clethraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Picramniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lauraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Proteales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Viburnaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Moraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Verbenaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Magnoliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Picramniales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Rosales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Piperales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Fabales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Metteniusales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Primulaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Apocynaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Sapotaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Chloranthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Sapindales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cyatheaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Gentianales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Magnoliales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Cyatheales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Oxalidales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Asteraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Salicaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Euphorbiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Anacardiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Annonaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Apiales</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <acknowledgements>Los autores desean expresar su agradecimiento con Smurfit Westrock Colombia por permitir la realización y patrocinio de los muestreos en el núcleo forestal Riosucio.</acknowledgements>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unknown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <salutation>Sr.</salutation>
+                <givenName>Smurfit</givenName>
+                <surName>Westrock Colombia</surName>
+            </individualName>
+            <organizationName>Smurfit Westrock</organizationName>
+            <address>
+                <city>Yumbo</city>
+                <administrativeArea>Valle del Cauca</administrativeArea>
+                <postalCode>760001</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+        </contact>
+        <contact>
+            <individualName>
+                <salutation>Sr.</salutation>
+                <givenName>Wilmar</givenName>
+                <surName>López</surName>
+            </individualName>
+            <organizationName>Smurfit Westrock</organizationName>
+            <address>
+                <city>Yumbo</city>
+                <administrativeArea>Valle del Cauca</administrativeArea>
+                <postalCode>760001</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>wilmar.lopez@smurfitwestrock.co</electronicMailAddress>
+        </contact>
+        <contact>
+            <individualName>
+                <salutation>Sr.</salutation>
+                <givenName>Edgar Alberto</givenName>
+                <surName>Agudelo del Rio</surName>
+            </individualName>
+            <organizationName>Smurfit Westrock</organizationName>
+            <address>
+                <city>Yumbo</city>
+                <administrativeArea>Valle del Cauca</administrativeArea>
+                <postalCode>760001</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Levantamiento de datos en campo 
+Para el muestreo y toma de datos de la vegetación se realizaron las siguientes actividades:</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Para registrar las variables florísticas y dendrométricas de las especies vegetales, se anotó en el formulario de campo el nombre de la familia o género a la que pertenece cada individuo fustal o latizal, esto con la ayuda de los binoculares (que también sirvieron para homologar en campo) y claves dendrológicas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Los recorridos se registraron con el receptor GPS y en el transcurso de estos se fueron colectando los especímenes, buscando que la muestra de aquellos individuos que tenían flores y/o frutos los tuviera, además, se tomó información del punto de referencia, características botánicas y observaciones ecológicas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Se tomaron datos dasométricos como la altura total y el DAP de aquellas especies superiores a 2,5 cm, y otras variables propuestas por el protocolo de Rainfor (2021), esta información y la antes mencionada se registró en formatos digitales en la aplicación móvil Fulcrum.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>La vegetación de cada transecto fue muestreada a 1 m a lado y lado de una línea principal de 50 m de longitud. Al encontrarse un individuo sobre el borde del transecto, se localizó el punto medio de su diámetro y con la medición perpendicular a la línea principal se determinó si se incluía o no.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>La secuencia de numeración se realizó mientras se avanzaba sobre la línea, en el orden en que se iban encontrando los individuos.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Seguido de marcar los individuos provisionalmente con tiza, a todos los que tuvieron un DAP mayor a 2,5 cm se les pintó una banda horizontal delgada en el punto óptimo de medición.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Para la orientación en campo, se dejaron de manera permanente tubos de PVC cada 20 m y 10 m al final, pintados de color rojo en un extremo superior para la visibilidad en posteriores monitoreos. Cada tubo externo del transecto se marcó con una placa de identificación con el número del RAP y transecto.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Además de las mediciones de altura y DAP, se tomó un registro de la posición relativa de cada individuo (X y Y) a lo largo del transecto, en el eje Y la distancia desde el punto cero hasta donde se encontraba el árbol y en el eje X la distancia desde la línea principal a la izquierda hasta -1 y a la derecha hasta 1.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>El estudio se realizó en el Municipio de Riosucio perteneciente al sector Nor-Occidental del departamento de Caldas, sobre la vertiente Oriental de la Cordillera Occidental de Colombia (López y Cruz, 2020), ubicado en el núcleo forestal de Riosucio, de la zona norte del patrimonio biológico en conservación, administrado por la División Forestal de Smurfit Westrock - Cartón de Colombia S.A. El área de estudio se presenta en la zona de vida de bosque húmedo y muy húmedo montano bajo (bh-MB y bmh-MB), con pendientes superiores al 50% (Smurfit Kappa, 2024). La topografía de esta zona es ondulada, con altitudes de hasta 3301 m s. n. m., temperaturas que oscilan en un rango de 11,9 a 24,0°C, y precipitaciones entre 1039,6 y 3120,5 mm (Corporación para el Desarrollo Ambiental Colombiano (CORDEAM), 2023). Los predios del área de estudio corresponden a diferentes fincas de propiedad de la empresa Smurfit Westrock Cartón de Colombia S.A.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Se establecieron tres muestreos rápidos de vegetación (RAP), cada uno correspondiente a 10 transectos de 50x2 m, se censó un área total de 0,3 ha (3000 m2), de todas las plantas cuyo tallo tenían un DAP ≥ 2,5 cm. Los transectos fueron distribuidos al azar sin que se sobrepusieron, siendo cada transecto distanciado por mínimo 20 m (Gentry, 1982; Mendoza, 2008), dichos transectos están debidamente establecidos de forma permanente, marcados y georreferenciados para futuras remediciones</para>
+                </samplingDescription>
+            </sampling>
+        </methods>
+
+            <project >
+                <title>Caracterización florística y estructural de bosques altoandinos en el núcleo Forestal de Riosucio, Caldas</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Wilmar</givenName>
+                    <surName>López</surName>
+                    </individualName>
+                    <role>POINT_OF_CONTACT</role>
+                </personnel>
+                <abstract>
+                    <para>Los bosques tropicales altoandinos son de gran valor para la población humana por su provisión de bienes y servicios ambientales, como la captura de carbono, la regulación hidrológica y el mantenimiento de la biodiversidad. No obstante, estos ecosistemas se encuentran amenazados por alteraciones antrópicas como el cambio climático, la tala ilegal y la expansión de la frontera agrícola y pecuaria, estas problemáticas muestran la necesidad de desarrollar estudios en estos bosques, para mejorar los planes de conservación. Esta investigación se realizó en los bosques del núcleo forestal de Riosucio-Caldas, de la zona norte del patrimonio biológico en conservación, administrado por la División Forestal de Smurfit Westrock Cartón de Colombia S.A. Para determinar la composición florística y estructural, se establecieron tres muestreos rápidos de vegetación (RAP), cada uno correspondiente a 10 transectos de 50x2 m distribuidos al azar, donde se censaron todas las plantas cuyo tallo tuviera un diámetro a la altura del pecho (DAP) mayor o igual a 2,5 cm. En total se registraron 914 individuos (311 árboles en el dosel y 603 en el sotobosque), distribuidos en 58 familias. Se resaltan las familias Rubiaceae, Lauraceae y Melastomataceae como las familias más diversas en especies, y la presencia de géneros como Magnolia y Cyathea y otras especies con endemismo y actualmente amenazadas. La alta riqueza y diversidad de especies en estos ecosistemas resalta la necesidad de mantener y mejorar los mecanismos de conservación, resaltando la importancia de un mayor monitoreo en el tiempo mediante el establecimiento de parcelas permanentes y declaración de áreas protegidas por su alto valor de conservación, para así disminuir las presiones antrópicas.</para>
+                </abstract>
+                <funding>
+                    <para>Smurfit Westrock Colombia</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El estudio se realizó en el Municipio de Riosucio, perteneciente al sector Nor-Occidental del departamento de Caldas, sobre la vertiente Oriental de la Cordillera Occidental de Colombia (López y Cruz, 2020), ubicado en el núcleo forestal de Riosucio, de la zona norte del patrimonio biológico en conservación, administrado por la División Forestal de Smurfit Westrock - Cartón de Colombia S.A. El área de estudio se presenta en la zona de vida de bosque húmedo y muy húmedo montano bajo (bh-MB y bmh-MB), con pendientes superiores al 50% (Smurfit Kappa, 2024). La topografía de esta zona es ondulada, con altitudes de hasta 3301 m s. n. m., temperaturas que oscilan en un rango de 11,9 a 24,0°C, y precipitaciones entre 1039,6 y 3120,5 mm (Corporación para el Desarrollo Ambiental Colombiano (CORDEAM), 2023). Los predios del área de estudio corresponden a diferentes fincas de propiedad de la empresa Smurfit Westrock Cartón de Colombia S.A.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>Se establecieron tres muestreos rápidos de vegetación (RAP), cada uno correspondiente a 10 transectos de 50x2 m, se censó un área total de 0,3 ha (3000 m2), de todas las plantas cuyo tallo tenían un DAP ≥ 2,5 cm. Los transectos fueron distribuidos al azar sin que se sobrepusieran, siendo cada transecto distanciado por mínimo 20 m (Gentry, 1982; Mendoza, 2008), dichos transectos están debidamente establecidos de forma permanente, marcados y georreferenciados para futuras remediciones.
+Para el muestreo y toma de datos de la vegetación se realizaron las siguientes actividades:
+●	Las variables florísticas y dendrométricas de las especies vegetales se anotaron en el formulario de campo el nombre de la familia o género a la que pertenece cada individuo fustal o latizal, esto con la ayuda de los binoculares y claves dendrológicas.
+●	Los recorridos se registraron con el receptor GPS y en el transcurso de estos se fueron colectando los especímenes botánicos, además, se tomó información del punto de referencia, características botánicas y observaciones ecológicas.
+●	Se anotaron datos dasométricos como la altura total y el DAP de aquellas especies superiores a 2,5 cm, y otras variables propuestas por el protocolo de Rainfor (2021) (Condición del árbol vivo, técnica de medición y técnica de medición de altura), esta información y la antes mencionada se registró en formatos digitales en la aplicación móvil Fulcrum.
+●	La vegetación de cada transecto fue muestreada a 1 m a lado y lado de una línea principal de 50 m de longitud. Al encontrarse un individuo sobre el borde del transecto, se localizó el punto medio de su diámetro y con la medición perpendicular a la línea principal se determinó si se incluía o no.
+●	La secuencia de numeración se realizó mientras se avanzaba sobre la línea, en el orden en que se iban encontrando los individuos.
+●	Seguido de marcar los individuos provisionalmente con tiza, a todos los que tuvieron un DAP mayor a 2,5 cm se les pintó una banda horizontal delgada en el punto óptimo de medición.
+●	Para la orientación en campo, se dejaron de manera permanente tubos de PVC cada 20 m y 10 m al final, pintados de color rojo en un extremo superior. Cada tubo externo del transecto se marcó con una placa de identificación con el número del RAP y transecto.
+●	Además de las mediciones de altura y DAP, se tomó un registro de la posición relativa de cada individuo (X y Y) a lo largo del transecto, en el eje Y la distancia desde el punto cero hasta donde se encontraba el árbol y en el eje X la distancia desde la línea principal a la izquierda hasta -1 y a la derecha hasta 1.
+Herbario
+Una vez colectadas las muestras botánicas en campo, éstas fueron debidamente procesadas en campo (prensadas, alcoholizadas y marcadas) y fueron llevadas al herbario del Jardín Botánico de Medellín (JAUM) para su correcta identificación taxonómica</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:24Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/u0vz3m">Sanchez Arias C E, Esteban Martínez K J, Suescún Carvajal D, Rojas Hurtado A D, López W, Universidad Industrial de Santander (2025). Caracterización florística y estructural de bosques altoandinos en Riosucio, Caldas. Version 2.1. Smurfit Westrock Colombia. Occurrence dataset https://doi.org/10.15472/u0vz3m accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>López, P. y Cruz, E. (2020). Diseño de un plan de mejoramiento del proceso extractivo y de beneficio de oro en la planta y mina “La Bendición”, ubicada en el municipio de Riosucio - Caldas, basado en herramientas Lean Manufacturing.  Fundación Universitaria de Popayán, Colombia. https://unividafup.edu.co/repositorio/files/original/b935776e99a6c8e4be56396e2217ad64.pdf</citation>
+                <citation>Smurfit Kappa. (2024). Resumen Plan de Manejo Forestal 2022-2026. Resumen público de las principales acciones de la división forestal. Cartón de Colombia S.A. https://www.smurfitkappa.com/sustainability/-/m/files/documents---country/colombia/resumenplan-de-manejo-2024---2028.pdf?rev=-1&amp;hash=5E1D7FD05D9F7D53C64338940A19A331</citation>
+                <citation>Gentry, A. H. (1982). Patterns of neotropical plant species diversity. In M. K. Hecht, B. Wallace &amp; G. T. Prance (Eds.), Evolutionary Biology (Vol. 15, pp. 1–84). Springer, New York, USA.</citation>
+                <citation>Mendoza, H. (2008). Compilación de los inventarios rap de vegetación en Colombia. Sistema de información y Biodiversidad. ¿Instituto de investigación de recursos biológicos Alexander Von Humboldt.repository.humboldt.org.co/bitstream/handle/20.500.11761/31183/10-053.pdf?sequence=1&amp;isAllowed=y</citation>
+                <citation>Rainfor. (2021). Amazon Forest Inventory Network. Fieldwork manuals, Field codes – Trees. https://rainfor.org/en/manuals/in-the-field/</citation>
+                </bibliography>
+                <resourceLogoUrl>https://gitlab.com/sib-colombia/logos/-/raw/main/socio-SiB-smurfit.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

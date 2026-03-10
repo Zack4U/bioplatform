@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="d69c0b98-00a6-491c-8dee-f2da8e88f4b4"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/63gggd</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=isagen_ch_miel</alternateIdentifier>
+        <title>Flora en zonas de influencia de la Central Hidroeléctrica Miel I. 2020</title>
+        <creator>
+            <individualName>
+                <givenName>Huber Alexander</givenName>
+                <surName>Vanegas</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Ingeniero forestal</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6844</phone>
+            <electronicMailAddress>hvanegas@isagen.com.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Felipe Alfonso</givenName>
+                <surName>Cardona Naranjo</surName>
+            </individualName>
+            <organizationName>Herbario Universidad de Antioquia</organizationName>
+            <positionName>Coordinador del monitoreo</positionName>
+            <address>
+                <deliveryPoint>Calle 67 Nº 53-108 Bloque 2-411. Herbario</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>cardonaf@gmail.com</electronicMailAddress>
+            <onlineUrl>http://www.herbariohua.com</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Angélica</givenName>
+                <surName>Rivera Duque</surName>
+            </individualName>
+            <organizationName>Herbario Universidad de Antioquia</organizationName>
+            <positionName>Equipo de monitoreo</positionName>
+            <address>
+                <deliveryPoint>Calle 67 Nº 53-108 Bloque 2-411. Herbario</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <onlineUrl>http://www.herbariohua.com</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>María Judith</givenName>
+                <surName>Carmona Higuita</surName>
+            </individualName>
+            <organizationName>Herbario Universidad de Antioquia</organizationName>
+            <positionName>Equipo de monitoreo</positionName>
+            <address>
+                <deliveryPoint>Calle 67 Nº 53-108 Bloque 2-411. Herbario</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>judith.carmona@udea.edu.co</electronicMailAddress>
+            <onlineUrl>http://www.herbariohua.com</onlineUrl>
+            <userId directory="http://orcid.org/">0000-0002-1865-9095</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6932</phone>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Astrid</givenName>
+                <surName>Álvarez Sánchez</surName>
+            </individualName>
+            <organizationName>Herbario Universidad de Antioquia</organizationName>
+            <positionName>Equipo de monitoreo</positionName>
+            <address>
+                <deliveryPoint>Calle 67 Nº 53-108 Bloque 2-411. Herbario</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <onlineUrl>http://www.herbariohua.com</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Sebastián</givenName>
+                <surName>Giraldo Gomez</surName>
+            </individualName>
+            <organizationName>Herbario Universidad de Antioquia</organizationName>
+            <positionName>Equipo de monitoreo</positionName>
+            <address>
+                <deliveryPoint>Calle 67 Nº 53-108 Bloque 2-411. Herbario</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>sgiraldo@rbge.org.uk</electronicMailAddress>
+            <onlineUrl>http://www.herbariohua.com</onlineUrl>
+            <userId directory="http://orcid.org/">0000-0003-0312-8424</userId>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6932</phone>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Huber Alexander</givenName>
+                <surName>Vanegas</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Ingeniero forestal</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6844</phone>
+            <electronicMailAddress>hvanegas@isagen.com.co</electronicMailAddress>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Herbario (HUA)</givenName>
+                <surName>Universidad de Antioquia</surName>
+            </individualName>
+            <organizationName>Universidad de Antioquia</organizationName>
+            <positionName>Proveedor de contenido</positionName>
+            <address>
+                <deliveryPoint>Calle 67 No. 53 – 108</deliveryPoint>
+                <city>Medellin</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(604) 219-56-14</phone>
+            <electronicMailAddress>herbario@udea.edu.co</electronicMailAddress>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <pubDate>
+                2025-01-21
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>Esta base de datos cuenta con un total de 17.488 registros de flora, obtenidos a partir de monitoreos realizados en la franja de protección del embalse Amaní de la Central Hidroeléctrica Miel I. Los datos fueron recolectados mediante el monitoreo de 6 parcelas permanentes. El monitoreo se llevó a cabo en los meses de septiembre y noviembre del 2020.</para><para>Las parcelas y el monitoreo están establecidos de acuerdo con la resolución 636 del 2022, emitida por la autoridad nacional de licencias ambientales (ANLA). La clasificación taxonómica de los registros sigue los estándares del Royal Botanic Gardens y el Global Biodiversity Information Facility (GBIF).</para><para>Durante el monitoreo se registraron un total de 386 taxones de plantas en las parcelas monitoreadas. De estos, 329 fueron identificados a nivel de especie, representados en 202 géneros, 68 familias, 28 órdenes y 1 clase. Las familias más diversas fueron Rubiaceae, con 33 taxones y Fabaceae con 30 taxones. En términos de abudancia la familia Melastomataceae destacó con 1.526 registros. Los muestreos fueron realizados por un equipo de profesionales botánicos del Herbario de la Universidad de Antioquia (HUA).</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Flora</keyword>
+            <keyword>Caldas</keyword>
+            <keyword>ISAGEN</keyword>
+            <keyword>Central Hidroeléctrica Miel I</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>PERMISO_COLECTA</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <additionalInfo>
+            <para>Este conjunto de datos fue publicado con el respaldo del proyecto CESP “OpenPSD – Engage and Promote the Private Sector in Open Biodiversity Data Publication (ID CESP2019-004)”, en alianza con la Asociación Nacional de Empresarios de Colombia (ANDI) a través de su iniciativa “Biodiversidad y Desarrollo” (Datos abiertos sobre biodiversidad desde el sector empresarial). Expresamos nuestro agradecimiento por la colaboración y el incentivo brindado para la difusión de datos desde el sector empresarial.</para>
+        </additionalInfo>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=isagen_ch_miel</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>Los muestreos se llevaron a cabo en el departamento de Caldas, específicamente en los municipios de Norcasia, Samaná y Victoria.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-74.924</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.878</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.564</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.5</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2020-09-13
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2020-10-27
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Este recurso contiene 17.488 registros de flora, clasificados en 29 órdenes, 68 familias, 202 géneros y 329 especies. Del total, el 98% de los registros está identificado a nivel de especie, mientras que el 2% restante corresponde a identificaciones a nivel de género o familia.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Fabaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Rubiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lauraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Anonnaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Moraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Piperaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Melastomataceae</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Huber Alexander</givenName>
+                <surName>Vanegas</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Ingeniero forestal</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6844</phone>
+            <electronicMailAddress>hvanegas@isagen.com.co</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Se establecieron parcelas permanentes de 1 ha para el monitoreo de individuos arbóreos con un diámetro a la altura del pecho (DAP) mayor o igual a 10 cm. Adicionalmente, se delimitaron subparcelas de 0,16 ha dentro de estas parcelas, donde se incluyeron individuos del sotobosque con un DAP mayor o igual a 1 cm y menor a 10 cm. Para medir los individuos del sotobosque, se realizaron dos mediciones del DAP, las cuales se promediaron.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>En cada censo, se verificó la ubicación y consistencia de los registros previos, asegurando que no hubiera incoherencias entre mediciones, como errores en el diámetro. El DAP actual fue registrado como referencia para calcular el crecimiento diamétrico y otras variables relacionadas, como la biomasa. También se registraron nuevos ingresos, definidos como individuos que alcanzaron un DAP mayor o igual a 10 cm en las parcelas principales o un DAP mayor o igual a 1 cm en las subparcelas de regeneración. Estos individuos fueron marcados, mapeados, medidos y registrados con un número de placa consecutivo al censo anterior.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Las mediciones del DAP se realizaron a 1,3 m del nivel del suelo para los individuos con un DAP mayor o igual a 10 cm y a ras del suelo para aquellos con un DAP menor a 10 cm. En individuos con tallos múltiples, se midió el diámetro de cada tallo por debajo de 1,3 m. En situaciones donde las mediciones no pudieron realizarse debido a bifurcaciones, troncos anómalos o puntos de medición indefinidos, se siguieron las directrices metodológicas de Condit (1998) para garantizar la precisión y consistencia de los datos.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Cada registro incluyó un nombre científico asignado al nivel taxonómico más detallado posible, basado en la colecta de los morfos correspondientes durante el monitoreo. La determinación de los morfos en campo dependió de la experiencia del investigador, aunque ajustes nomenclaturales, errores de observador o cambios en los métodos pueden modificar los nombres asignados para reflejar con mayor precisión la diversidad (Durak et al., 2015). Por ello, se realizaron colectas botánicas adicionales para incluir nuevos registros, confirmar identificaciones previas o enriquecer colecciones biológicas mediante la preservación de muestras fértiles.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Se recolectaron muestras botánicas de los nuevos individuos censados en las parcelas, tanto del dosel como del sotobosque. También se colectaron ejemplares que no pudieron ser determinados taxonómicamente en censos previos. Durante este proceso, se registraron características morfológicas que podrían desaparecer tras el secado o alcoholización, como exudados, olores, texturas, sabores, colores y particularidades arquitectónicas, siguiendo técnicas tradicionales de procesamiento botánico (Lot &amp; Chiang, 1986).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>El material botánico recolectado fue secado en el Herbario de la Universidad de Antioquia (HUA) utilizando prensas metálicas, a una temperatura de 60 °C, durante 12 a 24 horas, dependiendo de las características del espécimen. La identificación de las muestras se realizó en el HUA, empleando el sistema de clasificación internacional del Angiosperm Phylogeny Group (APG IV, 2016) para Angiospermas y el esquema propuesto por Smith et al. (2008) para Pteridophyta. La identificación incluyó la comparación con materiales de referencia mediante claves taxonómicas, literatura especializada y bases de datos reconocidas, como Missouri Botanical Garden y PlantList (2020). Además, se contó con el apoyo de especialistas para garantizar la precisión en la identificación de los ejemplares.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Las seis parcelas monitoreadas forman parte de la franja de protección de la Central Hidroeléctrica Miel I, ubicada en el departamento de Caldas, en los municipios de Norcasia, Samaná y Victoria. Estas parcelas se encuentran a altitudes entre 520 y 650 msnm, con una temperatura promedio de 25,5 °C y precipitaciones anuales promedio de 5.500 mm.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Se realizó el monitoreo de seis parcelas permanentes, establecidas desde 2005, excepto la parcela La Campiña, que fue establecida en 2010. En cada parcela se identificaron nuevos ingresos y se verificó la taxonomía de los individuos registrados en años anteriores. Además, se midieron los individuos con un diámetro a la altura del pecho (DAP) mayor o igual a 10 cm. Los muestreos se llevaron a cabo en los meses de septiembre y octubre de 2020.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Los taxones fueron identificados por un equipo de botánicos del Herbario de la Universidad de Antioquia (HUA), logrando el mayor nivel de detalle taxonómico posible. Para la identificación de nuevos reclutas y la corrección de registros taxonómicos, se emplearon técnicas básicas de herborización, con posterior análisis en el HUA. La validación de los nombres científicos se realizó mediante la herramienta Data Validator del GBIF y la base de datos del Royal Botanic Gardens.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:25Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/63gggd">Vanegas H A, Cardona Naranjo F A, Rivera Duque A, Carmona Higuita M J, Carvajal-Toro S, Álvarez Sánchez A, Giraldo Gomez S (2025). Flora en zonas de influencia de la Central Hidroeléctrica Miel I. 2020. Isagen S.A. E.S.P.. Occurrence dataset https://doi.org/10.15472/63gggd accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Condit, R. 1998. Tropical forest census plots: methods and results from Barro Colorado Island, Panama and a comparison whit other plot. Springer Sci. Bus. Media.</citation>
+                <citation>Durak, T., R. Durak, E. Wegrzyn &amp; K. Leniowski. 2015. The impact of changes in species richness and species replacement on patterns of taxonomic homogenization in the carpathian forest ecosystems. Forests 6: 4391-4402</citation>
+                <citation>Lot, A. &amp; F. Chiang. 1986. Manual de herbario: administración y manejo de colecciones, técnicas de recolección y preparación de ejemplares botánicos. Consejo Nacional de la flora de México.</citation>
+                <citation identifier="http://www.tropicos.org">Missouri Botanical Garden. 2020. Tropicos.org [WWW Document].</citation>
+                <citation>Smith, A., K. Pryer, E. Schuettpelz, P. Korall, H. Schneider &amp; P. Wolf. 2008. Fern classification, p. 417-468. En Biology an evolution of ferns and lycophytes. Cambridge University Press, Cambridge, Massachusetts, USA.</citation>
+                <citation>Vallejo, M., A. Londoño, R. López, G. Galeano, E. Álvarez &amp; W.Devia. 2005. Métodos para estudios ecológicos a largo plazo “Establecimiento de parcelas permanentes en bosques de Colombia”. Bogotá, D. C., Colombia</citation>
+                <citation>Idárraga, A., R. Ortiz, R. Callejas &amp; M. Merello. 2011. Flora de Antioquia: Catálogo de las plantas vasculares. Listado de plantas vasculares del departamento de Antioquia. Universidad de Antioquia, Missouri Botanical Garden &amp; Oficina de Planeación Departamental de la Gobernación de Antioquia. Programa Expedición Antioquia 2013. Series Biodiversidad y Recursos Naturales.</citation>
+                </bibliography>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-isagen.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

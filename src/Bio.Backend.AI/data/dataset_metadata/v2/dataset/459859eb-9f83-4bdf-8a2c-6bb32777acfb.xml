@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="459859eb-9f83-4bdf-8a2c-6bb32777acfb"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/iu3cig</alternateIdentifier>
+        <alternateIdentifier>459859eb-9f83-4bdf-8a2c-6bb32777acfb</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=masbiomas_corredor_bsandino</alternateIdentifier>
+        <shortName>MasBiomas_RBCCBAC</shortName>
+        <title>Registros biológicos del Corredor de Conservación de Bosques Andinos en el departamento de Caldas</title>
+        <creator>
+            <individualName>
+                <givenName>Fabián Guillermo</givenName>
+                <surName>Gaviria Ortiz</surName>
+            </individualName>
+            <organizationName>Más Biomas S.A.S.</organizationName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>fabianggo@gmail.com</electronicMailAddress>
+            <onlineUrl>https://www.masbiomas.com/</onlineUrl>
+            <userId directory="https://orcid.org/">0000-0001-8119-6372</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Alejandra</givenName>
+                <surName>Gutiérrez López</surName>
+            </individualName>
+            <organizationName>Más Biomas S.A.S.</organizationName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>alejaglopez@gmail.com</electronicMailAddress>
+            <onlineUrl>https://www.masbiomas.com/</onlineUrl>
+            <userId directory="https://orcid.org/">0009-0006-1425-2032</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Juan David</givenName>
+                <surName>Corrales</surName>
+            </individualName>
+            <organizationName>Más Biomas S.A.S.</organizationName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>juandavidcorrales@gmail.com</electronicMailAddress>
+            <onlineUrl>https://www.masbiomas.com/</onlineUrl>
+            <userId directory="https://orcid.org/">0000-0003-0860-9219</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Juan Alejandro</givenName>
+                <surName>Morales Betancourt</surName>
+            </individualName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>juanalejandromoralesbetancourt@gmail.com</electronicMailAddress>
+            <userId directory="https://orcid.org/">0000-0001-5311-3269</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Juan Mauricio</givenName>
+                <surName>Posada Herrera</surName>
+            </individualName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>juan.posada87@gmail.com</electronicMailAddress>
+            <userId directory="https://orcid.org/">0000-0001-7794-9300</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jonathan Alexis</givenName>
+                <surName>Castellanos Duran</surName>
+            </individualName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>jonathan.castellanosdu@gmail.com</electronicMailAddress>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Fabián Guillermo</givenName>
+                <surName>Gaviria Ortiz</surName>
+            </individualName>
+            <organizationName>Más Biomas S.A.S.</organizationName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>fabianggo@gmail.com</electronicMailAddress>
+            <onlineUrl>https://www.masbiomas.com/</onlineUrl>
+            <userId directory="https://orcid.org/">0000-0001-8119-6372</userId>
+        </metadataProvider>
+        <pubDate>
+                2025-08-29
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>Este recurso compila registros biológicos obtenidos durante el proceso de caracterización del corredor de conservación de bosques andinos en el departamento de Caldas, Colombia. La información fue recopilada por el equipo técnico de Más Biomas en el marco de una iniciativa respaldada por Corpocaldas, Gobernación de Caldas, Instituto Humboldt, Naturaleza y Cultura Internacional, re:wild y Andes Amazon Fund. El polígono evaluado abarca municipios como Marulanda, Neira, Aranzazu y Salamina, y comprende ecosistemas de bosque altoandino, subpáramo, páramo y humedales altoandinos entre los 2.000 y 3.800 m s.n.m.</para><para>Los datos incluyen observaciones de campo, registros por cámara trampa, rastros y redes de niebla. En total se registraron 1.489 observaciones, representadas en este conjunto bajo el estándar Darwin Core v4.1, que corresponden a taxones de flora, aves, mamíferos y herpetofauna.</para><para>Este recurso permite respaldar procesos de declaratoria de área protegida, monitoreo de biodiversidad, evaluación de especies objeto de conservación (VOC), y análisis de riqueza taxonómica. Asimismo, aporta a la interoperabilidad de datos abiertos entre el Sistema de Información sobre Biodiversidad de Colombia (SiB Colombia) y la Infraestructura Mundial de Información en Biodiversidad (GBIF).</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Biodiversidad de Alta Montaña</keyword>
+            <keyword>Registros Biológicos</keyword>
+            <keyword>Bosques Andinos</keyword>
+            <keyword>Corredor de Conservación Caldas</keyword>
+            <keyword>Especies Amenazadas</keyword>
+            <keywordThesaurus>NA</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-4.0.html</url>
+            <identifier>CC-BY-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=masbiomas_corredor_bsandino</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El área de estudio se localiza en el departamento de Caldas, dentro de la Cordillera Central de los Andes colombianos, abarcando predios públicos y privados en los municipios de Marulanda, Neira, Aranzazu y Salamina. El polígono evaluado tiene una extensión aproximada de 20.835 hectáreas, definido en sistema de coordenadas MAGNA-SIRGAS Origen Nacional.
+
+La región se caracteriza por un gradiente altitudinal entre los 2.000 y 3.800 m s.n.m., integrando ecosistemas estratégicos como el páramo, bosque altoandino, subpáramo, humedales altoandinos y cuerpos de agua abastecedores de acueductos comunitarios. El área limita con la Reserva Forestal Protectora Regional El Diamante y presenta superposiciones con el Complejo de Páramos Los Nevados y el sitio RAMSAR Laguna del Otún.
+
+Esta zona presenta alta riqueza biológica y valores de conservación, además de representar una estrella hídrica en la convergencia de las cuencas de los ríos Tapias, Guarinó y Chinchiná.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-75.453717</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-75.320083</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.24775</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.10595</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2025-01-28
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2025-03-30
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El recurso documenta registros biológicos correspondientes a cuatro grandes grupos taxonómicos: vegetación, avifauna (aves), mastofauna (mamíferos) y herpetofauna (anfibios y reptiles), asociados a ecosistemas altoandinos y de páramo del departamento de Caldas, Colombia.
+
+La información de vegetación incluye 402 especies de plantas vasculares, con representatividad en órdenes como Myrtales, Asterales y Ericales, y familias destacadas como Melastomataceae, Asteraceae, Orchidaceae y Ericaceae. Se registran especies en categoría de amenaza nacional e internacional, endémicas y varias listadas en el Apéndice II de CITES.
+
+El componente avifaunístico abarca un total de 258 especies, principalmente del orden Passeriformes, seguidas por Apodiformes y Accipitriformes, con representación en 42 familias. Se identifican aves endémicas, casi endémicas, amenazadas y especies CITES, así como especies sombrilla y dispersoras de semillas.
+
+En cuanto a mamíferos, se documentan 94 especies a nivel general y 23 especies mediante observaciones de campo, distribuidas en 11 órdenes, con especial riqueza en Chiroptera, Rodentia y Carnivora. Se incluyen registros de especies de interés para la conservación como Mazama rufina, Dinomys branickii, Leopardus pardinoides y Alouatta seniculus.
+
+La herpetofauna cuenta con 22 especies registradas, distribuidas entre Anura, Squamata y Caudata, con predominancia en el género Pristimantis. Se incluyen especies endémicas, vulnerables y en peligro crítico según criterios de UICN y normativa nacional.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Myrtales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Asterales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Ericales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Passeriformes</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Apodiformes</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Accipitriformes</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Chiroptera</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Rodentia</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Carnivora</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Anura</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Squamata</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Caudata</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <purpose>El conjunto de datos está estructurado principalmente en dos plantillas estandarizadas bajo el esquema Darwin Core v4.1: (i) la plantilla de Registros Biológicos, con 1.489 observaciones georreferenciadas, y (ii) una plantilla de Lista de Chequeo Taxonómica, con 776 especies sistematizadas. Estas plantillas fueron diseñadas conforme a los lineamientos del Sistema de Información sobre Biodiversidad de Colombia (SIB Colombia), lo que garantiza su compatibilidad con infraestructuras como GBIF e IPT.
+Los registros biológicos incluyen campos como scientificName, eventDate, decimalLatitude, decimalLongitude, basisOfRecord, recordedBy, identifiedBy, y occurrenceStatus, además de anotaciones sobre categoría de amenaza nacional (Resolución 0126 de 2024), internacional (UICN 2024), grado de endemismo y presencia en apéndices CITES. Cada registro fue relacionado a eventos de muestreo definidos por localidad, altitud y método de colecta, en especial redes de niebla, cámaras trampa, entrevistas comunitarias y observación directa. También se integraron observaciones provenientes de plataformas como GBIF, eBird, Xeno-canto e iNaturalist, con depuración altitudinal y taxonómica.
+Los datos fueron organizados y depurados utilizando software como R (versiones 4.x) y paquetes especializados como rgbif, sp, dplyr, tidyr, y CoordinateCleaner para validación geográfica y taxonómica. Para la revisión visual de mapas y capas superpuestas, se emplearon herramientas SIG en QGIS y Google Earth Engine, alineando los registros con capas ecológicas del proyecto (POMCA, ABACOS, coberturas naturales, biomas y zonas de amenaza minera).
+El formato final de publicación corresponde a archivos separados en CSV UTF-8, compatibles con el sistema IPT del SIB Colombia, acompañados por un metadato formal en formato EML (Ecological Metadata Language), que documenta el contexto, propósito, métodos y cobertura de los datos.</purpose>
+        <introduction>La caracterización biológica del Corredor de Conservación de Bosques Andinos en el departamento de Caldas se enmarca en una estrategia regional para fortalecer la representatividad ecológica y funcional del Sistema Departamental de Áreas Protegidas (SIDAP). El proyecto, liderado por  Más Biomas y Corpocaldas con el apoyo de la Gobernación de Caldas, el Instituto Alexander von Humboldt, y aliados internacionales como Naturaleza y Cultura Internacional, Re:wild y Andes Amazon Fund, responde a la meta nacional y global de ampliar la cobertura de áreas protegidas, en especial en ecosistemas estratégicos como el páramo, el bosque altoandino y los humedales altoandinos.
+El área evaluada abarca aproximadamente 20.835 hectáreas distribuidas en los municipios de Marulanda, Neira, Aranzazu y Salamina, con un gradiente altitudinal entre los 2.000 y 3.800 m s.n.m.. Esta región presenta una alta riqueza biológica, conectividad ecológica con áreas protegidas existentes (como la RFPR El Diamante y el sitio RAMSAR Laguna del Otún), y una función clave en la regulación hídrica para más de 100.000 habitantes. El corredor se superpone con áreas abastecedoras de acueductos comunitarios (ABACOS), zonas de importancia ambiental según los POMCA, y áreas prioritarias para la conservación según los imperativos globales definidos por Cresswell et al. (2023).
+El objetivo principal del proyecto fue generar información técnica y taxonómica que respalde la ruta de declaratoria de área protegida, mediante la recopilación de 1.489 registros biológicos y la identificación de 776 especies. Se abordaron hipótesis relacionadas con la persistencia de especies endémicas y amenazadas en gradientes altitudinales, la conectividad del paisaje, y el papel de las comunidades locales en la conservación. Los datos fueron obtenidos mediante muestreo directo (redes de niebla, cámaras trampa, rastros, observación), entrevistas comunitarias y depuración de fuentes secundarias como GBIF, eBird, iNaturalist y repositorios universitarios.
+Hasta la fecha, esta información ha sido utilizada para definir posibles valores objeto de conservación (VOC), establecer prioridades de manejo, y orientar procesos de gobernanza ambiental en el territorio. Su publicación como conjunto de datos abiertos en el SIB Colombia permitirá su uso en análisis de distribución de especies, modelación ecológica, monitoreo participativo, y evaluación de amenazas. Además, facilitará la interoperabilidad con plataformas como GBIF y contribuirá al cumplimiento de compromisos como el 30x30 y la Estrategia Nacional de Biodiversidad.</introduction>
+        <acknowledgements><para>Este estudio fue desarrollado con el apoyo financiero de Naturaleza y Cultura Internacional, Re:wild, y Andes Amazon Fund, en el marco del proyecto de cooperación internacional para el Corredor de Conservación de Bosques Andinos en el departamento de Caldas.</para><para>La caracterización biológica y social fue coordinada por Más Biomas, con la participación activa de Corpocaldas, la Gobernación de Caldas y la Secretaría de Medio Ambiente Departamental, así como el acompañamiento técnico del Instituto Alexander von Humboldt.</para><para>El trabajo de campo contó con la colaboración de investigadores locales, comunidades rurales y profesionales de las alcaldías de Marulanda, Neira, Salamina y Aranzazu, quienes aportaron valiosa información ecológica, social y cultural al proceso.</para></acknowledgements>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>notPlanned</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Fabián Guillermo</givenName>
+                <surName>Gaviria Ortiz</surName>
+            </individualName>
+            <organizationName>Más Biomas S.A.S.</organizationName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>fabianggo@gmail.com</electronicMailAddress>
+            <onlineUrl>https://www.masbiomas.com/</onlineUrl>
+            <userId directory="https://orcid.org/">0000-0001-8119-6372</userId>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>La producción de datos para el proyecto Corredor de Conservación de Bosques Andinos en Caldas se desarrolló bajo una metodología que integró muestreo directo, revisión de fuentes secundarias, validación comunitaria y análisis técnico-geoespacial. El primer paso consistió en la delimitación del área de estudio, definida por criterios ecológicos, altitudinales y funcionales de conectividad. Se estableció un polígono de 20.835 hectáreas, ubicado en los municipios de Marulanda, Neira, Aranzazu y Salamina, que incluye ecosistemas como bosque altoandino, páramo, subpáramo y humedales altoandinos. Esta zona presenta colindancias y superposiciones con áreas protegidas del SIDAP y SINAP, y fue seleccionada por su relevancia hídrica y biológica.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>A partir de este contexto, se identificaron cinco sectores específicos para el desarrollo del muestreo primario: El Zancudo, La Cristalina, San Pablo, El Diamante y Hojas Anchas. En cada uno se realizó un esfuerzo de campo de seis días-noche, combinando protocolos estandarizados por grupo taxonómico. Para quirópteros se utilizaron redes de niebla de 12 metros y apertura de 38 mm en horarios crepusculares, logrando un esfuerzo de 864 m²·hora/red y una captura eficaz en La Cristalina. Para mamíferos terrestres, se instalaron cámaras trampa con un esfuerzo acumulado de 310 días-cámara, permitiendo el registro de nueve especies validadas en campo.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Las aves fueron documentadas mediante observación directa, grabaciones sonoras y plataformas como eBird y Xeno-canto. La vegetación se caracterizó por recorridos botánicos, recolección de especímenes fértiles y determinación taxonómica en herbario. Finalmente, la herpetofauna fue evaluada por búsqueda visual dirigida en microhábitats sensibles, complementada con literatura especializada.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>El segundo componente metodológico consistió en la integración y depuración de fuentes secundarias, incluyendo plataformas como GBIF, iNaturalist, eBird y repositorios universitarios (especialmente el de la Universidad de Caldas). Se aplicaron filtros altitudinales, geográficos y ecológicos para validar la pertinencia de cada registro y excluir aquellos fuera de distribución natural. En este proceso se utilizó el lenguaje R con paquetes como rgbif, CoordinateCleaner, taxize, dplyr y tidyr, lo que permitió sistematizar 1.489 registros biológicos y 776 especies en formato Darwin Core v4.1.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>La caracterización biológica del Corredor de Conservación de Bosques Andinos en Caldas se llevó a cabo en cinco sectores específicos, seleccionados por su representatividad ecológica, conectividad funcional y presión antrópica. Cada área de muestreo fue definida con base en criterios altitudinales, cobertura vegetal, presencia de cuerpos de agua y accesibilidad logística, en coordinación con actores locales e institucionales.
+En el municipio de Marulanda, el muestreo se realizó en el sector de El Zancudo, una zona de transición entre bosque altoandino y subpáramo, con presencia de relictos boscosos y nacimientos hídricos. En Neira, se trabajó en San Pablo y La Cristalina, áreas con fragmentos de bosque conservado, conectores ecológicos y registros históricos de especies focales. En Aranzazu, se muestrearon los sectores de El Diamante, La Guaira, La Moravia y El Retiro, caracterizados por mosaicos de vegetación, humedales altoandinos y presión ganadera. Finalmente, en Salamina, el muestreo se concentró en Hojas Anchas, una zona con bosque altoandino bien conservado, conectividad con áreas protegidas y presencia de especies endémicas.
+Cada sector fue muestreado durante un período de seis días-noche, con jornadas de campo que incluyeron instalación de cámaras trampa, redes de niebla, recorridos botánicos, observación de aves y entrevistas comunitarias. Los límites temporales del estudio abarcan desde el 28 de enero hasta el 30 de marzo de 2025, cubriendo la temporada seca en la región, lo que favoreció la detección de especies y la validación de registros históricos. Esta ventana temporal también permitió consolidar y depurar datos secundarios provenientes de plataformas como GBIF, eBird, iNaturalist y repositorios universitarios, integrándolos al conjunto de datos bajo criterios de calidad y pertinencia ecológica.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Para el muestreo de mamíferos voladores (Chiroptera), se emplearon redes de niebla tipo monofilamento de 12 metros de largo por 2.5 metros de alto, con apertura de 38 mm. Estas fueron instaladas en claros de bosque y corredores ribereños, operadas entre las 17:30 y 23:00 horas. Se aplicó un esfuerzo acumulado de 864 m²·hora/red, siguiendo protocolos éticos para la captura y liberación de individuos, de acuerdo con los lineamientos propuestos por Sikes et al. (2016). La identificación taxonómica se realizó en campo y se obtuvieron registros de especies como Carollia brevicauda, Dermanura bogotensis y Platyrrhinus albericoi.
+Para los mamíferos terrestres medianos y grandes, se instalaron cámaras trampa en puntos estratégicos como pasos de fauna, bordes de bosque y senderos naturales. Las cámaras operaron 24 horas al día durante períodos acumulados de 310 días-cámara, distribuidos en Altamira–Perillo y La Cristalina. Estas fueron configuradas para capturar tres fotografías y un video de 10 segundos por evento, permitieron documentar especies como Mazama rufina, Leopardus pardinoides, Nasua nasua y Cuniculus tackzanowskii. Las imágenes fueron georreferenciadas, validadas por expertos y asociadas a eventos de muestreo.
+El protocolo aplicado para el registro de avifauna consistió en observación directa mediante puntos fijos y recorridos lineales, combinados con grabaciones de vocalizaciones y revisión de fuentes digitales como eBird y Xeno-canto. Las jornadas se llevaron a cabo entre las 05:30 y 10:30 horas utilizando binoculares 8x42 y grabadoras Zoom H1n. La identificación taxonómica se basó en morfología, canto y comportamiento, complementada con literatura especializada. Se registraron especies focales como Grallaria milleri, Atlapetes flaviceps y Spizaetus isidori.
+La caracterización de vegetación se realizó mediante recorridos botánicos exploratorios en transectos de aproximadamente 500 metros por ecosistema, recolectando ejemplares fértiles y documentando datos como hábito, fenología y microhábitat. Las muestras fueron procesadas en campo (prensado y secado) y determinadas taxonómicamente en laboratorios especializados. La nomenclatura se validó con el Catálogo de Plantas de Colombia, y se verificó la presencia en CITES y libros rojos nacionales. Entre las especies más relevantes se encuentran Lepanthes cuatrecasasii, Ceroxylon quindiuense y Plutarchia pubiflora.
+En el caso de la herpetofauna, se aplicaron búsquedas visuales dirigidas (Visual Encounter Surveys), efectuadas en microhábitats como hojarasca, bromelias, rocas y cuerpos de agua, en horarios tanto diurnos como nocturnos. Se siguieron los protocolos estandarizados de Heyer et al. (1994) para el registro de temperatura, humedad, esfuerzo de muestreo y condiciones del sitio. Las especies fueron identificadas por características morfológicas y vocalización, y validadas por literatura especializada. Se documentaron ejemplares como Osornophryne percrassa, Pristimantis simoterus y Centrolene buckleyi.
+Todos los registros fueron estandarizados en formato Darwin Core v4.1 y sistematizados en archivos CSV UTF-8. Su validación geográfica y taxonómica se realizó con herramientas del software R, empleando paquetes como CoordinateCleaner, rgbif y taxize, garantizando la calidad y interoperabilidad para su publicación en el SiB Colombia y GBIF.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>En cuanto al control de calidad, se estandarizó la nomenclatura taxonómica conforme a fuentes como GBIF, UICN, la Resolución 0126 de 2024 del MADS y los libros rojos nacionales. Se eliminaron duplicados, se validaron coordenadas y se revisaron los atributos de conservación como endemismo y presencia en CITES. La validación espacial se realizó con QGIS y Google Earth Engine, relacionando los datos con capas de amenazas mineras, coberturas naturales, zonas ABACOS y zonificaciones POMCA.
+El conjunto de datos generado está compuesto por dos archivos CSV en codificación UTF-8: uno para registros de ocurrencia (occurrence) y otro para listas taxonómicas (taxon). Estos fueron publicados en el Sistema de Información sobre Biodiversidad de Colombia (SiB Colombia) y están preparados para interoperar con GBIF, cumpliendo con los estándares de metadatos EML para su descripción formal.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project id="SIB-CALDAS-BOSANDINOS-RB-01">
+                <title>Corredor de Conservación de Bosques Andinos en el departamento de Caldas</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Fabián Guillermo</givenName>
+                    <surName>Gaviria Ortiz</surName>
+                    </individualName>
+                    <role>AUTHOR</role>
+                </personnel>
+                <abstract>
+                    <para>El proyecto de caracterización biológica del Corredor de Conservación de Bosques Andinos en Caldas fue desarrollado entre enero y marzo de 2025 como parte de una estrategia regional para fortalecer la conectividad ecológica y la representatividad de ecosistemas estratégicos en el Sistema Departamental de Áreas Protegidas (SIDAP). La iniciativa fue liderada por Más Biomas, con el apoyo de Corpocaldas, la Gobernación de Caldas, el Instituto  Alexander von Humboldt, y aliados internacionales como Naturaleza y Cultura Internacional, Re:wild y Andes Amazon Fund.
+El área de estudio abarca aproximadamente 20.835 hectáreas distribuidas en los municipios de Marulanda, Neira, Aranzazu y Salamina, con un gradiente altitudinal entre los 2.000 y 3.800 m s.n.m.. Se evaluaron ecosistemas de páramo, bosque altoandino, subpáramo y humedales altoandinos, con el objetivo de identificar especies focales, endémicas y amenazadas que respalden la declaratoria de nuevas áreas protegidas.
+Durante el proyecto se recopilaron 1.489 registros biológicos, sistematizados bajo el estándar Darwin Core, que incluyen observaciones de flora, aves, mamíferos y herpetofauna. Los datos fueron obtenidos mediante muestreo en campo, entrevistas comunitarias y depuración de fuentes secundarias como GBIF, eBird e iNaturalist. Se identificaron 776 especies, de las cuales más de 100 son endémicas y 89 están incluidas en los apéndices de CITES.
+El proyecto también generó insumos técnicos para la planificación territorial, el monitoreo participativo y la gobernanza ambiental, y sus resultados han sido utilizados para definir posibles valores objeto de conservación (VOC), orientar procesos de restauración ecológica y fortalecer la gestión comunitaria del agua y la biodiversidad.</para>
+                </abstract>
+                <funding>
+                    <para>El desarrollo de esta iniciativa fue posible gracias al respaldo financiero de Naturaleza y Cultura Internacional, Re:wild y Andes Amazon Fund, quienes apoyaron la ejecución técnica, logística y comunitaria del proceso. Estos aliados internacionales han contribuido activamente a la consolidación de estrategias de conservación en los Andes tropicales, priorizando ecosistemas de alta montaña y áreas con alto valor de biodiversidad.
+Su apoyo permitió la implementación de muestreos especializados, la sistematización de registros biológicos bajo estándares internacionales (Darwin Core), y la articulación con actores locales e institucionales para fortalecer la gobernanza ambiental en el departamento de Caldas. Además, facilitaron la interoperabilidad de los datos con plataformas como el SiB Colombia y GBIF, promoviendo el acceso abierto y la visibilidad internacional de la biodiversidad altoandina.</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El área física del proyecto corresponde al Corredor de Conservación de Bosques Andinos en el departamento de Caldas, Colombia,  se ubica ubica en la vertiente oriental de la Cordillera Central de los Andes. El polígono evaluado abarca aproximadamente 20.835 hectáreas, distribuidas en los municipios de Marulanda, Neira, Aranzazu y Salamina, con coordenadas geográficas que oscilan entre los 2.000 y 3.800 metros sobre el nivel del mar. Esta zona incluye ecosistemas estratégicos como bosque altoandino, subpáramo, páramo, humedales altoandinos y cuerpos de agua abastecedores de acueductos comunitarios.
+La cobertura temporal del estudio se concentró entre el 28 de enero y el 30 de marzo de 2025, período durante el cual se realizaron muestreos directos en campo, entrevistas comunitarias y depuración de fuentes secundarias. Esta ventana temporal permitió capturar información representativa de la biodiversidad en época seca, facilitando la observación de especies focales y la validación de registros históricos.
+En cuanto a la cobertura taxonómica, el área alberga una alta diversidad biológica, con 776 especies registradas en los grupos de vegetación, avifauna, mastofauna y herpetofauna. Se documentaron especies endémicas, amenazadas y de interés ecológico, incluyendo plantas vasculares de las familias Melastomataceae y Orchidaceae, aves como Grallaria milleri y Atlapetes flaviceps, mamíferos como Mazama rufina y Dinomys branickii, y anfibios como Osornophryne percrassa y Pristimantis alalocophus. La riqueza específica y funcional de esta área refuerza su valor como nodo de conectividad ecológica y como estrella hídrica en la convergencia de las cuencas de los ríos Tapias, Guarinó y Chinchiná.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>La investigación desarrollada en el Corredor de Conservación de Bosques Andinos en Caldas se fundamentó en un enfoque interdisciplinario que combina principios de ecología del paisaje, biogeografía andina y conservación basada en evidencia. El diseño metodológico respondió a la necesidad de generar información técnica que respaldara la declaratoria de nuevas áreas protegidas, considerando la alta biodiversidad, el valor hídrico y la conectividad ecológica del territorio. La motivación principal fue visibilizar los ecosistemas estratégicos de alta montaña frente a amenazas como la expansión agropecuaria, la minería y el cambio climático.
+El proyecto planteó varias hipótesis, entre ellas: que el corredor alberga una alta proporción de especies endémicas y amenazadas distribuidas en gradientes altitudinales; que la conectividad entre fragmentos de bosque y páramo favorece la persistencia de especies focales; y que el conocimiento ecológico local complementa los registros científicos. Estas hipótesis guiaron la selección de sitios de muestreo, el diseño de los protocolos y la integración de fuentes primarias y secundarias.
+La estrategia metodológica combinó muestreo directo en campo (redes de niebla, cámaras trampa, observación visual), entrevistas comunitarias y depuración de fuentes digitales como GBIF, eBird e iNaturalist. Se definieron cinco sectores de muestreo distribuidos en los municipios de Marulanda, Neira, Aranzazu y Salamina, con un esfuerzo de campo de seis días-noche por sector. Los datos fueron sistematizados bajo el estándar Darwin Core v4.1 y organizados en dos plantillas: registros de ocurrencia y listas de chequeo taxonómicas.
+Desde el punto de vista estadístico, se aplicaron análisis de riqueza específica, índices de diversidad (Shannon, Simpson), categorización por amenazas (UICN, Resolución 0126 de 2024), y validación geoespacial con herramientas SIG. La limpieza de coordenadas y la verificación taxonómica se realizaron en R mediante paquetes como CoordinateCleaner, rgbif y taxize. Esta estructura permitió integrar los datos en el Sistema de Información sobre Biodiversidad de Colombia (SIB Colombia) y garantizar su interoperabilidad con GBIF.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:25Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/iu3cig">Gaviria Ortiz F G, Gutiérrez López A, Corrales J D, Morales Betancourt J A, Posada Herrera J M, Castellanos Duran J A (2025). Registros biológicos del Corredor de Conservación de Bosques Andinos en el departamento de Caldas. Version 1.1. Más Biomas S.A.S.. Occurrence dataset https://doi.org/10.15472/iu3cig accessed via GBIF.org on 2026-03-09.</citation>
+                <resourceLogoUrl>https://gitlab.com/sib-colombia/logos/-/raw/main/socio-SiB-masbiomas.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="f91111a4-3c37-4273-ad0c-2789758d04e2"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/rbozdf</alternateIdentifier>
+        <alternateIdentifier>f91111a4-3c37-4273-ad0c-2789758d04e2</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=ideam_ifn</alternateIdentifier>
+        <title>Compilación de datos de campo provenientes del levantamiento del Inventario Forestal Nacional (2015-2017), datos sin validar</title>
+        <creator>
+            <individualName>
+                <surName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</surName>
+            </individualName>
+            <organizationName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</organizationName>
+            <positionName>Autor</positionName>
+            <address>
+                <deliveryPoint>Cl. 25d #96B - 70</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <postalCode>110911</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+57 (601) 3527160</phone>
+            <onlineUrl>http://www.ideam.gov.co/</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <surName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</surName>
+            </individualName>
+            <organizationName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</organizationName>
+            <positionName>Autor</positionName>
+            <address>
+                <deliveryPoint>Cl. 25d #96B - 70</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <postalCode>110911</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+57 (601) 3527160</phone>
+            <onlineUrl>http://www.ideam.gov.co/</onlineUrl>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Claudia Patricia</givenName>
+                <surName>Olarte Villlanueva</surName>
+            </individualName>
+            <organizationName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</organizationName>
+            <positionName>Profesional especializada. Grupo de Bosques, Subdirección de Ecosistemas e Información Ambiental</positionName>
+            <address>
+                <deliveryPoint>Cl. 25d #96B - 70</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <postalCode>110911</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+57 (601) 3527160</phone>
+            <electronicMailAddress>colarte@ideam.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.ideam.gov.co/</onlineUrl>
+            <role>EDITOR</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Amparo</givenName>
+                <surName>Rodríguez León</surName>
+            </individualName>
+            <organizationName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</organizationName>
+            <positionName>Coordinadora. Grupo de Bosques, Subdirección de Ecosistemas e Información Ambiental</positionName>
+            <address>
+                <deliveryPoint>Cl. 25d #96B - 70</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <postalCode>110911</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+57 (601) 3527160</phone>
+            <electronicMailAddress>arodriguezl@ideam.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.ideam.gov.co/</onlineUrl>
+            <role>EDITOR</role>
+        </associatedParty>
+        <pubDate>
+                2023-05-05
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>El Inventario Forestal Nacional (IFN) es una iniciativa a gran escala, cuya puesta en marcha en campo se inició en el año 2015 (Olarte, et al, 2021). El Decreto 1655 de 2017 define al IFN, como la &amp;#34;operación estadística mediante la cual se registran objetivamente variables de interés nacional (superficie, composición, estructura, diversidad forestal, entre otras), referidas a los bosques naturales de Colombia, con el fin de proveer información que requieren diferentes usuarios y que contribuye al monitoreo y seguimiento a los bosques, a la formulación de los planes de ordenación y a la administración sostenible de este recurso en Colombia&amp;#34;.</para>
+<para>El IFN es coordinado por el Ideam, bajo la dirección del Ministerio de Ambiente y Desarrollo Sostenible (Minambiente) como ente rector. Su diseño inició en el año 2007 con el apoyo del Departamento Administrativo Nacional de Estadística- DANE, Minambiente y la participación de las Corporaciones Autónomas Regionales y de Desarrollo Sostenible y otros actores académicos (Olarte, et al. 2021).</para>
+<para>El IFN, espera dar respuesta a preguntas fundamentales que el Estado debe conocer con relación a los bosques ¿Cuántos tipos de bosques tiene Colombia? ¿Cuáles son las especies principales que los caracterizan? ¿Cuál es el estado de las masas forestales? ¿Cuánta biomasa se acumula en ellos? entre otras, que deben soportar la planificación de este recurso a nivel nacional y regional (Olarte, et al. 2021).</para>
+<para>Derivado de lo anterior, se plantea como objetivos del IFN, entre otros aspectos los de i) Proporcionar estándares, procedimientos, metodologías y herramientas para el levantamiento de información orientada a la caracterización de bosques y otras coberturas; ii) Brindar información confiable, consistente y continua que sirva de fundamento para la formulación de planes de ordenación forestal, la administración del recurso forestal, la definición de políticas, la planificación sectorial y la toma de decisiones orientadas al manejo sostenible y la conservación del patrimonio forestal del país; iii) Suministrar información a los tomadores de decisión que sirva de referencia para el cumplimiento de sus funciones relacionadas con la fijación de los cupos globales y determinación de las especies para el aprovechamiento de bosques naturales.</para>
+<para>La implementación del IFN, se deberá ejecutar en ciclos quinquenales, de los cuales a la fecha se viene desarrollando el primer ciclo de implementación o línea base, el cual finalizará en el primer semestre de 2023.</para>
+<para>Los registros que se comparten corresponden a un primer avance en el levantamiento de información de campo efectuada entre 2015 y 2017, en diferentes regiones del país, por lo que los datos y resultados presentados en el SIB, están sujetos a modificaciones en la medida en que se avance en la ejecución de la operación estadística y en la validación de los datos recolectados. En este recurso se presentan 10025 registros de especímenes botánicos observados en 180 municipios del territorio nacional entre el 2015 y 2017. Los especímenes botánicos se encuentran agrupados en 39 órdenes y 126 familias de las clases Liliopsida, Magnoliopsida, Pinopsida y Polypodiopsida.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Colombia</keyword>
+            <keyword>Flora</keyword>
+            <keyword>Caracterización</keyword>
+            <keyword>Inventario Forestal</keyword>
+            <keyword>Dinámica</keyword>
+            <keyword>Composición de Bosques</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-4.0.html</url>
+            <identifier>CC-BY-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="information">http://www.ideam.gov.co/web/ecosistemas/inventario-forestal-nacional</url>
+            </online>
+        </distribution>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=ideam_ifn</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El conjunto de datos recolectados en campo de esta muestra abarca 180 municipios del territorio nacional distribuido en 32 departamentos. El departamento del Amazonas es el más representativo con 2173 registros de especímenes vegetales correspondientes al 21,67%, seguido de Vaupés con el 10,55%, Antioquia con el 7,12%, Meta con el 6,66% y Chocó con el 5,92%. Risaralda es el departamento menos representativo con 12 registros correspondientes al 0,11%.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-78.818</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-67.705</eastBoundingCoordinate>
+                    <northBoundingCoordinate>9.828</northBoundingCoordinate>
+                    <southBoundingCoordinate>-0.061</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2015-01-01
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2017-12-31
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Los especímenes botánicos presentados, se encuentran agrupados en 39 órdenes y 126 familias de las clases Liliopsida, Magnoliopsida, Pinopsida y Polypodiopsida. La familia más representativa es Fabaceae con 1254 registros correspondientes al 12,5%, seguida de Moraceae con 498 (4,96%), Myristicaceae con 444 (4,43%) y Arecaceae con 438 registros que representan el 4,42%.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Apiales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Aquifoliales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Arecales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Asterales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Boraginales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Brassicales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Canellales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Caryophyllales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Celastrales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Chloranthales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Cucurbitales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Cyatheales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Dilleniales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Dipsacales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Ericales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Escalloniales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Fabales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Fagales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Gentianales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Icacinales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Lamiales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Laurales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Magnoliales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Malpighiales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Malvales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Metteniusales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Myrtales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Oxalidales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Picramniales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Pinales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Piperales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Poales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Proteales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Ranunculales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Rosales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Santalales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Sapindales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Solanales</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Order</taxonRankName>
+                    <taxonRankValue>Zygophyllales</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>asNeeded</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <surName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</surName>
+            </individualName>
+            <organizationName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</organizationName>
+            <positionName>Autor</positionName>
+            <address>
+                <deliveryPoint>Cl. 25d #96B - 70</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <postalCode>110911</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+57 (601) 3527160</phone>
+            <onlineUrl>http://www.ideam.gov.co/</onlineUrl>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>La descripción de los procedimientos de campo empleados en el IFN puede consultarse en su versión más actualizada en el manual de campo del IFN versión 5.2 (Ideam, 2021).</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>La muestra estadística diseñada para la recolección de datos del IFN, es de carácter nacional, sin embargo y para efectos logísticos, la recolección de los datos de campo se realiza por región natural, por lo que la muestra estadística, esta igualmente distribuida. De este modo, los estimadores y factores de expansión empleados se llevan también a este nivel, por lo que los indicadores resultantes del análisis se presentarán agregados para cada una de las cinco regiones naturales de Colombia.
+
+En este sentido, los resultados de la muestra que se presentan no corresponden a los agregados nacionales empleando los factores de expansión diseñados, por lo que están sujetos a cambios.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>El IFN está diseñado sobre un marco geoestadístico de carácter nacional, es decir que integra elementos espaciales y estadísticos que garantizan la selección y precisión de la muestra estadística definida en todo el territorio nacional.  El tipo de muestreo definido es probabilístico, posestratificado y de conglomerado de áreas. Para la selección de la muestra, se definió un muestreo aleatorio probabilístico, por lo que el diseño del IFN corresponde a un muestreo aleatorio simple de conglomerados (MASC) posestratificado (Olarte, et al. 2021). 
+
+El IFN define una muestra de 1,479 unidades de muestreo (UM) o conglomerados que se distribuyen en cada una de las cinco regiones naturales de Colombia y que son seleccionados sobre un marco muestral de áreas con limites imaginarios que posibilitan y consolidan la definición del modelo estadístico, permitiendo la selección de una muestra ubicada geográficamente. Las áreas fueron trazadas de forma sistemática y consisten en polígonos cuadrados de 24 kilómetros (km) por 24 km (Olarte, et al. 2021).
+
+La captura de información de campo dentro del IFN, se lleva a cabo teniendo en cuenta los estándares y procedimientos definidos en el manual de campo del Inventario Forestal Nacional, en donde se definen catorce (14) formularios de registro de información que describen desde la localización y establecimiento del conglomerado y las subparcelas, hasta el registro y medición de individuos, su colección botánica y los análisis de muestreo de suelos y detritos de madera.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Los elementos del control de calidad dentro del IFN se compilan en la Guía de control de calidad Inventario Forestal Nacional -IFN- COLOMBIA (Ideam, 2022), que describe el programa de aseguramiento y control de calidad implementado en cada una de las fases del IFN. Este programa tiene como propósito garantizar que los datos generados en el Inventario Forestal Nacional cumplan con los requisitos establecidos en la norma técnica NTC-PE 1000:2017, relacionados con los atributos de exactitud, precisión y coherencia de las mediciones realizadas, garantizando la integridad de la información generada y que la misma sea confiable. Se pretende generar los mecanismos de seguimiento para mejorar la calidad de la información en cada uno de los niveles establecidos, mediante la identificación y tratamiento de no conformidades y de tolerancias establecidas para las mediciones realizadas.
+
+Uno de los principales instrumentos definidos en la fase de evaluación y validación de los datos recolectados en campo es el manual de crítica de la información. En este documento se define de manera precisa qué se entenderá por &quot;errores o imprecisiones en los datos&quot;, con el fin de entender lo que constituye o no un error, así como las acciones que se debe tomar en caso de encontrar errores o imprecisiones. En general, el control de calidad durante el operativo de campo del IFN se estructura en varias etapas (preoperativa, operativa y posoperativa) y niveles (jefe de brigada, supervisores, Coordinador regional y líder del IFN o Coordinador central del Ideam, con apoyo del equipo de crítica de información) (Ramírez C., et al. 2021).</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project >
+                <title>Inventario Forestal Nacional - IFN</title>
+                <personnel>
+                    <individualName>
+                    <surName>Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam</surName>
+                    </individualName>
+                    <role>AUTHOR</role>
+                </personnel>
+                <abstract>
+                    <para>El Inventario Forestal Nacional de Colombia comprende la operación estadística mediante la cual se registran  variables de interés nacional de los bosques naturales de Colombia, con el fin de proveer información que contribuye al monitoreo y seguimiento de estos ecosistemas, en su composición, estructura, degradación, enfatizando en el  análisis de indicadores de estado, demanda y presión, fundamentales para la toma de decisiones de política, su conservación y ordenamiento. 
+
+El desarrollo del IFN se basa en obtener información directamente de campo, a partir de la medición de atributos estructurales y florísticos de los bosques, así como el muestreo de suelos y de maderas en estado de descomposición en 1924 unidades de muestreo o conglomerados, cada una en un área de 0,35 ha, (70% ubicados en bosques y 30% en coberturas no boscosas) y 50 parcelas permanentes de una hectárea distribuidas sobre todo el territorio nacional. 
+
+En general se propone un IFN diseñado para suplir información periódica (cada cinco años), en los diferentes niveles de necesidades de información (jurisdiccional, regional, nacional) con visión prospectiva soportado en el Programa de Monitoreo y Seguimiento de Bosques –PMSB-, es decir, que integra otros métodos de investigación en bosques como el mapeo y monitoreo de los mismos e investigaciones especializadas a través de sub muestras en  temas centrales como su crecimiento, regeneración, biomasa acumulada y relación con el ciclo del carbono.</para>
+                </abstract>
+                <funding>
+                    <para></para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>Territorio nacional.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>El diseño del IFN de Colombia se realizó bajo la coordinación del IDEAM, con el apoyo del Ministerio de Ambiente y el DANE, y la participación de las Corporaciones autónomas regionales y otros actores académicos. El diseño incluye aspectos de planificación, recolección, formatos de registro único, la aplicación de un diseño estadístico multipropósito, el uso de tecnología de punta para la captura electrónica de datos “in situ”, el empleo de cartografía de precisión y la construcción de un marco estadístico y georeferenciado para realizar la investigación estadística de profundidad por muestreos estadísticos de los bosques naturales.
+
+Para el cumplimiento de los preceptos generales del diseño, la propuesta técnica abarca los siguientes componentes: Marco conceptual, definición de objetivos e indicadores del IFN, Diseño estadístico (tamaño de la muestra, selección de la muestra, varianzas, estimaciones y errores de muestreo de los indicadores; construcción del marco estadístico y preparación de la muestra seleccionada). Diseño de los instrumentos de la investigación (Formatos de registro, formato de control de calidad, formatos de reportes de monitoreo y seguimiento del operativo de campo, manuales técnicos, administrativos y financieros, equipos para el levantamiento de los datos). Diseño del sistema de captura: Arquitectura de la solución, software y hardware. Diseño del procesamiento y publicación de resultados (Hardware y software de procesamiento, algoritmos de estimaciones, varianzas y errores de muestreo para cada indicador predefinido). Diseño del operativo de campo ( Estructura institucional a cargo del operativo de campo, estructura del personal de campo, tipo de levantamiento, rendimientos, perfil técnico del personal de campo, sensibilización de la población local, transporte, comunicaciones, salud y seguridad del personal de campo). Pruebas piloto y el uso de información de otras experiencias nacionales e internacionales.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:24Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/rbozdf">Instituto de Hidrología, Meteorología y Estudios Ambientales - Ideam (2023). Compilación de datos de campo provenientes del levantamiento del Inventario Forestal Nacional (2015-2017), datos sin validar. Version 2.1. Instituto de Hidrología, Meteorología y Estudios Ambientales de Colombia - Ideam. Sampling event dataset https://doi.org/10.15472/rbozdf accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Olarte Villanueva, C. P., Merchán López, O. F., Linares Prieto, R., Quintero Cardozo, F., León Cruz, R., Rodríguez León, A., y Montealegre J. O. (2021). Marco rector para la implementación del Inventario Forestal Nacional. Bogotá: Instituto de Hidrología, Meteorología y Estudios Ambientales (Ideam). 168 pp.</citation>
+                <citation>Ramírez, C., Alberdi, I., Bahamondez, C., y Freitas, J., coords. 2021. Inventarios Forestales Nacionales de América Latina y el Caribe: Hacia la armonización de la información forestal. Roma, FAO. Capítulo 11. Colombia.</citation>
+                <citation>IDEAM, 2021. Manual de Campo Inventario Forestal Nacional Colombia, Versión 5.2. Adaptado de “IDEAM, 2018. Manual de Campo Inventario Forestal Nacional Colombia, Versión 4.0. Colombia, Bogotá, 2020. 160 páginas.” Colombia, Bogotá, 2021. 162 páginas.</citation>
+                <citation>Chapman AD, 2020. Buenas prácticas actuales para generalizar datos de especies sensibles. Copenhague: Secretaría de GBIF.</citation>
+                </bibliography>
+                <physical>
+                    <objectName>Manual de campo del Inventario Forestal Nacional</objectName>
+                    <characterEncoding>UTF-8</characterEncoding>
+                    <dataFormat>
+                        <externallyDefinedFormat>
+                            <formatName>PDF</formatName>
+                            <formatVersion>4</formatVersion>
+                        </externallyDefinedFormat>
+                    </dataFormat>
+                    <distribution>
+                        <online>
+                            <url function="download">http://181.225.72.78/archivosSIAC/recursosSiac/img/segundo_seminario_deforestacion_2017/01_MANUALES/Manual%20del%20IFN_FINAL%2020180531.pdf</url>
+                        </online>
+                    </distribution>
+                </physical>
+                <physical>
+                    <objectName>Mapa de vegetación Natural de Colombia</objectName>
+                    <characterEncoding>UTF-8</characterEncoding>
+                    <dataFormat>
+                        <externallyDefinedFormat>
+                            <formatName>Página web</formatName>
+                            <formatVersion>1</formatVersion>
+                        </externallyDefinedFormat>
+                    </dataFormat>
+                    <distribution>
+                        <online>
+                            <url function="download">https://mvn.colombiadiversidadbiotica.com/</url>
+                        </online>
+                    </distribution>
+                </physical>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-ideam.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

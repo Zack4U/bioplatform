@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="03114105-322a-42d1-9973-7467c42c858b"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/uibdzw</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/cr-sib/resource.do?r=1225_cenipalma02_20190611</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=cenipalma01</alternateIdentifier>
+        <alternateIdentifier>03114105-322a-42d1-9973-7467c42c858b</alternateIdentifier>
+        <alternateIdentifier>http://ipt.biodiversidad.co/sib/resource?r=cenipalma01</alternateIdentifier>
+        <title>Estudio de la estructura genética espacial de la palma Elaeis oleifera</title>
+        <creator>
+            <individualName>
+                <givenName>Elzbieta</givenName>
+                <surName>Bochno Hernández</surName>
+            </individualName>
+            <organizationName>Corporación Centro de Investigación en Palma de Aceite</organizationName>
+            <positionName>Secretaria General</positionName>
+            <address>
+                <deliveryPoint>Calle 98 no. 70-91 piso 14</deliveryPoint>
+                <city>Bogotá</city>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Elzbieta</givenName>
+                <surName>Bochno Hernández</surName>
+            </individualName>
+            <organizationName>Corporación Centro de Investigación en Palma de Aceite</organizationName>
+            <address>
+                <deliveryPoint>Calle 98 no. 70-91 piso 14</deliveryPoint>
+                <city>Bogotá</city>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5713138600</phone>
+            <electronicMailAddress>direcciongeneral@cenipalma.org</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Corporación Centro de Investigación en Palma de Aceite</givenName>
+                <surName>CENIPALMA</surName>
+            </individualName>
+            <organizationName>Corporación Centro de Investigación en Palma de Aceite</organizationName>
+            <positionName>Centro de Investigación</positionName>
+            <address>
+                <deliveryPoint>Calle 98 no. 70-91 piso 14</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Cundinamarca</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>direcciongeneral@cenipalma.org</electronicMailAddress>
+            <onlineUrl>https://www.cenipalma.org/</onlineUrl>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Elzbieta</givenName>
+                <surName>Bochno Hernández</surName>
+            </individualName>
+            <organizationName>Corporación Centro de Investigación en Palma de Aceite</organizationName>
+            <positionName>Secretaria General</positionName>
+            <address>
+                <deliveryPoint>Calle 98 no. 70-91 piso 14</deliveryPoint>
+                <city>Bogotá</city>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5713138600</phone>
+            <electronicMailAddress>direcciongeneral@cenipalma.org</electronicMailAddress>
+            <role>USER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Corporación Centro de Investigación en Palma de Aceite</givenName>
+                <surName>CENIPALMA</surName>
+            </individualName>
+            <organizationName>Corporación Centro de Investigación en Palma de Aceite</organizationName>
+            <positionName>Centro de Investigación</positionName>
+            <address>
+                <deliveryPoint>Calle 98 no. 70-91 piso 14</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Cundinamarca</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(571) 3138600</phone>
+            <electronicMailAddress>direcciongeneral@cenipalma.org</electronicMailAddress>
+            <role>OWNER</role>
+        </associatedParty>
+        <pubDate>
+                2021-03-02
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            Las muestras colectadas corresponden a palmas de la especie E. oleifera encontradas en distintos municipios de los departamentos de Antioquia, Boyacá, Caldas, Cesar, Chocó, Córdoba, Cundinamarca, Guajira, Magdalena, Santander y Sucre. 
+
+En cada sitio se colectaron racimos y folíolos de máximo 10 palmas. Sin embargo, la colecta de racimos por palma se hizo solo sí había disponibilidad de estos. Los frutos de los racimos son usados para hacer perfiles de ácidos grasos y para la germinación de semillas con el fin de tener plantas conservadas ex situ. Por otra parte, se tomaron 6 folíolos del tercio medio de la hoja número uno de cada una de las palmas identificada por sitio, con el fin de realizar una posterior extracción del ADN.
+        </abstract>
+        <keywordSet>
+            <keyword>diversidad genética</keyword>
+            <keyword>Elaeis oleifera</keyword>
+            <keyword>biogeografía</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>PERMISO_COLECTA</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-4.0.html</url>
+            <identifier>CC-BY-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=cenipalma01</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>11 departamentos y 28 municipios de las regiones Caribe y Andina de Colombia.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-77.695</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-71.938</eastBoundingCoordinate>
+                    <northBoundingCoordinate>12.168</northBoundingCoordinate>
+                    <southBoundingCoordinate>4.434</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2017-10-04
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2019-05-05
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Tronco con frecuencia rastrero. Aumentos anuales de altura entre 5 a 10 cm. El desarrollo de la raíz es parecido al de E. guineensis, pero las raíces que pueden crecer a 1 m de longitud se forman a lo largo del tronco rastrero. Todos los foliolos yacen en un plano y no tienen hinchazones basales y las espinas en el peciolo son cortas y gruesas. El racimo no tiene espigas largas. Los racimos son redondos y anchos en su centro, con tendencia a ser puntiagudos en el ápice. Con frecuencia los frutos partenocárpicos son numerosos.
+
+R.H.V. Corley y P.B. Tinker. 2009. La palma de aceite. Primera edición en español. Fedepalma. Bogotá.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Species</taxonRankName>
+                    <taxonRankValue>Elaeis oleifera</taxonRankValue>
+                    <commonName>Nolí o palma de corozo</commonName>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <purpose><para>Objetivo general
+Estudiar la estructura genética espacial de Elaeis oleifera en las zonas de distribución natural de las regiones Caribe y Andina de  
+Colombia con fines de conservación ex situ.
+
+Objetivos específicos
+•	Prospectar las poblaciones naturales de la especie E. oleifera en las regiones Caribe y Andina de Colombia.
+•	Caracterizar a nivel agronómico y fisicoquímico las poblaciones de E. oleifera seleccionadas.
+•	Evaluar la diversidad genética de las poblaciones de E. oleifera seleccionadas.
+•	Determinar la estructura poblacional de las palmas E. oleifera seleccionadas.
+•	Relacionar la diversidad genética y estructura poblacional con la distribución espacial de las poblaciones bajo estudio.
+•	Establecer una colección de semillas en estado de germinación de E. oleifera en CENIPALMA, que sea representativa de la diversidad genética de la especie en las zonas de estudio.</para></purpose>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>notPlanned</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Elzbieta</givenName>
+                <surName>Bochno Hernández</surName>
+            </individualName>
+            <organizationName>Corporación Centro de Investigación en Palma de Aceite</organizationName>
+            <address>
+                <deliveryPoint>Calle 98 no. 70-91 piso 14</deliveryPoint>
+                <city>Bogotá</city>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5713138600</phone>
+            <electronicMailAddress>direcciongeneral@cenipalma.org</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Con el fin de establecer los polígonos o localidades sobre las cuales se pediría permiso de colecta, en 2016 se realizaron salidas con fines de pre prospección. En esta oportunidad se tomaron las coordenadas de los lugares en los que se ubicaban las palmas que eran de interés colectar. Los resultados de este trabajo se pueden consultar a profundidad en el Ceniavances titulado: “Biogeografía de Elaeis oleifera (HBK) Cortés en las regiones Caribe y Andina de Colombia, para la conservación ex situ y uso sostenible del recurso genético” (No 188, ISSN 0123-8353, septiembre del 2018).
+
+Luego de la obtención del permiso de recolección se realizó la prospección de los nichos silvestres de la especie entre los meses de octubre del 2017 y abril del 2018 y abril-mayo 2019. Para esto, se efectuaron cinco salidas de campo en las cuales se prospectaron un total de 58 sitios (nichos), los cuales se distribuyen en 42 localidades y en ese momento se tomó la coordenada específica del lugar en el que se encontraba cada palma.
+
+En cada sitio se colectó material de máximo 10 palmas. Se colectaron racimos en cada palma, si había disponibilidad de estos, se tomó una muestra de suelo por sitio para la identificación química de sus componentes y en algunos sitios se realizaron mediciones de intercambio de gases o lo que es equivalente, la tasa de fotosíntesis. 
+
+Los racimos colectados se utilizaron para realizar el perfil de ácidos grasos y la preservación de semilla ex situ. Si el racimo colectado no se encontraba en punto óptimo de cosecha (maduro), no se utilizaba para el análisis de ácidos grasos, ya que estos análisis son válidos cuando la formación del fruto es completa. Sin embargo, todos los racimos colectados ingresaron a la cadena de preservación de semilla.
+
+Respecto a la toma de muestras para efectuar los estudios genéticos se tomaron seis (6) folíolos del tercio medio de la hoja número uno y se guardaron en bolsas con 200 gr de sílica gel, para quitar humedad a la muestra, con el fin de realizar una posterior extracción del ADN.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Los 83 nichos identificados, es decir, antes de las colectas, pertenecen a cuatro zonas de vida de acuerdo con la clasificación de Caldas-Lang. Predomina el clima semiárido cálido, seguido del semi húmedo y húmedo cálido. Solo un nicho fue clasificado como seco cálido. Los paisajes predominantes fueron planicies aluviales, humedales, pantano y humedales lacustrinos. También se registró paisajes de colinas suaves y los datos de elevación indican que el hábitat de esta especie va de 0 a 500 msnm. La mayoría de los nichos identificados pertenecen a propiedades privadas con vocación ganadera y en un grado menor, a tierra cultivada con arroz o frutales, y los individuos observados se encontraban con alta frecuencia en zonas inundadas.
+
+Los departamentos fueron Antioquia, Chocó, Córdoba, Cundinamarca, Magdalena y Sucre, Boyacá, Cesar, La Guajira, Santander y Caldas.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>En cada sitio se colectó material foliar de máximo 10 palmas. Sin embargo, la colecta de racimos por palma se hizo solo sí había disponibilidad de estos. Los frutos de los racimos son usados para hacer perfiles de ácidos grasos y para la germinación de semillas con el fin de tener plantas conservadas ex situ. Por otra parte, se tomaron 6 folíolos del tercio medio de la hoja número uno de cada una de las palmas identificada por sitio, con el fin de realizar una posterior extracción del ADN.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Ajuste de vocabulario controlado en el elemento geográfico county.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project id="Estudio de la estructura genética espacial de la palma Elaeis oleifera ">
+                <title>Estudio de la estructura genética espacial de la palma Elaeis oleifera (H.B.K) Cortés en zonas de distribución natural de Colombia con fines de conservación ex situ.</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Carmenza</givenName>
+                    <surName>Montoya Jaramillo</surName>
+                    </individualName>
+                    <role>PRINCIPAL_INVESTIGATOR</role>
+                </personnel>
+                <abstract>
+                    <para>La diversidad natural de las especies de uso agrícola constituye el pilar del mejoramiento agronómico e industrial, por ende su estudio y preservación es la estrategia más efectiva para la preservación del recurso genético. En Colombia, la especie Elaeis oleifera (H.B.K) Cortés, cobra importancia agroindustrial por su aceite rico en ácidos grasos insaturados y una tolerancia intrínseca a la Pudrición del Cogollo (PC). Se puede cruzar con la palma de aceite africana (Elaeis guineensis Jacq) dando origen al híbrido interespecífico E. oleífera x E. guineensis, lo cual constituye la mejor estrategia para hacer frente al principal riesgo fitosanitario del cultivo oleaginoso con mayor producción a nivel mundial.
+ 
+La especie E. oleifera se encuentra en peligro de extinción por pérdida de su hábitat, especialmente, los nichos de las regiones Caribe y Andina de Colombia. La prospección de materiales silvestres para esta especie en zonas de distribución natural, permitiría caracterizar y conservar su diversidad genética, salvaguardando tan preciado recurso. 
+
+El objetivo de este proyecto es estudiar la estructura genética espacial de E. oleifera en las zonas de distribución natural de la región Caribe y Andina para generar colecciones de germoplasma ex situ con fines de conservación, y así evitar la pérdida definitiva de las poblaciones silvestres.</para>
+                </abstract>
+                <funding>
+                    <para>Fondo de Fomento Palmero y Colciencias.</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>Los 83 nichos identificados, es decir, antes de las colectas, pertenecen a cuatro zonas de vida de acuerdo con la clasificación de Caldas-Lang. Predomina el clima semiárido cálido, seguido del semi húmedo y húmedo cálido. Solo un nicho fue clasificado como seco cálido. Los paisajes predominantes fueron planicies aluviales, humedales, pantano y humedales lacustrinos. También se registró paisajes de colinas suaves y los datos de elevación indican que el hábitat de esta especie va de 0 a 500 msnm. La mayoría de los nichos identificados pertenecen a propiedades privadas con vocación ganadera y en un grado menor, a tierra cultivada con arroz o frutales, y los individuos observados se encontraban con alta frecuencia en zonas inundadas.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>En cada sitio se colectó material foliar de máximo 10 palmas para los estudios de diversidad genética y racimos maduros para realizar análisis de ácidos grasos y para preservar semilla.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:24Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/uibdzw">Bochno Hernández E, CENIPALMA C C D I E P D A (2021). Estudio de la estructura genética espacial de la palma Elaeis oleifera. Version 2.7. Corporación Centro de Investigación en Palma de Aceite - CENIPALMA. Occurrence dataset https://doi.org/10.15472/uibdzw accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Montoya, C., Daza, E., Rincón, V., Ayala-Díaz, I., &amp; Romero, H.M. 2018. Biogeografía de Elaeis oleifera (HBK) Cortés en las regiones Caribe y Andina de Colombia, para la conservación ex situ y uso sostenible del recurso genético. Ceniavances no. 188.</citation>
+                <citation>R.H.V. Corley y P.B. Tinker. 2009. La palma de aceite. Primera edición en español. Fedepalma. Bogotá.</citation>
+                </bibliography>
+                <physical>
+                    <objectName>Estudio de la estructura genética espacial de la palma Elaeis oleifera</objectName>
+                    <characterEncoding>UTF-8</characterEncoding>
+                    <dataFormat>
+                        <externallyDefinedFormat>
+                            <formatName>DWC-A</formatName>
+                        </externallyDefinedFormat>
+                    </dataFormat>
+                    <distribution>
+                        <online>
+                            <url function="download">https://ipt.biodiversidad.co/cr-sib/resource.do?r=1225_palma_20191121</url>
+                        </online>
+                    </distribution>
+                </physical>
+                <resourceLogoUrl>https://statics.sibcolombia.net/sib-resources/images/logos-socios/500px/cenipalma.jpg</resourceLogoUrl>
+                <collection>
+                    <parentCollectionIdentifier>CVEOC</parentCollectionIdentifier>
+                    <collectionIdentifier>Registro Nacional de Colecciones Biológicas: 227</collectionIdentifier>
+                    <collectionName>Colección viva Elaeis oleifera-Cenipalma</collectionName>
+                </collection>
+                <specimenPreservationMethod>OTHER</specimenPreservationMethod>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

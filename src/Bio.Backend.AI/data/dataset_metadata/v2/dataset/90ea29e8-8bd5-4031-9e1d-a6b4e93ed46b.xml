@@ -1,0 +1,1452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="90ea29e8-8bd5-4031-9e1d-a6b4e93ed46b"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/maulhd</alternateIdentifier>
+        <alternateIdentifier>90ea29e8-8bd5-4031-9e1d-a6b4e93ed46b</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=epm_tepuy</alternateIdentifier>
+        <title>Biodiversidad asociada al proyecto Parque Solar Fotovoltaico Tepuy</title>
+        <creator>
+            <individualName>
+                <givenName>Johan Camilo</givenName>
+                <surName>Gomez Patiño</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743802506</phone>
+            <electronicMailAddress>johan.gomez@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Elizabeth</givenName>
+                <surName>Carmona Cano</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743802959</phone>
+            <electronicMailAddress>elizabeth.carmona@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Elvira Maria</givenName>
+                <surName>Aguilar Amaya</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Coordinadora equipo biótico consultor</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Freddy Alexande</givenName>
+                <surName>Grisales</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización Herpetofauna</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>fgrisales@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>David</givenName>
+                <surName>Marin</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización mamíferos</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Luis</givenName>
+                <surName>Téllez</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización aves</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Daniel Felipe</givenName>
+                <surName>Rodriguez Ríos</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>drodriguez@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Sebastian</givenName>
+                <surName>Giraldo Gómez</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>sgirald@unal.edu.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Sebastián</givenName>
+                <surName>Rodriguez</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Sara Cristina</givenName>
+                <surName>Betancur Huiguita</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Daniela</givenName>
+                <surName>Santana</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>dsantana@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Edilson Yamid</givenName>
+                <surName>Garcés Quintero</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>eygarces@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Nancy Fiorela</givenName>
+                <surName>Ordoñez Castillo</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>nfordonez@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Richard</givenName>
+                <surName>Gómez Monsalve</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>rgomez@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Stevens</givenName>
+                <surName>Garcia</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>stevens.garcia@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Carlos Andres</givenName>
+                <surName>Vargas</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jesús Andres</givenName>
+                <surName>Amador</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Eduard Alexis</givenName>
+                <surName>Quintero</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>equintero@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Santiago</givenName>
+                <surName>Palacio</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Sandra Milena</givenName>
+                <surName>Gallo</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización fauna</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>smgallo@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Yesenia</givenName>
+                <surName>García Morera</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social EPM</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>yesenia.garcia@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Luis Hernán</givenName>
+                <surName>Barreto Sánchez</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social EPM</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>LUIS.HERNAN.BARRETO@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Tatiana</givenName>
+                <surName>Espinal Vélez</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social EPM</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>TATIANA.ESPINAL@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Alba Lorena</givenName>
+                <surName>Hernández Gordillo</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social EPM</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Carrera 58 # 42-125</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>ALBA.HERNANDEZ@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jorge Ignacio</givenName>
+                <surName>Robles Vega</surName>
+            </individualName>
+            <organizationName>Ayesa</organizationName>
+            <positionName>Profesional Forestal</positionName>
+            <address>
+                <deliveryPoint>Cl. 126 #7-26</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>jorgerobles@ayesasolar.com</electronicMailAddress>
+            <onlineUrl>https://www.ayesa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Dahian Lizeth</givenName>
+                <surName>Patiño Siro</surName>
+            </individualName>
+            <organizationName>Ayesa</organizationName>
+            <positionName>Profesional Biótica</positionName>
+            <address>
+                <deliveryPoint>Cl. 126 #7-26</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>dlpatino@ayesa.com</electronicMailAddress>
+            <onlineUrl>https://www.ayesa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jesús Eduardo</givenName>
+                <surName>Guzmán Hernández</surName>
+            </individualName>
+            <organizationName>POWERCHINA INTERNATIONAL GROUP Sucursal Colombia</organizationName>
+            <positionName>Ingeniero Forestal</positionName>
+            <address>
+                <deliveryPoint>Cll. 93 #11 A 28</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>tepuy@powerchinacol.com</electronicMailAddress>
+            <onlineUrl>https://www.powerchinacolombia.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Cesar Ferney</givenName>
+                <surName>Villamil Menura</surName>
+            </individualName>
+            <organizationName>POWERCHINA INTERNATIONAL GROUP Sucursal Colombia</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <deliveryPoint>Cll. 93 #11 A 28</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>tepuy@powerchinacol.com</electronicMailAddress>
+            <onlineUrl>https://www.powerchinacolombia.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Michael Mauricio</givenName>
+                <surName>Cortés Vera</surName>
+            </individualName>
+            <organizationName>POWERCHINA INTERNATIONAL GROUP Sucursal Colombia</organizationName>
+            <positionName>Médico Veterinario</positionName>
+            <address>
+                <deliveryPoint>Cll. 93 #11 A 28</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>tepuy@powerchinacol.com</electronicMailAddress>
+            <onlineUrl>https://www.powerchinacolombia.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>María Lucía</givenName>
+                <surName>Charry Osorio</surName>
+            </individualName>
+            <organizationName>POWERCHINA INTERNATIONAL GROUP Sucursal Colombia</organizationName>
+            <positionName>Médica Veterinaria</positionName>
+            <address>
+                <deliveryPoint>Cll. 93 #11 A 28</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>tepuy@powerchinacol.com</electronicMailAddress>
+            <onlineUrl>https://www.powerchinacolombia.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Cediel</givenName>
+                <surName>Lozano Guzmán</surName>
+            </individualName>
+            <organizationName>POWERCHINA INTERNATIONAL GROUP Sucursal Colombia</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>tepuy@powerchinacol.com</electronicMailAddress>
+            <onlineUrl>https://www.powerchinacolombia.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Carlos Andrés</givenName>
+                <surName>Rengifo Cabezas</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Cristian Alfonso</givenName>
+                <surName>Gallego Carmona</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Martín Elías</givenName>
+                <surName>Berrocal Yánez</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Paola Andrea</givenName>
+                <surName>García Cerón</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Bióloga</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Laura Melisa</givenName>
+                <surName>Romero Betancourt</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Bióloga</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Luz Estefanía</givenName>
+                <surName>Guzmán Moreno</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Bióloga</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Juan David</givenName>
+                <surName>Gutierrez Marín</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Alejandro</givenName>
+                <surName>Pérez Henao</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Biólogo</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Vivian Tatiana</givenName>
+                <surName>Flórez Delgado</surName>
+            </individualName>
+            <organizationName>Debisamco</organizationName>
+            <positionName>Bióloga</positionName>
+            <address>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>info@debisamco.org</electronicMailAddress>
+            <onlineUrl>https://www.debisamco.org/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jorge Eduardo</givenName>
+                <surName>Raigosa Álvarez</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A.</organizationName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>biojorgee@gmail.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Alejandro</givenName>
+                <surName>Cabrejo Bello</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A.</organizationName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>alejandroc.bello@gmail.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jesús David</givenName>
+                <surName>Mendoza Polo</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A.</organizationName>
+            <address>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>jmendoza@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Valentina</givenName>
+                <surName>Urán Perez</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A.</organizationName>
+            <address>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>vuran@sag-sa.com</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <surName>Servicios Ambientales y Geográficos S.A.</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A.</organizationName>
+            <positionName>Consultora ambiental</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>4035570</phone>
+            <electronicMailAddress>sag.sa@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <surName>POWERCHINA INTERNATIONAL GROUP</surName>
+            </individualName>
+            <organizationName>POWERCHINA INTERNATIONAL GROUP Sucursal Colombia</organizationName>
+            <positionName>Consultora</positionName>
+            <address>
+                <deliveryPoint>Cll. 93 #11 A 28</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>tepuy@powerchinacol.com</electronicMailAddress>
+            <onlineUrl>https://www.powerchinacolombia.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <surName>Ayesa</surName>
+            </individualName>
+            <organizationName>Ayesa</organizationName>
+            <positionName>Consultora</positionName>
+            <address>
+                <deliveryPoint>Cl. 126 #7-26</deliveryPoint>
+                <city>Bogotá</city>
+                <administrativeArea>Bogotá</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>jorgerobles@ayesasolar.com</electronicMailAddress>
+            <onlineUrl>https://www.ayesa.com/</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Johan Camilo</givenName>
+                <surName>Gomez Patiño</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743802506</phone>
+            <electronicMailAddress>johan.gomez@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Maureen Daniela</givenName>
+                <surName>Montoya Ocampo</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743806590</phone>
+            <electronicMailAddress>MAUREEN.MONTOYA@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Claudia Juliana</givenName>
+                <surName>Quijano Abril</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743806590</phone>
+            <electronicMailAddress>claudia.quijano@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Mónica Andrea</givenName>
+                <surName>Ruíz Rendón</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743806590</phone>
+            <electronicMailAddress>monica.andrea.ruiz@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Carlos</givenName>
+                <surName>Cuartas Calle</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Profesional Mastozoólogo</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>carloscuar@gmail.com</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Marley Tatiana</givenName>
+                <surName>Gómez Rincón</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Profesional Herpetóloga</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>marleytgr@gmail.com</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Cristian Martín</givenName>
+                <surName>Muñetón Lozano</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>cmml1982@gmail.com</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Marisela</givenName>
+                <surName>Salinas Gutiérrez</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>msalinas@sag-sa.com</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Daniela</givenName>
+                <surName>Bonilla Cespedes</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y geográficos SAG S.A</organizationName>
+            <positionName>Caracterización flora</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A - 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>daniela.bonilla@sag-sa.com</electronicMailAddress>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Andrea Carolina</givenName>
+                <surName>Mejía Bassa</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Estudiante de práctica</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>andreac.mejia@udea.edu.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+            <role>PROCESSOR</role>
+        </associatedParty>
+        <pubDate>
+                2026-01-16
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>El proyecto consiste en un parque solar fotovoltaico de 96,7 MW pico (Potencia nominal aproximada de 83 MW) localizado en el municipio de La Dorada, Caldas, en el Magdalena Medio, el cual se interconecta al Sistema Interconectado Nacional (SIN) en la subestación Purnio de CHEC (Operador de red) a un nivel de tensión de 115 kV.  Se instalaron alrededor de 285.000 módulos fotovoltaicos de 360-400 Wp en una extensión de terreno aproximada de 220 Ha. La caracterización biótica del proyecto, se realizó bajo el permiso de recolección Resolución 0269 del 13 de marzo de 2017.</para><para>Los datos de la primera publicación, son procedentes de un Estudio de Impacto Ambiental, realizado para la obtención de la licencia ambiental para el proyecto. Este recurso contiene 3.641 registros, distribuidos en los reinos Plantae (1.978), Fungi (813), Animalia (684), Chromista (959, Protozoa (43) y Bacteria (28). Con un 70% clasificado a nivel de especie, 25% a género, 2% a clase y 3% a categorías superiores. Los datos fueron tomados en el municipio de La Dorada, Caldas en el 2018.</para><para>Los 9.014 datos de la primera actualización de este conjunto de datos corresponden a reportes de fauna (3.128) y flora (5.886) producto de la implementación de medidas de manejo de medio biótico en el marco de la licencia ambiental del Parque Solar Fotovoltaico Tepuy, resolución 1018 del 30 de junio 2021 CORPOCALDAS. Este conjunto de datos corresponde con la información reportada en los ICA 1, 2, 3, 4 y 5 de la fase de construcción del proyecto.</para><para>Los 1.669 datos de la segunda actualización corresponden al primer monitoreo de fauna silvestre, el cual fue ejecutado durante el primer año de la fase de operación del Parque Solar Fotovoltaico Tepuy, entre febrero y marzo del 2025. Esto en cumplimiento del Programa de Seguimiento y Monitoreo (PSM B05. Programa de seguimiento y monitoreo de fauna silvestre) y como línea base del plan de compensación por pérdida de biodiversidad. Esta estrategia se desarrolló en las áreas de compensación del proyecto que a su vez fueron las áreas de reubicación de fauna silvestre durante la construcción del proyecto, área que abarca más de 60 hectáreas de conservación y restauración. Durante este monitoreo, se registraron 12 especies de anfibios con un total de 248 individuos; 129 especies de aves con 1067 individuos; 22 especies de mamíferos con 225 individuos; y 11 especies de reptiles con 129 individuos.</para><para>En la tercera actualización se registran 2.124 nuevos registros biológicos que corresponden con información del monitoreo de fauna en las áreas de compensación reportadas en el mes de Agosto del 2025, así como el registro de 3.050 datos que corresponden con información de individuos arbóreos sembrados entre los meses de enero y octubre de 2025 en el marco de la implementación del plan de compensación por pérdida de biodiversidad y rehabilitación ecológica por afectación de especies en veda. Lo anterior, en cumplimiento de las actividades del plan de manejo y seguimiento y monitoreo ambiental. Durante este monitoreo se registraron 16 especies de anfibios distribuidas en 287 individuos, 132 especies de aves distribuidas en 1477 individuos, 37 especies de mamíferos y 13 especies de reptiles. Y durante las siembras, se registraron 3.050 individuos distribuidos en 47 especies.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Conexión</keyword>
+            <keyword>Energía renovable</keyword>
+            <keyword>Solar</keyword>
+            <keyword>Cambio climático</keyword>
+            <keyword>Coberturas vegetales</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>PERMISO_COLECTA</keyword>
+            <keyword>Sector empresarial</keyword>
+            <keyword>Alianza SiB Colombia ANDI</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>redes de niebla</keyword>
+            <keyword>monitoreo</keyword>
+            <keyword>muestreo de campo</keyword>
+            <keyword>esfuerzo de muestreo</keyword>
+            <keyword>Áreas de compensación ambiental</keyword>
+            <keyword>fauna silvestre</keyword>
+            <keyword>transectos</keyword>
+            <keyword>cámaras trampa</keyword>
+            <keyword>registros acústicos</keyword>
+            <keyword>encuentros visuales y auditivos</keyword>
+            <keywordThesaurus>Caracterización fauna</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>fertilización</keyword>
+            <keyword>rehabilitación</keyword>
+            <keyword>restacuración</keyword>
+            <keyword>Flora</keyword>
+            <keyword>siembras</keyword>
+            <keyword>compensación</keyword>
+            <keywordThesaurus>Caracterización flora</keywordThesaurus>
+        </keywordSet>
+        <additionalInfo>
+            <para>Este conjunto de datos fue publicado con el apoyo del proyecto CESP “OpenPSD – Engage and promote the private sector in open biodiversity data publication (ID CESP2019-004)”, y la alianza con la Asociación Nacional de Empresarios de Colombia (ANDI) a través de su iniciativa “Biodiversidad y Desarrollo” (Datos abiertos sobre biodiversidad desde el sector empresarial). Agradecemos la colaboración y el incentivo para compartir datos desde el sector empresarial. This dataset was published with support of the CESP project “OpenPSD – Engage and promote the private sector in open biodiversity data publication (ID CESP2019-004)”, and the alliance with the National Business Association of Colombia (ANDI) through its initiative &quot;Biodiversity and Development&quot; (Biodiversity open data from the private sector). We are grateful with the colaboration and incentive to share data from the private sector.</para>
+        </additionalInfo>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=epm_tepuy</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El Parque Solar Fotovoltaico Tepuy, se localiza en la hacienda Guadalupe, vereda Santa Helena cerca al centro poblado Purnio, municipio de La Dorada, en el departamento de Caldas.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-74.735</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.714</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.421</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.376</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2018-06-01
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2018-09-22
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2022-07-15
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2024-07-30
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2025-02-25
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2025-03-09
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2025-01-01
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2025-10-31
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Este recurso contiene 19.498 registros, distribuidos en los reinos Plantae (10.914), Fungi (813), Animalia (7.605), Chromista (95), Protozoa (43) y Bacteria (28). Con un 91.58% clasificado a nivel de especie, 7.16% a género, 0.32% a familia y 0.94% a categorías superiores. El reino Plantae abarca 5 filos, 10 clases, 42 ordenes, 73 familias, 164 géneros y 133 especies.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Plantae</taxonRankValue>
+                    <commonName>Cotorra carisucia</commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Bryophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Charophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Chlorophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Marchantiophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Tracheophyta</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El reino Fungi estuvo representado por el Phylum Ascomycota, abarcando 4 clases, 10 ordenes, 16 familias, 34 géneros y 31 especies</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Fungi</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Ascomycota</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El reino Animalia abarca 4 filos, 12 clases, 50 ordenes, 150 familias, 315 géneros y 274 especies.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Annelida</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Arthropoda</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Chordata</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Mollusca</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Animalia</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El reino Chromista abarca 3 filos, 3 clases, 13 ordenes, 18 familias y 19 géneros.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Chromista</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Cryptophyta</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Myzozoa</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Ochrophyta</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El reino Protozoa abarca 2 familias y 5 géneros.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Protozoa</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Euglenozoa</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El reino Bacteria abarca 3 ordenes, 7 familias y 9 géneros.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Phylum</taxonRankName>
+                    <taxonRankValue>Cyanobacteria</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Bacteria</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>daily</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Johan Camilo</givenName>
+                <surName>Gomez Patiño</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743802506</phone>
+            <electronicMailAddress>johan.gomez@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </contact>
+        <contact>
+            <individualName>
+                <givenName>Yesenia</givenName>
+                <surName>García Morera</surName>
+            </individualName>
+            <organizationName>Empresas públicas de Medellín</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743806590</phone>
+            <electronicMailAddress>yesenia.garcia@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Flora-Inventario al 100%:
+El inventario al 100% consistió en censar uno a uno los individuos fustales con diámetro a la altura del pecho (DAP) superior a 10 cm en el área de muestreo del proyecto.
+Los individuos encontrados fueron georreferenciados y marcados con pintura asfáltica de color amarillo sobre el tallo. A cada individuo se le registraron variables dasométricas tales como: circunferencia a la altura del pecho (CAP)  y altura total (Ht).
+Para las especies que no fue posible identificar en campo, se procedió a colectar una muestra botánica para su posterior identificación en el Herbario de la Universidad de Antioquia (HUA). La colección botánica de las especies se encuentra amparada bajo la Resolución 0269 del 13 de marzo de 2017 emitida por la ANLA (Ver Anexo 2.4). 
+Para el marcaje de los individuos, se asignó un código alfa-numérico, el cual está determinado según el equipo o cuadrilla (A, B, C, etc) y el número consecutivo de campo de cada individuo arbóreo dentro del muestreo (A1, A2, …B1, B2, etc).
+Para realizar la caracterización de la regeneración natural de estas áreas, se establecieron parcelas de 50 x 4 m (200 m2) para el registro de latizales y subparcelas de 4 x 5 m (20 m2), para el registro de individuos de la categoría brinzal. Estas parcelas fueron distribuidas al azar a lo largo del área de aprovechamiento inventariada al 100%. En cada parcela, se censaron los individuos dentro del rango de 1&lt;DAP≤9,9 cm, discriminándolos de acuerdo a la categoría de brinzal (&lt;5 cm) y latizal (entre 5 y 10 cm). Para los latizales se registró la circunferencia a la altura del pecho y la altura total de cada individuo, a lo largo de toda la parcela; para los individuos categorizados como brinzales, se realizó un conteo por especies y se estimó la altura total en la subparcela. Estas parcelas se montaron con base en la metodología utilizada por Gentry (1982), denominada RAP (Rapid Assessment Plot) y modificada posteriormente por el Convenio ISA-JAUM (2000).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Flora-Epífitas:
+Para la caracterización de la flora epífita se siguió la metodología de Análisis Rápido y Representativo de la diversidad de epífitas (RRED-analysis) propuesta por Gradstein et. al (2003), en donde se evalúan ocho (8) árboles maduros, de diferentes especies, para representar la diversidad de epífitas vasculares y no vasculares presentes por cada hectárea de cobertura natural. 
+Estos ocho árboles hospederos fueron escogidos al azar, garantizando que los árboles evaluados se encontraran distribuidos en toda el área de muestreo, en categoría fustal (DAP&gt;10 cm), que hacen parte del inventario forestal al 100% realizada para la caracterización florística. Cabe aclarar que debido a la naturaleza del área de muestreo, mayormente dominada por pastos limpios con destino al mantenimiento de semovientes, no se logró la caracterización de los 8 árboles por hectárea en las coberturas de pastos limpios. Por otro lado, la cobertura de pastos arbolado, constituidos en el proyecto por los cercos vivos que separan los lotes de la misma Finca Guadalupe, y establecidos en su mayoría por Maclura tictoria (dinde), Guazuma ulmifolia (guazimo), Gliricida sepium (mataratón) tampoco se cumplió con dicha intensidad pues la diversidad de este grupo de plantas es bajo. En la se presenta el número de unidades de muestreo (forófitos) evaluados en cada una de las coberturas vegetales presentes en el área.  En el bosque ripario y vegetación secundaria alta, si se cumplió con la intensidad de muestreo propuesto por Gradstein et. al (2003).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Flora-Epífitas Vasculares:
+Siguiendo el protocolo de Gradstein et. al (2003), a cada uno de los árboles hospederos (o forófitos) se le midieron variables dasométricas correspondientes (Circunferencia a la altura del pecho (CAP), altura total (HT) y altura comercial (HC). También se identificó hasta el nivel taxonómico posible por el equipo botánico en campo y cuando fue necesario, se recolectaron muestra botánicas para su identificación en herbario.
+La evaluación de las plantas epífitas vasculares se realizó teniendo en cuenta tres estratos de muestreo modificados a partir de la metodología de estratos verticales propuesta por Johansson (1974). El estrato 1 (E1) se define desde la base del árbol hasta los tres metros de altura; el estrato 2  (E2) se define entre los tres y seis metros; y el Estrato 3 (E3) desde seis metros en adelante. En cada uno de los estratos se evaluaron las morfo especies y el número de individuos correspondientes. 
+Finalmente, cuando fue necesario, se realizó colección botánica de las morfoespecies que no pudieron ser identificas en campo, las cuales se procesaron teniendo en cuenta las técnicas necesarias de herborización, de manera similar que las plantas leñosas y herbáceas.
+Las muestras colectadas de plantas se guardaron en bolsas plásticas, se prensaron en papel periódico debidamente marcado y se alcoholizaron para su preservación hasta llegar al HUA, donde se procedió con el secado. La identificación taxonómica de los especímenes colectados se realizó utilizando literatura especializada para las familias botánicas de especies, así como guías de campo, claves taxonómicas y listados de especies (Bernal et al. 2015; Instituto de ciencias naturales 2004; En línea). Finalmente se utilizó el método de taxonomía comparativa con especímenes de referencia del HUA y herbarios virtuales nacionales e internacionales COL, Field Museum Herbarium, Kew, STRI, entre otros.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Flora- Epífitas Musgo, Hepáticas y Líquenes:
+En el caso de especies de briófitos y líquenes, se utilizó la misma unidad de evaluación de las orquídeas y bromelias, siguiendo la metodología propuesta por Gradstein et. al (2003), quiénes indican que la evaluación de 3-5 árboles en una hectárea de cobertura, son suficientes para conocer entre el 75-80% de la diversidad de briófitos de un tipo de ecosistema de bosque tropical. Sin embargo, en el presente estudio se propuso la evaluación de ocho árboles hospederos por cada hectárea de cobertura vegetal natural a aprovechar, con el fin de ofrecer un balance más completo sobre la diversidad real de este tipo de organismos en el área de interés.
+En cada árbol hospedero (forófito) se evaluaron musgos, hepáticas, antocerotes, y líquenes presentes en el tronco a partir de una cuadricula de 25cm x 25cm, correspondiente a un área de 625 cm2 (Iwatsuki, 1960 en: (Pinzón, Linares, &amp; Uribe, 2003), con el fin de estimar el área de cobertura en cm2.
+Para tomar las muestras se removieron fragmentos de aproximadamente 3x3 cm de las morfo especies diferentes identificables en el árbol, para su identificación en laboratorio (dado que por el tamaño de los briófitos y líquenes es necesario la identificación por medio de estereoscopio). Las muestras se depositaron en bolsas de papel, cada una rotulada con la información correspondiente a la parcela, forófito y porcentaje del área de cobertura sobre el tronco. Adicional a esto, se realizó una descripción general del lugar donde se encontraba el árbol, como la cercanía a fuentes hídricas y el tipo de cobertura vegetal. 
+Las muestras de briófitos y líquenes colectadas y guardadas en las bolsas de papel se dejaron abiertas a temperatura ambiente para facilitar el proceso de secado; este grupo de plantas son muy pequeñas y crecen entremezcladas, por esto fue necesario el uso del estereoscopio y de pinzas de punta fina para realizar la separación de muestras. De cada espécimen separado, se elaboró una placa con el material necesario para la identificación a través de la observación en el microscopio óptico. Con la ayuda de claves, se identificaron los musgos hasta la categoría de familia, género y especies; para las hepáticas se determinaron las familias y en lo posible se llegó hasta género, por no disponer de claves para Colombia y llegar hasta la categoría de especie. La bibliografía especializada usada para musgos fue: Churchill &amp; Linares (1995), Buck (1998) y Gradstein et al. (2001).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Flora- Epífitas Especies terrestres (Bromelias, orquídeas, líquenes y briófitos):
+Para determinar la composición de las especies vedadas terrestres de bromelias, orquídeas, líquenes y briófitos, se siguió la metodología propuesta por Cámara &amp; Díaz del Olmo (2013), quienes proponen la técnica MIFC (Inventario de formaciones vegetales fanerófitos y caméfitos) basada en el muestreo tipo RAP propuesto por Gentry (1982), que establece la evaluación de mínimo 10 parcelas de 50 m x 2 m para un área total de evaluación mínima de 0,1 ha por cada cobertura vegetal. Sin embargo, debido a la naturaleza de las coberturas vegetales dominantes en el proyecto y la destinación de mantenimiento de semovientes, esta intensidad de muestreo no se cumplió a cabalidad. Esta decisión se tomó debido a que el constate movimiento del ganado, pisoteo y alimentación vuelve bajo estas condiciones el establecimiento de este grupo de plantas poco probable. Por otro lado, la zona donde se ubica el proyecto presenta zonas anegadas, algunas de origen natural otras artificiales, que no permiten el establecimiento de briófitos y líquenes en suelo y/o roca, de igual forma, el constante pisoteo por parte del ganado no permite el establecimiento de este grupo de organismos. 
+En este tipo de muestreo, la unidad de análisis es la parcela de 50 x 2 m, equivalente a 100 m2. Para la evaluación de bromelias y orquídeas, se toman datos de número de individuos por cada morfo especie, sustrato de crecimiento (suelo, roca, etc), y se georreferencia cada individuo. Además, se anotan características de las coberturas, tal como la asociación a fuentes hídricas, claros o eventos de disturbio entre otros.
+Para la evaluación líquenes y briófitos terrestres, se ubicaron al azar seis (6) sitios de muestreo dentro de la parcela, siendo 3 de sustrato terrestre y 3 para roca. En cada sitio, se estableció una plantilla de acetato transparente dividida en una cuadrícula de 25 x 25 cm, con el fin de estimar la cobertura en cm2 de las colonias de briófitos o líquenes terrestres encontrados. 
+Las muestras se recolectaron con ayuda de una navaja, cuchillo o un martillo y cincel, dependiendo el sustrato, para luego depositarlos en bolsas de papel craft, las cuales fueron rotuladas con la información correspondiente a la parcela y el sustrato de colecta.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Fauna-Anfibios y Reptiles:
+El método empleado para la caracterización de herpetofauna (Anfibios y reptiles) en el marco de desarrllo del EIA del proyecto Parque Solar Fotovoltaico Tepuy, consistió en una metodología integrativa que recoge las recomendaciones de Angulo et al. (2006) y McDiarmin (2012) implementando transectos de longitud variable de búsqueda libre con avistamiento, captura y registro de cantos, siendo prácticas ampliamente utilizadas para herpetofauna y con resultados fiables en muestreos que buscan una caracterización a nivel puntual. Los transectos fueron recorridos en horas de la mañana entre las 7:00 – 11:00 (diurno) y subsecuentemente muestreados entre las 18:00 y 22:00 (nocturno) en cada una de las tres coberturas vegetales (Bgr, Vs, P) identificadas en el AI, con el fin de detectar animales con diferentes períodos de actividad y uso de hábitat, los muestreos se realizaron del 29 de Mayo al 10 de Junio del 2018.
+En este caso, el trabajo en campo fue realizado por un equipo humano conformado por un profesional zoólogo-herpetólogo y un auxiliar de campo representado por un habitante de la vereda Purnio. Se realizó una búsqueda cuidadosa de anfibios y reptiles en todos los microhábitats posibles como: hojarasca, charcas, troncos caídos, cavidades del suelo o de los árboles. Los especímenes fueron capturados de forma manual, aunque también se dispuso de pinzas ofídicas para captura de serpientes, mientras que el almacenamiento temporal se realizó en bolsas ziploc y bolsas de tela dependiendo si el animal era un anfibio o reptil pequeño en el primer caso o un reptil de mayor tamaño en el segundo. Una vez capturado, se registraron datos de cobertura vegetal, microhábitat, georreferenciación, hora, número de individuos y finalmente se realizó una documentación fotográfica de cada uno de los individuos capturados, además de los no capturados. Dado que no se registraron especímenes que presentaran incertidumbre taxonómica, no se realizaron colectas definitivas en este estudio.
+Para la categorización taxonómica con fines del presente informe se adopta la propuesta de Batrachia: Lista de los anfibios de Colombia para el caso de anfibios (Acosta-Galvis 2018) y para los reptiles The Reptile Database (Uetz et al. 2018), ya que ambas presentan inclusión de las más recientes propuestas taxonómicas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Fauna-Aves:
+Las metodologías implementadas en la caracterización de la avifauna del proyecto, incluyen detección visual, auditiva y captura con redes de niebla, siendo métodos previamente estandarizados utilizados en inventarios y monitoreo de aves, diseñados por el Grupo de Exploración y Monitoreo Ambiental (GEMA) del Instituto de Investigación de Recursos Biológicos Alexander von Humboldt (lAvH) (Villareal et al. 2006). Estas metodologías permiten la detección de especies, además de obtener datos para realizar análisis de abundancia de las especies y la interpretación de las densidades y tendencias de las poblaciones de aves en las zonas a muestrear (Villareal et al. 2006).
+Esta metodología permitió registrar las especies que fueron poco vocales (detección visual) y aquellas que no fueron fáciles de observar debido a que se encontraban en lugares de difícil detección (detección auditiva), para esto se realizaron recorridos por medio de  transectos que abarcaron las diferentes coberturas vegetales presentes en el área de interés (Villareal et al. 2006). Cada cobertura fue muestreada durante tres (3) días y el transecto fue georreferenciado por un track, los recorridos se realizaron entre los días del 29 de mayo al 10 de junio de 2018. Estos recorridos se realizaron en las horas de mayor actividad de las aves, es decir, entre las 06:00 -10:30 h y entre las 14:30 -18:00 h (Villareal et al. 2006).
+Cada detección se anotó junto con la información asociada que se consideró pertinente: localidad, fecha, determinación taxonómica del individuo, hábitat donde fue detectado, estructura social, forma de detecciones (visuales, auditivas o ambas), entre otros. Los registros e identificaciones de las aves observadas durante los recorridos se hizo usando binoculares con un alcance de 10x50 mm.
+Ésta técnica consistió en instalar redes de niebla en áreas donde fuera difícil la detección visual de las aves y en zonas de especial interés para su captura. Las redes de niebla se ubicaron en sitios estratégicos como bordes de caminos, dentro del bosque, rastrojos y orillas de las quebradas, procurando el tránsito de las aves Ralph et al. 1996, Villareal et al. 2006). En total se instalaron tres redes de niebla con longitudes de 12 m x 2,5 m de altura en cada una de las coberturas.
+Las redes permanecieron abiertas durante dos (2) días en cada una de las coberturas muestreadas, en un máximo de ocho horas (06:00 - 10:30 horas y de 14:30 -18:00 horas) y fueron revisadas cada 20 minutos
+Cada individuo capturado, fue determinado hasta especie, soportado en bibliografía especializada como Hilty &amp; Brown (1986), Restall et al. (2006) y McMullan et al. (2014), se le tomó un registro fotográfico y posteriormente fue liberado. 
+Para la clasificación taxonómica de las aves se siguió la nomenclatura propuesta por el South American Classification Committee (SACC), perteneciente a la American Ornithologists Union (AOU), en el documento “A classification of the bird species of South America” de Remsen et al. (2018).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Fauna-Mamíferos:
+La fase de campo de mastofauna se realizó incluyendo diferentes sitios con el propósito de analizar la mayor cantidad de microhábitats a los que los mamíferos estuvieran asociados. Se elaboró el inventario de mamíferos, en tres componentes:
+Las capturas de los Pequeños mamíferos no voladores se realizaron con 30 trampas tipo Sherman plegables de un tamaño de ancho 7.6 cm x alto 8.8 cm x largo 22.8 cm y dos (2) trampas tipo Tomahawk. Abarcando las zonas en el interior y el borde del bosque cubriendo tanto el estrato arbóreo como el suelo, principalmente en troncos caídos, junto a la base de los árboles, en cavidades formadas por las raíces de los árboles, junto a huecos y madrigueras. En todas las trampas se utilizó un cebo a base de maní, hojuelas, y esencias que trató de abarcar todos los gremios alimenticios posibles Todos los días, durante el muestreo, en horas de la mañana las trampas fueron revisadas y recebadas; cada vez que se presentó una captura, la trampa se ubicó en el mismo sitio después de ser lavada, o fue reemplazada por otra (Voss &amp; Emmons, 1996), todas las trampas fueron marcadas con cinta reflectiva y mapeadas para su fácil ubicación.
+Con el propósito de evaluar la composición del ensamblaje de los mamíferos voladores se utilizaron cuatro (4) redes de niebla de tipo japonés de un tamaño 12m x 2,3m y 6m x 2,3m , dichas redes se ubicaron en el interior y borde de los fragmentos de bosque que abarcaran la zona de estudio, teniendo en cuenta sitios de refugio, tributarios, áreas abiertas y plantas asociadas a murciélagos. Las redes permanecieron abiertas desde las 18:00 a las 22:00 siendo monitoreadas cada media hora.
+	
+Con el propósito de obtener información directa de la presencia de las especies de mamíferos grandes y medianos en las zonas seleccionadas se ubicaron tres (3) cámaras automáticas (Bushnell Trophy Cam) especialmente en sitios de aparente tránsito para estas especies, incluyendo caminos o bordes de bosque, para maximizar la probabilidad de captura (Maffei et al. 2002). Cada cámara se sujetó a un árbol a una altura de aproximadamente 30 cm desde el suelo. Las cámaras se programan con resolución de alta calidad, 5 MP, sensor activo día/noche, y duración de video 30 segundos. Cada episodio de captura se toma como un periodo continuo de muestreo de 24 horas, definiendo así unidades discretas de tiempo (Delgado-V. et al. 2011).
+Para el muestreo de mamíferos medianos y grandes se empleó la observación directa, por medio de recorridos diurnos y nocturnos, con el propósito de avistar directamente las diferentes especies y de manera indirecta como búsqueda de huellas y rastros (heces, pelos, madrigueras, hozaderos, etc. Los recorridos libres de búsqueda activa se realizaron a la par con otras actividades y se centró en la identificación de cualquier evidencia de mamíferos del área. 
+Como parte de la detección indirecta se realizaron entrevistas informales a pobladores y trabajadores del proyecto eligiendo preferiblemente personas mayores y con un tiempo considerable en la zona. Para el reconocimiento de los mamíferos por parte de los pobladores fue utilizado material gráfico con ilustraciones de mamíferos neotrópicales (Emmons &amp; Feer 1999; Tirira, 2007). 
+A todos los individuos capturados se les tomó medidas corporales y datos reproductivos respectivos siguiendo los parámetros propuestos por Hall (1962), Emmons &amp; Feer (1999); así mismo se realizó un registro fotográfico. Se registró la localidad, fecha y hora de captura. La determinación taxonómica del ejemplar en campo se hace utilizando claves taxonómicas como Husson (1962), Linares (1998), Muñoz (1995, 2001), Simmons &amp; Voss (1998) y Emmons (1999).
+Los murciélagos se clasificaron según las categorías sexuales y de edad propuestas por Hall (1962) y Emmons &amp; Feer (1999) de la siguiente manera:</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Ecosistemas acuáticos-Micro-algas bentónicas (fico-perifiton):
+La recolección del perifíton de los sitios de muestreo, se realizó al azar, en seis sustratos rocosos inmersos o expuestos al flujo en el cauce activo de la corriente de agua, distribuidos en un transecto de 100 m longitudinales. Se utilizó un cepillo plástico para la remoción de las algas adheridas y se realizaron seis réplicas de 36 cm2, para un área total muestreada de 216 cm2. Cada muestra se almacenó en un recipiente plástico opaco debidamente etiquetado y se preservó con una solución de Lugol (Kl-I2) al 10% (0,5 ml por cada 100 ml de muestra)
+Para el cálculo de la densidad del fico-perifiton en individuos/cm2, cada muestra se homogenizó y se extrajo una sub-muestra de 1 ml, la cual fue depositada en una cámara de conteo. Las micro algas se contaron bajo microscopio invertido (Boeco BIB-100T) en una magnificación de 400 aumentos, en 30 campos, siguiendo el método de campos al azar por medio de una tabla de números aleatorios previamente preparada. Además, se realizó un recorrido en zigzag por toda la superficie de la cámara y a los organismos encontrados, que no fueron hallados en el conteo se les asignó un valor de 1 para el cálculo de la densidad.
+Para la identificación taxonómica, se usaron claves especializadas tales como Bicudo y Bicudo (1970), Bicudo y Menezes (2006, 2017), Bourrelly (1970, 1988), Comas (1996), Cox (1996), Komárek y Anagnostidis (1986, 1989, 1999), Komárek y Fott (1983) y Round et al. (1990). Adicionalmente, se realizó un registro fotográfico de la diversidad de taxones presentes en la muestra analizada.
+
+Micro-algas planctónicas (fitoplancton):
+Para el muestreo del fitoplancton, se utilizó una botella Schindler con capacidad de 5 litros. La muestra resultó de la mezcla de colectas en tres puntos del cuerpo de agua (debido a que todos tenían poca profundidad y la superficie representa la columna de agua), integrando 15 litros de agua por sitio. La muestra colectada se agitó con el fin de homogeneizarla y de ella se retiró una sub-muestra de 600 ml para utilizarla en la estimación de la composición y densidad del fitoplancton. Cada muestra se almacenó en un recipiente plástico debidamente etiquetado y se preservó con una solución de Lugol (Kl-I2) al 10% (0,5 ml por cada 100 ml de muestra). 
+Para calcular la densidad en individuos/ml, se utilizó el método de Utermohl (1958). Inicialmente, sedimentación de una sub-muestra de 50 ml y, posteriormente, traspaso a una cámara de sedimentación de 10 ml de capacidad, para sedimentación por un tiempo de 3 horas por cada centímetro de altura de la cámara. Las micro-algas se contaron bajo microscopio invertido (Boeco BIB-100T) en una magnificación de 400 aumentos, en 30 campos, siguiendo el método de campos al azar por medio de una tabla de números aleatorios previamente preparada. Además, se realizó un recorrido en zigzag por toda la superficie de la cámara y a los organismos encontrados, que no fueron hallados en el conteo se les asignó un valor de 1 para el cálculo de la densidad.
+Para la identificación taxonómica, se usaron claves especializadas tales como Bicudo y Bicudo (1970), Bicudo y Menezes (2006, 2017), Bourrelly (1970, 1988), Comas (1996), Cox (1996), Komárek y Anagnostidis (1986, 1989, 1999), Komárek y Fott (1983), y Round et al. (1990). Adicionalmente, se realizó un registro fotográfico de la diversidad de taxones presentes en la muestra analizada.
+
+Macrófitas acuáticas:
+En los sitios de muestreo del AI del proyecto Parque Solar Fotovoltaico Tepuy se realizó un recorrido alrededor de los jagüeyes, para registrar e identificar especies de macrófitas acuáticas. Luego, se estimó su porcentaje de cobertura utilizando un cuadrante de 1 m2 y efectuando 20 réplicas distribuidas alrededor del cuerpo de agua, hasta obtener un área de 20 m2 de muestreo. Se realizó un registro fotográfico de las plantas, y con mayor detalle las que no se pudieron identificar en campo. 
+Las plantas fueron taxonómicamente identificadas por comparación botánica mediante el uso de manuales y claves específicas (Schmidt- Mumm, 1988, Bartholomaüs et al. 1990, Cook 1990, Kahn et al. 1993, Velásquez 1994, Rodulio 1999, Crow 2002, Posada-García y López-Muñoz 2011 y APG 2016).
+
+Zooplancton:
+Para evaluar la composición y densidad del zooplancton, se recolectó una muestra integrada de 15 litros de agua, proveniente de tres puntos del cuerpo de agua a evaluar, mediante una botella Schindler de cinco litros de capacidad. La muestra recolectada se concentró pasándola por un tamiz de 38 µm de poro. Cada muestra se almacenó en un vial de 50 ml de capacidad debidamente etiquetado y se preservó con una solución de transeau (agua, etanol al 90% y formol al 40% en proporciones 6:3:1 respectivamente) en proporción 1:1. 
+Usando un microscopio óptico bifocal (Nikon Elipse E100) y una cámara de Sedgwick-Rafter se contaron seis sub-muestras de 1,5 ml y hasta un máximo total de 4,5ml a partir de un total de muestra de 50ml, filtrado de 15 L integrados de la columna de cada cuerpo de agua muestreado. Cada alícuota debe poseer un mínimo de 200 individuos adultos de los dos taxones más abundantes o 400 individuos adultos en total. Debido a la naturaleza de las muestras, cuyo contenido de sólidos suspendidos era muy alto, se optó por un conteo de al menos un 8% del total de la muestra (modificado de Bottrell et al. 1976).
+
+Macroinvertebrados acuáticos (bentos):
+La recolección de los macroinvertebrados acuáticos, se realizó en seis sitios del AI del proyecto. En los sitios bajo condición léntica (jagüeyes) se muestreó con una draga Eckman, y en cada uno se realizaron cuatro recolectas del bentos, obteniendo un total de 900 cm2; para los sitios bajo condición lótica (sitio 4_Quebrada Yeguas) se muestreó en un transecto longitudinal de 100 m, realizando 10 arrastres aleatorios con una red Surber de 30 cm de lado (900 cm2). El material recolectado se depositó en bolsas plásticas, a las cuales se les agregó alcohol al 70% para la preservación de los especímenes y luego fueron rotuladas con la información del sitio y se transportaron al laboratorio en neveras para su posterior separación e identificación. 
+Las muestras fueron separadas visualmente y se contabilizaron e identificaron hasta el máximo nivel taxonómico posible (género), utilizando un estereoscopio y claves taxonómicas especializadas (Johannsen 1977, Machado 1989, Merrit y Cummins 1996, McCafferty 1998, Posada-García y Roldán-Pérez 2003, Álvarez 2005, Manzo 2005, Domínguez y Fernández 2009, Flowers y De La Rosa 2010).
+
+Ictiofauna:
+En el caso de la quebrada Yeguas se combinaron dos aparejos de pesca: atarraya de ojo de malla de 1 cm (30 lances por transecto) y electro pesca (SUSAN-1020 NP). Este último, según Maldonado-Ocampo et al. (2005), es el método más adecuado para quebradas, ya que estos sistemas se caracterizan por lechos rocosos, pedregosos y flujo turbulento, donde la atarraya es poco efectiva. Para el caso de los Jagüeyes y el Pantano solo se realizó pesca con atarraya, ya que es el arte de pesca más efectivo en estos sistemas. En el caso de los sistemas que estaban secos y solo se encontraban pequeñas charcas (huellas del ganado) se utilizó una red de mano.
+Los individuos capturados fueron almacenados temporalmente en un balde con aireador para identificación en campo corroborando algunos caracteres utilizando el Manual de Identificación de Peces de los Andes (Maldonado-Ocampo et al. 2005). Los ejemplares fueron fotografiados con una cámara digital (Canon SX500 IS), pesados en una balanza con error de ± 0,1 g y medidos en su longitud estándar con un calibrador pie de rey (Ubermann) con error de ± 0,01 mm. Posterior a esto, los peces fueron liberados en el sistema que fueron capturados. La información biológica obtenida fue anotada en un cuaderno de campo para su posterior análisis.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Aprovechamiento forestal:
+- Se requirió la intervención de 220.39 ha, distribuidas en diferentes coberturas vegetales: pastos arbolados, pastos limpios, vegetación secundaria alta, tejido urbano discontinuo.
+- Se ejecutaron actividades de manejo para el ahuyentamiento, rescate y reubicación de fauna silvestre y especies sensibles, y manejo de especies en categoría de veda nacional (orquídeas y bromelias).
+- Se contó con un mapa detallado de las zonas que se intervinieron, con las áreas donde se realizaron las obras asociadas al proyecto
+- Para la tala de individuos se contó con machetes, cuñas de talado, palanca de volteo, tenazas, ganchos, motosierra, entre otros.
+- Se identificaron las vías de acceso y apilamiento temporal de la madera, cerca de las áreas de aprovechamiento.
+- Se verificó en la zona de aprovechamiento forestal la presencia de lianas o bejucos para hacer limpieza de estos, y cumplir con una tala rígida. Se realizó un registro y limpieza de la base del árbol y alrededor del mismo. A cada árbol se le realizó una evaluación específica del tamaño, arquitectura e inclinación, para escoger la dirección y las posibles rutas de evacuación en caso de que el árbol cambiara su dirección en el momento de su
+caída.
+- Durante el aprovechamiento, para los árboles con pudrición se recomendó hacer apeo; para los que estaban en descomposición, se eliminó la corteza; y para los que tenían bambas, se inició verificando la dirección óptima de caída, para iniciar con la eliminación de las bambas que tienen esa dirección y dejar las que podían hacer el contrapeso.
+- Se eliminaron las ramas del fuste, limpiando todas las ramas que cobijan el fuste incluida la copa, y haciendo el troceo o aserrado de los fustes en el lugar de caída para moverlos al sitio de apilamiento inicial. No se trozó antes de terminar de desramar, y no se realizó quema de la biomasa de menor tamaño obtenida en el aprovechamiento forestal.
+- En cuanto al transporte del material aprovechado, se realizó de manera manual con ayuda de ganchos de arrastre, volteo y cuerdas o transporte mular.
+- Se registraron los individuos talados, se informó la especie, el volumen total y comercial aprovechado.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Flora sensible:
+- Este programa se dirigió a mitigar la afectación a la población de E. oleífera en estado de regeneración, no se afectó a ningún individuo adulto de esta especie, por esto, se propuso el rescate de los individuos brinzales para llevarlos al área de compensación, donde se realizaron estas actividades: se registraron las plántulas viables para ser rescatadas, el cual debía contar con estas características: individuos sanos, sin presencia de plagas ni pudriciones, los individuos no debían sobrepasar los 30 cm de alto. Se sembraron los individuos brinzales rescatados en el área de compensación.
+En el trasplante se tuvo en cuenta:
+- Se extrajo volumen de suelo alrededor del sistema radicular que garantizara la continuidad de los procesos de la zona de raíces.
+- Este volumen cubrió al menos un radio de 6 cm alrededor de la base o el tallo, para asegurar mínimo un 80% de las raíces.
+- Se realizó una brecha alrededor del individuo, y se podaron las raíces que quedaron comprometidas en la brecha, y se utilizó cicatrizante en los cortes que se realizaron.
+- El transporte fue lo más rápido posible para evitar el estrés hídrico, el cual dependió del área donde fueron trasplantados.
+- Para el trasplante se tuvo un hoyado previo en las zonas receptoras y se aseguró que la plántula conservara su volumen de suelo.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Veda_Flora:
+- Las actividades de rescate de epífitas vasculares (orquídeas y bromelias) se ejecutaron simultáneamente con el aprovechamiento forestal.
+- Se rescataron orquídeas en estado fértil o infértil y las bromelias en estado infértil, donde se dió prioridad a especies con pocos individuos y a plantas jóvenes y adultas con buen estado fitosanitario, sin embargo, se evitó el rescate de los individuos muy jóvenes porque son vulnerables al proceso de reubicación.
+- Se rescató el 100% de los individuos viables de la familia de orquídeas.
+- Se rescató el 50% de los individuos viables de la familia de bromelias.
+- Las plantas se rescataron del forófito con parte del sustrato sobre el cual estaba establecida, luego se hidrataron y se trasladaron a un área temporal, mientras se finalizaba el rescate de todo el material viable, y se trasladaban a un área definitiva de reubicación.
+- Cada planta se rotuló con número único de identificación y se registró en formularios con información específica como coordenadas, fecha de rescate, entre otros.
+- El proceso de reubicación se realizó en el menor tiempo posible para evitar el estrés de las plantas, en áreas con coberturas de vegetación secundaria alta, bosque ripario, pastos arbolados y pastos limpios.
+- Los forófitos fueron marcados para su ubicación, y para su selección se tuvieron en cuenta: que fuera el mismo forófito de donde fue extraída la epífita, debía estar en las mismas condiciones fitosanitarias, con ramificaciones a baja altura, de corteza rugosa y que no presentara desprendimiento de ritidoma, y árboles con área superficial disponible.
+- Para ejecutar la reubicación de las plantas en el forófito receptor, no se sobrecargó el forófito, se buscó un buen soporte a la epífita, y se utilizó fibra biodegradable para amarrar la epífita al forófito. Al finalizar la reubicación, se realizó una fertilización foliar y se aplicó enraizante, para acelerar la producción de raíces y acelerar el proceso de adhesión al sustrato.
+- Para el rescate de las orquídeas y bromelias de hábito rupícola y terrestre, se inspeccionó la presencia de estos individuos en el área de intervención previo al inicio de las actividades de tala, y si habían de este tipo de plantas, se procedió con su rescate, traslado y reubicación.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Manejo Fauna:
+- Se establecieron lugares de recepción, sitios con presencia de coberturas boscosas, baja intervención antrópica y conectividad.
+- Se efectuaron búsquedas visuales de nidos, neonatos, madrigueras e individuos de fauna silvestre en actividad reproductiva, movilidad reducida o enfermos, y se identificaron cuales requerían protección hasta culminar dicha actividad. Se realizaron desmontes de nidos y madrigueras inactivas para evitar una futura ocupación y activación. Se inspeccionaron y monitorearon los nidos y madrigueras para detectar cuáles se encontraban activos y en qué etapa de anidación estaban, para proceder con el rescate y protección, marcando los árboles con pintura.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Ahuyentamiento, rescate, traslado y liberación de anfibios y reptiles. Para el ahuyentamiento, se produjeron ruidos por medio de sirenas o bocinas, en distintas áreas y horas del día y de la noche, para ahuyentar las especies con mayor movilidad; se destruyeron y modificaron los microhábitats preferidos por las diferentes especies de anfibios y reptiles. Para el rescate y reubicación, los animales que en el ahuyentamiento no se trasladaron solos o que estaban atrapados o heridos, fueron rescatados por captura, que se llevó a cabo en diferentes horas del día entre las 8:00 y las 22:00 horas, debido a que estos animales pueden tener hábitos diurnos o nocturnos, la metodología que se empleó para la captura fue el método de encuentros visuales (que consiste en caminar en un área por un tiempo determinado) donde en cada microhábitat se hacían recorridos detallados, levantando rocas y fragmentos de vegetación, removiendo hojarasca y examinando las cuevas, raíces, agujeros de árboles, etc. Para el traslado y liberación, se hizo en bolsas de tela, plástico y costales, donde estas bolsas no estuvieron expuestas al sol o a condiciones de calor o frio extremo, ni se dejó mucho tiempo a los animales dentro de estas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Ahuyentamiento, rescate, traslado y liberación de aves. Para el ahuyentamiento, se produjeron ruidos intensos mediante sirenas o bocinas, se reprodujeron vocalizaciones reales de depredadores para atemorizar aves terrestres, se destruyeron y modificaron microhábitats, y se mantuvieron las zonas alteradas para que las aves no retornaran, como con el movimiento de los árboles. Para el rescate de las aves, las que no se desplazaron fácilmente, se capturaron en diferentes horas, y las aves pequeñas se capturaron de manera manual, con redes de niebla, mallas y bolsas de tela. Para el traslado y liberación, se protegieron en todo momento y no superaron las 12 horas (en el traslado), luego en la liberación, solo se abrieron las bolsas y se movieron para que las aves salieran.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Ahuyentamiento, rescate, traslado y liberación de mamíferos. Para el ahuyentamiento, se utilizaron reflectores de alta luminosidad en las horas de la noche, para generar un cambio en las condiciones naturales de su ambiente y se desplacen; se generaron ruidos por medio de sirenas o bocinas; se reprodujeron vocalizaciones de animales depredadores; se perturbaron sus microhábitats preferidos para refugio y vegetación. Para el rescate, los animales que no se trasladaron por sí mismos, se rescataron por captura, donde se emplearon técnicas como el acorralamiento, captura en trampas o redes y transporte en contenedores, se efectuaron en diferentes horarios porque hay especies de hábitos diurnos y nocturnos; en general se utilizaron trampas tipo Sherman y Tomahawk. Para el traslado y liberación, se transportaron mamíferos pequeños en las trampas, y los grandes en guacales, en ambos casos se cubrió donde ellos estaban, con telas oscuras para evitar que los animales observaran que los estaban movilizando; se protegieron de la luz directa del sol y de condiciones de extremo calor y frio; se liberaron a los ejemplares en áreas receptoras, a nivel del suelo y se movieron un poco para que el animal saliera (todo de forma manual). También se tuvo en cuenta un hogar de paso para el tratamiento y la recuperación de animales heridos.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Características del sitio de evaluación temporal. Se organizó el sitio con una temperatura adecuada, evitando las corrientes de aire; se contó con elementos de manejo como: contenedores de animales (guacales), gancho para manipular serpientes, bolsas de tela, elementos de desinfección y limpieza; se contó con equipos y elementos veterinarios como: fonendoscopio, termómetro, balanza, instrumental médico; para cirugías menores, mesa de examen, jeringas, agujas y sondas de diferente tamaño, algodón, gasa, linterna, guantes de examen, cuchillas, alcohol, solución yodada, soluciones inyectables, suplementos vitamínicos, droga para eutanasia, anestésicos, sedantes, analgésicos, antiinflamatorios, antibióticos, inmunoestimulantes, drogas de emergencia; y los residuos generados aquí, se manejaron dentro de los PMA – A6 y PMA – A5.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Manejo de fauna lesionada. A los individuos que requerían atención especial, se trasladaron a un centro veterinario que determinó la autoridad ambiental, donde luego de su tratamiento y su proceso de recuperación, se debían regresar para liberarlos; y finalmente se debía contar con la constancia escrita de los traslados de animales, donde esté el soporte del lugar donde estuvo y sobre su situación y su destino final.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Monitoreo/operación de anfibios y reptiles
+Se utilizó la técnica de búsqueda activa mediante encuentros visuales, tanto diurnos como nocturnos. Esta técnica incluyó la inspección de microhábitats como hojarasca, troncos y raíces, así como la detección auditiva de anuros. Los individuos fueron capturados manualmente o con herramientas especializadas, y se registraron datos detallados de cada avistamiento.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Monitoreo/operación de aves
+Se combinaron dos métodos: transectos para observación visual y auditiva, y redes de niebla para la captura directa. Las observaciones se realizaron con binoculares y grabaciones de cantos, mientras que las redes de niebla se instalaron en sitios estratégicos y se revisaron periódicamente para minimizar el estrés en las aves capturadas. Se tomaron datos morfométricos y se liberaron los individuos en el mismo lugar de captura.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Monitoreo/operación de mamíferos
+Se abordaron tres grupos (pequeños no voladores, murciélagos, y medianos-grandes). Para los pequeños mamíferos no voladores se utilizaron trampas Sherman cebadas con mezclas dulces y saladas, revisadas diariamente. Los murciélagos fueron capturados con redes de niebla instaladas en sitios de alta actividad, como cuerpos de agua y árboles frutales, y se registraron medidas morfológicas y características dentales. Para los mamíferos medianos y grandes se realizaron recorridos de observación y se instalaron cámaras trampa activas las 24 horas, complementadas con cebos para atraer a los animales.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>FLORA SIEMBRA
+En los predios definidos para la compensación, se implementaron núcleos de restauración de 12 m x 12 m, cada uno con un área total de 144 m². La siembra dentro de cada núcleo se realizó con un distanciamiento de 3,0 x 3,0 metros, combinando especies de rápido crecimiento, leguminosas, pioneras y aquellas que favorecen la presencia de dispersores de semillas y polinizadores. En total, se establecieron 103 núcleos de restauración, en los que se sembraron individuos arbóreos. El diseño interno de los núcleos se organizó en dos cuadros concéntricos: En el cuadro externo se dispusieron especies pioneras, de copa amplia y rápido desarrollo; en el cuadro siguiente se sembraron especies de mayor longevidad; finalmente, en el centro de cada núcleo se establecieron especies de especial relevancia ecológica. Así mismo, se implementó la metodología de ampliación de bordes, el diseño de esta consiste en siembras lineales de especies arbóreas con distancias entre individuos en un rango entre 3,0 y 5,0 metros. Las franjas se ubican entre 5,0 y 10,0 metros del borde del bosque. Se tomaron muestras de suelo para definir los fertilizantes necesarios y se realizó la rocería en las áreas de viveros, cerramientos y siembras, cuidando la regeneración natural. En la fase previa a la restauración se habilitó un sitio de acopio temporal para mantener las plántulas en buenas condiciones; se organizó su transporte desde el vivero, verificando hidratación; y se preparó el terreno mediante limpieza manual y manejo adecuado de los residuos vegetales. El trazado respetó la topografía, dejando tres metros entre plantas. Se hicieron plateos, hoyos y preparación del sustrato. Se aplicó la fertilización inicial con insumos técnicos, hidrogel y material vegetal descompuesto con micorrizas activadas, para asegurar un buen establecimiento de las plántulas en campo. La siembra de árboles nativos se realizó cuidando la posición de cada plántula y compactando bien el suelo. Se realizaron mantenimientos mensuales de las plántulas sembradas procurando por su sobrevivencia aquellos en los que se observó mortalidad, se realizó resiembra, de igual forma se realizaron monitoreos semestrales de estos individuos.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Se encuentra localizado al sur del área urbana del municipio de La Dorada, limitando al norte con la cabecera municipal y la vereda La Arenosa, al sur con la vereda La Petrolea y al oriente con el Rio Magdalena. El proyecto se ubicará en una zona rural, y abarcará una extensión de 220,39 Ha, área que será denominada en el presente estudio como área de intervención.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>La caracterización del área de influencia biótica se realizó mediante la aplicación las siguientes metodologías: Para plantas se realizó un inventario al 100% de fustales (DAP mayor a 10 cm) y para la evaluación de epífitas se utilizó la metodología de Análisis Rápido y Representativo de la diversidad de epífitas (RRED-analysis). Para el levantamiento de fauna se avaluaron los grupos de vertebrados terrestres con las metodologías específicas.
+
+Finalmente se realizó la caracterización de Ecosistemas Acuáticos, con dos campañas de monitoreo en los meses de junio y septiembre de 2018 para la evaluación hidrobiológica de los grupos bióticos perifíton, bentos (macroinvertebrados acuáticos), peces, plancton (fito y zoo) y macrófitas, de los ecosistemas lóticos y lénticos representativos.
+
+Para el monitoreo de fauna silvestre durante el primer año de la fase de operación, se realizaron campañas de muestreo por biólogos con experiencia en manejo y monitoreo de fauna silvestre entre febrero y marzo del año 2025, abarcando cuatro tipos de hábitats: bosque de galería, bosque fragmentado, vegetación secundaria alta y pastos (limpios y arbolados).</para>
+                </samplingDescription>
+            </sampling>
+        </methods>
+
+            <project >
+                <title>Estudio de Impacto Ambiental Parque Solar Fotovoltaico El Tepuy y Conexión al Sistema de Transmisión Nacional</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Elvira María</givenName>
+                    <surName>Aguilar Amaya</surName>
+                    </individualName>
+                    <role>PRINCIPAL_INVESTIGATOR</role>
+                </personnel>
+                <abstract>
+                    <para></para>
+                </abstract>
+                <funding>
+                    <para>Contrato celebrado entre EPM, CHEC y Servicios Geográficos y Ambientales SAG.SA.</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El proyecto consiste en un parque solar fotovoltaico de 96,7 MW pico (Potencia nominal aproximada de 83 MW) localizado en el municipio de La Dorada, Caldas, en el Magdalena Medio, el cual se interconectaría al SIN en la subestación Purnio de CHEC (Operador de red) a un nivel de tensión de 115 kV.  Se instalarían alrededor de 285.000 módulos fotovoltaicos de 360-400 Wp en una extensión de terreno aproximada de 220 Ha.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>El objetivo de este proyecto es aprovechar el potencial de irradiación solar reportado para la zona del  Magdalena Medio y avanzar en la implementación de proyectos de Energías Renovables No Convencionales, apoyando al país en el cumplimiento de la meta de reducción en un 20% de los gases efecto invernadero, adquirido en la vigésima primera reunión de la Conferencia de las Partes (COP 21) de la Convención Marco de Naciones Unidas sobre Cambio Climático.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:24Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/maulhd">Gomez Patiño J C, Carmona Cano E, Aguilar Amaya E M, Grisales F A, Marin D, Téllez L, Rodriguez Ríos D F, Giraldo Gómez S, Rodriguez S, Betancur Huiguita S C, Santana D, Garcés Quintero E Y, Ordoñez Castillo N F, Gómez Monsalve R, Garcia S, Vargas C A, Amador J A, Quintero E A, Palacio S, Gallo S M, García Morera Y, Barreto Sánchez L H, Espinal Vélez T, Hernández Gordillo A L, Robles Vega J I, Patiño Siro D L, Guzmán Hernández J E, Villamil Menura C F, Cortés Vera M M, Charry Osorio M L, Lozano Guzmán C, Rengifo Cabezas C A, Gallego Carmona C A, Berrocal Yánez M E, García Cerón P A, Romero Betancourt L M, Guzmán Moreno L E, Gutierrez Marín J D, Pérez Henao A, Flórez Delgado V T, Raigosa Álvarez J E, Cabrejo Bello A, Mendoza Polo J D, Urán Perez V, Montoya Ocampo M D, Quijano Abril C J, Ruíz Rendón M A, Cuartas Calle C, Gómez Rincón M T, Muñetón Lozano C M, Salinas Gutiérrez M, Bonilla Cespedes D, Servicios Ambientales y Geográficos S.A., POWERCHINA INTERNATIONAL GROUP, Ayesa (2026). Biodiversidad asociada al proyecto Parque Solar Fotovoltaico Tepuy. Version 2.6. Empresas Públicas de Medellín E.S.P.. Occurrence dataset https://doi.org/10.15472/maulhd accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Gentry, A. H. 1982. Patterns of Neotropical plant diversity. Evolutionary Biology 15: 1-84.</citation>
+                <citation>Gradstein, S.R., N.M. Nadkarni, T. Krömer, I. Holz &amp; N. Nöske. 2003. A protocol for rapid and representative sampling of vascular and non-vascular epiphyte diversity in tropical rain forests. Selbyana 24: 105-111</citation>
+                <citation>Bernal, R., Gradstein, S. y Celis, M. 2015. Catálogo de plantas y líquenes de Colombia. Recuperado de http://catalogoplantasdecolombia.unal.edu.co/es/</citation>
+                <citation>Churchill, S.P. &amp; E.L. Linares. 1995. Prodomus Bryologiae Novo Granatensis. Introducción a la flora de musgos de Colombia. Biblioteca José Jerónimo Triana. Tomos I y II. Instituto de Ciencias Naturales. Facultad de Ciencias. Universidad Nacional de Colombia, Bogotá.</citation>
+                <citation>Iwatsuki Z. 1960. The Epiphytic Briophyte Communities in Japan. J Hattori Bot Lab.;22:159-339</citation>
+                <citation>Pinzón, M., Linares, E.L. y Uribe-M., J. 2003. Hepáticas del Medio Caquetá (amazonia colombiana). Caldasia. 25, 2, 297-311</citation>
+                <citation>Churchill, S.P. &amp; E.L. Linares. 1995. Prodomus Bryologiae Novo Granatensis. Introducción a la flora de musgos de Colombia. Biblioteca José Jerónimo Triana. Tomos I y II. Instituto de Ciencias Naturales. Facultad de Ciencias. Universidad Nacional de Colombia, Bogotá.</citation>
+                <citation>Buck, W.R. 1998. Pleurocarpous mosses of the West Indies. The New York Botanical Garden. Bronx, Nueva York.</citation>
+                <citation>Gradstein, S. R., Churchill, S., &amp; Salazar-Allen, N. 2001. Guide to the bryophytes of Tropical America. Memoirs of the New York Botanical Garden, 86: 1-577</citation>
+                <citation>Angulo, A., J. V. Rueda-Almonacid, J. V. Rodríguez Mahecha y E. La Marca. 2006. Técnicas de inventario y monitoreo para los anfibios de la región tropical andina. Conservación Internacional-Colombia, Series Manuales de Campo No. 2, Panamericana Formas e Impresos S. A., Bogotá D.C. 298 pp.</citation>
+                <citation>McDiarmid, R. W., Foster, M. S., Guyer, C., Gibbons, J. W., &amp; Chernoff, N. 2012. Preface. En: R.W. McDiarmid, M. S. Foster, C. Guyer, J. W. Gibbons &amp; N. Chernoff (Ed.). Reptile biodiversity: Standard methods for inventory and monitoring (XI-XII). Berkeley: University of California Press</citation>
+                <citation>Uetz, P., Freed, P, Aguilar, R. &amp; Hošek, J. (eds.). 2018. The Reptile Database,</citation>
+                <citation>Acosta Galvis, A. R. 2018. Lista de los Anfibios de Colombia: Referencia en linea V.11.2018</citation>
+                <citation>Villarreal H., M. Álvarez, S. Córdoba, F. Escobar, G. Fagua, F. Gast, H. Mendoza, M. Ospina y A.M. Umaña. Segunda edición. 2006. Manual de métodos para el desarrollo de inventarios de biodiversidad. Programa de Inventarios de Biodiversidad. Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. Bogotá, Colombia. 236 pp</citation>
+                <citation>Hilty S. L, Brown W. L. 1986. A guide to the birds of Colombia. Princeton. Princeton University Press, Princeton, N. J</citation>
+                <citation>Restall R, Rodner C, Lentino M. 2006. Birds of northern South America: an identification guide. Volumes I and II. Christopher Helm Press, London. 288,289-326.</citation>
+                <citation>McMullan, M. &amp; Donegan, T. 2014. Field guide to the birds of Colombia. Fundación Proaves. Bobotá, Colombia.</citation>
+                <citation>Remsen, J. V., Jr., J. I. Areta, E. Bonaccorso, S. Claramunt, A. Jaramillo, D. F. Lane, J. F. Pacheco, M. B. Robbins, F. G. Stiles, and K. J. Zimmer. Version 2018. A classification of the bird species of South America. American Ornithological Society. http://www.museum.lsu.edu/~Remsen/SACCBaseline.htm</citation>
+                <citation>VOSS, R. S. &amp; EMMONS, L. H., 1996. Mammalian diversity in Neotropical lowland rainforest: A preliminary assessment. Bull. Am. Mus. Nat. His., 230: 13-35.</citation>
+                <citation>Delgado-V. C. A, Arias-Alzate A, Botero S, Sánchez-Londoño JD. Registro de Cuniculus taczanowskii (Rodentia: Cuniculidae) y Eira Barbara (Carnivora: Mustelidae) en una zona periurbana de Medellín, Colombia. Brenesia. 2011;75-76:124-126.</citation>
+                <citation>Maffei, L., E. Cuellar, y J. Noss. 2002. Uso de trampas cámara para la evaluación de mamíferos en el ecotono Chaco-Chiquitanía. Revista Boliviana de Ecología y Conservación Ambiental 11:55-65</citation>
+                <citation>Emmons, L. H.&amp; Feer, F. 1999. Mamíferos de los bosques húmedos de América tropical. Editorial F.A.N., Santa Cruz de la Sierra.</citation>
+                <citation>Tirira, D. G. 2007. Guía de campo de los mamíferos del Ecuador. Ediciones Murciélago Blanco. Publicación especial sobre los mamíferos del Ecuador 7. Quito.</citation>
+                <citation>Hall, E. R. 1962. Collecting and preparing study specimens of vertebrates. University of Kansas, Museum of Natural History, Miscellaneous Publication, 30: 1-46</citation>
+                <citation>Muñoz, J. 1995. Clave de murciélagos vivientes en Colombia. Editorial Universidad de Antioquia. 132 pp.</citation>
+                <citation>Muñoz, J. 2001. Los murciélagos de Colombia, sistemática, distribución, descripción, historia natural y ecología. Editorial Universidad de Antioquia. 391 pp</citation>
+                <citation>Linares, O. J. 1998. Mamíferos de Venezuela. Caracas: Soc. Conservacionista Audubon de Venezuela.</citation>
+                <citation>Simmons, N.B. &amp; R.S. Voss. 1998. The mammals of Paracou, French Guiana: a neotropical lowland rainforest fauna. Part 1 Bats. Bulletin of the American Museum of Natural History 237: 1-219</citation>
+                <citation>Bicudo, C. E., &amp; Bicudo, R. M. 1970. Algas de águas continentais brasileiras. São Paulo: Fundação Brasileira para o desenvolvimento o ensino de Ciências.   Bicudo C. Menezes M. (Eds.), Gêneros de Algas de Águas Continentais do Brasil. São Carlo, Brasil (pp. 58-95). Ed. RIMA.</citation>
+                <citation>Bicudo, C.E.M. &amp; Menezes, M., eds. 2017. Gêneros de algas de águas continentais do Brasil: chave para identificação e descrições. 3. ed. São Carlos: RiMa, 572 p</citation>
+                <citation>Bourrelly, P. 1970. Les algues d&apos;eu douce. Initiation á la systématique. Tome III: Les Algues Bleues et rouges, les Eugléniens, Péridiniens et Cryptomonadines. Paris, Francia: Editions Nouvel Boubée &amp; Cie.</citation>
+                <citation>Cox, E. J. 1996. Identification of freshwater diatoms from live material. Ed. Chapman &amp; May, Londres, 158 pp.</citation>
+                <citation>Komárek, J &amp; B. Fott. 1983. ChlorophyceaeChlorococcales. Das Phytoplankton des Süsswassers, Systematik u Biologie. In Thienemman, A. (ed.) Die Binnenngewässer 16, 7 (1). E Schweizerbart’sche Verlagbuchhandlung (Nägele u. Obermiller). Stuttgart.</citation>
+                <citation>Komárek, J. &amp; K. Anagnostidis. 1998. 19/1. Cyanoprokaryota: Chroococcales. Subwasserflora von Mitteleuropa. Gustav Fisher, Jena-StuttgartLübeck-Ulm, Alemania.</citation>
+                <citation>Komárek, J. &amp; K. Anagnostidis. 1989. Modern approach to the clasification system of Cyanophytes. 4. Nostocales. Arch. Hydrobiol./Algol. Stud. 82: 247-345.</citation>
+                <citation>Komárek, J. &amp; K. Anagnostidis. 1986. Modern approach to the clasification system of cyanophytes, 2. Chroococcales. Arch. Hydrobiol./Algol. Stud. 43: 157-226.</citation>
+                <citation>Round, F, R.M. Crawford &amp; D.G. Mann. 1990. The diatoms: Biology y morphology of the genera. Cambridge University Press, Cambridge. 741pp</citation>
+                <citation>Bartholomäus, Agnes et al. 1990.  El manto de la tierra: flora de los Andes.  Guía de 150 especies de la flora andina CAR/ GTZ/KFW.  Bogotá, Colombia: Editorial Lemer. 332 p</citation>
+                <citation>Johansen, O. A. 1977. Aquatic Diptera. Los Angeles, California. Entomological reprint specialists.</citation>
+                <citation>Merritt, R.W., &amp; Cummins, K.W. 1996. An Introduction to the Aquatic Insects of North America. Third edition. Kendall/Hunt Publishing Company. Iowa. 862 pp.</citation>
+                <citation>Machado, T.A. 1989. Distribución ecológica e identificación de los coleópteros en diferentes pisos altitudinales del departamento de Antioquia. Tesis de grado.Universidad de Antioquia. Medellín. 324 pp</citation>
+                <citation>Maldonado-Ocampo, J. A., A. Ortega-Lara, J. S. Usma-Oviedo, G. Galvis, F.A. Villa-Navarro, L. Vasquez, S. Prada-Pedreros y C.A. Rodriguez. 2005. Peces de los Andes de Colombia: guía de campo. Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. Bogotá D.C. 346 pp.</citation>
+                <citation>Flowers, R., &amp; Rosa de la, C. 2010. Ephemeroptera. Revista de Biología Tropical, 58, 63-93</citation>
+                <citation>POSADA-GARCÍA, J.A. &amp; ROLDÁN-PÉREZ, G., 2003.- Clave ilustrada y diversidad de las larvas de Trichoptera en el Nor-Occidente de Colombia. Caldasia, 25:169-192</citation>
+                <citation>MADS. Ministerio de Ambiente y Desarrollo Sostenible. Manual de Compensaciones del Componente Biótico. Ministerio de Ambiente y Desarrollo Sostenible, Bogotá, Colombia, 2018.</citation>
+                <citation>MAVDT &amp; ACCEFYN 2012. Guías Técnicas Para La Restauración Ecológica De Los Ecosistemas de Colombia. Convenio de Asociación No. 22 entre Ministerio de Ambiente, Vivienda y Desarrollo Territorial (MAVDT) y Academia de Ciencias Exactas, Físicas y Naturales (ACCEFYN). Bogotá D. C.</citation>
+                </bibliography>
+                <physical>
+                    <objectName>0269_eia_parquesolarfotovoltaico_tepuy_conexion_stn</objectName>
+                    <characterEncoding>UTF-8</characterEncoding>
+                    <dataFormat>
+                        <externallyDefinedFormat>
+                            <formatName>DWC-A</formatName>
+                            <formatVersion>1</formatVersion>
+                        </externallyDefinedFormat>
+                    </dataFormat>
+                    <distribution>
+                        <online>
+                            <url function="download">https://ipt.biodiversidad.co/cr-sib/resource.do?r=0269_eia_parquesolarfotovoltaico_tepuy_conexion_stn</url>
+                        </online>
+                    </distribution>
+                </physical>
+                <resourceLogoUrl>https://gitlab.com/sib-colombia/logos/-/raw/main/socio-SiB-epm.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>
