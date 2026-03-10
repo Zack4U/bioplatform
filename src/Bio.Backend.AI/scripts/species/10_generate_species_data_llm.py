@@ -6,6 +6,9 @@ Script 10: Generate Species Data via Gemini LLM
 Reads the master species list (from script 09) and uses Google Gemini
 to generate structured species data in batches of 10.
 
+Uses Pydantic models with Gemini's response_schema for guaranteed
+JSON structure (Structured Outputs).
+
 Outputs:
     1. CSV — Basic species info for SpeciesImportJob (taxonomy, description, etc.)
     2. JSON — Structured Traditional Uses and Economic Potential per species.
@@ -17,7 +20,7 @@ Uso:
     python scripts/species/10_generate_species_data_llm.py --batch-size 5
 
 Requisitos:
-    pip install google-genai
+    pip install google-genai pydantic
     GOOGLE_AI_API_KEY en .env
 """
 
@@ -30,8 +33,11 @@ import sys
 import time
 import unicodedata
 from collections import Counter
+from enum import Enum
 from pathlib import Path
 from typing import Any, Optional
+
+from pydantic import BaseModel, Field
 
 try:
     from dotenv import load_dotenv
@@ -49,28 +55,188 @@ CHECKPOINT_FILE = OUTPUT_DIR / "_checkpoint_llm.json"
 CSV_COLUMNS = [
     "Kingdom", "Phylum", "Class", "Order", "Family", "Genus",
     "ScientificName", "CommonName", "Slug", "Description",
-    "ConservationStatus", "IsSensitive", "ThumbnailUrl",
+    "AltitudeRange", "ConservationStatus", "LegalStatus",
+    "IsSensitive", "ThumbnailUrl",
 ]
 
 # Conservation statuses considered sensitive
 SENSITIVE_KEYWORDS = {"CR", "EN", "PELIGRO CRÍTICO", "EN PELIGRO"}
 
+
+# ── Pydantic Schema (Structured Outputs) ──────────────────────────
+
+class ConservationStatus(str, Enum):
+    LC = "LC"
+    NT = "NT"
+    VU = "VU"
+    EN = "EN"
+    CR = "CR"
+    DD = "DD"
+    NE = "NE"
+
+
+class MarketValue(str, Enum):
+    ALTO = "Alto"
+    MEDIO = "Medio"
+    BAJO = "Bajo"
+    DESCONOCIDO = "Desconocido"
+
+
+class SustainabilityLevel(str, Enum):
+    ALTO = "Alto"
+    MEDIO = "Medio"
+    BAJO = "Bajo"
+
+
+class Confidence(str, Enum):
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+
+
+class TraditionalUseEntry(BaseModel):
+    part: str = Field(
+        description="Parte de la especie utilizada (ej: Hojas, Tallo, Fruto, Raíz, Látex, Resina, Plumas, Cuerpo entero)"
+    )
+    category: list[str] = Field(
+        description="Categoría(s) principal(es) del uso. OBLIGATORIO elegir de esta lista: "
+        "[Medicinal, Alimentario, Mágico-Religioso/Ritual, Construcción, Artesanal, Forraje/Veterinario, Ornamental, Leña/Combustible, Tóxico/Caza]"
+    )
+    specific_purpose: str = Field(
+        description="Propósito exacto de la planta o animal (ej: 'Tratamiento de fiebre y parásitos', 'Elaboración de canastos', 'Alimento en época de escasez')."
+    )
+    preparation_method: str = Field(
+        description="Cómo se prepara o aplica tradicionalmente (ej: 'Infusión', 'Cataplasma', 'Consumo directo crudo', 'Maceración en aguardiente', 'Secado al sol'). Si no se conoce, responde 'Desconocido'."
+    )
+    description: str = Field(
+        description="Descripción etnográfica concisa del uso tradicional"
+    )
+    community: str = Field(
+        description="Comunidad indígena (ej. Emberá Chamí), afrodescendiente o campesina que lo practica. "
+        "Si no hay evidencia documentada específica de la región, responde "
+        "'Uso generalizado regional' o 'Desconocido'. "
+        "NO inventar comunidades bajo ninguna circunstancia."
+    )
+    traditional_warnings: str = Field(
+        description="Precauciones, tabúes o toxicidad según la tradición (ej: 'Tóxico en altas dosis', 'No consumir en embarazo'). Responde 'Ninguna conocida' si no aplica."
+    )
+
+
+class EconomicPotentialEntry(BaseModel):
+    sector: str = Field(
+        description="Sector económico. OBLIGATORIO elegir uno o más de esta lista: "
+        "[Ecoturismo, Cosmecéutica y Cuidado Personal, Nutracéutica y Alimentos Funcionales, "
+        "Fitoterapia y Farmacéutica, Bioinsumos Agrícolas, Artesanías, Construcción/Maderas, "
+        "Fitorremediación, Ornamental]"
+    )
+    products: list[str] = Field(
+        description="Lista de productos reales (ej: 'Aceite esencial', 'Colorante natural', 'Extracto hidroalcohólico', 'Fibra para cestería')"
+    )
+    active_properties: list[str] = Field(
+        default_factory=list,
+        description="Compuestos biológicos o propiedades físicas que justifican este uso (ej: 'Taninos', 'Antioxidantes', 'Resistencia a la humedad', 'Alcaloides'). Vacío si no aplica o se desconoce."
+    )
+    description: str = Field(
+        description="Descripción breve del potencial económico y cómo se procesa en español"
+    )
+    market_value: MarketValue = Field(
+        description="Valor de mercado estimado: Alto, Medio, Bajo, o Desconocido"
+    )
+    sustainability_level: SustainabilityLevel = Field(
+        description="Nivel de sostenibilidad de la explotación: Alto, Medio, o Bajo"
+    )
+
+
+class SpeciesData(BaseModel):
+    scientific_name: str = Field(description="Nombre científico exacto")
+    common_name: str = Field(description="Nombre común en español (Colombia)")
+    kingdom: str = Field(description="Reino taxonómico")
+    phylum: str = Field(description="Filo taxonómico")
+    class_name: str = Field(
+        description="Clase taxonómica (ej: Aves, Mammalia, Magnoliopsida)",
+        alias="class_field",
+    )
+    order: str = Field(description="Orden taxonómico")
+    family: str = Field(description="Familia taxonómica")
+    genus: str = Field(description="Género taxonómico")
+    description: str = Field(
+        description="Descripción concisa de 2-3 oraciones en español"
+    )
+    altitude_range: str = Field(
+        description="Rango de altitud típico en msnm "
+        "(ej: '1000-2000 msnm') o 'Desconocido'"
+    )
+    conservation_status: ConservationStatus = Field(
+        description="Estado de conservación UICN"
+    )
+    legal_status: bool = Field(
+        description="True si se requiere un permiso legal especial de "
+        "alguna entidad gubernamental o institución para "
+        "recolectar o explotar la especie. False si no."
+    )
+
+    expert_analysis: str = Field(
+        description="Razonamiento interno: Escribe un breve párrafo recordando la literatura científica, compuestos químicos o usos etnobotánicos conocidos para esta especie o su género ANTES de llenar las siguientes listas."
+    )
+
+    traditional_uses: list[TraditionalUseEntry] = Field(
+        default_factory=list,
+        description="Lista de usos tradicionales. Vacía si no tiene."
+    )
+    economic_potential: list[EconomicPotentialEntry] = Field(
+        default_factory=list,
+        description="Lista de potenciales económicos. Vacía si no tiene."
+    )
+    confidence: Confidence = Field(
+        description="Nivel de confianza en la información generada"
+    )
+
+
+class SpeciesBatchResponse(BaseModel):
+    species: list[SpeciesData] = Field(
+        description="Lista de especies con información completa"
+    )
+
+
 # ── LLM Prompt ─────────────────────────────────────────────────────
 
 SYSTEM_PROMPT = """\
-Eres un biólogo experto en biodiversidad colombiana, especialmente del \
-departamento de Caldas. Tu tarea es generar información estructurada y \
-precisa sobre especies de flora, fauna y hongos.
+Eres un experto en Bioprospección, Bioeconomía y Biodiversidad colombiana (Eje Cafetero/Caldas). \
+Tu tarea es mapear el potencial de biocomercio de especies de flora, fauna y hongos.
 
 REGLAS:
-- Responde ÚNICAMENTE con JSON válido, sin texto adicional.
-- Si no conoces información sobre una especie, coloca "Desconocido" o \
-  listas vacías según corresponda.
+- Genera información para TODAS las especies de la lista.
+- No te quedes en lo obvio. Para cada especie, evalúa mentalmente si tiene potencial en: \
+  Cosmética (aceites, resinas), Bioinsumos (control de plagas, abonos), Nutracéutica (superalimentos), \
+  Farmacéutica (principios activos).
+- Si una planta es "maleza", evalúa si sirve para fitorremediación (limpiar suelos) o forraje.
+- Si es un ave o anfibio amenazado, su uso principal debe ser Ecoturismo, Fotografía de naturaleza o Educación ambiental.
+- Genera información para TODAS las especies. Si no conoces usos, deja las listas vacías, \
+  pero esfuérzate por recordar literatura científica de la especie o su género.
 - Los nombres comunes deben ser en español colombiano.
 - Las descripciones deben ser concisas (2-3 oraciones en español).
-- Estado de conservación UICN: LC, NT, VU, EN, CR, DD, o NE.
-- El campo confidence indica qué tan seguro estás de la información: \
-  "high", "medium", "low".\
+- altitude_range: rango altitudinal típico (ej: "1500-2800 msnm") o "Desconocido".
+- legal_status: true si la especie requiere permisos legales para su \
+  recolección/explotación (ej: CITES, especies amenazadas). false si no.
+- conservation_status: usar códigos UICN (LC, NT, VU, EN, CR, DD, NE).
+- confidence: "high" si estás muy seguro, "medium" si hay incertidumbre, \
+  "low" para especies oscuras o poco documentadas.
+- community: Si no hay evidencia documentada de una comunidad específica, \
+  responder "Uso generalizado regional" o "Desconocido". NO inventar.\
+- Si una especie tiene potenciales económicos en sectores distintos \
+  (por ejemplo, sirve para 'Construcción/Maderas' pero también tiene \
+  compuestos químicos para 'Cosmecéutica' o 'Bioinsumos'), DEBES crear \
+  objetos separados en la lista de economic_potential para cada sector, \
+  no mezcles los compuestos en el sector equivocado.
+
+EJEMPLO DE RAZONAMIENTO ESPERADO PARA "expert_analysis":
+"Aunque Bixa orellana es conocida comúnmente, su potencial comercial va más allá del colorante tradicional. \
+  Científicamente contiene bixina y norbixina, carotenoides altamente valorados en la industria cosmética y \
+  alimentaria global por ser antioxidantes naturales y no tóxicos. Tradicionalmente las comunidades indígenas \
+  lo usan no solo para tintura, sino como repelente de insectos."
+
+A partir de ese análisis, llenarás las listas de usos con precisión.
+
 """
 
 
@@ -82,49 +248,18 @@ def build_batch_prompt(species_names: list[str]) -> str:
 
     return f"""\
 Genera información completa para las siguientes {len(species_names)} especies.
-
-Responde con un JSON que tenga EXACTAMENTE esta estructura (sin markdown, solo JSON puro):
-
-{{
-  "species": [
-    {{
-      "scientific_name": "Nombre científico exacto",
-      "common_name": "Nombre común en español (Colombia)",
-      "kingdom": "Animalia|Plantae|Fungi|Chromista|Protozoa|Bacteria",
-      "phylum": "...",
-      "class": "...",
-      "order": "...",
-      "family": "...",
-      "genus": "...",
-      "description": "Descripción concisa de 2-3 oraciones en español",
-      "conservation_status": "LC|NT|VU|EN|CR|DD|NE",
-      "traditional_uses": [
-        {{
-          "part": "Parte de la especie utilizada (ej: Hojas, Tallo, Fruto, Plumas, Piel, Cuerpo entero)",
-          "uses": ["Uso 1", "Uso 2"],
-          "description": "Descripción breve del uso tradicional",
-          "community": "Comunidad o región que lo practica (ej: Comunidades campesinas de Caldas)"
-        }}
-      ],
-      "economic_potential": [
-        {{
-          "sector": "Sector económico (ej: Ecoturismo, Cosmética, Alimentos, Medicina, Artesanías, Agricultura)",
-          "products": ["Producto o servicio 1", "Producto o servicio 2"],
-          "description": "Descripción breve del potencial económico",
-          "market_value": "Alto|Medio|Bajo|Desconocido",
-          "sustainability_level": "Alto|Medio|Bajo"
-        }}
-      ],
-      "confidence": "high|medium|low"
-    }}
-  ]
-}}
+El esquema JSON es forzado por la API — solo rellena los campos con datos precisos.
 
 IMPORTANTE:
-- Si la especie no tiene usos tradicionales conocidos, deja "traditional_uses": []
-- Si la especie no tiene potencial económico claro, deja "economic_potential": []
+- Si la especie no tiene usos tradicionales conocidos, deja traditional_uses: []
+- Si la especie no tiene potencial económico claro, deja economic_potential: []
 - Para insectos y microorganismos oscuros, usa confidence: "low"
 - Cada especie DEBE tener todos los campos de taxonomía
+- class_field es la clase taxonómica (ej: Aves, Mammalia, Insecta)
+- Oportunidades por Taxonomía: Si la especie específica carece de estudios comerciales detallados, \
+  pero su GÉNERO taxonómico es ampliamente usado en la industria (ej. para cosméticos o medicinas), \
+  incluye ese potencial económico y usa confidence: "medium" o "low", aclarando en la descripción que \
+  el potencial es "Inferido por las características de su género".
 
 Lista de especies:
 {names_list}"""
@@ -151,7 +286,7 @@ def is_sensitive(status: str) -> bool:
 # ── Gemini API ─────────────────────────────────────────────────────
 
 def init_gemini(api_key: str) -> Any:
-    """Initialize and return the Gemini generative model."""
+    """Initialize and return the Gemini client."""
     try:
         from google import genai
         client = genai.Client(api_key=api_key)
@@ -167,7 +302,10 @@ def call_gemini(
     model: str = "gemini-3.1-flash-lite-preview",
     max_retries: int = 3,
 ) -> Optional[dict]:
-    """Call Gemini API with retry logic. Returns parsed JSON or None."""
+    """Call Gemini API with Structured Outputs (response_schema).
+
+    Returns parsed dict matching SpeciesBatchResponse or None.
+    """
     from google.genai import types
 
     prompt = build_batch_prompt(species_names)
@@ -182,6 +320,7 @@ def call_gemini(
                     temperature=0.3,
                     max_output_tokens=8192,
                     response_mime_type="application/json",
+                    response_schema=SpeciesBatchResponse,
                 ),
             )
 
@@ -194,7 +333,7 @@ def call_gemini(
 
             raw_text = response.text.strip()
 
-            # Parse JSON
+            # Parse JSON (should always be valid with response_schema)
             data = json.loads(raw_text)
 
             # Validate structure
@@ -216,7 +355,6 @@ def call_gemini(
 
         except json.JSONDecodeError as e:
             print(f"    [WARN] JSON parse error (attempt {attempt}): {e}")
-            # Print raw text for debugging
             if raw_text:
                 print(f"    Raw (first 200 chars): {raw_text[:200]}")
         except Exception as e:
@@ -261,7 +399,7 @@ def process_llm_response(
         csv_row = {
             "Kingdom": sp.get("kingdom", ""),
             "Phylum": sp.get("phylum", ""),
-            "Class": sp.get("class", ""),
+            "Class": sp.get("class_field", ""),
             "Order": sp.get("order", ""),
             "Family": sp.get("family", ""),
             "Genus": sp.get("genus", ""),
@@ -269,7 +407,9 @@ def process_llm_response(
             "CommonName": sp.get("common_name", ""),
             "Slug": generate_slug(sci_name),
             "Description": sp.get("description", ""),
+            "AltitudeRange": sp.get("altitude_range", "Desconocido"),
             "ConservationStatus": conservation,
+            "LegalStatus": str(sp.get("legal_status", False)),
             "IsSensitive": str(is_sensitive(conservation)),
             "ThumbnailUrl": thumbnail,
         }
@@ -360,6 +500,13 @@ def generate_report(
     with_potential = len(potential)
     with_common = sum(1 for r in csv_rows if r.get("CommonName"))
     with_desc = sum(1 for r in csv_rows if r.get("Description"))
+    with_altitude = sum(
+        1 for r in csv_rows
+        if r.get("AltitudeRange") and r["AltitudeRange"] != "Desconocido"
+    )
+    with_legal = sum(
+        1 for r in csv_rows if r.get("LegalStatus") == "True"
+    )
     sensitive = sum(1 for r in csv_rows if r.get("IsSensitive") == "True")
 
     minutes = elapsed / 60
@@ -367,7 +514,7 @@ def generate_report(
     lines = [
         "=" * 60,
         "  LLM SPECIES DATA GENERATION REPORT",
-        "  Powered by Google Gemini",
+        "  Powered by Google Gemini (Structured Outputs)",
         "=" * 60,
         "",
         f"Total species in master list:  {total:,}",
@@ -380,6 +527,8 @@ def generate_report(
         "─" * 40,
         f"  With common name:    {with_common:4d} / {processed}",
         f"  With description:    {with_desc:4d} / {processed}",
+        f"  With altitude range: {with_altitude:4d} / {processed}",
+        f"  With legal status:   {with_legal:4d} / {processed} (require permits)",
         f"  With trad. uses:     {with_uses:4d} / {processed}",
         f"  With econ. potential: {with_potential:4d} / {processed}",
         f"  Marked sensitive:    {sensitive:4d} / {processed}",
@@ -404,7 +553,7 @@ def generate_report(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Generate species data via Gemini LLM"
+        description="Generate species data via Gemini LLM (Structured Outputs)"
     )
     parser.add_argument(
         "--limit", type=int, default=0,
@@ -481,6 +630,7 @@ def main() -> None:
     # ── Step 3: Initialize Gemini & Process ────────────────────────
     model_name = args.model
     print(f"\n[STEP 3/4] Processing species with {model_name}...")
+    print("[INFO] Using Structured Outputs (Pydantic response_schema)")
     client = init_gemini(api_key)
 
     batch_size = args.batch_size
