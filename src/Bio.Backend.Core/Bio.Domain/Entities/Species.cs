@@ -12,6 +12,8 @@ public class Species
     public string? TraditionalUses { get; private set; }
     public string? EconomicPotential { get; private set; }
     public string? ConservationStatus { get; private set; }
+    public string? AltitudeRange { get; private set; }
+    public bool LegalStatus { get; private set; } = false;
     public bool IsSensitive { get; private set; } = false;
     public string? ThumbnailUrl { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;

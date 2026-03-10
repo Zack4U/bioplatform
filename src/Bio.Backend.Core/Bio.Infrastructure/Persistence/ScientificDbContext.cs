@@ -38,6 +38,15 @@ public class ScientificDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.ScientificName).IsUnique();
+
+            // JSON columns for structured data (PostgreSQL jsonb)
+            entity.Property(e => e.TraditionalUses).HasColumnType("jsonb");
+            entity.Property(e => e.EconomicPotential).HasColumnType("jsonb");
+
+            // Legal and conservation
+            entity.Property(e => e.LegalStatus).HasDefaultValue(false);
+            entity.Property(e => e.IsSensitive).HasDefaultValue(false);
+
             // Note: Trigram indexes and specialized GIN ops are configured via migrations/fluent API
             entity.HasOne(e => e.Taxonomy)
                   .WithMany(t => t.Species)

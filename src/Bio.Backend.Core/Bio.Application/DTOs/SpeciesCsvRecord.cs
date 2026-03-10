@@ -17,6 +17,8 @@ public class SpeciesCsvRecord
     public string CommonName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string ConservationStatus { get; set; } = string.Empty;
+    public string AltitudeRange { get; set; } = string.Empty;
+    public bool LegalStatus { get; set; } = false;
     public string? TraditionalUses { get; set; }
     public bool IsSensitive { get; set; } = false;
     public string ThumbnailUrl { get; set; } = string.Empty;
