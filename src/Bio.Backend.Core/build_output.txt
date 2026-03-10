@@ -1,0 +1,20 @@
+  Determinando los proyectos que se van a restaurar...
+  Se ha restaurado e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.Infrastructure\Bio.Infrastructure.csproj (en 441 ms).
+  Se ha restaurado e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Bio.API.csproj (en 441 ms).
+  Se ha restaurado e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.Tests\Bio.Tests.csproj (en 453 ms).
+  Se ha restaurado e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.UnitTests\Bio.UnitTests.csproj (en 453 ms).
+  2 de 6 proyectos están actualizados para la restauración.
+  Bio.Domain -> e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.Domain\bin\Debug\net8.0\Bio.Domain.dll
+  Bio.Application -> e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.Application\bin\Debug\net8.0\Bio.Application.dll
+  Bio.Infrastructure -> e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.Infrastructure\bin\Debug\net8.0\Bio.Infrastructure.dll
+e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Program.cs(33,51): error CS0246: El nombre del tipo o del espacio de nombres 'SpeciesImportJob' no se encontró (¿falta una directiva using o una referencia de ensamblado?) [e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Bio.API.csproj]
+e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Program.cs(34,76): error CS0246: El nombre del tipo o del espacio de nombres 'JobEnqueuer' no se encontró (¿falta una directiva using o una referencia de ensamblado?) [e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Bio.API.csproj]
+
+ERROR al compilar.
+
+e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Program.cs(33,51): error CS0246: El nombre del tipo o del espacio de nombres 'SpeciesImportJob' no se encontró (¿falta una directiva using o una referencia de ensamblado?) [e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Bio.API.csproj]
+e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Program.cs(34,76): error CS0246: El nombre del tipo o del espacio de nombres 'JobEnqueuer' no se encontró (¿falta una directiva using o una referencia de ensamblado?) [e:\Projects\bioplatform\src\Bio.Backend.Core\Bio.API\Bio.API.csproj]
+    0 Advertencia(s)
+    2 Errores
+
+Tiempo transcurrido 00:00:02.17
