@@ -1,0 +1,2874 @@
+[
+  {
+    "scientific_name": "Acacia decurrens",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "uses": [
+          "Curtido de pieles"
+        ],
+        "description": "La corteza es rica en taninos, utilizados tradicionalmente para el curtido de cueros.",
+        "community": "Comunidades rurales de la zona andina"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Acrocomia aculeata",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Bebidas"
+        ],
+        "description": "La pulpa se consume directamente o se procesa para hacer jugos y bebidas tradicionales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Adiantum macrophyllum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Se utiliza en infusiones para tratar afecciones respiratorias y como expectorante.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Adiantum raddianum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Usado en decocción para el alivio de la tos y problemas bronquiales.",
+        "community": "Comunidades campesinas de los Andes"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ageratina pichinchensis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada para lavar heridas y como antiinflamatorio tópico.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Alnus acuminata",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción",
+          "Leña"
+        ],
+        "description": "Utilizada tradicionalmente para la fabricación de herramientas y como combustible doméstico.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Anas platyrhynchos",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo de carne en sistemas de producción avícola.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Aniba perutilis",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Ebanistería",
+          "Construcción"
+        ],
+        "description": "Utilizada históricamente para la fabricación de muebles finos y estructuras de alta resistencia.",
+        "community": "Comunidades rurales de la región andina"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Annona cherimola",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo, preparación de jugos y postres tradicionales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Annona rensoniana",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo ocasional por comunidades locales que recolectan frutos silvestres.",
+        "community": "Comunidades rurales"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Apeiba membranacea",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Uso de la corteza en decocción para tratar afecciones cutáneas.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Apis mellifera",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "uses": [
+          "Alimentación",
+          "Medicina"
+        ],
+        "description": "Uso extendido para endulzar y como remedio para afecciones respiratorias.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Aristolochia cordiflora",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Utilizada en infusiones para tratar afecciones digestivas en zonas rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Asclepias curassavica",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada en infusiones para tratar afecciones digestivas y parásitos, aunque debe usarse con precaución por su toxicidad.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Asplundia moritziana",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Artesanías"
+        ],
+        "description": "Las fibras se utilizan para tejer sombreros y diversos objetos artesanales tradicionales.",
+        "community": "Artesanos de Caldas y el Eje Cafetero"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Astroblepus guentheri",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo local en comunidades rurales cercanas a quebradas de alta montaña.",
+        "community": "Comunidades campesinas de los Andes colombianos"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Astrocaryum malybo",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo del fruto en preparaciones locales y extracción de aceite artesanal.",
+        "community": "Comunidades rurales del Magdalena Medio"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Astyanax caucanus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo frito como pasabocas en zonas ribereñas.",
+        "community": "Pobladores de las riberas del río Cauca"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Atta cephalotes",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Gastronomía"
+        ],
+        "description": "Las reinas son consumidas tostadas en algunas regiones de Colombia como fuente de proteína.",
+        "community": "Comunidades rurales de los Andes"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Attalea amygdalina",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Extracción de aceite"
+        ],
+        "description": "El aceite de la semilla se utiliza tradicionalmente en la cocina y para fines medicinales tópicos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Attalea butyracea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Artesanías",
+          "Construcción"
+        ],
+        "description": "Las hojas son tejidas para crear techos rústicos y diversos utensilios domésticos.",
+        "community": "Comunidades rurales de Caldas y el Magdalena"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Attalea cohune",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Aceite comestible",
+          "Combustible"
+        ],
+        "description": "El aceite extraído de la semilla se utiliza para cocinar y como fuente de iluminación.",
+        "community": "Comunidades rurales de zonas tropicales"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Baccharis latifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional",
+          "Baños"
+        ],
+        "description": "Se utiliza en infusiones para problemas digestivos y en baños para aliviar inflamaciones.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Baccharis prunifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Cercas vivas",
+          "Leña"
+        ],
+        "description": "Utilizado para delimitar terrenos y como fuente de combustible de baja intensidad.",
+        "community": "Comunidades rurales andinas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Barnadesia spinosa",
+    "traditional_uses": [
+      {
+        "part": "Tallos",
+        "uses": [
+          "Cercas vivas"
+        ],
+        "description": "Sus espinas lo hacen ideal para crear barreras naturales en fincas.",
+        "community": "Campesinos de los Andes colombianos"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bellucia pentamera",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "El fruto es consumido localmente por comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bidens rubifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Infusiones"
+        ],
+        "description": "Utilizada en medicina popular para afecciones digestivas leves.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Bixa orellana",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "uses": [
+          "Condimento",
+          "Colorante"
+        ],
+        "description": "Base fundamental para dar color y sabor a platos tradicionales colombianos.",
+        "community": "Comunidades rurales de Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Boa constrictor",
+    "traditional_uses": [
+      {
+        "part": "Grasa",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "La grasa se utiliza en ungüentos para tratar dolores musculares y afecciones respiratorias.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bocconia frutescens",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Utilizado tópicamente para tratar verrugas y afecciones cutáneas.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bos taurus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación",
+          "Tracción"
+        ],
+        "description": "Fuente principal de proteína animal y fuerza de trabajo en zonas rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Brachygastra lecheguana",
+    "traditional_uses": [
+      {
+        "part": "Nido",
+        "uses": [
+          "Consumo de miel"
+        ],
+        "description": "La miel es recolectada ocasionalmente por comunidades rurales para consumo directo.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Brugmansia aurea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Uso en cataplasmas para dolores musculares, aunque con alto riesgo de toxicidad.",
+        "community": "Comunidades campesinas y tradicionales"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bulnesia arborea",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción",
+          "Artesanías"
+        ],
+        "description": "Utilizada para fabricar herramientas y piezas de ebanistería fina por su dureza.",
+        "community": "Artesanos locales"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bulnesia carrapo",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción"
+        ],
+        "description": "Uso tradicional en postes para cercas y estructuras rurales de larga duración.",
+        "community": "Comunidades rurales"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Caiman crocodilus",
+    "traditional_uses": [
+      {
+        "part": "Carne",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo ocasional de su carne en comunidades rurales cercanas a zonas ribereñas.",
+        "community": "Comunidades ribereñas del Magdalena"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cairina moschata",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación",
+          "Cría doméstica"
+        ],
+        "description": "Fuente de proteína animal tradicional en fincas campesinas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Calathea crotalifera",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Envolver alimentos"
+        ],
+        "description": "Uso tradicional para envolver tamales y otros alimentos típicos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Canis lupus familiaris",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Compañía",
+          "Pastoreo",
+          "Caza"
+        ],
+        "description": "Compañero esencial en las labores rurales y domésticas de las comunidades campesinas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Canna indica",
+    "traditional_uses": [
+      {
+        "part": "Rizoma",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "El almidón de achira es fundamental para la elaboración de los tradicionales bizcochos de achira.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Capsicum dimorphum",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Condimento"
+        ],
+        "description": "Utilizado ocasionalmente en preparaciones locales por su sabor intenso.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Carludovica palmata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Artesanías",
+          "Sombreros"
+        ],
+        "description": "Las fibras de las hojas se procesan para tejer sombreros y diversos objetos decorativos.",
+        "community": "Comunidades campesinas y artesanas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cattleya warscewiczii",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Ornamentación"
+        ],
+        "description": "Utilizada tradicionalmente en festividades religiosas y decoraciones locales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cavendishia bracteata",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizada en arreglos florales locales por su durabilidad y belleza.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cavendishia nitida",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Los frutos son consumidos ocasionalmente por comunidades locales.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Cecropia angustifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina"
+        ],
+        "description": "Infusiones para tratar afecciones respiratorias y como diurético.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cecropia peltata",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "uses": [
+          "Medicina"
+        ],
+        "description": "Uso tradicional en decocciones para regular la presión arterial.",
+        "community": "Comunidades rurales de Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cedrela odorata",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción",
+          "Ebanistería"
+        ],
+        "description": "Madera altamente valorada por su resistencia a insectos y aroma.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ceroxylon quindiuense",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Celebraciones religiosas"
+        ],
+        "description": "Históricamente usadas en el Domingo de Ramos, práctica actualmente restringida por conservación.",
+        "community": "Comunidades campesinas de Caldas y Quindío"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Chamaedorea linearis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Artesanías",
+          "Decoración"
+        ],
+        "description": "Utilizadas tradicionalmente en celebraciones religiosas y elaboración de tejidos manuales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Chamaedorea pinnatifrons",
+    "traditional_uses": [
+      {
+        "part": "Inflorescencia",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Las inflorescencias inmaduras se consumen cocidas en diversas preparaciones locales.",
+        "community": "Comunidades rurales andinas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Chelonoidis carbonaria",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo histórico de su carne en comunidades rurales, aunque actualmente restringido por leyes ambientales.",
+        "community": "Comunidades rurales de Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cinchona pubescens",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "uses": [
+          "Medicina"
+        ],
+        "description": "Uso tradicional como antipalúdico y tónico amargo.",
+        "community": "Comunidades campesinas e indígenas de los Andes"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Clavija latifolia",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo ocasional de frutos silvestres por comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Clibadium surinamense",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Pesca"
+        ],
+        "description": "Las hojas se maceran y arrojan al agua para aturdir peces.",
+        "community": "Comunidades rurales de los Andes"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Colinus cristatus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo ocasional en zonas rurales, aunque su caza está regulada.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cordia alliodora",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción",
+          "Ebanistería"
+        ],
+        "description": "Utilizada tradicionalmente para la fabricación de muebles finos y estructuras de viviendas rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Coriaria ruscifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Uso en emplastos para tratar afecciones cutáneas menores bajo conocimiento ancestral.",
+        "community": "Comunidades rurales andinas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Cortaderia nitida",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Artesanías"
+        ],
+        "description": "Uso ocasional para tejidos rústicos y amarres en construcción de cercas.",
+        "community": "Comunidades campesinas de alta montaña"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Costus pulverulentus",
+    "traditional_uses": [
+      {
+        "part": "Tallos",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Uso de infusiones para tratar afecciones renales y urinarias.",
+        "community": "Comunidades rurales de zonas tropicales"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Couma macrocarpa",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto por su pulpa dulce y nutritiva.",
+        "community": "Comunidades rurales amazónicas y andinas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Crassocephalum crepidioides",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Las hojas tiernas se consumen cocidas en sopas o ensaladas.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Croton leptostachyus",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "uses": [
+          "Medicina"
+        ],
+        "description": "El látex se utiliza tradicionalmente para cicatrizar heridas y tratar afecciones gástricas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Cyathea caracasana",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "uses": [
+          "Artesanías",
+          "Sustrato"
+        ],
+        "description": "El tronco se ha usado tradicionalmente para crear macetas o soportes para orquídeas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cyphocharax magdalenae",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo local en comunidades ribereñas como fuente de proteína.",
+        "community": "Comunidades pesqueras del río Magdalena"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Dasyloricaria paucisquama",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo local ocasional en comunidades ribereñas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Dasyprocta punctata",
+    "traditional_uses": [
+      {
+        "part": "Carne",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Fuente de proteína en zonas rurales.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Dasypus novemcinctus",
+    "traditional_uses": [
+      {
+        "part": "Carne",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo tradicional en algunas zonas rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Desfontainia spinosa",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada en infusiones para tratar afecciones digestivas en zonas rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Didelphis marsupialis",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "En algunas zonas rurales, se utiliza la grasa extraída para tratar afecciones respiratorias o dolores musculares.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Disterigma alaternoides",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Consumo directo"
+        ],
+        "description": "Los frutos son recolectados ocasionalmente por campesinos para consumo fresco.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Drimys granadensis",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada en infusiones para tratar dolores estomacales y afecciones respiratorias.",
+        "community": "Comunidades rurales de los Andes colombianos"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Eichhornia crassipes",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "uses": [
+          "Artesanías"
+        ],
+        "description": "Las fibras secas se utilizan para tejer cestas y objetos decorativos.",
+        "community": "Comunidades ribereñas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Elaeis oleifera",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Extracción de aceite para consumo doméstico tradicional.",
+        "community": "Comunidades rurales del Magdalena Medio"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Epiphyllum phyllanthus",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizada para decorar jardines y patios por su belleza nocturna.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Equisetum bogotense",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "uses": [
+          "Medicina tradicional",
+          "Limpieza"
+        ],
+        "description": "Se usa en infusiones como diurético y para limpiar utensilios metálicos por su abrasividad.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Equus asinus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Transporte de carga",
+          "Labores agrícolas"
+        ],
+        "description": "Utilizado históricamente como animal de carga en terrenos montañosos y escarpados.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Equus caballus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Transporte",
+          "Equitación"
+        ],
+        "description": "Utilizado en la arriería tradicional y como medio de transporte en fincas.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Eryngium foetidum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Gastronomía",
+          "Medicina tradicional"
+        ],
+        "description": "Utilizado como condimento y en infusiones para aliviar problemas digestivos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Eryngium humile",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada en infusiones para tratar afecciones digestivas y como diurético en zonas rurales de Caldas.",
+        "community": "Comunidades campesinas de los Andes colombianos"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Espeletia argentea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizadas en emplastos para tratar afecciones respiratorias y dolores musculares.",
+        "community": "Comunidades campesinas de alta montaña"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Espeletia pycnophylla",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Uso de las hojas en infusiones para tratar afecciones respiratorias y como cicatrizante.",
+        "community": "Comunidades campesinas de los páramos de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Euphorbia hirta",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Tratamiento de afecciones respiratorias",
+          "Problemas digestivos"
+        ],
+        "description": "Se utiliza en infusiones para aliviar la tos y malestares estomacales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ficus maxima",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "uses": [
+          "Cicatrizante",
+          "Tratamiento de verrugas"
+        ],
+        "description": "El látex se aplica tópicamente para tratar afecciones cutáneas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Fuchsia boliviana",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizada tradicionalmente para decorar jardines y espacios públicos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Galium hypocarpium",
+    "traditional_uses": [
+      {
+        "part": "Planta entera",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada en infusiones para afecciones leves de la piel.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Gaultheria anastomosans",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo ocasional de frutos silvestres por comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Geonoma maxima",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Artesanías"
+        ],
+        "description": "Uso de las hojas para la elaboración de tejidos y adornos tradicionales.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Geonoma undata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Artesanías",
+          "Decoración"
+        ],
+        "description": "Utilizada tradicionalmente para la elaboración de ramos en celebraciones religiosas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Guadua angustifolia",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "uses": [
+          "Construcción",
+          "Artesanías",
+          "Muebles"
+        ],
+        "description": "Utilizada ancestralmente para viviendas rurales y utensilios domésticos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Handroanthus chrysanthus",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Decocción de la corteza usada para tratar afecciones inflamatorias.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Hedychium coronarium",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Ornamental",
+          "Aromaterapia"
+        ],
+        "description": "Utilizada en jardinería por su fragancia intensa y belleza estética.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Helichrysum graveolens",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Artesanías",
+          "Decoración"
+        ],
+        "description": "Utilizada en la elaboración de arreglos florales secos y artesanías tradicionales.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Heliconia bihai",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Envoltura de alimentos"
+        ],
+        "description": "Las hojas se utilizan tradicionalmente para envolver tamales y otros alimentos típicos.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Helix aspersa",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Gastronomía"
+        ],
+        "description": "Consumo humano en preparaciones gourmet o tradicionales.",
+        "community": "Comunidades urbanas y rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Herpetotheres cachinnans",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Control biológico"
+        ],
+        "description": "Las comunidades campesinas valoran su presencia por el control natural de serpientes venenosas.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Hirtella americana",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción rústica"
+        ],
+        "description": "Utilizada ocasionalmente para cercas y herramientas agrícolas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Huperzia reflexa",
+    "traditional_uses": [
+      {
+        "part": "Planta entera",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizada en arreglos florales y jardinería local.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Hydrocotyle lehmannii",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Infusiones usadas para tratar afecciones digestivas leves.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Hyptis capitata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Infusiones",
+          "Lavados"
+        ],
+        "description": "Utilizada tradicionalmente para aliviar afecciones cutáneas y como antiséptico natural.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Iguana iguana",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo de carne y huevos en comunidades rurales de la costa y valles.",
+        "community": "Comunidades rurales de zonas cálidas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Inga sapindoides",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo de la pulpa algodonosa que recubre las semillas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ipomoea batatas",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo cocido o frito como acompañamiento en platos típicos.",
+        "community": "Comunidades rurales y urbanas de Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Iriartea deltoidea",
+    "traditional_uses": [
+      {
+        "part": "Tronco",
+        "uses": [
+          "Construcción"
+        ],
+        "description": "La madera del tronco se utiliza para la construcción de viviendas rurales y pisos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Jacaranda caucana",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina"
+        ],
+        "description": "Infusiones de hojas usadas tradicionalmente para afecciones de la piel.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Juglans neotropica",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Carpintería",
+          "Construcción"
+        ],
+        "description": "Madera fina muy apreciada para la fabricación de muebles de alta calidad.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Lachemilla orbiculata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Infusión medicinal"
+        ],
+        "description": "Se utiliza en medicina tradicional para tratar afecciones digestivas y como astringente.",
+        "community": "Comunidades campesinas de la zona andina de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Leuenbergeria bleo",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Infusiones utilizadas popularmente para tratar inflamaciones y problemas digestivos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Loricaria complanata",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumido ocasionalmente en sopas tradicionales por comunidades ribereñas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Lupinus colombiensis",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Tras un proceso de lavado para eliminar alcaloides, se consumen como fuente de proteína.",
+        "community": "Comunidades rurales andinas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Lycoperdon perlatum",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo fructífero",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizado en polvo para ayudar a la cicatrización de heridas menores.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Lycopodium jussiaei",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "uses": [
+          "Artesanías"
+        ],
+        "description": "Utilizado para la elaboración de arreglos florales y coronas decorativas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Macleania rupestris",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto por comunidades rurales debido a su sabor dulce.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Macrobrachium",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Captura artesanal para consumo local en sancochos y platos típicos.",
+        "community": "Comunidades ribereñas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Marattia laevis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizado ocasionalmente en jardinería especializada por su aspecto arcaico.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Matisia cordata",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto maduro o en jugos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Mazama americana",
+    "traditional_uses": [
+      {
+        "part": "Piel",
+        "uses": [
+          "Artesanías"
+        ],
+        "description": "Uso histórico en la elaboración de elementos de carga.",
+        "community": "Comunidades rurales de la cordillera"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Melipona nigrescens",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "uses": [
+          "Medicina tradicional",
+          "Alimento"
+        ],
+        "description": "La miel se utiliza para tratar afecciones respiratorias y oculares.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Momordica charantia",
+    "traditional_uses": [
+      {
+        "part": "Hojas y fruto",
+        "uses": [
+          "Medicina",
+          "Infusiones"
+        ],
+        "description": "Se usa en infusión para tratar parásitos intestinales y controlar niveles de azúcar en sangre.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Monnina salicifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Limpieza",
+          "Cosmética"
+        ],
+        "description": "Utilizado tradicionalmente como sustituto del jabón por sus propiedades saponinas.",
+        "community": "Comunidades rurales de los Andes"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Morella pubescens",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Velas",
+          "Iluminación"
+        ],
+        "description": "La cera extraída de los frutos se utiliza tradicionalmente para la fabricación de velas artesanales.",
+        "community": "Comunidades campesinas de los Andes colombianos"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Mucuna pruriens",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada en infusiones para tratar afecciones neurológicas y como tónico general.",
+        "community": "Comunidades rurales de Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Muntingia calabura",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto fresco por su sabor dulce y agradable.",
+        "community": "Comunidades rurales y urbanas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Mutisia clematis",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizada en infusiones para tratar afecciones respiratorias y como antiinflamatorio.",
+        "community": "Comunidades campesinas de los Andes"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Myrrhidendron pennellii",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Utilizada en infusiones para tratar afecciones respiratorias en comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Nephrolepis cordifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizado ampliamente en la decoración de interiores y jardinería local.",
+        "community": "Comunidades campesinas y urbanas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Odocoileus virginianus",
+    "traditional_uses": [
+      {
+        "part": "Piel",
+        "uses": [
+          "Artesanías"
+        ],
+        "description": "Uso histórico en la elaboración de elementos de cuero por comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Oenocarpus minor",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo del fruto en jugos y bebidas tradicionales.",
+        "community": "Comunidades rurales de Caldas y el Magdalena Medio"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Oncorhynchus mykiss",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo habitual en zonas rurales y turísticas de Caldas, especialmente en municipios como Santa Rosa de Cabal.",
+        "community": "Comunidades campesinas y turísticas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Oreopanax glabrifolius",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Infusiones utilizadas popularmente para tratar afecciones respiratorias leves.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pachira speciosa",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Las semillas son consumidas tostadas o cocidas por comunidades locales.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Paraponera clavata",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Rituales de iniciación"
+        ],
+        "description": "Utilizada en ritos de paso por comunidades indígenas amazónicas, aunque su uso no es tradicional en Caldas.",
+        "community": "Comunidades indígenas amazónicas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Parodon magdalenensis",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumido localmente por comunidades ribereñas en preparaciones tradicionales.",
+        "community": "Comunidades ribereñas del río Magdalena en Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora adenopoda",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo fresco del fruto silvestre por habitantes rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora alata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Infusiones para tratar el insomnio y la ansiedad.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora antioquiensis",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Preparación de jugos y postres tradicionales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora capsularis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Infusiones"
+        ],
+        "description": "Utilizada ocasionalmente en medicina tradicional para tratar afecciones nerviosas leves.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora cumbalensis",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo o en jugos por comunidades campesinas de alta montaña.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora maliformis",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Bebidas"
+        ],
+        "description": "Consumo fresco y preparación de jugos y postres tradicionales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora mixta",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo ocasional por caminantes y campesinos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora mollissima",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Medicina"
+        ],
+        "description": "Base para jugos, postres y remedios caseros para la digestión.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pernettya prostrata",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimenticio"
+        ],
+        "description": "Los frutos son consumidos ocasionalmente por comunidades locales en mermeladas o frescos.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Persea americana",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Infusiones",
+          "Medicina tradicional"
+        ],
+        "description": "Uso de las hojas en infusión para tratar problemas digestivos y como antihipertensivo.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Phytolacca bogotensis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Se utiliza en cataplasmas para desinflamar golpes y tratar afecciones cutáneas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Phytolacca rivinoides",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Tintura"
+        ],
+        "description": "El jugo de los frutos se ha usado tradicionalmente como colorante natural.",
+        "community": "Comunidades rurales andinas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper aequale",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Utilizado en infusiones para tratar problemas digestivos y como antiséptico local.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Piper arboreum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicinal"
+        ],
+        "description": "Uso tradicional en baños para aliviar dolores musculares y reumatismo.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper auritum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Gastronomía",
+          "Medicina tradicional"
+        ],
+        "description": "Se usa para envolver alimentos y tratar inflamaciones digestivas.",
+        "community": "Comunidades rurales de Caldas y el Eje Cafetero"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper lanceifolium",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Uso tópico para aliviar dolores musculares y afecciones cutáneas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Piper marginatum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional",
+          "Aromatizante"
+        ],
+        "description": "Utilizado en infusiones para problemas digestivos y como condimento.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper peltatum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Aplicación de hojas frescas para tratar heridas leves.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Pistia stratiotes",
+    "traditional_uses": [
+      {
+        "part": "Planta entera",
+        "uses": [
+          "Fitorremediación"
+        ],
+        "description": "Utilizada para la limpieza de aguas residuales debido a su capacidad de absorber metales pesados.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Plantago rigida",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Infusiones"
+        ],
+        "description": "Uso ocasional en medicina tradicional para afecciones respiratorias.",
+        "community": "Comunidades campesinas de alta montaña en Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pleroma urvilleanum",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "uses": [
+          "Cercas vivas"
+        ],
+        "description": "Utilizada para delimitar terrenos debido a su resistencia.",
+        "community": "Campesinos de la zona cafetera"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pleurotus djamor",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumido en preparaciones culinarias locales por su textura carnosa.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Podocnemis lewyana",
+    "traditional_uses": [
+      {
+        "part": "Huevos",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo tradicional de huevos en comunidades ribereñas, práctica actualmente restringida por leyes ambientales.",
+        "community": "Comunidades ribereñas del Magdalena"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Potentilla indica",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizada ocasionalmente en jardinería por su apariencia decorativa.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pourouma bicolor",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto fresco por comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Psammisia pennellii",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Frutos silvestres consumidos ocasionalmente por comunidades locales.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Psilocybe cubensis",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Rituales ancestrales",
+          "Medicina tradicional"
+        ],
+        "description": "Utilizado en contextos ceremoniales por comunidades indígenas y locales en diversas regiones de Colombia.",
+        "community": "Comunidades rurales y grupos de medicina ancestral"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pycnoporus sanguineus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Utilizado en algunas zonas rurales como cicatrizante tópico.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Quercus humboldtii",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción",
+          "Artesanías"
+        ],
+        "description": "Históricamente usada para vigas y herramientas agrícolas por su gran dureza.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rana catesbeiana",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo de sus ancas en preparaciones gastronómicas.",
+        "community": "Comunidades rurales y sector gastronómico"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Renealmia cernua",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Envoltura de alimentos"
+        ],
+        "description": "Uso tradicional para envolver tamales y otros alimentos cocidos al vapor.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Retrophyllum rospigliosii",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción",
+          "Carpintería"
+        ],
+        "description": "Madera de alta calidad utilizada históricamente en ebanistería fina.",
+        "community": "Comunidades rurales de la zona andina"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ricinus communis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Antiinflamatorio",
+          "Analgésico"
+        ],
+        "description": "Las hojas se calientan y aplican tópicamente para aliviar dolores musculares y reumatismo.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rubus adenotrichos",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo o en jugos por comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rubus floribundus",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Recolección para consumo local.",
+        "community": "Campesinos de la zona andina"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Rubus glaucus",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Medicina"
+        ],
+        "description": "Uso en jugos, postres y como remedio casero para la garganta.",
+        "community": "General en Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rubus robustus",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "uses": [
+          "Cercas vivas"
+        ],
+        "description": "Uso de la planta como barrera natural debido a sus espinas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Salvia carnea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Infusiones"
+        ],
+        "description": "Utilizada en medicina tradicional para aliviar dolores estomacales y como antiséptico.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Saracha quitensis",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto maduro por comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Schizophyllum commune",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumido en algunas regiones rurales tras cocción adecuada.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Sechium edule",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Medicina tradicional"
+        ],
+        "description": "Consumido en sopas y guisos, y utilizado en infusiones para controlar la presión arterial.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Senna multiglandulosa",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina"
+        ],
+        "description": "Utilizadas tradicionalmente como purgante suave en infusiones.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Serjania mexicana",
+    "traditional_uses": [
+      {
+        "part": "Raíces",
+        "uses": [
+          "Pesca artesanal"
+        ],
+        "description": "Utilizada tradicionalmente como ictiotóxico para aturdir peces en ríos.",
+        "community": "Comunidades rurales de los Andes"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Sicalis flaveola",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Mascota"
+        ],
+        "description": "Históricamente capturado para ser mantenido en cautiverio por su canto, aunque esta práctica está regulada y desaconsejada.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Simira cordifolia",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción"
+        ],
+        "description": "Utilizada ocasionalmente para postes o herramientas menores debido a la resistencia de su madera.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Smilax tomentosa",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "uses": [
+          "Depurativo",
+          "Antiinflamatorio"
+        ],
+        "description": "Se utiliza en infusiones para limpiar la sangre y tratar afecciones articulares.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Solanum quitoense",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Refrescante"
+        ],
+        "description": "Consumo directo en jugos y batidos por su alto contenido de vitamina C.",
+        "community": "General en Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Solanum tuberosum",
+    "traditional_uses": [
+      {
+        "part": "Tubérculo",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Base de la dieta andina, utilizada en sopas, guisos y preparaciones tradicionales.",
+        "community": "Comunidades rurales andinas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Spermacoce capitata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Antiséptico"
+        ],
+        "description": "Uso ocasional en medicina popular para lavar heridas externas.",
+        "community": "Comunidades rurales"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Spondias mombin",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación",
+          "Bebidas"
+        ],
+        "description": "El fruto se consume fresco o en jugos, siendo muy popular en la dieta rural.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Spondias purpurea",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto maduro como snack tradicional.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Stemmadenia grandiflora",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "El látex se ha utilizado localmente para tratar afecciones cutáneas.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Streptosolen jamesonii",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Ornamental"
+        ],
+        "description": "Utilizada tradicionalmente en jardines campesinos de Caldas por su belleza.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Suillus luteus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumido en preparaciones culinarias tras retirar la cutícula viscosa.",
+        "community": "Comunidades rurales con plantaciones forestales"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Taraxacum officinale",
+    "traditional_uses": [
+      {
+        "part": "Hojas y raíz",
+        "uses": [
+          "Infusiones",
+          "Diurético"
+        ],
+        "description": "Utilizada en medicina popular para limpiar el hígado y como diurético suave.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Tetragonisca angustula",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "uses": [
+          "Medicina tradicional",
+          "Endulzante"
+        ],
+        "description": "La miel se utiliza para tratar afecciones oculares y respiratorias en comunidades rurales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Theobroma cacao",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "uses": [
+          "Alimentación",
+          "Bebida ritual"
+        ],
+        "description": "Preparación de bebidas calientes tradicionales y uso en repostería local.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Tibouchina mollis",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Cercas",
+          "Leña"
+        ],
+        "description": "Uso tradicional en zonas rurales para delimitación de predios.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Toxicodendron striatum",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "uses": [
+          "Construcción rústica"
+        ],
+        "description": "Utilizada ocasionalmente por su resistencia, aunque con precaución por su toxicidad.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trichanthera gigantea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Forraje",
+          "Medicina veterinaria"
+        ],
+        "description": "Utilizado para alimentar ganado y tratar afecciones digestivas en animales.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trifolium pratense",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "uses": [
+          "Infusiones"
+        ],
+        "description": "Utilizado en medicina popular para afecciones respiratorias.",
+        "community": "Comunidades rurales andinas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trigona fulviventris",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "uses": [
+          "Medicina",
+          "Alimentación"
+        ],
+        "description": "Utilizada para tratar problemas oculares y respiratorios.",
+        "community": "Comunidades campesinas e indígenas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trophis caucana",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "El látex se ha utilizado en algunas comunidades rurales para tratar afecciones cutáneas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Turnera subulata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Infusiones utilizadas popularmente para tratar afecciones digestivas leves.",
+        "community": "Comunidades rurales de Caldas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ugni myricoides",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "uses": [
+          "Alimentación"
+        ],
+        "description": "Consumo directo del fruto silvestre por comunidades locales.",
+        "community": "Comunidades campesinas de alta montaña"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Valeriana pilosa",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "uses": [
+          "Sedante",
+          "Relajante"
+        ],
+        "description": "Uso tradicional en infusiones para tratar el insomnio y la ansiedad.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Vultur gryphus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "uses": [
+          "Símbolo cultural"
+        ],
+        "description": "Representación sagrada y de identidad para comunidades indígenas y campesinas andinas.",
+        "community": "Comunidades andinas de Colombia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Zantedeschia aethiopica",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "uses": [
+          "Medicina tradicional"
+        ],
+        "description": "Se utilizan las hojas ligeramente calentadas para tratar inflamaciones externas.",
+        "community": "Comunidades campesinas de Caldas"
+      }
+    ],
+    "confidence": "high"
+  }
+]

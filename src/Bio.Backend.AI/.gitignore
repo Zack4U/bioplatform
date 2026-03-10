@@ -82,3 +82,5 @@ data/processed/val*
 #data/evaluation*
 #data/comparation
 *.rar
+data/reports*
+#data/species_catalog
