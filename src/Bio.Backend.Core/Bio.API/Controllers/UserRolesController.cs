@@ -7,12 +7,14 @@ using Bio.Application.Features.UserRoles.Queries.GetUserRolesByRoleId;
 using Bio.Application.Features.UserRoles.Queries.GetUserRolesByRoleName;
 using Bio.Application.Features.UserRoles.Queries.GetUserRolesByUserId;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bio.API.Controllers;
 
 /// <summary>
 /// Dedicated controller for independent user-role management using MediatR.
 /// </summary>
+[Authorize(Roles = "ADMIN")]
 [ApiController]
 [Route("api/user-roles")]
 [Produces("application/json")]

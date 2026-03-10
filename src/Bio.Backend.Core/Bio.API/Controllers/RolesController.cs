@@ -7,12 +7,14 @@ using Bio.Application.Features.Roles.Queries.GetAllRoles;
 using Bio.Application.Features.Roles.Queries.GetRoleById;
 using Bio.Application.Features.Roles.Queries.GetRoleByName;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bio.API.Controllers;
 
 /// <summary>
 /// Controller for managing security roles using MediatR.
 /// </summary>
+[Authorize(Roles = "ADMIN")]
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
