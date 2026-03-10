@@ -59,4 +59,3 @@ public class AuthController : ControllerBase
     }
 }
 
-public record RefreshRequestDTO(string AccessToken, string RefreshToken);

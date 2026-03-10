@@ -15,6 +15,8 @@ public class CreateUserHandlerTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IPasswordHasher> _passwordHasherMock;
+    private readonly Mock<IRoleRepository> _roleRepositoryMock;
+    private readonly Mock<IUserRoleRepository> _userRoleRepositoryMock;
     private readonly CreateUserHandler _handler;
 
     /// <summary>
@@ -24,7 +26,13 @@ public class CreateUserHandlerTests
     {
         _userRepositoryMock = new Mock<IUserRepository>();
         _passwordHasherMock = new Mock<IPasswordHasher>();
-        _handler = new CreateUserHandler(_userRepositoryMock.Object, _passwordHasherMock.Object);
+        _roleRepositoryMock = new Mock<IRoleRepository>();
+        _userRoleRepositoryMock = new Mock<IUserRoleRepository>();
+        _handler = new CreateUserHandler(
+            _userRepositoryMock.Object,
+            _passwordHasherMock.Object,
+            _roleRepositoryMock.Object,
+            _userRoleRepositoryMock.Object);
 
         // Default: password hasher returns a valid hash/salt pair
         _passwordHasherMock
