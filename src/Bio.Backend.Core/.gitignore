@@ -31,3 +31,9 @@ artifacts/
 appsettings.Development.json
 appsettings.Production.json
 appsettings.Staging.json
+
+# ===========================================
+# Migraciones
+# ===========================================
+Migrations/
+Migrations*

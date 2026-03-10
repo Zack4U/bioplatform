@@ -6,7 +6,7 @@ public class Species
     public int? TaxonomyId { get; private set; }
     public string Slug { get; private set; } = string.Empty;
     public string ScientificName { get; private set; } = string.Empty;
-    public string? CommonName { get; private set; }
+    public List<string> CommonNames { get; private set; } = new();
     public string? Description { get; private set; }
     public string? EcologicalInfo { get; private set; }
     public string? TraditionalUses { get; private set; }
