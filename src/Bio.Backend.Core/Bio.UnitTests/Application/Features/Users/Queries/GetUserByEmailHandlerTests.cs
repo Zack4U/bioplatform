@@ -1,5 +1,6 @@
 using Bio.Application.Features.Users.Queries.GetUserByEmail;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -49,20 +50,20 @@ public class GetUserByEmailHandlerTests
         }
 
         /// <summary>
-        /// Verifies that null is returned when the email does not exist.
+        /// Verifies that a NotFoundException is thrown when the user email does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnNull_When_EmailDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_EmailDoesNotExist()
         {
             // Arrange
             var email = "missing@example.com";
             _userRepositoryMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync((User?)null);
 
             // Act
-            var result = await _handler.Handle(new GetUserByEmailQuery(email), CancellationToken.None);
+            var act = async () => await _handler.Handle(new GetUserByEmailQuery(email), CancellationToken.None);
 
             // Assert
-            result.Should().BeNull();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }

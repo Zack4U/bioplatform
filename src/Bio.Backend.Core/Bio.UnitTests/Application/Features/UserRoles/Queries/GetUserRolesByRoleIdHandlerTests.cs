@@ -1,5 +1,6 @@
 using Bio.Application.Features.UserRoles.Queries.GetUserRolesByRoleId;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using Bio.Domain.ReadModels;
 using FluentAssertions;
@@ -33,17 +34,17 @@ public class GetUserRolesByRoleIdHandlerTests
     public class Handle : GetUserRolesByRoleIdHandlerTests
     {
         /// <summary>
-        /// Verifies that a list of user assignments is returned when the role exists.
+        /// Verifies that a list of user assignments is returned when the role ID exists.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnUsers_When_RoleExists()
+        public async Task Should_ReturnUsers_When_RoleIdExists()
         {
             // Arrange
             var roleId = Guid.NewGuid();
             var role = new Role(roleId, "ADMIN", "Admin Role");
             var details = new List<UserRoleDetail>
             {
-                new() { UserId = Guid.NewGuid(), UserEmail = "alice@example.com", RoleId = roleId, RoleName = "ADMIN", AssignedAt = DateTime.UtcNow }
+                new() { UserId = Guid.NewGuid(), UserEmail = "admin@example.com", RoleId = roleId, RoleName = "ADMIN", AssignedAt = DateTime.UtcNow }
             };
 
             _roleRepositoryMock.Setup(r => r.GetByIdAsync(roleId)).ReturnsAsync(role);
@@ -54,14 +55,14 @@ public class GetUserRolesByRoleIdHandlerTests
 
             // Assert
             result.Should().HaveCount(1);
-            result.Should().Contain(r => r.UserEmail == "alice@example.com");
+            result.Should().Contain(r => r.RoleName == "ADMIN");
         }
 
         /// <summary>
-        /// Verifies that an empty list is returned when the role exists but has no users assigned.
+        /// Verifies that an empty list is returned when the role ID exists but no users have it assigned.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnEmptyList_When_RoleExistsButHasNoAssignments()
+        public async Task Should_ReturnEmptyList_When_RoleIdExistsButHasNoAssignments()
         {
             // Arrange
             var roleId = Guid.NewGuid();
@@ -78,10 +79,10 @@ public class GetUserRolesByRoleIdHandlerTests
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the role does not exist.
+        /// Verifies that a NotFoundException is thrown when the role does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_RoleDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_RoleDoesNotExist()
         {
             // Arrange
             var roleId = Guid.NewGuid();
@@ -91,8 +92,8 @@ public class GetUserRolesByRoleIdHandlerTests
             Func<Task> act = async () => await _handler.Handle(new GetUserRolesByRoleIdQuery(roleId), CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"*{roleId}*");
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"*Role*{roleId}*not found*");
         }
     }
 }

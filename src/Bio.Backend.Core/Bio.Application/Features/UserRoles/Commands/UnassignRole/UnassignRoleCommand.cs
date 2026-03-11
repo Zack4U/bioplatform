@@ -1,3 +1,4 @@
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
@@ -19,7 +20,7 @@ public class UnassignRoleHandler : IRequestHandler<UnassignRoleCommand>
         var userRole = await _userRoleRepository.GetByIdsAsync(request.UserId, request.RoleId);
         if (userRole == null)
         {
-            throw new KeyNotFoundException($"Assignment for User {request.UserId} and Role {request.RoleId} not found.");
+            throw new NotFoundException($"Assignment for User {request.UserId} and Role {request.RoleId} not found.");
         }
 
         await _userRoleRepository.DeleteAsync(userRole);

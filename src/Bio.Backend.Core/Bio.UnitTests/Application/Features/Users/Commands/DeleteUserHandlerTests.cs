@@ -1,5 +1,6 @@
 using Bio.Application.Features.Users.Commands.DeleteUser;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -30,10 +31,10 @@ public class DeleteUserHandlerTests
     public class Handle : DeleteUserHandlerTests
     {
         /// <summary>
-        /// Verifies that a user is successfully deleted and true is returned when the user exists.
+        /// Verifies that a user is successfully deleted when the user exists.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnTrue_When_UserExistsAndIsDeleted()
+        public async Task Should_Delete_When_UserExists()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -42,19 +43,18 @@ public class DeleteUserHandlerTests
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
 
             // Act
-            var result = await _handler.Handle(new DeleteUserCommand(userId), CancellationToken.None);
+            await _handler.Handle(new DeleteUserCommand(userId), CancellationToken.None);
 
             // Assert
-            result.Should().BeTrue();
             _userRepositoryMock.Verify(r => r.DeleteAsync(user), Times.Once);
             _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
 
         /// <summary>
-        /// Verifies that false is returned when the user to delete does not exist.
+        /// Verifies that a NotFoundException is thrown when attempting to delete a non-existent user.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnFalse_When_UserDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_UserDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -62,10 +62,10 @@ public class DeleteUserHandlerTests
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync((User?)null);
 
             // Act
-            var result = await _handler.Handle(new DeleteUserCommand(userId), CancellationToken.None);
+            var act = async () => await _handler.Handle(new DeleteUserCommand(userId), CancellationToken.None);
 
             // Assert
-            result.Should().BeFalse();
+            await act.Should().ThrowAsync<NotFoundException>();
             _userRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<User>()), Times.Never);
             _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
         }

@@ -32,13 +32,12 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, RoleResponse
         await _roleRepository.AddAsync(role);
         await _roleRepository.SaveChangesAsync();
 
-        return new RoleResponseDTO
-        {
-            Id = role.Id,
-            Name = role.Name,
-            Description = role.Description,
-            CreatedAt = role.CreatedAt,
-            UpdatedAt = role.UpdatedAt
-        };
+        return new RoleResponseDTO(
+            role.Id,
+            role.Name,
+            role.Description,
+            role.CreatedAt,
+            role.UpdatedAt
+        );
     }
 }

@@ -11,11 +11,19 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IRoleRepository _roleRepository;
+    private readonly IUserRoleRepository _userRoleRepository;
 
-    public CreateUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
+    public CreateUserHandler(
+        IUserRepository userRepository,
+        IPasswordHasher passwordHasher,
+        IRoleRepository roleRepository,
+        IUserRoleRepository userRoleRepository)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _roleRepository = roleRepository;
+        _userRoleRepository = userRoleRepository;
     }
 
     public async Task<UserResponseDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -49,17 +57,25 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
 
         // 4. Persistence
         await _userRepository.AddAsync(user);
+
+        // 5. Automatic Role Assignment (Buyer)
+        var buyerRole = await _roleRepository.GetByNameAsync("Buyer");
+        if (buyerRole != null)
+        {
+            var userRole = new UserRole(user.Id, buyerRole.Id);
+            await _userRoleRepository.AddAsync(userRole);
+        }
+
         await _userRepository.SaveChangesAsync();
 
-        // 5. Response
-        return new UserResponseDTO
-        {
-            Id = user.Id,
-            FullName = user.FullName,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
-        };
+        // 6. Response
+        return new UserResponseDTO(
+            user.Id,
+            user.FullName,
+            user.Email,
+            user.PhoneNumber,
+            user.CreatedAt,
+            user.UpdatedAt
+        );
     }
 }

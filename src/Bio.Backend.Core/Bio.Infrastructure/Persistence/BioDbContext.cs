@@ -37,6 +37,18 @@ public class BioDbContext : DbContext
     /// Executed when the model for the context is being initialized.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Token).IsRequired().HasMaxLength(500);
+            entity.HasIndex(e => e.Token);
+
+            entity.HasOne(rt => rt.User)
+                .WithMany()
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             // Define the primary key
@@ -44,7 +56,7 @@ public class BioDbContext : DbContext
 
             // Integrity and length rules for fields
             entity.Property(e => e.FullName).IsRequired().HasMaxLength(150);
-            entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
             entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(500);
             entity.Property(e => e.Salt).IsRequired().HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
@@ -82,16 +94,7 @@ public class BioDbContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // RefreshTokens
-        modelBuilder.Entity<RefreshToken>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.Token);
-            entity.HasOne(e => e.User)
-                  .WithMany()
-                  .HasForeignKey(e => e.UserId)
-                  .OnDelete(DeleteBehavior.Cascade);
-        });
+
 
         // ProductCategories
         modelBuilder.Entity<ProductCategory>(entity =>

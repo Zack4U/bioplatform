@@ -13,11 +13,7 @@ public class RoleCreateDTOTests
     /// <summary>
     /// Creates a valid RoleCreateDTO instance for testing purposes.
     /// </summary>
-    private RoleCreateDTO CreateValidDTO() => new()
-    {
-        Name = "ADMIN",
-        Description = "System Administrator"
-    };
+    private RoleCreateDTO CreateValidDTO() => new("ADMIN", "System Administrator");
 
     /// <summary>
     /// Verifies that a valid RoleCreateDTO instance does not have any validation errors.
@@ -42,8 +38,7 @@ public class RoleCreateDTOTests
     public void MissingName_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Name = string.Empty;
+        var dto = CreateValidDTO() with { Name = string.Empty };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -59,8 +54,7 @@ public class RoleCreateDTOTests
     public void NameTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Name = new string('A', 101);
+        var dto = CreateValidDTO() with { Name = new string('A', 101) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -76,8 +70,7 @@ public class RoleCreateDTOTests
     public void DescriptionTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Description = new string('A', 2001);
+        var dto = CreateValidDTO() with { Description = new string('A', 2001) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -87,17 +80,13 @@ public class RoleCreateDTOTests
     }
 
     /// <summary>
-    /// Verifies that a RoleCreateDTO with both name and description exceeding the maximum length has validation errors.
+    /// Verifies that a RoleCreateDTO with both name and description exceeding maximum lengths has multiple validation errors.
     /// </summary>
     [Fact]
     public void BothNameAndDescriptionTooLong_ShouldHaveValidationErrors()
     {
         // Arrange
-        var dto = new RoleCreateDTO
-        {
-            Name = new string('A', 101),
-            Description = new string('B', 2001)
-        };
+        var dto = new RoleCreateDTO(new string('A', 101), new string('B', 2001));
 
         // Act
         var results = ValidationHelper.Validate(dto);

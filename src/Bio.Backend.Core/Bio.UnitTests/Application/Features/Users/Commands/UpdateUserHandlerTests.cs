@@ -1,6 +1,7 @@
 using Bio.Application.DTOs;
 using Bio.Application.Features.Users.Commands.UpdateUser;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -39,12 +40,7 @@ public class UpdateUserHandlerTests
             // Arrange
             var userId = Guid.NewGuid();
             var existingUser = new User(userId, "Old Name", "old@example.com", "h", "s", "+111");
-            var dto = new UserUpdateDTO
-            {
-                FullName = "New Name",
-                Email = "new@example.com",
-                PhoneNumber = "+999"
-            };
+            var dto = new UserUpdateDTO("New Name", "new@example.com", "+999");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
@@ -62,23 +58,23 @@ public class UpdateUserHandlerTests
         }
 
         /// <summary>
-        /// Verifies that null is returned when the user ID does not exist.
+        /// Verifies that a NotFoundException is thrown when attempting to update a non-existent user.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnNull_When_UserDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_UserDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var dto = new UserUpdateDTO { FullName = "Name", Email = "email@test.com", PhoneNumber = "+1" };
+            var dto = new UserUpdateDTO("Name", "email@test.com", "+1");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync((User?)null);
 
             // Act
-            var result = await _handler.Handle(command, CancellationToken.None);
+            var act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            result.Should().BeNull();
+            await act.Should().ThrowAsync<NotFoundException>();
             _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
         }
 
@@ -92,7 +88,7 @@ public class UpdateUserHandlerTests
             var userId = Guid.NewGuid();
             var existingUser = new User(userId, "User", "user@example.com", "h", "s");
             var conflictUser = new User(Guid.NewGuid(), "Other", "conflict@example.com", "h", "s");
-            var dto = new UserUpdateDTO { FullName = "User", Email = "conflict@example.com", PhoneNumber = "+1" };
+            var dto = new UserUpdateDTO("User", "conflict@example.com", "+1");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
@@ -117,7 +113,7 @@ public class UpdateUserHandlerTests
             var userId = Guid.NewGuid();
             var existingUser = new User(userId, "User", "user@example.com", "h", "s", "+111");
             var conflictUser = new User(Guid.NewGuid(), "Other", "other@example.com", "h", "s", "+999");
-            var dto = new UserUpdateDTO { FullName = "User", Email = "user@example.com", PhoneNumber = "+999" };
+            var dto = new UserUpdateDTO("User", "user@example.com", "+999");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);

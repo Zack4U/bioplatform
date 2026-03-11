@@ -1,5 +1,6 @@
 using Bio.Application.Features.Roles.Queries.GetRoleById;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -55,10 +56,10 @@ public class GetRoleByIdHandlerTests
         }
 
         /// <summary>
-        /// Verifies that null is returned when the role ID does not exist.
+        /// Verifies that a NotFoundException is thrown when the role ID does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnNull_When_IdDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_IdDoesNotExist()
         {
             // Arrange
             var roleId = Guid.NewGuid();
@@ -67,10 +68,10 @@ public class GetRoleByIdHandlerTests
                 .ReturnsAsync((Role?)null);
 
             // Act
-            var result = await _handler.Handle(new GetRoleByIdQuery(roleId), CancellationToken.None);
+            var act = async () => await _handler.Handle(new GetRoleByIdQuery(roleId), CancellationToken.None);
 
             // Assert
-            result.Should().BeNull();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }

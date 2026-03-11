@@ -1,5 +1,6 @@
 using Bio.Application.Features.UserRoles.Queries.GetUserRolesByRoleName;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using Bio.Domain.ReadModels;
 using FluentAssertions;
@@ -80,10 +81,10 @@ public class GetUserRolesByRoleNameHandlerTests
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the role name does not exist.
+        /// Verifies that a NotFoundException is thrown when the role name does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_RoleNameDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_RoleNameDoesNotExist()
         {
             // Arrange
             var roleName = "NonExistent";
@@ -94,8 +95,8 @@ public class GetUserRolesByRoleNameHandlerTests
             Func<Task> act = async () => await _handler.Handle(new GetUserRolesByRoleNameQuery(roleName), CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"*{roleName}*");
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"*Role*{roleName}*not found*");
         }
     }
 }

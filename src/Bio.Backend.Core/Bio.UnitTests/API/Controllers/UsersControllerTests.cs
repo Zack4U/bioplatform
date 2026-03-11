@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Moq;
 using Xunit;
+using System.Security.Claims;
 
 namespace Bio.UnitTests.API.Controllers;
 
@@ -38,6 +39,22 @@ public class UsersControllerTests
         _usersController = new UsersController(_mediatorMock.Object);
     }
 
+    private void MockUser(Guid userId, string role = "USER")
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Role, role)
+        };
+        var identity = new ClaimsIdentity(claims, "TestAuthType");
+        var claimsPrincipal = new ClaimsPrincipal(identity);
+
+        _usersController.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+        };
+    }
+
     public class CreateUser : UsersControllerTests
     {
         /// <summary>
@@ -47,8 +64,8 @@ public class UsersControllerTests
         public async Task ValidData_ShouldReturnCreated()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "test@test.com", Password = "Pass123!", PhoneNumber = "123" };
-            var responseDto = new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test", Email = "test@test.com", PhoneNumber = "123" };
+            var dto = new UserCreateDTO("Test", "test@test.com", "123", "Pass123!");
+            var responseDto = new UserResponseDTO(Guid.NewGuid(), "Test", "test@test.com", "123", DateTime.UtcNow);
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ReturnsAsync(responseDto);
@@ -63,60 +80,57 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a duplicate email user creation request returns a 409 Conflict response.
+        /// Verifies that a duplicate email user creation request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicateEmail_ShouldReturnConflict()
+        public async Task DuplicateEmail_ShouldThrowConflictException()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "duplicate@test.com", Password = "Pass123!" };
+            var dto = new UserCreateDTO("Test", "duplicate@test.com", string.Empty, "Pass123!");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("User with email already exists."));
 
             // Act
-            var result = await _usersController.CreateUser(dto);
+            var act = async () => await _usersController.CreateUser(dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that a duplicate phone number user creation request returns a 409 Conflict response.
+        /// Verifies that a duplicate phone number user creation request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicatePhone_ShouldReturnConflict()
+        public async Task DuplicatePhone_ShouldThrowConflictException()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "test@test.com", Password = "Pass123!", PhoneNumber = "555555" };
+            var dto = new UserCreateDTO("Test", "test@test.com", "555555", "Pass123!");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("User with phone number already exists."));
 
             // Act
-            var result = await _usersController.CreateUser(dto);
+            var act = async () => await _usersController.CreateUser(dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that a request with both duplicate email and phone number returns a 409 Conflict response.
+        /// Verifies that a request with both duplicate email and phone number throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task BothEmailAndPhoneDuplicate_ShouldReturnConflict()
+        public async Task BothEmailAndPhoneDuplicate_ShouldThrowConflictException()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "dup@test.com", Password = "Pass123!", PhoneNumber = "555" };
+            var dto = new UserCreateDTO("Test", "dup@test.com", "555", "Pass123!");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("User with email or phone already exists."));
 
             // Act
-            var result = await _usersController.CreateUser(dto);
+            var act = async () => await _usersController.CreateUser(dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
     }
 
@@ -131,8 +145,8 @@ public class UsersControllerTests
             // Arrange
             var users = new List<UserResponseDTO>
             {
-                new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test1" },
-                new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test2" }
+                new UserResponseDTO(Guid.NewGuid(), "Test1", "1@t.com", "1", DateTime.UtcNow),
+                new UserResponseDTO(Guid.NewGuid(), "Test2", "2@t.com", "2", DateTime.UtcNow)
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllUsersQuery>(), default))
                 .ReturnsAsync(users);
@@ -156,7 +170,7 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var user = new UserResponseDTO { Id = id, FullName = "Test1" };
+            var user = new UserResponseDTO(id, "John Doe", "john@test.com", "123", DateTime.UtcNow);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByIdQuery>(), default))
                 .ReturnsAsync(user);
 
@@ -169,21 +183,21 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user id get request returns a 404 Not Found response.
+        /// Verifies that a non-existing user ID request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExistingUser_ShouldReturnNotFound()
+        public async Task NonExistingUser_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByIdQuery>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
+                .ThrowsAsync(new NotFoundException("User", id));
 
             // Act
-            var result = await _usersController.GetUserById(id);
+            var act = async () => await _usersController.GetUserById(id);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -197,7 +211,7 @@ public class UsersControllerTests
         {
             // Arrange
             var email = "test@example.com";
-            var user = new UserResponseDTO { Id = Guid.NewGuid(), Email = email };
+            var user = new UserResponseDTO(Guid.NewGuid(), "Test", email, "123", DateTime.UtcNow);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByEmailQuery>(), default))
                 .ReturnsAsync(user);
 
@@ -210,20 +224,21 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user email get request returns a 404 Not Found response.
+        /// Verifies that a non-existing user email request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
+            var email = "missing@example.com";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByEmailQuery>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
+                .ThrowsAsync(new NotFoundException("User", email));
 
             // Act
-            var result = await _usersController.GetUserByEmail("missing@example.com");
+            var act = async () => await _usersController.GetUserByEmail(email);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -237,7 +252,7 @@ public class UsersControllerTests
         {
             // Arrange
             var phone = "123456789";
-            var user = new UserResponseDTO { Id = Guid.NewGuid(), PhoneNumber = phone };
+            var user = new UserResponseDTO(Guid.NewGuid(), "Test", "t@t.com", phone, DateTime.UtcNow);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByPhoneNumberQuery>(), default))
                 .ReturnsAsync(user);
 
@@ -250,20 +265,21 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user phone number get request returns a 404 Not Found response.
+        /// Verifies that a non-existing user phone number request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
+            var phone = "0000";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByPhoneNumberQuery>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
+                .ThrowsAsync(new NotFoundException("User", phone));
 
             // Act
-            var result = await _usersController.GetUserByPhoneNumber("0000");
+            var act = async () => await _usersController.GetUserByPhoneNumber(phone);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -277,8 +293,9 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "updated@example.com", PhoneNumber = "999" };
-            var responseDto = new UserResponseDTO { Id = id, FullName = updateDto.FullName, Email = updateDto.Email, PhoneNumber = updateDto.PhoneNumber };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "updated@example.com", "999");
+            var responseDto = new UserResponseDTO(id, updateDto.FullName, updateDto.Email, updateDto.PhoneNumber, DateTime.UtcNow);
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ReturnsAsync(responseDto);
@@ -292,82 +309,83 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user update request returns a 404 Not Found response.
+        /// Verifies that updating a non-existing user throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExistingUser_ShouldReturnNotFound()
+        public async Task NonExistingUser_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "u@u.com", "1");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
+                .ThrowsAsync(new NotFoundException("User", id));
 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
 
         /// <summary>
-        /// Verifies that a duplicate email user update request returns a 409 Conflict response.
+        /// Verifies that a duplicate email user update request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicateEmail_ShouldReturnConflict()
+        public async Task DuplicateEmail_ShouldThrowConflictException()
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "duplicate@example.com" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "duplicate@example.com", "1");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("Email already exists."));
 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that a duplicate phone number user update request returns a 409 Conflict response.
+        /// Verifies that a duplicate phone number user update request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicatePhone_ShouldReturnConflict()
+        public async Task DuplicatePhone_ShouldThrowConflictException()
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "u@test.com", PhoneNumber = "555" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "u@test.com", "555");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("Phone number already exists."));
 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that an update request with both duplicate email and phone number returns a 409 Conflict response.
+        /// Verifies that an update request with both duplicate email and phone number throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task BothEmailAndPhoneDuplicate_ShouldReturnConflict()
+        public async Task BothEmailAndPhoneDuplicate_ShouldThrowConflictException()
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "dup@test.com", PhoneNumber = "555" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "dup@test.com", "555");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("Email or Phone already exists."));
 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
     }
 
@@ -381,8 +399,9 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
+            MockUser(id);
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
-                .ReturnsAsync(true);
+                .Returns(Task.CompletedTask);
 
             // Act
             var result = await _usersController.DeleteUser(id);
@@ -392,21 +411,22 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user delete request returns a 404 Not Found response.
+        /// Verifies that deleting a non-existing user throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExistingUser_ShouldReturnNotFound()
+        public async Task NonExistingUser_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
+            MockUser(id, "ADMIN"); // Admin can delete any user, so we test the handler part
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
-                .ReturnsAsync(false);
+                .ThrowsAsync(new NotFoundException("User", id));
 
             // Act
-            var result = await _usersController.DeleteUser(id);
+            var act = async () => await _usersController.DeleteUser(id);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }

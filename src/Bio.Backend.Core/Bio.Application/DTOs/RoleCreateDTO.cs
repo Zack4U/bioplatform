@@ -5,20 +5,22 @@ namespace Bio.Application.DTOs;
 /// <summary>
 /// Data transfer object for role creation.
 /// </summary>
-public class RoleCreateDTO
+/// <param name="Name">Name of the role (e.g., ADMIN). Will be normalized to uppercase.</param>
+/// <param name="Description">Optional description of the role.</param>
+public record RoleCreateDTO
 {
-    /// <summary>
-    /// Name of the role (e.g., ADMIN). Will be normalized to uppercase.
-    /// </summary>
-    /// <example>ADMIN</example>
+    public RoleCreateDTO() { }
+
+    public RoleCreateDTO(string name, string? description = null)
+    {
+        Name = name;
+        Description = description;
+    }
+
     [Required(ErrorMessage = "Name is required.")]
     [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; init; } = "";
 
-    /// <summary>
-    /// Optional description of the role.
-    /// </summary>
-    /// <example>System Administrator</example>
     [StringLength(2000, ErrorMessage = "Description cannot exceed 2000 characters.")]
-    public string? Description { get; set; }
+    public string? Description { get; init; } = null;
 }

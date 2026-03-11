@@ -7,7 +7,10 @@ using Bio.Application.Features.Users.Queries.GetAllUsers;
 using Bio.Application.Features.Users.Queries.GetUserByEmail;
 using Bio.Application.Features.Users.Queries.GetUserById;
 using Bio.Application.Features.Users.Queries.GetUserByPhoneNumber;
+using Bio.Domain.Exceptions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Bio.API.Controllers;
 
@@ -38,21 +41,24 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreateUser(UserCreateDTO userCreateDTO) =>
-        await HandleExceptionsAsync(async () =>
-        {
-            var response = await _mediator.Send(new CreateUserCommand(userCreateDTO));
-            return CreatedAtAction(nameof(GetUserById), new { id = response.Id }, response);
-        });
+    public async Task<IActionResult> CreateUser(UserCreateDTO userCreateDTO)
+    {
+        var response = await _mediator.Send(new CreateUserCommand(userCreateDTO));
+        return CreatedAtAction(nameof(GetUserById), new { id = response.Id }, response);
+    }
 
     /// <summary>
-    /// Retrieves all registered users.
+    /// Retrieves all registered users. Restricted to administrators.
     /// </summary>
     /// <returns>A list of user DTOs.</returns>
     /// <response code="200">Returns the list of users.</response>
-    /// <response code="404">No users found.</response>
+    /// <response code="403">If the user is not an administrator.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    [Authorize(Roles = "ADMIN")]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<UserResponseDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _mediator.Send(new GetAllUsersQuery());
@@ -66,13 +72,13 @@ public class UsersController : ControllerBase
     /// <returns>The user DTO if found; otherwise, 404.</returns>
     /// <response code="200">User found.</response>
     /// <response code="404">User not found.</response>
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await _mediator.Send(new GetUserByIdQuery(id));
-        if (user == null) return NotFound();
         return Ok(user);
     }
 
@@ -83,13 +89,13 @@ public class UsersController : ControllerBase
     /// <returns>The user DTO if found; otherwise, 404.</returns>
     /// <response code="200">User found.</response>
     /// <response code="404">User not found.</response>
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("email/{email}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await _mediator.Send(new GetUserByEmailQuery(email));
-        if (user == null) return NotFound();
         return Ok(user);
     }
 
@@ -100,13 +106,13 @@ public class UsersController : ControllerBase
     /// <returns>The user DTO if found; otherwise, 404.</returns>
     /// <response code="200">User found.</response>
     /// <response code="404">User not found.</response>
+    [Authorize(Roles = "ADMIN")]
     [HttpGet("phone/{phoneNumber}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserByPhoneNumber(string phoneNumber)
     {
         var user = await _mediator.Send(new GetUserByPhoneNumberQuery(phoneNumber));
-        if (user == null) return NotFound();
         return Ok(user);
     }
 
@@ -120,18 +126,26 @@ public class UsersController : ControllerBase
     /// <response code="400">If the data is invalid.</response>
     /// <response code="404">If the user was not found.</response>
     /// <response code="409">If email or phone is already in use by another user.</response>
+    [Authorize]
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> UpdateUser(Guid id, UserUpdateDTO userUpdateDTO) =>
-        await HandleExceptionsAsync(async () =>
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> UpdateUser(Guid id, UserUpdateDTO userUpdateDTO)
+    {
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                                 ?? User.FindFirst("sub")?.Value;
+
+        if (currentUserIdClaim == null || !Guid.TryParse(currentUserIdClaim, out var currentUserId) || currentUserId != id)
         {
-            var user = await _mediator.Send(new UpdateUserCommand(id, userUpdateDTO));
-            if (user == null) return NotFound();
-            return Ok(user);
-        });
+            throw new ForbiddenException("You can only update your own profile.");
+        }
+
+        var user = await _mediator.Send(new UpdateUserCommand(id, userUpdateDTO));
+        return Ok(user);
+    }
 
     /// <summary>
     /// Deletes a user by their unique identifier.
@@ -140,39 +154,29 @@ public class UsersController : ControllerBase
     /// <returns>204 No Content if deleted; 404 if not found.</returns>
     /// <response code="204">User successfully deleted.</response>
     /// <response code="404">If the user was not found.</response>
+    [Authorize]
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteUser(Guid id) =>
-        await HandleExceptionsAsync(async () =>
-        {
-            var deleted = await _mediator.Send(new DeleteUserCommand(id));
-            if (!deleted) return NotFound();
-            return NoContent();
-        });
-
-    /// <summary>
-    /// Handles exceptions that may occur during API operations.
-    /// </summary>
-    /// <param name="action">The action to execute.</param>
-    /// <returns>The result of the action.</returns>
-    private async Task<IActionResult> HandleExceptionsAsync(Func<Task<IActionResult>> action)
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
-        try
+        var isIdMatch = false;
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                                 ?? User.FindFirst("sub")?.Value;
+
+        if (currentUserIdClaim != null && Guid.TryParse(currentUserIdClaim, out var currentUserId))
         {
-            return await action();
+            isIdMatch = currentUserId == id;
         }
-        catch (Bio.Domain.Exceptions.ConflictException ex)
+
+        if (!User.IsInRole("ADMIN") && !isIdMatch)
         {
-            return Conflict(new { message = ex.Message });
+            throw new ForbiddenException("You can only delete your own account or you must be an administrator.");
         }
-        catch (Bio.Domain.Exceptions.ValidationException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
+
+        await _mediator.Send(new DeleteUserCommand(id));
+        return NoContent();
     }
 }

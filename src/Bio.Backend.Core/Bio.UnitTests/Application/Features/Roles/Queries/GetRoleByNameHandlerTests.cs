@@ -1,5 +1,6 @@
 using Bio.Application.Features.Roles.Queries.GetRoleByName;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -55,10 +56,10 @@ public class GetRoleByNameHandlerTests
         }
 
         /// <summary>
-        /// Verifies that null is returned when the role name does not exist.
+        /// Verifies that a NotFoundException is thrown when the role name does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnNull_When_NameDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_NameDoesNotExist()
         {
             // Arrange
             var roleName = "NonExistent";
@@ -68,10 +69,10 @@ public class GetRoleByNameHandlerTests
                 .ReturnsAsync((Role?)null);
 
             // Act
-            var result = await _handler.Handle(new GetRoleByNameQuery(roleName), CancellationToken.None);
+            var act = async () => await _handler.Handle(new GetRoleByNameQuery(roleName), CancellationToken.None);
 
             // Assert
-            result.Should().BeNull();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }
