@@ -1,12 +1,13 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
 namespace Bio.Application.Features.Users.Commands.UpdateUser;
 
-public record UpdateUserCommand(Guid Id, UserUpdateDTO Dto) : IRequest<UserResponseDTO?>;
+public record UpdateUserCommand(Guid Id, UserUpdateDTO Dto) : IRequest<UserResponseDTO>;
 
-public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserResponseDTO?>
+public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserResponseDTO>
 {
     private readonly IUserRepository _userRepository;
 
@@ -15,10 +16,10 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserResponse
         _userRepository = userRepository;
     }
 
-    public async Task<UserResponseDTO?> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<UserResponseDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id);
-        if (user == null) return null;
+        if (user == null) throw new NotFoundException("User", request.Id);
 
         // Uniqueness checks
         var emailConflict = await _userRepository.GetByEmailExcludingIdAsync(request.Dto.Email, request.Id);

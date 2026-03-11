@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
@@ -20,7 +21,7 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, RoleResponse
         var role = await _roleRepository.GetByIdAsync(request.Id);
         if (role == null)
         {
-            throw new KeyNotFoundException($"Role with ID '{request.Id}' not found.");
+            throw new NotFoundException("Role", request.Id);
         }
 
         var normalizedName = request.Dto.Name.Trim().ToUpperInvariant();

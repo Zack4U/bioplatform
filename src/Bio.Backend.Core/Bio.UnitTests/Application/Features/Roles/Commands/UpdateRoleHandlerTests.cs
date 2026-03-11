@@ -1,6 +1,7 @@
 using Bio.Application.DTOs;
 using Bio.Application.Features.Roles.Commands.UpdateRole;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -63,10 +64,10 @@ public class UpdateRoleHandlerTests
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the role ID does not exist.
+        /// Verifies that a NotFoundException is thrown when attempting to update a non-existent role.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_RoleDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_RoleDoesNotExist()
         {
             // Arrange
             var roleId = Guid.NewGuid();
@@ -80,8 +81,7 @@ public class UpdateRoleHandlerTests
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"Role with ID '{roleId}' not found.");
+            await act.Should().ThrowAsync<NotFoundException>();
 
             _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
         }

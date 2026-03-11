@@ -1,6 +1,7 @@
 using Bio.Application.DTOs;
 using Bio.Application.Features.Users.Commands.UpdateUser;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -57,10 +58,10 @@ public class UpdateUserHandlerTests
         }
 
         /// <summary>
-        /// Verifies that null is returned when the user ID does not exist.
+        /// Verifies that a NotFoundException is thrown when attempting to update a non-existent user.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnNull_When_UserDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_UserDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -70,10 +71,10 @@ public class UpdateUserHandlerTests
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync((User?)null);
 
             // Act
-            var result = await _handler.Handle(command, CancellationToken.None);
+            var act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            result.Should().BeNull();
+            await act.Should().ThrowAsync<NotFoundException>();
             _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
         }
 

@@ -1,5 +1,6 @@
 using Bio.Application.DTOs;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
@@ -31,14 +32,14 @@ public class AssignRoleHandler : IRequestHandler<AssignRoleCommand>
         var user = await _userRepository.GetByIdAsync(dto.UserId!.Value);
         if (user == null)
         {
-            throw new KeyNotFoundException($"User with ID {dto.UserId} not found.");
+            throw new NotFoundException("User", dto.UserId!.Value);
         }
 
         // 2. Ensure Role Exists
         var role = await _roleRepository.GetByIdAsync(dto.RoleId!.Value);
         if (role == null)
         {
-            throw new KeyNotFoundException($"Role with ID {dto.RoleId} not found.");
+            throw new NotFoundException("Role", dto.RoleId!.Value);
         }
 
         // 3. Check for existing assignment

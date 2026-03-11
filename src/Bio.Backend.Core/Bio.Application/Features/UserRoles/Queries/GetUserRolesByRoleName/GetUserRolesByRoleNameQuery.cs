@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
@@ -23,7 +24,7 @@ public class GetUserRolesByRoleNameHandler : IRequestHandler<GetUserRolesByRoleN
         var role = await _roleRepository.GetByNameAsync(normalizedName);
         if (role == null)
         {
-            throw new KeyNotFoundException($"Role '{request.RoleName}' not found.");
+            throw new NotFoundException("Role", request.RoleName);
         }
 
         var details = await _userRoleRepository.GetByRoleNameWithDetailsAsync(normalizedName);

@@ -7,6 +7,7 @@ using Bio.Application.Features.Users.Queries.GetAllUsers;
 using Bio.Application.Features.Users.Queries.GetUserByEmail;
 using Bio.Application.Features.Users.Queries.GetUserById;
 using Bio.Application.Features.Users.Queries.GetUserByPhoneNumber;
+using Bio.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -40,12 +41,11 @@ public class UsersController : ControllerBase
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreateUser(UserCreateDTO userCreateDTO) =>
-        await HandleExceptionsAsync(async () =>
-        {
-            var response = await _mediator.Send(new CreateUserCommand(userCreateDTO));
-            return CreatedAtAction(nameof(GetUserById), new { id = response.Id }, response);
-        });
+    public async Task<IActionResult> CreateUser(UserCreateDTO userCreateDTO)
+    {
+        var response = await _mediator.Send(new CreateUserCommand(userCreateDTO));
+        return CreatedAtAction(nameof(GetUserById), new { id = response.Id }, response);
+    }
 
     /// <summary>
     /// Retrieves all registered users. Restricted to administrators.
@@ -79,7 +79,6 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await _mediator.Send(new GetUserByIdQuery(id));
-        if (user == null) return NotFound();
         return Ok(user);
     }
 
@@ -97,7 +96,6 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await _mediator.Send(new GetUserByEmailQuery(email));
-        if (user == null) return NotFound();
         return Ok(user);
     }
 
@@ -115,7 +113,6 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetUserByPhoneNumber(string phoneNumber)
     {
         var user = await _mediator.Send(new GetUserByPhoneNumberQuery(phoneNumber));
-        if (user == null) return NotFound();
         return Ok(user);
     }
 
@@ -136,21 +133,19 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> UpdateUser(Guid id, UserUpdateDTO userUpdateDTO) =>
-        await HandleExceptionsAsync(async () =>
+    public async Task<IActionResult> UpdateUser(Guid id, UserUpdateDTO userUpdateDTO)
+    {
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+                                 ?? User.FindFirst("sub")?.Value;
+
+        if (currentUserIdClaim == null || !Guid.TryParse(currentUserIdClaim, out var currentUserId) || currentUserId != id)
         {
-            var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
-                                     ?? User.FindFirst("sub")?.Value;
+            throw new ForbiddenException("You can only update your own profile.");
+        }
 
-            if (currentUserIdClaim == null || !Guid.TryParse(currentUserIdClaim, out var currentUserId) || currentUserId != id)
-            {
-                throw new Bio.Domain.Exceptions.SecurityException("You can only update your own profile.");
-            }
-
-            var user = await _mediator.Send(new UpdateUserCommand(id, userUpdateDTO));
-            if (user == null) return NotFound();
-            return Ok(user);
-        });
+        var user = await _mediator.Send(new UpdateUserCommand(id, userUpdateDTO));
+        return Ok(user);
+    }
 
     /// <summary>
     /// Deletes a user by their unique identifier.
@@ -165,54 +160,23 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> DeleteUser(Guid id) =>
-        await HandleExceptionsAsync(async () =>
-        {
-            var isIdMatch = false;
-            var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
-                                     ?? User.FindFirst("sub")?.Value;
-
-            if (currentUserIdClaim != null && Guid.TryParse(currentUserIdClaim, out var currentUserId))
-            {
-                isIdMatch = currentUserId == id;
-            }
-
-            if (!User.IsInRole("ADMIN") && !isIdMatch)
-            {
-                throw new Bio.Domain.Exceptions.SecurityException("You can only delete your own account or you must be an administrator.");
-            }
-
-            var deleted = await _mediator.Send(new DeleteUserCommand(id));
-            if (!deleted) return NotFound();
-            return NoContent();
-        });
-
-    /// <summary>
-    /// Handles exceptions that may occur during API operations.
-    /// </summary>
-    /// <param name="action">The action to execute.</param>
-    /// <returns>The result of the action.</returns>
-    private async Task<IActionResult> HandleExceptionsAsync(Func<Task<IActionResult>> action)
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
-        try
+        var isIdMatch = false;
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+                                 ?? User.FindFirst("sub")?.Value;
+
+        if (currentUserIdClaim != null && Guid.TryParse(currentUserIdClaim, out var currentUserId))
         {
-            return await action();
+            isIdMatch = currentUserId == id;
         }
-        catch (Bio.Domain.Exceptions.ConflictException ex)
+
+        if (!User.IsInRole("ADMIN") && !isIdMatch)
         {
-            return Conflict(new { message = ex.Message });
+            throw new ForbiddenException("You can only delete your own account or you must be an administrator.");
         }
-        catch (Bio.Domain.Exceptions.ValidationException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
-        catch (Bio.Domain.Exceptions.SecurityException ex)
-        {
-            return Unauthorized(new { message = ex.Message });
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
+
+        await _mediator.Send(new DeleteUserCommand(id));
+        return NoContent();
     }
 }

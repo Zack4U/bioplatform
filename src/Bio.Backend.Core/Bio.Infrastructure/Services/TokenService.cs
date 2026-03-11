@@ -85,7 +85,7 @@ public class TokenService : ITokenService
         
         if (string.IsNullOrEmpty(sub) || !Guid.TryParse(sub, out var userId))
         {
-            throw new SecurityException("Invalid token: User ID not found.");
+            throw new UnauthorizedException("Invalid token: User ID not found.");
         }
 
         return userId;
@@ -113,7 +113,7 @@ public class TokenService : ITokenService
         if (securityToken is not JwtSecurityToken jwtSecurityToken || 
             !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
         {
-            throw new SecurityException("Invalid token");
+            throw new UnauthorizedException("Invalid token");
         }
 
         return principal;

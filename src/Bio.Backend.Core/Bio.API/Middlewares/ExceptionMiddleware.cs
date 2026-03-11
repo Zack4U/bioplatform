@@ -42,10 +42,11 @@ public class ExceptionMiddleware
         {
             ArgumentException => (int)HttpStatusCode.BadRequest,
             ValidationException => (int)HttpStatusCode.BadRequest,
+            NotFoundException => (int)HttpStatusCode.NotFound,
             KeyNotFoundException => (int)HttpStatusCode.NotFound,
             ConflictException => (int)HttpStatusCode.Conflict,
-            InvalidCredentialException => (int)HttpStatusCode.Unauthorized,
-            SecurityException => (int)HttpStatusCode.Unauthorized,
+            UnauthorizedException => (int)HttpStatusCode.Unauthorized,
+            ForbiddenException => (int)HttpStatusCode.Forbidden,
             _ => (int)HttpStatusCode.InternalServerError
         };
 
@@ -77,6 +78,7 @@ public class ExceptionMiddleware
             (int)HttpStatusCode.NotFound => "Not Found",
             (int)HttpStatusCode.Conflict => "Conflict",
             (int)HttpStatusCode.Unauthorized => "Unauthorized",
+            (int)HttpStatusCode.Forbidden => "Forbidden",
             _ => "Internal Server Error"
         };
     }

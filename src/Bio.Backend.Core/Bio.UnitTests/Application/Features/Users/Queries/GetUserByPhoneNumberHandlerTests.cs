@@ -1,5 +1,6 @@
 using Bio.Application.Features.Users.Queries.GetUserByPhoneNumber;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -49,20 +50,20 @@ public class GetUserByPhoneNumberHandlerTests
         }
 
         /// <summary>
-        /// Verifies that null is returned when the phone number does not exist.
+        /// Verifies that a NotFoundException is thrown when the user phone number does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ReturnNull_When_PhoneDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_PhoneDoesNotExist()
         {
             // Arrange
             var phone = "+0000000000";
             _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(phone)).ReturnsAsync((User?)null);
 
             // Act
-            var result = await _handler.Handle(new GetUserByPhoneNumberQuery(phone), CancellationToken.None);
+            var act = async () => await _handler.Handle(new GetUserByPhoneNumberQuery(phone), CancellationToken.None);
 
             // Assert
-            result.Should().BeNull();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }

@@ -68,14 +68,14 @@ public class AuthControllerTests
             var request = new LoginRequestDTO("ghost@test.com", "Pass123!");
 
             _authServiceMock.Setup(s => s.LoginAsync(request))
-                .ThrowsAsync(new System.Security.Authentication.AuthenticationException("User not found."));
+                .ThrowsAsync(new UnauthorizedException("User not found."));
 
             // Act
             var act = async () => await _authController.Login(request);
 
             // Assert
             await act.Should()
-                .ThrowAsync<System.Security.Authentication.AuthenticationException>()
+                .ThrowAsync<UnauthorizedException>()
                 .WithMessage("User not found.");
         }
 
@@ -91,14 +91,14 @@ public class AuthControllerTests
             var request = new LoginRequestDTO("user@test.com", "IncorrectPass!");
 
             _authServiceMock.Setup(s => s.LoginAsync(request))
-                .ThrowsAsync(new System.Security.Authentication.AuthenticationException("Invalid password."));
+                .ThrowsAsync(new UnauthorizedException("Invalid password."));
 
             // Act
             var act = async () => await _authController.Login(request);
 
             // Assert
             await act.Should()
-                .ThrowAsync<System.Security.Authentication.AuthenticationException>()
+                .ThrowAsync<UnauthorizedException>()
                 .WithMessage("Invalid password.");
         }
     }
@@ -140,14 +140,14 @@ public class AuthControllerTests
             var request = new RefreshRequestDTO("old-access-token", "invalid-refresh-token");
 
             _authServiceMock.Setup(s => s.RefreshTokenAsync(request.RefreshToken, request.AccessToken))
-                .ThrowsAsync(new SecurityException("Invalid or expired refresh token."));
+                .ThrowsAsync(new UnauthorizedException("Invalid or expired refresh token."));
 
             // Act
             var act = async () => await _authController.Refresh(request);
 
             // Assert
             await act.Should()
-                .ThrowAsync<SecurityException>()
+                .ThrowAsync<UnauthorizedException>()
                 .WithMessage("Invalid or expired refresh token.");
         }
 
@@ -161,14 +161,14 @@ public class AuthControllerTests
             var request = new RefreshRequestDTO("old-access-token", "revoked-refresh-token");
 
             _authServiceMock.Setup(s => s.RefreshTokenAsync(request.RefreshToken, request.AccessToken))
-                .ThrowsAsync(new SecurityException("Refresh token has been revoked."));
+                .ThrowsAsync(new UnauthorizedException("Refresh token has been revoked."));
 
             // Act
             var act = async () => await _authController.Refresh(request);
 
             // Assert
             await act.Should()
-                .ThrowAsync<SecurityException>()
+                .ThrowAsync<UnauthorizedException>()
                 .WithMessage("Refresh token has been revoked.");
         }
     }
@@ -207,14 +207,14 @@ public class AuthControllerTests
             var refreshToken = "non-existent-token";
 
             _authServiceMock.Setup(s => s.RevokeTokenAsync(refreshToken))
-                .ThrowsAsync(new SecurityException("Refresh token not found."));
+                .ThrowsAsync(new UnauthorizedException("Refresh token not found."));
 
             // Act
             var act = async () => await _authController.Revoke(refreshToken);
 
             // Assert
             await act.Should()
-                .ThrowAsync<SecurityException>()
+                .ThrowAsync<UnauthorizedException>()
                 .WithMessage("Refresh token not found.");
         }
 
@@ -228,14 +228,14 @@ public class AuthControllerTests
             var refreshToken = "already-revoked-token";
 
             _authServiceMock.Setup(s => s.RevokeTokenAsync(refreshToken))
-                .ThrowsAsync(new SecurityException("Refresh token has already been revoked."));
+                .ThrowsAsync(new UnauthorizedException("Refresh token has already been revoked."));
 
             // Act
             var act = async () => await _authController.Revoke(refreshToken);
 
             // Assert
             await act.Should()
-                .ThrowAsync<SecurityException>()
+                .ThrowAsync<UnauthorizedException>()
                 .WithMessage("Refresh token has already been revoked.");
         }
     }

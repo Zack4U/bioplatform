@@ -47,7 +47,7 @@ public class AuthService : IAuthService
         
         if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.PasswordHash, user.Salt))
         {
-            throw new SecurityException("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         }
 
         var roles = (await _userRoleRepository.GetByUserIdWithDetailsAsync(user.Id))
@@ -86,7 +86,7 @@ public class AuthService : IAuthService
 
         if (user == null || storedRefreshToken == null || !storedRefreshToken.IsActive)
         {
-            throw new SecurityException("Invalid refresh token.");
+            throw new UnauthorizedException("Invalid refresh token.");
         }
 
         var roles = (await _userRoleRepository.GetByUserIdWithDetailsAsync(user.Id))

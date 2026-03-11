@@ -1,12 +1,13 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
 namespace Bio.Application.Features.Users.Queries.GetUserByPhoneNumber;
 
-public record GetUserByPhoneNumberQuery(string PhoneNumber) : IRequest<UserResponseDTO?>;
+public record GetUserByPhoneNumberQuery(string PhoneNumber) : IRequest<UserResponseDTO>;
 
-public class GetUserByPhoneNumberHandler : IRequestHandler<GetUserByPhoneNumberQuery, UserResponseDTO?>
+public class GetUserByPhoneNumberHandler : IRequestHandler<GetUserByPhoneNumberQuery, UserResponseDTO>
 {
     private readonly IUserRepository _userRepository;
 
@@ -15,10 +16,10 @@ public class GetUserByPhoneNumberHandler : IRequestHandler<GetUserByPhoneNumberQ
         _userRepository = userRepository;
     }
 
-    public async Task<UserResponseDTO?> Handle(GetUserByPhoneNumberQuery request, CancellationToken cancellationToken)
+    public async Task<UserResponseDTO> Handle(GetUserByPhoneNumberQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByPhoneNumberAsync(request.PhoneNumber);
-        if (user == null) return null;
+        if (user == null) throw new NotFoundException("User", request.PhoneNumber);
 
         return new UserResponseDTO(
             user.Id,

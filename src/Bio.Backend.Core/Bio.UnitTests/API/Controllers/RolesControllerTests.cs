@@ -130,21 +130,21 @@ public class RolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// Verifies that a non-existing role ID request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByIdQuery>(), default))
-                .ReturnsAsync((RoleResponseDTO?)null);
-
+                .ThrowsAsync(new NotFoundException("Role", id));
+ 
             // Act
-            var result = await _rolesController.GetRoleById(id);
-
+            var act = async () => await _rolesController.GetRoleById(id);
+ 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -171,20 +171,21 @@ public class RolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// Verifies that a non-existing role name request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
+            var name = "GHOST";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByNameQuery>(), default))
-                .ReturnsAsync((RoleResponseDTO?)null);
-
+                .ThrowsAsync(new NotFoundException("Role", name));
+ 
             // Act
-            var result = await _rolesController.GetRoleByName("GHOST");
-
+            var act = async () => await _rolesController.GetRoleByName(name);
+ 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -212,23 +213,22 @@ public class RolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// Verifies that updating a non-existing role throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
             var dto = new RoleUpdateDTO("FAIL");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateRoleCommand>(), default))
-                .ThrowsAsync(new KeyNotFoundException());
-
+                .ThrowsAsync(new NotFoundException("Role", id));
+ 
             // Act
-            var result = await _rolesController.UpdateRole(id, dto);
-
+            var act = async () => await _rolesController.UpdateRole(id, dto);
+ 
             // Assert
-            var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
-            notFoundResult.StatusCode.Should().Be(StatusCodes.Status404NotFound);
+            await act.Should().ThrowAsync<NotFoundException>();
         }
 
         /// <summary>
@@ -273,22 +273,21 @@ public class RolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// Verifies that deleting a non-existing role throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteRoleCommand>(), default))
-                .ThrowsAsync(new KeyNotFoundException());
-
+                .ThrowsAsync(new NotFoundException("Role", id));
+ 
             // Act
-            var result = await _rolesController.DeleteRole(id);
-
+            var act = async () => await _rolesController.DeleteRole(id);
+ 
             // Assert
-            var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
-            notFoundResult.StatusCode.Should().Be(StatusCodes.Status404NotFound);
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }

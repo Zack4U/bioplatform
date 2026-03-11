@@ -186,21 +186,21 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user id get request returns a 404 Not Found response.
+        /// Verifies that a non-existing user ID request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExistingUser_ShouldReturnNotFound()
+        public async Task NonExistingUser_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByIdQuery>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
-
+                .ThrowsAsync(new NotFoundException("User", id));
+ 
             // Act
-            var result = await _usersController.GetUserById(id);
-
+            var act = async () => await _usersController.GetUserById(id);
+ 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -227,20 +227,21 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user email get request returns a 404 Not Found response.
+        /// Verifies that a non-existing user email request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
+            var email = "missing@example.com";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByEmailQuery>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
-
+                .ThrowsAsync(new NotFoundException("User", email));
+ 
             // Act
-            var result = await _usersController.GetUserByEmail("missing@example.com");
-
+            var act = async () => await _usersController.GetUserByEmail(email);
+ 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -267,20 +268,21 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user phone number get request returns a 404 Not Found response.
+        /// Verifies that a non-existing user phone number request throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExisting_ShouldReturnNotFound()
+        public async Task NonExisting_ShouldThrowNotFoundException()
         {
             // Arrange
+            var phone = "0000";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByPhoneNumberQuery>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
-
+                .ThrowsAsync(new NotFoundException("User", phone));
+ 
             // Act
-            var result = await _usersController.GetUserByPhoneNumber("0000");
-
+            var act = async () => await _usersController.GetUserByPhoneNumber(phone);
+ 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 
@@ -310,23 +312,23 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user update request returns a 404 Not Found response.
+        /// Verifies that updating a non-existing user throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExistingUser_ShouldReturnNotFound()
+        public async Task NonExistingUser_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
             MockUser(id);
             var updateDto = new UserUpdateDTO("Updated", "u@u.com", "1");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
-                .ReturnsAsync((UserResponseDTO?)null);
-
+                .ThrowsAsync(new NotFoundException("User", id));
+ 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
-
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
+ 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
 
         /// <summary>
@@ -405,7 +407,7 @@ public class UsersControllerTests
             var id = Guid.NewGuid();
             MockUser(id);
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
-                .ReturnsAsync(true);
+                .Returns(Task.CompletedTask);
 
             // Act
             var result = await _usersController.DeleteUser(id);
@@ -415,22 +417,22 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a non-existing user delete request returns a 404 Not Found response.
+        /// Verifies that deleting a non-existing user throws a NotFoundException.
         /// </summary>
         [Fact]
-        public async Task NonExistingUser_ShouldReturnNotFound()
+        public async Task NonExistingUser_ShouldThrowNotFoundException()
         {
             // Arrange
             var id = Guid.NewGuid();
-            MockUser(id);
+            MockUser(id, "ADMIN"); // Admin can delete any user, so we test the handler part
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
-                .ReturnsAsync(false);
-
+                .ThrowsAsync(new NotFoundException("User", id));
+ 
             // Act
-            var result = await _usersController.DeleteUser(id);
-
+            var act = async () => await _usersController.DeleteUser(id);
+ 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }

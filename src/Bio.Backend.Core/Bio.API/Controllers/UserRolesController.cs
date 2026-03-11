@@ -51,8 +51,11 @@ public class UserRolesController : ControllerBase
     [HttpGet("user/{userId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByUser(Guid userId) =>
-        await HandleExceptionsAsync(async () => Ok(await _mediator.Send(new GetUserRolesByUserIdQuery(userId))));
+    public async Task<IActionResult> GetByUser(Guid userId)
+    {
+        var result = await _mediator.Send(new GetUserRolesByUserIdQuery(userId));
+        return Ok(result);
+    }
 
     /// <summary>
     /// Retrieves all users assigned to a specific role name.
@@ -64,8 +67,11 @@ public class UserRolesController : ControllerBase
     [HttpGet("role/{roleName}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByRole(string roleName) =>
-        await HandleExceptionsAsync(async () => Ok(await _mediator.Send(new GetUserRolesByRoleNameQuery(roleName))));
+    public async Task<IActionResult> GetByRole(string roleName)
+    {
+        var result = await _mediator.Send(new GetUserRolesByRoleNameQuery(roleName));
+        return Ok(result);
+    }
 
     /// <summary>
     /// Retrieves all users assigned to a specific role ID.
@@ -77,8 +83,11 @@ public class UserRolesController : ControllerBase
     [HttpGet("role-id/{roleId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<UserRoleResponseDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetByRoleId(Guid roleId) =>
-        await HandleExceptionsAsync(async () => Ok(await _mediator.Send(new GetUserRolesByRoleIdQuery(roleId))));
+    public async Task<IActionResult> GetByRoleId(Guid roleId)
+    {
+        var result = await _mediator.Send(new GetUserRolesByRoleIdQuery(roleId));
+        return Ok(result);
+    }
 
     /// <summary>
     /// Assigns a security role to a user.
@@ -94,12 +103,11 @@ public class UserRolesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> AssignRole([FromBody] UserRoleCreateDTO dto) =>
-        await HandleExceptionsAsync(async () =>
-        {
-            await _mediator.Send(new AssignRoleCommand(dto));
-            return NoContent();
-        });
+    public async Task<IActionResult> AssignRole([FromBody] UserRoleCreateDTO dto)
+    {
+        await _mediator.Send(new AssignRoleCommand(dto));
+        return NoContent();
+    }
 
     /// <summary>
     /// Unassigns a security role from a user.
@@ -112,39 +120,9 @@ public class UserRolesController : ControllerBase
     [HttpDelete("user/{userId:guid}/role/{roleId:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId) =>
-        await HandleExceptionsAsync(async () =>
-        {
-            await _mediator.Send(new UnassignRoleCommand(userId, roleId));
-            return NoContent();
-        });
-
-    /// <summary>
-    /// Handles exceptions that may occur during API operations.
-    /// </summary>
-    /// <param name="action">The action to execute.</param>
-    /// <returns>The result of the action.</returns>
-    private async Task<IActionResult> HandleExceptionsAsync(Func<Task<IActionResult>> action)
+    public async Task<IActionResult> UnassignRole(Guid userId, Guid roleId)
     {
-        try
-        {
-            return await action();
-        }
-        catch (Bio.Domain.Exceptions.ConflictException ex)
-        {
-            return Conflict(new { message = ex.Message });
-        }
-        catch (Bio.Domain.Exceptions.ValidationException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { message = ex.Message });
-        }
+        await _mediator.Send(new UnassignRoleCommand(userId, roleId));
+        return NoContent();
     }
 }
