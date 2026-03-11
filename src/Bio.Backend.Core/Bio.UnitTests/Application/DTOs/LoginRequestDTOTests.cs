@@ -5,7 +5,7 @@ using Xunit;
 namespace Bio.UnitTests.Application.DTOs;
 
 /// <summary>
-/// Unit tests for LoginRequestDTO validation logic.
+/// Unit tests for <see cref="LoginRequestDTO"/> validation logic.
 /// </summary>
 public class LoginRequestDTOTests
 {
@@ -15,47 +15,103 @@ public class LoginRequestDTOTests
         Password = "SecurePassword123!"
     };
 
-    [Fact]
-    public void ValidDTO_ShouldNotHaveValidationErrors()
+    /// <summary>
+    /// Tests for positive validation scenarios.
+    /// </summary>
+    public class Validation
     {
-        var dto = CreateValidDTO();
-        var results = ValidationHelper.Validate(dto);
-        results.Should().BeEmpty();
+        private readonly LoginRequestDTOTests _parent = new();
+
+        /// <summary>
+        /// Verifies that a valid LoginRequestDTO instance does not have any validation errors.
+        /// </summary>
+        [Fact]
+        public void ValidDTO_ShouldNotHaveValidationErrors()
+        {
+            // Arrange
+            var dto = _parent.CreateValidDTO();
+
+            // Act
+            var results = ValidationHelper.Validate(dto);
+
+            // Assert
+            results.Should().BeEmpty();
+        }
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
-    public void MissingEmail_ShouldHaveValidationError(string? email)
+    /// <summary>
+    /// Tests for the Email property validation.
+    /// </summary>
+    public class Email
     {
-        var dto = CreateValidDTO();
-        dto.Email = email!;
-        var results = ValidationHelper.Validate(dto);
-        results.Should().Contain(r => r.ErrorMessage == "Email is required.");
+        private readonly LoginRequestDTOTests _parent = new();
+
+        /// <summary>
+        /// Verifies that a missing or empty email has validation errors.
+        /// </summary>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void MissingEmail_ShouldHaveValidationError(string? email)
+        {
+            // Arrange
+            var dto = _parent.CreateValidDTO();
+            dto.Email = email!;
+
+            // Act
+            var results = ValidationHelper.Validate(dto);
+
+            // Assert
+            results.Should().Contain(r => r.ErrorMessage == "Email is required.");
+        }
+
+        /// <summary>
+        /// Verifies that an invalid email format has validation errors.
+        /// </summary>
+        [Theory]
+        [InlineData("invalid-email")]
+        [InlineData("test@")]
+        [InlineData("@example.com")]
+        public void InvalidEmail_ShouldHaveValidationError(string email)
+        {
+            // Arrange
+            var dto = _parent.CreateValidDTO();
+            dto.Email = email;
+
+            // Act
+            var results = ValidationHelper.Validate(dto);
+
+            // Assert
+            results.Should().Contain(r => r.ErrorMessage == "Email format is invalid.");
+        }
     }
 
-    [Theory]
-    [InlineData("invalid-email")]
-    [InlineData("test@")]
-    [InlineData("@example.com")]
-    public void InvalidEmail_ShouldHaveValidationError(string email)
+    /// <summary>
+    /// Tests for the Password property validation.
+    /// </summary>
+    public class Password
     {
-        var dto = CreateValidDTO();
-        dto.Email = email;
-        var results = ValidationHelper.Validate(dto);
-        results.Should().Contain(r => r.ErrorMessage == "Email format is invalid.");
-    }
+        private readonly LoginRequestDTOTests _parent = new();
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
-    public void MissingPassword_ShouldHaveValidationError(string? password)
-    {
-        var dto = CreateValidDTO();
-        dto.Password = password!;
-        var results = ValidationHelper.Validate(dto);
-        results.Should().Contain(r => r.ErrorMessage == "Password is required.");
+        /// <summary>
+        /// Verifies that a missing or empty password has validation errors.
+        /// </summary>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void MissingPassword_ShouldHaveValidationError(string? password)
+        {
+            // Arrange
+            var dto = _parent.CreateValidDTO();
+            dto.Password = password!;
+
+            // Act
+            var results = ValidationHelper.Validate(dto);
+
+            // Assert
+            results.Should().Contain(r => r.ErrorMessage == "Password is required.");
+        }
     }
 }
