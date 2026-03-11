@@ -5,6 +5,7 @@ using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using AutoMapper;
 
 namespace Bio.UnitTests.Application.Features.Roles.Commands;
 
@@ -15,6 +16,7 @@ public class CreateRoleCommandHandlerTests
 {
     private readonly Mock<IRoleRepository> _roleRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IMapper> _mapperMock;
     private readonly CreateRoleCommandHandler _handler;
 
     /// <summary>
@@ -24,7 +26,8 @@ public class CreateRoleCommandHandlerTests
     {
         _roleRepositoryMock = new Mock<IRoleRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new CreateRoleCommandHandler(_roleRepositoryMock.Object, _unitOfWorkMock.Object);
+        _mapperMock = new Mock<IMapper>();
+        _handler = new CreateRoleCommandHandler(_roleRepositoryMock.Object, _unitOfWorkMock.Object, _mapperMock.Object);
     }
 
     /// <summary>
@@ -45,6 +48,8 @@ public class CreateRoleCommandHandlerTests
 
             _roleRepositoryMock.Setup(repo => repo.GetByNameAsync(normalizedName))
                 .ReturnsAsync((Role?)null);
+            _mapperMock.Setup(m => m.Map<RoleResponseDTO>(It.IsAny<Role>()))
+                .Returns(new RoleResponseDTO(Guid.NewGuid(), normalizedName, dto.Description, DateTime.UtcNow, DateTime.UtcNow));
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);

@@ -6,6 +6,7 @@ using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using AutoMapper;
 
 namespace Bio.UnitTests.Application.Features.UserRoles.Commands;
 
@@ -18,6 +19,7 @@ public class AssignRoleCommandHandlerTests
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IRoleRepository> _roleRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IMapper> _mapperMock;
     private readonly AssignRoleCommandHandler _handler;
 
     /// <summary>
@@ -29,11 +31,13 @@ public class AssignRoleCommandHandlerTests
         _userRepositoryMock = new Mock<IUserRepository>();
         _roleRepositoryMock = new Mock<IRoleRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _mapperMock = new Mock<IMapper>();
         _handler = new AssignRoleCommandHandler(
             _userRoleRepositoryMock.Object,
             _userRepositoryMock.Object,
             _roleRepositoryMock.Object,
-            _unitOfWorkMock.Object);
+            _unitOfWorkMock.Object,
+            _mapperMock.Object);
     }
 
     /// <summary>

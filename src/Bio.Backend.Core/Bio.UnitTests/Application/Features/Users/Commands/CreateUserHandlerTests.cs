@@ -5,6 +5,7 @@ using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using AutoMapper;
 
 namespace Bio.UnitTests.Application.Features.Users.Commands;
 
@@ -18,6 +19,7 @@ public class CreateUserCommandHandlerTests
     private readonly Mock<IRoleRepository> _roleRepositoryMock;
     private readonly Mock<IUserRoleRepository> _userRoleRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IMapper> _mapperMock;
     private readonly CreateUserCommandHandler _handler;
 
     /// <summary>
@@ -30,12 +32,15 @@ public class CreateUserCommandHandlerTests
         _roleRepositoryMock = new Mock<IRoleRepository>();
         _userRoleRepositoryMock = new Mock<IUserRoleRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _mapperMock = new Mock<IMapper>();
+
         _handler = new CreateUserCommandHandler(
             _userRepositoryMock.Object,
             _passwordHasherMock.Object,
             _roleRepositoryMock.Object,
             _userRoleRepositoryMock.Object,
-            _unitOfWorkMock.Object);
+            _unitOfWorkMock.Object,
+            _mapperMock.Object);
 
         // Default: password hasher returns a valid hash/salt pair
         _passwordHasherMock
@@ -65,6 +70,8 @@ public class CreateUserCommandHandlerTests
 
             _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((User?)null);
             _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(dto.PhoneNumber)).ReturnsAsync((User?)null);
+            _mapperMock.Setup(m => m.Map<UserResponseDTO>(It.IsAny<User>()))
+                .Returns(new UserResponseDTO(Guid.NewGuid(), dto.FullName, dto.Email, dto.PhoneNumber, DateTime.UtcNow, DateTime.UtcNow));
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);

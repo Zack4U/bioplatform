@@ -3,6 +3,7 @@ using Bio.Domain.Entities;
 using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
+using AutoMapper;
 
 namespace Bio.Application.Features.UserRoles.Commands.AssignRole;
 
@@ -14,17 +15,20 @@ public class AssignRoleCommandHandler : IRequestHandler<AssignRoleCommand>
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
     public AssignRoleCommandHandler(
         IUserRoleRepository userRoleRepository,
         IUserRepository userRepository,
         IRoleRepository roleRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _userRoleRepository = userRoleRepository;
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task Handle(AssignRoleCommand request, CancellationToken cancellationToken)

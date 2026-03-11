@@ -2,6 +2,7 @@ using Bio.Application.DTOs;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
 using MediatR;
+using AutoMapper;
 
 namespace Bio.Application.Features.Roles.Commands.CreateRole;
 
@@ -11,11 +12,13 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, RoleR
 {
     private readonly IRoleRepository _roleRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CreateRoleCommandHandler(IRoleRepository roleRepository, IUnitOfWork unitOfWork)
+    public CreateRoleCommandHandler(IRoleRepository roleRepository, IUnitOfWork unitOfWork, IMapper mapper)
     {
         _roleRepository = roleRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<RoleResponseDTO> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
@@ -34,12 +37,6 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, RoleR
         await _roleRepository.AddAsync(role);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RoleResponseDTO(
-            role.Id,
-            role.Name,
-            role.Description,
-            role.CreatedAt,
-            role.UpdatedAt
-        );
+        return _mapper.Map<RoleResponseDTO>(role);
     }
 }

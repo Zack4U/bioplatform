@@ -6,6 +6,7 @@ using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using AutoMapper;
 
 namespace Bio.UnitTests.Application.Features.Users.Commands;
 
@@ -16,6 +17,7 @@ public class UpdateUserCommandHandlerTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IMapper> _mapperMock;
     private readonly UpdateUserCommandHandler _handler;
 
     /// <summary>
@@ -25,7 +27,8 @@ public class UpdateUserCommandHandlerTests
     {
         _userRepositoryMock = new Mock<IUserRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _handler = new UpdateUserCommandHandler(_userRepositoryMock.Object, _unitOfWorkMock.Object);
+        _mapperMock = new Mock<IMapper>();
+        _handler = new UpdateUserCommandHandler(_userRepositoryMock.Object, _unitOfWorkMock.Object, _mapperMock.Object);
     }
 
     /// <summary>
@@ -48,6 +51,8 @@ public class UpdateUserCommandHandlerTests
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
             _userRepositoryMock.Setup(r => r.GetByEmailExcludingIdAsync(dto.Email, userId)).ReturnsAsync((User?)null);
             _userRepositoryMock.Setup(r => r.GetByPhoneNumberExcludingIdAsync(dto.PhoneNumber, userId)).ReturnsAsync((User?)null);
+            _mapperMock.Setup(m => m.Map<UserResponseDTO>(It.IsAny<User>()))
+                .Returns(new UserResponseDTO(userId, dto.FullName, dto.Email, dto.PhoneNumber, existingUser.CreatedAt, DateTime.UtcNow));
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);

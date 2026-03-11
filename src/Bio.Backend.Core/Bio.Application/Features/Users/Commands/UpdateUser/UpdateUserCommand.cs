@@ -2,6 +2,7 @@ using Bio.Application.DTOs;
 using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
+using AutoMapper;
 
 namespace Bio.Application.Features.Users.Commands.UpdateUser;
 
@@ -11,11 +12,13 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserR
 {
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    public UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IMapper mapper)
     {
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<UserResponseDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -45,13 +48,6 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserR
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new UserResponseDTO(
-            user.Id,
-            user.FullName,
-            user.Email,
-            user.PhoneNumber,
-            user.CreatedAt,
-            user.UpdatedAt
-        );
+        return _mapper.Map<UserResponseDTO>(user);
     }
 }

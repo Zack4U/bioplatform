@@ -2,6 +2,7 @@ using Bio.Application.DTOs;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
 using MediatR;
+using AutoMapper;
 
 namespace Bio.Application.Features.Users.Commands.CreateUser;
 
@@ -14,19 +15,22 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserR
     private readonly IRoleRepository _roleRepository;
     private readonly IUserRoleRepository _userRoleRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
     public CreateUserCommandHandler(
         IUserRepository userRepository,
         IPasswordHasher passwordHasher,
         IRoleRepository roleRepository,
         IUserRoleRepository userRoleRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _roleRepository = roleRepository;
         _userRoleRepository = userRoleRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<UserResponseDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -71,14 +75,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserR
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // 6. Response
-        return new UserResponseDTO(
-            user.Id,
-            user.FullName,
-            user.Email,
-            user.PhoneNumber,
-            user.CreatedAt,
-            user.UpdatedAt
-        );
+        // 6. Response (Auto-mapped)
+        return _mapper.Map<UserResponseDTO>(user);
     }
 }
