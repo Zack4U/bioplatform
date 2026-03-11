@@ -8,9 +8,9 @@ namespace Bio.Application.DTOs;
 /// <param name="UserId">The unique identifier of the user.</param>
 /// <param name="RoleId">The unique identifier of the role to assign.</param>
 public record UserRoleCreateDTO(
-    [property: Required(ErrorMessage = "User ID is required.")]
+    [Required(ErrorMessage = "User ID is required.")]
     Guid? UserId = null,
 
-    [property: Required(ErrorMessage = "Role ID is required.")]
+    [Required(ErrorMessage = "Role ID is required.")]
     Guid? RoleId = null
 );

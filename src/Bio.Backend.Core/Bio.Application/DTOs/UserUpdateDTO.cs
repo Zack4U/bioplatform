@@ -10,17 +10,17 @@ namespace Bio.Application.DTOs;
 /// <param name="Email">Institutional or personal email. Must be unique.</param>
 /// <param name="PhoneNumber">Contact phone number.</param>
 public record UserUpdateDTO(
-    [property: Required(ErrorMessage = "Full name is required.")]
-    [property: StringLength(150, ErrorMessage = "Name cannot exceed 150 characters.")]
+    [Required(ErrorMessage = "Full name is required.")]
+    [StringLength(150, ErrorMessage = "Name cannot exceed 150 characters.")]
     string FullName = "",
 
-    [property: Required(ErrorMessage = "Email is required.")]
-    [property: EmailAddress(ErrorMessage = "Email format is invalid.")]
-    [property: StringLength(100, ErrorMessage = "Email cannot exceed 100 characters.")]
+    [Required(ErrorMessage = "Email is required.")]
+    [EmailAddress(ErrorMessage = "Email format is invalid.")]
+    [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters.")]
     string Email = "",
 
-    [property: Required(ErrorMessage = "Phone number is required.")]
-    [property: Phone(ErrorMessage = "Phone format is invalid.")]
-    [property: StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
+    [Required(ErrorMessage = "Phone number is required.")]
+    [Phone(ErrorMessage = "Phone format is invalid.")]
+    [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
     string PhoneNumber = ""
 );

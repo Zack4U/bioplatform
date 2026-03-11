@@ -77,7 +77,7 @@ public class BioDbContextTests
 
             // Assert
             property!.IsNullable.Should().BeFalse();
-            property.GetMaxLength().Should().Be(100);
+            property.GetMaxLength().Should().Be(255);
         }
 
         /// <summary>

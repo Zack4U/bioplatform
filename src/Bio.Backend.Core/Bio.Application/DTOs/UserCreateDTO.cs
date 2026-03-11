@@ -10,21 +10,21 @@ namespace Bio.Application.DTOs;
 /// <param name="PhoneNumber">Contact phone number.</param>
 /// <param name="Password">Access password. It is recommended to include uppercase letters, numbers and symbols.</param>
 public record UserCreateDTO(
-    [property: Required(ErrorMessage = "Full name is required.")]
-    [property: StringLength(150, ErrorMessage = "Name cannot exceed 150 characters.")]
+    [Required(ErrorMessage = "Full name is required.")]
+    [StringLength(150, ErrorMessage = "Name cannot exceed 150 characters.")]
     string FullName = "",
 
-    [property: Required(ErrorMessage = "Email is required.")]
-    [property: EmailAddress(ErrorMessage = "Email format is invalid.")]
-    [property: StringLength(100, ErrorMessage = "Email cannot exceed 100 characters.")]
+    [Required(ErrorMessage = "Email is required.")]
+    [EmailAddress(ErrorMessage = "Email format is invalid.")]
+    [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters.")]
     string Email = "",
 
-    [property: Required(ErrorMessage = "Phone number is required.")]
-    [property: Phone(ErrorMessage = "Phone format is invalid.")]
-    [property: StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
+    [Required(ErrorMessage = "Phone number is required.")]
+    [Phone(ErrorMessage = "Phone format is invalid.")]
+    [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
     string PhoneNumber = "",
 
-    [property: Required(ErrorMessage = "Password is required.")]
-    [property: MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
+    [Required(ErrorMessage = "Password is required.")]
+    [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
     string Password = ""
 );

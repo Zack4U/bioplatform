@@ -8,10 +8,10 @@ namespace Bio.Application.DTOs;
 /// <param name="Name">Gets or sets the name of the role. Case-insensitive.</param>
 /// <param name="Description">Gets or sets the optional description of the role.</param>
 public record RoleUpdateDTO(
-    [property: Required(ErrorMessage = "Name is required.")]
-    [property: StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
+    [Required(ErrorMessage = "Name is required.")]
+    [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
     string Name = "",
 
-    [property: StringLength(2000, ErrorMessage = "Description cannot exceed 2000 characters.")]
+    [StringLength(2000, ErrorMessage = "Description cannot exceed 2000 characters.")]
     string? Description = null
 );
