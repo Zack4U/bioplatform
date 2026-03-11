@@ -37,17 +37,15 @@ public class SpeciesTests
         /// Verifies that optional properties can be set.
         /// </summary>
         [Fact]
-        public void ShouldAllowSettingOptionalProperties()
+        public void ShouldHaveNullOptionalProperties_WhenCreatedWithNameOnly()
         {
             // Arrange
             var species = new Species(ValidScientificName);
-            var commonName = "Tomato";
-            var description = "A red fruit.";
 
-            // Act - Using reflection or just checking if we can set them if they had public setters.
-            // Wait, looking at Species.cs, they have private setters.
-            // There are no Update methods in Species.cs. This is interesting.
-            // I should check if there are any other methods.
+            // Assert - optional properties default to null when not set
+            species.CommonName.Should().BeNull();
+            species.Description.Should().BeNull();
+            species.ConservationStatus.Should().BeNull();
         }
     }
 }
