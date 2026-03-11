@@ -80,10 +80,10 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a duplicate email user creation request returns a 409 Conflict response.
+        /// Verifies that a duplicate email user creation request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicateEmail_ShouldReturnConflict()
+        public async Task DuplicateEmail_ShouldThrowConflictException()
         {
             // Arrange
             var dto = new UserCreateDTO("Test", "duplicate@test.com", null, "Pass123!");
@@ -91,18 +91,17 @@ public class UsersControllerTests
                 .ThrowsAsync(new ConflictException("User with email already exists."));
 
             // Act
-            var result = await _usersController.CreateUser(dto);
+            var act = async () => await _usersController.CreateUser(dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that a duplicate phone number user creation request returns a 409 Conflict response.
+        /// Verifies that a duplicate phone number user creation request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicatePhone_ShouldReturnConflict()
+        public async Task DuplicatePhone_ShouldThrowConflictException()
         {
             // Arrange
             var dto = new UserCreateDTO("Test", "test@test.com", "555555", "Pass123!");
@@ -110,18 +109,17 @@ public class UsersControllerTests
                 .ThrowsAsync(new ConflictException("User with phone number already exists."));
 
             // Act
-            var result = await _usersController.CreateUser(dto);
+            var act = async () => await _usersController.CreateUser(dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that a request with both duplicate email and phone number returns a 409 Conflict response.
+        /// Verifies that a request with both duplicate email and phone number throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task BothEmailAndPhoneDuplicate_ShouldReturnConflict()
+        public async Task BothEmailAndPhoneDuplicate_ShouldThrowConflictException()
         {
             // Arrange
             var dto = new UserCreateDTO("Test", "dup@test.com", "555", "Pass123!");
@@ -129,11 +127,10 @@ public class UsersControllerTests
                 .ThrowsAsync(new ConflictException("User with email or phone already exists."));
 
             // Act
-            var result = await _usersController.CreateUser(dto);
+            var act = async () => await _usersController.CreateUser(dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
     }
 
@@ -332,10 +329,10 @@ public class UsersControllerTests
         }
 
         /// <summary>
-        /// Verifies that a duplicate email user update request returns a 409 Conflict response.
+        /// Verifies that a duplicate email user update request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicateEmail_ShouldReturnConflict()
+        public async Task DuplicateEmail_ShouldThrowConflictException()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -345,18 +342,17 @@ public class UsersControllerTests
                 .ThrowsAsync(new ConflictException("Email already exists."));
 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that a duplicate phone number user update request returns a 409 Conflict response.
+        /// Verifies that a duplicate phone number user update request throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicatePhone_ShouldReturnConflict()
+        public async Task DuplicatePhone_ShouldThrowConflictException()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -366,18 +362,17 @@ public class UsersControllerTests
                 .ThrowsAsync(new ConflictException("Phone number already exists."));
 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
 
         /// <summary>
-        /// Verifies that an update request with both duplicate email and phone number returns a 409 Conflict response.
+        /// Verifies that an update request with both duplicate email and phone number throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task BothEmailAndPhoneDuplicate_ShouldReturnConflict()
+        public async Task BothEmailAndPhoneDuplicate_ShouldThrowConflictException()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -387,11 +382,10 @@ public class UsersControllerTests
                 .ThrowsAsync(new ConflictException("Email or Phone already exists."));
 
             // Act
-            var result = await _usersController.UpdateUser(id, updateDto);
+            var act = async () => await _usersController.UpdateUser(id, updateDto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
     }
 

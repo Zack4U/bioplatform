@@ -62,10 +62,10 @@ public class RolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that a role creation request with a duplicate name returns a 409 Conflict response.
+        /// Verifies that a role creation request with a duplicate name throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicateName_ShouldReturnConflict()
+        public async Task DuplicateName_ShouldThrowConflictException()
         {
             // Arrange
             var dto = new RoleCreateDTO("EXISTING");
@@ -73,11 +73,10 @@ public class RolesControllerTests
                 .ThrowsAsync(new ConflictException("Role name already exists."));
 
             // Act
-            var result = await _rolesController.CreateRole(dto);
+            var act = async () => await _rolesController.CreateRole(dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
     }
 
@@ -232,10 +231,10 @@ public class RolesControllerTests
         }
 
         /// <summary>
-        /// Verifies that a valid role creation request returns a 201 Created response.
+        /// Verifies that a role update request with a duplicate name throws a ConflictException.
         /// </summary>
         [Fact]
-        public async Task DuplicateName_ShouldReturnConflict()
+        public async Task DuplicateName_ShouldThrowConflictException()
         {
             // Arrange
             var id = Guid.NewGuid();
@@ -244,11 +243,10 @@ public class RolesControllerTests
                 .ThrowsAsync(new ConflictException("Role name already exists."));
 
             // Act
-            var result = await _rolesController.UpdateRole(id, dto);
+            var act = async () => await _rolesController.UpdateRole(id, dto);
 
             // Assert
-            var conflictResult = result.Should().BeOfType<ConflictObjectResult>().Subject;
-            conflictResult.StatusCode.Should().Be(StatusCodes.Status409Conflict);
+            await act.Should().ThrowAsync<ConflictException>();
         }
     }
 

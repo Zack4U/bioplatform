@@ -1,6 +1,7 @@
 using Bio.Application.DTOs;
 using Bio.Application.Features.UserRoles.Commands.AssignRole;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -64,10 +65,10 @@ public class AssignRoleHandlerTests
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the user does not exist.
+        /// Verifies that a NotFoundException is thrown when the user does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_UserDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_UserDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -81,16 +82,16 @@ public class AssignRoleHandlerTests
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"*{userId}*");
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"*User*{userId}*not found*");
             _userRoleRepositoryMock.Verify(r => r.AddAsync(It.IsAny<UserRole>()), Times.Never);
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the role does not exist.
+        /// Verifies that a NotFoundException is thrown when the role does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_RoleDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_RoleDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -106,8 +107,8 @@ public class AssignRoleHandlerTests
             Func<Task> act = async () => await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"*{roleId}*");
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"*Role*{roleId}*not found*");
             _userRoleRepositoryMock.Verify(r => r.AddAsync(It.IsAny<UserRole>()), Times.Never);
         }
 

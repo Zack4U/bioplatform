@@ -1,5 +1,6 @@
 using Bio.Application.Features.UserRoles.Commands.UnassignRole;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -51,10 +52,10 @@ public class UnassignRoleHandlerTests
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the assignment does not exist.
+        /// Verifies that a NotFoundException is thrown when the assignment does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_AssignmentDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_AssignmentDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -66,8 +67,8 @@ public class UnassignRoleHandlerTests
             Func<Task> act = async () => await _handler.Handle(new UnassignRoleCommand(userId, roleId), CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"*{userId}*{roleId}*");
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"*Assignment*User*{userId}*Role*{roleId}*not found*");
             _userRoleRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<UserRole>()), Times.Never);
         }
     }
