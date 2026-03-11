@@ -1,4 +1,3 @@
-using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore.Storage;
 
