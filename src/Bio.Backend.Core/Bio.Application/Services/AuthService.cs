@@ -5,7 +5,6 @@ using Bio.Domain.Entities;
 using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using Microsoft.Extensions.Options;
-using System.Security.Authentication;
 
 namespace Bio.Application.Services;
 
@@ -48,7 +47,7 @@ public class AuthService : IAuthService
         
         if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.PasswordHash, user.Salt))
         {
-            throw new InvalidCredentialException("Invalid email or password.");
+            throw new SecurityException("Invalid email or password.");
         }
 
         var roles = (await _userRoleRepository.GetByUserIdWithDetailsAsync(user.Id))
@@ -58,12 +57,10 @@ public class AuthService : IAuthService
         var accessToken = _tokenService.GenerateAccessToken(user, roles);
         var refreshToken = _tokenService.GenerateRefreshToken();
 
-        var refreshTokenEntity = new RefreshToken
-        {
-            UserId = user.Id,
-            Token = refreshToken,
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays)
-        };
+        var refreshTokenEntity = new RefreshToken(
+            user.Id, 
+            refreshToken, 
+            DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays));
 
         await _refreshTokenRepository.AddAsync(refreshTokenEntity);
         await _refreshTokenRepository.SaveChangesAsync();
@@ -82,14 +79,7 @@ public class AuthService : IAuthService
     /// <returns>The authentication response.</returns>
     public async Task<AuthResponseDTO> RefreshTokenAsync(string refreshToken, string accessToken)
     {
-        var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
-        var userIdClaim = principal.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier) 
-                         ?? principal.FindFirst("sub");
-
-        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
-        {
-            throw new SecurityException("Invalid token.");
-        }
+        var userId = _tokenService.GetUserIdFromToken(accessToken);
 
         var user = await _userRepository.GetByIdAsync(userId);
         var storedRefreshToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken, userId);
@@ -99,10 +89,6 @@ public class AuthService : IAuthService
             throw new SecurityException("Invalid refresh token.");
         }
 
-        // Revoke current token and generate a new one
-        storedRefreshToken.RevokedAt = DateTime.UtcNow;
-        await _refreshTokenRepository.UpdateAsync(storedRefreshToken);
-        
         var roles = (await _userRoleRepository.GetByUserIdWithDetailsAsync(user.Id))
             .Select(ur => ur.RoleName)
             .ToList();
@@ -110,13 +96,14 @@ public class AuthService : IAuthService
         var newAccessToken = _tokenService.GenerateAccessToken(user, roles);
         var newRefreshToken = _tokenService.GenerateRefreshToken();
 
-        var newRefreshTokenEntity = new RefreshToken
-        {
-            UserId = user.Id,
-            Token = newRefreshToken,
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays),
-            ReplacedByToken = newRefreshToken
-        };
+        // Revoke current token
+        storedRefreshToken.Revoke(newRefreshToken);
+        await _refreshTokenRepository.UpdateAsync(storedRefreshToken);
+
+        var newRefreshTokenEntity = new RefreshToken(
+            user.Id, 
+            newRefreshToken, 
+            DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays));
 
         await _refreshTokenRepository.AddAsync(newRefreshTokenEntity);
         await _refreshTokenRepository.SaveChangesAsync();
@@ -136,7 +123,7 @@ public class AuthService : IAuthService
         var storedToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
         if (storedToken != null && storedToken.IsActive)
         {
-            storedToken.RevokedAt = DateTime.UtcNow;
+            storedToken.Revoke();
             await _refreshTokenRepository.UpdateAsync(storedToken);
             await _refreshTokenRepository.SaveChangesAsync();
         }

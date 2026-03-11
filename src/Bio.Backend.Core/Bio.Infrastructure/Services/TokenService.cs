@@ -1,5 +1,6 @@
 using Bio.Application.Common.Models;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -75,6 +76,22 @@ public class TokenService : ITokenService
     }
 
     /// <summary>
+    /// Gets the user ID from an expired token.
+    /// </summary>
+    public Guid GetUserIdFromToken(string token)
+    {
+        var principal = GetPrincipalFromExpiredToken(token);
+        var sub = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        
+        if (string.IsNullOrEmpty(sub) || !Guid.TryParse(sub, out var userId))
+        {
+            throw new SecurityException("Invalid token: User ID not found.");
+        }
+
+        return userId;
+    }
+
+    /// <summary>
     /// Gets the claims principal from an expired token.
     /// </summary>
     /// <param name="token">The expired token.</param>
@@ -96,7 +113,7 @@ public class TokenService : ITokenService
         if (securityToken is not JwtSecurityToken jwtSecurityToken || 
             !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
         {
-            throw new SecurityTokenException("Invalid token");
+            throw new SecurityException("Invalid token");
         }
 
         return principal;

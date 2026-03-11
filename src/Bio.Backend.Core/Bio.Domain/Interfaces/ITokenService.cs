@@ -19,6 +19,11 @@ public interface ITokenService
     string GenerateRefreshToken();
 
     /// <summary>
+    /// Extracts the user ID from an expired JWT token.
+    /// </summary>
+    Guid GetUserIdFromToken(string token);
+
+    /// <summary>
     /// Extracts the user principal from an expired JWT token (used for validation during refresh).
     /// </summary>
     ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
