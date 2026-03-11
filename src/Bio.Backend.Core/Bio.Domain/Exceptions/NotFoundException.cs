@@ -12,7 +12,7 @@ public class NotFoundException : Exception
             throw new ArgumentException("Exception message cannot be empty.", nameof(message));
     }
 
-    public NotFoundException(string name, object key) 
+    public NotFoundException(string name, object key)
         : base($"Entity \"{name}\" ({key}) was not found.")
     {
         if (string.IsNullOrWhiteSpace(name))

@@ -135,7 +135,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UpdateUser(Guid id, UserUpdateDTO userUpdateDTO)
     {
-        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                                  ?? User.FindFirst("sub")?.Value;
 
         if (currentUserIdClaim == null || !Guid.TryParse(currentUserIdClaim, out var currentUserId) || currentUserId != id)
@@ -163,7 +163,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> DeleteUser(Guid id)
     {
         var isIdMatch = false;
-        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
                                  ?? User.FindFirst("sub")?.Value;
 
         if (currentUserIdClaim != null && Guid.TryParse(currentUserIdClaim, out var currentUserId))

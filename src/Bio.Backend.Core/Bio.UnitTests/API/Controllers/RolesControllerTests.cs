@@ -138,10 +138,10 @@ public class RolesControllerTests
             var id = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByIdQuery>(), default))
                 .ThrowsAsync(new NotFoundException("Role", id));
- 
+
             // Act
             var act = async () => await _rolesController.GetRoleById(id);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -179,10 +179,10 @@ public class RolesControllerTests
             var name = "GHOST";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByNameQuery>(), default))
                 .ThrowsAsync(new NotFoundException("Role", name));
- 
+
             // Act
             var act = async () => await _rolesController.GetRoleByName(name);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -222,10 +222,10 @@ public class RolesControllerTests
             var dto = new RoleUpdateDTO("FAIL");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateRoleCommand>(), default))
                 .ThrowsAsync(new NotFoundException("Role", id));
- 
+
             // Act
             var act = async () => await _rolesController.UpdateRole(id, dto);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -280,10 +280,10 @@ public class RolesControllerTests
             var id = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteRoleCommand>(), default))
                 .ThrowsAsync(new NotFoundException("Role", id));
- 
+
             // Act
             var act = async () => await _rolesController.DeleteRole(id);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }

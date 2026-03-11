@@ -68,7 +68,7 @@ public class TokenServiceTests
 
             jwtToken.Issuer.Should().Be(_jwtSettings.Issuer);
             jwtToken.Audiences.Should().Contain(_jwtSettings.Audience);
-            
+
             var claims = jwtToken.Claims.ToList();
             claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == user.Id.ToString());
             claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Email && c.Value == user.Email);
@@ -124,7 +124,7 @@ public class TokenServiceTests
         {
             // Arrange
             var user = new User(Guid.NewGuid(), "Jane Doe", "jane@example.com", "hash", "salt");
-            
+
             // To create an expired token for testing, we can use a service instance with a negative ExpiryMinutes
             var settings = new JwtSettings
             {
@@ -133,7 +133,7 @@ public class TokenServiceTests
                 Audience = _jwtSettings.Audience,
                 ExpiryMinutes = -10 // Expired 10 minutes ago
             };
-            
+
             var expiredTokenService = new TokenService(Options.Create(settings));
             var expiredToken = expiredTokenService.GenerateAccessToken(user, new List<string> { "User" });
 
@@ -154,7 +154,7 @@ public class TokenServiceTests
         {
             // Arrange
             var user = new User(Guid.NewGuid(), "Jane Doe", "jane@example.com", "hash", "salt");
-            
+
             // Create a token with a different secret
             var settingsWithDifferentSecret = new JwtSettings
             {
@@ -194,10 +194,10 @@ public class TokenServiceTests
             // Arrange
             var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.Sub, Guid.NewGuid().ToString()) };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_jwtSettings.Secret));
-            
+
             // Generate token with HmacSha512 instead of HmacSha256
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512); 
-            
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
@@ -205,7 +205,7 @@ public class TokenServiceTests
                 expires: DateTime.UtcNow.AddMinutes(10),
                 signingCredentials: creds
             );
-            
+
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             // Act & Assert
@@ -252,13 +252,13 @@ public class TokenServiceTests
             // Arrange
             var userId = Guid.NewGuid();
             var user = new User(userId, "Jane Doe", "jane@example.com", "hash", "salt");
-            
-            var expiredTokenService = new TokenService(Options.Create(new JwtSettings 
+
+            var expiredTokenService = new TokenService(Options.Create(new JwtSettings
             {
                 Secret = _jwtSettings.Secret,
                 Issuer = _jwtSettings.Issuer,
                 Audience = _jwtSettings.Audience,
-                ExpiryMinutes = -5 
+                ExpiryMinutes = -5
             }));
             var token = expiredTokenService.GenerateAccessToken(user, new List<string>());
 
@@ -279,7 +279,7 @@ public class TokenServiceTests
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, "TestUserWithoutId") };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_jwtSettings.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            
+
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
@@ -287,7 +287,7 @@ public class TokenServiceTests
                 expires: DateTime.UtcNow.AddMinutes(10),
                 signingCredentials: creds
             );
-            
+
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             // Act & Assert

@@ -7,11 +7,20 @@ namespace Bio.Application.DTOs;
 /// </summary>
 /// <param name="Email">Institutional or personal email.</param>
 /// <param name="Password">Access password.</param>
-public record LoginRequestDTO(
+public record LoginRequestDTO
+{
+    public LoginRequestDTO() { }
+
+    public LoginRequestDTO(string email, string password)
+    {
+        Email = email;
+        Password = password;
+    }
+
     [Required(ErrorMessage = "Email is required.")]
     [EmailAddress(ErrorMessage = "Email format is invalid.")]
-    string Email = "",
-    
+    public string Email { get; init; } = "";
+
     [Required(ErrorMessage = "Password is required.")]
-    string Password = ""
-);
+    public string Password { get; init; } = "";
+}

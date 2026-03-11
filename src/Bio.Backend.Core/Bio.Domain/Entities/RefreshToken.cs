@@ -44,7 +44,7 @@ public class RefreshToken
     public void Revoke(string? replacedByToken = null)
     {
         if (IsRevoked) return;
-        
+
         RevokedAt = DateTime.UtcNow;
         ReplacedByToken = replacedByToken;
     }

@@ -7,10 +7,19 @@ namespace Bio.Application.DTOs;
 /// </summary>
 /// <param name="AccessToken">The expired access token.</param>
 /// <param name="RefreshToken">The valid refresh token.</param>
-public record RefreshRequestDTO(
+public record RefreshRequestDTO
+{
+    public RefreshRequestDTO() { }
+
+    public RefreshRequestDTO(string accessToken, string refreshToken)
+    {
+        AccessToken = accessToken;
+        RefreshToken = refreshToken;
+    }
+
     [Required(ErrorMessage = "AccessToken is required.")]
-    string AccessToken = "",
+    public string AccessToken { get; init; } = "";
 
     [Required(ErrorMessage = "RefreshToken is required.")]
-    string RefreshToken = ""
-);
+    public string RefreshToken { get; init; } = "";
+}

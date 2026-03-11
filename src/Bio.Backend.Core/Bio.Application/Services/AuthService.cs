@@ -44,7 +44,7 @@ public class AuthService : IAuthService
     public async Task<AuthResponseDTO> LoginAsync(LoginRequestDTO request)
     {
         var user = await _userRepository.GetByEmailAsync(request.Email);
-        
+
         if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.PasswordHash, user.Salt))
         {
             throw new UnauthorizedException("Invalid email or password.");
@@ -58,16 +58,16 @@ public class AuthService : IAuthService
         var refreshToken = _tokenService.GenerateRefreshToken();
 
         var refreshTokenEntity = new RefreshToken(
-            user.Id, 
-            refreshToken, 
+            user.Id,
+            refreshToken,
             DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays));
 
         await _refreshTokenRepository.AddAsync(refreshTokenEntity);
         await _refreshTokenRepository.SaveChangesAsync();
 
         return new AuthResponseDTO(
-            accessToken, 
-            refreshToken, 
+            accessToken,
+            refreshToken,
             DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes));
     }
 
@@ -101,16 +101,16 @@ public class AuthService : IAuthService
         await _refreshTokenRepository.UpdateAsync(storedRefreshToken);
 
         var newRefreshTokenEntity = new RefreshToken(
-            user.Id, 
-            newRefreshToken, 
+            user.Id,
+            newRefreshToken,
             DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays));
 
         await _refreshTokenRepository.AddAsync(newRefreshTokenEntity);
         await _refreshTokenRepository.SaveChangesAsync();
 
         return new AuthResponseDTO(
-            newAccessToken, 
-            newRefreshToken, 
+            newAccessToken,
+            newRefreshToken,
             DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes));
     }
 

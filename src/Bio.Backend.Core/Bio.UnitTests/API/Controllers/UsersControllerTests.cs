@@ -192,10 +192,10 @@ public class UsersControllerTests
             var id = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByIdQuery>(), default))
                 .ThrowsAsync(new NotFoundException("User", id));
- 
+
             // Act
             var act = async () => await _usersController.GetUserById(id);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -233,10 +233,10 @@ public class UsersControllerTests
             var email = "missing@example.com";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByEmailQuery>(), default))
                 .ThrowsAsync(new NotFoundException("User", email));
- 
+
             // Act
             var act = async () => await _usersController.GetUserByEmail(email);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -274,10 +274,10 @@ public class UsersControllerTests
             var phone = "0000";
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByPhoneNumberQuery>(), default))
                 .ThrowsAsync(new NotFoundException("User", phone));
- 
+
             // Act
             var act = async () => await _usersController.GetUserByPhoneNumber(phone);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -320,10 +320,10 @@ public class UsersControllerTests
             var updateDto = new UserUpdateDTO("Updated", "u@u.com", "1");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ThrowsAsync(new NotFoundException("User", id));
- 
+
             // Act
             var act = async () => await _usersController.UpdateUser(id, updateDto);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }
@@ -421,10 +421,10 @@ public class UsersControllerTests
             MockUser(id, "ADMIN"); // Admin can delete any user, so we test the handler part
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
                 .ThrowsAsync(new NotFoundException("User", id));
- 
+
             // Act
             var act = async () => await _usersController.DeleteUser(id);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
         }

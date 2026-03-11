@@ -82,7 +82,7 @@ public class TokenService : ITokenService
     {
         var principal = GetPrincipalFromExpiredToken(token);
         var sub = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        
+
         if (string.IsNullOrEmpty(sub) || !Guid.TryParse(sub, out var userId))
         {
             throw new UnauthorizedException("Invalid token: User ID not found.");
@@ -110,7 +110,7 @@ public class TokenService : ITokenService
         var tokenHandler = new JwtSecurityTokenHandler();
         var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
 
-        if (securityToken is not JwtSecurityToken jwtSecurityToken || 
+        if (securityToken is not JwtSecurityToken jwtSecurityToken ||
             !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
         {
             throw new UnauthorizedException("Invalid token");

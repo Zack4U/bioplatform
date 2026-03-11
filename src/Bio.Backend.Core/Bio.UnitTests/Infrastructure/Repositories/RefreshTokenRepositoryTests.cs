@@ -90,7 +90,7 @@ public class RefreshTokenRepositoryTests : IDisposable
             // Arrange
             var tokenString = "existing_token_abc123";
             var refreshToken = new RefreshToken(Guid.NewGuid(), tokenString, DateTime.UtcNow.AddDays(7));
-            
+
             await _context.RefreshTokens.AddAsync(refreshToken);
             await _context.SaveChangesAsync();
 
@@ -132,7 +132,7 @@ public class RefreshTokenRepositoryTests : IDisposable
             var tokenString = "user_specific_token";
             var userId = Guid.NewGuid();
             var refreshToken = new RefreshToken(userId, tokenString, DateTime.UtcNow.AddDays(7));
-            
+
             await _context.RefreshTokens.AddAsync(refreshToken);
             await _context.SaveChangesAsync();
 
@@ -155,7 +155,7 @@ public class RefreshTokenRepositoryTests : IDisposable
             var tokenString = "user_specific_token";
             var initialUserId = Guid.NewGuid();
             var differentUserId = Guid.NewGuid(); // Mismatch
-            
+
             var refreshToken = new RefreshToken(initialUserId, tokenString, DateTime.UtcNow.AddDays(7));
             await _context.RefreshTokens.AddAsync(refreshToken);
             await _context.SaveChangesAsync();
@@ -205,7 +205,7 @@ public class RefreshTokenRepositoryTests : IDisposable
 
             // Assert - Read fresh from DB
             var updatedToken = await _context.RefreshTokens.FindAsync(refreshToken.Id);
-            
+
             updatedToken.Should().NotBeNull();
             updatedToken!.IsRevoked.Should().BeTrue();
             updatedToken.RevokedAt.Should().NotBeNull();
@@ -232,7 +232,7 @@ public class RefreshTokenRepositoryTests : IDisposable
 
             // Assert - Read fresh from DB
             var updatedToken = await _context.RefreshTokens.FindAsync(refreshToken.Id);
-            
+
             updatedToken.Should().NotBeNull();
             updatedToken!.IsRevoked.Should().BeTrue();
             updatedToken.RevokedAt.Should().NotBeNull();

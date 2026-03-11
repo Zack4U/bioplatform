@@ -116,7 +116,7 @@ public class NotFoundExceptionTests
             act.Should().Throw<ArgumentException>()
                .WithMessage("*Entity name cannot be empty.*");
         }
-        
+
         /// <summary>
         /// Tests that the exception handles a null key gracefully by using its ToString representation.
         /// </summary>
@@ -126,7 +126,7 @@ public class NotFoundExceptionTests
             // Arrange
             var entityName = "Config";
             object? nullKey = null;
-            var expectedMessage = $"Entity \"{entityName}\" () was not found."; 
+            var expectedMessage = $"Entity \"{entityName}\" () was not found.";
 
             // Act
             var exception = new NotFoundException(entityName, nullKey!);

@@ -87,10 +87,10 @@ public class GetUserRolesByRoleIdHandlerTests
             // Arrange
             var roleId = Guid.NewGuid();
             _roleRepositoryMock.Setup(r => r.GetByIdAsync(roleId)).ReturnsAsync((Role?)null);
- 
+
             // Act
             Func<Task> act = async () => await _handler.Handle(new GetUserRolesByRoleIdQuery(roleId), CancellationToken.None);
- 
+
             // Assert
             await act.Should().ThrowAsync<NotFoundException>()
                 .WithMessage($"*Role*{roleId}*not found*");

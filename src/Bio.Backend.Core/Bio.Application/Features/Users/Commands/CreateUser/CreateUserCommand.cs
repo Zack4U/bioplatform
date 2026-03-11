@@ -15,7 +15,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
     private readonly IUserRoleRepository _userRoleRepository;
 
     public CreateUserHandler(
-        IUserRepository userRepository, 
+        IUserRepository userRepository,
         IPasswordHasher passwordHasher,
         IRoleRepository roleRepository,
         IUserRoleRepository userRoleRepository)
@@ -57,7 +57,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
 
         // 4. Persistence
         await _userRepository.AddAsync(user);
-        
+
         // 5. Automatic Role Assignment (Buyer)
         var buyerRole = await _roleRepository.GetByNameAsync("Buyer");
         if (buyerRole != null)
