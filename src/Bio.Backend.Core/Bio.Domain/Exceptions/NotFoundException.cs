@@ -15,5 +15,7 @@ public class NotFoundException : Exception
     public NotFoundException(string name, object key) 
         : base($"Entity \"{name}\" ({key}) was not found.")
     {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Entity name cannot be empty.", nameof(name));
     }
 }
