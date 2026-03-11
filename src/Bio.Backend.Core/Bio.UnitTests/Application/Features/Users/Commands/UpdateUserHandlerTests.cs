@@ -10,26 +10,28 @@ using Xunit;
 namespace Bio.UnitTests.Application.Features.Users.Commands;
 
 /// <summary>
-/// Unit tests for the UpdateUserHandler class.
+/// Unit tests for the UpdateUserCommandHandler class.
 /// </summary>
-public class UpdateUserHandlerTests
+public class UpdateUserCommandHandlerTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
-    private readonly UpdateUserHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly UpdateUserCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="UpdateUserHandlerTests"/> class.
+    /// Initializes a new instance of the <see cref="UpdateUserCommandHandlerTests"/> class.
     /// </summary>
-    public UpdateUserHandlerTests()
+    public UpdateUserCommandHandlerTests()
     {
         _userRepositoryMock = new Mock<IUserRepository>();
-        _handler = new UpdateUserHandler(_userRepositoryMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _handler = new UpdateUserCommandHandler(_userRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     /// <summary>
-    /// Tests for the Handle method of UpdateUserHandler.
+    /// Tests for the Handle method of UpdateUserCommandHandler.
     /// </summary>
-    public class Handle : UpdateUserHandlerTests
+    public class Handle : UpdateUserCommandHandlerTests
     {
         /// <summary>
         /// Verifies that a user profile is successfully updated when no conflicts exist.
@@ -54,7 +56,7 @@ public class UpdateUserHandlerTests
             result.Should().NotBeNull();
             result!.FullName.Should().Be(dto.FullName);
             result.Email.Should().Be(dto.Email);
-            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ public class UpdateUserHandlerTests
 
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
-            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
 
         /// <summary>
@@ -99,8 +101,8 @@ public class UpdateUserHandlerTests
 
             // Assert
             await act.Should().ThrowAsync<Bio.Domain.Exceptions.ConflictException>()
-                .WithMessage($"*{dto.Email}*");
-            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
+                .WithMessage("Email is already in use by another account.");
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
 
         /// <summary>
@@ -125,8 +127,8 @@ public class UpdateUserHandlerTests
 
             // Assert
             await act.Should().ThrowAsync<Bio.Domain.Exceptions.ConflictException>()
-                .WithMessage($"*{dto.PhoneNumber}*");
-            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
+                .WithMessage("Phone number is already in use by another account.");
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

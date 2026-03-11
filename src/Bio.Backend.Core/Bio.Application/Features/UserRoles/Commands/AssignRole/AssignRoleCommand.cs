@@ -8,20 +8,23 @@ namespace Bio.Application.Features.UserRoles.Commands.AssignRole;
 
 public record AssignRoleCommand(UserRoleCreateDTO Dto) : IRequest;
 
-public class AssignRoleHandler : IRequestHandler<AssignRoleCommand>
+public class AssignRoleCommandHandler : IRequestHandler<AssignRoleCommand>
 {
     private readonly IUserRoleRepository _userRoleRepository;
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AssignRoleHandler(
+    public AssignRoleCommandHandler(
         IUserRoleRepository userRoleRepository,
         IUserRepository userRepository,
-        IRoleRepository roleRepository)
+        IRoleRepository roleRepository,
+        IUnitOfWork unitOfWork)
     {
         _userRoleRepository = userRoleRepository;
         _userRepository = userRepository;
         _roleRepository = roleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(AssignRoleCommand request, CancellationToken cancellationToken)
@@ -53,6 +56,6 @@ public class AssignRoleHandler : IRequestHandler<AssignRoleCommand>
         var userRole = new UserRole(dto.UserId!.Value, dto.RoleId!.Value);
 
         await _userRoleRepository.AddAsync(userRole);
-        await _userRoleRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

@@ -5,13 +5,15 @@ namespace Bio.Application.Features.Roles.Commands.DeleteRole;
 
 public record DeleteRoleCommand(Guid Id) : IRequest;
 
-public class DeleteRoleHandler : IRequestHandler<DeleteRoleCommand>
+public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand>
 {
     private readonly IRoleRepository _roleRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteRoleHandler(IRoleRepository roleRepository)
+    public DeleteRoleCommandHandler(IRoleRepository roleRepository, IUnitOfWork unitOfWork)
     {
         _roleRepository = roleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
@@ -23,6 +25,6 @@ public class DeleteRoleHandler : IRequestHandler<DeleteRoleCommand>
         }
 
         await _roleRepository.DeleteAsync(role);
-        await _roleRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

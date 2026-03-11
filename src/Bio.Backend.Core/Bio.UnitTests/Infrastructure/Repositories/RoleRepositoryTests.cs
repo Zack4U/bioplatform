@@ -96,7 +96,7 @@ public class RoleRepositoryTests : IDisposable
 
             // Act
             await _repository.AddAsync(role);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert
             var savedRole = await _context.Roles.FindAsync(role.Id);
@@ -126,7 +126,7 @@ public class RoleRepositoryTests : IDisposable
             var role2 = new Role(id, "ROLE 2");
 
             await _repository.AddAsync(role1);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Act - Use a new context to bypass EF tracking and trigger DB PK constraint
             var options = new DbContextOptionsBuilder<BioDbContext>()
@@ -139,7 +139,7 @@ public class RoleRepositoryTests : IDisposable
             await newRepository.AddAsync(role2);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateException>(() => newRepository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateException>(() => newContext.SaveChangesAsync());
         }
 
         /// <summary>
@@ -154,13 +154,13 @@ public class RoleRepositoryTests : IDisposable
             var role2 = new Role(Guid.NewGuid(), commonName);
 
             await _repository.AddAsync(role1);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Act
             await _repository.AddAsync(role2);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateException>(() => _repository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateException>(() => _context.SaveChangesAsync());
         }
     }
 
@@ -346,7 +346,7 @@ public class RoleRepositoryTests : IDisposable
 
             // Act
             await _repository.DeleteAsync(role);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert
             var deletedRole = await _context.Roles.FindAsync(role.Id);
@@ -366,7 +366,7 @@ public class RoleRepositoryTests : IDisposable
             await _repository.DeleteAsync(role);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _repository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _context.SaveChangesAsync());
         }
 
         /// <summary>

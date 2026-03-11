@@ -124,12 +124,4 @@ public class UserRoleRepository : IUserRoleRepository
         _context.Set<UserRole>().Remove(userRole);
         await Task.CompletedTask;
     }
-
-    /// <summary>
-    /// Persists all pending changes to the database.
-    /// </summary>
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
 }

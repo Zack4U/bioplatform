@@ -7,13 +7,15 @@ namespace Bio.Application.Features.Roles.Commands.CreateRole;
 
 public record CreateRoleCommand(RoleCreateDTO Dto) : IRequest<RoleResponseDTO>;
 
-public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, RoleResponseDTO>
+public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, RoleResponseDTO>
 {
     private readonly IRoleRepository _roleRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateRoleHandler(IRoleRepository roleRepository)
+    public CreateRoleCommandHandler(IRoleRepository roleRepository, IUnitOfWork unitOfWork)
     {
         _roleRepository = roleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<RoleResponseDTO> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
@@ -30,7 +32,7 @@ public class CreateRoleHandler : IRequestHandler<CreateRoleCommand, RoleResponse
         var role = new Role(Guid.NewGuid(), normalizedName, dto.Description);
 
         await _roleRepository.AddAsync(role);
-        await _roleRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RoleResponseDTO(
             role.Id,

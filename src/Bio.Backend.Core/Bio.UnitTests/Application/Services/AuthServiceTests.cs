@@ -27,6 +27,7 @@ public class AuthServiceTests
     private readonly Mock<IPasswordHasher> _passwordHasherMock;
     private readonly Mock<ITokenService> _tokenServiceMock;
     private readonly Mock<IOptions<JwtSettings>> _jwtSettingsMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly JwtSettings _jwtSettings;
     private readonly AuthService _authService;
 
@@ -41,6 +42,7 @@ public class AuthServiceTests
         _passwordHasherMock = new Mock<IPasswordHasher>();
         _tokenServiceMock = new Mock<ITokenService>();
         _jwtSettingsMock = new Mock<IOptions<JwtSettings>>();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         _jwtSettings = new JwtSettings
         {
@@ -59,6 +61,7 @@ public class AuthServiceTests
             _refreshTokenRepositoryMock.Object,
             _passwordHasherMock.Object,
             _tokenServiceMock.Object,
+            _unitOfWorkMock.Object,
             _jwtSettingsMock.Object);
     }
 
@@ -94,12 +97,11 @@ public class AuthServiceTests
             // Act
             var result = await _authService.LoginAsync(request);
 
-            // Assert
             result.Should().NotBeNull();
             result.AccessToken.Should().Be(accessToken);
             result.RefreshToken.Should().Be(refreshToken);
             _refreshTokenRepositoryMock.Verify(r => r.AddAsync(It.Is<RefreshToken>(rt => rt.UserId == user.Id && rt.Token == refreshToken)), Times.Once);
-            _refreshTokenRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -181,14 +183,13 @@ public class AuthServiceTests
             // Act
             var result = await _authService.RefreshTokenAsync(refreshToken, accessToken);
 
-            // Assert
             result.Should().NotBeNull();
             result.AccessToken.Should().Be(newAccessToken);
             result.RefreshToken.Should().Be(newRefreshToken);
             storedToken.IsActive.Should().BeFalse();
             _refreshTokenRepositoryMock.Verify(r => r.UpdateAsync(storedToken), Times.Once);
             _refreshTokenRepositoryMock.Verify(r => r.AddAsync(It.Is<RefreshToken>(rt => rt.Token == newRefreshToken)), Times.Once);
-            _refreshTokenRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -268,7 +269,7 @@ public class AuthServiceTests
             // Assert
             storedToken.IsActive.Should().BeFalse();
             _refreshTokenRepositoryMock.Verify(r => r.UpdateAsync(storedToken), Times.Once);
-            _refreshTokenRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -287,7 +288,7 @@ public class AuthServiceTests
 
             // Assert
             _refreshTokenRepositoryMock.Verify(r => r.UpdateAsync(It.IsAny<RefreshToken>()), Times.Never);
-            _refreshTokenRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 
@@ -317,7 +318,7 @@ public class AuthServiceTests
             // Assert
             user.PasswordHash.Should().Be("newHash");
             user.Salt.Should().Be("newSalt");
-            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         [Fact]

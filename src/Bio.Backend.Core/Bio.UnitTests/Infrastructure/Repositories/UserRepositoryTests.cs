@@ -96,7 +96,7 @@ public class UserRepositoryTests : IDisposable
 
             // Act
             await _repository.AddAsync(user);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert
             var savedUser = await _context.Users.FindAsync(user.Id);
@@ -126,7 +126,7 @@ public class UserRepositoryTests : IDisposable
             var user2 = new User(id, "User 1 Duplicate", "u1_dup@test.com", "h", "s");
 
             await _repository.AddAsync(user1);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Act - Use a new context and repository instance to avoid tracking conflicts
             // but keep the same underlying SQLite connection
@@ -140,7 +140,7 @@ public class UserRepositoryTests : IDisposable
             await newRepository.AddAsync(user2);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateException>(() => newRepository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateException>(() => newContext.SaveChangesAsync());
         }
 
         /// <summary>
@@ -155,13 +155,13 @@ public class UserRepositoryTests : IDisposable
             var user2 = new User(Guid.NewGuid(), "User 2", email, "h", "s");
 
             await _repository.AddAsync(user1);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Act
             await _repository.AddAsync(user2);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateException>(() => _repository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateException>(() => _context.SaveChangesAsync());
         }
 
         /// <summary>
@@ -176,13 +176,13 @@ public class UserRepositoryTests : IDisposable
             var user2 = new User(Guid.NewGuid(), "User 2", "u2@test.com", "h", "s", phone);
 
             await _repository.AddAsync(user1);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Act
             await _repository.AddAsync(user2);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateException>(() => _repository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateException>(() => _context.SaveChangesAsync());
         }
     }
 
@@ -453,7 +453,7 @@ public class UserRepositoryTests : IDisposable
 
             // Act
             await _repository.DeleteAsync(user);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert
             var deletedUser = await _context.Users.FindAsync(user.Id);
@@ -473,7 +473,7 @@ public class UserRepositoryTests : IDisposable
             await _repository.DeleteAsync(user);
 
             // Assert - EF Core throws DbUpdateConcurrencyException when it expects to delete 1 row but deletes 0
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _repository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _context.SaveChangesAsync());
         }
 
         /// <summary>

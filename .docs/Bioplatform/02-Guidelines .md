@@ -44,8 +44,8 @@
 
 ## **2.1 Backend (.NET 8+)**
 
-* \[ \] Implementación de Clean Architecture / Hexagonal.  
-* \[ \] Uso de CQRS con MediatR.  
+* \[X\] Implementación de Clean Architecture / Hexagonal.  
+* \[X\] Uso de CQRS con MediatR.  
 * \[ \] Repository Pattern y Unit of Work.  
 * \[ \] Validación con FluentValidation y mapeo con AutoMapper/Mapperly.  
 * \[ \] Pruebas unitarias con xUnit (cobertura mín. 60%).

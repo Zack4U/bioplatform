@@ -49,10 +49,4 @@ public interface IRoleRepository
     /// <param name="role">The role entity to delete.</param>
     /// <returns>A task representing the asynchronous delete operation.</returns>
     Task DeleteAsync(Role role);
-
-    /// <summary>
-    /// Asynchronously saves all changes made in this context to the database.
-    /// </summary>
-    /// <returns>A task representing the asynchronous save operation.</returns>
-    Task SaveChangesAsync();
 }

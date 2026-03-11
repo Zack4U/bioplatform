@@ -7,13 +7,15 @@ namespace Bio.Application.Features.Roles.Commands.UpdateRole;
 
 public record UpdateRoleCommand(Guid Id, RoleUpdateDTO Dto) : IRequest<RoleResponseDTO>;
 
-public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, RoleResponseDTO>
+public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, RoleResponseDTO>
 {
     private readonly IRoleRepository _roleRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateRoleHandler(IRoleRepository roleRepository)
+    public UpdateRoleCommandHandler(IRoleRepository roleRepository, IUnitOfWork unitOfWork)
     {
         _roleRepository = roleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<RoleResponseDTO> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
@@ -34,7 +36,7 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, RoleResponse
 
         role.Update(normalizedName, request.Dto.Description);
 
-        await _roleRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RoleResponseDTO(
             role.Id,

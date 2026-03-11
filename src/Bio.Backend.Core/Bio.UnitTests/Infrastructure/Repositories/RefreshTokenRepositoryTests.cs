@@ -57,7 +57,7 @@ public class RefreshTokenRepositoryTests : IDisposable
 
             // Act
             await _repository.AddAsync(refreshToken);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert
             var savedToken = await _context.RefreshTokens.FindAsync(refreshToken.Id);
@@ -201,7 +201,7 @@ public class RefreshTokenRepositoryTests : IDisposable
             refreshToken.Revoke(); // Revoke without replacing
 
             await _repository.UpdateAsync(refreshToken);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert - Read fresh from DB
             var updatedToken = await _context.RefreshTokens.FindAsync(refreshToken.Id);
@@ -228,7 +228,7 @@ public class RefreshTokenRepositoryTests : IDisposable
             refreshToken.Revoke(expectedReplacement); // Revoke passing a replacement
 
             await _repository.UpdateAsync(refreshToken);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert - Read fresh from DB
             var updatedToken = await _context.RefreshTokens.FindAsync(refreshToken.Id);

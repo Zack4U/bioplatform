@@ -9,26 +9,28 @@ using Xunit;
 namespace Bio.UnitTests.Application.Features.Users.Commands;
 
 /// <summary>
-/// Unit tests for the DeleteUserHandler class.
+/// Unit tests for the DeleteUserCommandHandler class.
 /// </summary>
-public class DeleteUserHandlerTests
+public class DeleteUserCommandHandlerTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
-    private readonly DeleteUserHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly DeleteUserCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DeleteUserHandlerTests"/> class.
+    /// Initializes a new instance of the <see cref="DeleteUserCommandHandlerTests"/> class.
     /// </summary>
-    public DeleteUserHandlerTests()
+    public DeleteUserCommandHandlerTests()
     {
         _userRepositoryMock = new Mock<IUserRepository>();
-        _handler = new DeleteUserHandler(_userRepositoryMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _handler = new DeleteUserCommandHandler(_userRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     /// <summary>
-    /// Tests for the Handle method of DeleteUserHandler.
+    /// Tests for the Handle method of DeleteUserCommandHandler.
     /// </summary>
-    public class Handle : DeleteUserHandlerTests
+    public class Handle : DeleteUserCommandHandlerTests
     {
         /// <summary>
         /// Verifies that a user is successfully deleted when the user exists.
@@ -47,7 +49,7 @@ public class DeleteUserHandlerTests
 
             // Assert
             _userRepositoryMock.Verify(r => r.DeleteAsync(user), Times.Once);
-            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ public class DeleteUserHandlerTests
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
             _userRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<User>()), Times.Never);
-            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

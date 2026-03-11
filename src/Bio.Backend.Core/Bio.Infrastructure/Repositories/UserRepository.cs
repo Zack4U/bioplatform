@@ -32,14 +32,6 @@ public class UserRepository : IUserRepository
     }
 
     /// <summary>
-    /// Asynchronously saves all changes made in this context to the database.
-    /// </summary>
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
-
-    /// <summary>
     /// Asynchronously retrieves all users from the database.
     /// </summary>
     /// <returns>A collection of all user entities.</returns>

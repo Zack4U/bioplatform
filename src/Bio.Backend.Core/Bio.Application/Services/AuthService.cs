@@ -18,6 +18,7 @@ public class AuthService : IAuthService
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenService _tokenService;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly JwtSettings _jwtSettings;
 
     public AuthService(
@@ -26,6 +27,7 @@ public class AuthService : IAuthService
         IRefreshTokenRepository refreshTokenRepository,
         IPasswordHasher passwordHasher,
         ITokenService tokenService,
+        IUnitOfWork unitOfWork,
         IOptions<JwtSettings> jwtSettings)
     {
         _userRepository = userRepository;
@@ -33,6 +35,7 @@ public class AuthService : IAuthService
         _refreshTokenRepository = refreshTokenRepository;
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
+        _unitOfWork = unitOfWork;
         _jwtSettings = jwtSettings.Value;
     }
 
@@ -63,7 +66,7 @@ public class AuthService : IAuthService
             DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays));
 
         await _refreshTokenRepository.AddAsync(refreshTokenEntity);
-        await _refreshTokenRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return new AuthResponseDTO(
             accessToken,
@@ -106,7 +109,7 @@ public class AuthService : IAuthService
             DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays));
 
         await _refreshTokenRepository.AddAsync(newRefreshTokenEntity);
-        await _refreshTokenRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return new AuthResponseDTO(
             newAccessToken,
@@ -125,7 +128,7 @@ public class AuthService : IAuthService
         {
             storedToken.Revoke();
             await _refreshTokenRepository.UpdateAsync(storedToken);
-            await _refreshTokenRepository.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 
@@ -151,6 +154,6 @@ public class AuthService : IAuthService
         
         user.ChangePassword(newHash, newSalt);
         
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
 }

@@ -7,23 +7,26 @@ namespace Bio.Application.Features.Users.Commands.CreateUser;
 
 public record CreateUserCommand(UserCreateDTO Dto) : IRequest<UserResponseDTO>;
 
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponseDTO>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserResponseDTO>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IRoleRepository _roleRepository;
     private readonly IUserRoleRepository _userRoleRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateUserHandler(
+    public CreateUserCommandHandler(
         IUserRepository userRepository,
         IPasswordHasher passwordHasher,
         IRoleRepository roleRepository,
-        IUserRoleRepository userRoleRepository)
+        IUserRoleRepository userRoleRepository,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _roleRepository = roleRepository;
         _userRoleRepository = userRoleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<UserResponseDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -58,7 +61,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
         // 4. Persistence
         await _userRepository.AddAsync(user);
 
-        // 5. Automatic Role Assignment (Buyer)
+        // 5. Automatic Role Assignment (Buyer) by default
         var buyerRole = await _roleRepository.GetByNameAsync("Buyer");
         if (buyerRole != null)
         {
@@ -66,7 +69,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
             await _userRoleRepository.AddAsync(userRole);
         }
 
-        await _userRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         // 6. Response
         return new UserResponseDTO(

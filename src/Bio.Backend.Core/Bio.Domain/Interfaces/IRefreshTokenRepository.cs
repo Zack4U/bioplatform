@@ -33,9 +33,4 @@ public interface IRefreshTokenRepository
     /// </summary>
     /// <param name="refreshToken">The refresh token to update.</param>
     Task UpdateAsync(RefreshToken refreshToken);
-
-    /// <summary>
-    /// Saves the changes to the database.
-    /// </summary>
-    Task SaveChangesAsync();
 }
