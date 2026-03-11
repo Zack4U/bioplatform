@@ -52,13 +52,12 @@ public class CreateUserHandlerTests
         public async Task Should_CreateUser_When_EmailAndPhoneAreUnique()
         {
             // Arrange
-            var dto = new UserCreateDTO
-            {
-                FullName = "John Doe",
-                Email = "john@example.com",
-                PhoneNumber = "+1234567890",
-                Password = "SecurePass123!"
-            };
+            var dto = new UserCreateDTO(
+                "John Doe",
+                "john@example.com",
+                "+1234567890",
+                "SecurePass123!"
+            );
             var command = new CreateUserCommand(dto);
 
             _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((User?)null);
@@ -83,13 +82,12 @@ public class CreateUserHandlerTests
         public async Task Should_ThrowConflictException_When_EmailAlreadyExists()
         {
             // Arrange
-            var dto = new UserCreateDTO
-            {
-                FullName = "John Doe",
-                Email = "existing@example.com",
-                PhoneNumber = "+1234567890",
-                Password = "SecurePass123!"
-            };
+            var dto = new UserCreateDTO(
+                "John Doe",
+                "existing@example.com",
+                "+1234567890",
+                "SecurePass123!"
+            );
             var command = new CreateUserCommand(dto);
             var existingUser = new User(Guid.NewGuid(), "Other", dto.Email, "h", "s");
 
@@ -112,13 +110,12 @@ public class CreateUserHandlerTests
         public async Task Should_ThrowConflictException_When_PhoneAlreadyExists()
         {
             // Arrange
-            var dto = new UserCreateDTO
-            {
-                FullName = "John Doe",
-                Email = "new@example.com",
-                PhoneNumber = "+0000000000",
-                Password = "SecurePass123!"
-            };
+            var dto = new UserCreateDTO(
+                "John Doe",
+                "john@example.com",
+                "+1234567890",
+                "SecurePass123!"
+            );
             var command = new CreateUserCommand(dto);
             var existingUser = new User(Guid.NewGuid(), "Other", "other@example.com", "h", "s", dto.PhoneNumber);
 

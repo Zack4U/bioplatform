@@ -46,8 +46,8 @@ public class RolesControllerTests
         public async Task ValidData_ShouldReturnCreated()
         {
             // Arrange
-            var dto = new RoleCreateDTO { Name = "ADMIN", Description = "Administrator role" };
-            var responseDto = new RoleResponseDTO { Id = Guid.NewGuid(), Name = "ADMIN", Description = "Administrator role" };
+            var dto = new RoleCreateDTO("ADMIN", "Administrator role");
+            var responseDto = new RoleResponseDTO(Guid.NewGuid(), "ADMIN", "Administrator role", DateTime.UtcNow);
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateRoleCommand>(), default))
                 .ReturnsAsync(responseDto);
@@ -68,7 +68,7 @@ public class RolesControllerTests
         public async Task DuplicateName_ShouldReturnConflict()
         {
             // Arrange
-            var dto = new RoleCreateDTO { Name = "EXISTING" };
+            var dto = new RoleCreateDTO("EXISTING");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateRoleCommand>(), default))
                 .ThrowsAsync(new ConflictException("Role name already exists."));
 
@@ -92,8 +92,8 @@ public class RolesControllerTests
             // Arrange
             var roles = new List<RoleResponseDTO>
             {
-                new RoleResponseDTO { Id = Guid.NewGuid(), Name = "ADMIN" },
-                new RoleResponseDTO { Id = Guid.NewGuid(), Name = "USER" }
+                new RoleResponseDTO(Guid.NewGuid(), "ADMIN"),
+                new RoleResponseDTO(Guid.NewGuid(), "USER")
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllRolesQuery>(), default))
                 .ReturnsAsync(roles);
@@ -117,7 +117,7 @@ public class RolesControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var role = new RoleResponseDTO { Id = id, Name = "ADMIN" };
+            var role = new RoleResponseDTO(id, "ADMIN");
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByIdQuery>(), default))
                 .ReturnsAsync(role);
 
@@ -158,7 +158,7 @@ public class RolesControllerTests
         {
             // Arrange
             var name = "ADMIN";
-            var role = new RoleResponseDTO { Id = Guid.NewGuid(), Name = name };
+            var role = new RoleResponseDTO(Guid.NewGuid(), name);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByNameQuery>(), default))
                 .ReturnsAsync(role);
 
@@ -198,8 +198,8 @@ public class RolesControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var dto = new RoleUpdateDTO { Name = "SUPERADMIN" };
-            var response = new RoleResponseDTO { Id = id, Name = "SUPERADMIN" };
+            var dto = new RoleUpdateDTO("SUPERADMIN");
+            var response = new RoleResponseDTO(id, "SUPERADMIN");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateRoleCommand>(), default))
                 .ReturnsAsync(response);
 
@@ -219,7 +219,7 @@ public class RolesControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var dto = new RoleUpdateDTO { Name = "FAIL" };
+            var dto = new RoleUpdateDTO("FAIL");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateRoleCommand>(), default))
                 .ThrowsAsync(new KeyNotFoundException());
 
@@ -239,7 +239,7 @@ public class RolesControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var dto = new RoleUpdateDTO { Name = "TAKEN" };
+            var dto = new RoleUpdateDTO("TAKEN");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateRoleCommand>(), default))
                 .ThrowsAsync(new ConflictException("Role name already exists."));
 

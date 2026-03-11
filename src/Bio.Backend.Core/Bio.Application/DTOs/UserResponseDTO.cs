@@ -4,35 +4,17 @@ namespace Bio.Application.DTOs;
 /// Data Transfer Object representing the user information sent back to the client.
 /// This object excludes sensitive data like password hashes or salts.
 /// </summary>
-public class UserResponseDTO
-{
-    /// <summary>
-    /// Unique identifier for the user.
-    /// </summary>
-    public Guid Id { get; set; }
-
-    /// <summary>
-    /// Full name of the user.
-    /// </summary>
-    public string FullName { get; set; } = string.Empty;
-
-    /// <summary>
-    /// User's registered email address.
-    /// </summary>
-    public string Email { get; set; } = string.Empty;
-
-    /// <summary>
-    /// User's phone number.
-    /// </summary>
-    public string? PhoneNumber { get; set; }
-
-    /// <summary>
-    /// The date and time when the user account was created.
-    /// </summary>
-    public DateTime CreatedAt { get; set; }
-
-    /// <summary>
-    /// The date and time when the user account was updated.
-    /// </summary>
-    public DateTime? UpdatedAt { get; set; }
-}
+/// <param name="Id">Unique identifier for the user.</param>
+/// <param name="FullName">Full name of the user.</param>
+/// <param name="Email">User's registered email address.</param>
+/// <param name="PhoneNumber">User's phone number.</param>
+/// <param name="CreatedAt">The date and time when the user account was created.</param>
+/// <param name="UpdatedAt">The date and time when the user account was updated.</param>
+public record UserResponseDTO(
+    Guid Id,
+    string FullName = "",
+    string Email = "",
+    string? PhoneNumber = null,
+    DateTime CreatedAt = default,
+    DateTime? UpdatedAt = null
+);

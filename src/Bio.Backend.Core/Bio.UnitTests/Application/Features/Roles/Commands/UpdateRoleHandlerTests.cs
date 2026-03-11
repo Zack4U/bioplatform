@@ -42,7 +42,7 @@ public class UpdateRoleHandlerTests
             // Arrange
             var roleId = Guid.NewGuid();
             var existingRole = new Role(roleId, "OLD_NAME", "Old Description");
-            var dto = new RoleUpdateDTO { Name = "New Name", Description = "New Description" };
+            var dto = new RoleUpdateDTO("New Name", "New Description");
             var command = new UpdateRoleCommand(roleId, dto);
             var normalizedName = dto.Name.Trim().ToUpperInvariant();
 
@@ -70,7 +70,7 @@ public class UpdateRoleHandlerTests
         {
             // Arrange
             var roleId = Guid.NewGuid();
-            var dto = new RoleUpdateDTO { Name = "Name", Description = "Description" };
+            var dto = new RoleUpdateDTO("Name", "Description");
             var command = new UpdateRoleCommand(roleId, dto);
 
             _roleRepositoryMock.Setup(repo => repo.GetByIdAsync(roleId))
@@ -97,7 +97,7 @@ public class UpdateRoleHandlerTests
             var existingRole = new Role(roleId, "ORIGINAL_NAME", "Description");
             var otherRoleId = Guid.NewGuid();
             var otherRole = new Role(otherRoleId, "CONFLICT_NAME", "Description");
-            var dto = new RoleUpdateDTO { Name = "Conflict Name", Description = "Description" };
+            var dto = new RoleUpdateDTO("Conflict Name", "Description");
             var command = new UpdateRoleCommand(roleId, dto);
             var normalizedName = dto.Name.Trim().ToUpperInvariant();
 

@@ -39,12 +39,7 @@ public class UpdateUserHandlerTests
             // Arrange
             var userId = Guid.NewGuid();
             var existingUser = new User(userId, "Old Name", "old@example.com", "h", "s", "+111");
-            var dto = new UserUpdateDTO
-            {
-                FullName = "New Name",
-                Email = "new@example.com",
-                PhoneNumber = "+999"
-            };
+            var dto = new UserUpdateDTO("New Name", "new@example.com", "+999");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
@@ -69,7 +64,7 @@ public class UpdateUserHandlerTests
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var dto = new UserUpdateDTO { FullName = "Name", Email = "email@test.com", PhoneNumber = "+1" };
+            var dto = new UserUpdateDTO("Name", "email@test.com", "+1");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync((User?)null);
@@ -92,7 +87,7 @@ public class UpdateUserHandlerTests
             var userId = Guid.NewGuid();
             var existingUser = new User(userId, "User", "user@example.com", "h", "s");
             var conflictUser = new User(Guid.NewGuid(), "Other", "conflict@example.com", "h", "s");
-            var dto = new UserUpdateDTO { FullName = "User", Email = "conflict@example.com", PhoneNumber = "+1" };
+            var dto = new UserUpdateDTO("User", "conflict@example.com", "+1");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);
@@ -117,7 +112,7 @@ public class UpdateUserHandlerTests
             var userId = Guid.NewGuid();
             var existingUser = new User(userId, "User", "user@example.com", "h", "s", "+111");
             var conflictUser = new User(Guid.NewGuid(), "Other", "other@example.com", "h", "s", "+999");
-            var dto = new UserUpdateDTO { FullName = "User", Email = "user@example.com", PhoneNumber = "+999" };
+            var dto = new UserUpdateDTO("User", "user@example.com", "+999");
             var command = new UpdateUserCommand(userId, dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(existingUser);

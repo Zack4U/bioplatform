@@ -5,20 +5,13 @@ namespace Bio.Application.DTOs;
 /// <summary>
 /// Data transfer object for login requests.
 /// </summary>
-public class LoginRequestDTO
-{
-    /// <summary>
-    /// Institutional or personal email.
-    /// </summary>
-    /// <example>user@example.com</example>
-    [Required(ErrorMessage = "Email is required.")]
-    [EmailAddress(ErrorMessage = "Email format is invalid.")]
-    public string Email { get; set; } = string.Empty;
+/// <param name="Email">Institutional or personal email.</param>
+/// <param name="Password">Access password.</param>
+public record LoginRequestDTO(
+    [property: Required(ErrorMessage = "Email is required.")]
+    [property: EmailAddress(ErrorMessage = "Email format is invalid.")]
+    string Email = "",
 
-    /// <summary>
-    /// Access password.
-    /// </summary>
-    /// <example>P@ssword123!</example>
-    [Required(ErrorMessage = "Password is required.")]
-    public string Password { get; set; } = string.Empty;
-}
+    [property: Required(ErrorMessage = "Password is required.")]
+    string Password = ""
+);

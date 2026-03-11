@@ -43,7 +43,7 @@ public class AuthControllerTests
         public async Task ValidCredentials_ShouldReturnOkWithTokens()
         {
             // Arrange
-            var request = new LoginRequestDTO { Email = "user@test.com", Password = "Pass123!" };
+            var request = new LoginRequestDTO("user@test.com", "Pass123!");
             var response = new AuthResponseDTO("access-token", "refresh-token", DateTime.UtcNow.AddMinutes(15));
 
             _authServiceMock.Setup(s => s.LoginAsync(request))
@@ -65,7 +65,7 @@ public class AuthControllerTests
         public async Task NonExistentUser_ShouldThrowAuthenticationException()
         {
             // Arrange
-            var request = new LoginRequestDTO { Email = "ghost@test.com", Password = "Pass123!" };
+            var request = new LoginRequestDTO("ghost@test.com", "Pass123!");
 
             _authServiceMock.Setup(s => s.LoginAsync(request))
                 .ThrowsAsync(new System.Security.Authentication.AuthenticationException("User not found."));
@@ -88,7 +88,7 @@ public class AuthControllerTests
         {
             // Arrange
             // The email belongs to a real account, but the password does not match.
-            var request = new LoginRequestDTO { Email = "user@test.com", Password = "IncorrectPass!" };
+            var request = new LoginRequestDTO("user@test.com", "IncorrectPass!");
 
             _authServiceMock.Setup(s => s.LoginAsync(request))
                 .ThrowsAsync(new System.Security.Authentication.AuthenticationException("Invalid password."));
@@ -115,7 +115,7 @@ public class AuthControllerTests
         public async Task ValidTokens_ShouldReturnOkWithNewTokens()
         {
             // Arrange
-            var request = new RefreshRequestDTO { AccessToken = "old-access-token", RefreshToken = "valid-refresh-token" };
+            var request = new RefreshRequestDTO("old-access-token", "valid-refresh-token");
             var response = new AuthResponseDTO("new-access-token", "new-refresh-token", DateTime.UtcNow.AddMinutes(15));
 
             _authServiceMock.Setup(s => s.RefreshTokenAsync(request.RefreshToken, request.AccessToken))
@@ -137,7 +137,7 @@ public class AuthControllerTests
         public async Task InvalidRefreshToken_ShouldThrowSecurityException()
         {
             // Arrange
-            var request = new RefreshRequestDTO { AccessToken = "old-access-token", RefreshToken = "invalid-refresh-token" };
+            var request = new RefreshRequestDTO("old-access-token", "invalid-refresh-token");
 
             _authServiceMock.Setup(s => s.RefreshTokenAsync(request.RefreshToken, request.AccessToken))
                 .ThrowsAsync(new SecurityException("Invalid or expired refresh token."));
@@ -158,7 +158,7 @@ public class AuthControllerTests
         public async Task RevokedRefreshToken_ShouldThrowSecurityException()
         {
             // Arrange
-            var request = new RefreshRequestDTO { AccessToken = "old-access-token", RefreshToken = "revoked-refresh-token" };
+            var request = new RefreshRequestDTO("old-access-token", "revoked-refresh-token");
 
             _authServiceMock.Setup(s => s.RefreshTokenAsync(request.RefreshToken, request.AccessToken))
                 .ThrowsAsync(new SecurityException("Refresh token has been revoked."));

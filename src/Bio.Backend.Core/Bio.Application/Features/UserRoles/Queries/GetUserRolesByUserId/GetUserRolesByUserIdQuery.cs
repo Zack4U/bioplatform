@@ -26,13 +26,12 @@ public class GetUserRolesByUserIdHandler : IRequestHandler<GetUserRolesByUserIdQ
         }
 
         var details = await _userRoleRepository.GetByUserIdWithDetailsAsync(request.UserId);
-        return details.Select(d => new UserRoleResponseDTO
-        {
-            UserId = d.UserId,
-            UserEmail = d.UserEmail,
-            RoleId = d.RoleId,
-            RoleName = d.RoleName,
-            AssignedAt = d.AssignedAt
-        });
+        return details.Select(d => new UserRoleResponseDTO(
+            d.UserId,
+            d.UserEmail,
+            d.RoleId,
+            d.RoleName,
+            d.AssignedAt
+        ));
     }
 }

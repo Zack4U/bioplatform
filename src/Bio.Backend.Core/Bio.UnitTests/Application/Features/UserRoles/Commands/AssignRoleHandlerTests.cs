@@ -48,7 +48,7 @@ public class AssignRoleHandlerTests
             var roleId = Guid.NewGuid();
             var user = new User(userId, "Alice", "alice@example.com", "h", "s");
             var role = new Role(roleId, "ADMIN", "Admin Role");
-            var dto = new UserRoleCreateDTO { UserId = userId, RoleId = roleId };
+            var dto = new UserRoleCreateDTO(userId, roleId);
             var command = new AssignRoleCommand(dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
@@ -72,7 +72,7 @@ public class AssignRoleHandlerTests
             // Arrange
             var userId = Guid.NewGuid();
             var roleId = Guid.NewGuid();
-            var dto = new UserRoleCreateDTO { UserId = userId, RoleId = roleId };
+            var dto = new UserRoleCreateDTO(userId, roleId);
             var command = new AssignRoleCommand(dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync((User?)null);
@@ -96,7 +96,7 @@ public class AssignRoleHandlerTests
             var userId = Guid.NewGuid();
             var roleId = Guid.NewGuid();
             var user = new User(userId, "Alice", "alice@example.com", "h", "s");
-            var dto = new UserRoleCreateDTO { UserId = userId, RoleId = roleId };
+            var dto = new UserRoleCreateDTO(userId, roleId);
             var command = new AssignRoleCommand(dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
@@ -122,7 +122,7 @@ public class AssignRoleHandlerTests
             var roleId = Guid.NewGuid();
             var user = new User(userId, "Alice", "alice@example.com", "h", "s");
             var role = new Role(roleId, "ADMIN", "Admin Role");
-            var dto = new UserRoleCreateDTO { UserId = userId, RoleId = roleId };
+            var dto = new UserRoleCreateDTO(userId, roleId);
             var command = new AssignRoleCommand(dto);
 
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);

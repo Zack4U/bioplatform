@@ -48,7 +48,7 @@ public class UserRolesControllerTests
             // Arrange
             var assignments = new List<UserRoleResponseDTO>
             {
-                new UserRoleResponseDTO { UserId = Guid.NewGuid(), UserEmail = "a@a.com", RoleName = "ADMIN" }
+                new UserRoleResponseDTO(Guid.NewGuid(), "a@a.com", Guid.NewGuid(), "ADMIN", DateTime.UtcNow)
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllUserRolesQuery>(), default))
                 .ReturnsAsync(assignments);
@@ -74,7 +74,7 @@ public class UserRolesControllerTests
             var userId = Guid.NewGuid();
             var assignments = new List<UserRoleResponseDTO>
             {
-                new UserRoleResponseDTO { UserId = userId, UserEmail = "test@test.com", RoleName = "EDITOR" }
+                new UserRoleResponseDTO(userId, "test@test.com", Guid.NewGuid(), "EDITOR", DateTime.UtcNow)
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserRolesByUserIdQuery>(), default))
                 .ReturnsAsync(assignments);
@@ -118,7 +118,7 @@ public class UserRolesControllerTests
             var roleName = "ADMIN";
             var assignments = new List<UserRoleResponseDTO>
             {
-                new UserRoleResponseDTO { UserId = Guid.NewGuid(), UserEmail = "admin@test.com", RoleName = roleName }
+                new UserRoleResponseDTO(Guid.NewGuid(), "admin@test.com", Guid.NewGuid(), roleName, DateTime.UtcNow)
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserRolesByRoleNameQuery>(), default))
                 .ReturnsAsync(assignments);
@@ -162,7 +162,7 @@ public class UserRolesControllerTests
             var roleId = Guid.NewGuid();
             var assignments = new List<UserRoleResponseDTO>
             {
-                new UserRoleResponseDTO { RoleId = roleId, RoleName = "DEV" }
+                new UserRoleResponseDTO(Guid.NewGuid(), "u@u.com", roleId, "DEV", DateTime.UtcNow)
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserRolesByRoleIdQuery>(), default))
                 .ReturnsAsync(assignments);
@@ -200,7 +200,7 @@ public class UserRolesControllerTests
         public async Task ValidAssignment_ShouldReturnNoContent()
         {
             // Arrange
-            var dto = new UserRoleCreateDTO { UserId = Guid.NewGuid(), RoleId = Guid.NewGuid() };
+            var dto = new UserRoleCreateDTO(Guid.NewGuid(), Guid.NewGuid());
             _mediatorMock.Setup(m => m.Send(It.IsAny<AssignRoleCommand>(), default))
                 .Returns(Task.CompletedTask);
 
@@ -218,7 +218,7 @@ public class UserRolesControllerTests
         public async Task DuplicateAssignment_ShouldReturnConflict()
         {
             // Arrange
-            var dto = new UserRoleCreateDTO { UserId = Guid.NewGuid(), RoleId = Guid.NewGuid() };
+            var dto = new UserRoleCreateDTO(Guid.NewGuid(), Guid.NewGuid());
             _mediatorMock.Setup(m => m.Send(It.IsAny<AssignRoleCommand>(), default))
                 .ThrowsAsync(new ConflictException("Assignment exists."));
 
@@ -237,7 +237,7 @@ public class UserRolesControllerTests
         public async Task UserNotFound_ShouldReturnNotFound()
         {
             // Arrange
-            var dto = new UserRoleCreateDTO { UserId = Guid.NewGuid(), RoleId = Guid.NewGuid() };
+            var dto = new UserRoleCreateDTO(Guid.NewGuid(), Guid.NewGuid());
             _mediatorMock.Setup(m => m.Send(It.IsAny<AssignRoleCommand>(), default))
                 .ThrowsAsync(new KeyNotFoundException("User not found."));
 
@@ -256,7 +256,7 @@ public class UserRolesControllerTests
         public async Task RoleNotFound_ShouldReturnNotFound()
         {
             // Arrange
-            var dto = new UserRoleCreateDTO { UserId = Guid.NewGuid(), RoleId = Guid.NewGuid() };
+            var dto = new UserRoleCreateDTO(Guid.NewGuid(), Guid.NewGuid());
             _mediatorMock.Setup(m => m.Send(It.IsAny<AssignRoleCommand>(), default))
                 .ThrowsAsync(new KeyNotFoundException("Role not found."));
 

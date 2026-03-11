@@ -20,13 +20,12 @@ public class GetRoleByIdHandler : IRequestHandler<GetRoleByIdQuery, RoleResponse
         var role = await _roleRepository.GetByIdAsync(request.Id);
         if (role == null) return null;
 
-        return new RoleResponseDTO
-        {
-            Id = role.Id,
-            Name = role.Name,
-            Description = role.Description,
-            CreatedAt = role.CreatedAt,
-            UpdatedAt = role.UpdatedAt
-        };
+        return new RoleResponseDTO(
+            role.Id,
+            role.Name,
+            role.Description,
+            role.CreatedAt,
+            role.UpdatedAt
+        );
     }
 }

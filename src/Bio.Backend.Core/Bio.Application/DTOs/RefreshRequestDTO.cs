@@ -5,17 +5,12 @@ namespace Bio.Application.DTOs;
 /// <summary>
 /// Data transfer object for refresh token requests.
 /// </summary>
-public class RefreshRequestDTO
-{
-    /// <summary>
-    /// The expired access token.
-    /// </summary>
-    [Required(ErrorMessage = "AccessToken is required.")]
-    public string AccessToken { get; set; } = string.Empty;
+/// <param name="AccessToken">The expired access token.</param>
+/// <param name="RefreshToken">The valid refresh token.</param>
+public record RefreshRequestDTO(
+    [property: Required(ErrorMessage = "AccessToken is required.")]
+    string AccessToken = "",
 
-    /// <summary>
-    /// The valid refresh token.
-    /// </summary>
-    [Required(ErrorMessage = "RefreshToken is required.")]
-    public string RefreshToken { get; set; } = string.Empty;
-}
+    [property: Required(ErrorMessage = "RefreshToken is required.")]
+    string RefreshToken = ""
+);

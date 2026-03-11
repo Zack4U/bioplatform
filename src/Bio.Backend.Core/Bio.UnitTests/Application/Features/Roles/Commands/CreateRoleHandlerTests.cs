@@ -40,7 +40,7 @@ public class CreateRoleHandlerTests
         public async Task Should_CreateRole_When_NameIsUnique()
         {
             // Arrange
-            var dto = new RoleCreateDTO { Name = "New Role", Description = "New Description" };
+            var dto = new RoleCreateDTO("New Role", "New Description");
             var command = new CreateRoleCommand(dto);
             var normalizedName = dto.Name.Trim().ToUpperInvariant();
 
@@ -66,7 +66,7 @@ public class CreateRoleHandlerTests
         public async Task Should_ThrowConflictException_When_RoleNameExists()
         {
             // Arrange
-            var dto = new RoleCreateDTO { Name = "Existing Role", Description = "Description" };
+            var dto = new RoleCreateDTO("Existing Role", "Description");
             var command = new CreateRoleCommand(dto);
             var normalizedName = dto.Name.Trim().ToUpperInvariant();
             var existingRole = new Role(Guid.NewGuid(), normalizedName, "Some Description");

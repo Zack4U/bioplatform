@@ -9,11 +9,10 @@ namespace Bio.UnitTests.Application.DTOs;
 /// </summary>
 public class LoginRequestDTOTests
 {
-    private LoginRequestDTO CreateValidDTO() => new()
-    {
-        Email = "test@example.com",
-        Password = "SecurePassword123!"
-    };
+    /// <summary>
+    /// Creates a valid LoginRequestDTO instance for testing purposes.
+    /// </summary>
+    private LoginRequestDTO CreateValidDTO() => new("test@example.com", "SecurePassword123!");
 
     /// <summary>
     /// Tests for positive validation scenarios.
@@ -56,8 +55,7 @@ public class LoginRequestDTOTests
         public void MissingEmail_ShouldHaveValidationError(string? email)
         {
             // Arrange
-            var dto = _parent.CreateValidDTO();
-            dto.Email = email!;
+            var dto = _parent.CreateValidDTO() with { Email = email! };
 
             // Act
             var results = ValidationHelper.Validate(dto);
@@ -67,7 +65,7 @@ public class LoginRequestDTOTests
         }
 
         /// <summary>
-        /// Verifies that an invalid email format has validation errors.
+        /// Verifies that an email with an invalid format has validation errors.
         /// </summary>
         [Theory]
         [InlineData("invalid-email")]
@@ -76,8 +74,7 @@ public class LoginRequestDTOTests
         public void InvalidEmail_ShouldHaveValidationError(string email)
         {
             // Arrange
-            var dto = _parent.CreateValidDTO();
-            dto.Email = email;
+            var dto = _parent.CreateValidDTO() with { Email = email };
 
             // Act
             var results = ValidationHelper.Validate(dto);
@@ -104,8 +101,7 @@ public class LoginRequestDTOTests
         public void MissingPassword_ShouldHaveValidationError(string? password)
         {
             // Arrange
-            var dto = _parent.CreateValidDTO();
-            dto.Password = password!;
+            var dto = _parent.CreateValidDTO() with { Password = password! };
 
             // Act
             var results = ValidationHelper.Validate(dto);

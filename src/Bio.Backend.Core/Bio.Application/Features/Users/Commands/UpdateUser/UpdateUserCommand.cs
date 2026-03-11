@@ -37,14 +37,13 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, UserResponse
 
         await _userRepository.SaveChangesAsync();
 
-        return new UserResponseDTO
-        {
-            Id = user.Id,
-            FullName = user.FullName,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
-        };
+        return new UserResponseDTO(
+            user.Id,
+            user.FullName,
+            user.Email,
+            user.PhoneNumber,
+            user.CreatedAt,
+            user.UpdatedAt
+        );
     }
 }

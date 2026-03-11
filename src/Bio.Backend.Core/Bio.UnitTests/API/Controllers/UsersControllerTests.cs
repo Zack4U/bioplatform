@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Moq;
 using Xunit;
+using System.Security.Claims;
 
 namespace Bio.UnitTests.API.Controllers;
 
@@ -38,6 +39,22 @@ public class UsersControllerTests
         _usersController = new UsersController(_mediatorMock.Object);
     }
 
+    private void MockUser(Guid userId, string role = "USER")
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Role, role)
+        };
+        var identity = new ClaimsIdentity(claims, "TestAuthType");
+        var claimsPrincipal = new ClaimsPrincipal(identity);
+
+        _usersController.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+        };
+    }
+
     public class CreateUser : UsersControllerTests
     {
         /// <summary>
@@ -47,8 +64,8 @@ public class UsersControllerTests
         public async Task ValidData_ShouldReturnCreated()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "test@test.com", Password = "Pass123!", PhoneNumber = "123" };
-            var responseDto = new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test", Email = "test@test.com", PhoneNumber = "123" };
+            var dto = new UserCreateDTO("Test", "test@test.com", "123", "Pass123!");
+            var responseDto = new UserResponseDTO(Guid.NewGuid(), "Test", "test@test.com", "123", DateTime.UtcNow);
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ReturnsAsync(responseDto);
@@ -69,7 +86,7 @@ public class UsersControllerTests
         public async Task DuplicateEmail_ShouldReturnConflict()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "duplicate@test.com", Password = "Pass123!" };
+            var dto = new UserCreateDTO("Test", "duplicate@test.com", null, "Pass123!");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("User with email already exists."));
 
@@ -88,7 +105,7 @@ public class UsersControllerTests
         public async Task DuplicatePhone_ShouldReturnConflict()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "test@test.com", Password = "Pass123!", PhoneNumber = "555555" };
+            var dto = new UserCreateDTO("Test", "test@test.com", "555555", "Pass123!");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("User with phone number already exists."));
 
@@ -107,7 +124,7 @@ public class UsersControllerTests
         public async Task BothEmailAndPhoneDuplicate_ShouldReturnConflict()
         {
             // Arrange
-            var dto = new UserCreateDTO { FullName = "Test", Email = "dup@test.com", Password = "Pass123!", PhoneNumber = "555" };
+            var dto = new UserCreateDTO("Test", "dup@test.com", "555", "Pass123!");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("User with email or phone already exists."));
 
@@ -131,8 +148,8 @@ public class UsersControllerTests
             // Arrange
             var users = new List<UserResponseDTO>
             {
-                new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test1" },
-                new UserResponseDTO { Id = Guid.NewGuid(), FullName = "Test2" }
+                new UserResponseDTO(Guid.NewGuid(), "Test1", "1@t.com", "1", DateTime.UtcNow),
+                new UserResponseDTO(Guid.NewGuid(), "Test2", "2@t.com", "2", DateTime.UtcNow)
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllUsersQuery>(), default))
                 .ReturnsAsync(users);
@@ -156,7 +173,7 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var user = new UserResponseDTO { Id = id, FullName = "Test1" };
+            var user = new UserResponseDTO(id, "John Doe", "john@test.com", "123", DateTime.UtcNow);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByIdQuery>(), default))
                 .ReturnsAsync(user);
 
@@ -197,7 +214,7 @@ public class UsersControllerTests
         {
             // Arrange
             var email = "test@example.com";
-            var user = new UserResponseDTO { Id = Guid.NewGuid(), Email = email };
+            var user = new UserResponseDTO(Guid.NewGuid(), "Test", email, "123", DateTime.UtcNow);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByEmailQuery>(), default))
                 .ReturnsAsync(user);
 
@@ -237,7 +254,7 @@ public class UsersControllerTests
         {
             // Arrange
             var phone = "123456789";
-            var user = new UserResponseDTO { Id = Guid.NewGuid(), PhoneNumber = phone };
+            var user = new UserResponseDTO(Guid.NewGuid(), "Test", "t@t.com", phone, DateTime.UtcNow);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByPhoneNumberQuery>(), default))
                 .ReturnsAsync(user);
 
@@ -277,8 +294,9 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "updated@example.com", PhoneNumber = "999" };
-            var responseDto = new UserResponseDTO { Id = id, FullName = updateDto.FullName, Email = updateDto.Email, PhoneNumber = updateDto.PhoneNumber };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "updated@example.com", "999");
+            var responseDto = new UserResponseDTO(id, updateDto.FullName, updateDto.Email, updateDto.PhoneNumber, DateTime.UtcNow);
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ReturnsAsync(responseDto);
@@ -299,7 +317,8 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "u@u.com", "1");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ReturnsAsync((UserResponseDTO?)null);
 
@@ -318,7 +337,8 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "duplicate@example.com" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "duplicate@example.com", "1");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("Email already exists."));
 
@@ -338,7 +358,8 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "u@test.com", PhoneNumber = "555" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "u@test.com", "555");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("Phone number already exists."));
 
@@ -358,7 +379,8 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var updateDto = new UserUpdateDTO { FullName = "Updated", Email = "dup@test.com", PhoneNumber = "555" };
+            MockUser(id);
+            var updateDto = new UserUpdateDTO("Updated", "dup@test.com", "555");
             _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("Email or Phone already exists."));
 
@@ -381,6 +403,7 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
+            MockUser(id);
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
                 .ReturnsAsync(true);
 
@@ -399,6 +422,7 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
+            MockUser(id);
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
                 .ReturnsAsync(false);
 

@@ -9,11 +9,10 @@ namespace Bio.UnitTests.Application.DTOs;
 /// </summary>
 public class RefreshRequestDTOTests
 {
-    private RefreshRequestDTO CreateValidDTO() => new()
-    {
-        AccessToken = "old-access-token",
-        RefreshToken = "valid-refresh-token"
-    };
+    /// <summary>
+    /// Creates a valid RefreshRequestDTO instance for testing purposes.
+    /// </summary>
+    private RefreshRequestDTO CreateValidDTO() => new("old-access-token", "valid-refresh-token");
 
     /// <summary>
     /// Tests for positive validation scenarios.
@@ -56,8 +55,7 @@ public class RefreshRequestDTOTests
         public void MissingAccessToken_ShouldHaveValidationError(string? token)
         {
             // Arrange
-            var dto = _parent.CreateValidDTO();
-            dto.AccessToken = token!;
+            var dto = _parent.CreateValidDTO() with { AccessToken = token! };
 
             // Act
             var results = ValidationHelper.Validate(dto);
@@ -84,8 +82,7 @@ public class RefreshRequestDTOTests
         public void MissingRefreshToken_ShouldHaveValidationError(string? token)
         {
             // Arrange
-            var dto = _parent.CreateValidDTO();
-            dto.RefreshToken = token!;
+            var dto = _parent.CreateValidDTO() with { RefreshToken = token! };
 
             // Act
             var results = ValidationHelper.Validate(dto);

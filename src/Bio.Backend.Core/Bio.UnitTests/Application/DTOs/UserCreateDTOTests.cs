@@ -12,13 +12,12 @@ public class UserCreateDTOTests
     /// <summary>
     /// Creates a valid UserCreateDTO instance for testing purposes.
     /// </summary>
-    private UserCreateDTO CreateValidDTO() => new()
-    {
-        FullName = "John Doe",
-        Email = "john.doe@example.com",
-        PhoneNumber = "+1234567890",
-        Password = "SecurePassword123!"
-    };
+    private UserCreateDTO CreateValidDTO() => new(
+        "John Doe",
+        "john.doe@example.com",
+        "+1234567890",
+        "SecurePassword123!"
+    );
 
     /// <summary>
     /// Verifies that a valid UserCreateDTO instance does not have any validation errors.
@@ -37,7 +36,7 @@ public class UserCreateDTOTests
     }
 
     /// <summary>
-    /// Verifies that a UserCreateDTO with a missing name has validation errors.
+    /// Verifies that a UserCreateDTO with a missing full name has validation errors.
     /// </summary>
     [Theory]
     [InlineData(null)]
@@ -46,8 +45,7 @@ public class UserCreateDTOTests
     public void MissingFullName_ShouldHaveValidationError(string? name)
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.FullName = name!;
+        var dto = CreateValidDTO() with { FullName = name! };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -63,8 +61,7 @@ public class UserCreateDTOTests
     public void NameTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.FullName = new string('A', 151);
+        var dto = CreateValidDTO() with { FullName = new string('A', 151) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -83,8 +80,7 @@ public class UserCreateDTOTests
     public void InvalidEmail_ShouldHaveValidationError(string email)
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Email = email;
+        var dto = CreateValidDTO() with { Email = email };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -100,8 +96,7 @@ public class UserCreateDTOTests
     public void PasswordTooShort_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Password = "short";
+        var dto = CreateValidDTO() with { Password = "short" };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -117,8 +112,7 @@ public class UserCreateDTOTests
     public void MissingPhoneNumber_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.PhoneNumber = string.Empty;
+        var dto = CreateValidDTO() with { PhoneNumber = string.Empty };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -134,8 +128,7 @@ public class UserCreateDTOTests
     public void EmailTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Email = new string('a', 92) + "@test.com"; // 92 + 9 = 101
+        var dto = CreateValidDTO() with { Email = new string('a', 92) + "@test.com" };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -151,8 +144,7 @@ public class UserCreateDTOTests
     public void PhoneNumberTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.PhoneNumber = new string('1', 21);
+        var dto = CreateValidDTO() with { PhoneNumber = new string('1', 21) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -168,8 +160,7 @@ public class UserCreateDTOTests
     public void MissingPassword_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Password = string.Empty;
+        var dto = CreateValidDTO() with { Password = string.Empty };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -185,13 +176,7 @@ public class UserCreateDTOTests
     public void AllRequiredFieldsMissing_ShouldHaveValidationErrors()
     {
         // Arrange
-        var dto = new UserCreateDTO
-        {
-            FullName = string.Empty,
-            Email = string.Empty,
-            PhoneNumber = string.Empty,
-            Password = string.Empty
-        };
+        var dto = new UserCreateDTO(string.Empty, string.Empty, string.Empty, string.Empty);
 
         // Act
         var results = ValidationHelper.Validate(dto);

@@ -12,12 +12,7 @@ public class UserUpdateDTOTests
     /// <summary>
     /// Creates a valid UserUpdateDTO instance for testing purposes.
     /// </summary>
-    private UserUpdateDTO CreateValidDTO() => new()
-    {
-        FullName = "Jane Doe",
-        Email = "jane.doe@example.com",
-        PhoneNumber = "+9876543210"
-    };
+    private UserUpdateDTO CreateValidDTO() => new("Jane Doe", "jane.doe@example.com", "+9876543210");
 
     /// <summary>
     /// Verifies that a valid UserUpdateDTO instance does not have any validation errors.
@@ -42,8 +37,7 @@ public class UserUpdateDTOTests
     public void MissingFullName_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.FullName = string.Empty;
+        var dto = CreateValidDTO() with { FullName = string.Empty };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -59,8 +53,7 @@ public class UserUpdateDTOTests
     public void InvalidEmail_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Email = "not-an-email";
+        var dto = CreateValidDTO() with { Email = "not-an-email" };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -76,8 +69,7 @@ public class UserUpdateDTOTests
     public void MissingPhoneNumber_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.PhoneNumber = string.Empty;
+        var dto = CreateValidDTO() with { PhoneNumber = string.Empty };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -93,8 +85,7 @@ public class UserUpdateDTOTests
     public void MissingEmail_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Email = string.Empty;
+        var dto = CreateValidDTO() with { Email = string.Empty };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -104,18 +95,13 @@ public class UserUpdateDTOTests
     }
 
     /// <summary>
-    /// Verifies that a UserUpdateDTO with all required fields missing has validation errors.
+    /// Verifies that a UserUpdateDTO with all required fields missing has multiple validation errors.
     /// </summary>
     [Fact]
     public void AllRequiredFieldsMissing_ShouldHaveValidationErrors()
     {
         // Arrange
-        var dto = new UserUpdateDTO
-        {
-            FullName = string.Empty,
-            Email = string.Empty,
-            PhoneNumber = string.Empty
-        };
+        var dto = new UserUpdateDTO(string.Empty, string.Empty, string.Empty);
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -134,8 +120,7 @@ public class UserUpdateDTOTests
     public void NameTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.FullName = new string('A', 151);
+        var dto = CreateValidDTO() with { FullName = new string('A', 151) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -151,8 +136,7 @@ public class UserUpdateDTOTests
     public void EmailTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Email = new string('a', 92) + "@test.com";
+        var dto = CreateValidDTO() with { Email = new string('a', 92) + "@test.com" };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -168,8 +152,7 @@ public class UserUpdateDTOTests
     public void PhoneNumberTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.PhoneNumber = new string('1', 21);
+        var dto = CreateValidDTO() with { PhoneNumber = new string('1', 21) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -179,18 +162,17 @@ public class UserUpdateDTOTests
     }
 
     /// <summary>
-    /// Verifies that a UserUpdateDTO with all fields exceeding their maximum length has validation errors.
+    /// Verifies that a UserUpdateDTO with all fields exceeding their maximum lengths has multiple validation errors.
     /// </summary>
     [Fact]
     public void AllFieldsTooLong_ShouldHaveValidationErrors()
     {
         // Arrange
-        var dto = new UserUpdateDTO
-        {
-            FullName = new string('A', 151),
-            Email = new string('a', 92) + "@test.com",
-            PhoneNumber = new string('1', 21)
-        };
+        var dto = new UserUpdateDTO(
+            new string('A', 151),
+            new string('a', 92) + "@test.com",
+            new string('1', 21)
+        );
 
         // Act
         var results = ValidationHelper.Validate(dto);
