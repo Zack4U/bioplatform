@@ -86,7 +86,7 @@ public class UsersControllerTests
         public async Task DuplicateEmail_ShouldThrowConflictException()
         {
             // Arrange
-            var dto = new UserCreateDTO("Test", "duplicate@test.com", null, "Pass123!");
+            var dto = new UserCreateDTO("Test", "duplicate@test.com", string.Empty, "Pass123!");
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default))
                 .ThrowsAsync(new ConflictException("User with email already exists."));
 
