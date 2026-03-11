@@ -80,4 +80,17 @@ public class User
         PhoneNumber = phoneNumber?.Trim();
         UpdatedAt = DateTime.UtcNow;
     }
+
+    /// <summary>
+    /// Changes the user's password.
+    /// </summary>
+    public void ChangePassword(string newPasswordHash, string newSalt)
+    {
+        if (string.IsNullOrWhiteSpace(newPasswordHash)) throw new ArgumentException("Password hash cannot be empty.", nameof(newPasswordHash));
+        if (string.IsNullOrWhiteSpace(newSalt)) throw new ArgumentException("Salt cannot be empty.", nameof(newSalt));
+
+        PasswordHash = newPasswordHash;
+        Salt = newSalt;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

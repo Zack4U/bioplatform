@@ -128,4 +128,29 @@ public class AuthService : IAuthService
             await _refreshTokenRepository.SaveChangesAsync();
         }
     }
+
+    /// <summary>
+    /// Changes the user's password.
+    /// </summary>
+    /// <param name="userId">The ID of the user requesting the change.</param>
+    /// <param name="request">The change password request containing current and new passwords.</param>
+    public async Task ChangePasswordAsync(Guid userId, ChangePasswordRequestDTO request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null)
+        {
+            throw new NotFoundException($"User with ID {userId} not found.");
+        }
+
+        if (!_passwordHasher.VerifyPassword(request.CurrentPassword, user.PasswordHash, user.Salt))
+        {
+            throw new UnauthorizedException("Invalid current password.");
+        }
+
+        var (newHash, newSalt) = _passwordHasher.HashPassword(request.NewPassword);
+        
+        user.ChangePassword(newHash, newSalt);
+        
+        await _userRepository.SaveChangesAsync();
+    }
 }

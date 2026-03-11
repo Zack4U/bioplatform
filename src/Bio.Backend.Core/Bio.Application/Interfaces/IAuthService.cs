@@ -21,4 +21,9 @@ public interface IAuthService
     /// Revokes a refresh token, effectively ending the session.
     /// </summary>
     Task RevokeTokenAsync(string refreshToken);
+
+    /// <summary>
+    /// Changes an authenticated user's password.
+    /// </summary>
+    Task ChangePasswordAsync(Guid userId, ChangePasswordRequestDTO request);
 }

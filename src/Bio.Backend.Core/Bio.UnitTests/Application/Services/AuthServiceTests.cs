@@ -290,4 +290,73 @@ public class AuthServiceTests
             _refreshTokenRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Never);
         }
     }
+
+    /// <summary>
+    /// Tests for the <see cref="AuthService.ChangePasswordAsync"/> method.
+    /// </summary>
+    public class ChangePasswordAsync : AuthServiceTests
+    {
+        [Fact]
+        public async Task ValidRequest_ShouldChangePassword()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var user = new User(userId, "Test User", "test@example.com", "oldHash", "oldSalt");
+            var request = new ChangePasswordRequestDTO("OldPassword123!", "NewPassword123!", "NewPassword123!");
+
+            _userRepositoryMock.Setup(r => r.GetByIdAsync(userId))
+                .ReturnsAsync(user);
+            _passwordHasherMock.Setup(h => h.VerifyPassword(request.CurrentPassword, user.PasswordHash, user.Salt))
+                .Returns(true);
+            _passwordHasherMock.Setup(h => h.HashPassword(request.NewPassword))
+                .Returns(("newHash", "newSalt"));
+
+            // Act
+            await _authService.ChangePasswordAsync(userId, request);
+
+            // Assert
+            user.PasswordHash.Should().Be("newHash");
+            user.Salt.Should().Be("newSalt");
+            _userRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task UserNotFound_ShouldThrowNotFoundException()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var request = new ChangePasswordRequestDTO("OldPassword123!", "NewPassword123!", "NewPassword123!");
+
+            _userRepositoryMock.Setup(r => r.GetByIdAsync(userId))
+                .ReturnsAsync((User?)null);
+
+            // Act
+            var act = async () => await _authService.ChangePasswordAsync(userId, request);
+
+            // Assert
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"User with ID {userId} not found.");
+        }
+
+        [Fact]
+        public async Task WrongCurrentPassword_ShouldThrowUnauthorizedException()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var user = new User(userId, "Test User", "test@example.com", "oldHash", "oldSalt");
+            var request = new ChangePasswordRequestDTO("WrongPassword!", "NewPassword123!", "NewPassword123!");
+
+            _userRepositoryMock.Setup(r => r.GetByIdAsync(userId))
+                .ReturnsAsync(user);
+            _passwordHasherMock.Setup(h => h.VerifyPassword(request.CurrentPassword, user.PasswordHash, user.Salt))
+                .Returns(false);
+
+            // Act
+            var act = async () => await _authService.ChangePasswordAsync(userId, request);
+
+            // Assert
+            await act.Should().ThrowAsync<UnauthorizedException>()
+                .WithMessage("Invalid current password.");
+        }
+    }
 }

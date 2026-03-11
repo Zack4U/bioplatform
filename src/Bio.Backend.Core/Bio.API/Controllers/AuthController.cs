@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace Bio.API.Controllers;
 
@@ -55,6 +56,26 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Revoke([FromBody] string refreshToken)
     {
         await _authService.RevokeTokenAsync(refreshToken);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Changes the password of the authenticated user.
+    /// </summary>
+    [HttpPut("change-password")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDTO request)
+    {
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        await _authService.ChangePasswordAsync(userId, request);
         return NoContent();
     }
 }
