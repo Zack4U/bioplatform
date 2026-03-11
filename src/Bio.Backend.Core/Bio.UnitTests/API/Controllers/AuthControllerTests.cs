@@ -239,4 +239,98 @@ public class AuthControllerTests
                 .WithMessage("Refresh token has already been revoked.");
         }
     }
+
+    /// <summary>
+    /// Tests for the <see cref="AuthController.ChangePassword"/> endpoint.
+    /// </summary>
+    public class ChangePassword : AuthControllerTests
+    {
+        /// <summary>
+        /// Verifies that a valid change password request returns a 204 No Content response.
+        /// </summary>
+        [Fact]
+        public async Task ValidRequest_ShouldReturnNoContent()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var request = new ChangePasswordRequestDTO("OldPassword123!", "NewPassword123!", "NewPassword123!");
+
+            // Mock the User property on the controller to return a claims principal with the NameIdentifier claim
+            var claims = new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, userId.ToString()) };
+            var identity = new System.Security.Claims.ClaimsIdentity(claims, "TestAuthType");
+            var claimsPrincipal = new System.Security.Claims.ClaimsPrincipal(identity);
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            _authServiceMock.Setup(s => s.ChangePasswordAsync(userId, request))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _authController.ChangePassword(request);
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+            _authServiceMock.Verify(s => s.ChangePasswordAsync(userId, request), Times.Once);
+        }
+
+        /// <summary>
+        /// Verifies that a missing NameIdentifier claim returns a 401 Unauthorized response.
+        /// </summary>
+        [Fact]
+        public async Task MissingNameIdentifierClaim_ShouldReturnUnauthorized()
+        {
+            // Arrange
+            var request = new ChangePasswordRequestDTO("OldPassword123!", "NewPassword123!", "NewPassword123!");
+
+            // Mock the User property on the controller with no claims
+            var identity = new System.Security.Claims.ClaimsIdentity();
+            var claimsPrincipal = new System.Security.Claims.ClaimsPrincipal(identity);
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            // Act
+            var result = await _authController.ChangePassword(request);
+
+            // Assert
+            result.Should().BeOfType<UnauthorizedResult>();
+            _authServiceMock.Verify(s => s.ChangePasswordAsync(It.IsAny<Guid>(), It.IsAny<ChangePasswordRequestDTO>()), Times.Never);
+        }
+
+        /// <summary>
+        /// Verifies that an invalid current password causes the service exception to propagate.
+        /// </summary>
+        [Fact]
+        public async Task InvalidCurrentPassword_ShouldThrowUnauthorizedException()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var request = new ChangePasswordRequestDTO("WrongPassword!", "NewPassword123!", "NewPassword123!");
+
+            var claims = new[] { new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, userId.ToString()) };
+            var identity = new System.Security.Claims.ClaimsIdentity(claims, "TestAuthType");
+            var claimsPrincipal = new System.Security.Claims.ClaimsPrincipal(identity);
+
+            _authController.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
+
+            _authServiceMock.Setup(s => s.ChangePasswordAsync(userId, request))
+                .ThrowsAsync(new UnauthorizedException("Invalid current password."));
+
+            // Act
+            var act = async () => await _authController.ChangePassword(request);
+
+            // Assert
+            await act.Should()
+                .ThrowAsync<UnauthorizedException>()
+                .WithMessage("Invalid current password.");
+        }
+    }
 }

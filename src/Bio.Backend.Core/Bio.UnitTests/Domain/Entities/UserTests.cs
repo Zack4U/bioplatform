@@ -330,5 +330,98 @@ public class UserTests
             // Assert
             act.Should().Throw<ArgumentException>().WithMessage("*Email cannot be empty.*");
         }
+
+        /// <summary>
+        /// Tests for the ChangePassword domain method.
+        /// </summary>
+        public class ChangePassword
+        {
+            /// <summary>
+            /// Verifies that ChangePassword correctly updates the password hash.
+            /// </summary>
+            [Fact]
+            public void ShouldUpdateHash_WhenChanged()
+            {
+                // Arrange
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "oldHash", "oldSalt");
+                var newHash = "newHash";
+                var newSalt = "newSalt";
+
+                // Act
+                user.ChangePassword(newHash, newSalt);
+
+                // Assert
+                user.PasswordHash.Should().Be(newHash);
+            }
+
+            /// <summary>
+            /// Verifies that ChangePassword correctly updates the salt.
+            /// </summary>
+            [Fact]
+            public void ShouldUpdateSalt_WhenChanged()
+            {
+                // Arrange
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "oldHash", "oldSalt");
+                var newHash = "newHash";
+                var newSalt = "newSalt";
+
+                // Act
+                user.ChangePassword(newHash, newSalt);
+
+                // Assert
+                user.Salt.Should().Be(newSalt);
+            }
+
+            /// <summary>
+            /// Verifies that ChangePassword correctly sets the UpdatedAt timestamp.
+            /// </summary>
+            [Fact]
+            public void ShouldSetUpdatedAt_WhenChanged()
+            {
+                // Arrange
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "oldHash", "oldSalt");
+                var newHash = "newHash";
+                var newSalt = "newSalt";
+
+                // Act
+                user.ChangePassword(newHash, newSalt);
+
+                // Assert
+                user.UpdatedAt.Should().NotBeNull();
+                user.UpdatedAt!.Value.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+            }
+
+            /// <summary>
+            /// Verifies that ChangePassword throws an ArgumentException when the new hash is empty.
+            /// </summary>
+            [Fact]
+            public void ShouldThrowException_When_HashIsEmpty()
+            {
+                // Arrange
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+
+                // Act
+                Action act = () => user.ChangePassword("", "newSalt");
+
+                // Assert
+                act.Should().Throw<ArgumentException>().WithMessage("*Password hash cannot be empty.*");
+            }
+
+            /// <summary>
+            /// Verifies that ChangePassword throws an ArgumentException when the new salt is empty.
+            /// </summary>
+            [Fact]
+            public void ShouldThrowException_When_SaltIsEmpty()
+            {
+                // Arrange
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+
+                // Act
+                Action act = () => user.ChangePassword("newHash", "");
+
+                // Assert
+                act.Should().Throw<ArgumentException>().WithMessage("*Salt cannot be empty.*");
+            }
+        }
     }
 }
