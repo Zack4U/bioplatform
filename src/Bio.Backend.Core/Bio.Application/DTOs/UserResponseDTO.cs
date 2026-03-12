@@ -16,5 +16,6 @@ public record UserResponseDTO(
     string Email = "",
     string? PhoneNumber = null,
     DateTime CreatedAt = default,
-    DateTime? UpdatedAt = null
+    DateTime? UpdatedAt = null,
+    bool TwoFactorEnabled = false
 );
