@@ -345,7 +345,7 @@ public class TokenServiceTests
 
             jwtToken.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == user.Id.ToString());
             jwtToken.Claims.Should().Contain(c => c.Type == "2fa_pending" && c.Value == "true");
-            
+
             // Should expire in approximately 5 minutes
             jwtToken.ValidTo.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(5), TimeSpan.FromSeconds(5));
         }

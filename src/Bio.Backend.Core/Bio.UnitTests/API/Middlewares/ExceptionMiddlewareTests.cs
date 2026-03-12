@@ -180,11 +180,11 @@ public class ExceptionMiddlewareTests
 
             // Assert
             _httpContext.Response.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
-            
+
             _httpContext.Response.Body.Seek(0, SeekOrigin.Begin);
             using var reader = new StreamReader(_httpContext.Response.Body);
             var responseBody = await reader.ReadToEndAsync();
-            
+
             var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(responseBody, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true

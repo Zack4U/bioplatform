@@ -10,8 +10,8 @@ namespace Bio.Application.DTOs;
 /// <param name="TwoFactorRequired">Indicates if the user must complete a 2FA challenge.</param>
 /// <param name="TwoFactorToken">A temporary token to be used for 2FA verification.</param>
 public record AuthResponseDTO(
-    string? AccessToken = null, 
-    string? RefreshToken = null, 
+    string? AccessToken = null,
+    string? RefreshToken = null,
     DateTime? AccessTokenExpiration = null,
     bool TwoFactorRequired = false,
     string? TwoFactorToken = null

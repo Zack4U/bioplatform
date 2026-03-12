@@ -71,7 +71,7 @@ public class ValidationBehaviorTests
             var request = new TestRequest();
 
             _validatorMock.Setup(v => v.ValidateAsync(
-                It.IsAny<ValidationContext<TestRequest>>(), 
+                It.IsAny<ValidationContext<TestRequest>>(),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult());
 
@@ -94,7 +94,7 @@ public class ValidationBehaviorTests
 
             var failures = new List<ValidationFailure> { new("Property", "Error message") };
             _validatorMock.Setup(v => v.ValidateAsync(
-                It.IsAny<ValidationContext<TestRequest>>(), 
+                It.IsAny<ValidationContext<TestRequest>>(),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult(failures));
 

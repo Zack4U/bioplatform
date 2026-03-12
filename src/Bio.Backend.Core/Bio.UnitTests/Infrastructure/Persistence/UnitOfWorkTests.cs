@@ -81,11 +81,11 @@ public class UnitOfWorkTests
         public TransactionTests()
         {
             _transactionMock = new Mock<IDbContextTransaction>();
-            
+
             // Setup Database and Transaction Mocking
             var databaseMock = new Mock<Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade>(_contextMock.Object);
             _contextMock.Setup(c => c.Database).Returns(databaseMock.Object);
-            
+
             databaseMock.Setup(d => d.BeginTransactionAsync(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_transactionMock.Object);
         }

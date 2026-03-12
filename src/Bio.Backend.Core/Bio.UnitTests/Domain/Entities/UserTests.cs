@@ -237,7 +237,7 @@ public class UserTests
             public void ShouldThrowException_When_HashOrSaltIsEmpty()
             {
                 var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
-                
+
                 Action actHash = () => user.ChangePassword("", "s");
                 actHash.Should().Throw<ArgumentException>();
 
@@ -272,7 +272,7 @@ public class UserTests
             public void SetTwoFactorSecret_ShouldUpdateTimestamp()
             {
                 var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
-                
+
                 user.SetTwoFactorSecret("ABCDEF123456");
 
                 user.UpdatedAt.Should().NotBeNull();

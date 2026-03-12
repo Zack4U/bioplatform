@@ -484,7 +484,7 @@ public class AuthServiceTests
             var key = OtpNet.KeyGeneration.GenerateRandomKey(20);
             var base32Secret = OtpNet.Base32Encoding.ToString(key);
             user.SetTwoFactorSecret(base32Secret);
-            
+
             var totp = new OtpNet.Totp(key);
             var validCode = totp.ComputeTotp();
 

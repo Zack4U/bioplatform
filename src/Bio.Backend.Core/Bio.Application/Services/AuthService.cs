@@ -160,9 +160,9 @@ public class AuthService : IAuthService
         }
 
         var (newHash, newSalt) = _passwordHasher.HashPassword(request.NewPassword);
-        
+
         user.ChangePassword(newHash, newSalt);
-        
+
         await _unitOfWork.SaveChangesAsync();
     }
 
@@ -172,11 +172,11 @@ public class AuthService : IAuthService
     public async Task<AuthResponseDTO> LoginTwoFactorAsync(TwoFactorLoginRequestDTO request)
     {
         var principal = _tokenService.GetPrincipalFromExpiredToken(request.TwoFactorToken);
-        
+
         // Find user ID (sub or NameIdentifier due to potential claim mapping)
-        var sub = principal.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value 
+        var sub = principal.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value
                   ?? principal.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        
+
         if (string.IsNullOrEmpty(sub) || !Guid.TryParse(sub, out var userId))
         {
             throw new UnauthorizedException("Invalid 2FA token.");

@@ -13,10 +13,10 @@ public class MappingProfile : Profile
     {
         // User Mappings
         CreateMap<User, UserResponseDTO>();
-        
+
         // Role Mappings
         CreateMap<Role, RoleResponseDTO>();
-        
+
         // UserRole Mappings
         CreateMap<UserRole, UserRoleResponseDTO>();
     }

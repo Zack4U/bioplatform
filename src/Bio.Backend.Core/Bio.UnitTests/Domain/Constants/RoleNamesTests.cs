@@ -42,7 +42,7 @@ public class RoleNamesTests
         public void Role_ShouldBeInUppercase(string roleName)
         {
             // Assert
-            roleName.Should().Be(roleName.ToUpperInvariant(), 
+            roleName.Should().Be(roleName.ToUpperInvariant(),
                 $"The role '{roleName}' must be in uppercase to maintain consistency with entity mapping.");
         }
     }
