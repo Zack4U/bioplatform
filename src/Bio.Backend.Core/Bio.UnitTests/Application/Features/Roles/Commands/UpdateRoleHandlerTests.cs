@@ -10,29 +10,28 @@ using Xunit;
 namespace Bio.UnitTests.Application.Features.Roles.Commands;
 
 /// <summary>
-/// Unit tests for the UpdateRoleHandler class.
+/// Unit tests for the UpdateRoleCommandHandler class.
 /// </summary>
-public class UpdateRoleHandlerTests
+public class UpdateRoleCommandHandlerTests
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UpdateRoleHandlerTests"/> class.
-    /// </summary>
     private readonly Mock<IRoleRepository> _roleRepositoryMock;
-    private readonly UpdateRoleHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly UpdateRoleCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="UpdateRoleHandlerTests"/> class.
+    /// Initializes a new instance of the <see cref="UpdateRoleCommandHandlerTests"/> class.
     /// </summary>
-    public UpdateRoleHandlerTests()
+    public UpdateRoleCommandHandlerTests()
     {
         _roleRepositoryMock = new Mock<IRoleRepository>();
-        _handler = new UpdateRoleHandler(_roleRepositoryMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _handler = new UpdateRoleCommandHandler(_roleRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     /// <summary>
-    /// Tests for the Handle method of UpdateRoleHandler.
+    /// Tests for the Handle method of UpdateRoleCommandHandler.
     /// </summary>
-    public class Handle : UpdateRoleHandlerTests
+    public class Handle : UpdateRoleCommandHandlerTests
     {
         /// <summary>
         /// Verifies that a role is successfully updated when the ID exists and the name is unique.
@@ -60,7 +59,7 @@ public class UpdateRoleHandlerTests
             result.Name.Should().Be(normalizedName);
             result.Description.Should().Be(dto.Description);
 
-            _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ public class UpdateRoleHandlerTests
             // Assert
             await act.Should().ThrowAsync<NotFoundException>();
 
-            _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
 
         /// <summary>
@@ -113,7 +112,7 @@ public class UpdateRoleHandlerTests
             await act.Should().ThrowAsync<Bio.Domain.Exceptions.ConflictException>()
                 .WithMessage($"Another role with name '{normalizedName}' already exists.");
 
-            _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

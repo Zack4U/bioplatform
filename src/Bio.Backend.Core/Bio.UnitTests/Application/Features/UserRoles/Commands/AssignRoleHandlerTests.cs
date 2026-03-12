@@ -6,37 +6,44 @@ using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using AutoMapper;
 
 namespace Bio.UnitTests.Application.Features.UserRoles.Commands;
 
 /// <summary>
-/// Unit tests for the AssignRoleHandler class.
+/// Unit tests for the AssignRoleCommandHandler class.
 /// </summary>
-public class AssignRoleHandlerTests
+public class AssignRoleCommandHandlerTests
 {
     private readonly Mock<IUserRoleRepository> _userRoleRepositoryMock;
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IRoleRepository> _roleRepositoryMock;
-    private readonly AssignRoleHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IMapper> _mapperMock;
+    private readonly AssignRoleCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AssignRoleHandlerTests"/> class.
+    /// Initializes a new instance of the <see cref="AssignRoleCommandHandlerTests"/> class.
     /// </summary>
-    public AssignRoleHandlerTests()
+    public AssignRoleCommandHandlerTests()
     {
         _userRoleRepositoryMock = new Mock<IUserRoleRepository>();
         _userRepositoryMock = new Mock<IUserRepository>();
         _roleRepositoryMock = new Mock<IRoleRepository>();
-        _handler = new AssignRoleHandler(
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _mapperMock = new Mock<IMapper>();
+        _handler = new AssignRoleCommandHandler(
             _userRoleRepositoryMock.Object,
             _userRepositoryMock.Object,
-            _roleRepositoryMock.Object);
+            _roleRepositoryMock.Object,
+            _unitOfWorkMock.Object,
+            _mapperMock.Object);
     }
 
     /// <summary>
-    /// Tests for the Handle method of AssignRoleHandler.
+    /// Tests for the Handle method of AssignRoleCommandHandler.
     /// </summary>
-    public class Handle : AssignRoleHandlerTests
+    public class Handle : AssignRoleCommandHandlerTests
     {
         /// <summary>
         /// Verifies that a role is successfully assigned when user and role exist and no duplicate assignment.
@@ -61,7 +68,7 @@ public class AssignRoleHandlerTests
 
             // Assert
             _userRoleRepositoryMock.Verify(r => r.AddAsync(It.IsAny<UserRole>()), Times.Once);
-            _userRoleRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -85,6 +92,7 @@ public class AssignRoleHandlerTests
             await act.Should().ThrowAsync<NotFoundException>()
                 .WithMessage($"*User*{userId}*not found*");
             _userRoleRepositoryMock.Verify(r => r.AddAsync(It.IsAny<UserRole>()), Times.Never);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
 
         /// <summary>
@@ -110,6 +118,7 @@ public class AssignRoleHandlerTests
             await act.Should().ThrowAsync<NotFoundException>()
                 .WithMessage($"*Role*{roleId}*not found*");
             _userRoleRepositoryMock.Verify(r => r.AddAsync(It.IsAny<UserRole>()), Times.Never);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
 
         /// <summary>
@@ -137,6 +146,7 @@ public class AssignRoleHandlerTests
             await act.Should().ThrowAsync<Bio.Domain.Exceptions.ConflictException>()
                 .WithMessage($"*{role.Name}*");
             _userRoleRepositoryMock.Verify(r => r.AddAsync(It.IsAny<UserRole>()), Times.Never);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

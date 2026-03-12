@@ -5,33 +5,35 @@ using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
+using AutoMapper;
 
 namespace Bio.UnitTests.Application.Features.Roles.Commands;
 
 /// <summary>
-/// Unit tests for the CreateRoleHandler class.
+/// Unit tests for the CreateRoleCommandHandler class.
 /// </summary>
-public class CreateRoleHandlerTests
+public class CreateRoleCommandHandlerTests
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CreateRoleHandlerTests"/> class.
-    /// </summary>
     private readonly Mock<IRoleRepository> _roleRepositoryMock;
-    private readonly CreateRoleHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IMapper> _mapperMock;
+    private readonly CreateRoleCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateRoleHandlerTests"/> class.
+    /// Initializes a new instance of the <see cref="CreateRoleCommandHandlerTests"/> class.
     /// </summary>
-    public CreateRoleHandlerTests()
+    public CreateRoleCommandHandlerTests()
     {
         _roleRepositoryMock = new Mock<IRoleRepository>();
-        _handler = new CreateRoleHandler(_roleRepositoryMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _mapperMock = new Mock<IMapper>();
+        _handler = new CreateRoleCommandHandler(_roleRepositoryMock.Object, _unitOfWorkMock.Object, _mapperMock.Object);
     }
 
     /// <summary>
-    /// Tests for the Handle method of CreateRoleHandler.
+    /// Tests for the Handle method of CreateRoleCommandHandler.
     /// </summary>
-    public class Handle : CreateRoleHandlerTests
+    public class Handle : CreateRoleCommandHandlerTests
     {
         /// <summary>
         /// Verifies that a role is successfully created when the name is unique.
@@ -46,6 +48,8 @@ public class CreateRoleHandlerTests
 
             _roleRepositoryMock.Setup(repo => repo.GetByNameAsync(normalizedName))
                 .ReturnsAsync((Role?)null);
+            _mapperMock.Setup(m => m.Map<RoleResponseDTO>(It.IsAny<Role>()))
+                .Returns(new RoleResponseDTO(Guid.NewGuid(), normalizedName, dto.Description, DateTime.UtcNow, DateTime.UtcNow));
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -56,7 +60,7 @@ public class CreateRoleHandlerTests
             result.Description.Should().Be(dto.Description);
 
             _roleRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Role>()), Times.Once);
-            _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -82,7 +86,7 @@ public class CreateRoleHandlerTests
                 .WithMessage($"Role with name '{normalizedName}' already exists.");
 
             _roleRepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Role>()), Times.Never);
-            _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

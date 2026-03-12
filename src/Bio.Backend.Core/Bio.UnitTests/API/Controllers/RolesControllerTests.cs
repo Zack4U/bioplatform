@@ -1,4 +1,5 @@
 using Bio.API.Controllers;
+using Bio.Domain.Constants;
 using Bio.Application.DTOs;
 using Bio.Application.Features.Roles.Commands.CreateRole;
 using Bio.Application.Features.Roles.Commands.DeleteRole;
@@ -46,8 +47,8 @@ public class RolesControllerTests
         public async Task ValidData_ShouldReturnCreated()
         {
             // Arrange
-            var dto = new RoleCreateDTO("ADMIN", "Administrator role");
-            var responseDto = new RoleResponseDTO(Guid.NewGuid(), "ADMIN", "Administrator role", DateTime.UtcNow);
+            var dto = new RoleCreateDTO(RoleNames.Admin, "Administrator role");
+            var responseDto = new RoleResponseDTO(Guid.NewGuid(), RoleNames.Admin, "Administrator role", DateTime.UtcNow);
 
             _mediatorMock.Setup(m => m.Send(It.IsAny<CreateRoleCommand>(), default))
                 .ReturnsAsync(responseDto);
@@ -91,7 +92,7 @@ public class RolesControllerTests
             // Arrange
             var roles = new List<RoleResponseDTO>
             {
-                new RoleResponseDTO(Guid.NewGuid(), "ADMIN"),
+                new RoleResponseDTO(Guid.NewGuid(), RoleNames.Admin),
                 new RoleResponseDTO(Guid.NewGuid(), "USER")
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllRolesQuery>(), default))
@@ -116,7 +117,7 @@ public class RolesControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var role = new RoleResponseDTO(id, "ADMIN");
+            var role = new RoleResponseDTO(id, RoleNames.Admin);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByIdQuery>(), default))
                 .ReturnsAsync(role);
 
@@ -156,7 +157,7 @@ public class RolesControllerTests
         public async Task ExistingRole_ShouldReturnOk()
         {
             // Arrange
-            var name = "ADMIN";
+            var name = RoleNames.Admin;
             var role = new RoleResponseDTO(Guid.NewGuid(), name);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoleByNameQuery>(), default))
                 .ReturnsAsync(role);

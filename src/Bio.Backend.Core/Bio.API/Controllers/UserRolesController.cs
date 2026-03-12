@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Bio.Domain.Constants;
 using Bio.Application.DTOs;
 using Bio.Application.Features.UserRoles.Commands.AssignRole;
 using Bio.Application.Features.UserRoles.Commands.UnassignRole;
@@ -14,7 +15,7 @@ namespace Bio.API.Controllers;
 /// <summary>
 /// Dedicated controller for independent user-role management using MediatR.
 /// </summary>
-[Authorize(Roles = "ADMIN")]
+[Authorize(Roles = RoleNames.Admin)]
 [ApiController]
 [Route("api/user-roles")]
 [Produces("application/json")]

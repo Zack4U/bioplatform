@@ -8,29 +8,28 @@ using Xunit;
 namespace Bio.UnitTests.Application.Features.Roles.Commands;
 
 /// <summary>
-/// Unit tests for the DeleteRoleHandler class.
+/// Unit tests for the DeleteRoleCommandHandler class.
 /// </summary>
-public class DeleteRoleHandlerTests
+public class DeleteRoleCommandHandlerTests
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DeleteRoleHandlerTests"/> class.
-    /// </summary>
     private readonly Mock<IRoleRepository> _roleRepositoryMock;
-    private readonly DeleteRoleHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly DeleteRoleCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DeleteRoleHandlerTests"/> class.
+    /// Initializes a new instance of the <see cref="DeleteRoleCommandHandlerTests"/> class.
     /// </summary>
-    public DeleteRoleHandlerTests()
+    public DeleteRoleCommandHandlerTests()
     {
         _roleRepositoryMock = new Mock<IRoleRepository>();
-        _handler = new DeleteRoleHandler(_roleRepositoryMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _handler = new DeleteRoleCommandHandler(_roleRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     /// <summary>
-    /// Tests for the Handle method of DeleteRoleHandler.
+    /// Tests for the Handle method of DeleteRoleCommandHandler.
     /// </summary>
-    public class Handle : DeleteRoleHandlerTests
+    public class Handle : DeleteRoleCommandHandlerTests
     {
         /// <summary>
         /// Verifies that a role is successfully deleted when it exists.
@@ -50,7 +49,7 @@ public class DeleteRoleHandlerTests
 
             // Assert
             _roleRepositoryMock.Verify(repo => repo.DeleteAsync(role), Times.Once);
-            _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
@@ -73,7 +72,7 @@ public class DeleteRoleHandlerTests
                 .WithMessage($"Role with ID '{roleId}' not found.");
 
             _roleRepositoryMock.Verify(repo => repo.DeleteAsync(It.IsAny<Role>()), Times.Never);
-            _roleRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
+            _unitOfWorkMock.Verify(uow => uow.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

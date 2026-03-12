@@ -27,7 +27,8 @@ public class GetUserByEmailHandler : IRequestHandler<GetUserByEmailQuery, UserRe
             user.Email,
             user.PhoneNumber,
             user.CreatedAt,
-            user.UpdatedAt
+            user.UpdatedAt,
+            user.TwoFactorEnabled
         );
     }
 }

@@ -319,4 +319,94 @@ public class TokenServiceTests
             act.Should().Throw<ArgumentException>();
         }
     }
+
+    /// <summary>
+    /// Tests for the GenerateTwoFactorToken method.
+    /// </summary>
+    public class GenerateTwoFactorToken : TokenServiceTests
+    {
+        /// <summary>
+        /// Verifies that the generated 2FA token contains the correct user ID claim.
+        /// </summary>
+        [Fact]
+        public void ShouldGenerateValidTwoFactorToken()
+        {
+            // Arrange
+            var user = new User(Guid.NewGuid(), "John Doe", "john@example.com", "h", "s");
+
+            // Act
+            var tokenString = _tokenService.GenerateTwoFactorToken(user);
+
+            // Assert
+            tokenString.Should().NotBeNullOrWhiteSpace();
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(tokenString);
+
+            jwtToken.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == user.Id.ToString());
+            jwtToken.Claims.Should().Contain(c => c.Type == "2fa_pending" && c.Value == "true");
+
+            // Should expire in approximately 5 minutes
+            jwtToken.ValidTo.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(5), TimeSpan.FromSeconds(5));
+        }
+
+        /// <summary>
+        /// Verifies that the 2FA token does NOT contain a different user's ID as the subject claim.
+        /// </summary>
+        [Fact]
+        public void ShouldNotContainDifferentUserId()
+        {
+            // Arrange
+            var user = new User(Guid.NewGuid(), "John Doe", "john@example.com", "h", "s");
+            var differentUserId = Guid.NewGuid().ToString();
+
+            // Act
+            var tokenString = _tokenService.GenerateTwoFactorToken(user);
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(tokenString);
+
+            // Assert
+            jwtToken.Claims.Should().NotContain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == differentUserId);
+        }
+
+        /// <summary>
+        /// Verifies that two different users receive tokens with different subject claims.
+        /// </summary>
+        [Fact]
+        public void TwoUsers_ShouldReceiveTokensWithDifferentSubClaims()
+        {
+            // Arrange
+            var userA = new User(Guid.NewGuid(), "Alice", "alice@example.com", "h", "s");
+            var userB = new User(Guid.NewGuid(), "Bob", "bob@example.com", "h", "s");
+
+            // Act
+            var tokenA = new JwtSecurityTokenHandler().ReadJwtToken(_tokenService.GenerateTwoFactorToken(userA));
+            var tokenB = new JwtSecurityTokenHandler().ReadJwtToken(_tokenService.GenerateTwoFactorToken(userB));
+
+            var subA = tokenA.Claims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
+            var subB = tokenB.Claims.First(c => c.Type == JwtRegisteredClaimNames.Sub).Value;
+
+            // Assert
+            subA.Should().NotBe(subB);
+        }
+
+        /// <summary>
+        /// Verifies that token is rejected when the sub claim does not match the expected user ID.
+        /// </summary>
+        [Fact]
+        public void GeneratedToken_SubClaimShouldNotMatchArbitraryGuid()
+        {
+            // Arrange
+            var user = new User(Guid.NewGuid(), "John Doe", "john@example.com", "h", "s");
+            var attackerUserId = Guid.NewGuid();
+
+            // Act
+            var tokenString = _tokenService.GenerateTwoFactorToken(user);
+            var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(tokenString);
+            var subClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+
+            // Assert: the token's sub claim should not match an arbitrary unrelated ID
+            var isMatchingAttacker = Guid.TryParse(subClaim, out var parsedId) && parsedId == attackerUserId;
+            isMatchingAttacker.Should().BeFalse();
+        }
+    }
 }

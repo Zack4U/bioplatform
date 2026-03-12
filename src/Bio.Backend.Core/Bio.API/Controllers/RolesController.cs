@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Bio.Domain.Constants;
 using Bio.Application.DTOs;
 using Bio.Application.Features.Roles.Commands.CreateRole;
 using Bio.Application.Features.Roles.Commands.DeleteRole;
@@ -14,7 +15,7 @@ namespace Bio.API.Controllers;
 /// <summary>
 /// Controller for managing security roles using MediatR.
 /// </summary>
-[Authorize(Roles = "ADMIN")]
+[Authorize(Roles = RoleNames.Admin)]
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]

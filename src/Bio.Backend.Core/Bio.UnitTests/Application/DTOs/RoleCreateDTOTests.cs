@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Bio.Application.DTOs;
+using Bio.Domain.Constants;
 using FluentAssertions;
 using Xunit;
 
@@ -13,7 +14,7 @@ public class RoleCreateDTOTests
     /// <summary>
     /// Creates a valid RoleCreateDTO instance for testing purposes.
     /// </summary>
-    private RoleCreateDTO CreateValidDTO() => new("ADMIN", "System Administrator");
+    private RoleCreateDTO CreateValidDTO() => new(RoleNames.Admin, "System Administrator");
 
     /// <summary>
     /// Verifies that a valid RoleCreateDTO instance does not have any validation errors.

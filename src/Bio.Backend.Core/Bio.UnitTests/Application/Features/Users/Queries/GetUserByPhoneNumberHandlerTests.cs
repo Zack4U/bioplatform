@@ -36,9 +36,10 @@ public class GetUserByPhoneNumberHandlerTests
         [Fact]
         public async Task Should_ReturnUser_When_PhoneExists()
         {
-            // Arrange
             var phone = "+1234567890";
             var user = new User(Guid.NewGuid(), "Alice", "alice@example.com", "h", "s", phone);
+            user.SetTwoFactorSecret("SECRET");
+            user.EnableTwoFactor();
             _userRepositoryMock.Setup(r => r.GetByPhoneNumberAsync(phone)).ReturnsAsync(user);
 
             // Act
@@ -47,6 +48,7 @@ public class GetUserByPhoneNumberHandlerTests
             // Assert
             result.Should().NotBeNull();
             result!.PhoneNumber.Should().Be(phone);
+            result.TwoFactorEnabled.Should().BeTrue();
         }
 
         /// <summary>

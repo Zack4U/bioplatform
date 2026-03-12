@@ -24,7 +24,8 @@ public class GetAllUsersHandler : IRequestHandler<GetAllUsersQuery, IEnumerable<
             u.Email,
             u.PhoneNumber,
             u.CreatedAt,
-            u.UpdatedAt
+            u.UpdatedAt,
+            u.TwoFactorEnabled
         ));
     }
 }

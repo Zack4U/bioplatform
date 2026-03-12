@@ -46,6 +46,16 @@ public class User
     /// </summary>
     public DateTime? UpdatedAt { get; private set; }
 
+    /// <summary>
+    /// Indicates if Two-Factor Authentication (OTP) is active for this user.
+    /// </summary>
+    public bool TwoFactorEnabled { get; private set; }
+
+    /// <summary>
+    /// Base32 encoded secret for TOTP generation.
+    /// </summary>
+    public string? TwoFactorSecret { get; private set; }
+
     // Required for EF Core
     private User() { }
 
@@ -78,6 +88,52 @@ public class User
         FullName = fullName.Trim();
         Email = email.Trim().ToLowerInvariant();
         PhoneNumber = phoneNumber?.Trim();
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Changes the user's password.
+    /// </summary>
+    public void ChangePassword(string newPasswordHash, string newSalt)
+    {
+        if (string.IsNullOrWhiteSpace(newPasswordHash)) throw new ArgumentException("Password hash cannot be empty.", nameof(newPasswordHash));
+        if (string.IsNullOrWhiteSpace(newSalt)) throw new ArgumentException("Salt cannot be empty.", nameof(newSalt));
+
+        PasswordHash = newPasswordHash;
+        Salt = newSalt;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Updates the secret for Two-Factor Authentication.
+    /// </summary>
+    public void SetTwoFactorSecret(string secret)
+    {
+        if (string.IsNullOrWhiteSpace(secret)) throw new ArgumentException("Secret cannot be empty.", nameof(secret));
+        TwoFactorSecret = secret;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Permits activation of 2FA for the account.
+    /// Should be called after verifying the first successful OTP.
+    /// </summary>
+    public void EnableTwoFactor()
+    {
+        if (string.IsNullOrWhiteSpace(TwoFactorSecret))
+            throw new InvalidOperationException("Cannot enable 2FA without a secret.");
+
+        TwoFactorEnabled = true;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Disables Two-Factor Authentication and clears the secret.
+    /// </summary>
+    public void DisableTwoFactor()
+    {
+        TwoFactorEnabled = false;
+        TwoFactorSecret = null;
         UpdatedAt = DateTime.UtcNow;
     }
 }

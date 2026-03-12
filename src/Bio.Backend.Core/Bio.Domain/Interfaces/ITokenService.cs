@@ -27,4 +27,9 @@ public interface ITokenService
     /// Extracts the user principal from an expired JWT token (used for validation during refresh).
     /// </summary>
     ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+
+    /// <summary>
+    /// Generates a short-lived token to be used exclusively for 2FA verification.
+    /// </summary>
+    string GenerateTwoFactorToken(User user);
 }

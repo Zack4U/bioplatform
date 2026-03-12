@@ -36,9 +36,10 @@ public class GetUserByEmailHandlerTests
         [Fact]
         public async Task Should_ReturnUser_When_EmailExists()
         {
-            // Arrange
             var email = "alice@example.com";
             var user = new User(Guid.NewGuid(), "Alice", email, "h", "s");
+            user.SetTwoFactorSecret("SECRET");
+            user.EnableTwoFactor();
             _userRepositoryMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(user);
 
             // Act
@@ -47,6 +48,7 @@ public class GetUserByEmailHandlerTests
             // Assert
             result.Should().NotBeNull();
             result!.Email.Should().Be(email);
+            result.TwoFactorEnabled.Should().BeTrue();
         }
 
         /// <summary>

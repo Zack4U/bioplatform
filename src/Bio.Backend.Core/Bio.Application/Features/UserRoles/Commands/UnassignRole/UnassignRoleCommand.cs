@@ -6,24 +6,24 @@ namespace Bio.Application.Features.UserRoles.Commands.UnassignRole;
 
 public record UnassignRoleCommand(Guid UserId, Guid RoleId) : IRequest;
 
-public class UnassignRoleHandler : IRequestHandler<UnassignRoleCommand>
+public class UnassignRoleCommandHandler : IRequestHandler<UnassignRoleCommand>
 {
     private readonly IUserRoleRepository _userRoleRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UnassignRoleHandler(IUserRoleRepository userRoleRepository)
+    public UnassignRoleCommandHandler(IUserRoleRepository userRoleRepository, IUnitOfWork unitOfWork)
     {
         _userRoleRepository = userRoleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UnassignRoleCommand request, CancellationToken cancellationToken)
     {
         var userRole = await _userRoleRepository.GetByIdsAsync(request.UserId, request.RoleId);
         if (userRole == null)
-        {
-            throw new NotFoundException($"Assignment for User {request.UserId} and Role {request.RoleId} not found.");
-        }
+            throw new NotFoundException("Role assignment not found for this user.");
 
         await _userRoleRepository.DeleteAsync(userRole);
-        await _userRoleRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
