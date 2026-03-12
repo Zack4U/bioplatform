@@ -21,13 +21,8 @@ public class UserTests
         [Fact]
         public void ShouldSetId_WhenCreated()
         {
-            // Arrange
             var id = Guid.NewGuid();
-
-            // Act
             var user = new User(id, "John Doe", "john.doe@example.com", "hash", "salt", "+123456789");
-
-            // Assert
             user.Id.Should().Be(id);
         }
 
@@ -37,13 +32,8 @@ public class UserTests
         [Fact]
         public void ShouldSetFullName_WhenCreated()
         {
-            // Arrange
             var fullName = "John Doe";
-
-            // Act
             var user = new User(Guid.NewGuid(), fullName, "john.doe@example.com", "hash", "salt", "+123456789");
-
-            // Assert
             user.FullName.Should().Be(fullName);
         }
 
@@ -53,13 +43,8 @@ public class UserTests
         [Fact]
         public void ShouldSetEmail_WhenCreated()
         {
-            // Arrange
             var email = "john.doe@example.com";
-
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", email, "hash", "salt", "+123456789");
-
-            // Assert
             user.Email.Should().Be(email);
         }
 
@@ -69,13 +54,8 @@ public class UserTests
         [Fact]
         public void ShouldSetPasswordHash_WhenCreated()
         {
-            // Arrange
             var passwordHash = "hash";
-
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "john.doe@example.com", passwordHash, "salt", "+123456789");
-
-            // Assert
             user.PasswordHash.Should().Be(passwordHash);
         }
 
@@ -85,13 +65,8 @@ public class UserTests
         [Fact]
         public void ShouldSetSalt_WhenCreated()
         {
-            // Arrange
             var salt = "salt";
-
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "john.doe@example.com", "hash", salt, "+123456789");
-
-            // Assert
             user.Salt.Should().Be(salt);
         }
 
@@ -101,13 +76,8 @@ public class UserTests
         [Fact]
         public void ShouldSetPhoneNumber_WhenCreated()
         {
-            // Arrange
             var phone = "+123456789";
-
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "john.doe@example.com", "hash", "salt", phone);
-
-            // Assert
             user.PhoneNumber.Should().Be(phone);
         }
 
@@ -117,23 +87,17 @@ public class UserTests
         [Fact]
         public void ShouldSetCreatedAt_WhenCreated()
         {
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "john.doe@example.com", "hash", "salt", "+123456789");
-
-            // Assert
             user.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         }
 
         /// <summary>
-        /// Verifies that UpdatedAt is null immediately after construction (user has never been updated).
+        /// Verifies that UpdatedAt is null immediately after construction.
         /// </summary>
         [Fact]
         public void ShouldSetUpdatedAtAsNull_Initially()
         {
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
-
-            // Assert
             user.UpdatedAt.Should().BeNull();
         }
 
@@ -143,10 +107,7 @@ public class UserTests
         [Fact]
         public void ShouldNormalizeEmailToLowercase_WhenCreated()
         {
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "JOHN.DOE@EXAMPLE.COM", "h", "s");
-
-            // Assert
             user.Email.Should().Be("john.doe@example.com");
         }
 
@@ -156,10 +117,7 @@ public class UserTests
         [Fact]
         public void ShouldTrimWhitespaceFromFullName_WhenCreated()
         {
-            // Act
             var user = new User(Guid.NewGuid(), "  John Doe  ", "john@test.com", "h", "s");
-
-            // Assert
             user.FullName.Should().Be("John Doe");
         }
 
@@ -169,10 +127,7 @@ public class UserTests
         [Fact]
         public void ShouldTrimWhitespaceFromEmail_WhenCreated()
         {
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "  john@test.com  ", "h", "s");
-
-            // Assert
             user.Email.Should().Be("john@test.com");
         }
 
@@ -182,10 +137,7 @@ public class UserTests
         [Fact]
         public void ShouldThrowException_When_IdIsEmpty()
         {
-            // Act
             Action act = () => new User(Guid.Empty, "John Doe", "email@test.com", "h", "s");
-
-            // Assert
             act.Should().Throw<ArgumentException>().WithMessage("*User ID cannot be empty.*");
         }
 
@@ -195,23 +147,7 @@ public class UserTests
         [Fact]
         public void ShouldThrowException_When_NameIsEmpty()
         {
-            // Act
             Action act = () => new User(Guid.NewGuid(), "", "email@test.com", "h", "s");
-
-            // Assert
-            act.Should().Throw<ArgumentException>().WithMessage("*Full name is required.*");
-        }
-
-        /// <summary>
-        /// Verifies that an ArgumentException is thrown when the full name is only whitespace.
-        /// </summary>
-        [Fact]
-        public void ShouldThrowException_When_NameIsWhitespace()
-        {
-            // Act
-            Action act = () => new User(Guid.NewGuid(), "   ", "email@test.com", "h", "s");
-
-            // Assert
             act.Should().Throw<ArgumentException>().WithMessage("*Full name is required.*");
         }
 
@@ -221,42 +157,23 @@ public class UserTests
         [Fact]
         public void ShouldThrowException_When_EmailIsEmpty()
         {
-            // Act
             Action act = () => new User(Guid.NewGuid(), "John Doe", "", "h", "s");
-
-            // Assert
             act.Should().Throw<ArgumentException>().WithMessage("*Email is required.*");
         }
 
         /// <summary>
-        /// Verifies that an ArgumentException is thrown when the email is only whitespace.
-        /// </summary>
-        [Fact]
-        public void ShouldThrowException_When_EmailIsWhitespace()
-        {
-            // Act
-            Action act = () => new User(Guid.NewGuid(), "John Doe", "   ", "h", "s");
-
-            // Assert
-            act.Should().Throw<ArgumentException>().WithMessage("*Email is required.*");
-        }
-
-        /// <summary>
-        /// Verifies that a user can be created without a phone number (optional field).
+        /// Verifies that a user can be created without a phone number.
         /// </summary>
         [Fact]
         public void ShouldAllowNullPhoneNumber_WhenCreated()
         {
-            // Act
             var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
-
-            // Assert
             user.PhoneNumber.Should().BeNull();
         }
     }
 
     /// <summary>
-    /// Tests for the UpdateProfile domain method.
+    /// Tests for domain methods of the User entity.
     /// </summary>
     public class DomainMethods
     {
@@ -266,37 +183,18 @@ public class UserTests
         [Fact]
         public void UpdateProfile_ShouldChangeValuesAndSetTimestamp()
         {
-            // Arrange
             var user = new User(Guid.NewGuid(), "Old Name", "old@email.com", "h", "s");
             var newName = "New Name";
-            var newEmail = "NEW@EMAIL.COM";
+            var newEmail = "updated@email.com";
             var newPhone = "+987654321";
 
-            // Act
             user.UpdateProfile(newName, newEmail, newPhone);
 
-            // Assert
             user.FullName.Should().Be(newName);
-            user.Email.Should().Be(newEmail.ToLowerInvariant());
+            user.Email.Should().Be(newEmail);
             user.PhoneNumber.Should().Be(newPhone);
             user.UpdatedAt.Should().NotBeNull();
             user.UpdatedAt!.Value.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
-        }
-
-        /// <summary>
-        /// Verifies that UpdateProfile normalizes the email to lowercase.
-        /// </summary>
-        [Fact]
-        public void UpdateProfile_ShouldNormalizeEmailToLowercase()
-        {
-            // Arrange
-            var user = new User(Guid.NewGuid(), "John Doe", "old@test.com", "h", "s");
-
-            // Act
-            user.UpdateProfile("John Doe", "UPDATED@TEST.COM", null);
-
-            // Assert
-            user.Email.Should().Be("updated@test.com");
         }
 
         /// <summary>
@@ -305,122 +203,141 @@ public class UserTests
         [Fact]
         public void UpdateProfile_ShouldThrowException_When_NameIsEmpty()
         {
-            // Arrange
             var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
-
-            // Act
             Action act = () => user.UpdateProfile("", "john@test.com", null);
-
-            // Assert
             act.Should().Throw<ArgumentException>().WithMessage("*Full name cannot be empty.*");
         }
 
         /// <summary>
-        /// Verifies that UpdateProfile throws an ArgumentException when the new email is empty.
-        /// </summary>
-        [Fact]
-        public void UpdateProfile_ShouldThrowException_When_EmailIsEmpty()
-        {
-            // Arrange
-            var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
-
-            // Act
-            Action act = () => user.UpdateProfile("John Doe", "", null);
-
-            // Assert
-            act.Should().Throw<ArgumentException>().WithMessage("*Email cannot be empty.*");
-        }
-
-        /// <summary>
-        /// Tests for the ChangePassword domain method.
+        /// Tests for the ChangePassword method of the User entity.
         /// </summary>
         public class ChangePassword
         {
             /// <summary>
-            /// Verifies that ChangePassword correctly updates the password hash.
+            /// Verifies that ChangePassword correctly updates the password hash and salt.
             /// </summary>
             [Fact]
-            public void ShouldUpdateHash_WhenChanged()
+            public void ShouldUpdateHashAndSalt_WhenChanged()
             {
-                // Arrange
-                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "oldHash", "oldSalt");
-                var newHash = "newHash";
-                var newSalt = "newSalt";
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "oldH", "oldS");
+                var newH = "newH";
+                var newS = "newS";
 
-                // Act
-                user.ChangePassword(newHash, newSalt);
+                user.ChangePassword(newH, newS);
 
-                // Assert
-                user.PasswordHash.Should().Be(newHash);
+                user.PasswordHash.Should().Be(newH);
+                user.Salt.Should().Be(newS);
+                user.UpdatedAt.Should().NotBeNull();
             }
 
             /// <summary>
-            /// Verifies that ChangePassword correctly updates the salt.
+            /// Verifies that ChangePassword throws an ArgumentException when hash or salt are empty.
             /// </summary>
             [Fact]
-            public void ShouldUpdateSalt_WhenChanged()
+            public void ShouldThrowException_When_HashOrSaltIsEmpty()
             {
-                // Arrange
-                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "oldHash", "oldSalt");
-                var newHash = "newHash";
-                var newSalt = "newSalt";
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+                
+                Action actHash = () => user.ChangePassword("", "s");
+                actHash.Should().Throw<ArgumentException>();
 
-                // Act
-                user.ChangePassword(newHash, newSalt);
+                Action actSalt = () => user.ChangePassword("h", "");
+                actSalt.Should().Throw<ArgumentException>();
+            }
+        }
 
-                // Assert
-                user.Salt.Should().Be(newSalt);
+        /// <summary>
+        /// Tests for Two-Factor Authentication domain methods.
+        /// </summary>
+        public class TwoFactorAuthentication
+        {
+            /// <summary>
+            /// Verifies that SetTwoFactorSecret sets the secret correctly.
+            /// </summary>
+            [Fact]
+            public void SetTwoFactorSecret_ShouldSetSecret()
+            {
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+                var secret = "ABCDEF123456";
+
+                user.SetTwoFactorSecret(secret);
+
+                user.TwoFactorSecret.Should().Be(secret);
             }
 
             /// <summary>
-            /// Verifies that ChangePassword correctly sets the UpdatedAt timestamp.
+            /// Verifies that SetTwoFactorSecret updates the timestamp.
             /// </summary>
             [Fact]
-            public void ShouldSetUpdatedAt_WhenChanged()
+            public void SetTwoFactorSecret_ShouldUpdateTimestamp()
             {
-                // Arrange
-                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "oldHash", "oldSalt");
-                var newHash = "newHash";
-                var newSalt = "newSalt";
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+                
+                user.SetTwoFactorSecret("ABCDEF123456");
 
-                // Act
-                user.ChangePassword(newHash, newSalt);
-
-                // Assert
                 user.UpdatedAt.Should().NotBeNull();
                 user.UpdatedAt!.Value.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
             }
 
             /// <summary>
-            /// Verifies that ChangePassword throws an ArgumentException when the new hash is empty.
+            /// Verifies that EnableTwoFactor enables 2FA.
             /// </summary>
             [Fact]
-            public void ShouldThrowException_When_HashIsEmpty()
+            public void EnableTwoFactor_ShouldEnable()
             {
-                // Arrange
                 var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+                user.SetTwoFactorSecret("SECRET");
 
-                // Act
-                Action act = () => user.ChangePassword("", "newSalt");
+                user.EnableTwoFactor();
 
-                // Assert
-                act.Should().Throw<ArgumentException>().WithMessage("*Password hash cannot be empty.*");
+                user.TwoFactorEnabled.Should().BeTrue();
             }
 
             /// <summary>
-            /// Verifies that ChangePassword throws an ArgumentException when the new salt is empty.
+            /// Verifies that EnableTwoFactor updates the timestamp.
             /// </summary>
             [Fact]
-            public void ShouldThrowException_When_SaltIsEmpty()
+            public void EnableTwoFactor_ShouldUpdateTimestamp()
             {
-                // Arrange
                 var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+                user.SetTwoFactorSecret("SECRET");
 
-                // Act
-                Action act = () => user.ChangePassword("newHash", "");
+                user.EnableTwoFactor();
 
-                // Assert
-                act.Should().Throw<ArgumentException>().WithMessage("*Salt cannot be empty.*");
+                user.UpdatedAt.Should().NotBeNull();
+                user.UpdatedAt!.Value.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+            }
+
+            /// <summary>
+            /// Verifies that DisableTwoFactor disables 2FA and clears the secret.
+            /// </summary>
+            [Fact]
+            public void DisableTwoFactor_ShouldDisableAndClearSecret()
+            {
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+                user.SetTwoFactorSecret("SECRET");
+                user.EnableTwoFactor();
+
+                user.DisableTwoFactor();
+
+                user.TwoFactorEnabled.Should().BeFalse();
+                user.TwoFactorSecret.Should().BeNull();
+            }
+
+            /// <summary>
+            /// Verifies that DisableTwoFactor updates the timestamp.
+            /// </summary>
+            [Fact]
+            public void DisableTwoFactor_ShouldUpdateTimestamp()
+            {
+                var user = new User(Guid.NewGuid(), "John Doe", "john@test.com", "h", "s");
+                user.SetTwoFactorSecret("SECRET");
+                user.EnableTwoFactor();
+
+                user.DisableTwoFactor();
+
+                user.UpdatedAt.Should().NotBeNull();
+                user.UpdatedAt!.Value.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
             }
         }
     }

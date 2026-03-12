@@ -36,9 +36,10 @@ public class GetUserByIdHandlerTests
         [Fact]
         public async Task Should_ReturnUser_When_IdExists()
         {
-            // Arrange
             var userId = Guid.NewGuid();
             var user = new User(userId, "Alice", "alice@example.com", "h", "s");
+            user.SetTwoFactorSecret("SECRET");
+            user.EnableTwoFactor();
             _userRepositoryMock.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
 
             // Act
@@ -48,6 +49,7 @@ public class GetUserByIdHandlerTests
             result.Should().NotBeNull();
             result!.Id.Should().Be(userId);
             result.Email.Should().Be("alice@example.com");
+            result.TwoFactorEnabled.Should().BeTrue();
         }
 
         /// <summary>

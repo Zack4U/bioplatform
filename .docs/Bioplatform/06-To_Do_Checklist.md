@@ -30,7 +30,7 @@
 * **\[X\] Endpoints de Identity y Generación JWT:**  
   * **Descripción:** Desarrollo de los comandos LoginCommand y RegisterCommand. Configuración de firma HMACSHA256 para emisión de Access Tokens (15 min) y Refresh Tokens (7 días).  
   * **Tecnologías obligatorias:** ASP.NET Core Identity, JWT Bearer.  
-* **\[ \] RBAC y Middleware TOTP (2FA):**  
+* **\[X\] RBAC y Middleware TOTP (2FA):**  
   * **Descripción:** Implementación de políticas de autorización basadas en claims para los 6 roles. Configuración del validador TOTP para obligar el doble factor en roles críticos (Investigador, Autoridad).  
   * **Tecnologías obligatorias:** .NET 8 Authorization Policies.  
   * **Dependencias:** Endpoints de Identity.
