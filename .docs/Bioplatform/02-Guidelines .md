@@ -47,7 +47,7 @@
 * \[X\] Implementación de Clean Architecture / Hexagonal.  
 * \[X\] Uso de CQRS con MediatR.  
 * \[X\] Repository Pattern y Unit of Work.  
-* \[ \] Validación con FluentValidation y mapeo con AutoMapper/Mapperly.  
+* \[X\] Validación con FluentValidation y mapeo con AutoMapper/Mapperly.  
 * \[X\] Pruebas unitarias con xUnit (cobertura mín. 60%).
 
 ## **2.2 Frontend (Next.js con Vite)**
