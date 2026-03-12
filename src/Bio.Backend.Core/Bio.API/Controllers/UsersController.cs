@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Bio.Domain.Constants;
 using Bio.Application.DTOs;
 using Bio.Application.Features.Users.Commands.CreateUser;
 using Bio.Application.Features.Users.Commands.DeleteUser;
@@ -54,7 +55,7 @@ public class UsersController : ControllerBase
     /// <response code="200">Returns the list of users.</response>
     /// <response code="403">If the user is not an administrator.</response>
     /// <response code="401">If the user is not authenticated.</response>
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = RoleNames.Admin)]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<UserResponseDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -72,7 +73,7 @@ public class UsersController : ControllerBase
     /// <returns>The user DTO if found; otherwise, 404.</returns>
     /// <response code="200">User found.</response>
     /// <response code="404">User not found.</response>
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = RoleNames.Admin)]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -89,7 +90,7 @@ public class UsersController : ControllerBase
     /// <returns>The user DTO if found; otherwise, 404.</returns>
     /// <response code="200">User found.</response>
     /// <response code="404">User not found.</response>
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = RoleNames.Admin)]
     [HttpGet("email/{email}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -106,7 +107,7 @@ public class UsersController : ControllerBase
     /// <returns>The user DTO if found; otherwise, 404.</returns>
     /// <response code="200">User found.</response>
     /// <response code="404">User not found.</response>
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = RoleNames.Admin)]
     [HttpGet("phone/{phoneNumber}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -171,7 +172,7 @@ public class UsersController : ControllerBase
             isIdMatch = currentUserId == id;
         }
 
-        if (!User.IsInRole("ADMIN") && !isIdMatch)
+        if (!User.IsInRole(RoleNames.Admin) && !isIdMatch)
         {
             throw new ForbiddenException("You can only delete your own account or you must be an administrator.");
         }

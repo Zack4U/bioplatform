@@ -1,6 +1,7 @@
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Bio.Domain.Entities;
+using Bio.Domain.Constants;
 using FluentAssertions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -101,7 +102,7 @@ public class RoleRepositoryTests : IDisposable
             // Assert
             var savedRole = await _context.Roles.FindAsync(role.Id);
             savedRole.Should().NotBeNull();
-            savedRole!.Name.Should().Be("ADMIN");
+            savedRole!.Name.Should().Be(RoleNames.Admin);
         }
 
         /// <summary>

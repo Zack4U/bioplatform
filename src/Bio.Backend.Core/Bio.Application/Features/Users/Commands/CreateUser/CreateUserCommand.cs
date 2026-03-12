@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Constants;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
 using MediatR;
@@ -66,7 +67,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserR
         await _userRepository.AddAsync(user);
 
         // 5. Automatic Role Assignment (Buyer) by default
-        var buyerRole = await _roleRepository.GetByNameAsync("Buyer");
+        var buyerRole = await _roleRepository.GetByNameAsync(RoleNames.Buyer);
         if (buyerRole != null)
         {
             var userRole = new UserRole(user.Id, buyerRole.Id);

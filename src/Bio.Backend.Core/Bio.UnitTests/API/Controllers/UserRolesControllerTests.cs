@@ -1,4 +1,5 @@
 using Bio.API.Controllers;
+using Bio.Domain.Constants;
 using Bio.Application.DTOs;
 using Bio.Application.Features.UserRoles.Commands.AssignRole;
 using Bio.Application.Features.UserRoles.Commands.UnassignRole;
@@ -48,7 +49,7 @@ public class UserRolesControllerTests
             // Arrange
             var assignments = new List<UserRoleResponseDTO>
             {
-                new UserRoleResponseDTO(Guid.NewGuid(), "a@a.com", Guid.NewGuid(), "ADMIN", DateTime.UtcNow)
+                new UserRoleResponseDTO(Guid.NewGuid(), "a@a.com", Guid.NewGuid(), RoleNames.Admin, DateTime.UtcNow)
             };
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetAllUserRolesQuery>(), default))
                 .ReturnsAsync(assignments);
@@ -115,7 +116,7 @@ public class UserRolesControllerTests
         public async Task ExistingRole_ShouldReturnOk()
         {
             // Arrange
-            var roleName = "ADMIN";
+            var roleName = RoleNames.Admin;
             var assignments = new List<UserRoleResponseDTO>
             {
                 new UserRoleResponseDTO(Guid.NewGuid(), "admin@test.com", Guid.NewGuid(), roleName, DateTime.UtcNow)
