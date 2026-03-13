@@ -31,14 +31,17 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 | :---- | :---- | :---- | :---- | :---- |
 | id | UNIQUEIDENTIFIER | PK, Not Null | Identificador único global del usuario. | a0eebc99-9c0b... |
 | email | NVARCHAR(255) | UK, Not Null | Correo electrónico (Username). | researcher@caldas.gov.co |
-| password\_hash | NVARCHAR(MAX) | Not Null | Hash de contraseña (Argon2id o BCrypt). | $2a$12$R9h/cO... |
-| full\_name | NVARCHAR(150) | Not Null | Nombre legal completo. | Maria Rodriguez |
-| phone\_number | NVARCHAR(20) | Nullable | Teléfono para contacto o SMS 2FA. | +573001234567 |
-| is\_verified | BIT | Default 0 | Indica si el email/teléfono ha sido confirmado. | 1 (True) |
-| two\_factor\_secret | NVARCHAR(100) | Nullable | Semilla secreta para TOTP (Google Auth). | JBSWY3DPEHPK3... |
-| last\_login | DATETIME2 | Nullable | Último inicio de sesión exitoso. | 2025-02-20 14:30:00 |
-| is\_active | BIT | Default 1 | Soft delete. | 1 |
-| created\_at | DATETIME2 | Default GETUTCDATE() | Fecha de registro. | 2025-01-15 10:00:00 |
+| password_hash | NVARCHAR(MAX) | Not Null | Hash de contraseña (Argon2id o BCrypt). | $2a$12$R9h/cO... |
+| salt | NVARCHAR(100) | Not Null | Semilla aleatoria única usada para hashing. | a3b4c5... |
+| full_name | NVARCHAR(150) | Not Null | Nombre legal completo. | Maria Rodriguez |
+| phone_number | NVARCHAR(20) | Nullable | Teléfono para contacto o SMS 2FA. | +573001234567 |
+| is_verified | BIT | Default 0 | Indica si el email/teléfono ha sido confirmado. | 1 (True) |
+| last_login | DATETIME2 | Nullable | Último inicio de sesión exitoso. | 2025-02-20 14:30:00 |
+| is_active | BIT | Default 1 | Soft delete. | 1 |
+| created_at | DATETIME2 | Default GETUTCDATE() | Fecha de registro. | 2025-01-15 10:00:00 |
+| updated_at | DATETIME2 | Nullable | Última actualización del perfil. | 2025-02-20 14:30:00 |
+| two_factor_enabled | BIT | Default 0 | Indica si 2FA está activo. | 1 |
+| two_factor_secret | NVARCHAR(100) | Nullable | Semilla secreta para TOTP (Google Auth). | JBSWY3DPEHPK3... |
 
 ### **Tabla: Roles**
 
@@ -155,12 +158,17 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 | Campo | Tipo de Dato | Restricciones | Descripción | Ejemplo |
 | :---- | :---- | :---- | :---- | :---- |
 | id | UNIQUEIDENTIFIER | PK | ID de la orden. | e999... |
-| buyer\_id | UNIQUEIDENTIFIER | FK (Users), Not Null | Usuario comprador. | f111... |
-| total\_amount | DECIMAL(18,2) | Not Null | Total pagado en COP. | 90000.00 |
+| order_number | NVARCHAR(50) | UK, Not Null | Referencia legible de la orden. | ORD-2025-001 |
+| buyer_id | UNIQUEIDENTIFIER | FK (Users), Not Null | Usuario comprador. | f111... |
+| total_amount | DECIMAL(18,2) | Not Null | Total pagado en COP. | 90000.00 |
+| subtotal_amount| DECIMAL(18,2) | Not Null | Subtotal antes de impuestos/descuentos. | 80000.00 |
+| tax_amount | DECIMAL(18,2) | Default 0 | Impuestos aplicados. | 10000.00 |
+| shipping_amount| DECIMAL(18,2) | Default 0 | Costo de envío. | 0.00 |
+| discount_amount| DECIMAL(18,2) | Default 0 | Descuentos aplicados. | 0.00 |
 | status | NVARCHAR(20) | Not Null | Estado del pedido: 'Pending', 'Paid', 'Shipped', 'Cancelled'. | Paid |
-| payment\_method | NVARCHAR(50) | Not Null | Pasarela usada. | Stripe, PSE |
-| transaction\_ref | NVARCHAR(100) | Nullable | ID de transacción de la pasarela (Stripe payment intent ID). | pi\_1De... |
-| created\_at | DATETIME2 | Default GETUTCDATE() | Fecha de creación de la orden. | 2025-02-20 14:00:00 |
+| payment_method | NVARCHAR(50) | Not Null | Pasarela usada. | Stripe, PSE |
+| transaction_ref | NVARCHAR(100) | Nullable | ID de transacción de la pasarela (Stripe payment intent ID). | pi_1De... |
+| created_at | DATETIME2 | Default GETUTCDATE() | Fecha de creación de la orden. | 2025-02-20 14:00:00 |
 
 ### **Tabla: OrderItems**
 
@@ -202,10 +210,12 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 | id | SERIAL | PK | ID numérico interno. | 101 |
 | kingdom | VARCHAR(50) | Not Null | Reino. | Plantae |
 | phylum | VARCHAR(50) | Nullable | Filo/División. | Tracheophyta |
-| class\_name | VARCHAR(50) | Nullable | Clase taxonómica. | Magnoliopsida |
-| order\_name | VARCHAR(50) | Nullable | Orden taxonómico. | Asparagales |
+| class_name | VARCHAR(50) | Nullable | Clase taxonómica. | Magnoliopsida |
+| order | VARCHAR(50) | Nullable | Orden taxonómico. | Asparagales |
 | family | VARCHAR(50) | Index, Not Null | Familia (clave para búsquedas). | Orchidaceae |
 | genus | VARCHAR(50) | Not Null | Género. | Cattleya |
+| created_at | TIMESTAMPTZ | Default NOW() | Fecha de registro. | 2025-01-10 08:00:00+00 |
+| updated_at | TIMESTAMPTZ | Default NOW() | Fecha de actualización. | 2025-01-10 08:00:00+00 |
 
 ### **Tabla: Species**
 
@@ -234,14 +244,16 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 
 | Campo | Tipo de Dato | Restricciones | Descripción | Ejemplo |
 | :---- | :---- | :---- | :---- | :---- |
-| id | UUID | PK, Default gen\_random\_uuid() | ID del registro de distribución. | d555... |
-| species\_id | UUID | FK (Species), Not Null | Especie avistada/registrada. | c456... |
-| latitude | FLOAT | Not Null | Latitud del punto de observación. | 5.0689 |
-| longitude | FLOAT | Not Null | Longitud del punto de observación. | -75.5174 |
-| altitude | FLOAT | Nullable | Metros sobre el nivel del mar. | 2150 |
+| id | UUID | PK, Default gen_random_uuid() | ID del registro de distribución. | d555... |
+| species_id | UUID | FK (Species), Not Null | Especie avistada/registrada. | c456... |
 | municipality | VARCHAR(100) | Not Null, Index | Municipio de Caldas. | Manizales |
-| ecosystem\_type | VARCHAR(100) | Nullable | Tipo de ecosistema en el punto de observación. | Bosque de niebla |
-| location\_point | GEOGRAPHY(Point, 4326) | Index (GIST) | Punto PostGIS calculado a partir de lat/lon. Para queries espaciales. | SRID=4326;POINT(-75.5174 5.0689) |
+| vereda | VARCHAR(100) | Nullable | Vereda de observación. | La Esperanza |
+| location_point | GEOGRAPHY(Point, 4326) | Nullable, Index | Punto PostGIS para geolocalización. | SRID=4326;POINT(-75.5174 5.0689) |
+| altitude | FLOAT | Nullable | Metros sobre el nivel del mar. | 2150 |
+| observation_date | TIMESTAMPTZ | Nullable | Fecha del avistamiento. | 2025-01-15 00:00:00+00 |
+| observer_user_id | UUID | Nullable, Index | Usuario que realizó el avistamiento. | a0ee... |
+| notes | TEXT | Nullable | Notas adicionales. | Avistamiento cerca al río... |
+| created_at | TIMESTAMPTZ | Default NOW() | Fecha de registro. | 2025-01-16 10:00:00+00 |
 
 ---
 
@@ -300,12 +312,18 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 
 | Campo | Tipo de Dato | Restricciones | Descripción | Ejemplo |
 | :---- | :---- | :---- | :---- | :---- |
-| id | UUID | PK, Default gen\_random\_uuid() | ID del plan. | plan1... |
-| entrepreneur\_id | UUID | Index, Not Null | **Logical FK** a SQL Server (Users). Emprendedor solicitante. | a0ee... |
-| project\_title | VARCHAR(200) | Not Null | Título del proyecto de biocomercio. | Exportación de Vainilla Orgánica |
-| generated\_content | TEXT | Not Null | Contenido completo en Markdown generado por GPT-4. | # Plan de Negocio... |
-| market\_analysis\_data | JSONB | Nullable | Datos estructurados para gráficos del Dashboard. | {"cagr": "5%", "competitors": [...]} |
-| created\_at | TIMESTAMPTZ | Default NOW() | Fecha de generación del plan. | 2025-02-25 10:00:00+00 |
+| id | UUID | PK, Default gen_random_uuid() | ID del plan. | plan1... |
+| entrepreneur_id | UUID | Index, Not Null | **Logical FK** a SQL Server (Users). Emprendedor solicitante. | a0ee... |
+| project_title | VARCHAR(200) | Not Null | Título del proyecto de biocomercio. | Exportación de Vainilla Orgánica |
+| species_ids | UUID[] | Nullable | Arreglo de IDs de especies involucradas. | {c456..., d789...} |
+| generated_content | TEXT | Not Null | Contenido completo en Markdown generado por IA. | # Plan de Negocio... |
+| market_analysis_data | JSONB | Nullable | Datos estructurados para gráficos del Dashboard. | {"cagr": "5%", "competitors": [...]} |
+| financial_projections| JSONB | Nullable | Proyecciones financieras. | {"roi": "15%", "payback": "2 years"} |
+| generation_prompt | TEXT | Nullable | Prompt utilizado para la generación. | Genera un plan para... |
+| model_used | VARCHAR(50) | Nullable | Modelo de IA utilizado. | gpt-4-turbo |
+| status | VARCHAR(20) | Default 'draft' | Estado del plan. | draft |
+| created_at | TIMESTAMPTZ | Default NOW() | Fecha de generación del plan. | 2025-02-25 10:00:00+00 |
+| updated_at | TIMESTAMPTZ | Default NOW() | Fecha de última actualización. | 2025-02-25 10:00:00+00 |
 
 ### **Tabla: ChatSessions**
 
