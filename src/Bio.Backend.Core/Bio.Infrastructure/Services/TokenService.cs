@@ -81,7 +81,10 @@ public class TokenService : ITokenService
     public Guid GetUserIdFromToken(string token)
     {
         var principal = GetPrincipalFromExpiredToken(token);
-        var sub = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+        // Find user ID (sub or NameIdentifier due to potential claim mapping)
+        var sub = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                  ?? principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(sub) || !Guid.TryParse(sub, out var userId))
         {

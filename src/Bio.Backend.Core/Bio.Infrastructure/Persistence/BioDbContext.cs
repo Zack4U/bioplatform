@@ -61,6 +61,9 @@ public class BioDbContext : DbContext
             entity.Property(e => e.Salt).IsRequired().HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
 
+            // Mapping property names to database columns from init.sql
+            entity.Property(e => e.TwoFactorSecret).HasMaxLength(100);
+
             // Ensures that no duplicate emails exist
             entity.HasIndex(e => e.Email).IsUnique();
 
