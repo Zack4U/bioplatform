@@ -13,7 +13,7 @@
 - **Core Backend:** .NET 8 (C#) using Clean Architecture + CQRS (MediatR).
 - **AI Microservice:** Python 3.11 with FastAPI (Pydantic, Type Hints).
 - **Frontend Web:** Next.js 14 (App Router), TypeScript, Shadcn/ui, Tailwind, Zustand, React Query.
-- **Frontend Mobile:** React Native (Expo), Vision Camera, WatermelonDB/SQLite (Offline-first).
+- **Frontend Mobile:** React Native (Expo), Vision Camera, WatermelonDB/SQLite (Offline-first), NativeWind (v4) for Tailwind CSS integration and React Native Reusables (RNR) for Shadcn-like universal components, Sonner-native for Toasts, lucide-react-native for iconography, Expo Router for file-based navigation (app/ directory), Zustand (Global State) and React Query (Server State).
 - **Databases:**
     - **SQL Server:** Identity, Marketplace, Orders, Permissions (ACID strict).
     - **PostgreSQL (PostGIS):** Taxonomy, Species, Geography, RAG Content.
@@ -43,6 +43,19 @@
 - Do not use Vite for the Next.js web app.
 - Use always ShadCN/UI Componentes or Common Components for UI consistency. Avoid custom CSS when possible.
 - Use Always common/SmartImage component for optimized image rendering with Next.js or Cloudinary.
+- Always use aliases for imports.
+
+### Frontend Mobile (React Native - Expo)
+
+- Use Expo Router for file-based navigation (app/ directory).
+- TypeScript required.
+- UI & Styling: Use NativeWind (v4) for Tailwind CSS integration and React Native Reusables (RNR) for Shadcn-like universal components. Do NOT use standard StyleSheet.create unless absolutely necessary for complex animations.
+- Use lucide-react-native for iconography.
+- State management: Use Zustand (Global State) and React Query (Server State).
+- Offline-first approach: Use Expo SQLite or WatermelonDB for local catalog persistence.
+- Camera & AI: Use React Native Vision Camera exclusively for capturing and processing frames to send to the CNN.
+- Always use aliases for imports.
+- Use always NativeWind and React native Reusables (RNR) Componentes or Common Components for UI consistency. Avoid custom CSS when possible.
 
 ### AI and Data
 
@@ -140,7 +153,11 @@ BioMarketplace-Caldas/
 │   ├── Bio.Frontend.Web/           # Next.js 14
 │   │   ├── src/ (app, components/ui, components/features, hooks, lib, store)
 │   └── Bio.Frontend.Mobile/        # React Native Expo
-│       ├── src/ (components, navigation, screens, services, database)
+│       ├── app/                    # Expo Router pages (tabs, layouts)
+│       ├── components/             # ui (RNR/Shadcn), custom
+│       ├── store/                  # Zustand stores
+│       ├── services/               # API calls (Axios)
+│       └── lib/                    # SQLite DB, utilities
 └── docker-compose.yml
 ```
 

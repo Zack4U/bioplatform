@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * BioCommerce Caldas — Green Theme (Native Mobile Base)
+ * Formato compatible con NativeWind v4 + React Native
+ * Valores HSL del tema verde Caldas — sincronizados con Web global.css
+ */
+
+@layer base {
+    :root {
+        --radius: 0.625rem;
+
+        /* Background & Foreground */
+        --background: 149 20% 98%;
+        --foreground: 149 10% 15%;
+
+        /* Card */
+        --card: 0 0% 100%;
+        --card-foreground: 149 10% 15%;
+
+        /* Popover */
+        --popover: 0 0% 100%;
+        --popover-foreground: 149 10% 15%;
+
+        /* Primary — Green Caldas */
+        --primary: 149 70% 35%;
+        --primary-foreground: 149 20% 98%;
+
+        /* Secondary */
+        --secondary: 149 10% 95%;
+        --secondary-foreground: 149 15% 25%;
+
+        /* Muted */
+        --muted: 149 10% 95%;
+        --muted-foreground: 149 10% 50%;
+
+        /* Accent */
+        --accent: 149 50% 90%;
+        --accent-foreground: 149 60% 25%;
+
+        /* Destructive */
+        --destructive: 0 84% 60%;
+
+        /* Semantic Colors */
+        --success: 149 60% 40%;
+        --success-foreground: 149 20% 98%;
+        --warning: 45 90% 50%;
+        --warning-foreground: 45 80% 20%;
+        --info: 210 80% 50%;
+        --info-foreground: 149 20% 98%;
+
+        /* Border & Input */
+        --border: 149 10% 90%;
+        --input: 149 10% 90%;
+        --ring: 149 70% 35%;
+
+        /* Charts */
+        --chart-1: 149 70% 35%;
+        --chart-2: 210 80% 50%;
+        --chart-3: 45 90% 50%;
+        --chart-4: 30 80% 50%;
+        --chart-5: 280 70% 50%;
+    }
+
+    .dark:root {
+        /* Background & Foreground */
+        --background: 149 10% 12%;
+        --foreground: 149 20% 98%;
+
+        /* Card */
+        --card: 149 10% 15%;
+        --card-foreground: 149 20% 98%;
+
+        /* Popover */
+        --popover: 149 10% 15%;
+        --popover-foreground: 149 20% 98%;
+
+        /* Primary — Green Caldas */
+        --primary: 149 50% 50%;
+        --primary-foreground: 149 80% 15%;
+
+        /* Secondary */
+        --secondary: 149 10% 25%;
+        --secondary-foreground: 149 20% 98%;
+
+        /* Muted */
+        --muted: 149 10% 25%;
+        --muted-foreground: 149 10% 65%;
+
+        /* Accent */
+        --accent: 149 40% 25%;
+        --accent-foreground: 149 60% 85%;
+
+        /* Destructive */
+        --destructive: 0 60% 50%;
+
+        /* Semantic Colors */
+        --success: 149 50% 50%;
+        --success-foreground: 149 80% 15%;
+        --warning: 45 90% 50%;
+        --warning-foreground: 45 80% 20%;
+        --info: 210 80% 50%;
+        --info-foreground: 210 80% 15%;
+
+        /* Border & Input */
+        --border: 149 10% 25%;
+        --input: 149 10% 25%;
+        --ring: 149 50% 50%;
+
+        /* Charts */
+        --chart-1: 149 50% 50%;
+        --chart-2: 210 80% 50%;
+        --chart-3: 45 90% 50%;
+        --chart-4: 280 70% 50%;
+        --chart-5: 15 70% 50%;
+    }
+}
