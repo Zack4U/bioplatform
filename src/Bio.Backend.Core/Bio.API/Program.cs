@@ -17,6 +17,7 @@ using Bio.Application.Mappings;
 using FluentValidation;
 using MediatR;
 using DotNetEnv;
+using AutoMapper;
 
 // Cargar .env desde la raíz del proyecto (las credenciales no se duplican en appsettings)
 Env.TraversePath().Load();
@@ -64,7 +65,7 @@ builder.Services.AddScoped<IScientificUnitOfWork, ScientificUnitOfWork>();
 
 // Register AutoMapper and FluentValidation
 builder.Services.AddValidatorsFromAssembly(typeof(UserResponseDTO).Assembly);
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Configure Authentication
