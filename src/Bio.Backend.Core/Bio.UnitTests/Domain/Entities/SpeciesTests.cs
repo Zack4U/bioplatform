@@ -22,15 +22,16 @@ public class SpeciesTests
         [Fact]
         public void ShouldSetProperties_WhenCreated()
         {
-            // Act
-            var species = new Species(ValidScientificName);
+            // Act - constructor: id, slug, scientificName, taxonomyId?, thumbnailUrl?, commonName?, ...
+            var id = Guid.NewGuid();
+            var species = new Species(id, "solanum-lycopersicum", ValidScientificName);
 
             // Assert
-            species.Id.Should().NotBeEmpty();
+            species.Id.Should().Be(id);
             species.ScientificName.Should().Be(ValidScientificName);
+            species.Slug.Should().Be("solanum-lycopersicum");
             species.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
             species.IsSensitive.Should().BeFalse();
-            species.Slug.Should().BeEmpty();
         }
 
         /// <summary>
@@ -39,8 +40,8 @@ public class SpeciesTests
         [Fact]
         public void ShouldHaveNullOptionalProperties_WhenCreatedWithNameOnly()
         {
-            // Arrange
-            var species = new Species(ValidScientificName);
+            // Arrange - constructor requiere slug y scientificName
+            var species = new Species(Guid.NewGuid(), "solanum-lycopersicum", ValidScientificName);
 
             // Assert - optional properties default to null when not set
             species.CommonName.Should().BeNull();

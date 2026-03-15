@@ -23,14 +23,12 @@ public class TaxonomyTests
         [Fact]
         public void ShouldSetProperties_WhenCreated()
         {
-            // Act
-            var taxonomy = new Taxonomy(ValidKingdom, ValidGenus);
+            // Act - constructor: kingdom, phylum, className, orderName, family, genus
+            var taxonomy = new Taxonomy(ValidKingdom, "Magnoliophyta", "Magnoliopsida", "Solanales", "Solanaceae", ValidGenus);
 
-            // Assert
+            // Assert (Taxonomy ya no tiene CreatedAt/UpdatedAt; alineado al script PostgreSQL)
             taxonomy.Kingdom.Should().Be(ValidKingdom);
             taxonomy.Genus.Should().Be(ValidGenus);
-            taxonomy.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
-            taxonomy.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
             taxonomy.Species.Should().BeEmpty();
         }
     }
