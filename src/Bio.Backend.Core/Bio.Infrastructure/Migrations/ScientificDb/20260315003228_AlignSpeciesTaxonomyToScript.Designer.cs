@@ -3,6 +3,7 @@ using System;
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bio.Infrastructure.Migrations.ScientificDb
 {
     [DbContext(typeof(ScientificDbContext))]
-    partial class ScientificDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260315003228_AlignSpeciesTaxonomyToScript")]
+    partial class AlignSpeciesTaxonomyToScript
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

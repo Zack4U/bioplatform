@@ -19,5 +19,12 @@ public class MappingProfile : Profile
 
         // UserRole Mappings
         CreateMap<UserRole, UserRoleResponseDTO>();
+
+        // Taxonomy
+        CreateMap<Taxonomy, TaxonomyResponseDTO>();
+
+        // Species (Taxonomy se resuelve por Include en el repositorio)
+        CreateMap<Species, SpeciesResponseDTO>()
+            .ForMember(d => d.Taxonomy, opt => opt.MapFrom(s => s.Taxonomy));
     }
 }
