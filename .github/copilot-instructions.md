@@ -220,3 +220,4 @@ BioMarketplace-Caldas/
 - When generating code for the backend, ensure that it follows the Clean Architecture principles and that the dependencies are correctly injected.
 - When generating code for the frontend, ensure that the logic is separated from the UI components and that custom hooks are used for state management and side effects.
 - Always suggest running the CI/CD pipeline after pushing new code to ensure that all tests pass and that the code quality standards are maintained.
+- Never use Icons or Emojis in the code, always use text. Icons only from Lucide React.
