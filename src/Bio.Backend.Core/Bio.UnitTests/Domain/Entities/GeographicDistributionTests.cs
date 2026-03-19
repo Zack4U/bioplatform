@@ -23,14 +23,15 @@ public class GeographicDistributionTests
         [Fact]
         public void ShouldSetProperties_WhenCreated()
         {
-            // Act
-            var distribution = new GeographicDistribution(SpeciesId, Municipality);
+            // Act - constructor: speciesId, latitude, longitude, altitude?, municipality?, ecosystemType?, locationPoint?
+            var distribution = new GeographicDistribution(SpeciesId, 4.5, -75.5, null, Municipality, null, null);
 
-            // Assert
+            // Assert (GeographicDistribution alineado al script: sin CreatedAt)
             distribution.Id.Should().NotBeEmpty();
             distribution.SpeciesId.Should().Be(SpeciesId);
+            distribution.Latitude.Should().Be(4.5);
+            distribution.Longitude.Should().Be(-75.5);
             distribution.Municipality.Should().Be(Municipality);
-            distribution.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         }
     }
 }

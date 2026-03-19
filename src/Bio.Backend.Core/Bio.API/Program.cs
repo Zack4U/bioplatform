@@ -16,21 +16,37 @@ using Bio.Application.Behaviors;
 using Bio.Application.Mappings;
 using FluentValidation;
 using MediatR;
+using DotNetEnv;
+using AutoMapper;
+
+// Cargar .env desde la raíz del proyecto (las credenciales no se duplican en appsettings)
+Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Cadenas de conexión desde variables de entorno (.env) — única fuente de secretos
+var defaultConnection = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_SQL")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+// PostgreSQL (Scientific): siempre desde DB_PG_* para que la contraseña venga solo de DB_PG_PASSWORD
+var pgHost = Environment.GetEnvironmentVariable("DB_PG_HOST") ?? "localhost";
+var pgPort = Environment.GetEnvironmentVariable("DB_PG_PORT") ?? "5432";
+var pgDatabase = Environment.GetEnvironmentVariable("DB_PG_DATABASE") ?? "BioCommerce_Scientific";
+var pgUser = Environment.GetEnvironmentVariable("DB_PG_USER") ?? "postgres";
+var pgPassword = Environment.GetEnvironmentVariable("DB_PG_PASSWORD") ?? "";
+var scientificConnection = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword}";
 
 // Configure JWT Settings
 var jwtSettings = new JwtSettings();
 builder.Configuration.GetSection(JwtSettings.SectionName).Bind(jwtSettings);
 builder.Services.AddSingleton(Options.Create(jwtSettings));
 
-// Register BioPlatform Services
+// Register BioPlatform Services (conexiones desde .env)
 builder.Services.AddDbContext<BioDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(defaultConnection));
 
 builder.Services.AddDbContext<ScientificDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ScientificConnection"),
-        o => o.UseNetTopologySuite()));
+    options.UseNpgsql(scientificConnection, o => o.UseNetTopologySuite()));
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -41,9 +57,15 @@ builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Scientific (PostgreSQL) repositories and unit of work
+builder.Services.AddScoped<ITaxonomyRepository, TaxonomyRepository>();
+builder.Services.AddScoped<ISpeciesRepository, SpeciesRepository>();
+builder.Services.AddScoped<IGeographicDistributionRepository, GeographicDistributionRepository>();
+builder.Services.AddScoped<IScientificUnitOfWork, ScientificUnitOfWork>();
+
 // Register AutoMapper and FluentValidation
 builder.Services.AddValidatorsFromAssembly(typeof(UserResponseDTO).Assembly);
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Configure Authentication
