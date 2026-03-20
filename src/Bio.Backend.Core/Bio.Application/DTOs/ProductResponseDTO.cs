@@ -16,6 +16,6 @@ public class ProductResponseDTO
     public string? ThumbnailUrl { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    
+
     public string CategoryName { get; set; } = string.Empty;
 }

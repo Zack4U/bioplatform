@@ -12,7 +12,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ScientificDbContext _context;
     private IDbContextTransaction? _transaction;
-    
+
     private IProductRepository? _products;
     private IProductCategoryRepository? _categories;
 

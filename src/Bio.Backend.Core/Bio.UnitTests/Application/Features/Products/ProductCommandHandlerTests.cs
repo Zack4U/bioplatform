@@ -40,7 +40,7 @@ public class ProductCommandHandlersTests
 
         _uowMock.Setup(m => m.Products.GetBySlugAsync(dto.Slug, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Product)null!);
-        
+
         _uowMock.Setup(m => m.Products.AddAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
