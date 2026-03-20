@@ -15,22 +15,56 @@ public class Product
     public bool IsActive { get; private set; } = true;
     public string? ThumbnailUrl { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; private set; }
 
+    // Navigation properties
     public User Entrepreneur { get; private set; } = null!;
-    // Navigation to Reviews, Certifications
+    public ProductCategory? Category { get; private set; }
+    public Species BaseSpecies { get; private set; } = null!;
+    
     public ICollection<ProductReview> Reviews { get; private set; } = new List<ProductReview>();
     public ICollection<Certification> Certifications { get; private set; } = new List<Certification>();
 
     private Product() { }
 
-    public Product(Guid entrepreneurId, Guid baseSpeciesId, string name, string description, decimal price, int stockQuantity)
+    public Product(Guid id, Guid entrepreneurId, Guid baseSpeciesId, int? categoryId, string slug, string name, string description, decimal price, int stockQuantity, string? sku, string? thumbnailUrl)
     {
-        Id = Guid.NewGuid();
+        Id = id == Guid.Empty ? Guid.NewGuid() : id;
         EntrepreneurId = entrepreneurId;
         BaseSpeciesId = baseSpeciesId;
+        CategoryId = categoryId;
+        Slug = slug.ToLowerInvariant();
         Name = name;
         Description = description;
         Price = price;
         StockQuantity = stockQuantity;
+        Sku = sku;
+        ThumbnailUrl = thumbnailUrl;
+        CreatedAt = DateTime.UtcNow;
+        IsActive = true;
+    }
+
+    public void Update(string name, string description, decimal price, int stockQuantity, string? sku, string? thumbnailUrl, int? categoryId)
+    {
+        Name = name;
+        Description = description;
+        Price = price;
+        StockQuantity = stockQuantity;
+        Sku = sku;
+        ThumbnailUrl = thumbnailUrl;
+        CategoryId = categoryId;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Activate()
+    {
+        IsActive = true;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

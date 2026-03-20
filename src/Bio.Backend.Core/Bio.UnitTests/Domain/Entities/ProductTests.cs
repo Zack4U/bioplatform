@@ -28,7 +28,7 @@ public class ProductTests
         public void ShouldSetProperties_WhenCreated()
         {
             // Act
-            var product = new Product(EntrepreneurId, BaseSpeciesId, Name, Description, Price, StockQuantity);
+            var product = new Product(Guid.NewGuid(), EntrepreneurId, BaseSpeciesId, null, "slug", Name, Description, Price, StockQuantity, null, null);
 
             // Assert
             product.Id.Should().NotBeEmpty();

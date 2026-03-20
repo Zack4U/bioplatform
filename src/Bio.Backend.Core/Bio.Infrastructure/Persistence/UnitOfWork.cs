@@ -1,4 +1,5 @@
 using Bio.Domain.Interfaces;
+using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Bio.Backend.Core.Bio.Infrastructure.Persistence;
@@ -9,13 +10,19 @@ namespace Bio.Backend.Core.Bio.Infrastructure.Persistence;
 /// </summary>
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly BioDbContext _context;
+    private readonly ScientificDbContext _context;
     private IDbContextTransaction? _transaction;
+    
+    private IProductRepository? _products;
+    private IProductCategoryRepository? _categories;
 
-    public UnitOfWork(BioDbContext context)
+    public UnitOfWork(ScientificDbContext context)
     {
         _context = context;
     }
+
+    public IProductRepository Products => _products ??= new ProductRepository(_context);
+    public IProductCategoryRepository Categories => _categories ??= new ProductCategoryRepository(_context);
 
     /// <summary>
     /// Asynchronously saves all changes made within the current unit of work to the database.

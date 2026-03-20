@@ -27,4 +27,7 @@ public interface IUnitOfWork : IDisposable
     /// Rolls back the current transaction.
     /// </summary>
     Task RollbackTransactionAsync();
+
+    IProductRepository Products { get; }
+    IProductCategoryRepository Categories { get; }
 }

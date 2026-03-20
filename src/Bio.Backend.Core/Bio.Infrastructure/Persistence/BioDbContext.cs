@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Bio.Domain.Entities;
+using Bio.Domain.Constants;
 
 namespace Bio.Backend.Core.Bio.Infrastructure.Persistence;
 
@@ -107,6 +108,10 @@ public class BioDbContext : DbContext
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Slug).IsRequired().HasMaxLength(150);
+            entity.Property(e => e.Sku).HasMaxLength(50);
+            entity.Property(e => e.ThumbnailUrl).HasMaxLength(500);
             entity.HasIndex(e => e.Slug).IsUnique();
             entity.HasIndex(e => e.EntrepreneurId);
             entity.HasIndex(e => e.BaseSpeciesId); // Logical FK to PostgreSQL
@@ -117,7 +122,7 @@ public class BioDbContext : DbContext
                   .HasForeignKey(e => e.EntrepreneurId)
                   .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne<ProductCategory>()
+            entity.HasOne(e => e.Category)
                   .WithMany(pc => pc.Products)
                   .HasForeignKey(e => e.CategoryId)
                   .OnDelete(DeleteBehavior.SetNull);
@@ -222,5 +227,15 @@ public class BioDbContext : DbContext
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
+
+        // Seed Roles
+        modelBuilder.Entity<Role>().HasData(
+            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Admin, "System Administrator"),
+            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Researcher, "Scientific Researcher"),
+            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Entrepreneur, "Green Entrepreneur"),
+            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Community, "Local Community Member"),
+            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Buyer, "Standard Buyer/Consumer"),
+            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.EnvironmentalAuthority, "Environmental Regulatory Authority")
+        );
     }
 }

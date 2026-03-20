@@ -41,12 +41,13 @@ var jwtSettings = new JwtSettings();
 builder.Configuration.GetSection(JwtSettings.SectionName).Bind(jwtSettings);
 builder.Services.AddSingleton(Options.Create(jwtSettings));
 
-// Register BioPlatform Services (conexiones desde .env)
-builder.Services.AddDbContext<BioDbContext>(options =>
-    options.UseSqlServer(defaultConnection));
-
+// Register BioPlatform Services (Consolidated on PostgreSQL ScientificDbContext)
 builder.Services.AddDbContext<ScientificDbContext>(options =>
     options.UseNpgsql(scientificConnection, o => o.UseNetTopologySuite()));
+
+// Legacy SQL Server context (Commented out as per user request to use only Postgres)
+// builder.Services.AddDbContext<BioDbContext>(options =>
+//    options.UseSqlServer(defaultConnection));
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -57,7 +58,7 @@ builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Scientific (PostgreSQL) repositories and unit of work
+// Scientific Specific Repositories (Also using ScientificDbContext)
 builder.Services.AddScoped<ITaxonomyRepository, TaxonomyRepository>();
 builder.Services.AddScoped<ISpeciesRepository, SpeciesRepository>();
 builder.Services.AddScoped<IGeographicDistributionRepository, GeographicDistributionRepository>();
