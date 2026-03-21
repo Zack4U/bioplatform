@@ -6,37 +6,54 @@ using Bio.Application.Services;
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Bio.Backend.Core.Bio.Infrastructure.Services;
-using Bio.Application.DTOs;
+using Bio.Domain.Interfaces;
 using FluentValidation;
 using MediatR;
 using DotNetEnv;
 using AutoMapper;
-
-// Cargar .env desde la raíz del proyecto (las credenciales no se duplican en appsettings)
-Env.TraversePath().Load();
 using Hangfire;
 using Hangfire.Redis.StackExchange;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Cadenas de conexión desde variables de entorno (.env) — única fuente de secretos
-var defaultConnection = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_SQL")
-    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+// Cadenas de conexión exclusivamente desde appsettings.json o appsettings.Development.json
+var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? throw new InvalidOperationException("DefaultConnection no está configurado en appsettings.");
 
-// PostgreSQL (Scientific): siempre desde DB_PG_* para que la contraseña venga solo de DB_PG_PASSWORD
-var pgHost = Environment.GetEnvironmentVariable("DB_PG_HOST") ?? "localhost";
-var pgPort = Environment.GetEnvironmentVariable("DB_PG_PORT") ?? "5432";
-var pgDatabase = Environment.GetEnvironmentVariable("DB_PG_DATABASE") ?? "BioCommerce_Scientific";
-var pgUser = Environment.GetEnvironmentVariable("DB_PG_USER") ?? "postgres";
-var pgPassword = Environment.GetEnvironmentVariable("DB_PG_PASSWORD") ?? "";
-var scientificConnection = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword}";
+var scientificConnection = builder.Configuration.GetConnectionString("ScientificConnection")
+    ?? throw new InvalidOperationException("ScientificConnection no está configurado en appsettings.");
 
 // Configure JWT Settings
 var jwtSettings = new JwtSettings();
 builder.Configuration.GetSection(JwtSettings.SectionName).Bind(jwtSettings);
 builder.Services.AddSingleton(Options.Create(jwtSettings));
 
-// Register BioPlatform Services (conexiones desde .env)
+// JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings.Issuer,
+        ValidAudience = jwtSettings.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+    };
+});
+
+// Register BioPlatform Services
 builder.Services.AddDbContext<BioDbContext>(options =>
     options.UseSqlServer(defaultConnection));
 
@@ -49,8 +66,35 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// MediatR registration is enough as it scans everything in Bio.Application assembly.
+// Scientific context (PostgreSQL) — Biodiversity Catalog
+builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.SpeciesRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ITaxonomyRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.TaxonomyRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IScientificUnitOfWork, Bio.Backend.Core.Bio.Infrastructure.Persistence.ScientificUnitOfWork>();
+
+// Hangfire — background job processing with Redis storage
+var redisConnection = builder.Configuration.GetConnectionString("RedisConnection")
+    ?? "localhost:6379";
+// Ensure abortConnect=false so Hangfire retries instead of crashing when Redis is momentarily unavailable
+if (!redisConnection.Contains("abortConnect", StringComparison.OrdinalIgnoreCase))
+    redisConnection += ",abortConnect=false";
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseRedisStorage(redisConnection));
+builder.Services.AddHangfireServer();
+
+builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesBulkImportJob, Bio.Infrastructure.Services.SpeciesImportJob>();
+builder.Services.AddScoped<Bio.Application.Common.Interfaces.IJobEnqueuer, Bio.Infrastructure.Services.JobEnqueuer>();
+
+// MediatR, AutoMapper, FluentValidation, Controllers
+builder.Services.AddControllers();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Bio.Application.Features.Species.Commands.ImportSpeciesCsvCommand).Assembly));
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Bio.Application.Mappings.MappingProfile).Assembly));
+builder.Services.AddValidatorsFromAssembly(typeof(Bio.Application.Features.Species.Commands.ImportSpeciesCsvCommand).Assembly);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

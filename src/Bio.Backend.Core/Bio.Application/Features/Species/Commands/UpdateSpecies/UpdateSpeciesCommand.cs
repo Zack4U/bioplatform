@@ -39,6 +39,8 @@ public class UpdateSpeciesCommandHandler : IRequestHandler<UpdateSpeciesCommand,
             dto.TraditionalUses,
             dto.EconomicPotential,
             dto.ConservationStatus,
+            dto.AltitudeRange,
+            dto.LegalStatus,
             dto.IsSensitive,
             dto.TaxonomyId);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

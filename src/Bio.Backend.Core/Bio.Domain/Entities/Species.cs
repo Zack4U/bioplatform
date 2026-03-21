@@ -11,7 +11,7 @@ public class Species
     public string Slug { get; private set; } = string.Empty;
     public string? ThumbnailUrl { get; private set; }
     public string ScientificName { get; private set; } = string.Empty;
-    public List<string> CommonNames { get; private set; } = new();
+    public string? CommonName { get; private set; }
     public string? Description { get; private set; }
     public string? EcologicalInfo { get; private set; }
     public string? TraditionalUses { get; private set; }
@@ -20,7 +20,6 @@ public class Species
     public string? AltitudeRange { get; private set; }
     public bool LegalStatus { get; private set; } = false;
     public bool IsSensitive { get; private set; } = false;
-    public string? ThumbnailUrl { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
 
@@ -41,6 +40,8 @@ public class Species
         string? traditionalUses = null,
         string? economicPotential = null,
         string? conservationStatus = null,
+        string? altitudeRange = null,
+        bool legalStatus = false,
         bool isSensitive = false)
     {
         Id = id;
@@ -54,6 +55,8 @@ public class Species
         TraditionalUses = traditionalUses;
         EconomicPotential = economicPotential;
         ConservationStatus = conservationStatus;
+        AltitudeRange = altitudeRange;
+        LegalStatus = legalStatus;
         IsSensitive = isSensitive;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
@@ -68,6 +71,8 @@ public class Species
         string? traditionalUses,
         string? economicPotential,
         string? conservationStatus,
+        string? altitudeRange,
+        bool? legalStatus,
         bool? isSensitive,
         int? taxonomyId)
     {
@@ -79,6 +84,8 @@ public class Species
         if (traditionalUses != null) TraditionalUses = traditionalUses;
         if (economicPotential != null) EconomicPotential = economicPotential;
         if (conservationStatus != null) ConservationStatus = conservationStatus;
+        if (altitudeRange != null) AltitudeRange = altitudeRange;
+        if (legalStatus.HasValue) LegalStatus = legalStatus.Value;
         if (isSensitive.HasValue) IsSensitive = isSensitive.Value;
         if (taxonomyId.HasValue) TaxonomyId = taxonomyId;
         UpdatedAt = DateTime.UtcNow;

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Bio.Application.DTOs;
+using Bio.Application.Features.Species.Commands;
 using Bio.Application.Features.Species.Commands.CreateSpecies;
 using Bio.Application.Features.Species.Commands.DeleteSpecies;
 using Bio.Application.Features.Species.Commands.UpdateSpecies;
@@ -86,4 +87,40 @@ public class SpeciesController : ControllerBase
         await _mediator.Send(new DeleteSpeciesCommand(id));
         return NoContent();
     }
+
+    /// <summary>
+    /// Carga masiva de especies desde un archivo CSV.
+    /// El archivo se procesa en segundo plano (Hangfire).
+    /// </summary>
+    [HttpPost("import-csv")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> ImportCsv(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { error = "A CSV file is required." });
+
+        if (!file.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { error = "Only CSV files are accepted." });
+
+        // Save the file to a temporary location
+        var tempPath = Path.Combine(Path.GetTempPath(), $"bio-import-{Guid.NewGuid()}.csv");
+        await using (var stream = new FileStream(tempPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        // TODO: Extract real userId from JWT claims once auth is wired.
+        var userId = Guid.Empty;
+
+        var jobId = await _mediator.Send(new ImportSpeciesCsvCommand
+        {
+            FilePath = tempPath,
+            UserId = userId
+        });
+
+        return Accepted(new { jobId, message = "CSV import job enqueued successfully." });
+    }
 }
+

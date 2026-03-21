@@ -20,6 +20,8 @@ public class SpeciesCsvRecord
     public string AltitudeRange { get; set; } = string.Empty;
     public bool LegalStatus { get; set; } = false;
     public string? TraditionalUses { get; set; }
+    public string? EcologicalInfo { get; set; }
+    public string? EconomicPotential { get; set; }
     public bool IsSensitive { get; set; } = false;
     public string ThumbnailUrl { get; set; } = string.Empty;
 

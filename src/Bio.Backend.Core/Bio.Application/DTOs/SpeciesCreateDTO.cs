@@ -15,5 +15,7 @@ public record SpeciesCreateDTO
     public string? TraditionalUses { get; init; }
     public string? EconomicPotential { get; init; }
     public string? ConservationStatus { get; init; }
+    public string? AltitudeRange { get; init; }
+    public bool LegalStatus { get; init; }
     public bool IsSensitive { get; init; }
 }

@@ -49,6 +49,11 @@ public class SpeciesRepository : ISpeciesRepository
         return species;
     }
 
+    public async Task AddRangeAsync(IEnumerable<Species> speciesList, CancellationToken cancellationToken = default)
+    {
+        await _context.Species.AddRangeAsync(speciesList, cancellationToken);
+    }
+
     public Task DeleteAsync(Species species, CancellationToken cancellationToken = default)
     {
         _context.Species.Remove(species);

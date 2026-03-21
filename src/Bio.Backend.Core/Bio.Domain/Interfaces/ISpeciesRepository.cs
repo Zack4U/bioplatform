@@ -12,6 +12,7 @@ public interface ISpeciesRepository
     Task<Species?> GetByScientificNameAsync(string scientificName, CancellationToken cancellationToken = default);
     Task<IEnumerable<Species>> GetAllAsync(int? skip = null, int? take = null, CancellationToken cancellationToken = default);
     Task<Species> AddAsync(Species species, CancellationToken cancellationToken = default);
+    Task AddRangeAsync(IEnumerable<Species> speciesList, CancellationToken cancellationToken = default);
     Task DeleteAsync(Species species, CancellationToken cancellationToken = default);
     /// <summary>
     /// Comprueba si existe otra especie (excluyendo id) con el mismo scientific_name o slug.

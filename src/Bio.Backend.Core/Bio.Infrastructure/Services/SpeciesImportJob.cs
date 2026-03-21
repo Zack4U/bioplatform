@@ -2,25 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Bio.Application.DTOs;
+using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
-// using Bio.Domain.Entities;
 
 namespace Bio.Infrastructure.Services;
 
 public class SpeciesImportJob : ISpeciesBulkImportJob
 {
     private readonly ILogger<SpeciesImportJob> _logger;
-    // private readonly ISpeciesRepository _speciesRepository; // Placeholder (Domain CRUD missing)
-    // private readonly ITaxonomyRepository _taxonomyRepository; // Placeholder (Domain CRUD missing)
+    private readonly ISpeciesRepository _speciesRepository;
+    private readonly ITaxonomyRepository _taxonomyRepository;
+    private readonly IScientificUnitOfWork _unitOfWork;
 
-    public SpeciesImportJob(ILogger<SpeciesImportJob> logger)
+    public SpeciesImportJob(
+        ILogger<SpeciesImportJob> logger,
+        ISpeciesRepository speciesRepository,
+        ITaxonomyRepository taxonomyRepository,
+        IScientificUnitOfWork unitOfWork)
     {
         _logger = logger;
+        _speciesRepository = speciesRepository;
+        _taxonomyRepository = taxonomyRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task ProcessCsvImportAsync(string filePath, Guid userId)
@@ -50,6 +60,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
             int batchSize = 500;
             var currentBatch = new List<SpeciesCsvRecord>();
             int totalProcessed = 0;
+            int totalSkipped = 0;
 
             await foreach (var record in records)
             {
@@ -57,19 +68,23 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
 
                 if (currentBatch.Count >= batchSize)
                 {
-                    await ProcessBatchAsync(currentBatch, userId);
-                    totalProcessed += currentBatch.Count;
+                    var (processed, skipped) = await ProcessBatchAsync(currentBatch, userId);
+                    totalProcessed += processed;
+                    totalSkipped += skipped;
                     currentBatch.Clear();
                 }
             }
 
             if (currentBatch.Count > 0)
             {
-                await ProcessBatchAsync(currentBatch, userId);
-                totalProcessed += currentBatch.Count;
+                var (processed, skipped) = await ProcessBatchAsync(currentBatch, userId);
+                totalProcessed += processed;
+                totalSkipped += skipped;
             }
 
-            _logger.LogInformation("Successfully processed {TotalProcessed} records from CSV", totalProcessed);
+            _logger.LogInformation(
+                "CSV Import complete. Processed: {TotalProcessed}, Skipped (duplicates): {TotalSkipped}",
+                totalProcessed, totalSkipped);
         }
         catch (Exception ex)
         {
@@ -86,22 +101,107 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         }
     }
 
-    private async Task ProcessBatchAsync(List<SpeciesCsvRecord> batch, Guid userId)
+    internal async Task<(int Processed, int Skipped)> ProcessBatchAsync(List<SpeciesCsvRecord> batch, Guid userId)
     {
         _logger.LogInformation("Processing batch of {Count} records", batch.Count);
 
-        // TODO: Mapear SpeciesCsvRecord a entidades del Dominio (Taxonomy, Species, GeographicDistribution)
-        // Ejemplo:
-        // foreach(var record in batch) {
-        //     var taxonomy = new Taxonomy(record.Kingdom, record.Family, ...);
-        //     var species = new Species(record.ScientificName, ...);
-        //     species.GeographicDistributions.Add(new GeographicDistribution(record.Latitude, ...));
-        // }
+        var speciesEntities = new List<Species>();
+        int skipped = 0;
 
-        // TODO: Invocar _speciesRepository.AddRangeAsync(entities) para insertar las entidades
-        // await _speciesRepository.SaveChangesAsync();
+        foreach (var record in batch)
+        {
+            // Validate required field
+            if (string.IsNullOrWhiteSpace(record.ScientificName))
+            {
+                _logger.LogWarning("Skipping record with empty ScientificName.");
+                skipped++;
+                continue;
+            }
 
-        // Para evitar bloqueos, simulamos I/O:
-        await Task.Delay(100); 
+            // Check for duplicate by scientific name
+            var existing = await _speciesRepository.GetByScientificNameAsync(record.ScientificName);
+            if (existing != null)
+            {
+                _logger.LogWarning("Skipping duplicate species: {ScientificName}", record.ScientificName);
+                skipped++;
+                continue;
+            }
+
+            // Upsert Taxonomy: find existing or create new
+            var taxonomy = await _taxonomyRepository.GetByFieldsAsync(
+                NullIfEmpty(record.Kingdom),
+                NullIfEmpty(record.Phylum),
+                NullIfEmpty(record.Class),
+                NullIfEmpty(record.Order),
+                NullIfEmpty(record.Family),
+                NullIfEmpty(record.Genus));
+
+            if (taxonomy == null)
+            {
+                taxonomy = new Taxonomy(
+                    NullIfEmpty(record.Kingdom),
+                    NullIfEmpty(record.Phylum),
+                    NullIfEmpty(record.Class),
+                    NullIfEmpty(record.Order),
+                    NullIfEmpty(record.Family),
+                    NullIfEmpty(record.Genus));
+                await _taxonomyRepository.AddAsync(taxonomy);
+                // Save so the Taxonomy gets its generated Id
+                await _unitOfWork.SaveChangesAsync();
+            }
+
+            // Generate slug from scientific name
+            var slug = GenerateSlug(record.ScientificName);
+
+            // Create Species entity
+            var species = new Species(
+                id: Guid.NewGuid(),
+                slug: slug,
+                scientificName: record.ScientificName.Trim(),
+                taxonomyId: taxonomy.Id,
+                thumbnailUrl: NullIfEmpty(record.ThumbnailUrl),
+                commonName: NullIfEmpty(record.CommonName),
+                description: NullIfEmpty(record.Description),
+                ecologicalInfo: NullIfEmpty(record.EcologicalInfo),
+                traditionalUses: NullIfEmpty(record.TraditionalUses),
+                economicPotential: NullIfEmpty(record.EconomicPotential),
+                conservationStatus: NullIfEmpty(record.ConservationStatus),
+                altitudeRange: NullIfEmpty(record.AltitudeRange),
+                legalStatus: record.LegalStatus,
+                isSensitive: record.IsSensitive);
+
+            speciesEntities.Add(species);
+        }
+
+        if (speciesEntities.Count > 0)
+        {
+            await _speciesRepository.AddRangeAsync(speciesEntities);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        _logger.LogInformation(
+            "Batch complete. Inserted: {Inserted}, Skipped: {Skipped}",
+            speciesEntities.Count, skipped);
+
+        return (speciesEntities.Count, skipped);
+    }
+
+    /// <summary>
+    /// Generates a URL-friendly slug from a scientific name.
+    /// Example: "Cattleya trianae" → "cattleya-trianae"
+    /// </summary>
+    internal static string GenerateSlug(string scientificName)
+    {
+        var slug = scientificName.Trim().ToLowerInvariant();
+        slug = Regex.Replace(slug, @"[^a-z0-9\s-]", "");
+        slug = Regex.Replace(slug, @"\s+", "-");
+        slug = Regex.Replace(slug, @"-+", "-");
+        slug = slug.Trim('-');
+        return slug;
+    }
+
+    private static string? NullIfEmpty(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     }
 }
