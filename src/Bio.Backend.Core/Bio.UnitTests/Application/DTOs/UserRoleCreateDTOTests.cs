@@ -12,11 +12,7 @@ public class UserRoleCreateDTOTests
     /// <summary>
     /// Creates a valid UserRoleCreateDTO instance for testing purposes.
     /// </summary>
-    private UserRoleCreateDTO CreateValidDTO() => new()
-    {
-        UserId = Guid.NewGuid(),
-        RoleId = Guid.NewGuid()
-    };
+    private UserRoleCreateDTO CreateValidDTO() => new(Guid.NewGuid(), Guid.NewGuid());
 
     /// <summary>
     /// Verifies that a valid UserRoleCreateDTO instance does not have any validation errors.
@@ -41,8 +37,7 @@ public class UserRoleCreateDTOTests
     public void MissingUserId_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.UserId = null;
+        var dto = new UserRoleCreateDTO(default, Guid.NewGuid()) with { UserId = null! };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -58,8 +53,7 @@ public class UserRoleCreateDTOTests
     public void MissingRoleId_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.RoleId = null;
+        var dto = new UserRoleCreateDTO(Guid.NewGuid(), default) with { RoleId = null! };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -69,17 +63,13 @@ public class UserRoleCreateDTOTests
     }
 
     /// <summary>
-    /// Verifies that a UserRoleCreateDTO with both missing user and role IDs has multiple validation errors.
+    /// Verifies that a UserRoleCreateDTO with both user and role IDs missing has multiple validation errors.
     /// </summary>
     [Fact]
     public void BothIdsMissing_ShouldHaveValidationErrors()
     {
         // Arrange
-        var dto = new UserRoleCreateDTO
-        {
-            UserId = null,
-            RoleId = null
-        };
+        var dto = new UserRoleCreateDTO(null!, null!);
 
         // Act
         var results = ValidationHelper.Validate(dto);

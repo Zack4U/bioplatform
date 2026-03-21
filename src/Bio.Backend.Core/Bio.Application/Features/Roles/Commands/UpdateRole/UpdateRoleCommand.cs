@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
@@ -6,13 +7,15 @@ namespace Bio.Application.Features.Roles.Commands.UpdateRole;
 
 public record UpdateRoleCommand(Guid Id, RoleUpdateDTO Dto) : IRequest<RoleResponseDTO>;
 
-public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, RoleResponseDTO>
+public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, RoleResponseDTO>
 {
     private readonly IRoleRepository _roleRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateRoleHandler(IRoleRepository roleRepository)
+    public UpdateRoleCommandHandler(IRoleRepository roleRepository, IUnitOfWork unitOfWork)
     {
         _roleRepository = roleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<RoleResponseDTO> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
@@ -20,7 +23,7 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, RoleResponse
         var role = await _roleRepository.GetByIdAsync(request.Id);
         if (role == null)
         {
-            throw new KeyNotFoundException($"Role with ID '{request.Id}' not found.");
+            throw new NotFoundException("Role", request.Id);
         }
 
         var normalizedName = request.Dto.Name.Trim().ToUpperInvariant();
@@ -33,15 +36,14 @@ public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand, RoleResponse
 
         role.Update(normalizedName, request.Dto.Description);
 
-        await _roleRepository.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RoleResponseDTO
-        {
-            Id = role.Id,
-            Name = role.Name,
-            Description = role.Description,
-            CreatedAt = role.CreatedAt,
-            UpdatedAt = role.UpdatedAt
-        };
+        return new RoleResponseDTO(
+            role.Id,
+            role.Name,
+            role.Description,
+            role.CreatedAt,
+            role.UpdatedAt
+        );
     }
 }

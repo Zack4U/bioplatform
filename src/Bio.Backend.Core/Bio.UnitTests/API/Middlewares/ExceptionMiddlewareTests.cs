@@ -158,6 +158,44 @@ public class ExceptionMiddlewareTests
             problemDetails.Title.Should().Be("Conflict");
             problemDetails.Detail.Should().Be(exceptionMessage);
         }
+
+        /// <summary>
+        /// Verifies that a FluentValidation.ValidationException is mapped to a 400 Bad Request
+        /// and includes the validation errors in the response.
+        /// </summary>
+        [Fact]
+        public async Task InvokeAsync_ShouldReturnValidationProblemDetails_WhenFluentValidationExceptionIsThrown()
+        {
+            // Arrange
+            var failures = new List<FluentValidation.Results.ValidationFailure>
+            {
+                new("Email", "Email is required"),
+                new("Password", "Password is too short")
+            };
+            var exception = new FluentValidation.ValidationException(failures);
+            var middleware = CreateMiddleware(innerHttpContext => throw exception);
+
+            // Act
+            await middleware.InvokeAsync(_httpContext);
+
+            // Assert
+            _httpContext.Response.StatusCode.Should().Be((int)HttpStatusCode.BadRequest);
+
+            _httpContext.Response.Body.Seek(0, SeekOrigin.Begin);
+            using var reader = new StreamReader(_httpContext.Response.Body);
+            var responseBody = await reader.ReadToEndAsync();
+
+            var problemDetails = JsonSerializer.Deserialize<ValidationProblemDetails>(responseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            problemDetails.Should().NotBeNull();
+            problemDetails!.Errors.Should().ContainKey("Email");
+            problemDetails.Errors["Email"].Should().Contain("Email is required");
+            problemDetails.Errors.Should().ContainKey("Password");
+            problemDetails.Errors["Password"].Should().Contain("Password is too short");
+        }
     }
 
     /// <summary>

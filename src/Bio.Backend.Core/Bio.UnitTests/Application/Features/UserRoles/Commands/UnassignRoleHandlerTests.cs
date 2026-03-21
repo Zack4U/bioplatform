@@ -1,5 +1,6 @@
 using Bio.Application.Features.UserRoles.Commands.UnassignRole;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using FluentAssertions;
 using Moq;
@@ -8,26 +9,28 @@ using Xunit;
 namespace Bio.UnitTests.Application.Features.UserRoles.Commands;
 
 /// <summary>
-/// Unit tests for the UnassignRoleHandler class.
+/// Unit tests for the UnassignRoleCommandHandler class.
 /// </summary>
-public class UnassignRoleHandlerTests
+public class UnassignRoleCommandHandlerTests
 {
     private readonly Mock<IUserRoleRepository> _userRoleRepositoryMock;
-    private readonly UnassignRoleHandler _handler;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly UnassignRoleCommandHandler _handler;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="UnassignRoleHandlerTests"/> class.
+    /// Initializes a new instance of the <see cref="UnassignRoleCommandHandlerTests"/> class.
     /// </summary>
-    public UnassignRoleHandlerTests()
+    public UnassignRoleCommandHandlerTests()
     {
         _userRoleRepositoryMock = new Mock<IUserRoleRepository>();
-        _handler = new UnassignRoleHandler(_userRoleRepositoryMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _handler = new UnassignRoleCommandHandler(_userRoleRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
     /// <summary>
-    /// Tests for the Handle method of UnassignRoleHandler.
+    /// Tests for the Handle method of UnassignRoleCommandHandler.
     /// </summary>
-    public class Handle : UnassignRoleHandlerTests
+    public class Handle : UnassignRoleCommandHandlerTests
     {
         /// <summary>
         /// Verifies that a role assignment is successfully removed when it exists.
@@ -47,14 +50,14 @@ public class UnassignRoleHandlerTests
 
             // Assert
             _userRoleRepositoryMock.Verify(r => r.DeleteAsync(userRole), Times.Once);
-            _userRoleRepositoryMock.Verify(r => r.SaveChangesAsync(), Times.Once);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the assignment does not exist.
+        /// Verifies that a NotFoundException is thrown when the assignment does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_AssignmentDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_AssignmentDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -66,9 +69,10 @@ public class UnassignRoleHandlerTests
             Func<Task> act = async () => await _handler.Handle(new UnassignRoleCommand(userId, roleId), CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"*{userId}*{roleId}*");
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage("Role assignment not found for this user.");
             _userRoleRepositoryMock.Verify(r => r.DeleteAsync(It.IsAny<UserRole>()), Times.Never);
+            _unitOfWorkMock.Verify(r => r.SaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

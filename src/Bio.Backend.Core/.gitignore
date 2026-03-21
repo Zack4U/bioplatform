@@ -24,6 +24,9 @@ project.lock.json
 publish/
 artifacts/
 .fake
+Bio.UnitTests/TestResults/
+Bio.UnitTests/coverage/
+Bio.UnitTests/Report/
 
 # ===========================================
 # Secretos y configuración local

@@ -64,10 +64,4 @@ public interface IUserRoleRepository
     /// <param name="userRole">The user-role assignment entity to remove.</param>
     /// <returns>A task representing the asynchronous delete operation.</returns>
     Task DeleteAsync(UserRole userRole);
-
-    /// <summary>
-    /// Persists changes to the database.
-    /// </summary>
-    /// <returns>A task representing the asynchronous save operation.</returns>
-    Task SaveChangesAsync();
 }

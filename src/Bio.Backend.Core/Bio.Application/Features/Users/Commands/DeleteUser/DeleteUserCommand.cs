@@ -1,26 +1,29 @@
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
 namespace Bio.Application.Features.Users.Commands.DeleteUser;
 
-public record DeleteUserCommand(Guid Id) : IRequest<bool>;
+public record DeleteUserCommand(Guid Id) : IRequest;
 
-public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, bool>
+public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteUserHandler(IUserRepository userRepository)
+    public DeleteUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.Id);
-        if (user == null) return false;
+        if (user == null)
+            throw new NotFoundException($"User with ID {request.Id} not found.");
 
         await _userRepository.DeleteAsync(user);
-        await _userRepository.SaveChangesAsync();
-        return true;
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

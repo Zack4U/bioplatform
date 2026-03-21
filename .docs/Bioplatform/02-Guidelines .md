@@ -44,11 +44,11 @@
 
 ## **2.1 Backend (.NET 8+)**
 
-* \[ \] Implementación de Clean Architecture / Hexagonal.  
-* \[ \] Uso de CQRS con MediatR.  
-* \[ \] Repository Pattern y Unit of Work.  
-* \[ \] Validación con FluentValidation y mapeo con AutoMapper/Mapperly.  
-* \[ \] Pruebas unitarias con xUnit (cobertura mín. 60%).
+* \[X\] Implementación de Clean Architecture / Hexagonal.  
+* \[X\] Uso de CQRS con MediatR.  
+* \[X\] Repository Pattern y Unit of Work.  
+* \[X\] Validación con FluentValidation y mapeo con AutoMapper/Mapperly.  
+* \[X\] Pruebas unitarias con xUnit (cobertura mín. 60%).
 
 ## **2.2 Frontend (Next.js con Vite)**
 

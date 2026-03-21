@@ -35,6 +35,12 @@ public class Role
     // Required for EF Core
     private Role() { }
 
+    /// <summary>
+    /// Creates a new role.
+    /// </summary>
+    /// <param name="id">The ID of the role.</param>
+    /// <param name="name">The name of the role.</param>
+    /// <param name="description">The description of the role.</param>
     public Role(Guid id, string name, string? description = null)
     {
         if (id == Guid.Empty) throw new ArgumentException("Role ID cannot be empty.", nameof(id));
@@ -46,6 +52,11 @@ public class Role
         CreatedAt = DateTime.UtcNow;
     }
 
+    /// <summary>
+    /// Updates the role information.
+    /// </summary>
+    /// <param name="name">The new name of the role.</param>
+    /// <param name="description">The new description of the role.</param>
     public void Update(string name, string? description)
     {
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Role name cannot be empty.", nameof(name));

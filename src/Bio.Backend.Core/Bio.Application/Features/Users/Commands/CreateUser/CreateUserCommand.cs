@@ -1,21 +1,37 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Constants;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
 using MediatR;
+using AutoMapper;
 
 namespace Bio.Application.Features.Users.Commands.CreateUser;
 
 public record CreateUserCommand(UserCreateDTO Dto) : IRequest<UserResponseDTO>;
 
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponseDTO>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserResponseDTO>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IRoleRepository _roleRepository;
+    private readonly IUserRoleRepository _userRoleRepository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CreateUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
+    public CreateUserCommandHandler(
+        IUserRepository userRepository,
+        IPasswordHasher passwordHasher,
+        IRoleRepository roleRepository,
+        IUserRoleRepository userRoleRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _roleRepository = roleRepository;
+        _userRoleRepository = userRoleRepository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<UserResponseDTO> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -49,17 +65,18 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserResponse
 
         // 4. Persistence
         await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
 
-        // 5. Response
-        return new UserResponseDTO
+        // 5. Automatic Role Assignment (Buyer) by default
+        var buyerRole = await _roleRepository.GetByNameAsync(RoleNames.Buyer);
+        if (buyerRole != null)
         {
-            Id = user.Id,
-            FullName = user.FullName,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
-        };
+            var userRole = new UserRole(user.Id, buyerRole.Id);
+            await _userRoleRepository.AddAsync(userRole);
+        }
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        // 6. Response (Auto-mapped)
+        return _mapper.Map<UserResponseDTO>(user);
     }
 }

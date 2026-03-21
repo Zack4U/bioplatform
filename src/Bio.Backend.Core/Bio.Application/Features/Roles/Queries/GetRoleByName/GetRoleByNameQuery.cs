@@ -1,12 +1,13 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
 
 namespace Bio.Application.Features.Roles.Queries.GetRoleByName;
 
-public record GetRoleByNameQuery(string Name) : IRequest<RoleResponseDTO?>;
+public record GetRoleByNameQuery(string Name) : IRequest<RoleResponseDTO>;
 
-public class GetRoleByNameHandler : IRequestHandler<GetRoleByNameQuery, RoleResponseDTO?>
+public class GetRoleByNameHandler : IRequestHandler<GetRoleByNameQuery, RoleResponseDTO>
 {
     private readonly IRoleRepository _roleRepository;
 
@@ -15,19 +16,18 @@ public class GetRoleByNameHandler : IRequestHandler<GetRoleByNameQuery, RoleResp
         _roleRepository = roleRepository;
     }
 
-    public async Task<RoleResponseDTO?> Handle(GetRoleByNameQuery request, CancellationToken cancellationToken)
+    public async Task<RoleResponseDTO> Handle(GetRoleByNameQuery request, CancellationToken cancellationToken)
     {
         var normalizedName = request.Name.Trim().ToUpperInvariant();
         var role = await _roleRepository.GetByNameAsync(normalizedName);
-        if (role == null) return null;
+        if (role == null) throw new NotFoundException("Role", normalizedName);
 
-        return new RoleResponseDTO
-        {
-            Id = role.Id,
-            Name = role.Name,
-            Description = role.Description,
-            CreatedAt = role.CreatedAt,
-            UpdatedAt = role.UpdatedAt
-        };
+        return new RoleResponseDTO(
+            role.Id,
+            role.Name,
+            role.Description,
+            role.CreatedAt,
+            role.UpdatedAt
+        );
     }
 }

@@ -12,11 +12,7 @@ public class RoleUpdateDTOTests
     /// <summary>
     /// Creates a valid RoleUpdateDTO instance for testing purposes.
     /// </summary>
-    private RoleUpdateDTO CreateValidDTO() => new()
-    {
-        Name = "EDITOR",
-        Description = "Content Editor"
-    };
+    private RoleUpdateDTO CreateValidDTO() => new("EDITOR", "Content Editor");
 
     /// <summary>
     /// Verifies that a valid RoleUpdateDTO instance does not have any validation errors.
@@ -41,8 +37,7 @@ public class RoleUpdateDTOTests
     public void MissingName_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Name = string.Empty;
+        var dto = CreateValidDTO() with { Name = string.Empty };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -58,8 +53,7 @@ public class RoleUpdateDTOTests
     public void NameTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Name = new string('A', 101);
+        var dto = CreateValidDTO() with { Name = new string('A', 101) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -75,8 +69,7 @@ public class RoleUpdateDTOTests
     public void DescriptionTooLong_ShouldHaveValidationError()
     {
         // Arrange
-        var dto = CreateValidDTO();
-        dto.Description = new string('A', 2001);
+        var dto = CreateValidDTO() with { Description = new string('A', 2001) };
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -86,17 +79,13 @@ public class RoleUpdateDTOTests
     }
 
     /// <summary>
-    /// Verifies that a RoleUpdateDTO with both name and description exceeding the maximum length has validation errors.
+    /// Verifies that a RoleUpdateDTO with both name and description exceeding maximum lengths has multiple validation errors.
     /// </summary>
     [Fact]
     public void BothNameAndDescriptionTooLong_ShouldHaveValidationErrors()
     {
         // Arrange
-        var dto = new RoleUpdateDTO
-        {
-            Name = new string('A', 101),
-            Description = new string('B', 2001)
-        };
+        var dto = new RoleUpdateDTO(new string('A', 101), new string('B', 2001));
 
         // Act
         var results = ValidationHelper.Validate(dto);
@@ -108,17 +97,13 @@ public class RoleUpdateDTOTests
     }
 
     /// <summary>
-    /// Verifies that a RoleUpdateDTO with a missing name and a description that exceeds the maximum length has validation errors.
+    /// Verifies that a RoleUpdateDTO with a missing name and a description that exceeds the maximum length has multiple validation errors.
     /// </summary>
     [Fact]
     public void MissingNameAndDescriptionTooLong_ShouldHaveValidationErrors()
     {
         // Arrange
-        var dto = new RoleUpdateDTO
-        {
-            Name = string.Empty,
-            Description = new string('B', 2001)
-        };
+        var dto = new RoleUpdateDTO(string.Empty, new string('B', 2001));
 
         // Act
         var results = ValidationHelper.Validate(dto);

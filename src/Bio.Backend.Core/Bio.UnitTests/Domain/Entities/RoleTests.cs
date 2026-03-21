@@ -1,4 +1,5 @@
 using Bio.Domain.Entities;
+using Bio.Domain.Constants;
 using FluentAssertions;
 using Xunit;
 
@@ -44,7 +45,7 @@ public class RoleTests
             var role = new Role(Guid.NewGuid(), name);
 
             // Assert
-            role.Name.Should().Be("ADMIN");
+            role.Name.Should().Be(RoleNames.Admin);
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ public class RoleTests
             var role = new Role(Guid.NewGuid(), "admin");
 
             // Assert
-            role.Name.Should().Be("ADMIN");
+            role.Name.Should().Be(RoleNames.Admin);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ public class RoleTests
             var role = new Role(Guid.NewGuid(), "  admin  ");
 
             // Assert
-            role.Name.Should().Be("ADMIN");
+            role.Name.Should().Be(RoleNames.Admin);
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ public class RoleTests
         public void ShouldThrowException_When_IdIsEmpty()
         {
             // Act
-            Action act = () => new Role(Guid.Empty, "ADMIN");
+            Action act = () => new Role(Guid.Empty, RoleNames.Admin);
 
             // Assert
             act.Should().Throw<ArgumentException>().WithMessage("*Role ID cannot be empty.*");
@@ -245,10 +246,10 @@ public class RoleTests
         public void Update_ShouldAllowClearingDescription()
         {
             // Arrange
-            var role = new Role(Guid.NewGuid(), "ADMIN", "Some description");
+            var role = new Role(Guid.NewGuid(), RoleNames.Admin, "Some description");
 
             // Act
-            role.Update("ADMIN", null);
+            role.Update(RoleNames.Admin, null);
 
             // Assert
             role.Description.Should().BeNull();
@@ -261,7 +262,7 @@ public class RoleTests
         public void Update_ShouldThrowException_When_NameIsEmpty()
         {
             // Arrange
-            var role = new Role(Guid.NewGuid(), "ADMIN");
+            var role = new Role(Guid.NewGuid(), RoleNames.Admin);
 
             // Act
             Action act = () => role.Update("", null);
@@ -277,7 +278,7 @@ public class RoleTests
         public void Update_ShouldThrowException_When_NameIsWhitespace()
         {
             // Arrange
-            var role = new Role(Guid.NewGuid(), "ADMIN");
+            var role = new Role(Guid.NewGuid(), RoleNames.Admin);
 
             // Act
             Action act = () => role.Update("   ", null);

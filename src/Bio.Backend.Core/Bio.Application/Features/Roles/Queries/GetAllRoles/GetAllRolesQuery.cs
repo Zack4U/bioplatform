@@ -18,13 +18,12 @@ public class GetAllRolesHandler : IRequestHandler<GetAllRolesQuery, IEnumerable<
     public async Task<IEnumerable<RoleResponseDTO>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
     {
         var roles = await _roleRepository.GetAllAsync();
-        return roles.Select(role => new RoleResponseDTO
-        {
-            Id = role.Id,
-            Name = role.Name,
-            Description = role.Description,
-            CreatedAt = role.CreatedAt,
-            UpdatedAt = role.UpdatedAt
-        });
+        return roles.Select(role => new RoleResponseDTO(
+            role.Id,
+            role.Name,
+            role.Description,
+            role.CreatedAt,
+            role.UpdatedAt
+        ));
     }
 }

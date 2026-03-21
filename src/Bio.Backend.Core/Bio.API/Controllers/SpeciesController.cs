@@ -1,15 +1,21 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Bio.Application.DTOs;
+using Bio.Application.Features.Species.Commands.CreateSpecies;
+using Bio.Application.Features.Species.Commands.DeleteSpecies;
+using Bio.Application.Features.Species.Commands.UpdateSpecies;
+using Bio.Application.Features.Species.Queries.GetAllSpecies;
+using Bio.Application.Features.Species.Queries.GetSpeciesById;
+using Bio.Application.Features.Species.Queries.GetSpeciesBySlug;
 using MediatR;
-using Bio.Application.Features.Species.Commands;
 
 namespace Bio.API.Controllers;
 
+/// <summary>
+/// CRUD de especies del catálogo de biodiversidad (taxonomía completa).
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class SpeciesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -19,46 +25,65 @@ public class SpeciesController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("import")]
-    // [Authorize(Roles = "Researcher, Admin")] // Assuming RBAC
-    public async Task<IActionResult> ImportSpeciesCsv(IFormFile file)
+    /// <summary>Lista especies con paginación opcional (skip, take).</summary>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<SpeciesResponseDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll([FromQuery] int? skip, [FromQuery] int? take)
     {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest("No file uploaded.");
-        }
+        var result = await _mediator.Send(new GetAllSpeciesQuery(skip, take));
+        return Ok(result);
+    }
 
-        if (!file.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
-        {
-            return BadRequest("File must be a CSV.");
-        }
+    /// <summary>Obtiene una especie por id.</summary>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _mediator.Send(new GetSpeciesByIdQuery(id));
+        return Ok(result);
+    }
 
-        // Save file locally to a temp path
-        var tempFolder = Path.Combine(Path.GetTempPath(), "BioPlatformUploads");
-        Directory.CreateDirectory(tempFolder);
-        
-        var tempFilePath = Path.Combine(tempFolder, $"{Guid.NewGuid()}_{file.FileName}");
+    /// <summary>Obtiene una especie por slug.</summary>
+    [HttpGet("slug/{slug}")]
+    [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetBySlug(string slug)
+    {
+        var result = await _mediator.Send(new GetSpeciesBySlugQuery(slug));
+        return Ok(result);
+    }
 
-        using (var stream = new FileStream(tempFilePath, FileMode.Create))
-        {
-            await file.CopyToAsync(stream);
-        }
+    /// <summary>Crea una nueva especie.</summary>
+    [HttpPost]
+    [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Create([FromBody] SpeciesCreateDTO dto)
+    {
+        var result = await _mediator.Send(new CreateSpeciesCommand(dto));
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
 
-        // Assuming UserId comes from User Claims
-        // var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        var dummyUserId = Guid.NewGuid(); // Placeholder
+    /// <summary>Actualiza una especie existente.</summary>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Update(Guid id, [FromBody] SpeciesUpdateDTO dto)
+    {
+        var result = await _mediator.Send(new UpdateSpeciesCommand(id, dto));
+        return Ok(result);
+    }
 
-        var command = new ImportSpeciesCsvCommand
-        {
-            FilePath = tempFilePath,
-            UserId = dummyUserId
-        };
-
-        var jobId = await _mediator.Send(command);
-
-        return Accepted(new { 
-            Message = "CSV upload accepted and job enqueued in the background.", 
-            JobId = jobId 
-        });
+    /// <summary>Elimina una especie.</summary>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _mediator.Send(new DeleteSpeciesCommand(id));
+        return NoContent();
     }
 }

@@ -41,6 +41,8 @@ public class GetAllUsersHandlerTests
                 new User(Guid.NewGuid(), "Alice", "alice@example.com", "h", "s"),
                 new User(Guid.NewGuid(), "Bob", "bob@example.com", "h", "s")
             };
+            users[0].SetTwoFactorSecret("SECRET");
+            users[0].EnableTwoFactor();
             _userRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(users);
 
             // Act
@@ -49,6 +51,8 @@ public class GetAllUsersHandlerTests
             // Assert
             result.Should().HaveCount(2);
             result.Should().Contain(u => u.Email == "alice@example.com");
+            result.Any(u => u.TwoFactorEnabled).Should().BeTrue();
+            result.Any(u => !u.TwoFactorEnabled).Should().BeTrue();
         }
 
         /// <summary>

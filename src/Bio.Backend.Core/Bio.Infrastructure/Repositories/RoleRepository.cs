@@ -76,12 +76,4 @@ public class RoleRepository : IRoleRepository
         _context.Roles.Remove(role);
         return Task.CompletedTask;
     }
-
-    /// <summary>
-    /// Asynchronously saves all changes made in this context to the database.
-    /// </summary>
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
 }

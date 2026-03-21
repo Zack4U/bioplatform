@@ -127,7 +127,10 @@ dotnet watch run --project Bio.API/Bio.API.csproj
 **Requisitos:**
 
 - .NET 8 SDK instalado
-- Variables de conexión a BD en appsettings
+- **Conexiones a BD:** La API lee **solo desde el archivo `.env`** en la raíz del proyecto (`E:\Proyecto Integrador\bioplatform\.env`), para no duplicar credenciales en otros archivos.
+  - **PostgreSQL (especies, taxonomía):** variables `DB_PG_HOST`, `DB_PG_PORT`, `DB_PG_DATABASE`, `DB_PG_USER`, `DB_PG_PASSWORD` (la contraseña solo va en `.env`).
+  - **SQL Server (usuarios, roles):** variable `DB_CONNECTION_STRING_SQL` o las equivalentes `DB_SQL_*`.
+  - Al arrancar, la API carga `.env` automáticamente desde la raíz del repo; debe coincidir con la misma conexión que usas en DBeaver.
 
 ---
 
@@ -235,6 +238,74 @@ const AI_API_URL = __DEV__
 | **Seq**     | http://localhost:5341 | Ver logs centralizados            |
 
 - Credenciales: En las variables de entorno (.env)
+
+### 3.1 Probar CRUD Especies y Taxonomía (Swagger / Postman)
+
+Los endpoints de **Species** y **Taxonomy** están disponibles sin autenticación para pruebas. Puedes usar Swagger o Postman.
+
+**Pasos rápidos:**
+
+1. **PostgreSQL en marcha** (Docker o tu instancia; misma conexión que en DBeaver).
+2. **Conexión en el Backend:** En el `.env` de la raíz del proyecto (`DB_PG_HOST`, `DB_PG_PORT`, `DB_PG_DATABASE`, `DB_PG_USER`, `DB_PG_PASSWORD`). La API carga ese `.env` al iniciar y no usa credenciales en `appsettings`.
+3. **Migraciones Scientific (solo si la BD no tiene ya las tablas del script):**
+   ```bash
+   cd src/Bio.Backend.Core
+   dotnet ef database update --context ScientificDbContext -p Bio.Infrastructure -s Bio.API
+   ```
+4. **Levantar la API:**
+   ```bash
+   cd src/Bio.Backend.Core
+   dotnet watch run --project Bio.API/Bio.API.csproj
+   ```
+5. **Abrir Swagger:** [http://localhost:5070/swagger](http://localhost:5070/swagger).
+
+**Orden sugerido en Swagger:**
+
+- **Taxonomy:** `POST /api/Taxonomy` (crear una taxonomía) → `GET /api/Taxonomy` (listar) → `GET /api/Taxonomy/{id}` (detalle) → `PUT` / `DELETE` si quieres.
+- **Species:** `POST /api/Species` (crear especie; opcionalmente con `taxonomyId` de la taxonomía creada) → `GET /api/Species` → `GET /api/Species/{id}` o `GET /api/Species/slug/{slug}` → `PUT` / `DELETE`.
+
+**Ejemplo body para POST /api/Taxonomy:**
+
+```json
+{
+  "kingdom": "Plantae",
+  "phylum": "Magnoliophyta",
+  "className": "Magnoliopsida",
+  "orderName": "Fagales",
+  "family": "Fagaceae",
+  "genus": "Quercus"
+}
+```
+
+**Ejemplo body para POST /api/Species:**
+
+```json
+{
+  "taxonomyId": 1,
+  "slug": "quercus-humboldtii",
+  "scientificName": "Quercus humboldtii",
+  "commonName": "Roble",
+  "description": "Árbol nativo de los Andes.",
+  "conservationStatus": "Vulnerable",
+  "isSensitive": false
+}
+```
+
+**Postman:** Misma base URL `http://localhost:5070`. Colección sugerida:
+
+| Método | Ruta | Uso |
+|--------|------|-----|
+| GET | `/api/Taxonomy` | Listar taxonomías |
+| GET | `/api/Taxonomy/{id}` | Obtener por id (entero) |
+| POST | `/api/Taxonomy` | Crear taxonomía (body JSON) |
+| PUT | `/api/Taxonomy/{id}` | Actualizar taxonomía |
+| DELETE | `/api/Taxonomy/{id}` | Eliminar taxonomía |
+| GET | `/api/Species` | Listar especies (`?skip=0&take=10` opcional) |
+| GET | `/api/Species/{id}` | Por id (GUID) |
+| GET | `/api/Species/slug/{slug}` | Por slug |
+| POST | `/api/Species` | Crear especie (body JSON) |
+| PUT | `/api/Species/{id}` | Actualizar especie |
+| DELETE | `/api/Species/{id}` | Eliminar especie |
 
 ---
 

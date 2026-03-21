@@ -1,5 +1,6 @@
 using Bio.Application.Features.UserRoles.Queries.GetUserRolesByUserId;
 using Bio.Domain.Entities;
+using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using Bio.Domain.ReadModels;
 using FluentAssertions;
@@ -78,10 +79,10 @@ public class GetUserRolesByUserIdHandlerTests
         }
 
         /// <summary>
-        /// Verifies that a KeyNotFoundException is thrown when the user does not exist.
+        /// Verifies that a NotFoundException is thrown when the user does not exist.
         /// </summary>
         [Fact]
-        public async Task Should_ThrowKeyNotFoundException_When_UserDoesNotExist()
+        public async Task Should_ThrowNotFoundException_When_UserDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -91,8 +92,8 @@ public class GetUserRolesByUserIdHandlerTests
             Func<Task> act = async () => await _handler.Handle(new GetUserRolesByUserIdQuery(userId), CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"*{userId}*");
+            await act.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"*User*{userId}*not found*");
         }
     }
 }

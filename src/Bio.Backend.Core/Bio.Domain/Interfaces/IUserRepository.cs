@@ -15,12 +15,6 @@ public interface IUserRepository
     Task AddAsync(User user);
 
     /// <summary>
-    /// Persists changes to the repository.
-    /// </summary>
-    /// <returns>A task representing the asynchronous save operation.</returns>
-    Task SaveChangesAsync();
-
-    /// <summary>
     /// Retrieves all users from the repository.
     /// </summary>
     /// <returns>An enumerable collection of user entities.</returns>

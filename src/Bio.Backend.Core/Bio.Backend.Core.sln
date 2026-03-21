@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -10,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bio.Infrastructure", "Bio.Infrastructure\Bio.Infrastructure.csproj", "{BC7F6D98-91CE-457F-AC9D-0C6AEAE99F2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bio.API", "Bio.API\Bio.API.csproj", "{4E622DB6-B5C3-4960-8E15-ACB66E53096F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bio.Tests", "Bio.Tests\Bio.Tests.csproj", "{B8239511-AD93-4F74-8AC2-4C9927AF4373}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bio.UnitTests", "Bio.UnitTests\Bio.UnitTests.csproj", "{0EAB4E7D-AAA8-48C1-BF73-7C87628ED062}"
 EndProject
@@ -40,10 +38,6 @@ Global
 		{4E622DB6-B5C3-4960-8E15-ACB66E53096F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E622DB6-B5C3-4960-8E15-ACB66E53096F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E622DB6-B5C3-4960-8E15-ACB66E53096F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8239511-AD93-4F74-8AC2-4C9927AF4373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8239511-AD93-4F74-8AC2-4C9927AF4373}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8239511-AD93-4F74-8AC2-4C9927AF4373}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8239511-AD93-4F74-8AC2-4C9927AF4373}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EAB4E7D-AAA8-48C1-BF73-7C87628ED062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0EAB4E7D-AAA8-48C1-BF73-7C87628ED062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EAB4E7D-AAA8-48C1-BF73-7C87628ED062}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -101,7 +101,7 @@ public class UserRoleRepositoryTests : IDisposable
 
             // Act
             await _repository.AddAsync(userRole);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert
             var result = await _context.Set<UserRole>().FindAsync(user.Id, role.Id);
@@ -125,7 +125,7 @@ public class UserRoleRepositoryTests : IDisposable
             var ur2 = new UserRole(user.Id, role.Id);
 
             await _repository.AddAsync(ur1);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Act - Use separate context to trigger DB-level PK violation
             var options = new DbContextOptionsBuilder<BioDbContext>()
@@ -138,7 +138,7 @@ public class UserRoleRepositoryTests : IDisposable
             await newRepo.AddAsync(ur2);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateException>(() => newRepo.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateException>(() => newContext.SaveChangesAsync());
         }
 
         /// <summary>
@@ -373,7 +373,7 @@ public class UserRoleRepositoryTests : IDisposable
 
             // Act
             await _repository.DeleteAsync(ur);
-            await _repository.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             // Assert
             var result = await _context.Set<UserRole>().FindAsync(ur.UserId, ur.RoleId);
@@ -400,7 +400,7 @@ public class UserRoleRepositoryTests : IDisposable
             await _repository.DeleteAsync(ur);
 
             // Assert
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _repository.SaveChangesAsync());
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _context.SaveChangesAsync());
         }
 
         /// <summary>

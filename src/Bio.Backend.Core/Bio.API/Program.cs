@@ -1,53 +1,88 @@
 using Bio.API.Middlewares;
-using Microsoft.EntityFrameworkCore;
-using Bio.Domain.Interfaces;
+using Bio.Application.Common.Models;
+using Bio.Application.DTOs;
+using Bio.Application.Interfaces;
+using Bio.Application.Services;
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Bio.Backend.Core.Bio.Infrastructure.Services;
-using Bio.Infrastructure.Services;
 using Bio.Application.DTOs;
 using FluentValidation;
+using MediatR;
+using DotNetEnv;
+using AutoMapper;
+
+// Cargar .env desde la raíz del proyecto (las credenciales no se duplican en appsettings)
+Env.TraversePath().Load();
 using Hangfire;
 using Hangfire.Redis.StackExchange;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserResponseDTO).Assembly));
+// Cadenas de conexión desde variables de entorno (.env) — única fuente de secretos
+var defaultConnection = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_SQL")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddControllers();
+// PostgreSQL (Scientific): siempre desde DB_PG_* para que la contraseña venga solo de DB_PG_PASSWORD
+var pgHost = Environment.GetEnvironmentVariable("DB_PG_HOST") ?? "localhost";
+var pgPort = Environment.GetEnvironmentVariable("DB_PG_PORT") ?? "5432";
+var pgDatabase = Environment.GetEnvironmentVariable("DB_PG_DATABASE") ?? "BioCommerce_Scientific";
+var pgUser = Environment.GetEnvironmentVariable("DB_PG_USER") ?? "postgres";
+var pgPassword = Environment.GetEnvironmentVariable("DB_PG_PASSWORD") ?? "";
+var scientificConnection = $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword}";
 
-// Register BioPlatform Services
+// Configure JWT Settings
+var jwtSettings = new JwtSettings();
+builder.Configuration.GetSection(JwtSettings.SectionName).Bind(jwtSettings);
+builder.Services.AddSingleton(Options.Create(jwtSettings));
+
+// Register BioPlatform Services (conexiones desde .env)
 builder.Services.AddDbContext<BioDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(defaultConnection));
 
 builder.Services.AddDbContext<ScientificDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ScientificConnection"),
-        o => o.UseNetTopologySuite()));
+    options.UseNpgsql(scientificConnection, o => o.UseNetTopologySuite()));
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-
-// Register Species Background Job
-builder.Services.AddScoped<ISpeciesBulkImportJob, SpeciesImportJob>();
-builder.Services.AddScoped<Bio.Application.Common.Interfaces.IJobEnqueuer, JobEnqueuer>();
-
-// Configure Hangfire with Redis
-builder.Services.AddHangfire(configuration => configuration
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UseRedisStorage(builder.Configuration.GetConnectionString("RedisConnection")));
-
-builder.Services.AddHangfireServer();
 
 // MediatR registration is enough as it scans everything in Bio.Application assembly.
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "BioPlatform API", Version = "v1" });
+
+    // Add JWT Authentication support to Swagger
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
 
@@ -62,6 +97,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); // Added authentication middleware
 app.UseAuthorization();
 
 // Expose Hangfire Dashboard
