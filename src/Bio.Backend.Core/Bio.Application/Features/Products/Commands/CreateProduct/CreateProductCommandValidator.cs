@@ -25,7 +25,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 
         RuleFor(x => x.Dto.BaseSpeciesId)
             .NotEmpty().WithMessage("Base Species Id is required.");
-            
+
         RuleFor(x => x.Dto.Sku)
             .MaximumLength(50).WithMessage("SKU must not exceed 50 characters.");
 

@@ -21,7 +21,7 @@ public class Product
     public User Entrepreneur { get; private set; } = null!;
     public ProductCategory? Category { get; private set; }
     public Species BaseSpecies { get; private set; } = null!;
-    
+
     public ICollection<ProductReview> Reviews { get; private set; } = new List<ProductReview>();
     public ICollection<Certification> Certifications { get; private set; } = new List<Certification>();
 

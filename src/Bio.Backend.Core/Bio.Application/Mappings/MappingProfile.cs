@@ -30,7 +30,7 @@ public class MappingProfile : Profile
         // Product Mappings
         CreateMap<Product, ProductResponseDTO>()
             .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Category != null ? s.Category.Name : string.Empty));
-        
+
         // Category Mappings
         CreateMap<ProductCategory, ProductCategoryResponseDTO>();
     }
