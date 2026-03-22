@@ -22,8 +22,8 @@ import webbrowser
 from pathlib import Path
 
 # ── Resolve project paths ──────────────────────────────────────────
-SCRIPT_DIR = Path(__file__).resolve().parent      # scripts/tools/
-PROJECT_ROOT = SCRIPT_DIR.parent.parent           # Bio.Backend.AI/
+SCRIPT_DIR = Path(__file__).resolve().parent  # scripts/tools/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import uvicorn  # noqa: E402
@@ -78,6 +78,7 @@ def _load_species_f1_data(min_f1: float) -> tuple[set[str] | None, dict[str, flo
         print("  [WARN] evaluation_metrics.json not found, F1 filter disabled.")
         return None, {}
     import json as _json
+
     with open(eval_path, encoding="utf-8") as f:
         metrics = _json.load(f)
     per_class = metrics.get("per_class", {})
@@ -110,6 +111,7 @@ def _get_classifier() -> SpeciesClassifier:
 
 # ── Endpoints ──────────────────────────────────────────────────────
 
+
 @api.get("/", response_class=HTMLResponse)
 async def index():
     return AUDITOR_HTML
@@ -122,10 +124,7 @@ async def classify(file: UploadFile = File(...)):
         result = _get_classifier().classify(image_bytes, top_k=5)
         # Filter by F1 threshold
         if _allowed_species is not None:
-            result["predictions"] = [
-                p for p in result["predictions"]
-                if p["species"] in _allowed_species
-            ]
+            result["predictions"] = [p for p in result["predictions"] if p["species"] in _allowed_species]
             # Re-rank after filtering
             for i, p in enumerate(result["predictions"], start=1):
                 p["rank"] = i
@@ -193,6 +192,7 @@ async def species_list():
 async def metrics_summary():
     """Return full evaluation metrics summary for the dashboard."""
     import json as _json
+
     eval_path = PROJECT_ROOT / "data" / "evaluation" / "evaluation_metrics.json"
     if not eval_path.exists():
         return JSONResponse(status_code=404, content={"error": "evaluation_metrics.json not found"})
@@ -206,8 +206,7 @@ async def metrics_summary():
     # Pre-compute F1 histogram bins
     f1_values = [m.get("f1_score", 0) for m in per_class.values()]
     bins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.01]
-    bin_labels = ["0-.1", ".1-.2", ".2-.3", ".3-.4", ".4-.5",
-                  ".5-.6", ".6-.7", ".7-.8", ".8-.9", ".9-1.0"]
+    bin_labels = ["0-.1", ".1-.2", ".2-.3", ".3-.4", ".4-.5", ".5-.6", ".6-.7", ".7-.8", ".8-.9", ".9-1.0"]
     histogram = [0] * len(bin_labels)
     for v in f1_values:
         for i in range(len(bins) - 1):
@@ -245,6 +244,7 @@ async def metrics_summary():
 async def metrics_misclassified():
     """Return misclassified samples from evaluation."""
     import json as _json
+
     path = PROJECT_ROOT / "data" / "evaluation" / "misclassified_samples.json"
     if not path.exists():
         return JSONResponse(status_code=404, content={"error": "misclassified_samples.json not found"})
@@ -257,6 +257,7 @@ async def metrics_misclassified():
 async def metrics_confusion():
     """Return top confused species pairs from evaluation."""
     import re
+
     path = PROJECT_ROOT / "data" / "evaluation" / "confusion_matrix.txt"
     if not path.exists():
         return JSONResponse(status_code=404, content={"error": "confusion_matrix.txt not found"})
@@ -271,12 +272,14 @@ async def metrics_confusion():
             if len(parts) >= 4:
                 try:
                     rate_str = parts[2].replace("%", "")
-                    pairs.append({
-                        "true_species": parts[0].strip(),
-                        "predicted_as": parts[1].strip(),
-                        "rate": float(rate_str),
-                        "count": int(parts[3]),
-                    })
+                    pairs.append(
+                        {
+                            "true_species": parts[0].strip(),
+                            "predicted_as": parts[1].strip(),
+                            "rate": float(rate_str),
+                            "count": int(parts[3]),
+                        }
+                    )
                 except (ValueError, IndexError):
                     pass
     return {"pairs": pairs, "total": len(pairs)}
@@ -312,22 +315,28 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
   body{font-family:'Inter',sans-serif;background:var(--c-bg);color:#e2e8f0;min-height:100vh;}
 
   /* upload zone */
-  .upload-zone{border:2px dashed #374151;border-radius:1rem;padding:2.5rem 1.5rem;text-align:center;transition:all .25s;cursor:pointer;background:var(--c-surface);}
+  .upload-zone{border:2px dashed #374151;border-radius:1rem;padding:2.5rem 1.5rem;text-align:center;transition:all
+    .25s;cursor:pointer;background:var(--c-surface);}
   .upload-zone:hover,.upload-zone.drag-over{border-color:var(--c-emerald);background:rgba(16,185,129,.06);}
   .upload-zone.drag-over{box-shadow:0 0 40px rgba(16,185,129,.12);}
 
   /* species panel */
-  .species-panel{background:var(--c-surface);border:1px solid var(--c-border);border-radius:1rem;overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 160px);}
+  .species-panel{background:var(--c-surface);border:1px solid
+    var(--c-border);border-radius:1rem;overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 160px);}
   .species-panel-header{padding:.75rem 1rem;border-bottom:1px solid var(--c-border);background:var(--c-surface-2);}
   .species-list{overflow-y:auto;flex:1;padding:.5rem;}
-  .species-group-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#10b981;padding:.6rem .75rem .3rem;}
+  .species-group-title{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#10b981;
+    padding:.6rem .75rem .3rem;}
 
   /* kingdom column */
-  .kingdom-col{flex:1;min-width:240px;display:flex;flex-direction:column;border-right:1px solid var(--c-border);overflow:hidden;}
+  .kingdom-col{flex:1;min-width:240px;display:flex;flex-direction:column;border-right:1px solid
+    var(--c-border);overflow:hidden;}
   .kingdom-col:last-child{border-right:none;}
-  .kingdom-col-header{padding:.6rem 1rem;border-bottom:1px solid var(--c-border);background:var(--c-surface-2);display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+  .kingdom-col-header{padding:.6rem 1rem;border-bottom:1px solid
+    var(--c-border);background:var(--c-surface-2);display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
   .kingdom-col-list{overflow-y:auto;flex:1;padding:.4rem;}
-  .kingdom-col-count{font-size:.6rem;color:#64748b;margin-left:auto;background:var(--c-surface);padding:.1rem .45rem;border-radius:9999px;}
+  .kingdom-col-count{font-size:.6rem;color:#64748b;margin-left:auto;background:var(--c-surface);padding:.1rem
+    .45rem;border-radius:9999px;}
 
   .species-item{display:flex;align-items:center;gap:.6rem;padding:.5rem .75rem;border-radius:.6rem;transition:background .15s;}
   .species-item:hover{background:var(--c-surface-2);}
@@ -349,16 +358,19 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
     0%{transform:scale(.9);opacity:1}
     80%,100%{transform:scale(2.4);opacity:0}
   }
-  .pulse-ring{position:absolute;width:80px;height:80px;border-radius:50%;border:3px solid var(--c-emerald);animation:pulseRing 1.6s cubic-bezier(.2,.6,.4,1) infinite;}
+  .pulse-ring{position:absolute;width:80px;height:80px;border-radius:50%;border:3px solid var(--c-emerald);animation:pulseRing
+    1.6s cubic-bezier(.2,.6,.4,1) infinite;}
   .pulse-ring:nth-child(2){animation-delay:.4s;}
   .pulse-ring:nth-child(3){animation-delay:.8s;}
 
   /* spinner dot */
   @keyframes spin{to{transform:rotate(360deg)}}
-  .spinner-dot{width:52px;height:52px;border-radius:50%;border:4px solid transparent;border-top-color:var(--c-emerald);animation:spin .8s linear infinite;}
+  .spinner-dot{width:52px;height:52px;border-radius:50%;border:4px solid
+    transparent;border-top-color:var(--c-emerald);animation:spin .8s linear infinite;}
 
   /* cards */
-  .result-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:1rem;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+  .result-card{background:var(--c-surface);border:1px solid
+    var(--c-border);border-radius:1rem;overflow:hidden;transition:transform .2s,box-shadow .2s;}
   .result-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(16,185,129,.1);}
 
   /* confidence bar */
@@ -366,14 +378,17 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
   .conf-bar-fill{height:100%;border-radius:3px;transition:width .6s ease;}
 
   /* badge colors */
-  .badge{display:inline-flex;align-items:center;font-size:.65rem;font-weight:600;padding:.15rem .5rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;}
+  .badge{display:inline-flex;align-items:center;font-size:.65rem;font-weight:600;padding:.15rem
+    .5rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;}
   .badge-green{background:rgba(16,185,129,.15);color:#34d399;}
   .badge-amber{background:rgba(245,158,11,.15);color:#fbbf24;}
   .badge-red{background:rgba(239,68,68,.15);color:#f87171;}
   .badge-slate{background:rgba(100,116,139,.2);color:#94a3b8;}
 
   /* taxonomy pills */
-  .tax-pill{display:inline-block;font-size:.7rem;padding:.2rem .55rem;border-radius:.4rem;background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8;margin:.15rem .15rem;}
+  .tax-pill{display:inline-block;font-size:.7rem;padding:.2rem
+    .55rem;border-radius:.4rem;background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8;margin:.15rem
+    .15rem;}
 
   /* fade/slide in */
   @keyframes fadeSlideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
@@ -392,14 +407,20 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
 <body class="flex flex-col min-h-screen">
 
 <!-- ═══ Navbar ═══ -->
-<nav class="flex items-center justify-between px-6 py-3 border-b" style="border-color:var(--c-border);background:var(--c-surface)">
+<nav class="flex items-center justify-between px-6 py-3 border-b"
+    style="border-color:var(--c-border);background:var(--c-surface)">
   <div class="flex items-center gap-3">
-    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#10b981,#06b6d4)">
-      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+      style="background:linear-gradient(135deg,#10b981,#06b6d4)">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
     </div>
     <span class="font-bold text-sm tracking-tight">BioAudit</span>
     <span class="text-xs text-gray-500 ml-1">Model Auditor</span>
-    <a href="/metrics" class="flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-lg transition ml-4" style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8" onmouseenter="this.style.borderColor='#10b981';this.style.color='#10b981'" onmouseleave="this.style.borderColor='var(--c-border)';this.style.color='#94a3b8'">
+    <a href="/metrics" class="flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-lg transition ml-4"
+      style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8"
+      onmouseenter="this.style.borderColor='#10b981';this.style.color='#10b981'"
+      onmouseleave="this.style.borderColor='var(--c-border)';this.style.color='#94a3b8'">
       &#128202; Métricas
     </a>
   </div>
@@ -416,7 +437,8 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
   <section id="screenUpload" class="screen active w-full animate-in" style="flex-direction:column;height:calc(100vh - 100px);">
 
     <!-- Top toolbar: title + search + sort + upload -->
-    <div class="flex items-center gap-3 px-4 py-3 flex-shrink-0 flex-wrap" style="border-bottom:1px solid var(--c-border);background:var(--c-surface);">
+    <div class="flex items-center gap-3 px-4 py-3 flex-shrink-0 flex-wrap" style="border-bottom:1px solid
+      var(--c-border);background:var(--c-surface);">
       <div class="flex items-center gap-2 mr-auto">
         <p class="font-semibold text-sm whitespace-nowrap">Especies entrenadas</p>
         <span class="text-[.65rem] text-gray-500 whitespace-nowrap" id="speciesCount">Cargando…</span>
@@ -424,7 +446,9 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
 
       <!-- Search -->
       <div class="relative" style="min-width:200px;max-width:320px;flex:1;">
-        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14" fill="none"
+          viewBox="0 0 24 24" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
         <input id="speciesSearch" type="text" placeholder="Buscar especie, familia, género…"
           class="w-full text-xs rounded-lg py-1.5 pl-8 pr-3 outline-none focus:ring-1 focus:ring-emerald-500"
           style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#e2e8f0;"
@@ -451,7 +475,8 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
         class="flex items-center gap-1.5 text-xs font-semibold px-4 py-1.5 rounded-lg transition whitespace-nowrap"
         style="background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;"
         onmouseenter="this.style.opacity='0.85'" onmouseleave="this.style.opacity='1'">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
         Clasificar imagen
       </button>
       <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" class="hidden"/>
@@ -463,7 +488,8 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
     </div>
 
     <!-- Hidden drag zone overlay + preview -->
-    <div id="dropZone" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background:rgba(12,15,22,.85);backdrop-filter:blur(4px);">
+    <div id="dropZone" class="hidden fixed inset-0 z-50 flex items-center justify-center"
+      style="background:rgba(12,15,22,.85);backdrop-filter:blur(4px);">
       <div class="upload-zone flex flex-col items-center gap-4 p-10" style="max-width:420px;">
         <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:rgba(16,185,129,.1)">
           <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="1.5">
@@ -476,7 +502,8 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
       </div>
     </div>
 
-    <div id="previewContainer" class="hidden fixed inset-0 z-50 flex items-center justify-center" style="background:rgba(12,15,22,.9);backdrop-filter:blur(6px);">
+    <div id="previewContainer" class="hidden fixed inset-0 z-50 flex items-center justify-center"
+      style="background:rgba(12,15,22,.9);backdrop-filter:blur(6px);">
       <div class="flex flex-col items-center gap-3 animate-in">
         <img id="previewImg" class="preview-img" alt="Preview"/>
         <div class="flex items-center gap-3">
@@ -484,7 +511,8 @@ AUDITOR_HTML = r"""<!DOCTYPE html>
           <span id="fileSize" class="text-xs text-gray-600"></span>
         </div>
         <p class="text-xs text-emerald-400 mt-1 flex items-center gap-1">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/></svg>
           Clasificando automáticamente…
         </p>
       </div>
@@ -597,9 +625,12 @@ function confColor(c) {
 function lowF1Warning(pred, threshold) {
   if (!pred.low_f1_warning) return '';
   const f1Pct = pred.f1_score != null ? (pred.f1_score * 100).toFixed(1) + '%' : '?';
-  return `<div class="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg text-xs" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fbbf24">
-    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01M12 3l9.66 16.5H2.34L12 3z"/></svg>
-    <span><b>Baja confiabilidad:</b> F1 del modelo para esta especie es ${f1Pct} (umbral: ${(threshold*100).toFixed(0)}%). La identificaci\u00f3n puede no ser precisa.</span>
+  return `<div class="flex items-center gap-2 mt-2 px-3 py-2 rounded-lg text-xs"
+    style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fbbf24">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path d="M12 9v2m0 4h.01M12 3l9.66 16.5H2.34L12 3z"/></svg>
+    <span><b>Baja confiabilidad:</b> F1 del modelo para esta especie es ${f1Pct} (umbral: ${(threshold*100).toFixed(0)}%). La
+      identificaci\u00f3n puede no ser precisa.</span>
   </div>`;
 }
 
@@ -658,7 +689,8 @@ function renderResults(data) {
           <h2 class="text-xl font-bold">Resultado del Análisis</h2>
           <p class="text-gray-500 text-xs mt-0.5">Modelo: ${data.model || '?'} · ${data.num_classes || '?'} clases</p>
         </div>
-        <button onclick="resetAudit()" class="text-xs px-4 py-2 rounded-lg font-medium transition" style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8"
+        <button onclick="resetAudit()" class="text-xs px-4 py-2 rounded-lg font-medium transition"
+          style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8"
                 onmouseenter="this.style.borderColor='#10b981'" onmouseleave="this.style.borderColor='var(--c-border)'">
           ← Nueva imagen
         </button>
@@ -681,7 +713,8 @@ function renderResults(data) {
           ${sciName ? `<p class="text-xs text-gray-500 mt-0.5">${sciName}</p>` : ''}
           <div class="flex items-center gap-3 mt-3">
             <span class="text-2xl font-extrabold" style="color:${confColor(top.confidence)}">${pct}%</span>
-            <div class="conf-bar flex-1"><div class="conf-bar-fill" style="width:${pct}%;background:${confColor(top.confidence)}"></div></div>
+            <div class="conf-bar flex-1"><div class="conf-bar-fill"
+              style="width:${pct}%;background:${confColor(top.confidence)}"></div></div>
           </div>
           ${lowF1Warning(top, warnThreshold)}
         </div>
@@ -705,7 +738,8 @@ function renderResults(data) {
           <span class="text-sm font-bold" style="color:${confColor(p.confidence)}">${pct}%</span>
         </div>
         <p class="font-semibold text-sm"><em>${fmtSpecies(p.species)}</em></p>
-        <div class="conf-bar mt-2"><div class="conf-bar-fill" style="width:${pct}%;background:${confColor(p.confidence)}"></div></div>
+        <div class="conf-bar mt-2"><div class="conf-bar-fill" style="width:${pct}%;background:${confColor(p.confidence)}">
+          </div></div>
         ${lowF1Warning(p, warnThreshold)}
         <div class="mt-2 flex flex-wrap">${taxonomyHTML(p.taxonomy, true)}</div>
       </div>`;
@@ -804,16 +838,19 @@ function renderKingdomColumns() {
         : _currentSort === 'order' ? sp.order
         : _currentSort === 'phylum' ? (sp.phylum || '')
         : _currentSort === 'scientific_name' ? (sp.scientific_name || sp.name)
-        : (_currentSort === 'f1_desc' || _currentSort === 'f1_asc') ? (sp.f1_score != null ? 'F1: ' + (sp.f1_score * 100).toFixed(1) + '%' : 'F1: N/A')
+        : (_currentSort === 'f1_desc' || _currentSort === 'f1_asc') ? (sp.f1_score != null ? 'F1: ' + (sp.f1_score *
+          100).toFixed(1) + '%' : 'F1: N/A')
         : sp.family + (sp.order ? ' · ' + sp.order : '');
       const f1Badge = sp.low_f1
-        ? `<span class="badge badge-amber" style="font-size:.55rem;padding:.1rem .35rem" title="F1: ${sp.f1_score != null ? (sp.f1_score*100).toFixed(1)+'%' : '?'}">⚠ F1 bajo</span>`
+        ? `<span class="badge badge-amber" style="font-size:.55rem;padding:.1rem .35rem" title="F1: ${sp.f1_score != null ?
+          (sp.f1_score*100).toFixed(1)+'%' : '?'}">⚠ F1 bajo</span>`
         : '';
       html += `
         <div class="species-item">
           ${dot}
           <div style="min-width:0;overflow:hidden">
-            <div class="sp-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${fmtSpecies(sp.name)} ${f1Badge}</div>
+            <div class="sp-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${fmtSpecies(sp.name)}
+              ${f1Badge}</div>
             <div class="sp-family" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sortLabel}</div>
           </div>
           <span class="sp-count">${sp.train_count} imgs</span>
@@ -877,7 +914,8 @@ METRICS_HTML = r"""<!DOCTYPE html>
   ::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
 
   /* KPI cards */
-  .kpi-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:1rem;padding:1.5rem;transition:transform .2s,box-shadow .2s;}
+  .kpi-card{background:var(--c-surface);border:1px solid
+    var(--c-border);border-radius:1rem;padding:1.5rem;transition:transform .2s,box-shadow .2s;}
   .kpi-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(16,185,129,.12);}
   .kpi-value{font-size:2.2rem;font-weight:800;line-height:1.1;}
   .kpi-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-top:.4rem;}
@@ -890,7 +928,9 @@ METRICS_HTML = r"""<!DOCTYPE html>
 
   /* data table */
   .data-table{width:100%;border-collapse:collapse;font-size:.75rem;}
-  .data-table thead th{text-align:left;padding:.6rem .75rem;border-bottom:2px solid var(--c-border);color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:.65rem;cursor:pointer;user-select:none;white-space:nowrap;}
+  .data-table thead th{text-align:left;padding:.6rem .75rem;border-bottom:2px solid
+    var(--c-border);color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:.65rem;
+    cursor:pointer;user-select:none;white-space:nowrap;}
   .data-table thead th:hover{color:#10b981;}
   .data-table thead th.sorted-asc::after{content:' ▲';color:#10b981;}
   .data-table thead th.sorted-desc::after{content:' ▼';color:#10b981;}
@@ -899,7 +939,8 @@ METRICS_HTML = r"""<!DOCTYPE html>
   .data-table tbody tr:hover td{color:#e2e8f0;}
 
   /* badge */
-  .badge{display:inline-flex;align-items:center;font-size:.6rem;font-weight:600;padding:.15rem .45rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;}
+  .badge{display:inline-flex;align-items:center;font-size:.6rem;font-weight:600;padding:.15rem
+    .45rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em;}
   .badge-green{background:rgba(16,185,129,.15);color:#34d399;}
   .badge-amber{background:rgba(245,158,11,.15);color:#fbbf24;}
   .badge-red{background:rgba(239,68,68,.15);color:#f87171;}
@@ -922,16 +963,23 @@ METRICS_HTML = r"""<!DOCTYPE html>
 <body class="flex flex-col min-h-screen">
 
 <!-- ═══ Navbar ═══ -->
-<nav class="flex items-center justify-between px-6 py-3 border-b" style="border-color:var(--c-border);background:var(--c-surface)">
+<nav class="flex items-center justify-between px-6 py-3 border-b"
+    style="border-color:var(--c-border);background:var(--c-surface)">
   <div class="flex items-center gap-3">
-    <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#10b981,#06b6d4)">
-      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
+    <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+      style="background:linear-gradient(135deg,#10b981,#06b6d4)">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l3 3 5-5"/></svg>
     </div>
     <span class="font-bold text-sm tracking-tight">BioAudit</span>
-    <a href="/" class="flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-lg transition ml-2" style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8" onmouseenter="this.style.borderColor='#10b981';this.style.color='#10b981'" onmouseleave="this.style.borderColor='var(--c-border)';this.style.color='#94a3b8'">
+    <a href="/" class="flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-lg transition ml-2"
+      style="background:var(--c-surface-2);border:1px solid var(--c-border);color:#94a3b8"
+      onmouseenter="this.style.borderColor='#10b981';this.style.color='#10b981'"
+      onmouseleave="this.style.borderColor='var(--c-border)';this.style.color='#94a3b8'">
       &#128269; Auditor
     </a>
-    <span class="text-xs font-semibold px-3 py-1 rounded-lg" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#10b981">
+    <span class="text-xs font-semibold px-3 py-1 rounded-lg" style="background:rgba(16,185,129,.12);border:1px solid
+      rgba(16,185,129,.3);color:#10b981">
       &#128202; Métricas
     </span>
   </div>
@@ -951,7 +999,8 @@ METRICS_HTML = r"""<!DOCTYPE html>
 
   <!-- Loading state -->
   <div id="loadingState" class="flex flex-col items-center justify-center py-20">
-    <div class="w-12 h-12 rounded-full border-4 border-transparent border-t-emerald-500" style="border-top-color:#10b981;animation:spin .8s linear infinite"></div>
+    <div class="w-12 h-12 rounded-full border-4 border-transparent border-t-emerald-500"
+      style="border-top-color:#10b981;animation:spin .8s linear infinite"></div>
     <p class="text-sm text-gray-500 mt-4">Cargando métricas…</p>
   </div>
   <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
@@ -962,25 +1011,32 @@ METRICS_HTML = r"""<!DOCTYPE html>
     <!-- KPI Row -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 animate-in" style="animation-delay:.1s">
       <div class="kpi-card">
-        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">🎯</span><span class="text-[.65rem] text-gray-500 font-semibold uppercase">Accuracy</span></div>
+        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">🎯</span>
+          <span class="text-[.65rem] text-gray-500 font-semibold uppercase">Accuracy</span></div>
         <div class="kpi-value" style="color:#10b981" id="kpiAccuracy">—</div>
         <div class="kpi-sub" id="kpiAccSub"></div>
-        <div class="kpi-sub mt-2 pt-2 border-t font-semibold" style="border-color:var(--c-border)" id="kpiAccTop300">Top-300: —</div>
+        <div class="kpi-sub mt-2 pt-2 border-t font-semibold" style="border-color:var(--c-border)" id="kpiAccTop300">Top-300:
+          —</div>
       </div>
       <div class="kpi-card">
-        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">🏆</span><span class="text-[.65rem] text-gray-500 font-semibold uppercase">Top-5 Accuracy</span></div>
+        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">🏆</span>
+          <span class="text-[.65rem] text-gray-500 font-semibold uppercase">Top-5 Accuracy</span></div>
         <div class="kpi-value" style="color:#06b6d4" id="kpiTop5">—</div>
         <div class="kpi-sub">Predicción correcta en top 5</div>
-        <div class="kpi-sub mt-2 pt-2 border-t font-semibold" style="border-color:var(--c-border)" id="kpiTop5Top300">Top-300: —</div>
+        <div class="kpi-sub mt-2 pt-2 border-t font-semibold" style="border-color:var(--c-border)" id="kpiTop5Top300">Top-300:
+          —</div>
       </div>
       <div class="kpi-card">
-        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">📊</span><span class="text-[.65rem] text-gray-500 font-semibold uppercase">Macro F1-Score</span></div>
+        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">📊</span>
+          <span class="text-[.65rem] text-gray-500 font-semibold uppercase">Macro F1-Score</span></div>
         <div class="kpi-value" style="color:#a78bfa" id="kpiMacroF1">—</div>
         <div class="kpi-sub" id="kpiMacroSub"></div>
-        <div class="kpi-sub mt-2 pt-2 border-t font-semibold" style="border-color:var(--c-border)" id="kpiMacroF1Top300">Top-300: —</div>
+        <div class="kpi-sub mt-2 pt-2 border-t font-semibold" style="border-color:var(--c-border)"
+          id="kpiMacroF1Top300">Top-300: —</div>
       </div>
       <div class="kpi-card">
-        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">🧬</span><span class="text-[.65rem] text-gray-500 font-semibold uppercase">Especies / Muestras</span></div>
+        <div class="flex items-center gap-2 mb-2"><span style="font-size:1.2rem">🧬</span>
+          <span class="text-[.65rem] text-gray-500 font-semibold uppercase">Especies / Muestras</span></div>
         <div class="kpi-value" style="color:#f59e0b" id="kpiSpecies">—</div>
         <div class="kpi-sub" id="kpiSamples"></div>
       </div>
@@ -1018,7 +1074,8 @@ METRICS_HTML = r"""<!DOCTYPE html>
 
     <!-- Per-Class Metrics Table -->
     <div class="panel mb-6 animate-in" style="animation-delay:.35s">
-      <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--c-border);background:var(--c-surface-2)">
+      <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid
+        var(--c-border);background:var(--c-surface-2)">
         <div class="section-title mb-0">📋 Métricas por Clase</div>
         <div class="flex items-center gap-3">
           <input id="classSearch" type="text" placeholder="Buscar especie…"
@@ -1046,7 +1103,8 @@ METRICS_HTML = r"""<!DOCTYPE html>
 
     <!-- Misclassified Samples Table -->
     <div class="panel mb-6 animate-in" style="animation-delay:.4s">
-      <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--c-border);background:var(--c-surface-2)">
+      <div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid
+        var(--c-border);background:var(--c-surface-2)">
         <div class="section-title mb-0">❌ Muestras Mal Clasificadas</div>
         <span id="misCount" class="text-[.6rem] text-gray-600"></span>
       </div>
@@ -1071,7 +1129,8 @@ METRICS_HTML = r"""<!DOCTYPE html>
         <div class="section-title mb-0">📖 Glosario de Métricas</div>
       </div>
       <div class="p-5">
-        <p class="text-xs text-gray-400 mb-5">Explicación de las métricas utilizadas para evaluar el rendimiento del modelo CNN de clasificación de especies.</p>
+        <p class="text-xs text-gray-400 mb-5">Explicación de las métricas utilizadas para evaluar el rendimiento del modelo
+          CNN de clasificación de especies.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -1081,8 +1140,10 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">🎯</span>
               <span class="text-sm font-bold" style="color:#10b981">Accuracy (Exactitud)</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">Proporción de predicciones correctas sobre el total de predicciones. Mide qué tan frecuentemente el modelo acierta.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">Proporción de predicciones correctas sobre el total de
+              predicciones. Mide qué tan frecuentemente el modelo acierta.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               Accuracy = Predicciones Correctas / Total de Predicciones
             </div>
           </div>
@@ -1093,8 +1154,10 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">🏆</span>
               <span class="text-sm font-bold" style="color:#06b6d4">Top-5 Accuracy</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">Proporción de veces que la etiqueta correcta aparece entre las 5 predicciones con mayor confianza. Útil cuando las clases son muy similares visualmente.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">Proporción de veces que la etiqueta correcta aparece entre
+              las 5 predicciones con mayor confianza. Útil cuando las clases son muy similares visualmente.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               Top-5 Acc = (Correcta en Top 5) / Total
             </div>
           </div>
@@ -1105,8 +1168,11 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">🔎</span>
               <span class="text-sm font-bold" style="color:#a78bfa">Precisión (Precision)</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">De todas las veces que el modelo predijo una especie, ¿cuántas veces acertó? Una precisión alta significa pocos <strong style="color:#cbd5e1">falsos positivos</strong>.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">De todas las veces que el modelo predijo una especie,
+              ¿cuántas veces acertó? Una precisión alta significa pocos <strong style="color:#cbd5e1">falsos
+              positivos</strong>.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               Precisión = VP / (VP + FP)
             </div>
           </div>
@@ -1117,8 +1183,10 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">📡</span>
               <span class="text-sm font-bold" style="color:#f59e0b">Recall (Sensibilidad)</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">De todas las muestras reales de una especie, ¿cuántas logró identificar? Un recall alto significa pocos <strong style="color:#cbd5e1">falsos negativos</strong>.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">De todas las muestras reales de una especie, ¿cuántas logró
+              identificar? Un recall alto significa pocos <strong style="color:#cbd5e1">falsos negativos</strong>.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               Recall = VP / (VP + FN)
             </div>
           </div>
@@ -1129,8 +1197,10 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">⚖️</span>
               <span class="text-sm font-bold" style="color:#ec4899">F1-Score</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">Media armónica entre Precisión y Recall. Balancea ambas métricas en un solo valor. Un F1 alto indica que el modelo es tanto preciso como completo.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">Media armónica entre Precisión y Recall. Balancea ambas
+              métricas en un solo valor. Un F1 alto indica que el modelo es tanto preciso como completo.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               F1 = 2 × (Precisión × Recall) / (Precisión + Recall)
             </div>
           </div>
@@ -1141,8 +1211,10 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">📦</span>
               <span class="text-sm font-bold" style="color:#14b8a6">Soporte (Support)</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">Número de muestras reales de cada especie en el conjunto de evaluación. Clases con bajo soporte pueden tener métricas menos confiables.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">Número de muestras reales de cada especie en el conjunto de
+              evaluación. Clases con bajo soporte pueden tener métricas menos confiables.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               Soporte = Nº de muestras reales de la clase
             </div>
           </div>
@@ -1153,8 +1225,10 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">📊</span>
               <span class="text-sm font-bold" style="color:#8b5cf6">Macro Average</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">Promedio simple de la métrica para todas las clases, sin importar el tamaño de cada clase. Trata a todas las especies por igual, incluso las raras.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">Promedio simple de la métrica para todas las clases, sin
+              importar el tamaño de cada clase. Trata a todas las especies por igual, incluso las raras.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               Macro = (1/N) × Σ métrica por clase
             </div>
           </div>
@@ -1165,8 +1239,10 @@ METRICS_HTML = r"""<!DOCTYPE html>
               <span style="font-size:1.1rem">🧮</span>
               <span class="text-sm font-bold" style="color:#0ea5e9">Weighted Average</span>
             </div>
-            <p class="text-xs text-gray-400 leading-relaxed mb-2">Promedio ponderado por el soporte de cada clase. Las especies con más muestras tienen mayor peso. Refleja el rendimiento "real" sobre los datos.</p>
-            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;color:#94a3b8">
+            <p class="text-xs text-gray-400 leading-relaxed mb-2">Promedio ponderado por el soporte de cada clase. Las
+              especies con más muestras tienen mayor peso. Refleja el rendimiento "real" sobre los datos.</p>
+            <div class="rounded-lg px-3 py-1.5" style="background:var(--c-bg);font-family:monospace;font-size:.65rem;
+              color:#94a3b8">
               Weighted = Σ (soporte_i × métrica_i) / Σ soporte_i
             </div>
           </div>
@@ -1174,11 +1250,16 @@ METRICS_HTML = r"""<!DOCTYPE html>
         </div>
 
         <!-- VP/VN/FP/FN legend -->
-        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-[.7rem] text-gray-400 p-4 rounded-xl" style="background:var(--c-surface-2);border:1px solid var(--c-border)">
-          <div><strong style="color:#10b981">VP (Verdaderos Positivos):</strong> El modelo predijo correctamente la especie.</div>
-          <div><strong style="color:#f59e0b">VN (Verdaderos Negativos):</strong> El modelo descartó correctamente una especie.</div>
-          <div><strong style="color:#ef4444">FP (Falsos Positivos):</strong> El modelo se equivocó al predecir una especie que no era (Falsa Alarma).</div>
-          <div><strong style="color:#06b6d4">FN (Falsos Negativos):</strong> El modelo no logró detectar la especie cuando sí era (Omisión).</div>
+        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-[.7rem] text-gray-400 p-4 rounded-xl"
+          style="background:var(--c-surface-2);border:1px solid var(--c-border)">
+          <div><strong style="color:#10b981">VP (Verdaderos Positivos):</strong> El modelo predijo correctamente la
+            especie.</div>
+          <div><strong style="color:#f59e0b">VN (Verdaderos Negativos):</strong> El modelo descartó correctamente una
+            especie.</div>
+          <div><strong style="color:#ef4444">FP (Falsos Positivos):</strong> El modelo se equivocó al predecir una especie que
+            no era (Falsa Alarma).</div>
+          <div><strong style="color:#06b6d4">FN (Falsos Negativos):</strong> El modelo no logró detectar la especie cuando sí
+            era (Omisión).</div>
         </div>
 
       </div>
@@ -1265,7 +1346,8 @@ function miniBar(v, color) {
 
     document.getElementById('kpiAccuracy').textContent = (acc * 100).toFixed(1) + '%';
     document.getElementById('kpiAccSub').textContent =
-      `P: ${((metrics.weighted_avg?.precision || 0) * 100).toFixed(1)}% · R: ${((metrics.weighted_avg?.recall || 0) * 100).toFixed(1)}%`;
+      `P: ${((metrics.weighted_avg?.precision || 0) * 100).toFixed(1)}% · R: ${((metrics.weighted_avg?.recall || 0) *
+        100).toFixed(1)}%`;
     if (document.getElementById('kpiAccTop300')) {
       document.getElementById('kpiAccTop300').textContent = `Top-300: ${(t300Acc * 100).toFixed(1)}%`;
     }
@@ -1277,7 +1359,8 @@ function miniBar(v, color) {
 
     document.getElementById('kpiMacroF1').textContent = (macroF1 * 100).toFixed(1) + '%';
     document.getElementById('kpiMacroSub').textContent =
-      `P: ${((metrics.macro_avg?.precision || 0) * 100).toFixed(1)}% · R: ${((metrics.macro_avg?.recall || 0) * 100).toFixed(1)}%`;
+      `P: ${((metrics.macro_avg?.precision || 0) * 100).toFixed(1)}% · R: ${((metrics.macro_avg?.recall || 0) *
+        100).toFixed(1)}%`;
     if (document.getElementById('kpiMacroF1Top300')) {
       document.getElementById('kpiMacroF1Top300').textContent = `Top-300: ${(t300MacroF1 * 100).toFixed(1)}%`;
     }
@@ -1432,7 +1515,8 @@ function miniBar(v, color) {
           legend: {position: 'bottom', labels: {padding: 12, usePointStyle: true, pointStyleWidth: 8}},
           tooltip: {
             callbacks: {
-              label: ctx => `${ctx.label}: ${ctx.parsed} especies (${((ctx.parsed / suppValues.reduce((a,b)=>a+b,0))*100).toFixed(1)}%)`
+              label: ctx => `${ctx.label}: ${ctx.parsed} especies (${((ctx.parsed /
+                suppValues.reduce((a,b)=>a+b,0))*100).toFixed(1)}%)`
             }
           }
         }
@@ -1460,14 +1544,16 @@ function miniBar(v, color) {
                   <span class="text-[.65rem] text-gray-400">Macro</span>
                   <span class="text-xs font-bold" style="color:${purple}">${(mv*100).toFixed(1)}%</span>
                 </div>
-                <div class="metric-bar" style="width:100%"><div class="metric-bar-fill" style="width:${mv*100}%;background:${purple}"></div></div>
+                <div class="metric-bar" style="width:100%">
+                  <div class="metric-bar-fill" style="width:${mv*100}%;background:${purple}"></div></div>
               </div>
               <div class="flex-1">
                 <div class="flex items-center justify-between mb-1">
                   <span class="text-[.65rem] text-gray-400">Weighted</span>
                   <span class="text-xs font-bold" style="color:${cyan}">${(wv*100).toFixed(1)}%</span>
                 </div>
-                <div class="metric-bar" style="width:100%"><div class="metric-bar-fill" style="width:${wv*100}%;background:${cyan}"></div></div>
+                <div class="metric-bar" style="width:100%">
+                  <div class="metric-bar-fill" style="width:${wv*100}%;background:${cyan}"></div></div>
               </div>
             </div>
           </div>
@@ -1552,26 +1638,34 @@ function miniBar(v, color) {
 
 # ── CLI Entry Point ────────────────────────────────────────────────
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="BioCommerce Caldas – Model Auditor UI",
     )
     parser.add_argument(
-        "--port", type=int, default=8501,
+        "--port",
+        type=int,
+        default=8501,
         help="Puerto del servidor local (default: 8501)",
     )
     parser.add_argument(
-        "--weights", type=str, default=None,
+        "--weights",
+        type=str,
+        default=None,
         help="Nombre del archivo de pesos en data/weights/ (default: best_model.pth)",
     )
     parser.add_argument(
-        "--no-browser", action="store_true",
+        "--no-browser",
+        action="store_true",
         help="No abrir el navegador automáticamente",
     )
     parser.add_argument(
-        "--min-f1", type=float, default=0.0,
+        "--min-f1",
+        type=float,
+        default=0.0,
         help="Umbral mínimo de F1-score para filtrar especies (e.g. 0.7). "
-             "Usa evaluation_metrics.json para excluir especies por debajo del umbral.",
+        "Usa evaluation_metrics.json para excluir especies por debajo del umbral.",
     )
     args = parser.parse_args()
 
@@ -1602,6 +1696,7 @@ def main() -> None:
 
     if not args.no_browser:
         import threading
+
         threading.Timer(1.5, lambda: webbrowser.open(url)).start()
 
     uvicorn.run(api, host="0.0.0.0", port=args.port, log_level="warning")

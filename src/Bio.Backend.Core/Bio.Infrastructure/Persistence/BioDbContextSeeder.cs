@@ -31,12 +31,12 @@ public static class BioDbContextSeeder
         byte[] saltBytes = new byte[16];
         for (int i = 0; i < 16; i++) saltBytes[i] = (byte)(i + 1);
         string salt = Convert.ToBase64String(saltBytes);
-        
+
         byte[] hashBytes = Rfc2898DeriveBytes.Pbkdf2(
-            "DevPassword123!", 
-            saltBytes, 
-            100000, 
-            HashAlgorithmName.SHA256, 
+            "DevPassword123!",
+            saltBytes,
+            100000,
+            HashAlgorithmName.SHA256,
             32);
         string hash = Convert.ToBase64String(hashBytes);
 

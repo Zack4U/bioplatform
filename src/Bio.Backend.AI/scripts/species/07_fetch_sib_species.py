@@ -295,7 +295,6 @@ def process_species(
         return None, None
 
     # Validate that the result matches our species
-    result_name = search_result.get("scientificNameSimple", "")
     canonical = (
         search_result.get("taxonRecordNameApprovedInUse", {})
         .get("taxonRecordName", {})

@@ -22,7 +22,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Cadenas de conexión exclusivamente desde appsettings.json o appsettings.Development.json
-var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection") 
+var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("DefaultConnection no está configurado en appsettings.");
 
 var scientificConnection = builder.Configuration.GetConnectionString("ScientificConnection")

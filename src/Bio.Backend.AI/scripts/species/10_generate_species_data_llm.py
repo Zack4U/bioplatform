@@ -53,10 +53,21 @@ CHECKPOINT_FILE = OUTPUT_DIR / "_checkpoint_llm.json"
 
 # ── CSV columns for SpeciesCsvRecord.cs ────────────────────────────
 CSV_COLUMNS = [
-    "Kingdom", "Phylum", "Class", "Order", "Family", "Genus",
-    "ScientificName", "CommonName", "Slug", "Description",
-    "AltitudeRange", "ConservationStatus", "LegalStatus",
-    "IsSensitive", "ThumbnailUrl",
+    "Kingdom",
+    "Phylum",
+    "Class",
+    "Order",
+    "Family",
+    "Genus",
+    "ScientificName",
+    "CommonName",
+    "Slug",
+    "Description",
+    "AltitudeRange",
+    "ConservationStatus",
+    "LegalStatus",
+    "IsSensitive",
+    "ThumbnailUrl",
 ]
 
 # Conservation statuses considered sensitive
@@ -64,6 +75,7 @@ SENSITIVE_KEYWORDS = {"CR", "EN", "PELIGRO CRÍTICO", "EN PELIGRO"}
 
 
 # ── Pydantic Schema (Structured Outputs) ──────────────────────────
+
 
 class ConservationStatus(str, Enum):
     LC = "LC"
@@ -100,17 +112,19 @@ class TraditionalUseEntry(BaseModel):
     )
     category: list[str] = Field(
         description="Categoría(s) principal(es) del uso. OBLIGATORIO elegir de esta lista: "
-        "[Medicinal, Alimentario, Mágico-Religioso/Ritual, Construcción, Artesanal, Forraje/Veterinario, Ornamental, Leña/Combustible, Tóxico/Caza]"
+        "[Medicinal, Alimentario, Mágico-Religioso/Ritual, Construcción, Artesanal, "
+        "Forraje/Veterinario, Ornamental, Leña/Combustible, Tóxico/Caza]"
     )
     specific_purpose: str = Field(
-        description="Propósito exacto de la planta o animal (ej: 'Tratamiento de fiebre y parásitos', 'Elaboración de canastos', 'Alimento en época de escasez')."
+        description="Propósito exacto de la planta o animal (ej: 'Tratamiento de fiebre y parásitos', "
+        "'Elaboración de canastos', 'Alimento en época de escasez')."
     )
     preparation_method: str = Field(
-        description="Cómo se prepara o aplica tradicionalmente (ej: 'Infusión', 'Cataplasma', 'Consumo directo crudo', 'Maceración en aguardiente', 'Secado al sol'). Si no se conoce, responde 'Desconocido'."
+        description="Cómo se prepara o aplica tradicionalmente (ej: 'Infusión', 'Cataplasma', "
+        "'Consumo directo crudo', 'Maceración en aguardiente', 'Secado al sol'). "
+        "Si no se conoce, responde 'Desconocido'."
     )
-    description: str = Field(
-        description="Descripción etnográfica concisa del uso tradicional"
-    )
+    description: str = Field(description="Descripción etnográfica concisa del uso tradicional")
     community: str = Field(
         description="Comunidad indígena (ej. Emberá Chamí), afrodescendiente o campesina que lo practica. "
         "Si no hay evidencia documentada específica de la región, responde "
@@ -118,7 +132,8 @@ class TraditionalUseEntry(BaseModel):
         "NO inventar comunidades bajo ninguna circunstancia."
     )
     traditional_warnings: str = Field(
-        description="Precauciones, tabúes o toxicidad según la tradición (ej: 'Tóxico en altas dosis', 'No consumir en embarazo'). Responde 'Ninguna conocida' si no aplica."
+        description="Precauciones, tabúes o toxicidad según la tradición (ej: 'Tóxico en altas dosis', "
+        "'No consumir en embarazo'). Responde 'Ninguna conocida' si no aplica."
     )
 
 
@@ -130,18 +145,17 @@ class EconomicPotentialEntry(BaseModel):
         "Fitorremediación, Ornamental]"
     )
     products: list[str] = Field(
-        description="Lista de productos reales (ej: 'Aceite esencial', 'Colorante natural', 'Extracto hidroalcohólico', 'Fibra para cestería')"
+        description="Lista de productos reales (ej: 'Aceite esencial', 'Colorante natural', "
+        "'Extracto hidroalcohólico', 'Fibra para cestería')"
     )
     active_properties: list[str] = Field(
         default_factory=list,
-        description="Compuestos biológicos o propiedades físicas que justifican este uso (ej: 'Taninos', 'Antioxidantes', 'Resistencia a la humedad', 'Alcaloides'). Vacío si no aplica o se desconoce."
+        description="Compuestos biológicos o propiedades físicas que justifican este uso "
+        "(ej: 'Taninos', 'Antioxidantes', 'Resistencia a la humedad', 'Alcaloides'). "
+        "Vacío si no aplica o se desconoce.",
     )
-    description: str = Field(
-        description="Descripción breve del potencial económico y cómo se procesa en español"
-    )
-    market_value: MarketValue = Field(
-        description="Valor de mercado estimado: Alto, Medio, Bajo, o Desconocido"
-    )
+    description: str = Field(description="Descripción breve del potencial económico y cómo se procesa en español")
+    market_value: MarketValue = Field(description="Valor de mercado estimado: Alto, Medio, Bajo, o Desconocido")
     sustainability_level: SustainabilityLevel = Field(
         description="Nivel de sostenibilidad de la explotación: Alto, Medio, o Bajo"
     )
@@ -159,16 +173,9 @@ class SpeciesData(BaseModel):
     order: str = Field(description="Orden taxonómico")
     family: str = Field(description="Familia taxonómica")
     genus: str = Field(description="Género taxonómico")
-    description: str = Field(
-        description="Descripción concisa de 2-3 oraciones en español"
-    )
-    altitude_range: str = Field(
-        description="Rango de altitud típico en msnm "
-        "(ej: '1000-2000 msnm') o 'Desconocido'"
-    )
-    conservation_status: ConservationStatus = Field(
-        description="Estado de conservación UICN"
-    )
+    description: str = Field(description="Descripción concisa de 2-3 oraciones en español")
+    altitude_range: str = Field(description="Rango de altitud típico en msnm (ej: '1000-2000 msnm') o 'Desconocido'")
+    conservation_status: ConservationStatus = Field(description="Estado de conservación UICN")
     legal_status: bool = Field(
         description="True si se requiere un permiso legal especial de "
         "alguna entidad gubernamental o institución para "
@@ -176,26 +183,22 @@ class SpeciesData(BaseModel):
     )
 
     expert_analysis: str = Field(
-        description="Razonamiento interno: Escribe un breve párrafo recordando la literatura científica, compuestos químicos o usos etnobotánicos conocidos para esta especie o su género ANTES de llenar las siguientes listas."
+        description="Razonamiento interno: Escribe un breve párrafo recordando la literatura científica, "
+        "compuestos químicos o usos etnobotánicos conocidos para esta especie o su género "
+        "ANTES de llenar las siguientes listas."
     )
 
     traditional_uses: list[TraditionalUseEntry] = Field(
-        default_factory=list,
-        description="Lista de usos tradicionales. Vacía si no tiene."
+        default_factory=list, description="Lista de usos tradicionales. Vacía si no tiene."
     )
     economic_potential: list[EconomicPotentialEntry] = Field(
-        default_factory=list,
-        description="Lista de potenciales económicos. Vacía si no tiene."
+        default_factory=list, description="Lista de potenciales económicos. Vacía si no tiene."
     )
-    confidence: Confidence = Field(
-        description="Nivel de confianza en la información generada"
-    )
+    confidence: Confidence = Field(description="Nivel de confianza en la información generada")
 
 
 class SpeciesBatchResponse(BaseModel):
-    species: list[SpeciesData] = Field(
-        description="Lista de especies con información completa"
-    )
+    species: list[SpeciesData] = Field(description="Lista de especies con información completa")
 
 
 # ── LLM Prompt ─────────────────────────────────────────────────────
@@ -242,9 +245,7 @@ A partir de ese análisis, llenarás las listas de usos con precisión.
 
 def build_batch_prompt(species_names: list[str]) -> str:
     """Build the user prompt for a batch of species."""
-    names_list = "\n".join(
-        f"  {i}. {name}" for i, name in enumerate(species_names, 1)
-    )
+    names_list = "\n".join(f"  {i}. {name}" for i, name in enumerate(species_names, 1))
 
     return f"""\
 Genera información completa para las siguientes {len(species_names)} especies.
@@ -267,6 +268,7 @@ Lista de especies:
 
 # ── Slug generation ────────────────────────────────────────────────
 
+
 def generate_slug(scientific_name: str) -> str:
     """Generate URL-friendly slug: 'Vultur gryphus' -> 'vultur-gryphus'."""
     text = unicodedata.normalize("NFKD", scientific_name)
@@ -285,10 +287,12 @@ def is_sensitive(status: str) -> bool:
 
 # ── Gemini API ─────────────────────────────────────────────────────
 
+
 def init_gemini(api_key: str) -> Any:
     """Initialize and return the Gemini client."""
     try:
         from google import genai
+
         client = genai.Client(api_key=api_key)
         return client
     except ImportError:
@@ -327,7 +331,7 @@ def call_gemini(
             # Check if response has text
             if not response.text:
                 print(f"    [WARN] Empty response (attempt {attempt})")
-                if hasattr(response, 'prompt_feedback'):
+                if hasattr(response, "prompt_feedback"):
                     print(f"    Feedback: {response.prompt_feedback}")
                 continue
 
@@ -342,10 +346,7 @@ def call_gemini(
                 continue
 
             if len(data["species"]) != len(species_names):
-                print(
-                    f"    [WARN] Expected {len(species_names)} species, "
-                    f"got {len(data['species'])} (attempt {attempt})"
-                )
+                print(f"    [WARN] Expected {len(species_names)} species, got {len(data['species'])} (attempt {attempt})")
                 # Accept partial results
                 if len(data["species"]) > 0:
                     return data
@@ -372,6 +373,7 @@ def call_gemini(
 
 
 # ── Data processing ────────────────────────────────────────────────
+
 
 def process_llm_response(
     llm_data: dict,
@@ -418,25 +420,30 @@ def process_llm_response(
         # Traditional Uses
         uses = sp.get("traditional_uses", [])
         if uses:
-            uses_entries.append({
-                "scientific_name": sci_name,
-                "traditional_uses": uses,
-                "confidence": sp.get("confidence", "medium"),
-            })
+            uses_entries.append(
+                {
+                    "scientific_name": sci_name,
+                    "traditional_uses": uses,
+                    "confidence": sp.get("confidence", "medium"),
+                }
+            )
 
         # Economic Potential
         potential = sp.get("economic_potential", [])
         if potential:
-            potential_entries.append({
-                "scientific_name": sci_name,
-                "economic_potential": potential,
-                "confidence": sp.get("confidence", "medium"),
-            })
+            potential_entries.append(
+                {
+                    "scientific_name": sci_name,
+                    "economic_potential": potential,
+                    "confidence": sp.get("confidence", "medium"),
+                }
+            )
 
     return csv_rows, uses_entries, potential_entries
 
 
 # ── Checkpoint ─────────────────────────────────────────────────────
+
 
 def load_checkpoint() -> dict[str, Any]:
     """Load LLM generation checkpoint."""
@@ -459,6 +466,7 @@ def save_checkpoint(checkpoint: dict[str, Any]) -> None:
 
 
 # ── Output ─────────────────────────────────────────────────────────
+
 
 def save_csv(rows: list[dict], path: Path) -> None:
     """Save CSV for SpeciesImportJob."""
@@ -500,13 +508,8 @@ def generate_report(
     with_potential = len(potential)
     with_common = sum(1 for r in csv_rows if r.get("CommonName"))
     with_desc = sum(1 for r in csv_rows if r.get("Description"))
-    with_altitude = sum(
-        1 for r in csv_rows
-        if r.get("AltitudeRange") and r["AltitudeRange"] != "Desconocido"
-    )
-    with_legal = sum(
-        1 for r in csv_rows if r.get("LegalStatus") == "True"
-    )
+    with_altitude = sum(1 for r in csv_rows if r.get("AltitudeRange") and r["AltitudeRange"] != "Desconocido")
+    with_legal = sum(1 for r in csv_rows if r.get("LegalStatus") == "True")
     sensitive = sum(1 for r in csv_rows if r.get("IsSensitive") == "True")
 
     minutes = elapsed / 60
@@ -551,24 +554,30 @@ def generate_report(
 
 # ── Main ───────────────────────────────────────────────────────────
 
+
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Generate species data via Gemini LLM (Structured Outputs)"
-    )
+    parser = argparse.ArgumentParser(description="Generate species data via Gemini LLM (Structured Outputs)")
     parser.add_argument(
-        "--limit", type=int, default=0,
+        "--limit",
+        type=int,
+        default=0,
         help="Limit species count (0 = all)",
     )
     parser.add_argument(
-        "--model", type=str, default="gemini-3.1-flash-lite-preview",
+        "--model",
+        type=str,
+        default="gemini-3.1-flash-lite-preview",
         help="Gemini model to use (default: gemini-3.1-flash-lite-preview)",
     )
     parser.add_argument(
-        "--batch-size", type=int, default=10,
+        "--batch-size",
+        type=int,
+        default=10,
         help="Species per LLM request (default: 10)",
     )
     parser.add_argument(
-        "--no-checkpoint", action="store_true",
+        "--no-checkpoint",
+        action="store_true",
         help="Start fresh, ignore checkpoint",
     )
     args = parser.parse_args()
@@ -597,12 +606,10 @@ def main() -> None:
 
     all_species = master_data.get("species", [])
     species_names = [sp["scientific_name"] for sp in all_species]
-    master_lookup = {
-        sp["scientific_name"].lower(): sp for sp in all_species
-    }
+    master_lookup = {sp["scientific_name"].lower(): sp for sp in all_species}
 
     if args.limit > 0:
-        species_names = species_names[:args.limit]
+        species_names = species_names[: args.limit]
         print(f"[INFO] Limited to {args.limit} species (dry-run)")
 
     print(f"[INFO] {len(species_names):,} species to process")
@@ -611,8 +618,10 @@ def main() -> None:
     print("\n[STEP 2/4] Loading checkpoint...")
     if args.no_checkpoint:
         checkpoint = {
-            "processed_species": [], "csv_rows": [],
-            "uses": [], "potential": [],
+            "processed_species": [],
+            "csv_rows": [],
+            "uses": [],
+            "potential": [],
         }
         print("[INFO] Fresh start")
     else:
@@ -644,10 +653,7 @@ def main() -> None:
         batch_names = remaining[batch_start:batch_end]
         batch_num = batch_idx + 1
 
-        print(
-            f"\n  [Batch {batch_num}/{total_batches}] "
-            f"Processing {len(batch_names)} species..."
-        )
+        print(f"\n  [Batch {batch_num}/{total_batches}] Processing {len(batch_names)} species...")
         for name in batch_names:
             print(f"    • {name}")
 
@@ -671,10 +677,7 @@ def main() -> None:
             if name:
                 processed_set.add(name)
 
-        print(
-            f"  ✓ Batch {batch_num}: {len(csv_rows)} species, "
-            f"{len(uses)} with uses, {len(potential)} with potential"
-        )
+        print(f"  ✓ Batch {batch_num}: {len(csv_rows)} species, {len(uses)} with uses, {len(potential)} with potential")
 
         # Save checkpoint after each batch
         checkpoint = {
@@ -710,8 +713,12 @@ def main() -> None:
 
     # Report
     report = generate_report(
-        len(species_names), all_csv_rows,
-        all_uses, all_potential, failed_batches, elapsed,
+        len(species_names),
+        all_csv_rows,
+        all_uses,
+        all_potential,
+        failed_batches,
+        elapsed,
     )
     report_path = OUTPUT_DIR / "llm_generation_report.txt"
     with open(report_path, "w", encoding="utf-8") as f:

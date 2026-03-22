@@ -60,7 +60,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
             using var csv = new CsvReader(reader, config);
 
             var records = csv.GetRecordsAsync<SpeciesCsvRecord>();
-            
+
             int batchSize = 500;
             var currentBatch = new List<SpeciesCsvRecord>();
             int totalProcessed = 0;
