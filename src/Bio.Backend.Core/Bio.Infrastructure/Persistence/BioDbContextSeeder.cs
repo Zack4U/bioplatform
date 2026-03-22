@@ -52,12 +52,12 @@ public static class BioDbContextSeeder
 
         // 4. User-Role Assignments
         modelBuilder.Entity<UserRole>().HasData(
-            new { UserId = Guid.Parse("A1111111-1111-1111-1111-111111111111"), RoleId = adminRoleId },
-            new { UserId = Guid.Parse("A2222222-2222-2222-2222-222222222222"), RoleId = researcherRoleId },
-            new { UserId = Guid.Parse("A3333333-3333-3333-3333-333333333333"), RoleId = entrepreneurRoleId },
-            new { UserId = Guid.Parse("A4444444-4444-4444-4444-444444444444"), RoleId = communityRoleId },
-            new { UserId = Guid.Parse("A5555555-5555-5555-5555-555555555555"), RoleId = buyerRoleId },
-            new { UserId = Guid.Parse("A6666666-6666-6666-6666-666666666666"), RoleId = authorityRoleId }
+            new { UserId = Guid.Parse("A1111111-1111-1111-1111-111111111111"), RoleId = adminRoleId, AssignedAt = seedDate },
+            new { UserId = Guid.Parse("A2222222-2222-2222-2222-222222222222"), RoleId = researcherRoleId, AssignedAt = seedDate },
+            new { UserId = Guid.Parse("A3333333-3333-3333-3333-333333333333"), RoleId = entrepreneurRoleId, AssignedAt = seedDate },
+            new { UserId = Guid.Parse("A4444444-4444-4444-4444-444444444444"), RoleId = communityRoleId, AssignedAt = seedDate },
+            new { UserId = Guid.Parse("A5555555-5555-5555-5555-555555555555"), RoleId = buyerRoleId, AssignedAt = seedDate },
+            new { UserId = Guid.Parse("A6666666-6666-6666-6666-666666666666"), RoleId = authorityRoleId, AssignedAt = seedDate }
         );
     }
 }
