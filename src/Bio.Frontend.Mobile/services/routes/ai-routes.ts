@@ -10,7 +10,9 @@ export const AI_ROUTES = {
     /** Vision / CNN classification */
     CLASSIFICATION: {
         CLASSIFY: "/classify",
+        MODEL_INFO: "/model-info",
         HEALTH: "/health",
+        METRICS: "/model-metrics",
     },
 
     /** RAG-based assistant */

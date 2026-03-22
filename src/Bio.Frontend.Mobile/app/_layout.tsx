@@ -110,6 +110,22 @@ export default function RootLayout() {
                             }}
                         />
                         <Stack.Screen
+                            name="model-info"
+                            options={{
+                                title: "Auditor del Modelo",
+                                headerShown: false,
+                                animation: "slide_from_right",
+                            }}
+                        />
+                        <Stack.Screen
+                            name="model-stats"
+                            options={{
+                                title: "Estadísticas del Modelo",
+                                headerShown: false,
+                                animation: "slide_from_right",
+                            }}
+                        />
+                        <Stack.Screen
                             name="test"
                             options={{
                                 title: "Componentes UI (Test)",

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useAuth } from "@/hooks/useAuth";
 import { THEME } from "@/lib/theme";
+import { router } from "expo-router";
 import {
     ArrowLeft,
     Eye,
@@ -31,13 +32,11 @@ import {
     ScrollView,
     View,
 } from "react-native";
-import { router } from "expo-router";
 
 export default function LoginScreen() {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
-    const { login, twoFactorRequired, confirmTwoFactor, twoFactor } =
-        useAuth();
+    const { login, twoFactorRequired, confirmTwoFactor, twoFactor } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -70,7 +69,7 @@ export default function LoginScreen() {
                 {/* ─── Back Button ──────────────────────────── */}
                 <View className="px-5 pt-14">
                     <Pressable
-                        onPress={() => router.back()}
+                        onPress={() => router.replace("/")}
                         className="w-10 h-10 rounded-xl bg-card border border-border items-center justify-center active:opacity-70"
                     >
                         <ArrowLeft
@@ -238,8 +237,7 @@ export default function LoginScreen() {
                                 className="h-14 rounded-2xl mt-2"
                                 onPress={handleTwoFactorSubmit}
                                 disabled={
-                                    twoFactor.isPending ||
-                                    totpCode.length !== 6
+                                    twoFactor.isPending || totpCode.length !== 6
                                 }
                             >
                                 <Text className="text-primary-foreground font-bold text-base">

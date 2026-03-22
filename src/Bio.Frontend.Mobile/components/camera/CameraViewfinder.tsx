@@ -1,19 +1,25 @@
 /**
  * CameraViewfinder — Full-screen camera viewfinder with corner guides.
  * Renders the dark background, header overlay, and animated crosshair.
+ * Displays real-time CNN model status (active/inactive/checking).
  */
 
-import { THEME } from "@/lib/theme";
 import { Focus } from "lucide-react-native";
-import { useColorScheme } from "nativewind";
 import React, { useEffect, useRef } from "react";
-import { Animated, View } from "react-native";
+import { ActivityIndicator, Animated, View } from "react-native";
 import { Text } from "@/components/ui/text";
 
-export function CameraViewfinder() {
-    const { colorScheme } = useColorScheme();
-    const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
+interface CameraViewfinderProps {
+    /** Whether the CNN model is loaded and ready for inference. */
+    isModelActive?: boolean;
+    /** Whether the health check is still loading. */
+    isChecking?: boolean;
+}
 
+export function CameraViewfinder({
+    isModelActive = false,
+    isChecking = false,
+}: CameraViewfinderProps) {
     const pulseAnim = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
@@ -35,6 +41,19 @@ export function CameraViewfinder() {
         return () => pulse.stop();
     }, [pulseAnim]);
 
+    // CNN status badge configuration
+    const badgeLabel = isChecking
+        ? "Verificando…"
+        : isModelActive
+            ? "CNN Activa"
+            : "CNN Inactiva";
+
+    const badgeDotColor = isChecking
+        ? undefined
+        : isModelActive
+            ? "bg-green-400"
+            : "bg-red-400";
+
     return (
         <View className="flex-1 relative">
             {/* Header overlay */}
@@ -49,9 +68,13 @@ export function CameraViewfinder() {
                         </Text>
                     </View>
                     <View className="bg-white/10 rounded-full px-3 py-1.5 flex-row items-center gap-1.5">
-                        <View className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                        {isChecking ? (
+                            <ActivityIndicator size={8} color="white" />
+                        ) : (
+                            <View className={`w-1.5 h-1.5 rounded-full ${badgeDotColor}`} />
+                        )}
                         <Text className="text-[10px] text-white/80 font-medium">
-                            CNN Activa
+                            {badgeLabel}
                         </Text>
                     </View>
                 </View>

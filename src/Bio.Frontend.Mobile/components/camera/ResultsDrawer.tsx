@@ -1,13 +1,15 @@
 /**
  * ResultsDrawer — Bottom sheet showing CNN classification results.
  *
- * Matches the reference design:
- * - Circular confidence indicator at top
- * - Species name + scientific name
- * - Origin + status badges
+ * Uses the new ClassificationResponse / SpeciesPrediction types
+ * from the AI backend. Displays:
+ * - Hero section with captured photo as darkened background
+ * - Circular confidence indicator (top prediction)
+ * - Species name + taxonomy info
+ * - Conservation status + confidence alert badges
  * - Top 5 predictions list with confidence bars
- * - "Ver Ficha Completa" + "Guardar" actions
- * - "Volver a Tomar" footer
+ * - "Ver Detalles" navigates to species detail
+ * - "Volver a Tomar" retakes photo
  */
 
 import { Button } from "@/components/ui/button";
@@ -19,8 +21,9 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Text } from "@/components/ui/text";
 import { THEME } from "@/lib/theme";
-import type { ClassifyImageResponse } from "@/types";
+import type { ClassificationResponse, SpeciesPrediction } from "@/types";
 import {
+    AlertTriangle,
     ExternalLink,
     Leaf,
     MapPin,
@@ -30,12 +33,13 @@ import {
 } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ImageBackground, ScrollView, View } from "react-native";
 
 interface ResultsDrawerProps {
     open: boolean;
     onClose: () => void;
-    result: ClassifyImageResponse | null;
+    result: ClassificationResponse | null;
+    imageUri: string | null;
     onRetake: () => void;
     onViewDetails: () => void;
 }
@@ -44,24 +48,36 @@ export function ResultsDrawer({
     open,
     onClose,
     result,
+    imageUri,
     onRetake,
     onViewDetails,
 }: ResultsDrawerProps) {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
 
-    if (!result) return null;
+    if (!result || !result.predictions.length) return null;
 
-    const confidence = result.topPrediction.confidence * 100;
+    const topPred: SpeciesPrediction = result.predictions[0];
+    const confidence = topPred.confidence * 100;
 
     return (
-        <BottomSheet open={open} onClose={onClose} snapPoint={0.75}>
+        <BottomSheet open={open} onClose={onClose} snapPoint={0.85}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <BottomSheetBody>
-                    {/* ─── Circular Confidence Indicator ──────────── */}
-                    <View className="items-center pt-2 pb-4">
+                {/* ─── Hero Section: Photo Background + Confidence ─── */}
+                <ImageBackground
+                    source={imageUri ? { uri: imageUri } : undefined}
+                    resizeMode="cover"
+                    className="overflow-hidden"
+                    style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+                >
+                    {/* Dark overlay */}
+                    <View
+                        className="items-center px-4 pt-6 pb-5"
+                        style={{ backgroundColor: "rgba(0, 0, 0, 0.65)" }}
+                    >
+                        {/* Circular Confidence Indicator */}
                         <View
-                            className="w-28 h-28 rounded-full items-center justify-center mb-1"
+                            className="w-28 h-28 rounded-full items-center justify-center mb-3"
                             style={{
                                 borderWidth: 5,
                                 borderColor:
@@ -70,63 +86,131 @@ export function ResultsDrawer({
                                         : confidence >= 50
                                           ? theme.warning
                                           : theme.destructive,
+                                backgroundColor: "rgba(0, 0, 0, 0.4)",
                             }}
                         >
-                            <Text className="text-3xl font-bold text-foreground">
+                            <Text
+                                className="text-3xl font-bold"
+                                style={{ color: "#FFFFFF" }}
+                            >
                                 {confidence.toFixed(0)}%
                             </Text>
-                            <Text className="text-[9px] text-muted-foreground uppercase tracking-widest">
+                            <Text
+                                className="text-[9px] uppercase tracking-widest"
+                                style={{ color: "rgba(255, 255, 255, 0.7)" }}
+                            >
                                 Precisión
                             </Text>
                         </View>
-                    </View>
 
-                    {/* ─── Species Info ────────────────────────────── */}
-                    <View className="items-center mb-4">
-                        <Text className="text-xs text-primary font-semibold uppercase tracking-wider mb-1">
+                        {/* Species Info */}
+                        <Text
+                            className="text-xs font-semibold uppercase tracking-wider mb-1"
+                            style={{ color: theme.primary }}
+                        >
                             Especie Identificada
                         </Text>
-                        <Text className="text-xl font-bold text-foreground text-center">
-                            {result.topPrediction.commonName ??
-                                result.topPrediction.scientificName}
+                        <Text
+                            className="text-xl font-bold text-center"
+                            style={{ color: "#FFFFFF" }}
+                        >
+                            {topPred.speciesData?.commonName ?? topPred.species}
                         </Text>
-                        <Text className="text-sm text-muted-foreground italic text-center">
-                            {result.topPrediction.scientificName}
+                        <Text
+                            className="text-sm italic text-center"
+                            style={{ color: "rgba(255, 255, 255, 0.7)" }}
+                        >
+                            {topPred.species}
                         </Text>
-                    </View>
 
-                    {/* ─── Badges Row ──────────────────────────────── */}
-                    <View className="flex-row items-center justify-center gap-3 mb-5">
-                        <View className="flex-row items-center gap-1.5 bg-card border border-border px-3 py-2 rounded-xl">
-                            <MapPin
-                                size={14}
-                                color={theme.primary}
-                                strokeWidth={1.5}
-                            />
-                            <Text className="text-xs text-foreground font-medium">
-                                Caldas, CO
-                            </Text>
-                        </View>
-                        <View className="flex-row items-center gap-1.5 bg-card border border-border px-3 py-2 rounded-xl">
-                            <Shield
-                                size={14}
-                                color={theme.primary}
-                                strokeWidth={1.5}
-                            />
-                            <Text className="text-xs text-foreground font-medium">
-                                Endémica
-                            </Text>
+                        {/* Badges Row */}
+                        <View className="flex-row items-center justify-center gap-2 mt-3 flex-wrap">
+                            {topPred.taxonomy?.family && (
+                                <View
+                                    className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full"
+                                    style={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                                >
+                                    <Leaf size={12} color="#FFFFFF" strokeWidth={1.5} />
+                                    <Text className="text-xs font-medium" style={{ color: "#FFFFFF" }}>
+                                        {topPred.taxonomy.family}
+                                    </Text>
+                                </View>
+                            )}
+                            <View
+                                className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full"
+                                style={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                            >
+                                <MapPin size={12} color="#FFFFFF" strokeWidth={1.5} />
+                                <Text className="text-xs font-medium" style={{ color: "#FFFFFF" }}>
+                                    Caldas, CO
+                                </Text>
+                            </View>
+                            {topPred.speciesData?.conservationStatus && (
+                                <View
+                                    className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full"
+                                    style={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                                >
+                                    <Shield size={12} color="#FFFFFF" strokeWidth={1.5} />
+                                    <Text className="text-xs font-medium" style={{ color: "#FFFFFF" }}>
+                                        {topPred.speciesData.conservationStatus}
+                                    </Text>
+                                </View>
+                            )}
                         </View>
                     </View>
+                </ImageBackground>
+
+                <BottomSheetBody>
+                    {/* ─── Global Confidence Alert ────────────────── */}
+                    {result.confidenceAlert && (
+                        <View className="flex-row items-center gap-2 bg-destructive/10 border border-destructive/30 rounded-xl px-3 py-2.5 mb-4">
+                            <AlertTriangle
+                                size={16}
+                                color={theme.destructive}
+                                strokeWidth={1.8}
+                            />
+                            <Text className="text-xs text-destructive flex-1">
+                                {result.confidenceAlert}
+                            </Text>
+                        </View>
+                    )}
+
+                    {/* ─── Low-confidence alert (top prediction) ───── */}
+                    {topPred.lowConfidenceAlert && (
+                        <View className="flex-row items-center gap-2 bg-warning/10 border border-warning/30 rounded-xl px-3 py-2.5 mb-4">
+                            <AlertTriangle
+                                size={14}
+                                color={theme.warning}
+                                strokeWidth={1.8}
+                            />
+                            <Text className="text-xs text-warning flex-1">
+                                {topPred.lowConfidenceAlert}
+                            </Text>
+                        </View>
+                    )}
+
+                    {/* ─── DB Status Alert ────────────────────────── */}
+                    {topPred.speciesData?.dbAlert && (
+                        <View className="flex-row items-center gap-2 bg-muted border border-border rounded-xl px-3 py-2.5 mb-4">
+                            <AlertTriangle
+                                size={14}
+                                color={theme.mutedForeground}
+                                strokeWidth={1.8}
+                            />
+                            <Text className="text-xs text-muted-foreground flex-1">
+                                {topPred.speciesData.dbAlert}
+                            </Text>
+                        </View>
+                    )}
 
                     {/* ─── Top 5 Predictions ───────────────────────── */}
                     <Text className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
-                        Top 5 Predicciones
+                        Top {Math.min(result.predictions.length, 5)} Predicciones
                     </Text>
                     <View className="bg-card border border-border rounded-2xl p-3 mb-4">
                         {result.predictions.slice(0, 5).map((pred, i) => (
                             <View
-                                key={`pred-${i}`}
+                                key={`pred-${pred.rank}`}
                                 className={`flex-row items-center gap-3 py-2.5 ${
                                     i < Math.min(result.predictions.length, 5) - 1
                                         ? "border-b border-border"
@@ -145,7 +229,7 @@ export function ResultsDrawer({
                                                 : "text-muted-foreground"
                                         }`}
                                     >
-                                        {i + 1}
+                                        {pred.rank}
                                     </Text>
                                 </View>
                                 <Text
@@ -156,25 +240,25 @@ export function ResultsDrawer({
                                     }`}
                                     numberOfLines={1}
                                 >
-                                    {pred.class}
+                                    {pred.species}
                                 </Text>
                                 <View className="w-14">
                                     <Progress
-                                        value={pred.probability * 100}
+                                        value={pred.confidence * 100}
                                         className="h-1.5"
                                     />
                                 </View>
                                 <Text className="text-xs text-muted-foreground w-11 text-right font-medium">
-                                    {(pred.probability * 100).toFixed(1)}%
+                                    {(pred.confidence * 100).toFixed(1)}%
                                 </Text>
                             </View>
                         ))}
                     </View>
 
-                    {/* ─── Processing time ─────────────────────────── */}
+                    {/* ─── Model info ──────────────────────────────── */}
                     <View className="items-center mb-2">
                         <Text className="text-[10px] text-muted-foreground">
-                            ⚡ Procesado en {result.processingTimeMs}ms
+                            🧠 Modelo: {result.model} · {result.numClasses} clases
                         </Text>
                     </View>
                 </BottomSheetBody>
@@ -191,7 +275,7 @@ export function ResultsDrawer({
                             strokeWidth={1.8}
                         />
                         <Text className="font-bold text-primary-foreground ml-2 text-base">
-                            Ver Ficha Completa →
+                            Ver Detalles →
                         </Text>
                     </Button>
 
