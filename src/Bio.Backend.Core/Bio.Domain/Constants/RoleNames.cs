@@ -10,5 +10,5 @@ public static class RoleNames
     public const string Entrepreneur = "ENTREPRENEUR";
     public const string Community = "COMMUNITY";
     public const string Buyer = "BUYER";
-    public const string EnvironmentalAuthority = "ENVIRONMENTALAUTHORITY";
+    public const string EnvironmentalAuthority = "AUTHORITY";
 }

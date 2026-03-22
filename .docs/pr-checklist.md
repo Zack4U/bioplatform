@@ -71,19 +71,27 @@ dotnet format Bio.Backend.Core.sln --verify-no-changes --verbosity diagnostic
 // turbo
 dotnet build Bio.Backend.Core.sln --no-restore -c Release -warnaserror
 
-# 4. Tests con cobertura (mínimo 70%)
-dotnet test Bio.Backend.Core.sln --no-build -c Release --verbosity normal --collect:"XPlat Code Coverage"
+
+
+# 4. Tests con cobertura (mínimo 70%, solo Domain y Application)
+dotnet test Bio.Backend.Core.sln --no-build -c Release --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[Bio.Infrastructure*]*,[Bio.API*]*"
+
+# 5. Revisar el reporte con ReportGenerator (excluyendo Infrastructure y API)
+dotnet tool install -g dotnet-reportgenerator-globaltool
+reportgenerator -reports:Bio.UnitTests/TestResults/**/*.xml -targetdir:Bio.UnitTests/Report -reporttypes:Html -assemblyfilters:"-Bio.Infrastructure*;-Bio.API*"
+start Bio.UnitTests/Report/index.html
+
 ```
 
 ### Reglas clave
 
-| Regla                  | Valor                                         |
-| ---------------------- | --------------------------------------------- |
-| Formato código         | `dotnet format` (cero diferencias)            |
-| Warnings en build      | **Tratados como errores** (`-warnaserror`)    |
-| Cobertura mínima tests | **70%**                                       |
-| Framework tests        | xUnit + Moq                                   |
-| Naming                 | `PascalCase` clases/métodos, `ISomeInterface` |
+| Regla                  | Valor                                                               |
+| ---------------------- | ------------------------------------------------------------------- |
+| Formato código         | `dotnet format` (cero diferencias)                                  |
+| Warnings en build      | **Tratados como errores** (`-warnaserror`)                          |
+| Cobertura mínima tests | **70%** (solo Domain y Application, Infrastructure y API excluidas) |
+| Framework tests        | xUnit + Moq                                                         |
+| Naming                 | `PascalCase` clases/métodos, `ISomeInterface`                       |
 
 ---
 
@@ -205,7 +213,7 @@ Usar [Conventional Commits](https://www.conventionalcommits.org/):
 Antes de abrir tu PR, verifica:
 
 - [ ] Los comandos de lint/format de tu proyecto pasan sin errores
-- [ ] Los tests pasan y la cobertura supera el umbral mínimo
+- [ ] Los tests pasan y la cobertura supera el umbral mínimo (solo Domain y Application, Infrastructure y API excluidas)
 - [ ] El build del proyecto compila sin errores ni warnings
 - [ ] Los commits siguen Conventional Commits
 - [ ] El branch sigue el formato `feature/BIO-XXX-desc` o `fix/BIO-XXX-desc`

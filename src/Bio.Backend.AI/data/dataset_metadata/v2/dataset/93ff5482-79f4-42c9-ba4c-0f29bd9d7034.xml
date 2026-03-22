@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="93ff5482-79f4-42c9-ba4c-0f29bd9d7034"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/wzhj2x</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/parquesnacionales/resource?r=selva_restaura_2017</alternateIdentifier>
+        <title>Flora asociada al programa de monitoreo y restauración del 2017 en el Parque Nacional Natural Selva de Forencia</title>
+        <creator>
+            <individualName>
+                <givenName>Armando</givenName>
+                <surName>Herrera Caicedo</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Jefe de área protegida</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>flabio.herrera@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Johana Alezandra</givenName>
+                <surName>Echeverry Garzón</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Profesional Universitaria PNN Selva de Florencia</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>selvaflorencia@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Nesto</givenName>
+                <surName>Roncancio</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Profesional Biología de la Conservación DTAO</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>selvaflorencia@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Jorge Ivan</givenName>
+                <surName>Bedoya Zuluaga</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Asesor en Restauración y Sistemas Sostenibles</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>selvaflorencia@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Edwin Ferney</givenName>
+                <surName>Patiño cortes</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Técnico Administrativo PNN Selva de Florencia</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>selvaflorencia@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Weimar</givenName>
+                <surName>Hincapie Giraldo</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Técnico Administrativo PNN Selva de Florencia</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>selvaflorencia@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Andres Felipe</givenName>
+                <surName>Cardona Toro</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Operarios Calificados PNN Selva de Florencia</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>selvaflorencia@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Rigoberto</givenName>
+                <surName>Lancheros Murillo</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Operarios Calificados PNN Selva de Florencia</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>selvaflorencia@parquesnacionales.gov.co</electronicMailAddress>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Armando</givenName>
+                <surName>Herrera Caicedo</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Jefe de área protegida</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>flabio.herrera@parquesnacionales.gov.co</electronicMailAddress>
+        </metadataProvider>
+        <pubDate>
+                2021-10-22
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>En el Parque Nacional Natural Selva de Florencia hay predios saneados entre los años 1997 y 2000 que tienen áreas sometidas a diferentes tipos de disturbios, asociados principalmente a prácticas de ganadería extensiva de alrededor de 50 años, en donde las coberturas vegetales no han evolucionado hacia bosque húmedo subandino (sistema de referencia). En estas áreas se encuentran dos escenarios categorizados por el estado de las coberturas: Área de pasturas (18 predios) en donde persisten gramíneas no naturales cubriendo un área total de aproximadamente 80 ha; el segundo es un área de 3 ha de un predio el cual presenta un arbustal de entre cinco y siete metros de alto. Estas áreas han estado sometidas a diferentes tipos de intervención principalmente orientadas a favorecer procesos de regeneración natural mitigando el efecto del pastoreo por ganado bovino (tensionante) mediante aislamientos. Por otro lado, se ha intentado favorecer activamente el proceso haciendo enriquecimientos con diferentes especies vegetales (Bignoniaceae, Cecropiaceae, Clusaceae, Euphorbiaceae, Hypericaceae, Lauraceae, Malvaceae, Mimosaceae, Rubiaceae, Sapindaceae, Tiliaceae, Verbenaceae) y los resultados difieren en los diferentes módulos a restaurar.</para>
+<para>Este recurso contiene la información del monitoreo llevado acabo sobre las áreas de restauración y de referencia en el 2017, y tenía como objetivo evaluar el estado actual de las mismas comparandolas para compararlas con del sistema de referencia. Contienen 1.055 registros de plantas.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Valor Objeto de Conservación</keyword>
+            <keyword>VOC</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/parquesnacionales/archive.do?r=selva_restaura_2017</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El Parque Nacional Natural Selva de Florencia posee una extensión 10.019 hectáreas con un gradiente altitudinal que va desde los 850 hasta los 2400 m.s.n.m, presenta un relieve escarpado, una precipitación media anual de 6.270 mm y una temperatura promedio de 19° C. Se constituye como la única área de conservación nacional que se localiza en el Oriente del Departamento de Caldas, con un 78% en territorio del Municipio de Samaná y un 22% en el Municipio de Pensilvania. El área se caracteriza por presentar ecosistemas con elementos biológicos andinos, de selva húmeda tropical y riqueza hídrica que alimenta a los ríos La Miel y Samaná Sur, que drenan a la cuenca del río Magdalena. Presenta una importancia estratégica en la regulación hídrica, pues con un promedio de 8000 mm de precipitación, sobresale como una de las zonas más lluviosas del país.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-75.06</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-75.039</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.524</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.486</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2017-10-10
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2017-12-07
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Este recurso contiene 1.055 registros de flora, agrupados en 3 clases, 22 ordenes,42 familias, 65 géneros y 30 especies. Con un 52% clasificado a nivel de género, 33% a especie y 13% a familia.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Liliopsida</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Magnoliopsida</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Polypodiopsida</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Armando</givenName>
+                <surName>Herrera Caicedo</surName>
+            </individualName>
+            <organizationName>Parques Nacionales Naturales de Colombia</organizationName>
+            <positionName>Jefe de área protegida</positionName>
+            <address>
+                <deliveryPoint>Crr 9 Nro 2-30 Corregimiento de Florencia</deliveryPoint>
+                <city>Samaná</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3135466678</phone>
+            <electronicMailAddress>flabio.herrera@parquesnacionales.gov.co</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Para caracterizar la estructura y composición vegetal de los sistemas de referencia y hacer el monitoreo a la evolución de la sucesión en los módulos de restauración que se encuentren en estado de fase III o superior se usará parcelar de ancho fijo de 50 * 2 metros (Gentry 1982). Esta metodología ha sido ampliamente usada en plantas leñosas para el Neotrópico, lo que permite tener suficientes referentes para comparar. Entre sus desventajas se encuentra que no suministra información completa de la composición de especies, por lo que no se pueden efectuar comparaciones de similitud, y requiere de la colección e identificación de muchas especies. No obstante dado que lo que se busca es hacer una lectura comparativa de diferentes escenarios de algunos atributos de la estructura y diversidad vegetal no es necesario tener el inventario de todas las especies vegetales.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Este método de muestreo consiste en muestrear, en un área determinada todas los individuos cuyo tallo tenga un diámetro a la altura del pecho (DAP medido a 1.3 m desde la superficie del suelo) mayor o igual a 2.5 cm. En la presente propuesta se muestrearán todos los individuos con DAP mayor o igual a 1 cm, pues con esta modificación se obtiene una mejor representación de los estratos inferiores (sotobosque) y así se pueden evaluar estado menos avanzados de la sucesión.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>En el sistema de referencia en un área similar al módulo de restauración y en el módulo de restauración se establecerán aleatoriamente el número de parcelas necesarias para estabilizar las varianza de los indicadores cuantitativos de estructura del bosque y saturar la curva de acumulación de especies, información que se integra en el cálculo de los indicadores de diversidad (estructura y composición) vegetal. Cada parcela de 50x2 m se traza con una cuerda, y con una varita de 1 m se establece la distancia a cada lado de la cuerda. Se muestrean todos los individuos con DAP mayor o igual a 1 cm que se encuentren dentro del área de muestreo, se colectan, se mide su DAP, se estima su altura, se registra su hábito de crecimiento y todas las características que permitan reconocerlos posteriormente (si es posible se identifican en campo).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>La cuerda para cada transecto se amarra a un árbol, el cual se incluye dentro de los registros. Si no se dispone de una cinta diamétrica para medir el DAP, se puede utilizar un metro de modistería común y realizar la medida de la circunferencia a la altura del pecho (CAP). Si usted va a medir el CAP debe registrar los individuos que tiene un CAP mayor o igual a 3 cm.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Para el registro de la información en el campo se pueden utilizar libretas topográficas, formatos de campo previamente diseñados o una grabadora (la cual es más útil en lugares lluviosos). A medida que se van registrando los individuos en la parcela se deben numerar consecutivamente. Cuando se colecta un individuo, se debe guardar en una bolsa separada y marcarla con cinta de enmascarar o un papel con el número de la parcela y el número de secuencia de registro dentro del parcela, por ejemplo: T3-47, quiere decir que es el individuo 47 del parcela 3. Posteriormente a esta muestra se le asigna un número de colección, se prensa y se procesa hasta constituir un ejemplar de herbario (preferiblemente con 4 duplicados).</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Bosque Húmedo Subandino y Bosque Húmedo Altoandino: El PNN SFL, se considera como la única área primaria en el departamento de Caldas de bosque húmedo Subandino el cual cuenta en la actualidad con 7099 hectáreas y bosque húmedo Altoandino el cual cuenta en la actualidad con 2920 hectáreas; siendo el último refugio de especies de flora y fauna endémicas y/o en algún grado de amenaza en la región.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Se realizó la caracterización de los sistemas de referencia, inicialmente limitándose a estructura y diversidad vegetal. La estructura vegetal (atributo) midiendo DAP, altura, densidad de árboles (indicadores) y de diversidad vegetal (atributo), la cual está dividida en estructura de la diversidad (relaciones de número y abundancia de especies u otro nivel de organización de la diversidad) y composición (cuales taxones componen el ensamblaje). Para esto se utilizó el método de parcelas Gentry.</para>
+                </samplingDescription>
+            </sampling>
+        </methods>
+
+            <project >
+                <title>Programa de Monitoreo Parque Nacional Natural Selva de Florencia</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Armando</givenName>
+                    <surName>Herrera Caicedo</surName>
+                    </individualName>
+                    <role>CUSTODIAN_STEWARD</role>
+                </personnel>
+                <abstract>
+                    <para>En el marco de la formulación del Plan de Manejo del PNN SFL 2015 – 2019 el equipo de trabajo del área protegida, discutió y priorizó los criterios para la selección de los ecosistemas, cuencas y especies que fueron seleccionados como VOC.
+Con el fin de mencionar los elementos/sistemas o sus relaciones que han sido priorizadas para adelantar acciones de monitoreo, se describen a continuación los objetivos de conservación del área protegida a partir de los cuales se definieron los VOC.
+1.Conservar los biomas Bosque Húmedo Subandino y Bosque Húmedo Altoandino presentes en el PNN Selva de Florencia, a fin de contribuir a los procesos de conectividad y mantener el hábitat de especies con marcado endemismo y amenazadas de extinción en la ecorregión del Eje Cafetero, el Magdalena Medio Caldense y Oriente Antioqueño. 
+
+2. Conservar las microcuencas tributarias de los ríos La Miel y Samaná Sur que nacen al interior del PNN Selva de Florencia para contribuir al mantenimiento de los servicios hidrológicos de la región del Eje Cafetero, el Magdalena Medio Caldense y el Oriente Antioqueño. Teniendo en cuenta lo mencionado anteriormente se definieron para el PNN SFL treinta y cuatro (34) Valores Objeto de Conservación de los cuales dos son de filtro grueso y treinta y dos de filtro fino (Ver Tabla 1) de acuerdo con lo planteado por el documento de Parques Nacionales “Evaluación de integridad ecológica propuesta metodológica”</para>
+                </abstract>
+                <funding>
+                    <para></para>
+                </funding>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:23Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/wzhj2x">Herrera Caicedo A, Echeverry Garzón J A, Roncancio N, Bedoya Zuluaga J I, Patiño cortes E F, Hincapie Giraldo W, Cardona Toro A F, Lancheros Murillo R (2021). Flora asociada al programa de monitoreo y restauración del 2017 en el Parque Nacional Natural Selva de Forencia. Parques Nacionales Naturales de Colombia. Occurrence dataset https://doi.org/10.15472/wzhj2x accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Gentry, A. H. (1982). Patterns of neotropical plant species diversity. Evolutionary biology, 1-84.</citation>
+                </bibliography>
+                <resourceLogoUrl>https://statics.sibcolombia.net/sib-resources/images/logos-socios/500px/pnn.jpg</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

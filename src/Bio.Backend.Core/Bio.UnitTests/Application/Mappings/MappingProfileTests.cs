@@ -3,6 +3,7 @@ using Bio.Application.DTOs;
 using Bio.Application.Mappings;
 using Bio.Domain.Entities;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Bio.UnitTests.Application.Mappings;
@@ -17,7 +18,7 @@ public class MappingProfileTests
 
     public MappingProfileTests()
     {
-        _configuration = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
+        _configuration = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>(), NullLoggerFactory.Instance);
         _mapper = _configuration.CreateMapper();
     }
 

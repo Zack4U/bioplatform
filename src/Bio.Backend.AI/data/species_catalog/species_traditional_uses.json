@@ -1,0 +1,2909 @@
+[
+  {
+    "scientific_name": "Acacia decurrens",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Leña/Combustible"
+        ],
+        "specific_purpose": "Fuente de energía calorífica",
+        "preparation_method": "Secado",
+        "description": "Uso común en zonas rurales para cocinas de leña.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Acrocomia aculeata",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo y elaboración de bebidas",
+        "preparation_method": "Consumo directo crudo o macerado en agua",
+        "description": "El fruto se consume fresco o procesado en jugos y bebidas refrescantes tradicionales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Adiantum macrophyllum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias",
+        "preparation_method": "Infusión",
+        "description": "Se utiliza tradicionalmente como expectorante y para aliviar la tos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Adiantum raddianum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Salud capilar y afecciones respiratorias",
+        "preparation_method": "Infusión o maceración",
+        "description": "Uso tradicional para fortalecer el cabello y tratar problemas bronquiales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ageratina pichinchensis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Cicatrización de heridas y tratamiento de infecciones cutáneas",
+        "preparation_method": "Cataplasma o infusión concentrada",
+        "description": "Se aplican las hojas machacadas o el extracto sobre la piel para acelerar la regeneración tisular.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Alnus acuminata",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Elaboración de muebles y herramientas agrícolas",
+        "preparation_method": "Secado y aserrado",
+        "description": "Madera blanda y fácil de trabajar usada tradicionalmente en la construcción de viviendas rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Anas platyrhynchos",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo de carne y huevos",
+        "preparation_method": "Cocción",
+        "description": "Utilizado en sistemas de producción avícola a pequeña escala.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Aniba perutilis",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Ebanistería fina y construcción de viviendas",
+        "preparation_method": "Aserrado y secado",
+        "description": "Madera muy apreciada por su veta crespa y resistencia a la pudrición.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Annona cherimola",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo fresco y postres",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Fruta muy apreciada en la dieta campesina por su sabor dulce y textura cremosa.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Apeiba membranacea",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones cutáneas",
+        "preparation_method": "Decocción",
+        "description": "Uso tradicional para lavar heridas y tratar irritaciones de la piel.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Apis mellifera",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "category": [
+          "Alimentario",
+          "Medicinal"
+        ],
+        "specific_purpose": "Endulzante y tratamiento de afecciones respiratorias",
+        "preparation_method": "Consumo directo",
+        "description": "Uso ancestral para aliviar la tos y como fuente de energía.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No administrar a menores de un año"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Aristolochia cordiflora",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de mordeduras de serpiente y dolores musculares",
+        "preparation_method": "Maceración en aguardiente",
+        "description": "Se utiliza tradicionalmente como antídoto contra venenos y para aliviar inflamaciones mediante aplicaciones tópicas o ingesta controlada.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico en altas dosis; potencial daño renal severo."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ascalapha odorata",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Presagio de eventos",
+        "preparation_method": "Ninguno",
+        "description": "Existe una creencia popular generalizada en Colombia que asocia su llegada a las casas con la mala suerte o la muerte.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No debe ser maltratada según la visión de conservación moderna"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Asclepias curassavica",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de verrugas y afecciones cutáneas",
+        "preparation_method": "Aplicación tópica directa",
+        "description": "El látex se aplica sobre la piel para eliminar verrugas debido a sus propiedades cáusticas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico si se ingiere, puede causar irritación severa en mucosas."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Asplundia moritziana",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Artesanal"
+        ],
+        "specific_purpose": "Elaboración de sombreros y artesanías",
+        "preparation_method": "Secado y blanqueado al sol",
+        "description": "Las fibras se extraen de las hojas jóvenes, se hierven y se secan para obtener hilos resistentes.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Astrocaryum malybo",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo humano directo",
+        "preparation_method": "Consumo directo crudo",
+        "description": "El fruto es consumido ocasionalmente por comunidades locales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Atta cephalotes",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo humano como fuente de proteína",
+        "preparation_method": "Tostado",
+        "description": "Las hormigas reinas son recolectadas y tostadas para consumo directo como pasabocas tradicional.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Attalea amygdalina",
+    "traditional_uses": [
+      {
+        "part": "Savia",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Elaboración de bebida fermentada",
+        "preparation_method": "Fermentación",
+        "description": "Extracción de la savia del estípite para producir vino de palma artesanal.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado por contenido alcohólico"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Attalea butyracea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Techado de viviendas rurales",
+        "preparation_method": "Secado al sol",
+        "description": "Uso de las hojas para la elaboración de techos tradicionales en zonas rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Attalea cohune",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario",
+          "Leña/Combustible"
+        ],
+        "specific_purpose": "Consumo de la almendra y uso de endocarpio como combustible",
+        "preparation_method": "Extracción mecánica y secado",
+        "description": "Las comunidades locales consumen la almendra como alimento y utilizan el endocarpio duro como fuente de energía térmica.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Baccharis latifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones digestivas y cicatrización",
+        "preparation_method": "Infusión y cataplasma",
+        "description": "Las hojas se usan en infusión para dolores estomacales y como cataplasma para heridas externas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Baccharis prunifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones cutáneas y limpieza de heridas",
+        "preparation_method": "Infusión o emplasto",
+        "description": "Se utiliza tradicionalmente como antiséptico tópico para lavar heridas y tratar irritaciones de la piel.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bellucia pentamera",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo como fruta silvestre",
+        "preparation_method": "Consumo directo crudo",
+        "description": "El fruto es apreciado por comunidades rurales por su sabor dulce y textura suave.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bidens rubifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones cutáneas e inflamaciones",
+        "preparation_method": "Infusión o emplasto",
+        "description": "Uso tradicional en zonas rurales para lavar heridas y reducir inflamaciones locales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Bixa orellana",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "category": [
+          "Alimentario",
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Colorante alimentario y pintura corporal ritual",
+        "preparation_method": "Maceración en aceite o agua",
+        "description": "Utilizado ancestralmente para dar color a los alimentos y como protección ritual en ceremonias.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bocconia frutescens",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de verrugas y afecciones cutáneas",
+        "preparation_method": "Aplicación directa",
+        "description": "El látex anaranjado se aplica tópicamente sobre verrugas o heridas menores por sus propiedades cáusticas y antisépticas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico si se ingiere; evitar contacto con los ojos."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Bos taurus",
+    "traditional_uses": [
+      {
+        "part": "Leche",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo humano y elaboración de derivados lácteos",
+        "preparation_method": "Pasteurización, fermentación, cuajado",
+        "description": "Base de la dieta campesina y producción de quesos artesanales regionales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Brachygastra lecheguana",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Endulzante y medicina tradicional",
+        "preparation_method": "Consumo directo",
+        "description": "Recolección ocasional de panales silvestres por comunidades rurales para consumo directo.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Riesgo de picaduras severas durante la recolección"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Brugmansia aurea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Alivio de dolores reumáticos e inflamaciones",
+        "preparation_method": "Cataplasma",
+        "description": "Las hojas se calientan y aplican tópicamente sobre la zona afectada para reducir el dolor.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Altamente tóxico, puede causar alucinaciones y paro respiratorio si se ingiere."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Caiman crocodilus",
+    "traditional_uses": [
+      {
+        "part": "Carne",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Fuente de proteína",
+        "preparation_method": "Cocción",
+        "description": "Consumo de carne en comunidades ribereñas como fuente de subsistencia.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cairina moschata",
+    "traditional_uses": [
+      {
+        "part": "Carne",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimentación humana",
+        "preparation_method": "Cocción",
+        "description": "Cría tradicional en fincas para consumo familiar y comercialización local.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Calamagrostis effusa",
+    "traditional_uses": [
+      {
+        "part": "Tallo y hojas",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Techado de viviendas rurales",
+        "preparation_method": "Secado",
+        "description": "Uso histórico de las fibras secas para la elaboración de techos en construcciones tradicionales de páramo.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Calathea crotalifera",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Envoltura de alimentos",
+        "preparation_method": "Pasado por fuego",
+        "description": "Uso tradicional para envolver tamales y otros alimentos, aportando aroma y conservando la humedad.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Canis lupus familiaris",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Forraje/Veterinario"
+        ],
+        "specific_purpose": "Pastoreo y vigilancia",
+        "preparation_method": "Desconocido",
+        "description": "Uso tradicional en fincas cafeteras para el manejo de ganado y protección de cultivos contra animales silvestres o intrusos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Canna indica",
+    "traditional_uses": [
+      {
+        "part": "Rizoma",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Elaboración de bizcochos y harinas",
+        "preparation_method": "Extracción de almidón y horneado",
+        "description": "El almidón se extrae mediante lavado y sedimentación para producir los tradicionales bizcochos de achira.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Capsicum dimorphum",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Condimento",
+        "preparation_method": "Consumo directo o macerado",
+        "description": "Uso ocasional en la cocina campesina para dar picante a los alimentos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Evitar contacto con ojos"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Carludovica palmata",
+    "traditional_uses": [
+      {
+        "part": "Hojas jóvenes",
+        "category": [
+          "Artesanal"
+        ],
+        "specific_purpose": "Elaboración de sombreros y cestería",
+        "preparation_method": "Cocción, secado y blanqueado al sol",
+        "description": "Las fibras extraídas de las hojas jóvenes se procesan para crear tejidos finos de gran valor cultural.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cathartes aura",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Presagio de cambios climáticos",
+        "preparation_method": "Observación",
+        "description": "En comunidades campesinas, su vuelo en círculos se interpreta como indicador de cambios en el clima o presencia de animales muertos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cavendishia angustifolia",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo como alimento silvestre",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Los frutos son recolectados ocasionalmente por campesinos y niños en zonas rurales para consumo fresco.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Cecropia angustifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias y control de presión arterial",
+        "preparation_method": "Infusión",
+        "description": "Las hojas se preparan en infusión para tratar la tos y regular la tensión arterial.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumir con moderación por efectos hipotensores"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cecropia peltata",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de verrugas y afecciones cutáneas",
+        "preparation_method": "Aplicación directa",
+        "description": "El látex se aplica tópicamente para cauterizar verrugas y tratar hongos en la piel.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Evitar contacto con los ojos"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cedrela odorata",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de fiebres y problemas digestivos",
+        "preparation_method": "Decocción",
+        "description": "La corteza se hierve para preparar una bebida amarga usada como febrífugo.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Uso restringido por toxicidad potencial en dosis altas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Centrolobium yavizanum",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Construcción de viviendas y mobiliario de alta resistencia",
+        "preparation_method": "Aserrado y secado",
+        "description": "Madera altamente valorada por su durabilidad y belleza estética en estructuras rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ceroxylon quindiuense",
+    "traditional_uses": [
+      {
+        "part": "Cera del tronco",
+        "category": [
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Uso en celebraciones de Domingo de Ramos",
+        "preparation_method": "Recolección manual",
+        "description": "Tradicionalmente utilizada en procesiones religiosas, práctica hoy restringida por normatividad ambiental.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Prohibido por ley nacional"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Chamaedorea linearis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Celebración del Domingo de Ramos",
+        "preparation_method": "Corte y tejido manual",
+        "description": "Las hojas son utilizadas tradicionalmente para elaborar ramos bendecidos durante la Semana Santa.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Chelonoidis carbonaria",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo de carne en épocas de escasez",
+        "preparation_method": "Cocción directa",
+        "description": "Históricamente consumida por comunidades rurales, aunque hoy es una práctica desaconsejada y restringida por ley.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Especie protegida, su consumo es ilegal."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cinchona pubescens",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de fiebres y malaria",
+        "preparation_method": "Decocción",
+        "description": "Uso histórico para reducir fiebres intermitentes y como tónico amargo.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado, puede causar cinconismo en exceso."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Clibadium surinamense",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Tóxico/Caza"
+        ],
+        "specific_purpose": "Pesca artesanal",
+        "preparation_method": "Maceración",
+        "description": "Las hojas se maceran y se vierten en cuerpos de agua para aturdir peces facilitando su captura.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico para organismos acuáticos, no consumir el agua tratada."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Columba livia",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo de carne",
+        "preparation_method": "Cocción",
+        "description": "Consumo ocasional de carne en entornos rurales o urbanos de bajos recursos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Riesgo de transmisión de patógenos si no se manipula adecuadamente"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cordia alliodora",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Ebanistería y construcción de viviendas",
+        "preparation_method": "Aserrado y secado",
+        "description": "Uso tradicional para vigas, muebles y herramientas agrícolas por su durabilidad.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Coriaria ruscifolia",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Tóxico/Caza"
+        ],
+        "specific_purpose": "Control de plagas",
+        "preparation_method": "Maceración",
+        "description": "Uso histórico para preparar cebos tóxicos contra roedores.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Altamente tóxico para consumo humano."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Costus pulverulentus",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones renales y diurético",
+        "preparation_method": "Infusión",
+        "description": "Uso tradicional en zonas rurales para limpiar las vías urinarias.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Couma macrocarpa",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Fruto dulce consumido localmente por comunidades rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Crassocephalum crepidioides",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo como verdura cocida",
+        "preparation_method": "Cocción",
+        "description": "Las hojas tiernas se consumen hervidas en sopas o guisos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumir con moderación por posible presencia de alcaloides."
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Croton leptostachyus",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Cicatrizante y antiséptico",
+        "preparation_method": "Aplicación directa",
+        "description": "El látex se aplica sobre heridas para acelerar la regeneración de tejidos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Evitar contacto con los ojos."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cyathea caracasana",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Construcción de cercas y soportes",
+        "preparation_method": "Corte y secado",
+        "description": "Uso histórico para postes de cercas debido a su resistencia a la humedad, aunque actualmente restringido.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Especie protegida, su uso está regulado por ley."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cynodon nlemfuensis",
+    "traditional_uses": [
+      {
+        "part": "Hojas y tallos",
+        "category": [
+          "Forraje/Veterinario"
+        ],
+        "specific_purpose": "Alimentación de ganado bovino",
+        "preparation_method": "Pastoreo directo",
+        "description": "Utilizado como la base principal de la dieta en sistemas ganaderos extensivos de la región.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Cyphocharax magdalenae",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo proteico local",
+        "preparation_method": "Frito o sudado",
+        "description": "Consumo ocasional por comunidades ribereñas en la región del Magdalena.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Dasyloricaria paucisquama",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo local de subsistencia",
+        "preparation_method": "Asado o frito",
+        "description": "Consumo ocasional por comunidades ribereñas en zonas rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Dasyprocta punctata",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Fuente de proteína animal",
+        "preparation_method": "Cocción directa",
+        "description": "Consumido tradicionalmente por comunidades rurales como carne de monte.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Requiere control sanitario y respeto por vedas legales."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Dasypus novemcinctus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimentación",
+        "preparation_method": "Asado",
+        "description": "Consumo tradicional en zonas rurales del Eje Cafetero.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Posible vector de enfermedades zoonóticas."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Desfontainia spinosa",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de dolores musculares y reumatismo",
+        "preparation_method": "Decocción",
+        "description": "Se utiliza en baños o compresas para aliviar dolores articulares y musculares.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Uso externo recomendado, puede tener efectos secundarios si se ingiere sin supervisión."
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Didelphis marsupialis",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Uso de la grasa para afecciones respiratorias",
+        "preparation_method": "Aplicación tópica",
+        "description": "La grasa del animal se utiliza tradicionalmente en algunas comunidades rurales como ungüento para tratar el asma o la bronquitis.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Riesgo de zoonosis si no se manipula adecuadamente."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Disterigma alaternoides",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo como alimento silvestre",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Frutos consumidos ocasionalmente por campesinos y caminantes en zonas de páramo.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Drimys granadensis",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de dolores estomacales y afecciones respiratorias",
+        "preparation_method": "Decocción",
+        "description": "Se utiliza la corteza hervida para aliviar malestares digestivos y como estimulante.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado por su alta pungencia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Elaeis oleifera",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Extracción de aceite para cocina",
+        "preparation_method": "Cocción y prensado",
+        "description": "Uso tradicional en comunidades locales para la obtención de grasas vegetales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Equisetum bogotense",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones renales y urinarias",
+        "preparation_method": "Decocción",
+        "description": "Se utiliza tradicionalmente como diurético y para limpiar vías urinarias.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No consumir por periodos prolongados"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Equus asinus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Forraje/Veterinario"
+        ],
+        "specific_purpose": "Transporte de carga y arriería",
+        "preparation_method": "Domesticación",
+        "description": "Utilizado históricamente como animal de carga para el transporte de café y suministros en zonas de difícil acceso.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Equus caballus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Artesanal"
+        ],
+        "specific_purpose": "Arriería y transporte",
+        "preparation_method": "Domesticación",
+        "description": "Parte integral de la cultura cafetera, usado para el transporte de carga y movilización en zonas rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Eryngium foetidum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Alimentario",
+          "Medicinal"
+        ],
+        "specific_purpose": "Condimento y tratamiento de problemas digestivos",
+        "preparation_method": "Consumo directo o infusión",
+        "description": "Se utiliza como especia en sopas y guisos, y en infusión para aliviar dolores estomacales y flatulencias.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Espeletia argentea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias",
+        "preparation_method": "Infusión",
+        "description": "Uso histórico limitado en comunidades campesinas de alta montaña para aliviar síntomas de resfriados.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Uso restringido por protección legal"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Espeletia pycnophylla",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias y asma",
+        "preparation_method": "Infusión",
+        "description": "Uso ancestral en comunidades campesinas de alta montaña para aliviar problemas bronquiales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Uso restringido por protección ambiental"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Euphorbia hirta",
+    "traditional_uses": [
+      {
+        "part": "Planta entera",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias y problemas digestivos",
+        "preparation_method": "Decocción",
+        "description": "Se utiliza tradicionalmente en infusión para aliviar la tos, el asma y problemas gastrointestinales menores.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "El látex puede ser irritante para la piel y mucosas."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ficus insipida",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de parásitos intestinales",
+        "preparation_method": "Dilución en agua o leche",
+        "description": "El látex se extrae del tronco y se administra en pequeñas dosis para eliminar lombrices intestinales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico en altas dosis, puede causar irritación gástrica severa."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Fuchsia boliviana",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "category": [
+          "Ornamental"
+        ],
+        "specific_purpose": "Decoración de jardines",
+        "preparation_method": "Cultivo directo",
+        "description": "Utilizada tradicionalmente en jardines de casas campesinas por su atractivo visual.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Galium hypocarpium",
+    "traditional_uses": [
+      {
+        "part": "Planta entera",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Uso tradicional como depurativo",
+        "preparation_method": "Infusión",
+        "description": "Utilizada en decocciones suaves para mejorar la salud renal.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Gaultheria anastomosans",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo como fruta silvestre",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Los frutos son consumidos ocasionalmente por comunidades rurales durante caminatas en el páramo.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Geonoma maxima",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Artesanal",
+          "Construcción"
+        ],
+        "specific_purpose": "Elaboración de techos y tejidos",
+        "preparation_method": "Secado al aire",
+        "description": "Uso de las hojas para cubrir estructuras temporales o tejer elementos de carga.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Geonoma undata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Artesanal"
+        ],
+        "specific_purpose": "Elaboración de arreglos florales y adornos religiosos",
+        "preparation_method": "Corte y secado al aire",
+        "description": "Las hojas son utilizadas tradicionalmente en celebraciones religiosas locales por su durabilidad y forma.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Guadua angustifolia",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Construcción de viviendas, puentes y mobiliario",
+        "preparation_method": "Corte, curado y secado",
+        "description": "Uso ancestral para estructuras habitacionales y herramientas agrícolas debido a su flexibilidad y resistencia.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Handroanthus chrysanthus",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de infecciones y procesos inflamatorios",
+        "preparation_method": "Decocción",
+        "description": "La corteza se hierve para extraer compuestos activos usados en medicina tradicional campesina.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado, puede tener efectos secundarios en dosis altas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Hedychium coronarium",
+    "traditional_uses": [
+      {
+        "part": "Flor",
+        "category": [
+          "Ornamental"
+        ],
+        "specific_purpose": "Decoración de jardines y eventos",
+        "preparation_method": "Corte directo",
+        "description": "Uso común en jardinería regional por su fragancia y belleza estética.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Helichrysum graveolens",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "category": [
+          "Ornamental"
+        ],
+        "specific_purpose": "Decoración de interiores y arreglos florales secos",
+        "preparation_method": "Secado al aire",
+        "description": "Las flores se recolectan y secan para mantener su estructura por largos periodos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Heliconia bihai",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Envolver alimentos",
+        "preparation_method": "Limpieza y calentamiento leve",
+        "description": "Uso tradicional para envolver tamales y otros alimentos para cocción al vapor.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Heliconia longa",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Envolver alimentos (tamales, envueltos)",
+        "preparation_method": "Limpieza y calentamiento ligero",
+        "description": "Las hojas se usan tradicionalmente para envolver masas de maíz debido a su tamaño y flexibilidad.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Hirtella americana",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de inflamaciones leves",
+        "preparation_method": "Infusión",
+        "description": "Uso tradicional en decocciones para aliviar dolores corporales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Hydrocotyle lehmannii",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Cicatrización de heridas y afecciones de la piel",
+        "preparation_method": "Cataplasma",
+        "description": "Las hojas frescas se machacan y aplican directamente sobre heridas superficiales para acelerar la regeneración del tejido.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Hyptis capitata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de heridas y afecciones cutáneas",
+        "preparation_method": "Cataplasma",
+        "description": "Las hojas se machacan y aplican directamente sobre heridas para prevenir infecciones.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Iguana iguana",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo de carne y huevos en épocas de escasez",
+        "preparation_method": "Cocción directa",
+        "description": "Uso tradicional en comunidades campesinas y afrodescendientes de la costa y valles interandinos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado por riesgo de parásitos"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Inga sapindoides",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo de la pulpa",
+        "preparation_method": "Consumo directo crudo",
+        "description": "La pulpa algodonosa que recubre las semillas es consumida como golosina natural por comunidades campesinas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ipomoea batatas",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimentación humana",
+        "preparation_method": "Cocción",
+        "description": "Raíz tuberosa consumida hervida, asada o en preparaciones tradicionales como dulces.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Iriartea deltoidea",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Vigas y postes para viviendas rurales",
+        "preparation_method": "Corte y secado al aire",
+        "description": "El tronco se utiliza por su alta resistencia mecánica para estructuras de soporte en casas de campo.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Jacaranda caucana",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones cutáneas y desinfección de heridas",
+        "preparation_method": "Decocción",
+        "description": "Uso tradicional para lavar heridas y tratar irritaciones de la piel mediante baños.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Juglans neotropica",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Construcción",
+          "Artesanal"
+        ],
+        "specific_purpose": "Muebles finos y ebanistería",
+        "preparation_method": "Secado y tallado",
+        "description": "Madera de alta calidad utilizada tradicionalmente para la fabricación de muebles duraderos y herramientas agrícolas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Laetia americana",
+    "traditional_uses": [
+      {
+        "part": "Tallo",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Postes y carpintería rural",
+        "preparation_method": "Secado al aire",
+        "description": "Madera resistente utilizada para estructuras menores en fincas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Lafoensia acuminata",
+    "traditional_uses": [
+      {
+        "part": "Corteza",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Cicatrizante y antiinflamatorio",
+        "preparation_method": "Decocción",
+        "description": "Uso tradicional para lavar heridas y tratar inflamaciones cutáneas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No ingerir en grandes cantidades"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Leuenbergeria bleo",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de inflamaciones y afecciones gástricas",
+        "preparation_method": "Infusión",
+        "description": "Las hojas se consumen en infusión para aliviar dolores internos y procesos inflamatorios.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Loricaria complanata",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo proteico local",
+        "preparation_method": "Frito o en sancocho",
+        "description": "Consumo ocasional por comunidades ribereñas en zonas rurales del Eje Cafetero.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Lupinus colombiensis",
+    "traditional_uses": [
+      {
+        "part": "Semilla",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Fuente de proteína",
+        "preparation_method": "Remojo prolongado y cocción",
+        "description": "Consumo tradicional tras procesos de desamargado para eliminar alcaloides.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico si no se procesa adecuadamente para eliminar alcaloides"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Lycoperdon perlatum",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo fructífero",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Cicatrizante de heridas superficiales",
+        "preparation_method": "Polvo de esporas aplicado directamente",
+        "description": "Las esporas maduras se utilizan como polvo para detener hemorragias menores debido a sus propiedades absorbentes y antisépticas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No consumir si el interior ha cambiado a color oscuro o amarillento."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Macleania rupestris",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo como alimento silvestre",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Los frutos son recolectados por comunidades rurales y niños durante caminatas en el bosque.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Macrobrachium",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Fuente de proteína animal",
+        "preparation_method": "Cocción",
+        "description": "Captura artesanal para consumo local en comunidades ribereñas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Matisia cordata",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo humano directo",
+        "preparation_method": "Consumo directo crudo",
+        "description": "El fruto se consume fresco por su pulpa dulce y cremosa, muy apreciado en mercados locales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Megascops choliba",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Creencias sobre presagios",
+        "preparation_method": "Desconocido",
+        "description": "En algunas zonas rurales se le considera un ave de mal agüero o mensajera de eventos, lo cual ha generado mitos populares.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Melipona nigrescens",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones oculares y respiratorias",
+        "preparation_method": "Consumo directo",
+        "description": "La miel es apreciada por sus propiedades antibacterianas y antiinflamatorias en la medicina tradicional campesina.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ficus maxima",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Eliminación de parásitos intestinales",
+        "preparation_method": "Consumo diluido en agua",
+        "description": "El látex se utiliza tradicionalmente como vermífugo potente.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico en altas dosis, puede causar irritación gástrica severa."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Momordica charantia",
+    "traditional_uses": [
+      {
+        "part": "Hojas y Frutos",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Control de diabetes y afecciones de la piel",
+        "preparation_method": "Infusión o cataplasma",
+        "description": "Uso tradicional para regular niveles de azúcar en sangre y tratar heridas o erupciones cutáneas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No consumir en exceso durante el embarazo por posibles efectos abortivos."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Monnina salicifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Lavado de heridas y afecciones cutáneas",
+        "preparation_method": "Decocción",
+        "description": "Uso tradicional en zonas rurales para limpiar heridas debido a sus propiedades antisépticas percibidas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Morella pubescens",
+    "traditional_uses": [
+      {
+        "part": "Frutos",
+        "category": [
+          "Artesanal"
+        ],
+        "specific_purpose": "Elaboración de velas",
+        "preparation_method": "Hervido y decantación",
+        "description": "La cera se extrae hirviendo los frutos para que la grasa flote, luego se moldea para hacer velas aromáticas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Mucuna pruriens",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de trastornos neurológicos y fertilidad",
+        "preparation_method": "Tostado y molienda",
+        "description": "Tradicionalmente usada en algunas culturas para mejorar la vitalidad y tratar temblores.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico si no se procesa correctamente; los pelos de la vaina causan irritación severa."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Muntingia calabura",
+    "traditional_uses": [
+      {
+        "part": "Frutos",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Fruto dulce consumido frecuentemente por niños y aves en zonas rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Mutisia clematis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias",
+        "preparation_method": "Infusión",
+        "description": "Uso tradicional para aliviar la tos y el asma en comunidades campesinas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Nephrolepis cordifolia",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Ornamental"
+        ],
+        "specific_purpose": "Decoración de interiores",
+        "preparation_method": "Cultivo en maceta",
+        "description": "Uso extendido en hogares para purificación de aire y estética.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Odocoileus virginianus",
+    "traditional_uses": [
+      {
+        "part": "Carne",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Fuente de proteína",
+        "preparation_method": "Cocción",
+        "description": "Consumo tradicional en zonas rurales, actualmente restringido por normativas de fauna silvestre.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Requiere permisos de caza de subsistencia donde sea legal."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Oenocarpus minor",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo de pulpa y elaboración de bebidas refrescantes",
+        "preparation_method": "Maceración en agua",
+        "description": "La pulpa se macera para extraer una bebida nutritiva consumida localmente.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Oncorhynchus mykiss",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo humano",
+        "preparation_method": "Frito, ahumado o al horno",
+        "description": "Es el plato típico principal en zonas de alta montaña de la región.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Oreochromis niloticus",
+    "traditional_uses": [
+      {
+        "part": "Músculo",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Fuente de proteína animal",
+        "preparation_method": "Frito o sudado",
+        "description": "Consumo masivo en la dieta campesina y urbana regional.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pachira speciosa",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimento complementario",
+        "preparation_method": "Tostado",
+        "description": "Las semillas se consumen tostadas como fuente de energía.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Paraponera clavata",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Ritos de iniciación y fortalecimiento de la resistencia al dolor",
+        "preparation_method": "Aplicación directa mediante picaduras controladas",
+        "description": "Utilizada por comunidades indígenas amazónicas en rituales de paso donde el individuo debe soportar el dolor intenso para demostrar madurez.",
+        "community": "Comunidades indígenas amazónicas",
+        "traditional_warnings": "Extremadamente doloroso, puede causar reacciones alérgicas severas."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Parodon magdalenensis",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo humano como fuente de proteína",
+        "preparation_method": "Frito o en sancocho",
+        "description": "Pez tradicionalmente capturado por pescadores artesanales en las cuencas de los ríos del Eje Cafetero.",
+        "community": "Comunidades campesinas ribereñas",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora alata",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Sedante y tratamiento de ansiedad",
+        "preparation_method": "Infusión",
+        "description": "Uso tradicional como relajante natural para mejorar la calidad del sueño.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No consumir en exceso por posible somnolencia"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora antioquiensis",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Preparación de jugos y postres",
+        "preparation_method": "Consumo directo",
+        "description": "Fruto muy valorado en la gastronomía andina por su acidez característica.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora cumbalensis",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimentación local",
+        "preparation_method": "Consumo directo",
+        "description": "Fruto silvestre consumido ocasionalmente por comunidades rurales de alta montaña.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Passiflora maliformis",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo en jugos y postres",
+        "preparation_method": "Consumo directo",
+        "description": "La pulpa se consume fresca o procesada en jugos y dulces tradicionales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Passiflora mollissima",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Elaboración de jugos y postres",
+        "preparation_method": "Licuado y colado",
+        "description": "Uso tradicional en la dieta andina para refrescos y repostería.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pentacalia andicola",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Alivio de dolores musculares y golpes",
+        "preparation_method": "Cataplasma",
+        "description": "Las hojas se calientan y aplican sobre la zona afectada para reducir la inflamación.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico si se ingiere, solo uso externo"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Pernettya prostrata",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Consumido ocasionalmente por comunidades rurales en zonas de alta montaña.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumir con moderación por posible toxicidad en grandes cantidades."
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Persea americana",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de problemas digestivos y antiinflamatorio",
+        "preparation_method": "Infusión",
+        "description": "Uso tradicional para aliviar dolores estomacales y como diurético.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No consumir en exceso durante el embarazo."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Phytolacca bogotensis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Alivio de inflamaciones y dolores articulares",
+        "preparation_method": "Cataplasma",
+        "description": "Las hojas se calientan y aplican sobre la zona afectada para reducir la inflamación.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxica si se ingiere, solo uso externo."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper arboreum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones cutáneas y desinfección de heridas",
+        "preparation_method": "Cataplasma",
+        "description": "Uso tradicional para limpiar heridas y reducir inflamaciones locales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper auritum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Condimento y envoltorio para alimentos",
+        "preparation_method": "Consumo directo cocinado",
+        "description": "Las hojas se usan para envolver pescados o carnes, aportando un sabor anisado característico.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado por contenido de safrol"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper marginatum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Alivio de dolores musculares y reumatismo",
+        "preparation_method": "Maceración en alcohol",
+        "description": "Se utiliza la maceración de las hojas en alcohol para fricciones locales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Solo para uso externo"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Piper peltatum",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de inflamaciones y afecciones cutáneas",
+        "preparation_method": "Cataplasma",
+        "description": "Las hojas se calientan ligeramente y se aplican sobre la piel para reducir inflamaciones.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pleurotus djamor",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo fructífero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimento nutritivo",
+        "preparation_method": "Cocción",
+        "description": "Consumido como fuente de proteína en dietas locales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pleurotus ostreatus",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo fructífero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimentación",
+        "preparation_method": "Salteado",
+        "description": "Hongo de consumo común en la región cafetera.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Porphyrio martinica",
+    "traditional_uses": [
+      {
+        "part": "Cuerpo entero",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo ocasional en zonas rurales",
+        "preparation_method": "Cocción",
+        "description": "Consumo histórico en áreas rurales cercanas a humedales, actualmente en desuso.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Potentilla indica",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo ocasional",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Consumida ocasionalmente por caminantes en zonas rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Pourouma bicolor",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimento local",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Frutos consumidos por comunidades rurales y campesinas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Puya",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Artesanal"
+        ],
+        "specific_purpose": "Elaboración de fibras para tejidos",
+        "preparation_method": "Secado y desfibrado manual",
+        "description": "Uso de fibras resistentes para la creación de sogas y tejidos rústicos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Quercus humboldtii",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Construcción de viviendas y herramientas agrícolas",
+        "preparation_method": "Corte y tallado",
+        "description": "Uso histórico para vigas y postes debido a su alta durabilidad y resistencia.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Especie protegida, su tala está restringida."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Renealmia cernua",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Artesanal"
+        ],
+        "specific_purpose": "Envoltura de alimentos",
+        "preparation_method": "Limpieza y calentamiento leve",
+        "description": "Uso tradicional para envolver alimentos como tamales o quesos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Retrophyllum rospigliosii",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Construcción de viviendas y ebanistería fina",
+        "preparation_method": "Aserrado",
+        "description": "Madera de alta calidad utilizada históricamente en la región para carpintería estructural.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Ricinus communis",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Alivio de inflamaciones y dolores articulares",
+        "preparation_method": "Cataplasma",
+        "description": "Las hojas se calientan y aplican sobre la zona afectada para reducir la inflamación.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico si se ingiere, uso externo únicamente."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rottboellia cochinchinensis",
+    "traditional_uses": [
+      {
+        "part": "Planta entera",
+        "category": [
+          "Forraje/Veterinario"
+        ],
+        "specific_purpose": "Alimento para ganado",
+        "preparation_method": "Consumo directo",
+        "description": "Se utiliza como forraje en etapas tempranas antes de que desarrolle espinas endurecidas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Puede causar irritación mecánica por sus pelos silicificados."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rubus adenotrichos",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo y jugos",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Fruto recolectado en el campo para consumo fresco o preparación de bebidas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rubus floribundus",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimento en época de escasez",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Recolección silvestre para consumo local.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Rubus glaucus",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo y preparación de jugos",
+        "preparation_method": "Cocción o consumo fresco",
+        "description": "Fruta básica en la dieta campesina regional para jugos y mermeladas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Rubus urticifolius",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de diarreas",
+        "preparation_method": "Infusión",
+        "description": "Uso popular para aliviar problemas digestivos leves.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Sechium edule",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Alimentación diaria",
+        "preparation_method": "Cocción",
+        "description": "Consumo en sopas y guisos como base nutricional.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Senna multiglandulosa",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de estreñimiento",
+        "preparation_method": "Infusión",
+        "description": "Uso tradicional como purgante natural en comunidades rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No usar en embarazo o lactancia; uso prolongado causa dependencia."
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Serjania mexicana",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "category": [
+          "Tóxico/Caza"
+        ],
+        "specific_purpose": "Pesca artesanal",
+        "preparation_method": "Maceración",
+        "description": "La raíz macerada se vierte en el agua para aturdir peces.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxico para la fauna acuática; no consumir por humanos."
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Smilax tomentosa",
+    "traditional_uses": [
+      {
+        "part": "Raíz",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Depurativo sanguíneo y tratamiento de afecciones cutáneas",
+        "preparation_method": "Decocción",
+        "description": "Se utiliza la raíz hervida para limpiar la sangre y tratar problemas de la piel.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Consumo moderado"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Solanum quitoense",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Preparación de jugos y postres",
+        "preparation_method": "Licuado con agua o leche",
+        "description": "Consumo masivo como refresco natural en toda la región andina.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Solanum tuberosum",
+    "traditional_uses": [
+      {
+        "part": "Tubérculo",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Base de la dieta diaria",
+        "preparation_method": "Cocción",
+        "description": "Alimento básico en sopas y acompañamientos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Spondias mombin",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo y elaboración de jugos",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Fruto jugoso consumido tradicionalmente por comunidades rurales.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      },
+      {
+        "part": "Corteza",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Cicatrizante y antiinflamatorio",
+        "preparation_method": "Decocción",
+        "description": "Uso de la corteza en baños o lavados para heridas y afecciones de la piel.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Evitar uso excesivo en heridas abiertas profundas"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Spondias purpurea",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo fresco y conservas",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Fruto muy popular en mercados locales para consumo fresco.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Stemmadenia grandiflora",
+    "traditional_uses": [
+      {
+        "part": "Látex",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de verrugas y afecciones cutáneas",
+        "preparation_method": "Aplicación directa",
+        "description": "El látex se aplica tópicamente sobre verrugas por su acción cáustica.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Evitar contacto con los ojos, puede ser irritante."
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Taraxacum officinale",
+    "traditional_uses": [
+      {
+        "part": "Hojas y raíz",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Depurativo hepático y diurético",
+        "preparation_method": "Infusión o decocción",
+        "description": "Se utiliza tradicionalmente para limpiar el hígado y mejorar la digestión.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Evitar en caso de obstrucción biliar"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Tetragonisca angustula",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones oculares y respiratorias",
+        "preparation_method": "Consumo directo",
+        "description": "Utilizada tradicionalmente por campesinos para aliviar irritaciones oculares y tos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Theobroma cacao",
+    "traditional_uses": [
+      {
+        "part": "Semillas",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Bebida estimulante y alimento",
+        "preparation_method": "Fermentación, secado y tostado",
+        "description": "Consumo tradicional como bebida caliente o alimento energético.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trichanthera gigantea",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Forraje/Veterinario"
+        ],
+        "specific_purpose": "Suplemento alimenticio para ganado y cerdos",
+        "preparation_method": "Consumo directo fresco",
+        "description": "Se utiliza como forraje de alta calidad para mejorar la producción láctea y el peso en animales de granja.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trifolium pratense",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias y menopausia",
+        "preparation_method": "Infusión",
+        "description": "Se consume en infusión para aliviar la tos y como regulador hormonal natural.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "No consumir en exceso por actividad estrogénica"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trifolium repens",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones respiratorias y oculares",
+        "preparation_method": "Infusión",
+        "description": "Se utiliza tradicionalmente en infusiones para aliviar la tos y como lavado ocular para irritaciones leves.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Trigona fulviventris",
+    "traditional_uses": [
+      {
+        "part": "Miel",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Tratamiento de afecciones oculares y cicatrización",
+        "preparation_method": "Aplicación directa",
+        "description": "La miel se aplica directamente en los ojos para tratar cataratas o irritaciones y en heridas para acelerar la cicatrización.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Turnera subulata",
+    "traditional_uses": [
+      {
+        "part": "Flores",
+        "category": [
+          "Ornamental"
+        ],
+        "specific_purpose": "Decoración de jardines",
+        "preparation_method": "Cultivo directo",
+        "description": "Planta valorada por su belleza y facilidad de propagación en climas cálidos.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "medium"
+  },
+  {
+    "scientific_name": "Ugni myricoides",
+    "traditional_uses": [
+      {
+        "part": "Fruto",
+        "category": [
+          "Alimentario"
+        ],
+        "specific_purpose": "Consumo directo como fruta silvestre",
+        "preparation_method": "Consumo directo crudo",
+        "description": "Fruto recolectado por campesinos y caminantes en zonas de alta montaña.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Urochloa brizantha",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Forraje/Veterinario"
+        ],
+        "specific_purpose": "Alimentación de ganado vacuno",
+        "preparation_method": "Pastoreo directo",
+        "description": "Base de la dieta ganadera en muchas fincas del Eje Cafetero.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Vallea stipularis",
+    "traditional_uses": [
+      {
+        "part": "Madera",
+        "category": [
+          "Construcción"
+        ],
+        "specific_purpose": "Postes y herramientas agrícolas",
+        "preparation_method": "Corte y secado",
+        "description": "Uso ocasional en fincas para cercas vivas y herramientas.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Vultur gryphus",
+    "traditional_uses": [
+      {
+        "part": "Símbolo",
+        "category": [
+          "Mágico-Religioso/Ritual"
+        ],
+        "specific_purpose": "Representación cultural y espiritual",
+        "preparation_method": "Desconocido",
+        "description": "Considerado un animal sagrado en diversas culturas andinas, representando la conexión entre el cielo y la tierra.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Ninguna conocida"
+      }
+    ],
+    "confidence": "high"
+  },
+  {
+    "scientific_name": "Zantedeschia aethiopica",
+    "traditional_uses": [
+      {
+        "part": "Hojas",
+        "category": [
+          "Medicinal"
+        ],
+        "specific_purpose": "Maduración de abscesos",
+        "preparation_method": "Calentamiento al fuego",
+        "description": "La hoja se calienta y se aplica sobre la piel para tratar inflamaciones.",
+        "community": "Uso generalizado regional",
+        "traditional_warnings": "Tóxica si se ingiere debido a los oxalatos."
+      }
+    ],
+    "confidence": "high"
+  }
+]
