@@ -18,6 +18,7 @@ Usage in routers:
 """
 
 from __future__ import annotations
+from app.core.roles import UserRole
 
 import logging
 from dataclasses import dataclass
@@ -115,8 +116,6 @@ async def get_current_user(
         role=role,
     )
 
-
-from app.core.roles import UserRole
 
 def require_role(role: UserRole | str) -> Callable:
     """

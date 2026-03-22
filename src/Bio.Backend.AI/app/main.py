@@ -115,7 +115,7 @@ async def health() -> dict[str, Any]:
                     sa.text("SELECT COUNT(*) FROM species")
                 )
                 db_species_count = result.scalar() or 0
-        except Exception as e:
+        except Exception:
             pass
 
     return {

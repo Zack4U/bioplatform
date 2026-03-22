@@ -7,10 +7,10 @@
  * Persists the user's choice via AsyncStorage.
  */
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColorScheme as useNativeWindColorScheme } from "nativewind";
 import { useCallback, useEffect, useState } from "react";
 import { Appearance } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ThemeMode = "light" | "dark" | "system";
 
@@ -29,15 +29,17 @@ export function useThemeMode() {
             applyTheme(mode);
             setIsLoaded(true);
         });
-    }, []);
+    });
 
     // Listen for system appearance changes when in "system" mode
     useEffect(() => {
         if (themeMode !== "system") return;
 
-        const subscription = Appearance.addChangeListener(({ colorScheme: systemScheme }) => {
-            setColorScheme(systemScheme ?? "light");
-        });
+        const subscription = Appearance.addChangeListener(
+            ({ colorScheme: systemScheme }) => {
+                setColorScheme(systemScheme ?? "light");
+            },
+        );
 
         return () => subscription.remove();
     }, [themeMode, setColorScheme]);

@@ -39,14 +39,15 @@ import { router } from "expo-router";
 
 /** Convert a single snake_case string to camelCase. */
 function snakeToCamel(str: string): string {
-    return str.replace(/_([a-z])/g, (_, letter: string) => letter.toUpperCase());
+    return str.replace(/_([a-z])/g, (_, letter: string) =>
+        letter.toUpperCase(),
+    );
 }
 
 /**
  * Recursively convert all keys in a value from snake_case to camelCase.
  * Handles plain objects, arrays, and leaves primitives untouched.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- needed for generic recursive conversion
 function snakeToCamelDeep(value: any): any {
     if (Array.isArray(value)) {
         return value.map(snakeToCamelDeep);
@@ -208,10 +209,6 @@ export async function getModelMetrics(): Promise<ModelMetricsResponse> {
 export async function checkHealth(): Promise<HealthResponse> {
     // Strip /api/v1 suffix to hit the root-level /health endpoint
     const rootUrl = AI_API_BASE_URL.replace(/\/api\/v1\/?$/, "");
-    const { data } = await axios.get(
-        `${rootUrl}/health`,
-        { timeout: 5_000 },
-    );
+    const { data } = await axios.get(`${rootUrl}/health`, { timeout: 5_000 });
     return snakeToCamelDeep(data) as HealthResponse;
 }
-

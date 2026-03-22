@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class UserRole(str, Enum):
     """
     Role definitions that mirror the .NET Core backend Roles table.

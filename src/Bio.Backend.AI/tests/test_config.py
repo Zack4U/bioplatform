@@ -17,8 +17,8 @@ class TestSettings:
         assert s.pg_host == "localhost"
         assert s.pg_port == 5433
         assert s.pg_user == "postgres"
-        assert s.pg_password == "postgres"
-        assert s.pg_database == "biocommerce_scientific"
+        assert s.pg_password == "DevPassword123!"
+        assert s.pg_database == "BioCommerce_Scientific"
         assert s.bio_min_f1_threshold == 0.65
         assert s.cors_origins == "*"
         assert s.openai_api_key is None
