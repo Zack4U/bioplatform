@@ -2,7 +2,7 @@
  * Catalog Screen — Species Biodiversity Browser.
  *
  * Composes subcomponents:
- * - CatalogHeader: title, count, view-mode toggle, filters button
+ * - CatalogHeader: title, count, view-mode toggle
  * - KingdomFilters: horizontal pill row
  * - SpeciesListItem: full-width card for list mode
  * - SpeciesGridItem: compact square card for grid mode
@@ -12,6 +12,7 @@
  * - Toggle between List and Grid view modes
  * - Grid mode: responsive columns based on device width
  * - Species FlatList with pull-to-refresh
+ * - Tap species to navigate to detail screen
  */
 
 import { SearchInput } from "@/components/common";
@@ -22,7 +23,7 @@ import { SpeciesGridItem } from "@/components/catalog/SpeciesGridItem";
 import { SpeciesListItem } from "@/components/catalog/SpeciesListItem";
 import { useSpeciesList } from "@/hooks/useSpecies";
 import { THEME } from "@/lib/theme";
-import type { SpeciesListItem as SpeciesListItemType } from "@/types";
+import type { SpeciesResponse } from "@/types";
 import { Search } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useCallback, useState } from "react";
@@ -32,6 +33,7 @@ import {
     View,
     useWindowDimensions,
 } from "react-native";
+import { router } from "expo-router";
 
 export default function CatalogScreen() {
     const { colorScheme } = useColorScheme();
@@ -49,7 +51,7 @@ export default function CatalogScreen() {
         kingdom: selectedKingdom,
     });
 
-    const species = data?.items ?? [];
+    const species = data ?? [];
 
     // Responsive grid columns
     const numColumns = viewMode === "grid" ? (width < 400 ? 2 : 3) : 1;
@@ -59,17 +61,28 @@ export default function CatalogScreen() {
             ? (width - 40 - gridGap * (numColumns - 1)) / numColumns
             : 0;
 
+    const navigateToDetail = (id: string) => {
+        router.push(`/species/${id}` as never);
+    };
+
     // ─── Render Items ───────────────────────────────────────
     const renderListItem = useCallback(
-        ({ item }: { item: SpeciesListItemType }) => (
-            <SpeciesListItem item={item} />
+        ({ item }: { item: SpeciesResponse }) => (
+            <SpeciesListItem
+                item={item}
+                onPress={() => navigateToDetail(item.id)}
+            />
         ),
         [],
     );
 
     const renderGridItem = useCallback(
-        ({ item }: { item: SpeciesListItemType }) => (
-            <SpeciesGridItem item={item} width={gridItemWidth} />
+        ({ item }: { item: SpeciesResponse }) => (
+            <SpeciesGridItem
+                item={item}
+                width={gridItemWidth}
+                onPress={() => navigateToDetail(item.id)}
+            />
         ),
         [gridItemWidth],
     );
@@ -89,8 +102,8 @@ export default function CatalogScreen() {
             </Text>
             <Text className="text-sm text-muted-foreground text-center px-8">
                 {isLoading
-                    ? "Consultando el catálogo de biodiversidad"
-                    : "Ajusta los filtros o intenta con otro término de búsqueda."}
+                    ? "Consultando el catalogo de biodiversidad"
+                    : "Ajusta los filtros o intenta con otro termino de busqueda."}
             </Text>
         </View>
     );
@@ -100,7 +113,7 @@ export default function CatalogScreen() {
             {/* Header */}
             <View className="px-5 pt-14 pb-4">
                 <CatalogHeader
-                    totalCount={data?.totalCount ?? 0}
+                    totalCount={species.length}
                     viewMode={viewMode}
                     onToggleViewMode={() =>
                         setViewMode((m) => (m === "list" ? "grid" : "list"))
@@ -111,7 +124,7 @@ export default function CatalogScreen() {
                 <SearchInput
                     value={searchQuery}
                     onChange={setSearchQuery}
-                    placeholder="Buscar especie, familia, género..."
+                    placeholder="Buscar especie, familia, genero..."
                 />
 
                 {/* Kingdom Pills */}

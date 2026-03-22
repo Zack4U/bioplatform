@@ -1,95 +1,79 @@
 /**
  * React Query hooks for Species — Biodiversity Catalog.
  *
- * Ready for real backend integration: when the API is available,
- * remove the mock fallback in each queryFn and the data flows seamlessly
- * through the same hook interface.
+ * Connected to the .NET backend — no mock fallbacks.
  *
  * @module hooks/useSpecies
  */
 
-import { MOCK_SPECIES, MOCK_SPECIES_DETAIL } from "@/lib/mock-data";
-import { apiGet, apiGetPaginated } from "@/services/api";
-import type {
-    PaginatedResponse,
-    Species,
-    SpeciesListItem,
-    SpeciesSearchParams,
-} from "@/types";
+import { handleApiError } from "@/lib/error-handler";
+import * as speciesService from "@/services/species-service";
+import type { SpeciesResponse } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 const SPECIES_KEYS = {
     all: ["species"] as const,
     lists: () => [...SPECIES_KEYS.all, "list"] as const,
-    list: (params: SpeciesSearchParams) =>
-        [...SPECIES_KEYS.lists(), params] as const,
+    list: (search?: string, kingdom?: string) =>
+        [...SPECIES_KEYS.lists(), { search, kingdom }] as const,
     details: () => [...SPECIES_KEYS.all, "detail"] as const,
     detail: (id: string) => [...SPECIES_KEYS.details(), id] as const,
 };
 
+interface UseSpeciesListParams {
+    query?: string;
+    kingdom?: string;
+}
+
 /**
- * Fetch paginated list of species with search/filter support.
- * Falls back to mock data when the backend is unreachable.
+ * Fetch all species from the backend with client-side filtering.
+ * Backend doesn't support search/filter params — we filter locally.
  */
-export function useSpeciesList(params: SpeciesSearchParams = {}) {
+export function useSpeciesList(params: UseSpeciesListParams = {}) {
     return useQuery({
-        queryKey: SPECIES_KEYS.list(params),
-        queryFn: async (): Promise<PaginatedResponse<SpeciesListItem>> => {
+        queryKey: SPECIES_KEYS.list(params.query, params.kingdom),
+        queryFn: async (): Promise<SpeciesResponse[]> => {
             try {
-                return await apiGetPaginated<SpeciesListItem>(
-                    "/species",
-                    params as Record<string, unknown>,
-                );
-            } catch {
-                // Mock fallback — filter locally
-                let filtered = [...MOCK_SPECIES];
+                const allSpecies = await speciesService.getAll();
+
+                let filtered = allSpecies;
+
+                // Client-side search filter
                 if (params.query) {
                     const q = params.query.toLowerCase();
                     filtered = filtered.filter(
                         (s) =>
                             s.scientificName.toLowerCase().includes(q) ||
                             s.commonName?.toLowerCase().includes(q) ||
-                            s.family?.toLowerCase().includes(q),
+                            s.taxonomy?.family?.toLowerCase().includes(q) ||
+                            s.taxonomy?.genus?.toLowerCase().includes(q),
                     );
                 }
+
+                // Client-side kingdom filter
                 if (params.kingdom) {
                     filtered = filtered.filter(
-                        (s) => s.kingdom === params.kingdom,
+                        (s) => s.taxonomy?.kingdom === params.kingdom,
                     );
                 }
-                return {
-                    items: filtered,
-                    totalCount: filtered.length,
-                    page: params.page ?? 1,
-                    pageSize: params.pageSize ?? 12,
-                    totalPages: 1,
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                };
+
+                return filtered;
+            } catch (error) {
+                handleApiError(error);
+                return [];
             }
         },
-        staleTime: 5 * 60 * 1000, // 5 min
+        staleTime: 5 * 60 * 1000,
     });
 }
 
 /**
  * Fetch a single species by ID (full detail).
- * Falls back to mock detail data when the backend is unreachable.
  */
 export function useSpeciesDetail(id: string) {
     return useQuery({
         queryKey: SPECIES_KEYS.detail(id),
-        queryFn: async (): Promise<Species> => {
-            try {
-                return await apiGet<Species>(`/species/${id}`);
-            } catch {
-                // Mock fallback
-                return {
-                    ...MOCK_SPECIES_DETAIL,
-                    id,
-                };
-            }
-        },
+        queryFn: () => speciesService.getById(id),
         enabled: !!id,
     });
 }

@@ -102,6 +102,14 @@ export default function RootLayout() {
                             }}
                         />
                         <Stack.Screen
+                            name="species/[id]"
+                            options={{
+                                title: "Detalle de Especie",
+                                headerShown: false,
+                                animation: "slide_from_right",
+                            }}
+                        />
+                        <Stack.Screen
                             name="test"
                             options={{
                                 title: "Componentes UI (Test)",

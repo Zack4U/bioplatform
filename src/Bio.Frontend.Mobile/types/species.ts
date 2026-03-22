@@ -1,25 +1,32 @@
 /**
- * TypeScript types — Biodiversity Catalog (PostgreSQL)
- * Maps to: BioCommerce_Scientific database
+ * TypeScript types — Biodiversity Catalog.
+ * Maps to .NET Backend DTOs (Bio.Application.DTOs).
+ *
+ * Naming: camelCase (TypeScript) ↔ PascalCase (C#).
  */
 
-/** Taxonomy — mirrors taxonomies table (Postgres) */
-export interface Taxonomy {
+// ─── Taxonomy ────────────────────────────────────────────────────────────────
+
+/** Maps to TaxonomyResponseDTO */
+export interface TaxonomyResponse {
     id: number;
-    kingdom: string;
+    kingdom: string | null;
     phylum: string | null;
     className: string | null;
     orderName: string | null;
     family: string | null;
-    genus: string;
+    genus: string | null;
 }
 
-/** Species — mirrors species table (Postgres). Central catalog entity. */
-export interface Species {
+// ─── Species ─────────────────────────────────────────────────────────────────
+
+/** Maps to SpeciesResponseDTO */
+export interface SpeciesResponse {
     id: string;
-    taxonomyId: number;
-    taxonomy?: Taxonomy;
+    taxonomyId: number | null;
+    taxonomy: TaxonomyResponse | null;
     slug: string;
+    thumbnailUrl: string | null;
     scientificName: string;
     commonName: string | null;
     description: string | null;
@@ -27,15 +34,29 @@ export interface Species {
     traditionalUses: string | null;
     economicPotential: string | null;
     conservationStatus: string | null;
+    altitudeRange: string | null;
+    legalStatus: boolean;
     isSensitive: boolean;
-    thumbnailUrl: string | null;
-    images?: SpeciesImage[];
-    distributions?: GeographicDistribution[];
     createdAt: string;
-    updatedAt?: string;
+    updatedAt: string;
 }
 
-/** SpeciesImage — mirrors species_images table */
+// ─── Geographic Distribution ─────────────────────────────────────────────────
+
+/** Maps to GeographicDistribution entity (no DTO yet — future endpoint) */
+export interface GeographicDistribution {
+    id: string;
+    speciesId: string;
+    latitude: number;
+    longitude: number;
+    altitude: number | null;
+    municipality: string | null;
+    ecosystemType: string | null;
+}
+
+// ─── Species Images ──────────────────────────────────────────────────────────
+
+/** Maps to SpeciesImage entity (no DTO yet — future endpoint) */
 export interface SpeciesImage {
     id: string;
     speciesId: string;
@@ -45,44 +66,4 @@ export interface SpeciesImage {
     isValidatedByExpert: boolean;
     usedForTraining: boolean;
     licenseType: string;
-}
-
-/** GeographicDistribution — mirrors geographic_distributions table (PostGIS) */
-export interface GeographicDistribution {
-    id: string;
-    speciesId: string;
-    municipality: string;
-    /** Latitude — masked if species.isSensitive is true */
-    latitude: number | null;
-    /** Longitude — masked if species.isSensitive is true */
-    longitude: number | null;
-    altitude: number | null;
-    ecosystemType: string | null;
-}
-
-/** SpeciesListItem — lightweight DTO for lists/cards (avoids over-fetching) */
-export interface SpeciesListItem {
-    id: string;
-    slug: string;
-    scientificName: string;
-    commonName: string | null;
-    family: string | null;
-    kingdom: string;
-    thumbnailUrl: string | null;
-    isSensitive: boolean;
-}
-
-/** Species search/filter params */
-export interface SpeciesSearchParams {
-    query?: string;
-    kingdom?: string;
-    phylum?: string;
-    family?: string;
-    genus?: string;
-    isSensitive?: boolean;
-    conservationStatus?: string;
-    page?: number;
-    pageSize?: number;
-    sortBy?: "scientificName" | "commonName" | "createdAt";
-    sortOrder?: "asc" | "desc";
 }
