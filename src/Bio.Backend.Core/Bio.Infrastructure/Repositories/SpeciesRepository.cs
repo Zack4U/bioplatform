@@ -69,4 +69,14 @@ public class SpeciesRepository : ISpeciesRepository
     {
         return await _context.Species.AnyAsync(s => s.Slug == slug && s.Id != excludeId, cancellationToken);
     }
+
+    public async Task<HashSet<string>> ExistingScientificNamesAsync(IEnumerable<string> names, CancellationToken cancellationToken = default)
+    {
+        var nameList = names.ToList();
+        var existing = await _context.Species
+            .Where(s => nameList.Contains(s.ScientificName))
+            .Select(s => s.ScientificName)
+            .ToListAsync(cancellationToken);
+        return new HashSet<string>(existing);
+    }
 }

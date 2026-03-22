@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Bio.Application.DTOs;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
 using Bio.Infrastructure.Services;
+using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -22,6 +25,7 @@ public class SpeciesImportJobTests
     private readonly Mock<ISpeciesRepository> _speciesRepoMock;
     private readonly Mock<ITaxonomyRepository> _taxonomyRepoMock;
     private readonly Mock<IScientificUnitOfWork> _uowMock;
+    private readonly ScientificDbContext _dbContext;
     private readonly SpeciesImportJob _sut;
 
     public SpeciesImportJobTests()
@@ -31,11 +35,18 @@ public class SpeciesImportJobTests
         _taxonomyRepoMock = new Mock<ITaxonomyRepository>();
         _uowMock = new Mock<IScientificUnitOfWork>();
 
+        // In-memory DbContext for ChangeTracker tests
+        var options = new DbContextOptionsBuilder<ScientificDbContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+        _dbContext = new ScientificDbContext(options);
+
         _sut = new SpeciesImportJob(
             _loggerMock.Object,
             _speciesRepoMock.Object,
             _taxonomyRepoMock.Object,
-            _uowMock.Object);
+            _uowMock.Object,
+            _dbContext);
     }
 
     [Fact]
@@ -61,10 +72,10 @@ public class SpeciesImportJobTests
             }
         };
 
-        // No existing species
+        // No existing species (bulk check returns empty set)
         _speciesRepoMock
-            .Setup(r => r.GetByScientificNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Species?)null);
+            .Setup(r => r.ExistingScientificNamesAsync(It.IsAny<IEnumerable<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HashSet<string>());
 
         // No existing taxonomy
         _taxonomyRepoMock
@@ -107,10 +118,10 @@ public class SpeciesImportJobTests
             new() { ScientificName = "Cattleya trianae", Family = "Orchidaceae", Genus = "Cattleya" }
         };
 
-        // Species already exists
+        // Species already exists (bulk check returns the name)
         _speciesRepoMock
-            .Setup(r => r.GetByScientificNameAsync("Cattleya trianae", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Species(Guid.NewGuid(), "cattleya-trianae", "Cattleya trianae"));
+            .Setup(r => r.ExistingScientificNamesAsync(It.IsAny<IEnumerable<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HashSet<string> { "Cattleya trianae" });
 
         // Act
         var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
@@ -160,8 +171,8 @@ public class SpeciesImportJobTests
         };
 
         _speciesRepoMock
-            .Setup(r => r.GetByScientificNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Species?)null);
+            .Setup(r => r.ExistingScientificNamesAsync(It.IsAny<IEnumerable<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HashSet<string>());
 
         _taxonomyRepoMock
             .Setup(r => r.GetByFieldsAsync("Plantae", "Tracheophyta", "Magnoliopsida", "Asparagales", "Orchidaceae", "Cattleya", It.IsAny<CancellationToken>()))
@@ -212,14 +223,10 @@ public class SpeciesImportJobTests
             new() { ScientificName = "", Family = "Unknown", Genus = "Unknown" }
         };
 
-        // First species exists, second does not
+        // First species exists (bulk check returns it), second does not
         _speciesRepoMock
-            .Setup(r => r.GetByScientificNameAsync("Cattleya trianae", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Species(Guid.NewGuid(), "cattleya-trianae", "Cattleya trianae"));
-
-        _speciesRepoMock
-            .Setup(r => r.GetByScientificNameAsync("Quercus humboldtii", It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Species?)null);
+            .Setup(r => r.ExistingScientificNamesAsync(It.IsAny<IEnumerable<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HashSet<string> { "Cattleya trianae" });
 
         _taxonomyRepoMock
             .Setup(r => r.GetByFieldsAsync(
@@ -242,5 +249,53 @@ public class SpeciesImportJobTests
         // Assert
         processed.Should().Be(1);  // Only Quercus humboldtii 
         skipped.Should().Be(2);    // Cattleya (duplicate) + empty name
+    }
+
+    [Fact]
+    public async Task ProcessBatchAsync_MultipleRecordsSameTaxonomy_QueriesTaxonomyOnlyOnce()
+    {
+        // Arrange
+        var batch = new List<SpeciesCsvRecord>
+        {
+            new()
+            {
+                Kingdom = "Plantae", Phylum = "Tracheophyta", Class = "Magnoliopsida",
+                Order = "Asparagales", Family = "Orchidaceae", Genus = "Cattleya",
+                ScientificName = "Cattleya trianae"
+            },
+            new()
+            {
+                Kingdom = "Plantae", Phylum = "Tracheophyta", Class = "Magnoliopsida",
+                Order = "Asparagales", Family = "Orchidaceae", Genus = "Cattleya",
+                ScientificName = "Cattleya warscewiczii"
+            }
+        };
+
+        _speciesRepoMock
+            .Setup(r => r.ExistingScientificNamesAsync(It.IsAny<IEnumerable<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new HashSet<string>());
+
+        _taxonomyRepoMock
+            .Setup(r => r.GetByFieldsAsync(
+                "Plantae", "Tracheophyta", "Magnoliopsida", "Asparagales", "Orchidaceae", "Cattleya",
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Taxonomy("Plantae", "Tracheophyta", "Magnoliopsida", "Asparagales", "Orchidaceae", "Cattleya"));
+
+        _uowMock
+            .Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(1);
+
+        // Act
+        var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
+
+        // Assert
+        processed.Should().Be(2);
+        skipped.Should().Be(0);
+
+        // Taxonomy lookup should happen only ONCE due to caching
+        _taxonomyRepoMock.Verify(r => r.GetByFieldsAsync(
+            It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<string?>(),
+            It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<string?>(),
+            It.IsAny<CancellationToken>()), Times.Once);
     }
 }

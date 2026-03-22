@@ -19,4 +19,9 @@ public interface ISpeciesRepository
     /// </summary>
     Task<bool> ExistsByScientificNameExcludingIdAsync(string scientificName, Guid excludeId, CancellationToken cancellationToken = default);
     Task<bool> ExistsBySlugExcludingIdAsync(string slug, Guid excludeId, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Returns the set of scientific names (from the provided list) that already exist in the database.
+    /// Used for bulk duplicate detection during CSV import.
+    /// </summary>
+    Task<HashSet<string>> ExistingScientificNamesAsync(IEnumerable<string> names, CancellationToken cancellationToken = default);
 }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Bio.Application.DTOs;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
+using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 
 namespace Bio.Infrastructure.Services;
 
@@ -20,17 +21,20 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ITaxonomyRepository _taxonomyRepository;
     private readonly IScientificUnitOfWork _unitOfWork;
+    private readonly ScientificDbContext _dbContext;
 
     public SpeciesImportJob(
         ILogger<SpeciesImportJob> logger,
         ISpeciesRepository speciesRepository,
         ITaxonomyRepository taxonomyRepository,
-        IScientificUnitOfWork unitOfWork)
+        IScientificUnitOfWork unitOfWork,
+        ScientificDbContext dbContext)
     {
         _logger = logger;
         _speciesRepository = speciesRepository;
         _taxonomyRepository = taxonomyRepository;
         _unitOfWork = unitOfWork;
+        _dbContext = dbContext;
     }
 
     public async Task ProcessCsvImportAsync(string filePath, Guid userId)
@@ -72,6 +76,9 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
                     totalProcessed += processed;
                     totalSkipped += skipped;
                     currentBatch.Clear();
+
+                    // Clear EF change tracker to prevent memory/performance degradation across batches
+                    _dbContext.ChangeTracker.Clear();
                 }
             }
 
@@ -105,55 +112,89 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
     {
         _logger.LogInformation("Processing batch of {Count} records", batch.Count);
 
-        var speciesEntities = new List<Species>();
+        // 1. Pre-filter records with empty ScientificName
+        var validRecords = new List<SpeciesCsvRecord>();
         int skipped = 0;
 
         foreach (var record in batch)
         {
-            // Validate required field
             if (string.IsNullOrWhiteSpace(record.ScientificName))
             {
                 _logger.LogWarning("Skipping record with empty ScientificName.");
                 skipped++;
-                continue;
             }
+            else
+            {
+                validRecords.Add(record);
+            }
+        }
 
-            // Check for duplicate by scientific name
-            var existing = await _speciesRepository.GetByScientificNameAsync(record.ScientificName);
-            if (existing != null)
+        if (validRecords.Count == 0)
+        {
+            return (0, skipped);
+        }
+
+        // 2. Bulk duplicate check — single DB query instead of N queries
+        var allNames = validRecords.Select(r => r.ScientificName.Trim()).Distinct().ToList();
+        var existingNames = await _speciesRepository.ExistingScientificNamesAsync(allNames);
+
+        var newRecords = new List<SpeciesCsvRecord>();
+        foreach (var record in validRecords)
+        {
+            if (existingNames.Contains(record.ScientificName.Trim()))
             {
                 _logger.LogWarning("Skipping duplicate species: {ScientificName}", record.ScientificName);
                 skipped++;
-                continue;
             }
-
-            // Upsert Taxonomy: find existing or create new
-            var taxonomy = await _taxonomyRepository.GetByFieldsAsync(
-                NullIfEmpty(record.Kingdom),
-                NullIfEmpty(record.Phylum),
-                NullIfEmpty(record.Class),
-                NullIfEmpty(record.Order),
-                NullIfEmpty(record.Family),
-                NullIfEmpty(record.Genus));
-
-            if (taxonomy == null)
+            else
             {
-                taxonomy = new Taxonomy(
+                newRecords.Add(record);
+            }
+        }
+
+        if (newRecords.Count == 0)
+        {
+            return (0, skipped);
+        }
+
+        // 3. Process taxonomies with in-memory cache to avoid repeated lookups
+        var taxonomyCache = new Dictionary<string, Taxonomy>();
+        var speciesEntities = new List<Species>();
+
+        foreach (var record in newRecords)
+        {
+            // Build a cache key from the taxonomy fields
+            var taxonomyKey = BuildTaxonomyKey(record);
+
+            if (!taxonomyCache.TryGetValue(taxonomyKey, out var taxonomy))
+            {
+                // Query DB only once per unique taxonomy combination
+                taxonomy = await _taxonomyRepository.GetByFieldsAsync(
                     NullIfEmpty(record.Kingdom),
                     NullIfEmpty(record.Phylum),
                     NullIfEmpty(record.Class),
                     NullIfEmpty(record.Order),
                     NullIfEmpty(record.Family),
                     NullIfEmpty(record.Genus));
-                await _taxonomyRepository.AddAsync(taxonomy);
-                // Save so the Taxonomy gets its generated Id
-                await _unitOfWork.SaveChangesAsync();
+
+                if (taxonomy == null)
+                {
+                    taxonomy = new Taxonomy(
+                        NullIfEmpty(record.Kingdom),
+                        NullIfEmpty(record.Phylum),
+                        NullIfEmpty(record.Class),
+                        NullIfEmpty(record.Order),
+                        NullIfEmpty(record.Family),
+                        NullIfEmpty(record.Genus));
+                    await _taxonomyRepository.AddAsync(taxonomy);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                taxonomyCache[taxonomyKey] = taxonomy;
             }
 
-            // Generate slug from scientific name
             var slug = GenerateSlug(record.ScientificName);
 
-            // Create Species entity
             var species = new Species(
                 id: Guid.NewGuid(),
                 slug: slug,
@@ -184,6 +225,20 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
             speciesEntities.Count, skipped);
 
         return (speciesEntities.Count, skipped);
+    }
+
+    /// <summary>
+    /// Builds a composite cache key from the taxonomy fields of a CSV record.
+    /// </summary>
+    internal static string BuildTaxonomyKey(SpeciesCsvRecord record)
+    {
+        return string.Join("|",
+            record.Kingdom?.Trim() ?? "",
+            record.Phylum?.Trim() ?? "",
+            record.Class?.Trim() ?? "",
+            record.Order?.Trim() ?? "",
+            record.Family?.Trim() ?? "",
+            record.Genus?.Trim() ?? "");
     }
 
     /// <summary>
