@@ -12,7 +12,9 @@ import logging
 import time
 from typing import Annotated
 
-from fastapi import APIRouter, File, HTTPException, Query, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
+
+from app.core.auth import CurrentUser, get_current_user
 
 from app.models.vision import (
     ClassificationResponse,
@@ -161,6 +163,7 @@ async def classify_species(
     confidence_threshold: Annotated[
         float, Query(ge=0.0, le=1.0, description="Minimum confidence threshold")
     ] = 0.0,
+    current_user: CurrentUser = Depends(get_current_user),
 ) -> ClassificationResponse:
     """
     Classify a species image using the trained CNN model.
@@ -227,7 +230,7 @@ async def classify_species(
             from app.services.species_repository import log_prediction
 
             await log_prediction(
-                user_id=None,
+                user_id=current_user.user_id,
                 image_input_url="upload",
                 raw_result=result["predictions"],
                 confidence_score=top_pred["confidence"],

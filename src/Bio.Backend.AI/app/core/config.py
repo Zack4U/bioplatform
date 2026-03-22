@@ -43,6 +43,11 @@ class Settings(BaseSettings):
     model_weights_path: str = "data/weights/best_model.pth"
     bio_min_f1_threshold: float = 0.65
 
+    # ── JWT (shared with .NET backend) ─────────────────────────
+    jwt_secret: str = ""
+    jwt_issuer: str = "bioplatform-api"
+    jwt_audience: str = "bioplatform-clients"
+
     # ── CORS ───────────────────────────────────────────────────
     cors_origins: str = "*"
 

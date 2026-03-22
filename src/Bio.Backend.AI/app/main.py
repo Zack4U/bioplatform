@@ -86,8 +86,10 @@ app.add_middleware(
 
 # ── Register Routers ──────────────────────────────────────────
 from app.api.v1_classify import router as classify_router  # noqa: E402
+from app.api.v1_metrics import router as metrics_router  # noqa: E402
 
 app.include_router(classify_router)
+app.include_router(metrics_router)
 
 
 @app.get("/health", tags=["Infrastructure"])
@@ -96,11 +98,25 @@ async def health() -> dict[str, Any]:
     Health check endpoint for Docker / load balancer probes.
     Reports CNN model status and PostgreSQL connectivity.
     """
-    from app.core.database import check_db_connection
+    from app.core.database import check_db_connection, get_db_session
     from app.services.vision.classifier import get_classifier
+
+    import sqlalchemy as sa
 
     classifier = get_classifier()
     db_connected = await check_db_connection()
+
+    # Count species in the database (best-effort)
+    db_species_count = 0
+    if db_connected:
+        try:
+            async with get_db_session() as session:
+                result = await session.execute(
+                    sa.text("SELECT COUNT(*) FROM species")
+                )
+                db_species_count = result.scalar() or 0
+        except Exception as e:
+            pass
 
     return {
         "status": "healthy" if classifier.is_loaded else "degraded",
@@ -108,6 +124,7 @@ async def health() -> dict[str, Any]:
         "model_loaded": classifier.is_loaded,
         "num_classes": classifier.num_classes,
         "database_connected": db_connected,
+        "db_species_count": db_species_count,
     }
 
 
