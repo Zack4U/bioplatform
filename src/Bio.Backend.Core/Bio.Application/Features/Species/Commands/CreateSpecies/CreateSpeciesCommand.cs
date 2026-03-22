@@ -44,6 +44,8 @@ public class CreateSpeciesCommandHandler : IRequestHandler<CreateSpeciesCommand,
             dto.TraditionalUses,
             dto.EconomicPotential,
             dto.ConservationStatus,
+            dto.AltitudeRange,
+            dto.LegalStatus,
             dto.IsSensitive);
         await _repository.AddAsync(species, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

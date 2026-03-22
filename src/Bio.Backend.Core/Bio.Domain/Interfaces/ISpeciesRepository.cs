@@ -12,10 +12,16 @@ public interface ISpeciesRepository
     Task<Species?> GetByScientificNameAsync(string scientificName, CancellationToken cancellationToken = default);
     Task<IEnumerable<Species>> GetAllAsync(int? skip = null, int? take = null, CancellationToken cancellationToken = default);
     Task<Species> AddAsync(Species species, CancellationToken cancellationToken = default);
+    Task AddRangeAsync(IEnumerable<Species> speciesList, CancellationToken cancellationToken = default);
     Task DeleteAsync(Species species, CancellationToken cancellationToken = default);
     /// <summary>
     /// Comprueba si existe otra especie (excluyendo id) con el mismo scientific_name o slug.
     /// </summary>
     Task<bool> ExistsByScientificNameExcludingIdAsync(string scientificName, Guid excludeId, CancellationToken cancellationToken = default);
     Task<bool> ExistsBySlugExcludingIdAsync(string slug, Guid excludeId, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Returns the set of scientific names (from the provided list) that already exist in the database.
+    /// Used for bulk duplicate detection during CSV import.
+    /// </summary>
+    Task<HashSet<string>> ExistingScientificNamesAsync(IEnumerable<string> names, CancellationToken cancellationToken = default);
 }

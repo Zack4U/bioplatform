@@ -49,6 +49,11 @@ public class SpeciesRepository : ISpeciesRepository
         return species;
     }
 
+    public async Task AddRangeAsync(IEnumerable<Species> speciesList, CancellationToken cancellationToken = default)
+    {
+        await _context.Species.AddRangeAsync(speciesList, cancellationToken);
+    }
+
     public Task DeleteAsync(Species species, CancellationToken cancellationToken = default)
     {
         _context.Species.Remove(species);
@@ -63,5 +68,15 @@ public class SpeciesRepository : ISpeciesRepository
     public async Task<bool> ExistsBySlugExcludingIdAsync(string slug, Guid excludeId, CancellationToken cancellationToken = default)
     {
         return await _context.Species.AnyAsync(s => s.Slug == slug && s.Id != excludeId, cancellationToken);
+    }
+
+    public async Task<HashSet<string>> ExistingScientificNamesAsync(IEnumerable<string> names, CancellationToken cancellationToken = default)
+    {
+        var nameList = names.ToList();
+        var existing = await _context.Species
+            .Where(s => nameList.Contains(s.ScientificName))
+            .Select(s => s.ScientificName)
+            .ToListAsync(cancellationToken);
+        return new HashSet<string>(existing);
     }
 }

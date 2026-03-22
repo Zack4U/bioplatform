@@ -56,13 +56,24 @@ public class ScientificDbContext : DbContext
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.EcologicalInfo).HasColumnName("ecological_info");
             entity.Property(e => e.TraditionalUses).HasColumnName("traditional_uses");
-            entity.Property(e => e.EconomicPotential).HasColumnName("economic_potential").HasMaxLength(255);
+            entity.Property(e => e.EconomicPotential).HasColumnName("economic_potential");
+            entity.Property(e => e.AltitudeRange).HasColumnName("altitude_range").HasMaxLength(100);
+            entity.Property(e => e.LegalStatus).HasColumnName("legal_status").HasDefaultValue(false);
             entity.Property(e => e.ConservationStatus).HasColumnName("conservation_status").HasMaxLength(100);
             entity.Property(e => e.IsSensitive).HasColumnName("is_sensitive");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
             entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
             entity.HasIndex(e => e.Slug).IsUnique();
             entity.HasIndex(e => e.ScientificName).IsUnique();
+
+            // JSON columns for structured data (PostgreSQL jsonb)
+            entity.Property(e => e.TraditionalUses).HasColumnType("jsonb");
+            entity.Property(e => e.EconomicPotential).HasColumnType("jsonb");
+
+            // Conservation
+            entity.Property(e => e.IsSensitive).HasDefaultValue(false);
+
+            // Note: Trigram indexes and specialized GIN ops are configured via migrations/fluent API
             entity.HasOne(e => e.Taxonomy)
                   .WithMany(t => t.Species)
                   .HasForeignKey(e => e.TaxonomyId);

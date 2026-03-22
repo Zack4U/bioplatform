@@ -1,0 +1,45 @@
+============================================================
+  MASTER SPECIES LIST — BUILD REPORT
+  BioPlatform Caldas
+============================================================
+
+── SOURCES ─────────────────────────────
+  CNN Dataset species:        719
+  SIB Caldas (CO-CAL):        683
+
+── MERGE RESULTS ───────────────────────
+  Total merged (unique):      1,259
+  ├─ Only in dataset:         583
+  ├─ Only in SIB Caldas:      535
+  └─ In both sources:         141
+
+  Meets 1000+ threshold:      ✅ YES
+
+── DATA AVAILABLE ──────────────────────
+  In CNN dataset (images):    719
+  With SIB record ID:         676
+  With thumbnail URL:         653
+
+── SPECIES IN BOTH SOURCES ─────────────
+  (showing first 20 of 141)
+    • Aglaiocercus kingii
+    • Amanita muscaria
+    • Ampelion rubrocristatus
+    • Andigena hypoglauca
+    • Andigena nigrirostris
+    • Aniba perutilis
+    • Anisognathus igniventris
+    • Anolis antonii
+    • Aotus lemurinus
+    • Ara severus
+    • Ardea alba
+    • Ardea cocoi
+    • Arremon assimilis
+    • Asio stygius
+    • Atlapetes pallidinucha
+    • Atlapetes schistaceus
+    • Basiliscus galeritus
+    • Bellucia pentamera
+    • Bolborhynchus ferrugineifrons
+    • Bubulcus ibis
+    ... and 121 more

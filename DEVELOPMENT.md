@@ -396,6 +396,25 @@ dotnet ef database update --context ScientificDbContext -p Bio.Infrastructure -s
 # dotnet ef migrations add <Name> --context BioDbContext -p Bio.Infrastructure -s Bio.API
 ```
 
+### 5.3 Credenciales por Defecto (Seed)
+
+La base de datos se inicializa automáticamente en `BioDbContextSeeder.cs` (vía *Entity Framework HasData*) con los roles clave indicados en los requerimientos, y un usuario asignado a cada rol para pruebas.
+
+Puedes utilizar estas credenciales en el entorno de desarrollo:
+
+- **Contraseña universal:** `DevPassword123!`
+
+| Rol | Email |
+|-----|-------|
+| Admin | `admin@biocommerce.com` |
+| Researcher | `researcher@biocommerce.com` |
+| Entrepreneur | `entrepreneur@biocommerce.com` |
+| Community | `community@biocommerce.com` |
+| Buyer | `buyer@biocommerce.com` |
+| Authority | `authority@biocommerce.com` |
+
+*Nota: Esta semilla se genera dinámicamente con un salt determinista para mantener las migraciones consistentes.*
+
 ### 5.3 Reset de Base de Datos
 
 ```bash

@@ -78,20 +78,20 @@ dotnet test Bio.Backend.Core.sln --no-build -c Release --verbosity normal --coll
 
 # 5. Revisar el reporte con ReportGenerator (excluyendo Infrastructure y API)
 dotnet tool install -g dotnet-reportgenerator-globaltool
-reportgenerator -reports:Bio.UnitTests/TestResults/**/*.xml -targetdir:Bio.UnitTests/Report -reporttypes:Html -assemblyfilters:-Bio.Infrastructure*;-Bio.API*
+reportgenerator -reports:Bio.UnitTests/TestResults/**/*.xml -targetdir:Bio.UnitTests/Report -reporttypes:Html -assemblyfilters:"-Bio.Infrastructure*;-Bio.API*"
 start Bio.UnitTests/Report/index.html
 
 ```
 
 ### Reglas clave
 
-| Regla                  | Valor                                         |
-| ---------------------- | --------------------------------------------- |
-| Formato código         | `dotnet format` (cero diferencias)            |
-| Warnings en build      | **Tratados como errores** (`-warnaserror`)    |
+| Regla                  | Valor                                                               |
+| ---------------------- | ------------------------------------------------------------------- |
+| Formato código         | `dotnet format` (cero diferencias)                                  |
+| Warnings en build      | **Tratados como errores** (`-warnaserror`)                          |
 | Cobertura mínima tests | **70%** (solo Domain y Application, Infrastructure y API excluidas) |
-| Framework tests        | xUnit + Moq                                   |
-| Naming                 | `PascalCase` clases/métodos, `ISomeInterface` |
+| Framework tests        | xUnit + Moq                                                         |
+| Naming                 | `PascalCase` clases/métodos, `ISomeInterface`                       |
 
 ---
 
