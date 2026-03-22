@@ -19,6 +19,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useColorScheme } from "nativewind";
 import { useEffect, useState } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
     configureReanimatedLogger,
     ReanimatedLogLevel,
@@ -60,56 +61,58 @@ export default function RootLayout() {
     }
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
-                <Stack
-                    screenOptions={{
-                        headerShown: false,
-                        animation: "fade",
-                    }}
-                >
-                    <Stack.Screen
-                        name="splash"
-                        options={{
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider value={NAV_THEME[colorScheme ?? "light"]}>
+                    <Stack
+                        screenOptions={{
                             headerShown: false,
                             animation: "fade",
                         }}
-                    />
-                    <Stack.Screen
-                        name="(tabs)"
-                        options={{
-                            headerShown: false,
-                            animation: "fade",
-                        }}
-                    />
-                    <Stack.Screen
-                        name="login"
-                        options={{
-                            title: "Iniciar Sesión",
-                            headerShown: false,
-                            animation: "slide_from_bottom",
-                            presentation: "modal",
-                        }}
-                    />
-                    <Stack.Screen
-                        name="register"
-                        options={{
-                            title: "Crear Cuenta",
-                            headerShown: false,
-                            animation: "slide_from_right",
-                        }}
-                    />
-                    <Stack.Screen
-                        name="test"
-                        options={{
-                            title: "Componentes UI (Test)",
-                            headerShown: true,
-                        }}
-                    />
-                </Stack>
-                <PortalHost />
-                <Toaster />
-            </ThemeProvider>
-        </QueryClientProvider>
+                    >
+                        <Stack.Screen
+                            name="splash"
+                            options={{
+                                headerShown: false,
+                                animation: "fade",
+                            }}
+                        />
+                        <Stack.Screen
+                            name="(tabs)"
+                            options={{
+                                headerShown: false,
+                                animation: "fade",
+                            }}
+                        />
+                        <Stack.Screen
+                            name="login"
+                            options={{
+                                title: "Iniciar Sesion",
+                                headerShown: false,
+                                animation: "slide_from_bottom",
+                                presentation: "modal",
+                            }}
+                        />
+                        <Stack.Screen
+                            name="register"
+                            options={{
+                                title: "Crear Cuenta",
+                                headerShown: false,
+                                animation: "slide_from_right",
+                            }}
+                        />
+                        <Stack.Screen
+                            name="test"
+                            options={{
+                                title: "Componentes UI (Test)",
+                                headerShown: true,
+                            }}
+                        />
+                    </Stack>
+                    <PortalHost />
+                    <Toaster />
+                </ThemeProvider>
+            </QueryClientProvider>
+        </GestureHandlerRootView>
     );
 }

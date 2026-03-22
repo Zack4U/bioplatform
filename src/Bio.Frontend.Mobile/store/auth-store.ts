@@ -5,19 +5,24 @@
  * For production, consider migrating tokens to expo-secure-store.
  */
 
-import type { User } from "@/types";
+import type { UserResponse } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 
+/** AsyncStorage key constants */
+export const STORAGE_KEYS = {
+    ACCESS_TOKEN: "accessToken",
+    REFRESH_TOKEN: "refreshToken",
+} as const;
+
 interface AuthState {
-    user: User | null;
+    user: UserResponse | null;
     isAuthenticated: boolean;
     isLoading: boolean;
 
-    setUser: (user: User) => void;
+    setUser: (user: UserResponse) => void;
     setLoading: (loading: boolean) => void;
     logout: () => Promise<void>;
-    hydrate: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -30,16 +35,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     setLoading: (isLoading) => set({ isLoading }),
 
     logout: async () => {
-        await AsyncStorage.removeItem("accessToken");
-        await AsyncStorage.removeItem("refreshToken");
+        await AsyncStorage.multiRemove([
+            STORAGE_KEYS.ACCESS_TOKEN,
+            STORAGE_KEYS.REFRESH_TOKEN,
+        ]);
         set({ user: null, isAuthenticated: false, isLoading: false });
-    },
-
-    hydrate: async () => {
-        const token = await AsyncStorage.getItem("accessToken");
-        if (!token) {
-            set({ isLoading: false });
-        }
-        // Full hydration happens via a useAuth hook that calls /auth/me
     },
 }));

@@ -11,7 +11,6 @@ import type {
     PredictionResult,
     Species,
     SpeciesListItem,
-    User,
 } from "@/types";
 
 // ─── Mock Species (Catalog) ──────────────────────────────────────────────────
@@ -167,19 +166,6 @@ export const MOCK_CLASSIFICATION_RESPONSE: ClassifyImageResponse = {
         confidence: 0.92,
     },
     processingTimeMs: 1250,
-};
-
-// ─── Mock User ───────────────────────────────────────────────────────────────
-
-export const MOCK_USER: User = {
-    id: "usr-001",
-    email: "investigador@ucaldas.edu.co",
-    fullName: "Dr. Carlos Mejía",
-    phoneNumber: "+57 310 555 1234",
-    isVerified: true,
-    isActive: true,
-    roles: [{ id: 2, name: "Researcher", description: "Investigador" }],
-    createdAt: "2024-01-10T08:00:00Z",
 };
 
 // ─── Mock Stats ──────────────────────────────────────────────────────────────

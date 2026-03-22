@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { THEME } from "@/lib/theme";
-import type { User } from "@/types";
+import type { UserResponse } from "@/types";
 import { Shield, User as UserIcon } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
@@ -17,7 +17,7 @@ import { View } from "react-native";
 import { router } from "expo-router";
 
 interface UserCardProps {
-    user: User | null;
+    user: UserResponse | null;
     isAuthenticated: boolean;
 }
 
@@ -25,7 +25,7 @@ export function UserCard({ user, isAuthenticated }: UserCardProps) {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
 
-    const primaryRole = user?.roles[0];
+
 
     return (
         <View className="px-5 pt-14 pb-6">
@@ -54,17 +54,17 @@ export function UserCard({ user, isAuthenticated }: UserCardProps) {
                                 <View className="flex-row items-center gap-2 mt-2">
                                     <Badge className="bg-primary/10 border-0 px-3 py-1">
                                         <Text className="text-xs text-primary font-semibold">
-                                            {primaryRole?.name ?? "Usuario"}
+                                            Usuario
                                         </Text>
                                     </Badge>
-                                    {user.isVerified && (
+                                    {user.twoFactorEnabled && (
                                         <View className="flex-row items-center gap-1">
                                             <Shield
                                                 size={12}
                                                 color={theme.success}
                                             />
                                             <Text className="text-[10px] text-success font-medium">
-                                                Verificado
+                                                2FA Activo
                                             </Text>
                                         </View>
                                     )}

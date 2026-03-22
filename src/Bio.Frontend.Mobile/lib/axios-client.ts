@@ -4,7 +4,7 @@
  * Features:
  * - Base URL from environment variables (EXPO_PUBLIC_API_BASE_URL)
  * - JWT auth interceptor (attaches access token)
- * - Automatic token refresh on 401
+ * - Automatic token refresh on 401 (sends both accessToken + refreshToken)
  * - Global error handling with Sonner-native
  * - Request/response logging in development
  *
@@ -13,6 +13,7 @@
 
 import { API_BASE_URL } from "@/lib/constants";
 import { notificationService } from "@/lib/notifications";
+import { CORE_ROUTES } from "@/services/routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, {
     type AxiosError,
@@ -20,6 +21,7 @@ import axios, {
     type AxiosResponse,
     type InternalAxiosRequestConfig,
 } from "axios";
+import { router } from "expo-router";
 
 interface RetryableConfig extends InternalAxiosRequestConfig {
     _retry?: boolean;
@@ -66,13 +68,23 @@ apiClient.interceptors.response.use(
         ) {
             originalRequest._retry = true;
             try {
-                const refreshToken = await AsyncStorage.getItem("refreshToken");
-                if (refreshToken) {
+                const refreshToken =
+                    await AsyncStorage.getItem("refreshToken");
+                const accessToken =
+                    await AsyncStorage.getItem("accessToken");
+                if (refreshToken && accessToken) {
+                    // Matches RefreshRequestDTO { AccessToken, RefreshToken }
                     const { data } = await axios.post<{
                         accessToken: string;
                         refreshToken: string;
-                    }>(`${API_BASE_URL}/auth/refresh`, { refreshToken });
-                    await AsyncStorage.setItem("accessToken", data.accessToken);
+                    }>(`${API_BASE_URL}${CORE_ROUTES.AUTH.REFRESH}`, {
+                        accessToken,
+                        refreshToken,
+                    });
+                    await AsyncStorage.setItem(
+                        "accessToken",
+                        data.accessToken,
+                    );
                     await AsyncStorage.setItem(
                         "refreshToken",
                         data.refreshToken,
@@ -87,9 +99,9 @@ apiClient.interceptors.response.use(
                 await AsyncStorage.removeItem("accessToken");
                 await AsyncStorage.removeItem("refreshToken");
                 notificationService.warning(
-                    "Sesión expirada. Por favor, inicia sesión de nuevo.",
+                    "Sesion expirada. Por favor, inicia sesion de nuevo.",
                 );
-                // Puedes navegar a login usando tu router
+                router.replace("/login");
             }
         }
 

@@ -2,10 +2,10 @@
  * Register Screen — BioCommerce Caldas Mobile.
  *
  * Features:
- * - Full name, email, password, confirm password inputs
- * - Role selection via pill buttons
+ * - Full name, email, phone, password, confirm password inputs
  * - Terms & conditions checkbox
  * - Register mutation via useAuth hook
+ * - Matches backend UserCreateDTO (no role selection — assigned by default)
  */
 
 import { Button } from "@/components/ui/button";
@@ -14,14 +14,13 @@ import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useAuth } from "@/hooks/useAuth";
 import { THEME } from "@/lib/theme";
-import type { UserRoleName } from "@/types";
 import {
     ArrowLeft,
     Eye,
     EyeOff,
-    Leaf,
     Lock,
     Mail,
+    Phone,
     UserPlus,
 } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
@@ -35,13 +34,6 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 
-const AVAILABLE_ROLES: { label: string; value: UserRoleName; emoji: string }[] = [
-    { label: "Investigador", value: "Researcher", emoji: "🔬" },
-    { label: "Emprendedor", value: "Entrepreneur", emoji: "🌱" },
-    { label: "Comunidad", value: "Community", emoji: "🏘️" },
-    { label: "Comprador", value: "Buyer", emoji: "🛒" },
-];
-
 export default function RegisterScreen() {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
@@ -49,9 +41,9 @@ export default function RegisterScreen() {
 
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [selectedRole, setSelectedRole] = useState<UserRoleName>("Researcher");
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -59,6 +51,7 @@ export default function RegisterScreen() {
     const canSubmit =
         fullName.trim() &&
         email.trim() &&
+        phoneNumber.trim() &&
         password.length >= 8 &&
         passwordsMatch &&
         acceptTerms;
@@ -68,8 +61,8 @@ export default function RegisterScreen() {
         register.mutate({
             fullName: fullName.trim(),
             email: email.trim(),
+            phoneNumber: phoneNumber.trim(),
             password,
-            role: selectedRole,
         });
     };
 
@@ -156,10 +149,34 @@ export default function RegisterScreen() {
                         </View>
                     </View>
 
+                    {/* Phone Number */}
+                    <View>
+                        <Text className="text-sm font-medium text-foreground mb-2">
+                            Telefono
+                        </Text>
+                        <View className="relative">
+                            <View className="absolute left-3 top-0 bottom-0 justify-center z-10">
+                                <Phone
+                                    size={16}
+                                    color={theme.mutedForeground}
+                                    strokeWidth={1.5}
+                                />
+                            </View>
+                            <Input
+                                placeholder="+57 310 555 1234"
+                                value={phoneNumber}
+                                onChangeText={setPhoneNumber}
+                                keyboardType="phone-pad"
+                                autoComplete="tel"
+                                className="pl-10 h-14 rounded-2xl"
+                            />
+                        </View>
+                    </View>
+
                     {/* Password */}
                     <View>
                         <Text className="text-sm font-medium text-foreground mb-2">
-                            Contraseña
+                            Contrasena
                         </Text>
                         <View className="relative">
                             <View className="absolute left-3 top-0 bottom-0 justify-center z-10">
@@ -170,7 +187,7 @@ export default function RegisterScreen() {
                                 />
                             </View>
                             <Input
-                                placeholder="Mínimo 8 caracteres"
+                                placeholder="Minimo 8 caracteres"
                                 value={password}
                                 onChangeText={setPassword}
                                 secureTextEntry={!showPassword}
@@ -199,10 +216,10 @@ export default function RegisterScreen() {
                     {/* Confirm Password */}
                     <View>
                         <Text className="text-sm font-medium text-foreground mb-2">
-                            Confirmar contraseña
+                            Confirmar contrasena
                         </Text>
                         <Input
-                            placeholder="Repite la contraseña"
+                            placeholder="Repite la contrasena"
                             value={confirmPassword}
                             onChangeText={setConfirmPassword}
                             secureTextEntry={!showPassword}
@@ -211,48 +228,9 @@ export default function RegisterScreen() {
                         />
                         {confirmPassword.length > 0 && !passwordsMatch && (
                             <Text className="text-xs text-destructive mt-1">
-                                Las contraseñas no coinciden
+                                Las contrasenas no coinciden
                             </Text>
                         )}
-                    </View>
-
-                    {/* Role Selection */}
-                    <View>
-                        <Text className="text-sm font-medium text-foreground mb-3">
-                            ¿Cuál es tu rol?
-                        </Text>
-                        <View className="flex-row flex-wrap gap-2">
-                            {AVAILABLE_ROLES.map((role) => {
-                                const isSelected =
-                                    selectedRole === role.value;
-                                return (
-                                    <Pressable
-                                        key={role.value}
-                                        onPress={() =>
-                                            setSelectedRole(role.value)
-                                        }
-                                        className={`px-4 py-3 rounded-2xl flex-row items-center gap-2 ${
-                                            isSelected
-                                                ? "bg-primary"
-                                                : "bg-card border border-border"
-                                        }`}
-                                    >
-                                        <Text className="text-sm">
-                                            {role.emoji}
-                                        </Text>
-                                        <Text
-                                            className={`text-sm font-semibold ${
-                                                isSelected
-                                                    ? "text-primary-foreground"
-                                                    : "text-foreground"
-                                            }`}
-                                        >
-                                            {role.label}
-                                        </Text>
-                                    </Pressable>
-                                );
-                            })}
-                        </View>
                     </View>
 
                     {/* Terms */}
