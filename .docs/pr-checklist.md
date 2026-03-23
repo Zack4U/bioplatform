@@ -19,7 +19,7 @@ cd src/Bio.Backend.AI
 
 # 1. Activar venv
 # Windows:
-.venv\Scripts\activate
+source .venv/Scripts/activate
 # Linux/macOS:
 source .venv/bin/activate
 
@@ -126,6 +126,38 @@ npm run build
 | ESLint warnings permitidas | **0** (cero tolerancia)              |
 | TypeScript                 | `--noEmit` strict check              |
 | Build producción           | Debe completar sin errores           |
+| Lenguaje                   | TypeScript obligatorio               |
+| Naming                     | `camelCase` para variables/funciones |
+
+---
+
+## 📱 Bio.Frontend.Mobile (Expo / React Native)
+
+**Directorio:** `src/Bio.Frontend.Mobile`
+**CI Workflow:** `.github/workflows/mobile-app.yaml`
+
+```bash
+cd src/Bio.Frontend.Mobile
+
+# 1. Instalar dependencias (si es necesario)
+// turbo
+npm ci
+
+# 2. ESLint — política de cero warnings
+// turbo
+npx eslint . --max-warnings=0
+
+# 3. Type Check con TypeScript
+// turbo
+npx tsc --noEmit
+```
+
+### Reglas clave
+
+| Regla                      | Valor                                |
+| -------------------------- | ------------------------------------ |
+| ESLint warnings permitidas | **0** (cero tolerancia)              |
+| TypeScript                 | `--noEmit` strict check              |
 | Lenguaje                   | TypeScript obligatorio               |
 | Naming                     | `camelCase` para variables/funciones |
 

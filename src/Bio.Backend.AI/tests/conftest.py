@@ -100,7 +100,14 @@ def app_client(mock_classifier, mock_settings):
         ),
     ):
         from app.main import app
+        from app.core.auth import get_current_user, CurrentUser
+
+        app.dependency_overrides[get_current_user] = lambda: CurrentUser(
+            user_id="test", email="test@ex.com", name="Test", role="Admin"
+        )
 
         transport = ASGITransport(app=app)
         client = AsyncClient(transport=transport, base_url="http://test")
         yield client
+
+        app.dependency_overrides.clear()

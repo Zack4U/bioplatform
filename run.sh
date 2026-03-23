@@ -118,7 +118,7 @@ function start_service() {
         ai)
             echo -e "${YELLOW}🐍 AI Service${NC}"
             # Activación de Venv compatible con Git Bash
-            open_terminal "ai" "src/Bio.Backend.AI" "uvicorn app.main:app --reload --port 8000"
+            open_terminal "ai" "src/Bio.Backend.AI" "source ../../.venv/Scripts/activate && uvicorn app.main:app --reload --port 8000"
             echo -e "${GREEN}✓ AI Service iniciando...${NC}"
         ;;
         
