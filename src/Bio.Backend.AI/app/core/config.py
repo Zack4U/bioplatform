@@ -36,12 +36,17 @@ class Settings(BaseSettings):
     pg_host: str = "localhost"
     pg_port: int = 5433
     pg_user: str = "postgres"
-    pg_password: str = "postgres"
-    pg_database: str = "biocommerce_scientific"
+    pg_password: str = "DevPassword123!"
+    pg_database: str = "BioCommerce_Scientific"
 
     # ── CNN Model ──────────────────────────────────────────────
     model_weights_path: str = "data/weights/best_model.pth"
     bio_min_f1_threshold: float = 0.65
+
+    # ── JWT (shared with .NET backend) ─────────────────────────
+    jwt_secret: str = ""
+    jwt_issuer: str = "bioplatform-api"
+    jwt_audience: str = "bioplatform-clients"
 
     # ── CORS ───────────────────────────────────────────────────
     cors_origins: str = "*"
