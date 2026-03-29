@@ -19,6 +19,8 @@ import type {
     TwoFactorSetupResponse,
     TwoFactorVerifyRequest,
     UserResponse,
+    UserRoleName,
+    UserUpdateRequest,
 } from "@/types";
 
 // ─── Auth Endpoints ──────────────────────────────────────────────────────────
@@ -107,7 +109,42 @@ export async function register(
     return data;
 }
 
+/** GET /api/users/{id} — fetch complete user profile */
+export async function getProfile(userId: string): Promise<UserResponse> {
+    const { data } = await apiClient.get<UserResponse>(
+        CORE_ROUTES.USERS.BY_ID(userId),
+    );
+    return data;
+}
+
+/** PUT /api/users/{id} — update user profile */
+export async function updateProfile(
+    userId: string,
+    request: UserUpdateRequest,
+): Promise<UserResponse> {
+    const { data } = await apiClient.put<UserResponse>(
+        CORE_ROUTES.USERS.BY_ID(userId),
+        request,
+    );
+    return data;
+}
+
+/** DELETE /api/users/{id} — delete user account */
+export async function deleteAccount(userId: string): Promise<void> {
+    await apiClient.delete(CORE_ROUTES.USERS.BY_ID(userId));
+}
+
 // ─── Token Utilities ─────────────────────────────────────────────────────────
+
+/** Known role values that the backend JWT emits */
+const VALID_ROLES: ReadonlySet<string> = new Set<UserRoleName>([
+    "ADMIN",
+    "RESEARCHER",
+    "ENTREPRENEUR",
+    "COMMUNITY",
+    "BUYER",
+    "AUTHORITY",
+]);
 
 /**
  * Decode user information from a JWT access token.
@@ -129,6 +166,22 @@ export function decodeUserFromToken(token: string): UserResponse | null {
 
         if (!id) return null;
 
+        // Extract roles — JWT may have single string or array for `role` claim
+        const rawRole =
+            decoded.role ??
+            decoded[
+                "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+            ];
+
+        let roles: UserRoleName[] = [];
+        if (Array.isArray(rawRole)) {
+            roles = rawRole.filter((r: string) =>
+                VALID_ROLES.has(r),
+            ) as UserRoleName[];
+        } else if (typeof rawRole === "string" && VALID_ROLES.has(rawRole)) {
+            roles = [rawRole as UserRoleName];
+        }
+
         return {
             id,
             fullName: decoded.name ?? "",
@@ -142,6 +195,7 @@ export function decodeUserFromToken(token: string): UserResponse | null {
             createdAt: new Date().toISOString(),
             updatedAt: null,
             twoFactorEnabled: false,
+            roles,
         };
     } catch {
         return null;

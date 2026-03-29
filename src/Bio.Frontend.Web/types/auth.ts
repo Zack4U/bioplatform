@@ -16,6 +16,8 @@ export interface UserResponse {
     createdAt: string; // ISO 8601 UTC — format to local time only in UI
     updatedAt: string | null;
     twoFactorEnabled: boolean;
+    /** Roles decoded from JWT — not part of UserResponseDTO */
+    roles: UserRoleName[];
 }
 
 /** Maps to UserCreateDTO */
@@ -24,6 +26,13 @@ export interface RegisterRequest {
     email: string;
     phoneNumber: string;
     password: string;
+}
+
+/** Maps to UserUpdateDTO */
+export interface UserUpdateRequest {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
 }
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
@@ -77,10 +86,14 @@ export interface TwoFactorVerifyRequest {
 
 // ─── Roles ───────────────────────────────────────────────────────────────────
 
+/**
+ * Matches backend RoleNames.cs constants (uppercase).
+ * JWT `role` claim uses these exact values.
+ */
 export type UserRoleName =
-    | "Admin"
-    | "Researcher"
-    | "Entrepreneur"
-    | "Community"
-    | "Buyer"
-    | "EnvironmentalAuthority";
+    | "ADMIN"
+    | "RESEARCHER"
+    | "ENTREPRENEUR"
+    | "COMMUNITY"
+    | "BUYER"
+    | "AUTHORITY";

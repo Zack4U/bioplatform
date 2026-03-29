@@ -70,7 +70,7 @@ export function Navbar() {
                 Ir al contenido principal
             </a>
 
-            <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+            <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
                 <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                     {/* Logo */}
                     <Link
@@ -128,16 +128,14 @@ export function Navbar() {
                                 <DropdownMenuTrigger asChild>
                                     <Button
                                         id="user-menu-trigger"
-                                        variant="ghost"
+                                        variant="outline"
                                         size="icon"
-                                        className="rounded-full"
                                         aria-label="Menu de usuario"
                                     >
-                                        <Avatar size="sm">
-                                            <AvatarFallback>
-                                                {getInitials(user.fullName)}
-                                            </AvatarFallback>
-                                        </Avatar>
+                                        <User
+                                            className="h-4 w-4"
+                                            aria-hidden="true"
+                                        />
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent
@@ -145,13 +143,22 @@ export function Navbar() {
                                     className="w-56"
                                 >
                                     <DropdownMenuLabel className="font-normal">
-                                        <div className="flex flex-col space-y-1">
-                                            <p className="text-sm font-medium leading-none">
-                                                {user.fullName}
-                                            </p>
-                                            <p className="text-xs leading-none text-muted-foreground">
-                                                {user.email}
-                                            </p>
+                                        <div className="flex items-center gap-3">
+                                            <Avatar size="sm">
+                                                <AvatarFallback>
+                                                    {getInitials(
+                                                        user.fullName,
+                                                    )}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col space-y-1">
+                                                <p className="text-sm font-medium leading-none">
+                                                    {user.fullName}
+                                                </p>
+                                                <p className="text-xs leading-none text-muted-foreground">
+                                                    {user.email}
+                                                </p>
+                                            </div>
                                         </div>
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />

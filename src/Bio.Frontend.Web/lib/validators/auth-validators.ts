@@ -60,6 +60,25 @@ export const changePasswordSchema = z
 
 export type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
 
+/** Profile update form schema — mirrors UserUpdateDTO */
+export const updateProfileSchema = z.object({
+    fullName: z
+        .string()
+        .min(1, "El nombre completo es obligatorio")
+        .max(150, "El nombre no puede superar 150 caracteres"),
+    email: z
+        .string()
+        .min(1, "El correo es obligatorio")
+        .email("Formato de correo invalido")
+        .max(100, "El correo no puede superar 100 caracteres"),
+    phoneNumber: z
+        .string()
+        .min(1, "El telefono es obligatorio")
+        .max(20, "El telefono no puede superar 20 caracteres"),
+});
+
+export type UpdateProfileFormValues = z.infer<typeof updateProfileSchema>;
+
 /** 2FA code schema */
 export const twoFactorCodeSchema = z.object({
     code: z

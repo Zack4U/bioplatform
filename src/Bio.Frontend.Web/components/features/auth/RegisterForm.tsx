@@ -185,7 +185,7 @@ export function RegisterForm() {
                     </div>
                 </CardContent>
 
-                <CardFooter className="flex flex-col gap-4">
+                <CardFooter className="flex flex-col gap-4 pt-2">
                     <Button
                         id="register-submit"
                         type="submit"

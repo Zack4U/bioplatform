@@ -9,6 +9,7 @@
  * @module components/features/auth/LoginForm
  */
 
+import { TwoFactorDialog } from "@/components/features/auth/TwoFactorDialog";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -20,11 +21,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TwoFactorDialog } from "@/components/features/auth/TwoFactorDialog";
-import {
-    useLogin,
-    useTwoFactorLogin,
-} from "@/hooks/features/auth";
+import { useLogin, useTwoFactorLogin } from "@/hooks/features/auth";
 import {
     loginSchema,
     type LoginFormValues,
@@ -34,6 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, LogIn } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function LoginForm() {
     const { twoFactorPending, twoFactorToken, clearTwoFactorPending } =
@@ -59,9 +57,7 @@ export function LoginForm() {
         <>
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-2xl">
-                        Iniciar Sesion
-                    </CardTitle>
+                    <CardTitle className="text-2xl">Iniciar Sesion</CardTitle>
                     <CardDescription>
                         Ingresa tus credenciales para acceder a tu cuenta
                     </CardDescription>
@@ -108,13 +104,18 @@ export function LoginForm() {
                                 <Label htmlFor="login-password">
                                     Contrasena
                                 </Label>
-                                <Link
-                                    href="/forgot-password"
+                                <button
+                                    type="button"
                                     className="text-xs text-muted-foreground underline-offset-4 hover:underline"
                                     tabIndex={-1}
+                                    onClick={() => {
+                                        toast.info(
+                                            "Por implementar: recuperacion de contrasena por correo.",
+                                        );
+                                    }}
                                 >
                                     Olvidaste tu contrasena?
-                                </Link>
+                                </button>
                             </div>
                             <Input
                                 id="login-password"
@@ -141,7 +142,7 @@ export function LoginForm() {
                         </div>
                     </CardContent>
 
-                    <CardFooter className="flex flex-col gap-4">
+                    <CardFooter className="flex flex-col gap-4 pt-2">
                         <Button
                             id="login-submit"
                             type="submit"
@@ -154,10 +155,7 @@ export function LoginForm() {
                                     aria-hidden="true"
                                 />
                             ) : (
-                                <LogIn
-                                    className="h-4 w-4"
-                                    aria-hidden="true"
-                                />
+                                <LogIn className="h-4 w-4" aria-hidden="true" />
                             )}
                             {loginMutation.isPending
                                 ? "Ingresando..."
@@ -182,7 +180,7 @@ export function LoginForm() {
                 open={twoFactorPending}
                 twoFactorToken={twoFactorToken}
                 isPending={twoFactorMutation.isPending}
-                onSubmit={(code) => {
+                onSubmit={(code: string) => {
                     if (!twoFactorToken) return;
                     twoFactorMutation.mutate({
                         twoFactorToken,

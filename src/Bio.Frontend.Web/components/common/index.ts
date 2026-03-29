@@ -2,6 +2,7 @@
  * Barrel export for common components.
  */
 
+export { AuthGuard } from "./AuthGuard";
 export { ConfirmDialog } from "./ConfirmDialog";
 export { DataCard } from "./DataCard";
 export { EmptyState } from "./EmptyState";

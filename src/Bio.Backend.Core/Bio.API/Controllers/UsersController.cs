@@ -68,17 +68,34 @@ public class UsersController : ControllerBase
 
     /// <summary>
     /// Retrieves a user by their unique identifier.
+    /// Admins can read any profile; regular users can only read their own.
     /// </summary>
     /// <param name="id">The user's unique ID.</param>
     /// <returns>The user DTO if found; otherwise, 404.</returns>
     /// <response code="200">User found.</response>
+    /// <response code="403">If the user tries to read another user's profile without admin role.</response>
     /// <response code="404">User not found.</response>
-    [Authorize(Roles = RoleNames.Admin)]
+    [Authorize]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UserResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUserById(Guid id)
     {
+        var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                                 ?? User.FindFirst("sub")?.Value;
+
+        if (currentUserIdClaim == null || !Guid.TryParse(currentUserIdClaim, out var currentUserId))
+        {
+            return Unauthorized();
+        }
+
+        // Non-admin users can only read their own profile
+        if (currentUserId != id && !User.IsInRole(RoleNames.Admin))
+        {
+            return Forbid();
+        }
+
         var user = await _mediator.Send(new GetUserByIdQuery(id));
         return Ok(user);
     }

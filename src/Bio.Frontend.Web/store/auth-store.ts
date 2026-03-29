@@ -4,8 +4,24 @@
  */
 
 import { decodeUserFromToken } from "@/services/auth-service";
-import type { UserResponse } from "@/types";
+import type { UserResponse, UserRoleName } from "@/types";
 import { create } from "zustand";
+
+/**
+ * Check if a JWT token has expired by reading the `exp` claim.
+ * Returns true if expired, malformed, or unreadable.
+ */
+function isTokenExpired(token: string): boolean {
+    try {
+        const payload = token.split(".")[1];
+        if (!payload) return true;
+        const decoded = JSON.parse(atob(payload));
+        if (!decoded.exp) return false; // No expiry claim — treat as valid
+        return decoded.exp * 1000 < Date.now();
+    } catch {
+        return true;
+    }
+}
 
 interface AuthState {
     /** Current authenticated user (decoded from JWT) */
@@ -33,9 +49,11 @@ interface AuthState {
     logout: () => void;
     /** Hydrate from localStorage on mount */
     hydrate: () => void;
+    /** Check if user has a specific role */
+    hasRole: (role: UserRoleName) => boolean;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
     user: null,
     isAuthenticated: false,
     isLoading: true,
@@ -85,6 +103,18 @@ export const useAuthStore = create<AuthState>((set) => ({
         if (typeof window !== "undefined") {
             const token = localStorage.getItem("accessToken");
             if (token) {
+                // Validate token has not expired
+                if (isTokenExpired(token)) {
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+                    set({
+                        user: null,
+                        isAuthenticated: false,
+                        isLoading: false,
+                    });
+                    return;
+                }
+
                 const user = decodeUserFromToken(token);
                 set({
                     user,
@@ -95,5 +125,10 @@ export const useAuthStore = create<AuthState>((set) => ({
                 set({ isLoading: false });
             }
         }
+    },
+
+    hasRole: (role: UserRoleName) => {
+        const { user } = get();
+        return user?.roles?.includes(role) ?? false;
     },
 }));
