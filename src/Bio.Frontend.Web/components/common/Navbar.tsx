@@ -2,13 +2,23 @@
 
 /**
  * Navbar — main application navigation bar.
- * Built on Shadcn Button + Sheet primitives.
+ * Built on Shadcn Button + Sheet + DropdownMenu + Avatar primitives.
+ * Shows user avatar menu when authenticated, login button when guest.
  * WCAG: skip navigation link, landmark nav, keyboard accessible.
  * Responsive: uses Sheet for mobile navigation drawer.
  */
 
 import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import {
     Sheet,
@@ -19,17 +29,40 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { Leaf, Menu, ShoppingCart } from "lucide-react";
+import { useLogout } from "@/hooks/features/auth";
+import { useAuthStore } from "@/store/auth-store";
+import {
+    Leaf,
+    LogOut,
+    Menu,
+    Settings,
+    ShoppingCart,
+    User,
+} from "lucide-react";
 import Link from "next/link";
 
 const NAV_LINKS = [
-    { label: "Catálogo", href: "/catalog" },
+    { label: "Catalogo", href: "/catalog" },
     { label: "Marketplace", href: "/marketplace" },
-    { label: "Identificación IA", href: "/identify" },
+    { label: "Identificacion IA", href: "/identify" },
     { label: "Asesor IA", href: "/advisor" },
 ] as const;
 
+/** Extract initials from a full name (max 2 chars) */
+function getInitials(fullName: string): string {
+    const parts = fullName.trim().split(/\s+/);
+    if (parts.length === 0) return "U";
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (
+        parts[0].charAt(0).toUpperCase() +
+        parts[parts.length - 1].charAt(0).toUpperCase()
+    );
+}
+
 export function Navbar() {
+    const { isAuthenticated, user, isLoading } = useAuthStore();
+    const logoutMutation = useLogout();
+
     return (
         <>
             {/* Skip navigation — WCAG 2.1 AA */}
@@ -43,7 +76,7 @@ export function Navbar() {
                     <Link
                         href="/"
                         className="flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                        aria-label="BioCommerce Caldas — Inicio"
+                        aria-label="BioCommerce Caldas - Inicio"
                     >
                         <Leaf
                             className="h-7 w-7 text-primary"
@@ -56,7 +89,7 @@ export function Navbar() {
 
                     {/* Desktop nav */}
                     <nav
-                        aria-label="Navegación principal"
+                        aria-label="Navegacion principal"
                         className="hidden items-center gap-1 md:flex"
                     >
                         {NAV_LINKS.map((link) => (
@@ -89,13 +122,84 @@ export function Navbar() {
                             </Link>
                         </Button>
 
-                        <Button
-                            size="sm"
-                            className="hidden sm:inline-flex"
-                            asChild
-                        >
-                            <Link href="/login">Ingresar</Link>
-                        </Button>
+                        {/* Auth state — show user menu or login button */}
+                        {!isLoading && isAuthenticated && user ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        id="user-menu-trigger"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="rounded-full"
+                                        aria-label="Menu de usuario"
+                                    >
+                                        <Avatar size="sm">
+                                            <AvatarFallback>
+                                                {getInitials(user.fullName)}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    align="end"
+                                    className="w-56"
+                                >
+                                    <DropdownMenuLabel className="font-normal">
+                                        <div className="flex flex-col space-y-1">
+                                            <p className="text-sm font-medium leading-none">
+                                                {user.fullName}
+                                            </p>
+                                            <p className="text-xs leading-none text-muted-foreground">
+                                                {user.email}
+                                            </p>
+                                        </div>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/profile">
+                                            <User
+                                                className="h-4 w-4"
+                                                aria-hidden="true"
+                                            />
+                                            Mi perfil
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/settings">
+                                            <Settings
+                                                className="h-4 w-4"
+                                                aria-hidden="true"
+                                            />
+                                            Configuracion
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem
+                                        id="logout-button"
+                                        variant="destructive"
+                                        onClick={() =>
+                                            logoutMutation.mutate()
+                                        }
+                                        disabled={logoutMutation.isPending}
+                                    >
+                                        <LogOut
+                                            className="h-4 w-4"
+                                            aria-hidden="true"
+                                        />
+                                        Cerrar sesion
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <Button
+                                id="login-nav-button"
+                                size="sm"
+                                className="hidden sm:inline-flex"
+                                asChild
+                            >
+                                <Link href="/login">Ingresar</Link>
+                            </Button>
+                        )}
 
                         {/* Mobile menu — Sheet */}
                         <Sheet>
@@ -104,7 +208,7 @@ export function Navbar() {
                                     variant="outline"
                                     size="icon"
                                     className="md:hidden"
-                                    aria-label="Abrir menú de navegación"
+                                    aria-label="Abrir menu de navegacion"
                                 >
                                     <Menu
                                         className="h-4 w-4"
@@ -122,12 +226,37 @@ export function Navbar() {
                                         BioCommerce
                                     </SheetTitle>
                                     <SheetDescription>
-                                        Navegación principal
+                                        Navegacion principal
                                     </SheetDescription>
                                 </SheetHeader>
                                 <Separator />
+
+                                {/* User info in mobile menu */}
+                                {!isLoading && isAuthenticated && user && (
+                                    <>
+                                        <div className="flex items-center gap-3 px-2 py-3">
+                                            <Avatar size="default">
+                                                <AvatarFallback>
+                                                    {getInitials(
+                                                        user.fullName,
+                                                    )}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col">
+                                                <p className="text-sm font-medium leading-none">
+                                                    {user.fullName}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {user.email}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <Separator />
+                                    </>
+                                )}
+
                                 <nav
-                                    aria-label="Navegación móvil"
+                                    aria-label="Navegacion movil"
                                     className="flex flex-col gap-1 px-2"
                                 >
                                     {NAV_LINKS.map((link) => (
@@ -144,11 +273,73 @@ export function Navbar() {
                                         </SheetClose>
                                     ))}
                                     <Separator className="my-2" />
-                                    <SheetClose asChild>
-                                        <Button className="w-full" asChild>
-                                            <Link href="/login">Ingresar</Link>
-                                        </Button>
-                                    </SheetClose>
+
+                                    {!isLoading &&
+                                    isAuthenticated &&
+                                    user ? (
+                                        <>
+                                            <SheetClose asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="w-full justify-start"
+                                                    asChild
+                                                >
+                                                    <Link href="/profile">
+                                                        <User
+                                                            className="mr-2 h-4 w-4"
+                                                            aria-hidden="true"
+                                                        />
+                                                        Mi perfil
+                                                    </Link>
+                                                </Button>
+                                            </SheetClose>
+                                            <SheetClose asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="w-full justify-start"
+                                                    asChild
+                                                >
+                                                    <Link href="/settings">
+                                                        <Settings
+                                                            className="mr-2 h-4 w-4"
+                                                            aria-hidden="true"
+                                                        />
+                                                        Configuracion
+                                                    </Link>
+                                                </Button>
+                                            </SheetClose>
+                                            <Separator className="my-2" />
+                                            <SheetClose asChild>
+                                                <Button
+                                                    variant="destructive"
+                                                    className="w-full justify-start"
+                                                    onClick={() =>
+                                                        logoutMutation.mutate()
+                                                    }
+                                                    disabled={
+                                                        logoutMutation.isPending
+                                                    }
+                                                >
+                                                    <LogOut
+                                                        className="mr-2 h-4 w-4"
+                                                        aria-hidden="true"
+                                                    />
+                                                    Cerrar sesion
+                                                </Button>
+                                            </SheetClose>
+                                        </>
+                                    ) : (
+                                        <SheetClose asChild>
+                                            <Button
+                                                className="w-full"
+                                                asChild
+                                            >
+                                                <Link href="/login">
+                                                    Ingresar
+                                                </Link>
+                                            </Button>
+                                        </SheetClose>
+                                    )}
                                 </nav>
                             </SheetContent>
                         </Sheet>
