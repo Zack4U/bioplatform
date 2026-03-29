@@ -92,6 +92,22 @@ builder.Services.AddHangfireServer();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesBulkImportJob, Bio.Infrastructure.Services.SpeciesImportJob>();
 builder.Services.AddScoped<Bio.Application.Common.Interfaces.IJobEnqueuer, Bio.Infrastructure.Services.JobEnqueuer>();
 
+// CORS — allow configured frontend origins
+var corsOrigins = builder.Configuration
+    .GetSection("CorsSettings:AllowedOrigins")
+    .Get<string[]>() ?? ["http://localhost:3000"];
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(corsOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // MediatR, AutoMapper, FluentValidation, Controllers
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Bio.Application.Features.Species.Commands.ImportSpeciesCsvCommand).Assembly));
@@ -144,7 +160,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // Added authentication middleware
+// CORS must be before Authentication/Authorization
+app.UseCors();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Expose Hangfire Dashboard
