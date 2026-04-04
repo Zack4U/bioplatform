@@ -75,6 +75,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.SpeciesRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ITaxonomyRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.TaxonomyRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.IScientificUnitOfWork, Bio.Backend.Core.Bio.Infrastructure.Persistence.ScientificUnitOfWork>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IGeographicDistributionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.GeographicDistributionRepository>();
+builder.Services.AddScoped<Bio.Application.Interfaces.IRelatedProductsQuery, Bio.Backend.Core.Bio.Infrastructure.Services.RelatedProductsQuery>();
 
 // Hangfire — background job processing with Redis storage
 var redisConnection = builder.Configuration.GetConnectionString("RedisConnection")
