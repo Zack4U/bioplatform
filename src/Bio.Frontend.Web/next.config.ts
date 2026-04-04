@@ -28,6 +28,46 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "res.cloudinary.com", // Cloudinary CDN
             },
+            {
+                protocol: "https",
+                hostname: "upload.wikimedia.org", // Wikimedia Commons
+            },
+            {
+                protocol: "http",
+                hostname: "upload.wikimedia.org", // Wikimedia Commons
+            },
+            {
+                protocol: "https",
+                hostname: "images.mushroomobserver.org", // Mushroom Observer
+            },
+            {
+                protocol: "https",
+                hostname: "inaturalist-open-data.s3.amazonaws.com", // iNaturalist
+            },
+            {
+                protocol: "https",
+                hostname: "storage.googleapis.com", // Google Cloud Storage
+            },
+            {
+                protocol: "https",
+                hostname: "v3.boldsystems.org", // BOLD Systems
+            },
+            {
+                protocol: "https",
+                hostname: "www.inaturalist.org", // iNaturalist
+            },
+            {
+                protocol: "https",
+                hostname: "images.phylopic.org", // Phylopic
+            },
+            {
+                protocol: "https",
+                hostname: "static.inaturalist.org", // iNaturalist
+            },
+            {
+                protocol: "http",
+                hostname: "sweetgum.nybg.org", // New York Botanical Garden
+            },
         ],
     },
 

@@ -39,6 +39,8 @@ export const CORE_ROUTES = {
         BASE: "/species",
         BY_ID: (id: string) => `/species/${id}` as const,
         BY_SLUG: (slug: string) => `/species/slug/${slug}` as const,
+        DISTRIBUTIONS: (id: string) => `/species/${id}/distributions` as const,
+        FILTER_META: "/species/filter-meta",
     },
 
     /** TaxonomyController — /api/taxonomy */
