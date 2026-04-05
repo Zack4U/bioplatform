@@ -18,7 +18,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import { useAuthStore } from "@/store/auth-store";
 import type { ClassificationResponse, SpeciesPrediction, UserRoleName } from "@/types";
 import {
@@ -259,6 +258,45 @@ export function IdentifyResultsStep({
                 </div>
             )}
 
+            {/* ── Action Buttons (below header for accessibility) ────── */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+                {catalogHref && (
+                    <Button
+                        size="lg"
+                        className="gap-3 rounded-xl px-8"
+                        asChild
+                    >
+                        <Link href={catalogHref}>
+                            <ExternalLink
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                            />
+                            Ver en Catalogo
+                        </Link>
+                    </Button>
+                )}
+
+                <Button
+                    size="lg"
+                    variant="outline"
+                    className="gap-3 rounded-xl px-8"
+                    disabled
+                >
+                    <Save className="h-5 w-5" aria-hidden="true" />
+                    Guardar para revision
+                </Button>
+
+                <Button
+                    size="lg"
+                    variant="ghost"
+                    className="gap-3 rounded-xl px-8"
+                    onClick={onRetake}
+                >
+                    <RefreshCw className="h-5 w-5" aria-hidden="true" />
+                    Nueva Identificacion
+                </Button>
+            </div>
+
             {/* ── Top 5 Predictions ────────────────────────────────────── */}
             <Card>
                 <CardHeader className="pb-3">
@@ -374,47 +412,6 @@ export function IdentifyResultsStep({
                 <p className="text-xs text-muted-foreground">
                     Modelo: {result.model} - {result.numClasses} clases disponibles
                 </p>
-            </div>
-
-            <Separator />
-
-            {/* ── Action Buttons ────────────────────────────────────────── */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-                {catalogHref && (
-                    <Button
-                        size="lg"
-                        className="gap-3 rounded-xl px-8"
-                        asChild
-                    >
-                        <Link href={catalogHref}>
-                            <ExternalLink
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                            />
-                            Ver en Catalogo
-                        </Link>
-                    </Button>
-                )}
-
-                <Button
-                    size="lg"
-                    variant="outline"
-                    className="gap-3 rounded-xl px-8"
-                    disabled
-                >
-                    <Save className="h-5 w-5" aria-hidden="true" />
-                    Guardar para revision
-                </Button>
-
-                <Button
-                    size="lg"
-                    variant="ghost"
-                    className="gap-3 rounded-xl px-8"
-                    onClick={onRetake}
-                >
-                    <RefreshCw className="h-5 w-5" aria-hidden="true" />
-                    Nueva Identificacion
-                </Button>
             </div>
         </div>
     );
