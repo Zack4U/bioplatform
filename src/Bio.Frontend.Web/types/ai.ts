@@ -111,6 +111,17 @@ export interface AvgMetrics {
     f1Score: number;
 }
 
+/** F1-score distribution histogram (10 bins) */
+export interface F1Histogram {
+    labels: string[];
+    counts: number[];
+}
+
+/** Support (test sample) distribution by bucket */
+export interface SupportDistribution {
+    [bucket: string]: number;
+}
+
 /** Maps to GET /api/v1/model-metrics response */
 export interface ModelMetricsResponse {
     accuracy: number;
@@ -118,6 +129,9 @@ export interface ModelMetricsResponse {
     macroAvg: AvgMetrics;
     weightedAvg: AvgMetrics;
     totalEvaluatedSpecies: number;
+    totalSamples: number;
+    f1Histogram: F1Histogram;
+    supportDistribution: SupportDistribution;
     perClass: Record<string, ClassMetrics>;
 }
 

@@ -37,8 +37,8 @@ import { toast } from "sonner";
 
 /** Convert a single snake_case string to camelCase. */
 function snakeToCamel(str: string): string {
-    return str.replace(/_([a-z])/g, (_, letter: string) =>
-        letter.toUpperCase(),
+    return str.replace(/_([a-z0-9])/gi, (_, char: string) =>
+        char.toUpperCase(),
     );
 }
 

@@ -37,6 +37,14 @@ async def model_metrics() -> dict[str, Any]:
 
     Reads from ``data/evaluation/evaluation_metrics.json`` which is
     generated during model evaluation (05_evaluate_model.py).
+
+    Response includes:
+      - accuracy, top_5_accuracy
+      - macro_avg, weighted_avg (precision, recall, f1_score)
+      - total_evaluated_species, total_samples
+      - f1_histogram: { labels: [...], counts: [...] }
+      - support_distribution: { "≤5": N, "6-10": N, "11-15": N, "16+": N }
+      - per_class: { species: { precision, recall, f1_score, support } }
     """
     if not _EVAL_METRICS_PATH.exists():
         raise HTTPException(
@@ -55,12 +63,44 @@ async def model_metrics() -> dict[str, Any]:
         )
 
     per_class = metrics.get("per_class", {})
+    total_species = len(per_class)
+    total_samples = sum(m.get("support", 0) for m in per_class.values())
+
+    # ── F1-score histogram (10 bins) ──────────────────────────────────
+    f1_values = [m.get("f1_score", 0) for m in per_class.values()]
+    bins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.01]
+    bin_labels = [
+        "0-.1", ".1-.2", ".2-.3", ".3-.4", ".4-.5",
+        ".5-.6", ".6-.7", ".7-.8", ".8-.9", ".9-1.0",
+    ]
+    histogram = [0] * len(bin_labels)
+    for v in f1_values:
+        for i in range(len(bins) - 1):
+            if bins[i] <= v < bins[i + 1]:
+                histogram[i] += 1
+                break
+
+    # ── Support distribution (sample count buckets) ───────────────────
+    support_vals = [m.get("support", 0) for m in per_class.values()]
+    support_dist: dict[str, int] = {"≤5": 0, "6-10": 0, "11-15": 0, "16+": 0}
+    for s in support_vals:
+        if s <= 5:
+            support_dist["≤5"] += 1
+        elif s <= 10:
+            support_dist["6-10"] += 1
+        elif s <= 15:
+            support_dist["11-15"] += 1
+        else:
+            support_dist["16+"] += 1
 
     return {
         "accuracy": metrics.get("accuracy"),
         "top_5_accuracy": metrics.get("top_5_accuracy"),
         "macro_avg": metrics.get("macro_avg"),
         "weighted_avg": metrics.get("weighted_avg"),
-        "total_evaluated_species": len(per_class),
+        "total_evaluated_species": total_species,
+        "total_samples": total_samples,
+        "f1_histogram": {"labels": bin_labels, "counts": histogram},
+        "support_distribution": support_dist,
         "per_class": per_class,
     }

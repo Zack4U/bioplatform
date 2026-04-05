@@ -32,6 +32,9 @@ import {
     type WizardStep,
 } from "@/hooks/features/identification/useIdentificationWizard";
 import { cn } from "@/lib/utils";
+import { BarChart3 } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 // ── Step indicator config ────────────────────────────────────────────────────
 
@@ -121,6 +124,14 @@ export default function IdentifyPage() {
                     { label: "Inicio", href: "/" },
                     { label: "Identificacion IA" },
                 ]}
+                actions={
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href="/identify/model-info">
+                            <BarChart3 className="mr-2 h-4 w-4" />
+                            Metricas del Modelo
+                        </Link>
+                    </Button>
+                }
             />
 
             {/* ── Step Indicator ───────────────────────────────────── */}
