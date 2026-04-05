@@ -68,6 +68,10 @@ const nextConfig: NextConfig = {
                 protocol: "http",
                 hostname: "sweetgum.nybg.org", // New York Botanical Garden
             },
+            {
+                protocol: "https",
+                hostname: "natusfera.gbif.es", // GBIF
+            },
         ],
     },
 
