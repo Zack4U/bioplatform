@@ -55,7 +55,6 @@ async def get_species_by_scientific_name(
         FROM species s
         LEFT JOIN taxonomies t ON s.taxonomy_id = t.id
         WHERE LOWER(s.scientific_name) = LOWER(:name)
-          AND s.is_active IS NOT FALSE
         LIMIT 1
     """)
 

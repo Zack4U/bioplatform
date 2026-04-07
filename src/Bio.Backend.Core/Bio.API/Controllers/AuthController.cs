@@ -69,7 +69,8 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDTO request)
     {
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                          ?? User.FindFirstValue("sub");
         if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
         {
             return Unauthorized();
@@ -87,7 +88,8 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(TwoFactorSetupResponseDTO), StatusCodes.Status200OK)]
     public async Task<IActionResult> Setup2FA()
     {
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                          ?? User.FindFirstValue("sub");
         if (!Guid.TryParse(userIdClaim, out var userId)) return Unauthorized();
 
         var result = await _authService.SetupTwoFactorAsync(userId);
@@ -103,7 +105,8 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Verify2FA([FromBody] TwoFactorVerifyRequestDTO request)
     {
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                          ?? User.FindFirstValue("sub");
         if (!Guid.TryParse(userIdClaim, out var userId)) return Unauthorized();
 
         var success = await _authService.VerifyTwoFactorAsync(userId, request);
@@ -118,7 +121,8 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Disable2FA()
     {
-        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                          ?? User.FindFirstValue("sub");
         if (!Guid.TryParse(userIdClaim, out var userId)) return Unauthorized();
 
         await _authService.DisableTwoFactorAsync(userId);

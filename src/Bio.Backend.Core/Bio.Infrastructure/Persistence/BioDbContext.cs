@@ -225,5 +225,10 @@ public class BioDbContext : DbContext
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
+
+        // -------------------------------------------------------------
+        // SEED DATA 
+        // -------------------------------------------------------------
+        modelBuilder.SeedBaseData();
     }
 }

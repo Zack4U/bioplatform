@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    /* Prevent Turbopack from failing to resolve CSS-only packages
+       that are handled by the @tailwindcss/postcss plugin */
+    turbopack: {
+        resolveAlias: {
+            tailwindcss: require.resolve("tailwindcss"),
+        },
+    },
+
     /* Image optimization — allow external image domains for species/products */
     images: {
         remotePatterns: [
