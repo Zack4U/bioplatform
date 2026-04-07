@@ -53,6 +53,18 @@ public class RefreshTokenRepository : IRefreshTokenRepository
     }
 
     /// <summary>
+    /// Gets all active refresh tokens for a specific user.
+    /// </summary>
+    /// <param name="userId">The user ID.</param>
+    /// <returns>A collection of active refresh tokens.</returns>
+    public async Task<IEnumerable<RefreshToken>> GetActiveByUserIdAsync(Guid userId)
+    {
+        return await _context.RefreshTokens
+            .Where(rt => rt.UserId == userId && rt.RevokedAt == null && rt.ExpiresAt > DateTime.UtcNow)
+            .ToListAsync();
+    }
+
+    /// <summary>
     /// Updates an existing refresh token in the database.
     /// </summary>
     /// <param name="refreshToken">The refresh token to update.</param>
