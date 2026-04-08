@@ -12,7 +12,13 @@ import type { SpeciesFilterMeta, SpeciesSearchParams } from "@/types";
 import { Check, Search } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useEffect, useMemo, useState } from "react";
-import { FlatList, Pressable, ScrollView, View } from "react-native";
+import {
+    Pressable,
+    ScrollView,
+    View,
+    type NativeScrollEvent,
+    type NativeSyntheticEvent,
+} from "react-native";
 
 type CatalogFilterState = Pick<
     SpeciesSearchParams,
@@ -91,6 +97,20 @@ function SearchableFilterSection({
         setVisibleCount((current) => current + OPTIONS_PAGE_SIZE);
     };
 
+    const handleListScroll = (
+        event: NativeSyntheticEvent<NativeScrollEvent>,
+    ) => {
+        const { layoutMeasurement, contentOffset, contentSize } =
+            event.nativeEvent;
+
+        const remaining =
+            contentSize.height - (layoutMeasurement.height + contentOffset.y);
+
+        if (remaining < 40) {
+            loadMore();
+        }
+    };
+
     const mutedColor =
         colorScheme === "dark" ? "hsl(149, 10%, 65%)" : "hsl(149, 10%, 50%)";
 
@@ -114,37 +134,28 @@ function SearchableFilterSection({
             </View>
 
             <View className="rounded-xl border border-border bg-card max-h-44 overflow-hidden">
-                <FlatList
-                    data={visibleOptions}
-                    keyExtractor={(item) =>
-                        String(item.value ?? "all") + item.label
-                    }
+                <ScrollView
                     nestedScrollEnabled
                     showsVerticalScrollIndicator
                     keyboardShouldPersistTaps="handled"
-                    onEndReached={loadMore}
-                    onEndReachedThreshold={0.4}
-                    ListEmptyComponent={
+                    onScroll={handleListScroll}
+                    scrollEventThrottle={16}
+                >
+                    {visibleOptions.length === 0 && (
                         <View className="px-3 py-3">
                             <Text className="text-xs text-muted-foreground">
                                 Sin coincidencias.
                             </Text>
                         </View>
-                    }
-                    ListFooterComponent={
-                        canLoadMore ? (
-                            <View className="px-3 py-2">
-                                <Text className="text-[11px] text-muted-foreground">
-                                    Desliza para cargar mas opciones...
-                                </Text>
-                            </View>
-                        ) : null
-                    }
-                    renderItem={({ item: option }) => {
-                        const isActive = selected === option.value;
+                    )}
 
+                    {visibleOptions.map((option) => {
+                        const isActive = selected === option.value;
                         return (
                             <Pressable
+                                key={
+                                    String(option.value ?? "all") + option.label
+                                }
                                 className="flex-row items-center justify-between px-3 py-2.5"
                                 onPress={() => onSelect(option.value)}
                             >
@@ -166,8 +177,16 @@ function SearchableFilterSection({
                                 )}
                             </Pressable>
                         );
-                    }}
-                />
+                    })}
+
+                    {canLoadMore && (
+                        <View className="px-3 py-2">
+                            <Text className="text-[11px] text-muted-foreground">
+                                Desliza para cargar mas opciones...
+                            </Text>
+                        </View>
+                    )}
+                </ScrollView>
             </View>
         </View>
     );
