@@ -10,9 +10,9 @@ public class UserDomainTests
     {
         var user = new User(Guid.NewGuid(), "John", "test@test.com", "hash", "salt");
         Assert.False(user.IsVerified);
-        
+
         user.Verify();
-        
+
         Assert.True(user.IsVerified);
         Assert.NotNull(user.UpdatedAt);
     }
@@ -44,7 +44,7 @@ public class UserDomainTests
     public void ChangePassword_UpdatesHashAndSalt()
     {
         var user = new User(Guid.NewGuid(), "John", "test@test.com", "oldHash", "oldSalt");
-        
+
         user.ChangePassword("newHash", "newSalt");
 
         Assert.Equal("newHash", user.PasswordHash);
@@ -56,7 +56,7 @@ public class UserDomainTests
     public void ChangePassword_WithEmptyHash_Throws()
     {
         var user = new User(Guid.NewGuid(), "John", "test@test.com", "oldHash", "oldSalt");
-        
+
         Assert.Throws<ArgumentException>(() => user.ChangePassword("", "newSalt"));
         Assert.Throws<ArgumentException>(() => user.ChangePassword("newHash", ""));
     }

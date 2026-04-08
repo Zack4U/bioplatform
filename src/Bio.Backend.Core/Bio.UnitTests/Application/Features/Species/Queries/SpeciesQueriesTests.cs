@@ -34,7 +34,7 @@ public class SpeciesQueriesTests
             new(Guid.NewGuid(), "panthera-onca", "Panthera onca")
         };
         _speciesRepoMock.Setup(r => r.GetFilteredAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), 
+            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
             It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((speciesList, 1));
 

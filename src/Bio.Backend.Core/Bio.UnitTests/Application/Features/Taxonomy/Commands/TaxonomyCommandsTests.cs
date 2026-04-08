@@ -92,7 +92,7 @@ public class TaxonomyCommandsTests
     [Fact]
     public async Task DeleteTaxonomy_WhenNotFound_ThrowsNotFoundException()
     {
-         _repositoryMock.Setup(r => r.GetByIdAsync(99, It.IsAny<CancellationToken>())).ReturnsAsync((TaxonomyEntity?)null);
+        _repositoryMock.Setup(r => r.GetByIdAsync(99, It.IsAny<CancellationToken>())).ReturnsAsync((TaxonomyEntity?)null);
         var handler = new DeleteTaxonomyCommandHandler(_repositoryMock.Object, _uowMock.Object);
 
         await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(new DeleteTaxonomyCommand(99), CancellationToken.None));

@@ -92,7 +92,7 @@ public class SpeciesCommandsTests
         var id = Guid.NewGuid();
         var species = new SpeciesEntity(id, "old-slug", "Species");
         _repositoryMock.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>())).ReturnsAsync(species);
-        
+
         _repositoryMock.Setup(r => r.ExistsBySlugExcludingIdAsync("new-slug", id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
@@ -108,7 +108,7 @@ public class SpeciesCommandsTests
         var id = Guid.NewGuid();
         var species = new SpeciesEntity(id, "old-slug", "Species");
         _repositoryMock.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>())).ReturnsAsync(species);
-        
+
         var dto = new SpeciesUpdateDTO { Slug = "new-slug", CommonName = "common" };
         var handler = new UpdateSpeciesCommandHandler(_repositoryMock.Object, _uowMock.Object, _mapper);
 
