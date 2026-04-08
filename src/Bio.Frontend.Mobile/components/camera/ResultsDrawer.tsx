@@ -12,14 +12,22 @@
  * - "Volver a Tomar" retakes photo
  */
 
-import { Button } from "@/components/ui/button";
 import {
     BottomSheet,
     BottomSheetBody,
     BottomSheetFooter,
 } from "@/components/ui/bottom-sheet";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Text } from "@/components/ui/text";
+import {
+    getClassificationAlerts,
+    type ClassificationAlertTone,
+} from "@/lib/classification-alerts";
+import {
+    formatConservationStatus,
+    getConservationStatusBadgeStyle,
+} from "@/lib/formatters";
 import { THEME } from "@/lib/theme";
 import type { ClassificationResponse, SpeciesPrediction } from "@/types";
 import {
@@ -59,6 +67,35 @@ export function ResultsDrawer({
 
     const topPred: SpeciesPrediction = result.predictions[0];
     const confidence = topPred.confidence * 100;
+    const alerts = getClassificationAlerts(result, topPred);
+    const conservationBadgeStyle = getConservationStatusBadgeStyle(
+        topPred.speciesData?.conservationStatus,
+    );
+
+    const alertStyles: Record<
+        ClassificationAlertTone,
+        {
+            containerClass: string;
+            iconColor: string;
+            textClass: string;
+        }
+    > = {
+        destructive: {
+            containerClass: "bg-destructive/10 border border-destructive/30",
+            iconColor: theme.destructive,
+            textClass: "text-destructive",
+        },
+        warning: {
+            containerClass: "bg-warning/10 border border-warning/30",
+            iconColor: theme.warning,
+            textClass: "text-warning",
+        },
+        info: {
+            containerClass: "bg-muted border border-border",
+            iconColor: theme.mutedForeground,
+            textClass: "text-muted-foreground",
+        },
+    };
 
     return (
         <BottomSheet open={open} onClose={onClose} snapPoint={0.85}>
@@ -68,7 +105,10 @@ export function ResultsDrawer({
                     source={imageUri ? { uri: imageUri } : undefined}
                     resizeMode="cover"
                     className="overflow-hidden"
-                    style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+                    style={{
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                    }}
                 >
                     {/* Dark overlay */}
                     <View
@@ -128,31 +168,59 @@ export function ResultsDrawer({
                             {topPred.taxonomy?.family && (
                                 <View
                                     className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full"
-                                    style={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                                    style={{
+                                        backgroundColor:
+                                            "rgba(255, 255, 255, 0.15)",
+                                    }}
                                 >
-                                    <Leaf size={12} color="#FFFFFF" strokeWidth={1.5} />
-                                    <Text className="text-xs font-medium" style={{ color: "#FFFFFF" }}>
+                                    <Leaf
+                                        size={12}
+                                        color="#FFFFFF"
+                                        strokeWidth={1.5}
+                                    />
+                                    <Text
+                                        className="text-xs font-medium"
+                                        style={{ color: "#FFFFFF" }}
+                                    >
                                         {topPred.taxonomy.family}
                                     </Text>
                                 </View>
                             )}
                             <View
                                 className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full"
-                                style={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                                style={{
+                                    backgroundColor:
+                                        "rgba(255, 255, 255, 0.15)",
+                                }}
                             >
-                                <MapPin size={12} color="#FFFFFF" strokeWidth={1.5} />
-                                <Text className="text-xs font-medium" style={{ color: "#FFFFFF" }}>
+                                <MapPin
+                                    size={12}
+                                    color="#FFFFFF"
+                                    strokeWidth={1.5}
+                                />
+                                <Text
+                                    className="text-xs font-medium"
+                                    style={{ color: "#FFFFFF" }}
+                                >
                                     Caldas, CO
                                 </Text>
                             </View>
                             {topPred.speciesData?.conservationStatus && (
                                 <View
-                                    className="flex-row items-center gap-1.5 px-3 py-1.5 rounded-full"
-                                    style={{ backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                                    className={`flex-row items-center gap-1.5 px-3 py-1.5 rounded-full ${conservationBadgeStyle.containerClass}`}
                                 >
-                                    <Shield size={12} color="#FFFFFF" strokeWidth={1.5} />
-                                    <Text className="text-xs font-medium" style={{ color: "#FFFFFF" }}>
-                                        {topPred.speciesData.conservationStatus}
+                                    <Shield
+                                        size={12}
+                                        color={theme.foreground}
+                                        strokeWidth={1.5}
+                                    />
+                                    <Text
+                                        className={`text-xs font-medium ${conservationBadgeStyle.textClass}`}
+                                    >
+                                        {formatConservationStatus(
+                                            topPred.speciesData
+                                                .conservationStatus,
+                                        )}
                                     </Text>
                                 </View>
                             )}
@@ -161,58 +229,56 @@ export function ResultsDrawer({
                 </ImageBackground>
 
                 <BottomSheetBody>
-                    {/* ─── Global Confidence Alert ────────────────── */}
-                    {result.confidenceAlert && (
-                        <View className="flex-row items-center gap-2 bg-destructive/10 border border-destructive/30 rounded-xl px-3 py-2.5 mb-4">
-                            <AlertTriangle
-                                size={16}
-                                color={theme.destructive}
+                    <View className="mt-4 mb-4">
+                        <Button
+                            className="rounded-2xl h-14"
+                            onPress={onViewDetails}
+                        >
+                            <ExternalLink
+                                size={18}
+                                color={theme.primaryForeground}
                                 strokeWidth={1.8}
                             />
-                            <Text className="text-xs text-destructive flex-1">
-                                {result.confidenceAlert}
+                            <Text className="font-bold text-primary-foreground ml-2 text-base">
+                                Ver Detalles →
                             </Text>
-                        </View>
-                    )}
+                        </Button>
+                    </View>
 
-                    {/* ─── Low-confidence alert (top prediction) ───── */}
-                    {topPred.lowConfidenceAlert && (
-                        <View className="flex-row items-center gap-2 bg-warning/10 border border-warning/30 rounded-xl px-3 py-2.5 mb-4">
-                            <AlertTriangle
-                                size={14}
-                                color={theme.warning}
-                                strokeWidth={1.8}
-                            />
-                            <Text className="text-xs text-warning flex-1">
-                                {topPred.lowConfidenceAlert}
-                            </Text>
-                        </View>
-                    )}
-
-                    {/* ─── DB Status Alert ────────────────────────── */}
-                    {topPred.speciesData?.dbAlert && (
-                        <View className="flex-row items-center gap-2 bg-muted border border-border rounded-xl px-3 py-2.5 mb-4">
-                            <AlertTriangle
-                                size={14}
-                                color={theme.mutedForeground}
-                                strokeWidth={1.8}
-                            />
-                            <Text className="text-xs text-muted-foreground flex-1">
-                                {topPred.speciesData.dbAlert}
-                            </Text>
-                        </View>
-                    )}
+                    {/* ─── Alerts (normalized + translated) ─────────── */}
+                    {alerts.map((alert) => {
+                        const style = alertStyles[alert.tone];
+                        return (
+                            <View
+                                key={alert.id}
+                                className={`flex-row items-center gap-2 rounded-xl px-3 py-2.5 mb-4 ${style.containerClass}`}
+                            >
+                                <AlertTriangle
+                                    size={14}
+                                    color={style.iconColor}
+                                    strokeWidth={1.8}
+                                />
+                                <Text
+                                    className={`text-xs flex-1 ${style.textClass}`}
+                                >
+                                    {alert.message}
+                                </Text>
+                            </View>
+                        );
+                    })}
 
                     {/* ─── Top 5 Predictions ───────────────────────── */}
                     <Text className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
-                        Top {Math.min(result.predictions.length, 5)} Predicciones
+                        Top {Math.min(result.predictions.length, 5)}{" "}
+                        Predicciones
                     </Text>
                     <View className="bg-card border border-border rounded-2xl p-3 mb-4">
                         {result.predictions.slice(0, 5).map((pred, i) => (
                             <View
                                 key={`pred-${pred.rank}`}
                                 className={`flex-row items-center gap-3 py-2.5 ${
-                                    i < Math.min(result.predictions.length, 5) - 1
+                                    i <
+                                    Math.min(result.predictions.length, 5) - 1
                                         ? "border-b border-border"
                                         : ""
                                 }`}
@@ -258,27 +324,14 @@ export function ResultsDrawer({
                     {/* ─── Model info ──────────────────────────────── */}
                     <View className="items-center mb-2">
                         <Text className="text-[10px] text-muted-foreground">
-                            🧠 Modelo: {result.model} · {result.numClasses} clases
+                            🧠 Modelo: {result.model} · {result.numClasses}{" "}
+                            clases
                         </Text>
                     </View>
                 </BottomSheetBody>
 
                 {/* ─── Actions ─────────────────────────────────── */}
                 <BottomSheetFooter>
-                    <Button
-                        className="rounded-2xl h-14 mb-3"
-                        onPress={onViewDetails}
-                    >
-                        <ExternalLink
-                            size={18}
-                            color={theme.primaryForeground}
-                            strokeWidth={1.8}
-                        />
-                        <Text className="font-bold text-primary-foreground ml-2 text-base">
-                            Ver Detalles →
-                        </Text>
-                    </Button>
-
                     <Button
                         variant="ghost"
                         className="rounded-2xl h-12 mb-2"

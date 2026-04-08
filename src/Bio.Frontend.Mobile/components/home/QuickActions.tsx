@@ -4,44 +4,49 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
+import { useSpeciesFilterMeta } from "@/hooks/useSpecies";
 import { THEME } from "@/lib/theme";
+import type { RelativePathString } from "expo-router";
+import { router } from "expo-router";
 import { BookOpen, Bot, Camera, ChevronRight } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { Pressable, View } from "react-native";
-import { router } from "expo-router";
-import type { RelativePathString } from "expo-router";
-
-const QUICK_ACTIONS = [
-    {
-        id: "catalog",
-        title: "Explorar Catálogo",
-        subtitle: "347+ especies",
-        icon: BookOpen,
-        gradient: "bg-primary/10",
-        route: "/(tabs)/catalog" as const,
-    },
-    {
-        id: "identify",
-        title: "Identificar Especie",
-        subtitle: "CNN en tiempo real",
-        icon: Camera,
-        gradient: "bg-info/10",
-        route: "/(tabs)/camera" as const,
-    },
-    {
-        id: "assistant",
-        title: "Asistente IA",
-        subtitle: "RAG + GPT-4",
-        icon: Bot,
-        gradient: "bg-accent",
-        route: "/(tabs)/assistant" as const,
-    },
-];
 
 export function QuickActions() {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
+    const { data: filterMeta } = useSpeciesFilterMeta();
+
+    const speciesCount = filterMeta?.totalSpeciesCount ?? 0;
+    const speciesSubtitle = `${speciesCount} especies`;
+
+    const quickActions = [
+        {
+            id: "catalog",
+            title: "Explorar Catálogo",
+            subtitle: speciesSubtitle,
+            icon: BookOpen,
+            gradient: "bg-primary/10",
+            route: "/(tabs)/catalog" as const,
+        },
+        {
+            id: "identify",
+            title: "Identificar Especie",
+            subtitle: "CNN en tiempo real",
+            icon: Camera,
+            gradient: "bg-info/10",
+            route: "/(tabs)/camera" as const,
+        },
+        {
+            id: "assistant",
+            title: "Asistente IA",
+            subtitle: "RAG + GPT-4",
+            icon: Bot,
+            gradient: "bg-accent",
+            route: "/(tabs)/assistant" as const,
+        },
+    ];
 
     return (
         <View className="px-5 mb-6">
@@ -52,15 +57,13 @@ export function QuickActions() {
             </View>
 
             <View className="gap-3">
-                {QUICK_ACTIONS.map((action) => {
+                {quickActions.map((action) => {
                     const Icon = action.icon;
                     return (
                         <Pressable
                             key={action.id}
                             onPress={() =>
-                                router.push(
-                                    action.route as RelativePathString,
-                                )
+                                router.push(action.route as RelativePathString)
                             }
                             className="active:opacity-80"
                         >

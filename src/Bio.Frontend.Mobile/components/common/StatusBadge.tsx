@@ -6,6 +6,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
+import { getConservationStatusTone } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 
 type BadgeVariant =
@@ -36,7 +37,7 @@ const statusStyles: Record<BadgeVariant, string> = {
 
 const statusTextStyles: Record<BadgeVariant, string> = {
     success: "text-success",
-    warning: "text-warning-foreground",
+    warning: "text-warning",
     destructive: "text-white",
     info: "text-info",
     default: "text-secondary-foreground",
@@ -66,7 +67,9 @@ export function StatusBadge({
             variant={rnrVariantMap[variant]}
             className={cn(statusStyles[variant], className)}
         >
-            <Text className={cn("text-xs font-medium", statusTextStyles[variant])}>
+            <Text
+                className={cn("text-xs font-medium", statusTextStyles[variant])}
+            >
                 {label}
             </Text>
         </Badge>
@@ -78,24 +81,14 @@ export function StatusBadge({
  * Used for species catalog.
  */
 export function getConservationStatusVariant(status: string): BadgeVariant {
-    const map: Record<string, BadgeVariant> = {
-        "En Peligro Crítico": "destructive",
-        "En Peligro": "destructive",
-        Vulnerable: "warning",
-        "Casi Amenazada": "warning",
-        "Preocupación Menor": "success",
-        "Datos Insuficientes": "info",
-        "No Evaluada": "default",
-        // IUCN codes
-        CR: "destructive",
-        EN: "destructive",
-        VU: "warning",
-        NT: "warning",
-        LC: "success",
-        DD: "info",
-        NE: "default",
-    };
-    return map[status] ?? "default";
+    const tone = getConservationStatusTone(status);
+
+    if (tone === "destructive") return "destructive";
+    if (tone === "warning") return "warning";
+    if (tone === "success") return "success";
+    if (tone === "info") return "info";
+
+    return "default";
 }
 
 /**

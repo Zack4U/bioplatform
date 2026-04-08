@@ -6,22 +6,25 @@ import { Text } from "@/components/ui/text";
 import React from "react";
 import { Pressable, View } from "react-native";
 
-const KINGDOMS = [
-    { label: "Todas", value: undefined },
-    { label: "🌿 Plantae", value: "Plantae" },
-    { label: "🐾 Animalia", value: "Animalia" },
-    { label: "🍄 Fungi", value: "Fungi" },
-];
-
 interface KingdomFiltersProps {
+    options?: string[];
     selected: string | undefined;
     onSelect: (kingdom: string | undefined) => void;
 }
 
-export function KingdomFilters({ selected, onSelect }: KingdomFiltersProps) {
+export function KingdomFilters({
+    options = [],
+    selected,
+    onSelect,
+}: KingdomFiltersProps) {
+    const kingdoms = [
+        { label: "Todas", value: undefined },
+        ...options.map((value) => ({ label: value, value })),
+    ];
+
     return (
         <View className="flex-row gap-2 mt-3">
-            {KINGDOMS.map((kingdom) => {
+            {kingdoms.map((kingdom) => {
                 const isActive = selected === kingdom.value;
                 return (
                     <Pressable

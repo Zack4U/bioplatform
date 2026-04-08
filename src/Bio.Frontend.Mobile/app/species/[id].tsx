@@ -16,7 +16,12 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { useSpeciesDetail } from "@/hooks/useSpecies";
+import {
+    formatConservationStatus,
+    getConservationStatusBadgeStyle,
+} from "@/lib/formatters";
 import { THEME } from "@/lib/theme";
+import { router, useLocalSearchParams } from "expo-router";
 import {
     AlertTriangle,
     ArrowLeft,
@@ -40,7 +45,6 @@ import {
     ScrollView,
     View,
 } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
 
 // ─── InfoSection ─────────────────────────────────────────────────────────────
 
@@ -141,6 +145,9 @@ export default function SpeciesDetailScreen() {
     }
 
     const taxonomy = species.taxonomy;
+    const conservationBadgeStyle = getConservationStatusBadgeStyle(
+        species.conservationStatus,
+    );
 
     return (
         <ScrollView
@@ -191,9 +198,15 @@ export default function SpeciesDetailScreen() {
                 {/* Status Badges */}
                 <View className="flex-row flex-wrap items-center justify-center gap-2 mt-3">
                     {species.conservationStatus && (
-                        <Badge className="bg-warning/15 border-0 px-3 py-1">
-                            <Text className="text-xs text-warning font-semibold">
-                                {species.conservationStatus}
+                        <Badge
+                            className={`${conservationBadgeStyle.containerClass} border-0 px-3 py-1`}
+                        >
+                            <Text
+                                className={`text-xs font-semibold ${conservationBadgeStyle.textClass}`}
+                            >
+                                {formatConservationStatus(
+                                    species.conservationStatus,
+                                )}
                             </Text>
                         </Badge>
                     )}
@@ -226,10 +239,7 @@ export default function SpeciesDetailScreen() {
                                 label="Reino"
                                 value={taxonomy.kingdom}
                             />
-                            <TaxonomyRow
-                                label="Filo"
-                                value={taxonomy.phylum}
-                            />
+                            <TaxonomyRow label="Filo" value={taxonomy.phylum} />
                             <TaxonomyRow
                                 label="Clase"
                                 value={taxonomy.className}

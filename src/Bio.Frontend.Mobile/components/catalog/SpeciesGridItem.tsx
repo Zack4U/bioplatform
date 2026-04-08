@@ -5,14 +5,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
 import { THEME } from "@/lib/theme";
-import type { SpeciesResponse } from "@/types";
+import type { SpeciesListItem } from "@/types";
 import { Leaf, Shield } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { Image, Pressable, View } from "react-native";
 
 interface SpeciesGridItemProps {
-    item: SpeciesResponse;
+    item: SpeciesListItem;
     width: number;
     onPress?: () => void;
 }
@@ -25,11 +25,11 @@ export function SpeciesGridItem({
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
 
-    const kingdom = item.taxonomy?.kingdom;
+    const kingdom = item.kingdom;
 
     return (
         <Pressable
-            className="active:opacity-80"
+            className="active:opacity-80 mb-3"
             style={{ width }}
             onPress={onPress}
         >
@@ -68,16 +68,11 @@ export function SpeciesGridItem({
                         className="text-[10px] text-muted-foreground mt-0.5"
                         numberOfLines={1}
                     >
-                        {item.commonName ?? item.taxonomy?.family ?? "—"}
+                        {item.commonName ?? item.family ?? "—"}
                     </Text>
                     <View className="flex-row items-center mt-1.5">
-                        <Badge
-                            variant="secondary"
-                            className="px-1.5 py-0.5"
-                        >
-                            <Text className="text-[9px]">
-                                {kingdom ?? "—"}
-                            </Text>
+                        <Badge variant="secondary" className="px-1.5 py-0.5">
+                            <Text className="text-[9px]">{kingdom ?? "—"}</Text>
                         </Badge>
                         {item.isSensitive && (
                             <View className="w-1.5 h-1.5 rounded-full bg-warning ml-1.5" />

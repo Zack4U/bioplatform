@@ -6,14 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { THEME } from "@/lib/theme";
-import type { SpeciesResponse } from "@/types";
+import type { SpeciesListItem } from "@/types";
 import { Leaf, Shield } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { Image, Pressable, View } from "react-native";
 
 interface SpeciesListItemProps {
-    item: SpeciesResponse;
+    item: SpeciesListItem;
     onPress?: () => void;
 }
 
@@ -21,8 +21,8 @@ export function SpeciesListItem({ item, onPress }: SpeciesListItemProps) {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
 
-    const family = item.taxonomy?.family;
-    const kingdom = item.taxonomy?.kingdom;
+    const family = item.family;
+    const kingdom = item.kingdom;
 
     return (
         <Pressable className="active:opacity-80 mb-3" onPress={onPress}>
@@ -68,10 +68,7 @@ export function SpeciesListItem({ item, onPress }: SpeciesListItemProps) {
                             </Text>
                         )}
                         <View className="flex-row items-center gap-2 mt-2">
-                            <Badge
-                                variant="secondary"
-                                className="px-2 py-0.5"
-                            >
+                            <Badge variant="secondary" className="px-2 py-0.5">
                                 <Text className="text-[10px]">
                                     {family ?? kingdom ?? "—"}
                                 </Text>

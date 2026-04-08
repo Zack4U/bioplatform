@@ -11,7 +11,9 @@
  * - test: component sandbox (dev only)
  */
 
+import { SPECIES_FILTER_META_QUERY_KEY } from "@/hooks/useSpecies";
 import { NAV_THEME } from "@/lib/theme";
+import * as speciesService from "@/services/species-service";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -54,6 +56,13 @@ export default function RootLayout() {
     useEffect(() => {
         setIsColorSchemeLoaded(true);
         SplashScreen.hideAsync();
+
+        void queryClient.prefetchQuery({
+            queryKey: SPECIES_FILTER_META_QUERY_KEY,
+            queryFn: speciesService.getFilterMeta,
+            staleTime: Infinity,
+            gcTime: Infinity,
+        });
     }, []);
 
     if (!isColorSchemeLoaded) {
