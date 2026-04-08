@@ -12,9 +12,9 @@
  */
 
 import { NAV_THEME } from "@/lib/theme";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useColorScheme } from "nativewind";
@@ -109,14 +109,14 @@ export default function RootLayout() {
                                 animation: "slide_from_right",
                             }}
                         />
-                        <Stack.Screen
+                        {/* <Stack.Screen
                             name="model-info"
                             options={{
                                 title: "Auditor del Modelo",
                                 headerShown: false,
                                 animation: "slide_from_right",
                             }}
-                        />
+                        /> */}
                         <Stack.Screen
                             name="model-stats"
                             options={{
