@@ -140,15 +140,17 @@ export function SpeciesCard({
                     <CardContent className="pb-2 pt-0">
                         <div className="flex flex-wrap items-center gap-1.5">
                             {/* Kingdom badge */}
-                            <Badge
-                                variant="outline"
-                                className={cn(
-                                    "text-[11px] font-medium",
-                                    kingdomColors[species.kingdom],
-                                )}
-                            >
-                                {species.kingdom}
-                            </Badge>
+                            {species.kingdom && (
+                                <Badge
+                                    variant="outline"
+                                    className={cn(
+                                        "text-[11px] font-medium",
+                                        kingdomColors[species.kingdom],
+                                    )}
+                                >
+                                    {species.kingdom}
+                                </Badge>
+                            )}
 
                             {/* Family */}
                             {species.family && (

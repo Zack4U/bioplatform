@@ -4,8 +4,8 @@ Species Repository — PostgreSQL Queries
 Fetches species, taxonomy, and geographic data from
 BioCommerce_Scientific (PostgreSQL) for the CNN service.
 
-Follows Data Dictionary (03-Data_Dictionary.md):
-  - species, taxonomies, geographic_distributions tables.
+Table names match EF Core schema (ScientificDbContext):
+  - species, taxonomy, geographic_distribution.
   - is_sensitive flag: masks exact coordinates.
 """
 
@@ -48,12 +48,12 @@ async def get_species_by_scientific_name(
             s.thumbnail_url,
             t.kingdom,
             t.phylum,
-            t.class   AS class_name,
-            t."order"  AS order_name,
+            t.class_name,
+            t.order_name,
             t.family,
             t.genus
         FROM species s
-        LEFT JOIN taxonomies t ON s.taxonomy_id = t.id
+        LEFT JOIN taxonomy t ON s.taxonomy_id = t.id
         WHERE LOWER(s.scientific_name) = LOWER(:name)
         LIMIT 1
     """)
@@ -77,7 +77,7 @@ async def get_species_by_scientific_name(
 
     except Exception as exc:
         logger.error(f"DB query failed for '{scientific_name}': {exc}")
-        return None
+        raise
 
 
 async def get_species_by_id(species_id: UUID) -> Optional[dict[str, Any]]:
@@ -96,14 +96,13 @@ async def get_species_by_id(species_id: UUID) -> Optional[dict[str, Any]]:
             s.thumbnail_url,
             t.kingdom,
             t.phylum,
-            t.class   AS class_name,
-            t."order"  AS order_name,
+            t.class_name,
+            t.order_name,
             t.family,
             t.genus
         FROM species s
-        LEFT JOIN taxonomies t ON s.taxonomy_id = t.id
+        LEFT JOIN taxonomy t ON s.taxonomy_id = t.id
         WHERE s.id = :sid
-          AND s.is_active IS NOT FALSE
         LIMIT 1
     """)
 
@@ -123,7 +122,7 @@ async def get_species_by_id(species_id: UUID) -> Optional[dict[str, Any]]:
 
     except Exception as exc:
         logger.error(f"DB query failed for id={species_id}: {exc}")
-        return None
+        raise
 
 
 async def _get_distributions(
@@ -142,7 +141,7 @@ async def _get_distributions(
     if is_sensitive:
         query = sa.text("""
             SELECT DISTINCT municipality
-            FROM geographic_distributions
+            FROM geographic_distribution
             WHERE species_id = :sid
             ORDER BY municipality
         """)
@@ -152,11 +151,10 @@ async def _get_distributions(
     query = sa.text("""
         SELECT
             municipality,
-            ST_Y(location_point::geometry) AS latitude,
-            ST_X(location_point::geometry) AS longitude,
-            altitude,
-            observation_date
-        FROM geographic_distributions
+            latitude,
+            longitude,
+            altitude
+        FROM geographic_distribution
         WHERE species_id = :sid
         ORDER BY municipality
     """)
@@ -178,14 +176,14 @@ async def log_prediction(
     import json
 
     query = sa.text("""
-        INSERT INTO prediction_logs
-            (user_id, image_input_url, raw_prediction_result,
-             confidence_score, top_prediction_species_id,
-             model_version, processing_time_ms)
+        INSERT INTO "PredictionLogs"
+            ("Id", "UserId", "ImageInputUrl", "RawPredictionResult",
+             "ConfidenceScore", "TopPredictionSpeciesId",
+             "ModelVersion", "ProcessingTimeMs", "CreatedAt")
         VALUES
-            (:uid, :img_url, :raw::jsonb,
-             :conf, :pred_sid,
-             :model_ver, :proc_ms)
+            (gen_random_uuid(), CAST(:uid AS uuid), :img_url, CAST(:raw AS jsonb),
+             :conf, CAST(:pred_sid AS uuid),
+             :model_ver, :proc_ms, NOW())
     """)
 
     try:

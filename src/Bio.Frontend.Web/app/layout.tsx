@@ -1,5 +1,7 @@
 import { Footer } from "@/components/common/Footer";
 import { Navbar } from "@/components/common/Navbar";
+import { CartFloatingButton } from "@/components/features/marketplace/cart/CartFloatingButton";
+import { CartPreview } from "@/components/features/marketplace/cart/CartPreview";
 import { Providers } from "@/providers";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -56,6 +58,8 @@ export default function RootLayout({
                         </main>
                         <Footer />
                     </div>
+                    <CartFloatingButton />
+                    <CartPreview />
                 </Providers>
             </body>
         </html>

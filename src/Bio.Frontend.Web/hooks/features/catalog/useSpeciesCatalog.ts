@@ -14,20 +14,14 @@
  *  - This hook → ALL logic
  *  - CatalogFilters / SpeciesGrid / page.tsx → UI ONLY
  *
- * When the backend is ready, replace the mock import with apiGetPaginated.
+ * Connected to: GET /api/species (PaginatedResult<SpeciesListItemDTO>)
  */
 
 "use client";
 
+import { useSpeciesFilterMeta } from "@/hooks/features/catalog/useSpeciesFilterMeta";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
-import {
-    fetchSpeciesList,
-    MOCK_CONSERVATION_STATUSES,
-    MOCK_FAMILIES,
-    MOCK_GENERA,
-    MOCK_KINGDOMS,
-    MOCK_PHYLUMS,
-} from "@/lib/mock-data/species";
+import { getSpeciesList } from "@/services/species-service";
 import type { PaginatedResponse } from "@/types";
 import type { SpeciesListItem, SpeciesSearchParams } from "@/types/species";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -85,6 +79,8 @@ export const SORT_OPTIONS: SortOption[] = [
         sortOrder: "asc",
     },
 ];
+
+/* ─── Filter constants removed — now sourced from GET /api/species/filter-meta ── */
 
 /* ─── Helpers: URL ↔ SpeciesSearchParams ────────────────────────────────── */
 
@@ -190,6 +186,13 @@ export function useSpeciesCatalog() {
     const urlSearchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
 
+    /* ── Filter metadata from backend ────────────────────────────────────── */
+
+    const {
+        filterOptions,
+        isLoading: isFilterMetaLoading,
+    } = useSpeciesFilterMeta();
+
     /* ── Derive state from URL (single source of truth) ──────────────────── */
 
     const searchParams = useMemo(
@@ -215,7 +218,7 @@ export function useSpeciesCatalog() {
         [router, pathname, viewMode, startTransition],
     );
 
-    /* ── React Query — species list ──────────────────────────────────────── */
+    /* ── React Query — species list (real backend) ───────────────────────── */
 
     const queryKey = ["species", "list", searchParams] as const;
 
@@ -223,7 +226,7 @@ export function useSpeciesCatalog() {
         PaginatedResponse<SpeciesListItem>
     >({
         queryKey,
-        queryFn: () => fetchSpeciesList(searchParams),
+        queryFn: () => getSpeciesList(searchParams),
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
         placeholderData: keepPreviousData,
@@ -253,29 +256,9 @@ export function useSpeciesCatalog() {
 
     const hasActiveFilters = activeFilterCount > 0 || !!searchParams.query;
 
-    /* ── Filter options (later from backend /meta endpoint) ──────────────── */
+    /* ── Filter options (sourced from backend GET /api/species/filter-meta) ── */
 
-    const filterOptions = useMemo(
-        () => ({
-            kingdoms: MOCK_KINGDOMS.map((k) => ({ label: k, value: k })).sort(
-                (a, b) => a.label.localeCompare(b.label, "es"),
-            ),
-            phylums: MOCK_PHYLUMS.map((p) => ({ label: p, value: p })).sort(
-                (a, b) => a.label.localeCompare(b.label, "es"),
-            ),
-            families: MOCK_FAMILIES.map((f) => ({ label: f, value: f })).sort(
-                (a, b) => a.label.localeCompare(b.label, "es"),
-            ),
-            genera: MOCK_GENERA.map((g) => ({ label: g, value: g })).sort(
-                (a, b) => a.label.localeCompare(b.label, "es"),
-            ),
-            conservationStatuses: MOCK_CONSERVATION_STATUSES.map((s) => ({
-                label: s,
-                value: s,
-            })).sort((a, b) => a.label.localeCompare(b.label, "es")),
-        }),
-        [],
-    );
+    // filterOptions comes from useSpeciesFilterMeta hook (already memoized)
 
     /* ── Actions (all push to URL → re-derive state automatically) ───────── */
 
@@ -360,6 +343,7 @@ export function useSpeciesCatalog() {
         activeFilterCount,
         hasActiveFilters,
         filterOptions,
+        isFilterMetaLoading,
         setSearch,
         setFilter,
         clearFilters,

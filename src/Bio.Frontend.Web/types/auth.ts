@@ -1,63 +1,99 @@
 /**
- * TypeScript types — Identity & Access Management (SQL Server)
- * Maps to: BioCommerce_Transactional database
+ * TypeScript types — Identity & Access Management.
+ * Maps exactly to .NET Backend DTOs (Bio.Application.DTOs).
+ *
+ * Naming: camelCase (TypeScript) <-> PascalCase (C#) — serialized via System.Text.Json.
  */
 
-/** User entity — mirrors Users table (SQL Server) */
-export interface User {
+// ─── User ────────────────────────────────────────────────────────────────────
+
+/** Maps to UserResponseDTO */
+export interface UserResponse {
     id: string;
-    email: string;
     fullName: string;
+    email: string;
     phoneNumber: string | null;
-    isVerified: boolean;
-    isActive: boolean;
-    roles: Role[];
     createdAt: string; // ISO 8601 UTC — format to local time only in UI
+    updatedAt: string | null;
+    twoFactorEnabled: boolean;
+    /** Roles decoded from JWT — not part of UserResponseDTO */
+    roles: UserRoleName[];
 }
 
-/** Role entity — mirrors Roles table */
-export interface Role {
-    id: number;
-    name: UserRoleName;
-    description: string | null;
+/** Maps to UserCreateDTO */
+export interface RegisterRequest {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
 }
 
-export type UserRoleName =
-    | "Admin"
-    | "Researcher"
-    | "Entrepreneur"
-    | "Community"
-    | "Buyer"
-    | "EnvironmentalAuthority";
+/** Maps to UserUpdateDTO */
+export interface UserUpdateRequest {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+}
 
-/** Authentication DTOs */
+// ─── Auth ────────────────────────────────────────────────────────────────────
+
+/** Maps to LoginRequestDTO */
 export interface LoginRequest {
     email: string;
     password: string;
-    totpCode?: string;
 }
 
-export interface LoginResponse {
+/** Maps to AuthResponseDTO */
+export interface AuthResponse {
+    accessToken: string | null;
+    refreshToken: string | null;
+    accessTokenExpiration: string | null;
+    twoFactorRequired: boolean;
+    twoFactorToken: string | null;
+}
+
+/** Maps to RefreshRequestDTO */
+export interface RefreshRequest {
     accessToken: string;
     refreshToken: string;
-    expiresAt: string;
-    user: User;
 }
 
-export interface RegisterRequest {
-    email: string;
-    password: string;
-    fullName: string;
-    phoneNumber?: string;
-    role: UserRoleName;
+/** Maps to ChangePasswordRequestDTO */
+export interface ChangePasswordRequest {
+    currentPassword: string;
+    newPassword: string;
+    confirmNewPassword: string;
 }
 
-export interface RefreshTokenRequest {
-    refreshToken: string;
+// ─── Two-Factor Authentication ───────────────────────────────────────────────
+
+/** Maps to TwoFactorLoginRequestDTO */
+export interface TwoFactorLoginRequest {
+    twoFactorToken: string;
+    code: string;
 }
 
-export interface TokenPair {
-    accessToken: string;
-    refreshToken: string;
-    expiresAt: string;
+/** Maps to TwoFactorSetupResponseDTO */
+export interface TwoFactorSetupResponse {
+    sharedKey: string;
+    authenticatorUri: string;
 }
+
+/** Maps to TwoFactorVerifyRequestDTO */
+export interface TwoFactorVerifyRequest {
+    code: string;
+}
+
+// ─── Roles ───────────────────────────────────────────────────────────────────
+
+/**
+ * Matches backend RoleNames.cs constants (uppercase).
+ * JWT `role` claim uses these exact values.
+ */
+export type UserRoleName =
+    | "ADMIN"
+    | "RESEARCHER"
+    | "ENTREPRENEUR"
+    | "COMMUNITY"
+    | "BUYER"
+    | "AUTHORITY";

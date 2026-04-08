@@ -1,25 +1,28 @@
 /**
  * TypeScript types — Biodiversity Catalog (PostgreSQL)
  * Maps to: BioCommerce_Scientific database
+ * Aligned with backend DTOs: SpeciesResponseDTO, SpeciesDetailDTO,
+ * SpeciesListItemDTO, GeographicDistributionDTO, TaxonomyResponseDTO.
  */
 
-/** Taxonomy — mirrors taxonomies table (Postgres) */
-export interface Taxonomy {
+/** TaxonomyResponse — mirrors TaxonomyResponseDTO */
+export interface TaxonomyResponse {
     id: number;
-    kingdom: string;
+    kingdom: string | null;
     phylum: string | null;
     className: string | null;
     orderName: string | null;
     family: string | null;
-    genus: string;
+    genus: string | null;
 }
 
-/** Species — mirrors species table (Postgres). Central catalog entity. */
-export interface Species {
+/** SpeciesResponse — mirrors SpeciesResponseDTO (flat, no distributions) */
+export interface SpeciesResponse {
     id: string;
-    taxonomyId: number;
-    taxonomy?: Taxonomy;
+    taxonomyId: number | null;
+    taxonomy: TaxonomyResponse | null;
     slug: string;
+    thumbnailUrl: string | null;
     scientificName: string;
     commonName: string | null;
     description: string | null;
@@ -27,52 +30,78 @@ export interface Species {
     traditionalUses: string | null;
     economicPotential: string | null;
     conservationStatus: string | null;
+    altitudeRange: string | null;
+    legalStatus: boolean;
     isSensitive: boolean;
-    thumbnailUrl: string | null;
-    images?: SpeciesImage[];
-    distributions?: GeographicDistribution[];
     createdAt: string;
-    updatedAt?: string;
+    updatedAt: string;
 }
 
-/** SpeciesImage — mirrors species_images table */
-export interface SpeciesImage {
-    id: string;
-    speciesId: string;
-    uploaderUserId: string;
-    imageUrl: string;
-    metadata: Record<string, unknown> | null;
-    isValidatedByExpert: boolean;
-    usedForTraining: boolean;
-    licenseType: string;
-}
-
-/** GeographicDistribution — mirrors geographic_distributions table (PostGIS) */
+/** GeographicDistributionDTO — mirrors backend GeographicDistributionDTO */
 export interface GeographicDistribution {
     id: string;
     speciesId: string;
-    municipality: string;
-    /** Latitude — masked if species.isSensitive is true */
+    /** Latitude — null if species.isSensitive and user lacks privileged role */
     latitude: number | null;
-    /** Longitude — masked if species.isSensitive is true */
+    /** Longitude — null if species.isSensitive and user lacks privileged role */
     longitude: number | null;
     altitude: number | null;
+    municipality: string | null;
     ecosystemType: string | null;
+    /** True if coordinates were masked for bio-safety protection */
+    isMasked: boolean;
 }
 
-/** SpeciesListItem — lightweight DTO for lists/cards (avoids over-fetching) */
+/** RelatedProductDTO — lightweight product linked to a species via BaseSpeciesId */
+export interface RelatedProduct {
+    id: string;
+    name: string;
+    slug: string | null;
+    description: string;
+    price: number;
+    stockQuantity: number;
+    thumbnailUrl: string | null;
+    isActive: boolean;
+}
+
+/** SpeciesDetailDTO — full detail response from GET /api/species/{id} or /slug/{slug} */
+export interface SpeciesDetail {
+    id: string;
+    taxonomyId: number | null;
+    taxonomy: TaxonomyResponse | null;
+    slug: string;
+    thumbnailUrl: string | null;
+    scientificName: string;
+    commonName: string | null;
+    description: string | null;
+    ecologicalInfo: string | null;
+    traditionalUses: string | null;
+    economicPotential: string | null;
+    conservationStatus: string | null;
+    altitudeRange: string | null;
+    legalStatus: boolean;
+    isSensitive: boolean;
+    createdAt: string;
+    updatedAt: string | null;
+    distributions: GeographicDistribution[];
+    relatedProducts: RelatedProduct[];
+}
+
+/** SpeciesListItemDTO — lightweight DTO for catalog grid/list */
 export interface SpeciesListItem {
     id: string;
     slug: string;
     scientificName: string;
     commonName: string | null;
-    family: string | null;
-    kingdom: string;
     thumbnailUrl: string | null;
+    conservationStatus: string | null;
     isSensitive: boolean;
+    kingdom: string | null;
+    family: string | null;
+    createdAt: string;
 }
 
-/** Species search/filter params */
+/** Species search/filter params — mirrors backend SpeciesFilterParams */
 export interface SpeciesSearchParams {
     query?: string;
     kingdom?: string;
@@ -85,4 +114,14 @@ export interface SpeciesSearchParams {
     pageSize?: number;
     sortBy?: "scientificName" | "commonName" | "createdAt";
     sortOrder?: "asc" | "desc";
+}
+
+/** SpeciesFilterMetaDTO — distinct filter values from backend */
+export interface SpeciesFilterMeta {
+    kingdoms: string[];
+    phylums: string[];
+    families: string[];
+    genera: string[];
+    conservationStatuses: string[];
+    totalSpeciesCount: number;
 }

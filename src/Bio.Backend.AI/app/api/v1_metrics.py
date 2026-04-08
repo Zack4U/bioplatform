@@ -21,6 +21,41 @@ router = APIRouter(prefix="/api/v1", tags=["Vision - Model Metrics"])
 # Path to the evaluation metrics file
 _EVAL_METRICS_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "evaluation" / "evaluation_metrics.json"
 
+# ── Histogram constants ───────────────────────────────────────────────
+_F1_BINS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.01]
+_F1_BIN_LABELS = [
+    "0-.1", ".1-.2", ".2-.3", ".3-.4", ".4-.5",
+    ".5-.6", ".6-.7", ".7-.8", ".8-.9", ".9-1.0",
+]
+
+
+def _build_f1_histogram(per_class: dict[str, dict]) -> dict[str, Any]:
+    """Build a 10-bin histogram of F1 scores across species."""
+    f1_values = [m.get("f1_score", 0) for m in per_class.values()]
+    counts = [0] * len(_F1_BIN_LABELS)
+    for v in f1_values:
+        for i in range(len(_F1_BINS) - 1):
+            if _F1_BINS[i] <= v < _F1_BINS[i + 1]:
+                counts[i] += 1
+                break
+    return {"labels": _F1_BIN_LABELS, "counts": counts}
+
+
+def _build_support_distribution(per_class: dict[str, dict]) -> dict[str, int]:
+    """Bucket species by their sample-support count."""
+    dist: dict[str, int] = {"≤5": 0, "6-10": 0, "11-15": 0, "16+": 0}
+    for m in per_class.values():
+        s = m.get("support", 0)
+        if s <= 5:
+            dist["≤5"] += 1
+        elif s <= 10:
+            dist["6-10"] += 1
+        elif s <= 15:
+            dist["11-15"] += 1
+        else:
+            dist["16+"] += 1
+    return dist
+
 
 @router.get(
     "/model-metrics",
@@ -37,6 +72,14 @@ async def model_metrics() -> dict[str, Any]:
 
     Reads from ``data/evaluation/evaluation_metrics.json`` which is
     generated during model evaluation (05_evaluate_model.py).
+
+    Response includes:
+      - accuracy, top_5_accuracy
+      - macro_avg, weighted_avg (precision, recall, f1_score)
+      - total_evaluated_species, total_samples
+      - f1_histogram: { labels: [...], counts: [...] }
+      - support_distribution: { "≤5": N, "6-10": N, "11-15": N, "16+": N }
+      - per_class: { species: { precision, recall, f1_score, support } }
     """
     if not _EVAL_METRICS_PATH.exists():
         raise HTTPException(
@@ -62,5 +105,8 @@ async def model_metrics() -> dict[str, Any]:
         "macro_avg": metrics.get("macro_avg"),
         "weighted_avg": metrics.get("weighted_avg"),
         "total_evaluated_species": len(per_class),
+        "total_samples": sum(m.get("support", 0) for m in per_class.values()),
+        "f1_histogram": _build_f1_histogram(per_class),
+        "support_distribution": _build_support_distribution(per_class),
         "per_class": per_class,
     }
