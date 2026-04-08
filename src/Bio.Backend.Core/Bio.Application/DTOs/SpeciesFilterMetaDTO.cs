@@ -8,6 +8,8 @@ public record SpeciesFilterMetaDTO
 {
     public IReadOnlyList<string> Kingdoms { get; init; } = Array.Empty<string>();
     public IReadOnlyList<string> Phylums { get; init; } = Array.Empty<string>();
+    public IReadOnlyList<string> Classes { get; init; } = Array.Empty<string>();
+    public IReadOnlyList<string> Orders { get; init; } = Array.Empty<string>();
     public IReadOnlyList<string> Families { get; init; } = Array.Empty<string>();
     public IReadOnlyList<string> Genera { get; init; } = Array.Empty<string>();
     public IReadOnlyList<string> ConservationStatuses { get; init; } = Array.Empty<string>();
