@@ -5,7 +5,7 @@
  * @module store/cart-store
  */
 
-import type { Address, CartItem, CouponCode } from "@/types";
+import type { CartItem, CouponCode } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -188,10 +188,7 @@ export const useCartStore = create<CartState>()(
                 const { items, selectedItemIds } = get();
                 return items
                     .filter((i) => selectedItemIds.includes(i.productId))
-                    .reduce(
-                        (sum, item) => sum + item.price * item.quantity,
-                        0,
-                    );
+                    .reduce((sum, item) => sum + item.price * item.quantity, 0);
             },
 
             // ── Reset checkout ───────────────────────────────────────

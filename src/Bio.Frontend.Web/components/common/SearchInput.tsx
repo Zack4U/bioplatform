@@ -44,9 +44,9 @@ export function SearchInput({
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const isTypingRef = useRef(false);
 
-    // Sync controlled value → internal value when NOT actively typing
     useEffect(() => {
         if (!isTypingRef.current) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setInternalValue(controlledValue);
         }
     }, [controlledValue]);
