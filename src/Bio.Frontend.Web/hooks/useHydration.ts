@@ -13,11 +13,7 @@
 
 "use client";
 
-import { useSyncExternalStore } from "react";
-
-const emptySubscribe = () => () => {};
-const getClientSnapshot = () => true;
-const getServerSnapshot = () => false;
+import { useEffect, useState } from "react";
 
 /**
  * Returns `true` once the client has mounted and Zustand stores have rehydrated.
@@ -28,9 +24,11 @@ const getServerSnapshot = () => false;
  * const count = isHydrated ? totalItems() : 0;
  */
 export function useHydration() {
-    return useSyncExternalStore(
-        emptySubscribe,
-        getClientSnapshot,
-        getServerSnapshot,
-    );
+    const [hydrated, setHydrated] = useState(false);
+
+    useEffect(() => {
+        setHydrated(true);
+    }, []);
+
+    return hydrated;
 }

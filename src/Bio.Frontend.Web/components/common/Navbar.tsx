@@ -65,8 +65,10 @@ export function Navbar() {
     const { isAuthenticated, user, isLoading } = useAuthStore();
     const logoutMutation = useLogout();
     const isHydrated = useHydration();
-    const totalItems = useCartStore((s) => s.totalItems);
-    const cartCount = isHydrated ? totalItems() : 0;
+    const cartCountValue = useCartStore((s) =>
+        s.items.reduce((sum, item) => sum + item.quantity, 0),
+    );
+    const cartCount = isHydrated ? cartCountValue : 0;
 
     return (
         <>

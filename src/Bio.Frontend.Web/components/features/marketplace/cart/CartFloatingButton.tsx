@@ -18,14 +18,16 @@ import { usePathname } from "next/navigation";
 
 export function CartFloatingButton() {
     const isHydrated = useHydration();
-    const totalItems = useCartStore((s) => s.totalItems);
+    const cartCountValue = useCartStore((s) =>
+        s.items.reduce((sum, item) => sum + item.quantity, 0),
+    );
     const toggleCart = useCartStore((s) => s.toggleCart);
     const pathname = usePathname();
 
     // Hide on cart/checkout page
     if (pathname === "/cart") return null;
 
-    const count = isHydrated ? totalItems() : 0;
+    const count = isHydrated ? cartCountValue : 0;
 
     return (
         <Button
