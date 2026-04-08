@@ -11,6 +11,8 @@ public record GetAllSpeciesQuery : IRequest<PaginatedResult<SpeciesListItemDTO>>
     public string? Query { get; init; }
     public string? Kingdom { get; init; }
     public string? Phylum { get; init; }
+    public string? ClassName { get; init; }
+    public string? OrderName { get; init; }
     public string? Family { get; init; }
     public string? Genus { get; init; }
     public bool? IsSensitive { get; init; }
@@ -39,6 +41,8 @@ public class GetAllSpeciesQueryHandler
             query: request.Query,
             kingdom: request.Kingdom,
             phylum: request.Phylum,
+            className: request.ClassName,
+            orderName: request.OrderName,
             family: request.Family,
             genus: request.Genus,
             isSensitive: request.IsSensitive,

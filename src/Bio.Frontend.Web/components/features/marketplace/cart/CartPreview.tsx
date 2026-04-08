@@ -34,8 +34,7 @@ function PreviewItem({ item }: { item: CartItem }) {
     const updateQuantity = useCartStore((s) => s.updateQuantity);
     const removeItem = useCartStore((s) => s.removeItem);
 
-    const hasDiscount =
-        item.originalPrice && item.originalPrice > item.price;
+    const hasDiscount = item.originalPrice && item.originalPrice > item.price;
 
     return (
         <div className="flex gap-3 py-3">
@@ -153,11 +152,15 @@ export function CartPreview() {
     const isOpen = useCartStore((s) => s.isOpen);
     const closeCart = useCartStore((s) => s.closeCart);
     const clearCart = useCartStore((s) => s.clearCart);
-    const totalItems = useCartStore((s) => s.totalItems);
-    const totalAmount = useCartStore((s) => s.totalAmount);
+    const countValue = useCartStore((s) =>
+        s.items.reduce((sum, item) => sum + item.quantity, 0),
+    );
+    const totalValue = useCartStore((s) =>
+        s.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    );
 
-    const count = isHydrated ? totalItems() : 0;
-    const total = isHydrated ? totalAmount() : 0;
+    const count = isHydrated ? countValue : 0;
+    const total = isHydrated ? totalValue : 0;
 
     const handleClearCart = useCallback(() => {
         clearCart();

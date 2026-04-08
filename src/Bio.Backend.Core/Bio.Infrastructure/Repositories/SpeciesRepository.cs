@@ -63,6 +63,8 @@ public class SpeciesRepository : ISpeciesRepository
         string? query = null,
         string? kingdom = null,
         string? phylum = null,
+        string? className = null,
+        string? orderName = null,
         string? family = null,
         string? genus = null,
         bool? isSensitive = null,
@@ -86,7 +88,9 @@ public class SpeciesRepository : ISpeciesRepository
                 (s.CommonName != null && s.CommonName.ToLower().Contains(searchTerm)) ||
                 (s.Description != null && s.Description.ToLower().Contains(searchTerm)) ||
                 (s.Taxonomy != null && s.Taxonomy.Family != null && s.Taxonomy.Family.ToLower().Contains(searchTerm)) ||
-                (s.Taxonomy != null && s.Taxonomy.Genus != null && s.Taxonomy.Genus.ToLower().Contains(searchTerm)));
+                (s.Taxonomy != null && s.Taxonomy.Genus != null && s.Taxonomy.Genus.ToLower().Contains(searchTerm)) ||
+                (s.Taxonomy != null && s.Taxonomy.ClassName != null && s.Taxonomy.ClassName.ToLower().Contains(searchTerm)) ||
+                (s.Taxonomy != null && s.Taxonomy.OrderName != null && s.Taxonomy.OrderName.ToLower().Contains(searchTerm)));
         }
 
         // Taxonomy filters
@@ -95,6 +99,12 @@ public class SpeciesRepository : ISpeciesRepository
 
         if (!string.IsNullOrWhiteSpace(phylum))
             q = q.Where(s => s.Taxonomy != null && s.Taxonomy.Phylum == phylum);
+
+        if (!string.IsNullOrWhiteSpace(className))
+            q = q.Where(s => s.Taxonomy != null && s.Taxonomy.ClassName == className);
+
+        if (!string.IsNullOrWhiteSpace(orderName))
+            q = q.Where(s => s.Taxonomy != null && s.Taxonomy.OrderName == orderName);
 
         if (!string.IsNullOrWhiteSpace(family))
             q = q.Where(s => s.Taxonomy != null && s.Taxonomy.Family == family);
@@ -177,6 +187,8 @@ public class SpeciesRepository : ISpeciesRepository
     public async Task<(
         IReadOnlyList<string> Kingdoms,
         IReadOnlyList<string> Phylums,
+        IReadOnlyList<string> Classes,
+        IReadOnlyList<string> Orders,
         IReadOnlyList<string> Families,
         IReadOnlyList<string> Genera,
         IReadOnlyList<string> ConservationStatuses,
@@ -185,33 +197,34 @@ public class SpeciesRepository : ISpeciesRepository
     {
         var totalCount = await _context.Species.CountAsync(cancellationToken);
 
-        var kingdoms = await _context.Taxonomies
-            .Where(t => t.Kingdom != null)
-            .Select(t => t.Kingdom!)
-            .Distinct()
-            .OrderBy(k => k)
+        // Build metadata from species-linked taxonomies only, avoiding orphan taxonomy rows.
+        var taxonomyValues = await _context.Species
+            .AsNoTracking()
+            .Where(s => s.Taxonomy != null)
+            .Select(s => new
+            {
+                Kingdom = s.Taxonomy!.Kingdom,
+                Phylum = s.Taxonomy!.Phylum,
+                ClassName = s.Taxonomy!.ClassName,
+                OrderName = s.Taxonomy!.OrderName,
+                Family = s.Taxonomy!.Family,
+                Genus = s.Taxonomy!.Genus,
+            })
             .ToListAsync(cancellationToken);
 
-        var phylums = await _context.Taxonomies
-            .Where(t => t.Phylum != null)
-            .Select(t => t.Phylum!)
-            .Distinct()
-            .OrderBy(p => p)
-            .ToListAsync(cancellationToken);
+        static IReadOnlyList<string> DistinctSorted(IEnumerable<string?> values) => values
+            .Where(v => !string.IsNullOrWhiteSpace(v))
+            .Select(v => v!.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(v => v)
+            .ToList();
 
-        var families = await _context.Taxonomies
-            .Where(t => t.Family != null)
-            .Select(t => t.Family!)
-            .Distinct()
-            .OrderBy(f => f)
-            .ToListAsync(cancellationToken);
-
-        var genera = await _context.Taxonomies
-            .Where(t => t.Genus != null)
-            .Select(t => t.Genus!)
-            .Distinct()
-            .OrderBy(g => g)
-            .ToListAsync(cancellationToken);
+        var kingdoms = DistinctSorted(taxonomyValues.Select(v => v.Kingdom));
+        var phylums = DistinctSorted(taxonomyValues.Select(v => v.Phylum));
+        var classes = DistinctSorted(taxonomyValues.Select(v => v.ClassName));
+        var orders = DistinctSorted(taxonomyValues.Select(v => v.OrderName));
+        var families = DistinctSorted(taxonomyValues.Select(v => v.Family));
+        var genera = DistinctSorted(taxonomyValues.Select(v => v.Genus));
 
         var conservationStatuses = await _context.Species
             .Where(s => s.ConservationStatus != null)
@@ -220,6 +233,6 @@ public class SpeciesRepository : ISpeciesRepository
             .OrderBy(c => c)
             .ToListAsync(cancellationToken);
 
-        return (kingdoms, phylums, families, genera, conservationStatuses, totalCount);
+        return (kingdoms, phylums, classes, orders, families, genera, conservationStatuses, totalCount);
     }
 }

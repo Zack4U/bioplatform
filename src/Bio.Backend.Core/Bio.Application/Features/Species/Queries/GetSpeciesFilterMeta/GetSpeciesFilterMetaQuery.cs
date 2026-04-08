@@ -24,13 +24,15 @@ public class GetSpeciesFilterMetaQueryHandler
         GetSpeciesFilterMetaQuery request,
         CancellationToken cancellationToken)
     {
-        var (kingdoms, phylums, families, genera, conservationStatuses, totalCount) =
+        var (kingdoms, phylums, classes, orders, families, genera, conservationStatuses, totalCount) =
             await _repository.GetFilterMetaAsync(cancellationToken);
 
         return new SpeciesFilterMetaDTO
         {
             Kingdoms = kingdoms,
             Phylums = phylums,
+            Classes = classes,
+            Orders = orders,
             Families = families,
             Genera = genera,
             ConservationStatuses = conservationStatuses,

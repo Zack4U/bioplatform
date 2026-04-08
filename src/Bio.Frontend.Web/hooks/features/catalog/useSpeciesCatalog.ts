@@ -89,6 +89,8 @@ const PARAM_MAP = {
     query: "q",
     kingdom: "reino",
     phylum: "filo",
+    className: "clase",
+    orderName: "orden",
     family: "familia",
     genus: "genero",
     isSensitive: "sensible",
@@ -112,6 +114,12 @@ function urlToSearchParams(urlParams: URLSearchParams): SpeciesSearchParams {
 
     const phylum = urlParams.get(PARAM_MAP.phylum);
     if (phylum) params.phylum = phylum;
+
+    const className = urlParams.get(PARAM_MAP.className);
+    if (className) params.className = className;
+
+    const orderName = urlParams.get(PARAM_MAP.orderName);
+    if (orderName) params.orderName = orderName;
 
     const family = urlParams.get(PARAM_MAP.family);
     if (family) params.family = family;
@@ -160,6 +168,8 @@ function searchParamsToUrl(
     if (params.query) urlParams.set(PARAM_MAP.query, params.query);
     if (params.kingdom) urlParams.set(PARAM_MAP.kingdom, params.kingdom);
     if (params.phylum) urlParams.set(PARAM_MAP.phylum, params.phylum);
+    if (params.className) urlParams.set(PARAM_MAP.className, params.className);
+    if (params.orderName) urlParams.set(PARAM_MAP.orderName, params.orderName);
     if (params.family) urlParams.set(PARAM_MAP.family, params.family);
     if (params.genus) urlParams.set(PARAM_MAP.genus, params.genus);
     if (params.isSensitive !== undefined)
@@ -188,10 +198,8 @@ export function useSpeciesCatalog() {
 
     /* ── Filter metadata from backend ────────────────────────────────────── */
 
-    const {
-        filterOptions,
-        isLoading: isFilterMetaLoading,
-    } = useSpeciesFilterMeta();
+    const { filterOptions, isLoading: isFilterMetaLoading } =
+        useSpeciesFilterMeta();
 
     /* ── Derive state from URL (single source of truth) ──────────────────── */
 
@@ -247,6 +255,8 @@ export function useSpeciesCatalog() {
         let count = 0;
         if (searchParams.kingdom) count++;
         if (searchParams.phylum) count++;
+        if (searchParams.className) count++;
+        if (searchParams.orderName) count++;
         if (searchParams.family) count++;
         if (searchParams.genus) count++;
         if (searchParams.isSensitive !== undefined) count++;

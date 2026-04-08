@@ -16,7 +16,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { useSpeciesDetail } from "@/hooks/useSpecies";
+import {
+    formatConservationStatus,
+    getConservationStatusBadgeStyle,
+} from "@/lib/formatters";
 import { THEME } from "@/lib/theme";
+import type { SpeciesSearchParams } from "@/types";
+import { router, useLocalSearchParams } from "expo-router";
 import {
     AlertTriangle,
     ArrowLeft,
@@ -40,7 +46,6 @@ import {
     ScrollView,
     View,
 } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
 
 // ─── InfoSection ─────────────────────────────────────────────────────────────
 
@@ -75,14 +80,20 @@ function TaxonomyRow({
     label,
     value,
     isLast,
+    onPress,
 }: {
     label: string;
     value: string | null;
     isLast?: boolean;
+    onPress?: () => void;
 }) {
     if (!value) return null;
+
+    const RowComponent = onPress ? Pressable : View;
+
     return (
-        <View
+        <RowComponent
+            onPress={onPress}
             className={`flex-row items-center justify-between py-2.5 ${!isLast ? "border-b border-border" : ""}`}
         >
             <Text className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -92,11 +103,11 @@ function TaxonomyRow({
                 <Text className="text-sm font-medium text-foreground">
                     {value}
                 </Text>
-                {!isLast && (
+                {onPress && (
                     <ChevronRight size={12} color="hsl(149, 10%, 50%)" />
                 )}
             </View>
-        </View>
+        </RowComponent>
     );
 }
 
@@ -141,6 +152,39 @@ export default function SpeciesDetailScreen() {
     }
 
     const taxonomy = species.taxonomy;
+    const conservationBadgeStyle = getConservationStatusBadgeStyle(
+        species.conservationStatus,
+    );
+
+    const navigateToCatalogWithFilter = (
+        next: Pick<
+            SpeciesSearchParams,
+            | "kingdom"
+            | "phylum"
+            | "className"
+            | "orderName"
+            | "family"
+            | "genus"
+            | "query"
+        >,
+    ) => {
+        const params = new URLSearchParams();
+
+        if (next.kingdom) params.set("kingdom", next.kingdom);
+        if (next.phylum) params.set("phylum", next.phylum);
+        if (next.className) params.set("className", next.className);
+        if (next.orderName) params.set("orderName", next.orderName);
+        if (next.family) params.set("family", next.family);
+        if (next.genus) params.set("genus", next.genus);
+        if (next.query) params.set("query", next.query);
+
+        const queryString = params.toString();
+        router.push(
+            (queryString
+                ? `/(tabs)/catalog?${queryString}`
+                : "/(tabs)/catalog") as never,
+        );
+    };
 
     return (
         <ScrollView
@@ -191,9 +235,15 @@ export default function SpeciesDetailScreen() {
                 {/* Status Badges */}
                 <View className="flex-row flex-wrap items-center justify-center gap-2 mt-3">
                     {species.conservationStatus && (
-                        <Badge className="bg-warning/15 border-0 px-3 py-1">
-                            <Text className="text-xs text-warning font-semibold">
-                                {species.conservationStatus}
+                        <Badge
+                            className={`${conservationBadgeStyle.containerClass} border-0 px-3 py-1`}
+                        >
+                            <Text
+                                className={`text-xs font-semibold ${conservationBadgeStyle.textClass}`}
+                            >
+                                {formatConservationStatus(
+                                    species.conservationStatus,
+                                )}
                             </Text>
                         </Badge>
                     )}
@@ -225,27 +275,59 @@ export default function SpeciesDetailScreen() {
                             <TaxonomyRow
                                 label="Reino"
                                 value={taxonomy.kingdom}
+                                onPress={() =>
+                                    navigateToCatalogWithFilter({
+                                        kingdom: taxonomy.kingdom ?? undefined,
+                                    })
+                                }
                             />
                             <TaxonomyRow
                                 label="Filo"
                                 value={taxonomy.phylum}
+                                onPress={() =>
+                                    navigateToCatalogWithFilter({
+                                        phylum: taxonomy.phylum ?? undefined,
+                                    })
+                                }
                             />
                             <TaxonomyRow
                                 label="Clase"
                                 value={taxonomy.className}
+                                onPress={() =>
+                                    navigateToCatalogWithFilter({
+                                        className:
+                                            taxonomy.className ?? undefined,
+                                    })
+                                }
                             />
                             <TaxonomyRow
                                 label="Orden"
                                 value={taxonomy.orderName}
+                                onPress={() =>
+                                    navigateToCatalogWithFilter({
+                                        orderName:
+                                            taxonomy.orderName ?? undefined,
+                                    })
+                                }
                             />
                             <TaxonomyRow
                                 label="Familia"
                                 value={taxonomy.family}
+                                onPress={() =>
+                                    navigateToCatalogWithFilter({
+                                        family: taxonomy.family ?? undefined,
+                                    })
+                                }
                             />
                             <TaxonomyRow
                                 label="Genero"
                                 value={taxonomy.genus}
                                 isLast
+                                onPress={() =>
+                                    navigateToCatalogWithFilter({
+                                        genus: taxonomy.genus ?? undefined,
+                                    })
+                                }
                             />
                         </CardContent>
                     </Card>

@@ -33,14 +33,7 @@ import { useLogout } from "@/hooks/features/auth";
 import { useHydration } from "@/hooks/useHydration";
 import { useAuthStore } from "@/store/auth-store";
 import { useCartStore } from "@/store/cart-store";
-import {
-    Leaf,
-    LogOut,
-    Menu,
-    Settings,
-    ShoppingCart,
-    User,
-} from "lucide-react";
+import { Leaf, LogOut, Menu, Settings, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -65,8 +58,10 @@ export function Navbar() {
     const { isAuthenticated, user, isLoading } = useAuthStore();
     const logoutMutation = useLogout();
     const isHydrated = useHydration();
-    const totalItems = useCartStore((s) => s.totalItems);
-    const cartCount = isHydrated ? totalItems() : 0;
+    const cartCountValue = useCartStore((s) =>
+        s.items.reduce((sum, item) => sum + item.quantity, 0),
+    );
+    const cartCount = isHydrated ? cartCountValue : 0;
 
     return (
         <>
@@ -157,9 +152,7 @@ export function Navbar() {
                                         <div className="flex items-center gap-3">
                                             <Avatar size="sm">
                                                 <AvatarFallback>
-                                                    {getInitials(
-                                                        user.fullName,
-                                                    )}
+                                                    {getInitials(user.fullName)}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="flex flex-col space-y-1">
@@ -195,9 +188,7 @@ export function Navbar() {
                                     <DropdownMenuItem
                                         id="logout-button"
                                         variant="destructive"
-                                        onClick={() =>
-                                            logoutMutation.mutate()
-                                        }
+                                        onClick={() => logoutMutation.mutate()}
                                         disabled={logoutMutation.isPending}
                                     >
                                         <LogOut
@@ -255,9 +246,7 @@ export function Navbar() {
                                         <div className="flex items-center gap-3 px-2 py-3">
                                             <Avatar size="default">
                                                 <AvatarFallback>
-                                                    {getInitials(
-                                                        user.fullName,
-                                                    )}
+                                                    {getInitials(user.fullName)}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="flex flex-col">
@@ -292,9 +281,7 @@ export function Navbar() {
                                     ))}
                                     <Separator className="my-2" />
 
-                                    {!isLoading &&
-                                    isAuthenticated &&
-                                    user ? (
+                                    {!isLoading && isAuthenticated && user ? (
                                         <>
                                             <SheetClose asChild>
                                                 <Button
@@ -348,10 +335,7 @@ export function Navbar() {
                                         </>
                                     ) : (
                                         <SheetClose asChild>
-                                            <Button
-                                                className="w-full"
-                                                asChild
-                                            >
+                                            <Button className="w-full" asChild>
                                                 <Link href="/login">
                                                     Ingresar
                                                 </Link>

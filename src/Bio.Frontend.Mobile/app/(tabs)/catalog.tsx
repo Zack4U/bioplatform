@@ -15,43 +15,146 @@
  * - Tap species to navigate to detail screen
  */
 
-import { SearchInput } from "@/components/common";
-import { Text } from "@/components/ui/text";
+import { CatalogFiltersDrawer } from "@/components/catalog/CatalogFiltersDrawer";
 import { CatalogHeader } from "@/components/catalog/CatalogHeader";
 import { KingdomFilters } from "@/components/catalog/KingdomFilters";
 import { SpeciesGridItem } from "@/components/catalog/SpeciesGridItem";
 import { SpeciesListItem } from "@/components/catalog/SpeciesListItem";
-import { useSpeciesList } from "@/hooks/useSpecies";
+import { SearchInput } from "@/components/common";
+import { Text } from "@/components/ui/text";
+import { useSpeciesFilterMeta, useSpeciesList } from "@/hooks/useSpecies";
 import { THEME } from "@/lib/theme";
-import type { SpeciesResponse } from "@/types";
+import type {
+    SpeciesListItem as SpeciesListItemType,
+    SpeciesSearchParams,
+} from "@/types";
+import { router, useLocalSearchParams } from "expo-router";
 import { Search } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
     FlatList,
     RefreshControl,
     View,
     useWindowDimensions,
 } from "react-native";
-import { router } from "expo-router";
 
 export default function CatalogScreen() {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
     const { width } = useWindowDimensions();
 
+    type CatalogFilterState = Pick<
+        SpeciesSearchParams,
+        | "kingdom"
+        | "phylum"
+        | "className"
+        | "orderName"
+        | "family"
+        | "genus"
+        | "conservationStatus"
+        | "isSensitive"
+    >;
+
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedKingdom, setSelectedKingdom] = useState<string | undefined>(
-        undefined,
-    );
+    const [filters, setFilters] = useState<CatalogFilterState>({});
+    const [draftFilters, setDraftFilters] = useState<CatalogFilterState>({});
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+    const routeParams = useLocalSearchParams<{
+        query?: string | string[];
+        kingdom?: string | string[];
+        phylum?: string | string[];
+        className?: string | string[];
+        orderName?: string | string[];
+        family?: string | string[];
+        genus?: string | string[];
+    }>();
+
+    useEffect(() => {
+        const readParam = (value?: string | string[]) =>
+            Array.isArray(value) ? value[0] : value;
+
+        const queryFromRoute = readParam(routeParams.query)?.trim();
+        const kingdomFromRoute = readParam(routeParams.kingdom)?.trim();
+        const phylumFromRoute = readParam(routeParams.phylum)?.trim();
+        const classNameFromRoute = readParam(routeParams.className)?.trim();
+        const orderNameFromRoute = readParam(routeParams.orderName)?.trim();
+        const familyFromRoute = readParam(routeParams.family)?.trim();
+        const genusFromRoute = readParam(routeParams.genus)?.trim();
+
+        const nextFilters: CatalogFilterState = {};
+
+        if (kingdomFromRoute) nextFilters.kingdom = kingdomFromRoute;
+        if (phylumFromRoute) nextFilters.phylum = phylumFromRoute;
+        if (classNameFromRoute) nextFilters.className = classNameFromRoute;
+        if (orderNameFromRoute) nextFilters.orderName = orderNameFromRoute;
+        if (familyFromRoute) nextFilters.family = familyFromRoute;
+        if (genusFromRoute) nextFilters.genus = genusFromRoute;
+
+        const hasRouteDrivenState =
+            Boolean(queryFromRoute) || Object.keys(nextFilters).length > 0;
+
+        if (!hasRouteDrivenState) {
+            return;
+        }
+
+        setSearchQuery(queryFromRoute ?? "");
+        setFilters(nextFilters);
+        setDraftFilters(nextFilters);
+    }, [
+        routeParams.query,
+        routeParams.kingdom,
+        routeParams.phylum,
+        routeParams.className,
+        routeParams.orderName,
+        routeParams.family,
+        routeParams.genus,
+    ]);
+
+    const activeFilterCount = useMemo(() => {
+        let count = 0;
+        if (filters.kingdom) count++;
+        if (filters.phylum) count++;
+        if (filters.className) count++;
+        if (filters.orderName) count++;
+        if (filters.family) count++;
+        if (filters.genus) count++;
+        if (filters.conservationStatus) count++;
+        if (filters.isSensitive !== undefined) count++;
+        return count;
+    }, [filters]);
+
+    const openFiltersDrawer = useCallback(() => {
+        setDraftFilters(filters);
+        setIsFiltersOpen(true);
+    }, [filters]);
+
+    const closeFiltersDrawer = useCallback(() => {
+        setIsFiltersOpen(false);
+    }, []);
+
+    const applyFilters = useCallback(() => {
+        setFilters(draftFilters);
+        setIsFiltersOpen(false);
+    }, [draftFilters]);
+
+    const clearDraftFilters = useCallback(() => {
+        setDraftFilters({});
+    }, []);
 
     const { data, isLoading, refetch, isRefetching } = useSpeciesList({
         query: searchQuery || undefined,
-        kingdom: selectedKingdom,
+        ...filters,
+        page: 1,
+        pageSize: 500,
+        sortBy: "scientificName",
+        sortOrder: "asc",
     });
+    const { data: filterMeta } = useSpeciesFilterMeta();
 
-    const species = data ?? [];
+    const species = data?.items ?? [];
+    const totalCount = data?.totalCount ?? species.length;
 
     // Responsive grid columns
     const numColumns = viewMode === "grid" ? (width < 400 ? 2 : 3) : 1;
@@ -67,7 +170,7 @@ export default function CatalogScreen() {
 
     // ─── Render Items ───────────────────────────────────────
     const renderListItem = useCallback(
-        ({ item }: { item: SpeciesResponse }) => (
+        ({ item }: { item: SpeciesListItemType }) => (
             <SpeciesListItem
                 item={item}
                 onPress={() => navigateToDetail(item.id)}
@@ -77,7 +180,7 @@ export default function CatalogScreen() {
     );
 
     const renderGridItem = useCallback(
-        ({ item }: { item: SpeciesResponse }) => (
+        ({ item }: { item: SpeciesListItemType }) => (
             <SpeciesGridItem
                 item={item}
                 width={gridItemWidth}
@@ -113,11 +216,13 @@ export default function CatalogScreen() {
             {/* Header */}
             <View className="px-5 pt-14 pb-4">
                 <CatalogHeader
-                    totalCount={species.length}
+                    totalCount={totalCount}
                     viewMode={viewMode}
+                    activeFilterCount={activeFilterCount}
                     onToggleViewMode={() =>
                         setViewMode((m) => (m === "list" ? "grid" : "list"))
                     }
+                    onOpenFilters={openFiltersDrawer}
                 />
 
                 {/* Search */}
@@ -129,8 +234,14 @@ export default function CatalogScreen() {
 
                 {/* Kingdom Pills */}
                 <KingdomFilters
-                    selected={selectedKingdom}
-                    onSelect={setSelectedKingdom}
+                    options={filterMeta?.kingdoms ?? []}
+                    selected={filters.kingdom}
+                    onSelect={(kingdom) =>
+                        setFilters((previous) => ({
+                            ...previous,
+                            kingdom,
+                        }))
+                    }
                 />
             </View>
 
@@ -164,6 +275,16 @@ export default function CatalogScreen() {
                     />
                 }
                 ListEmptyComponent={EmptyComponent}
+            />
+
+            <CatalogFiltersDrawer
+                open={isFiltersOpen}
+                onClose={closeFiltersDrawer}
+                onApply={applyFilters}
+                onClear={clearDraftFilters}
+                value={draftFilters}
+                onChange={setDraftFilters}
+                filterMeta={filterMeta}
             />
         </View>
     );

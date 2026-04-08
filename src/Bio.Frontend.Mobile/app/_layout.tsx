@@ -11,10 +11,12 @@
  * - test: component sandbox (dev only)
  */
 
+import { SPECIES_FILTER_META_QUERY_KEY } from "@/hooks/useSpecies";
 import { NAV_THEME } from "@/lib/theme";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as speciesService from "@/services/species-service";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useColorScheme } from "nativewind";
@@ -54,6 +56,13 @@ export default function RootLayout() {
     useEffect(() => {
         setIsColorSchemeLoaded(true);
         SplashScreen.hideAsync();
+
+        void queryClient.prefetchQuery({
+            queryKey: SPECIES_FILTER_META_QUERY_KEY,
+            queryFn: speciesService.getFilterMeta,
+            staleTime: Infinity,
+            gcTime: Infinity,
+        });
     }, []);
 
     if (!isColorSchemeLoaded) {
@@ -109,14 +118,14 @@ export default function RootLayout() {
                                 animation: "slide_from_right",
                             }}
                         />
-                        <Stack.Screen
+                        {/* <Stack.Screen
                             name="model-info"
                             options={{
                                 title: "Auditor del Modelo",
                                 headerShown: false,
                                 animation: "slide_from_right",
                             }}
-                        />
+                        /> */}
                         <Stack.Screen
                             name="model-stats"
                             options={{

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
 import { useSpeciesList } from "@/hooks/useSpecies";
 import { THEME } from "@/lib/theme";
+import { router } from "expo-router";
 import { Leaf } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
@@ -17,12 +18,18 @@ import {
     ScrollView,
     View,
 } from "react-native";
-import { router } from "expo-router";
 
 export function FeaturedSpecies() {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
-    const { data: species, isLoading } = useSpeciesList();
+    const { data, isLoading } = useSpeciesList({
+        page: 1,
+        pageSize: 8,
+        sortBy: "scientificName",
+        sortOrder: "asc",
+    });
+
+    const species = data?.items ?? [];
 
     const featured = (species ?? []).slice(0, 5);
 
@@ -62,7 +69,9 @@ export function FeaturedSpecies() {
                         <Pressable
                             key={sp.id}
                             className="active:opacity-80"
-                            onPress={() => router.push(`/species/${sp.id}` as never)}
+                            onPress={() =>
+                                router.push(`/species/${sp.id}` as never)
+                            }
                         >
                             <View className="w-44 bg-card border border-border rounded-2xl overflow-hidden">
                                 {/* Image / placeholder */}
@@ -92,9 +101,7 @@ export function FeaturedSpecies() {
                                         className="text-[10px] text-muted-foreground mt-0.5"
                                         numberOfLines={1}
                                     >
-                                        {sp.commonName ??
-                                            sp.taxonomy?.family ??
-                                            "—"}
+                                        {sp.commonName ?? sp.family ?? "—"}
                                     </Text>
                                     <View className="flex-row items-center mt-2">
                                         <Badge
@@ -102,7 +109,7 @@ export function FeaturedSpecies() {
                                             className="px-2 py-0.5"
                                         >
                                             <Text className="text-[9px]">
-                                                {sp.taxonomy?.kingdom ?? "—"}
+                                                {sp.kingdom ?? "—"}
                                             </Text>
                                         </Badge>
                                     </View>

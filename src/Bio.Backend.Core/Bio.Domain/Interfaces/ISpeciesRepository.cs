@@ -30,6 +30,8 @@ public interface ISpeciesRepository
         string? query = null,
         string? kingdom = null,
         string? phylum = null,
+        string? className = null,
+        string? orderName = null,
         string? family = null,
         string? genus = null,
         bool? isSensitive = null,
@@ -61,6 +63,8 @@ public interface ISpeciesRepository
     Task<(
         IReadOnlyList<string> Kingdoms,
         IReadOnlyList<string> Phylums,
+        IReadOnlyList<string> Classes,
+        IReadOnlyList<string> Orders,
         IReadOnlyList<string> Families,
         IReadOnlyList<string> Genera,
         IReadOnlyList<string> ConservationStatuses,

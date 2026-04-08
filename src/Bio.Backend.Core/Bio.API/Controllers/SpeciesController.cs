@@ -41,6 +41,8 @@ public class SpeciesController : ControllerBase
             Query = filters.Query,
             Kingdom = filters.Kingdom,
             Phylum = filters.Phylum,
+            ClassName = filters.ClassName,
+            OrderName = filters.OrderName,
             Family = filters.Family,
             Genus = filters.Genus,
             IsSensitive = filters.IsSensitive,

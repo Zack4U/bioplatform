@@ -39,6 +39,8 @@ interface CatalogFiltersSidebarProps {
     filterOptions: {
         kingdoms: SelectOption[];
         phylums: SelectOption[];
+        classes: SelectOption[];
+        orders: SelectOption[];
         families: SelectOption[];
         genera: SelectOption[];
         conservationStatuses: SelectOption[];
@@ -183,6 +185,8 @@ export function CatalogFiltersSidebar({
                 defaultValue={[
                     "reino",
                     "filo",
+                    "clase",
+                    "orden",
                     "familia",
                     "genero",
                     "sensibilidad",
@@ -206,6 +210,24 @@ export function CatalogFiltersSidebar({
                     options={filterOptions.phylums}
                     selectedValue={searchParams.phylum}
                     onSelect={(v) => onFilterChange("phylum", v)}
+                />
+
+                {/* Clase */}
+                <CheckboxFilterSection
+                    filterId="clase"
+                    label="Clase"
+                    options={filterOptions.classes}
+                    selectedValue={searchParams.className}
+                    onSelect={(v) => onFilterChange("className", v)}
+                />
+
+                {/* Orden */}
+                <CheckboxFilterSection
+                    filterId="orden"
+                    label="Orden"
+                    options={filterOptions.orders}
+                    selectedValue={searchParams.orderName}
+                    onSelect={(v) => onFilterChange("orderName", v)}
                 />
 
                 {/* Familia */}

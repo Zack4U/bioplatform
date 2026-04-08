@@ -8,62 +8,81 @@
 
 import { handleApiError } from "@/lib/error-handler";
 import * as speciesService from "@/services/species-service";
-import type { SpeciesResponse } from "@/types";
+import type {
+    PaginatedResponse,
+    SpeciesFilterMeta,
+    SpeciesListItem,
+    SpeciesSearchParams,
+} from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 const SPECIES_KEYS = {
     all: ["species"] as const,
     lists: () => [...SPECIES_KEYS.all, "list"] as const,
-    list: (search?: string, kingdom?: string) =>
-        [...SPECIES_KEYS.lists(), { search, kingdom }] as const,
+    list: (params: SpeciesSearchParams) =>
+        [...SPECIES_KEYS.lists(), params] as const,
+    filterMeta: () => [...SPECIES_KEYS.all, "filter-meta"] as const,
     details: () => [...SPECIES_KEYS.all, "detail"] as const,
     detail: (id: string) => [...SPECIES_KEYS.details(), id] as const,
 };
 
-interface UseSpeciesListParams {
-    query?: string;
-    kingdom?: string;
-}
+export const SPECIES_FILTER_META_QUERY_KEY = [
+    "species",
+    "filter-meta",
+] as const;
 
 /**
- * Fetch all species from the backend with client-side filtering.
- * Backend doesn't support search/filter params — we filter locally.
+ * Fetch species from backend with server-side filtering/pagination.
  */
-export function useSpeciesList(params: UseSpeciesListParams = {}) {
+export function useSpeciesList(params: SpeciesSearchParams = {}) {
     return useQuery({
-        queryKey: SPECIES_KEYS.list(params.query, params.kingdom),
-        queryFn: async (): Promise<SpeciesResponse[]> => {
+        queryKey: SPECIES_KEYS.list(params),
+        queryFn: async (): Promise<PaginatedResponse<SpeciesListItem>> => {
             try {
-                const allSpecies = await speciesService.getAll();
-
-                let filtered = allSpecies;
-
-                // Client-side search filter
-                if (params.query) {
-                    const q = params.query.toLowerCase();
-                    filtered = filtered.filter(
-                        (s) =>
-                            s.scientificName.toLowerCase().includes(q) ||
-                            s.commonName?.toLowerCase().includes(q) ||
-                            s.taxonomy?.family?.toLowerCase().includes(q) ||
-                            s.taxonomy?.genus?.toLowerCase().includes(q),
-                    );
-                }
-
-                // Client-side kingdom filter
-                if (params.kingdom) {
-                    filtered = filtered.filter(
-                        (s) => s.taxonomy?.kingdom === params.kingdom,
-                    );
-                }
-
-                return filtered;
+                return await speciesService.getList(params);
             } catch (error) {
                 handleApiError(error);
-                return [];
+                return {
+                    items: [],
+                    totalCount: 0,
+                    page: params.page ?? 1,
+                    pageSize: params.pageSize ?? 0,
+                    totalPages: 0,
+                    hasNextPage: false,
+                    hasPreviousPage: false,
+                };
             }
         },
         staleTime: 5 * 60 * 1000,
+    });
+}
+
+/** Fetch backend species filter metadata (kingdoms/families/etc). */
+export function useSpeciesFilterMeta() {
+    return useQuery({
+        queryKey: SPECIES_FILTER_META_QUERY_KEY,
+        queryFn: async (): Promise<SpeciesFilterMeta> => {
+            try {
+                return await speciesService.getFilterMeta();
+            } catch (error) {
+                handleApiError(error);
+                return {
+                    kingdoms: [],
+                    phylums: [],
+                    classes: [],
+                    orders: [],
+                    families: [],
+                    genera: [],
+                    conservationStatuses: [],
+                    totalSpeciesCount: 0,
+                };
+            }
+        },
+        staleTime: Infinity,
+        gcTime: Infinity,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
     });
 }
 

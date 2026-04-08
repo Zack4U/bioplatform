@@ -2,12 +2,12 @@
  * CameraActions — Bottom action bar with 3 buttons: Gallery, Capture, History.
  */
 
+import { Text } from "@/components/ui/text";
 import { THEME } from "@/lib/theme";
 import { Camera as CameraIcon, History, ImagePlus } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { Pressable, View } from "react-native";
-import { Text } from "@/components/ui/text";
 
 interface CameraActionsProps {
     onCapture: () => void;
@@ -26,7 +26,7 @@ export function CameraActions({
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
 
     return (
-        <View className="bg-black pb-10 pt-6 px-8">
+        <View className="pb-10 pt-6 px-8">
             <View className="flex-row items-center justify-between">
                 {/* Gallery */}
                 <Pressable
@@ -64,7 +64,11 @@ export function CameraActions({
                     >
                         <View className="w-20 h-20 rounded-full bg-primary items-center justify-center">
                             <View className="w-16 h-16 rounded-full border-[3px] border-white/30 items-center justify-center">
-                                <CameraIcon size={30} color="white" strokeWidth={2} />
+                                <CameraIcon
+                                    size={30}
+                                    color="white"
+                                    strokeWidth={2}
+                                />
                             </View>
                         </View>
                     </View>

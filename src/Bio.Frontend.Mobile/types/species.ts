@@ -41,6 +41,49 @@ export interface SpeciesResponse {
     updatedAt: string;
 }
 
+/** Maps to SpeciesListItemDTO (paginated catalog list) */
+export interface SpeciesListItem {
+    id: string;
+    slug: string;
+    scientificName: string;
+    commonName: string | null;
+    thumbnailUrl: string | null;
+    conservationStatus: string | null;
+    isSensitive: boolean;
+    kingdom: string | null;
+    family: string | null;
+    createdAt: string;
+}
+
+/** Maps to SpeciesFilterParams */
+export interface SpeciesSearchParams {
+    query?: string;
+    kingdom?: string;
+    phylum?: string;
+    className?: string;
+    orderName?: string;
+    family?: string;
+    genus?: string;
+    isSensitive?: boolean;
+    conservationStatus?: string;
+    page?: number;
+    pageSize?: number;
+    sortBy?: "scientificName" | "commonName" | "createdAt";
+    sortOrder?: "asc" | "desc";
+}
+
+/** Maps to SpeciesFilterMetaDTO */
+export interface SpeciesFilterMeta {
+    kingdoms: string[];
+    phylums: string[];
+    classes: string[];
+    orders: string[];
+    families: string[];
+    genera: string[];
+    conservationStatuses: string[];
+    totalSpeciesCount: number;
+}
+
 // ─── Geographic Distribution ─────────────────────────────────────────────────
 
 /** Maps to GeographicDistribution entity (no DTO yet — future endpoint) */
