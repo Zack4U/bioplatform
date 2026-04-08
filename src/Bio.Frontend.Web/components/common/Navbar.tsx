@@ -30,7 +30,9 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { useLogout } from "@/hooks/features/auth";
+import { useHydration } from "@/hooks/useHydration";
 import { useAuthStore } from "@/store/auth-store";
+import { useCartStore } from "@/store/cart-store";
 import {
     Leaf,
     LogOut,
@@ -62,6 +64,9 @@ function getInitials(fullName: string): string {
 export function Navbar() {
     const { isAuthenticated, user, isLoading } = useAuthStore();
     const logoutMutation = useLogout();
+    const isHydrated = useHydration();
+    const totalItems = useCartStore((s) => s.totalItems);
+    const cartCount = isHydrated ? totalItems() : 0;
 
     return (
         <>
@@ -111,14 +116,20 @@ export function Navbar() {
                         <Button
                             variant="outline"
                             size="icon"
-                            aria-label="Carrito de compras"
+                            aria-label={`Carrito de compras: ${cartCount} artículo${cartCount !== 1 ? "s" : ""}`}
                             asChild
+                            className="relative"
                         >
                             <Link href="/cart">
                                 <ShoppingCart
                                     className="h-4 w-4"
                                     aria-hidden="true"
                                 />
+                                {cartCount > 0 && (
+                                    <span className="absolute -top-1.5 -right-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                                        {cartCount > 99 ? "99+" : cartCount}
+                                    </span>
+                                )}
                             </Link>
                         </Button>
 

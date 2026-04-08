@@ -72,6 +72,10 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "natusfera.gbif.es", // GBIF
             },
+            {
+                protocol: "https",
+                hostname: "www.mockupworld.co", // Mock/placeholder images
+            },
         ],
     },
 

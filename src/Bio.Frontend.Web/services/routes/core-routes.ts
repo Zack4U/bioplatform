@@ -48,4 +48,21 @@ export const CORE_ROUTES = {
         BASE: "/taxonomy",
         BY_ID: (id: number) => `/taxonomy/${id}` as const,
     },
+
+    /** ProductsController — /api/products */
+    PRODUCTS: {
+        BASE: "/products",
+        BY_ID: (id: string) => `/products/${id}` as const,
+        BY_SLUG: (slug: string) => `/products/slug/${slug}` as const,
+        CATEGORIES: "/products/categories",
+        REVIEWS: (productId: string) =>
+            `/products/${productId}/reviews` as const,
+    },
+
+    /** OrdersController — /api/orders */
+    ORDERS: {
+        BASE: "/orders",
+        BY_ID: (id: string) => `/orders/${id}` as const,
+        VALIDATE_COUPON: "/orders/validate-coupon",
+    },
 } as const;
