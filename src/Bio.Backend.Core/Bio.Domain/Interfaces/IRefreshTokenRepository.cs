@@ -29,6 +29,13 @@ public interface IRefreshTokenRepository
     Task<RefreshToken?> GetByTokenAsync(string token, Guid userId);
 
     /// <summary>
+    /// Gets all active refresh tokens for a specific user.
+    /// </summary>
+    /// <param name="userId">The user ID.</param>
+    /// <returns>A collection of active refresh tokens.</returns>
+    Task<IEnumerable<RefreshToken>> GetActiveByUserIdAsync(Guid userId);
+
+    /// <summary>
     /// Updates an existing refresh token.
     /// </summary>
     /// <param name="refreshToken">The refresh token to update.</param>

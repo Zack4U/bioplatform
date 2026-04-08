@@ -59,7 +59,6 @@ public class AuthService : IAuthService
             .Select(ur => ur.RoleName)
             .ToList();
 
-        // Check if 2FA is enabled
         if (user.TwoFactorEnabled)
         {
             var twoFactorToken = _tokenService.GenerateTwoFactorToken(user);

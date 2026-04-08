@@ -32,19 +32,9 @@ public class User
     public string? PhoneNumber { get; private set; }
 
     /// <summary>
-    /// Indicates if the user has verified their email address.
-    /// </summary>
-    public bool IsVerified { get; private set; }
-
-    /// <summary>
     /// Timestamp of the user's last successful login.
     /// </summary>
-    public DateTime? LastLogin { get; private set; }
-
-    /// <summary>
-    /// Indicates if the user account is active (soft delete).
-    /// </summary>
-    public bool IsActive { get; private set; } = true;
+    public DateTime? LastLoginAt { get; private set; }
 
     /// <summary>
     /// Unique random salt used for password hashing.
@@ -90,7 +80,6 @@ public class User
         Salt = salt;
         PhoneNumber = phoneNumber?.Trim();
         CreatedAt = DateTime.UtcNow;
-        IsActive = true;
     }
 
     /// <summary>
@@ -121,29 +110,11 @@ public class User
     }
 
     /// <summary>
-    /// Marks the user as verified.
-    /// </summary>
-    public void Verify()
-    {
-        IsVerified = true;
-        UpdatedAt = DateTime.UtcNow;
-    }
-
-    /// <summary>
     /// Records a successful login.
     /// </summary>
     public void RecordLogin()
     {
-        LastLogin = DateTime.UtcNow;
-    }
-
-    /// <summary>
-    /// Deactivates the user (soft delete).
-    /// </summary>
-    public void Deactivate()
-    {
-        IsActive = false;
-        UpdatedAt = DateTime.UtcNow;
+        LastLoginAt = DateTime.UtcNow;
     }
 
     /// <summary>
