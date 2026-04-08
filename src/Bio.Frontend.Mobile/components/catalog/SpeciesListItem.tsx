@@ -6,14 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { THEME } from "@/lib/theme";
-import type { SpeciesListItem } from "@/types";
+import type { SpeciesListItem as SpeciesListItemData } from "@/types";
 import { Leaf, Shield } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
 import { Image, Pressable, View } from "react-native";
 
 interface SpeciesListItemProps {
-    item: SpeciesListItem;
+    item: SpeciesListItemData;
     onPress?: () => void;
 }
 

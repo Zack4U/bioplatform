@@ -34,8 +34,7 @@ function PreviewItem({ item }: { item: CartItem }) {
     const updateQuantity = useCartStore((s) => s.updateQuantity);
     const removeItem = useCartStore((s) => s.removeItem);
 
-    const hasDiscount =
-        item.originalPrice && item.originalPrice > item.price;
+    const hasDiscount = item.originalPrice && item.originalPrice > item.price;
 
     return (
         <div className="flex gap-3 py-3">
