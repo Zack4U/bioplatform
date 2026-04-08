@@ -159,13 +159,21 @@ export default function SpeciesDetailScreen() {
     const navigateToCatalogWithFilter = (
         next: Pick<
             SpeciesSearchParams,
-            "kingdom" | "phylum" | "family" | "genus" | "query"
+            | "kingdom"
+            | "phylum"
+            | "className"
+            | "orderName"
+            | "family"
+            | "genus"
+            | "query"
         >,
     ) => {
         const params = new URLSearchParams();
 
         if (next.kingdom) params.set("kingdom", next.kingdom);
         if (next.phylum) params.set("phylum", next.phylum);
+        if (next.className) params.set("className", next.className);
+        if (next.orderName) params.set("orderName", next.orderName);
         if (next.family) params.set("family", next.family);
         if (next.genus) params.set("genus", next.genus);
         if (next.query) params.set("query", next.query);
@@ -287,7 +295,8 @@ export default function SpeciesDetailScreen() {
                                 value={taxonomy.className}
                                 onPress={() =>
                                     navigateToCatalogWithFilter({
-                                        query: taxonomy.className ?? undefined,
+                                        className:
+                                            taxonomy.className ?? undefined,
                                     })
                                 }
                             />
@@ -296,7 +305,8 @@ export default function SpeciesDetailScreen() {
                                 value={taxonomy.orderName}
                                 onPress={() =>
                                     navigateToCatalogWithFilter({
-                                        query: taxonomy.orderName ?? undefined,
+                                        orderName:
+                                            taxonomy.orderName ?? undefined,
                                     })
                                 }
                             />

@@ -24,6 +24,8 @@ type CatalogFilterState = Pick<
     SpeciesSearchParams,
     | "kingdom"
     | "phylum"
+    | "className"
+    | "orderName"
     | "family"
     | "genus"
     | "conservationStatus"
@@ -292,6 +294,28 @@ export function CatalogFiltersDrawer({
         [filterMeta?.families],
     );
 
+    const classOptions = useMemo(
+        () => [
+            { label: "Todas", value: undefined },
+            ...(filterMeta?.classes ?? []).map((entry) => ({
+                label: entry,
+                value: entry,
+            })),
+        ],
+        [filterMeta?.classes],
+    );
+
+    const orderOptions = useMemo(
+        () => [
+            { label: "Todos", value: undefined },
+            ...(filterMeta?.orders ?? []).map((entry) => ({
+                label: entry,
+                value: entry,
+            })),
+        ],
+        [filterMeta?.orders],
+    );
+
     const genusOptions = useMemo(
         () => [
             { label: "Todos", value: undefined },
@@ -344,6 +368,20 @@ export function CatalogFiltersDrawer({
                         selected={value.phylum}
                         onSelect={(next) => updateFilter("phylum", next)}
                         searchPlaceholder="Buscar filo..."
+                    />
+                    <SearchableFilterSection
+                        title="Clase"
+                        options={classOptions}
+                        selected={value.className}
+                        onSelect={(next) => updateFilter("className", next)}
+                        searchPlaceholder="Buscar clase..."
+                    />
+                    <SearchableFilterSection
+                        title="Orden"
+                        options={orderOptions}
+                        selected={value.orderName}
+                        onSelect={(next) => updateFilter("orderName", next)}
+                        searchPlaceholder="Buscar orden..."
                     />
                     <SearchableFilterSection
                         title="Familia"

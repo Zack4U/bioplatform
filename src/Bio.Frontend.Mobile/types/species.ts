@@ -60,6 +60,8 @@ export interface SpeciesSearchParams {
     query?: string;
     kingdom?: string;
     phylum?: string;
+    className?: string;
+    orderName?: string;
     family?: string;
     genus?: string;
     isSensitive?: boolean;
@@ -74,6 +76,8 @@ export interface SpeciesSearchParams {
 export interface SpeciesFilterMeta {
     kingdoms: string[];
     phylums: string[];
+    classes: string[];
+    orders: string[];
     families: string[];
     genera: string[];
     conservationStatuses: string[];

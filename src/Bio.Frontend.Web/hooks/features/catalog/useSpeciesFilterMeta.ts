@@ -27,7 +27,7 @@ export function useSpeciesFilterMeta() {
         queryKey: ["species", "filter-meta"],
         queryFn: getSpeciesFilterMeta,
         staleTime: 30 * 60 * 1000, // 30 minutes — filter options rarely change
-        gcTime: 60 * 60 * 1000,    // 1 hour
+        gcTime: 60 * 60 * 1000, // 1 hour
         retry: 2,
     });
 
@@ -38,6 +38,8 @@ export function useSpeciesFilterMeta() {
         return {
             kingdoms: toOptions(data?.kingdoms),
             phylums: toOptions(data?.phylums),
+            classes: toOptions(data?.classes),
+            orders: toOptions(data?.orders),
             families: toOptions(data?.families),
             genera: toOptions(data?.genera),
             conservationStatuses:

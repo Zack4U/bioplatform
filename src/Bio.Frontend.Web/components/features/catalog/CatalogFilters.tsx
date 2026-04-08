@@ -41,6 +41,8 @@ interface CatalogFiltersMobileProps {
     filterOptions: {
         kingdoms: SelectOption[];
         phylums: SelectOption[];
+        classes: SelectOption[];
+        orders: SelectOption[];
         families: SelectOption[];
         genera: SelectOption[];
         conservationStatuses: SelectOption[];

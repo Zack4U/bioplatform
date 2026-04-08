@@ -69,6 +69,8 @@ export function useSpeciesFilterMeta() {
                 return {
                     kingdoms: [],
                     phylums: [],
+                    classes: [],
+                    orders: [],
                     families: [],
                     genera: [],
                     conservationStatuses: [],

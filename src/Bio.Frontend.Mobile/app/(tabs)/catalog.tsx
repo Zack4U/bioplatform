@@ -48,6 +48,8 @@ export default function CatalogScreen() {
         SpeciesSearchParams,
         | "kingdom"
         | "phylum"
+        | "className"
+        | "orderName"
         | "family"
         | "genus"
         | "conservationStatus"
@@ -63,6 +65,8 @@ export default function CatalogScreen() {
         query?: string | string[];
         kingdom?: string | string[];
         phylum?: string | string[];
+        className?: string | string[];
+        orderName?: string | string[];
         family?: string | string[];
         genus?: string | string[];
     }>();
@@ -74,6 +78,8 @@ export default function CatalogScreen() {
         const queryFromRoute = readParam(routeParams.query)?.trim();
         const kingdomFromRoute = readParam(routeParams.kingdom)?.trim();
         const phylumFromRoute = readParam(routeParams.phylum)?.trim();
+        const classNameFromRoute = readParam(routeParams.className)?.trim();
+        const orderNameFromRoute = readParam(routeParams.orderName)?.trim();
         const familyFromRoute = readParam(routeParams.family)?.trim();
         const genusFromRoute = readParam(routeParams.genus)?.trim();
 
@@ -81,6 +87,8 @@ export default function CatalogScreen() {
 
         if (kingdomFromRoute) nextFilters.kingdom = kingdomFromRoute;
         if (phylumFromRoute) nextFilters.phylum = phylumFromRoute;
+        if (classNameFromRoute) nextFilters.className = classNameFromRoute;
+        if (orderNameFromRoute) nextFilters.orderName = orderNameFromRoute;
         if (familyFromRoute) nextFilters.family = familyFromRoute;
         if (genusFromRoute) nextFilters.genus = genusFromRoute;
 
@@ -98,6 +106,8 @@ export default function CatalogScreen() {
         routeParams.query,
         routeParams.kingdom,
         routeParams.phylum,
+        routeParams.className,
+        routeParams.orderName,
         routeParams.family,
         routeParams.genus,
     ]);
@@ -106,6 +116,8 @@ export default function CatalogScreen() {
         let count = 0;
         if (filters.kingdom) count++;
         if (filters.phylum) count++;
+        if (filters.className) count++;
+        if (filters.orderName) count++;
         if (filters.family) count++;
         if (filters.genus) count++;
         if (filters.conservationStatus) count++;
