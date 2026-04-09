@@ -2,12 +2,12 @@
  * SpeciesGridItem — Compact square card for grid mode in the species catalog.
  */
 
+import { SmartImage } from "@/components/common/SmartImage";
 import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
 import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
 import type { SpeciesListItem } from "@/types";
-import { Image } from "expo-image";
 import { Leaf, Shield } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useEffect, useState } from "react";
@@ -46,12 +46,10 @@ export function SpeciesGridItem({
                 {/* Thumbnail area */}
                 <View className="aspect-square bg-muted items-center justify-center overflow-hidden">
                     {canShowImage ? (
-                        <Image
+                        <SmartImage
                             source={{ uri: imageUri as string }}
                             style={{ width: "100%", height: "100%" }}
                             contentFit="cover"
-                            transition={120}
-                            cachePolicy="memory-disk"
                             onError={() => setImageFailed(true)}
                         />
                     ) : item.isSensitive ? (

@@ -12,6 +12,7 @@
  * - Distribution map placeholder (no distributions endpoint yet)
  */
 
+import { SmartImage } from "@/components/common/SmartImage";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
@@ -23,7 +24,6 @@ import {
 import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
 import type { SpeciesSearchParams } from "@/types";
-import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
 import {
     AlertTriangle,
@@ -213,12 +213,10 @@ export default function SpeciesDetailScreen() {
             <View className="items-center px-6 pb-6">
                 <View className="w-28 h-28 rounded-3xl bg-primary/10 items-center justify-center mb-4 overflow-hidden">
                     {canShowImage ? (
-                        <Image
+                        <SmartImage
                             source={{ uri: imageUri as string }}
                             style={{ width: "100%", height: "100%" }}
                             contentFit="cover"
-                            transition={150}
-                            cachePolicy="memory-disk"
                             onError={() => setImageFailed(true)}
                         />
                     ) : (

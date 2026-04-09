@@ -115,7 +115,9 @@ export function SmartImage({
 }: SmartImageProps) {
     const resolvedProvider = resolveProvider(providerProp, src);
     const shouldBypassOptimizer =
-        resolvedProvider === "next" && typeof src === "string" && isRateLimitedHost(src);
+        resolvedProvider === "next" &&
+        typeof src === "string" &&
+        isRateLimitedHost(src);
 
     /* ── Cloudinary ──────────────────────────────────────────────────────── */
     if (resolvedProvider === "cloudinary" && typeof src === "string") {

@@ -12,6 +12,7 @@
  * - "Volver a Tomar" retakes photo
  */
 
+import { SmartImageBackground } from "@/components/common/SmartImage";
 import {
     BottomSheet,
     BottomSheetBody,
@@ -30,7 +31,6 @@ import {
 } from "@/lib/formatters";
 import { THEME } from "@/lib/theme";
 import type { ClassificationResponse, SpeciesPrediction } from "@/types";
-import { ImageBackground } from "expo-image";
 import {
     AlertTriangle,
     ExternalLink,
@@ -102,11 +102,9 @@ export function ResultsDrawer({
         <BottomSheet open={open} onClose={onClose} snapPoint={0.85}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 {/* ─── Hero Section: Photo Background + Confidence ─── */}
-                <ImageBackground
+                <SmartImageBackground
                     source={imageUri ? { uri: imageUri } : undefined}
                     contentFit="cover"
-                    transition={120}
-                    cachePolicy="memory-disk"
                     className="overflow-hidden"
                     style={{
                         borderTopLeftRadius: 20,
@@ -229,7 +227,7 @@ export function ResultsDrawer({
                             )}
                         </View>
                     </View>
-                </ImageBackground>
+                </SmartImageBackground>
 
                 <BottomSheetBody>
                     <View className="mt-4 mb-4">

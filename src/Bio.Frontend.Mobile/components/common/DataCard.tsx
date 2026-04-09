@@ -4,6 +4,7 @@
  * Adapted for mobile: uses Pressable for touch interaction and Image for thumbnails.
  */
 
+import { SmartImage } from "@/components/common/SmartImage";
 import {
     Card,
     CardContent,
@@ -13,7 +14,6 @@ import {
 } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
-import { Image } from "expo-image";
 import { type ReactNode } from "react";
 import { Pressable, View } from "react-native";
 
@@ -45,12 +45,10 @@ export function DataCard({
             {/* Image */}
             {image && (
                 <View className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
-                    <Image
+                    <SmartImage
                         source={{ uri: image }}
                         style={{ width: "100%", height: "100%" }}
                         contentFit="cover"
-                        transition={120}
-                        cachePolicy="memory-disk"
                         accessibilityLabel={imageAlt ?? title}
                     />
                     {badge && (

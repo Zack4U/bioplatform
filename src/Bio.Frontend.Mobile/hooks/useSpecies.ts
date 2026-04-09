@@ -42,18 +42,11 @@ export function useSpeciesList(params: SpeciesSearchParams = {}) {
                 return await speciesService.getList(params);
             } catch (error) {
                 handleApiError(error);
-                return {
-                    items: [],
-                    totalCount: 0,
-                    page: params.page ?? 1,
-                    pageSize: params.pageSize ?? 0,
-                    totalPages: 0,
-                    hasNextPage: false,
-                    hasPreviousPage: false,
-                };
+                throw error;
             }
         },
         staleTime: 5 * 60 * 1000,
+        retry: 1,
     });
 }
 

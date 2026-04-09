@@ -3,12 +3,12 @@
  * Fetches real species data from the backend.
  */
 
+import { SmartImage } from "@/components/common/SmartImage";
 import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
 import { useSpeciesList } from "@/hooks/useSpecies";
 import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
-import { Image } from "expo-image";
 import { router } from "expo-router";
 import { Leaf } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
@@ -76,15 +76,13 @@ export function FeaturedSpecies() {
                                     {/* Image / placeholder */}
                                     <View className="h-28 bg-muted items-center justify-center overflow-hidden">
                                         {imageUri ? (
-                                            <Image
+                                            <SmartImage
                                                 source={{ uri: imageUri }}
                                                 style={{
                                                     width: "100%",
                                                     height: "100%",
                                                 }}
                                                 contentFit="cover"
-                                                transition={120}
-                                                cachePolicy="memory-disk"
                                             />
                                         ) : (
                                             <Leaf

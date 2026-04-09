@@ -63,7 +63,7 @@ export default function CatalogScreen() {
     const [filters, setFilters] = useState<CatalogFilterState>({});
     const [draftFilters, setDraftFilters] = useState<CatalogFilterState>({});
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-    const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+    const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
     const [page, setPage] = useState(1);
     const [species, setSpecies] = useState<SpeciesListItemType[]>([]);
     const [hasNextPage, setHasNextPage] = useState(false);
@@ -162,7 +162,7 @@ export default function CatalogScreen() {
         [filters, page, searchQuery],
     );
 
-    const { data, isLoading, isFetching, refetch, isRefetching } =
+    const { data, isLoading, isFetching, refetch, isRefetching, isError } =
         useSpeciesList(queryParams);
     const { data: filterMeta } = useSpeciesFilterMeta();
 
@@ -216,12 +216,14 @@ export default function CatalogScreen() {
     }, [hasNextPage, isFetching, isLoading, isLoadingMore]);
 
     const handleRefresh = useCallback(() => {
-        setPage(1);
-        setSpecies([]);
-        setHasNextPage(false);
         setIsLoadingMore(false);
-        void refetch();
-    }, [refetch]);
+        if (page === 1) {
+            void refetch();
+            return;
+        }
+
+        setPage(1);
+    }, [page, refetch]);
 
     // ─── Render Items ───────────────────────────────────────
     const renderListItem = useCallback(
@@ -256,12 +258,18 @@ export default function CatalogScreen() {
                 />
             </View>
             <Text className="text-base font-semibold text-foreground mb-1">
-                {isLoading ? "Cargando especies..." : "Sin resultados"}
+                {isLoading
+                    ? "Cargando especies..."
+                    : isError
+                      ? "No se pudieron cargar especies"
+                      : "Sin resultados"}
             </Text>
             <Text className="text-sm text-muted-foreground text-center px-8">
                 {isLoading
                     ? "Consultando el catalogo de biodiversidad"
-                    : "Ajusta los filtros o intenta con otro termino de busqueda."}
+                    : isError
+                      ? "Verifica tu conexion e intenta recargar."
+                      : "Ajusta los filtros o intenta con otro termino de busqueda."}
             </Text>
         </View>
     );
