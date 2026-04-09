@@ -4,12 +4,14 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
+import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
 import type { SpeciesListItem } from "@/types";
+import { Image } from "expo-image";
 import { Leaf, Shield } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
-import React from "react";
-import { Image, Pressable, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Pressable, View } from "react-native";
 
 interface SpeciesGridItemProps {
     item: SpeciesListItem;
@@ -24,8 +26,15 @@ export function SpeciesGridItem({
 }: SpeciesGridItemProps) {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
+    const [imageFailed, setImageFailed] = useState(false);
 
     const kingdom = item.kingdom;
+    const imageUri = normalizeImageUrl(item.thumbnailUrl);
+    const canShowImage = Boolean(imageUri) && !imageFailed;
+
+    useEffect(() => {
+        setImageFailed(false);
+    }, [imageUri]);
 
     return (
         <Pressable
@@ -36,11 +45,14 @@ export function SpeciesGridItem({
             <View className="bg-card border border-border rounded-2xl overflow-hidden">
                 {/* Thumbnail area */}
                 <View className="aspect-square bg-muted items-center justify-center overflow-hidden">
-                    {item.thumbnailUrl ? (
+                    {canShowImage ? (
                         <Image
-                            source={{ uri: item.thumbnailUrl }}
-                            className="w-full h-full"
-                            resizeMode="cover"
+                            source={{ uri: imageUri as string }}
+                            style={{ width: "100%", height: "100%" }}
+                            contentFit="cover"
+                            transition={120}
+                            cachePolicy="memory-disk"
+                            onError={() => setImageFailed(true)}
                         />
                     ) : item.isSensitive ? (
                         <Shield

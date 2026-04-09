@@ -6,18 +6,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/ui/text";
 import { useSpeciesList } from "@/hooks/useSpecies";
+import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
+import { Image } from "expo-image";
 import { router } from "expo-router";
 import { Leaf } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import {
-    ActivityIndicator,
-    Image,
-    Pressable,
-    ScrollView,
-    View,
-} from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 
 export function FeaturedSpecies() {
     const { colorScheme } = useColorScheme();
@@ -65,58 +61,67 @@ export function FeaturedSpecies() {
                         gap: 12,
                     }}
                 >
-                    {featured.map((sp) => (
-                        <Pressable
-                            key={sp.id}
-                            className="active:opacity-80"
-                            onPress={() =>
-                                router.push(`/species/${sp.id}` as never)
-                            }
-                        >
-                            <View className="w-44 bg-card border border-border rounded-2xl overflow-hidden">
-                                {/* Image / placeholder */}
-                                <View className="h-28 bg-muted items-center justify-center overflow-hidden">
-                                    {sp.thumbnailUrl ? (
-                                        <Image
-                                            source={{ uri: sp.thumbnailUrl }}
-                                            className="w-full h-full"
-                                            resizeMode="cover"
-                                        />
-                                    ) : (
-                                        <Leaf
-                                            size={28}
-                                            color={theme.mutedForeground}
-                                            strokeWidth={1.2}
-                                        />
-                                    )}
-                                </View>
-                                <View className="p-3">
-                                    <Text
-                                        className="text-xs font-semibold text-foreground"
-                                        numberOfLines={1}
-                                    >
-                                        {sp.scientificName}
-                                    </Text>
-                                    <Text
-                                        className="text-[10px] text-muted-foreground mt-0.5"
-                                        numberOfLines={1}
-                                    >
-                                        {sp.commonName ?? sp.family ?? "—"}
-                                    </Text>
-                                    <View className="flex-row items-center mt-2">
-                                        <Badge
-                                            variant="secondary"
-                                            className="px-2 py-0.5"
+                    {featured.map((sp) => {
+                        const imageUri = normalizeImageUrl(sp.thumbnailUrl);
+
+                        return (
+                            <Pressable
+                                key={sp.id}
+                                className="active:opacity-80"
+                                onPress={() =>
+                                    router.push(`/species/${sp.id}` as never)
+                                }
+                            >
+                                <View className="w-44 bg-card border border-border rounded-2xl overflow-hidden">
+                                    {/* Image / placeholder */}
+                                    <View className="h-28 bg-muted items-center justify-center overflow-hidden">
+                                        {imageUri ? (
+                                            <Image
+                                                source={{ uri: imageUri }}
+                                                style={{
+                                                    width: "100%",
+                                                    height: "100%",
+                                                }}
+                                                contentFit="cover"
+                                                transition={120}
+                                                cachePolicy="memory-disk"
+                                            />
+                                        ) : (
+                                            <Leaf
+                                                size={28}
+                                                color={theme.mutedForeground}
+                                                strokeWidth={1.2}
+                                            />
+                                        )}
+                                    </View>
+                                    <View className="p-3">
+                                        <Text
+                                            className="text-xs font-semibold text-foreground"
+                                            numberOfLines={1}
                                         >
-                                            <Text className="text-[9px]">
-                                                {sp.kingdom ?? "—"}
-                                            </Text>
-                                        </Badge>
+                                            {sp.scientificName}
+                                        </Text>
+                                        <Text
+                                            className="text-[10px] text-muted-foreground mt-0.5"
+                                            numberOfLines={1}
+                                        >
+                                            {sp.commonName ?? sp.family ?? "—"}
+                                        </Text>
+                                        <View className="flex-row items-center mt-2">
+                                            <Badge
+                                                variant="secondary"
+                                                className="px-2 py-0.5"
+                                            >
+                                                <Text className="text-[9px]">
+                                                    {sp.kingdom ?? "—"}
+                                                </Text>
+                                            </Badge>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        </Pressable>
-                    ))}
+                            </Pressable>
+                        );
+                    })}
                 </ScrollView>
             )}
         </View>

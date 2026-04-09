@@ -30,6 +30,7 @@ import {
 } from "@/lib/formatters";
 import { THEME } from "@/lib/theme";
 import type { ClassificationResponse, SpeciesPrediction } from "@/types";
+import { ImageBackground } from "expo-image";
 import {
     AlertTriangle,
     ExternalLink,
@@ -41,7 +42,7 @@ import {
 } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React from "react";
-import { ImageBackground, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 interface ResultsDrawerProps {
     open: boolean;
@@ -103,7 +104,9 @@ export function ResultsDrawer({
                 {/* ─── Hero Section: Photo Background + Confidence ─── */}
                 <ImageBackground
                     source={imageUri ? { uri: imageUri } : undefined}
-                    resizeMode="cover"
+                    contentFit="cover"
+                    transition={120}
+                    cachePolicy="memory-disk"
                     className="overflow-hidden"
                     style={{
                         borderTopLeftRadius: 20,

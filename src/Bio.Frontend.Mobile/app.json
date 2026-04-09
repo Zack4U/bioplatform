@@ -13,10 +13,14 @@
             "infoPlist": {
                 "NSCameraUsageDescription": "BioCommerce Caldas necesita acceso a la camara para identificar especies.",
                 "NSPhotoLibraryUsageDescription": "BioCommerce Caldas necesita acceso a tus fotos para identificar especies.",
-                "NSPhotoLibraryAddUsageDescription": "BioCommerce Caldas puede guardar imagenes usadas para identificacion de especies."
+                "NSPhotoLibraryAddUsageDescription": "BioCommerce Caldas puede guardar imagenes usadas para identificacion de especies.",
+                "NSAppTransportSecurity": {
+                    "NSAllowsArbitraryLoads": true
+                }
             }
         },
         "android": {
+            "usesCleartextTraffic": true,
             "permissions": [
                 "android.permission.CAMERA",
                 "android.permission.READ_MEDIA_IMAGES",

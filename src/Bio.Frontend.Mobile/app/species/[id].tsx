@@ -20,8 +20,10 @@ import {
     formatConservationStatus,
     getConservationStatusBadgeStyle,
 } from "@/lib/formatters";
+import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
 import type { SpeciesSearchParams } from "@/types";
+import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
 import {
     AlertTriangle,
@@ -38,14 +40,8 @@ import {
     TreePine,
 } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
-import React from "react";
-import {
-    ActivityIndicator,
-    Image,
-    Pressable,
-    ScrollView,
-    View,
-} from "react-native";
+import React, { useEffect } from "react";
+import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 
 // ─── InfoSection ─────────────────────────────────────────────────────────────
 
@@ -118,6 +114,11 @@ export default function SpeciesDetailScreen() {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
     const { data: species, isLoading, isError } = useSpeciesDetail(id ?? "");
+    const [imageFailed, setImageFailed] = React.useState(false);
+
+    useEffect(() => {
+        setImageFailed(false);
+    }, [id, species?.thumbnailUrl]);
 
     if (isLoading) {
         return (
@@ -155,6 +156,8 @@ export default function SpeciesDetailScreen() {
     const conservationBadgeStyle = getConservationStatusBadgeStyle(
         species.conservationStatus,
     );
+    const imageUri = normalizeImageUrl(species.thumbnailUrl);
+    const canShowImage = Boolean(imageUri) && !imageFailed;
 
     const navigateToCatalogWithFilter = (
         next: Pick<
@@ -209,11 +212,14 @@ export default function SpeciesDetailScreen() {
             {/* ─── Hero Section ──────────────────────────────── */}
             <View className="items-center px-6 pb-6">
                 <View className="w-28 h-28 rounded-3xl bg-primary/10 items-center justify-center mb-4 overflow-hidden">
-                    {species.thumbnailUrl ? (
+                    {canShowImage ? (
                         <Image
-                            source={{ uri: species.thumbnailUrl }}
-                            className="w-full h-full"
-                            resizeMode="cover"
+                            source={{ uri: imageUri as string }}
+                            style={{ width: "100%", height: "100%" }}
+                            contentFit="cover"
+                            transition={150}
+                            cachePolicy="memory-disk"
+                            onError={() => setImageFailed(true)}
                         />
                     ) : (
                         <Leaf

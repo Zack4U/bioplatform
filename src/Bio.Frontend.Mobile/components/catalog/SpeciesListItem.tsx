@@ -5,12 +5,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
+import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
 import type { SpeciesListItem as SpeciesListItemData } from "@/types";
+import { Image } from "expo-image";
 import { Leaf, Shield } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
-import React from "react";
-import { Image, Pressable, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Pressable, View } from "react-native";
 
 interface SpeciesListItemProps {
     item: SpeciesListItemData;
@@ -20,9 +22,16 @@ interface SpeciesListItemProps {
 export function SpeciesListItem({ item, onPress }: SpeciesListItemProps) {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
+    const [imageFailed, setImageFailed] = useState(false);
 
     const family = item.family;
     const kingdom = item.kingdom;
+    const imageUri = normalizeImageUrl(item.thumbnailUrl);
+    const canShowImage = Boolean(imageUri) && !imageFailed;
+
+    useEffect(() => {
+        setImageFailed(false);
+    }, [imageUri]);
 
     return (
         <Pressable className="active:opacity-80 mb-3" onPress={onPress}>
@@ -30,11 +39,14 @@ export function SpeciesListItem({ item, onPress }: SpeciesListItemProps) {
                 <CardContent className="flex-row p-3 gap-3">
                     {/* Thumbnail */}
                     <View className="w-20 h-20 rounded-xl bg-muted items-center justify-center overflow-hidden">
-                        {item.thumbnailUrl ? (
+                        {canShowImage ? (
                             <Image
-                                source={{ uri: item.thumbnailUrl }}
-                                className="w-full h-full"
-                                resizeMode="cover"
+                                source={{ uri: imageUri as string }}
+                                style={{ width: "100%", height: "100%" }}
+                                contentFit="cover"
+                                transition={120}
+                                cachePolicy="memory-disk"
+                                onError={() => setImageFailed(true)}
                             />
                         ) : item.isSensitive ? (
                             <Shield

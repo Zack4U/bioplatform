@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
+import { Image } from "expo-image";
 import { type ReactNode } from "react";
-import { Image, Pressable, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 interface DataCardProps {
     title: string;
@@ -46,8 +47,10 @@ export function DataCard({
                 <View className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
                     <Image
                         source={{ uri: image }}
-                        className="h-full w-full"
-                        resizeMode="cover"
+                        style={{ width: "100%", height: "100%" }}
+                        contentFit="cover"
+                        transition={120}
+                        cachePolicy="memory-disk"
                         accessibilityLabel={imageAlt ?? title}
                     />
                     {badge && (

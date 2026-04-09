@@ -33,11 +33,14 @@ import { Search } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
+    ActivityIndicator,
     FlatList,
     RefreshControl,
     View,
     useWindowDimensions,
 } from "react-native";
+
+const CATALOG_PAGE_SIZE = 60;
 
 export default function CatalogScreen() {
     const { colorScheme } = useColorScheme();
@@ -61,6 +64,10 @@ export default function CatalogScreen() {
     const [draftFilters, setDraftFilters] = useState<CatalogFilterState>({});
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+    const [page, setPage] = useState(1);
+    const [species, setSpecies] = useState<SpeciesListItemType[]>([]);
+    const [hasNextPage, setHasNextPage] = useState(false);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
     const routeParams = useLocalSearchParams<{
         query?: string | string[];
         kingdom?: string | string[];
@@ -143,18 +150,49 @@ export default function CatalogScreen() {
         setDraftFilters({});
     }, []);
 
-    const { data, isLoading, refetch, isRefetching } = useSpeciesList({
-        query: searchQuery || undefined,
-        ...filters,
-        page: 1,
-        pageSize: 500,
-        sortBy: "scientificName",
-        sortOrder: "asc",
-    });
+    const queryParams = useMemo(
+        () => ({
+            query: searchQuery || undefined,
+            ...filters,
+            page,
+            pageSize: CATALOG_PAGE_SIZE,
+            sortBy: "scientificName" as const,
+            sortOrder: "asc" as const,
+        }),
+        [filters, page, searchQuery],
+    );
+
+    const { data, isLoading, isFetching, refetch, isRefetching } =
+        useSpeciesList(queryParams);
     const { data: filterMeta } = useSpeciesFilterMeta();
 
-    const species = data?.items ?? [];
     const totalCount = data?.totalCount ?? species.length;
+
+    useEffect(() => {
+        setPage(1);
+        setSpecies([]);
+        setHasNextPage(false);
+        setIsLoadingMore(false);
+    }, [filters, searchQuery]);
+
+    useEffect(() => {
+        if (!data) return;
+
+        const items = data.items ?? [];
+
+        setSpecies((previous) => {
+            if (page === 1) {
+                return items;
+            }
+
+            const seen = new Set(previous.map((item) => item.id));
+            const nextItems = items.filter((item) => !seen.has(item.id));
+            return [...previous, ...nextItems];
+        });
+
+        setHasNextPage(Boolean(data.hasNextPage));
+        setIsLoadingMore(false);
+    }, [data, page]);
 
     // Responsive grid columns
     const numColumns = viewMode === "grid" ? (width < 400 ? 2 : 3) : 1;
@@ -167,6 +205,23 @@ export default function CatalogScreen() {
     const navigateToDetail = (id: string) => {
         router.push(`/species/${id}` as never);
     };
+
+    const handleEndReached = useCallback(() => {
+        if (isLoading || isFetching || isLoadingMore || !hasNextPage) {
+            return;
+        }
+
+        setIsLoadingMore(true);
+        setPage((previous) => previous + 1);
+    }, [hasNextPage, isFetching, isLoading, isLoadingMore]);
+
+    const handleRefresh = useCallback(() => {
+        setPage(1);
+        setSpecies([]);
+        setHasNextPage(false);
+        setIsLoadingMore(false);
+        void refetch();
+    }, [refetch]);
 
     // ─── Render Items ───────────────────────────────────────
     const renderListItem = useCallback(
@@ -210,6 +265,16 @@ export default function CatalogScreen() {
             </Text>
         </View>
     );
+
+    const FooterComponent =
+        isLoadingMore || (isFetching && page > 1) ? (
+            <View className="items-center py-4">
+                <ActivityIndicator size="small" color={theme.primary} />
+                <Text className="text-xs text-muted-foreground mt-2">
+                    Cargando mas especies...
+                </Text>
+            </View>
+        ) : null;
 
     return (
         <View className="flex-1 bg-background">
@@ -267,14 +332,17 @@ export default function CatalogScreen() {
                     paddingBottom: 100,
                 }}
                 showsVerticalScrollIndicator={false}
+                onEndReached={handleEndReached}
+                onEndReachedThreshold={0.35}
                 refreshControl={
                     <RefreshControl
                         refreshing={isRefetching}
-                        onRefresh={() => refetch()}
+                        onRefresh={handleRefresh}
                         tintColor={theme.primary}
                     />
                 }
                 ListEmptyComponent={EmptyComponent}
+                ListFooterComponent={FooterComponent}
             />
 
             <CatalogFiltersDrawer
