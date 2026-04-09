@@ -41,6 +41,9 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    // Keep JWT claim names as-is (sub, name, role) to match emitted token claims and role checks.
+    options.MapInboundClaims = false;
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -54,6 +57,8 @@ builder.Services.AddAuthentication(options =>
         RoleClaimType = "role"
     };
 });
+
+builder.Services.AddAuthorization();
 
 // Register BioPlatform Services
 builder.Services.AddDbContext<BioDbContext>(options =>
