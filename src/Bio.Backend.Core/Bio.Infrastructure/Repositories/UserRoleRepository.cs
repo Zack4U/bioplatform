@@ -11,13 +11,13 @@ namespace Bio.Backend.Core.Bio.Infrastructure.Repositories;
 /// </summary>
 public class UserRoleRepository : IUserRoleRepository
 {
-    private readonly ScientificDbContext _context;
+    private readonly BioDbContext _context;
 
     /// <summary>
     /// Initializes a new instance of <see cref="UserRoleRepository"/>.
     /// </summary>
     /// <param name="context">The database context.</param>
-    public UserRoleRepository(ScientificDbContext context)
+    public UserRoleRepository(BioDbContext context)
     {
         _context = context;
     }

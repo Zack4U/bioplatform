@@ -7,9 +7,9 @@ namespace Bio.Backend.Core.Bio.Infrastructure.Repositories;
 
 public class ProductCategoryRepository : IProductCategoryRepository
 {
-    private readonly ScientificDbContext _context;
+    private readonly BioDbContext _context;
 
-    public ProductCategoryRepository(ScientificDbContext context)
+    public ProductCategoryRepository(BioDbContext context)
     {
         _context = context;
     }

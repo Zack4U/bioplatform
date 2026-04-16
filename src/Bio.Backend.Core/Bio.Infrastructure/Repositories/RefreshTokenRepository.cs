@@ -10,13 +10,13 @@ namespace Bio.Backend.Core.Bio.Infrastructure.Repositories;
 /// </summary>
 public class RefreshTokenRepository : IRefreshTokenRepository
 {
-    private readonly ScientificDbContext _context;
+    private readonly BioDbContext _context;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RefreshTokenRepository"/> class.
     /// </summary>
     /// <param name="context">The database context.</param>
-    public RefreshTokenRepository(ScientificDbContext context)
+    public RefreshTokenRepository(BioDbContext context)
     {
         _context = context;
     }

@@ -10,13 +10,13 @@ namespace Bio.Backend.Core.Bio.Infrastructure.Persistence;
 /// </summary>
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly ScientificDbContext _context;
+    private readonly BioDbContext _context;
     private IDbContextTransaction? _transaction;
 
     private IProductRepository? _products;
     private IProductCategoryRepository? _categories;
 
-    public UnitOfWork(ScientificDbContext context)
+    public UnitOfWork(BioDbContext context)
     {
         _context = context;
     }
