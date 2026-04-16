@@ -231,6 +231,9 @@ public class BioDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
+        // Ignore GeographicDistribution to prevent EF from mapping NetTopologySuite.Geometries.Point in SQL Server
+        modelBuilder.Ignore<GeographicDistribution>();
+
         // -------------------------------------------------------------
         // SEED DATA 
         // -------------------------------------------------------------
