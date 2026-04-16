@@ -170,6 +170,7 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
+            MockUser(id);
             var user = new UserResponseDTO(id, "John Doe", "john@test.com", "123", DateTime.UtcNow);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByIdQuery>(), default))
                 .ReturnsAsync(user);
@@ -190,6 +191,7 @@ public class UsersControllerTests
         {
             // Arrange
             var id = Guid.NewGuid();
+            MockUser(id);
             _mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByIdQuery>(), default))
                 .ThrowsAsync(new NotFoundException("User", id));
 

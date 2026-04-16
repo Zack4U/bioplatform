@@ -72,9 +72,9 @@ public class TokenServiceTests
             var claims = jwtToken.Claims.ToList();
             claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == user.Id.ToString());
             claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Email && c.Value == user.Email);
-            claims.Should().Contain(c => c.Type == ClaimTypes.Name && c.Value == user.FullName);
-            claims.Should().Contain(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
-            claims.Should().Contain(c => c.Type == ClaimTypes.Role && c.Value == "User");
+            claims.Should().Contain(c => c.Type == "name" && c.Value == user.FullName);
+            claims.Should().Contain(c => c.Type == "role" && c.Value == "Admin");
+            claims.Should().Contain(c => c.Type == "role" && c.Value == "User");
         }
     }
 
@@ -276,7 +276,7 @@ public class TokenServiceTests
         public void ShouldThrowUnauthorizedException_WhenUserIdClaimIsMissing()
         {
             // Arrange
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, "TestUserWithoutId") };
+            var claims = new List<Claim> { new Claim("name", "TestUserWithoutId") };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_jwtSettings.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

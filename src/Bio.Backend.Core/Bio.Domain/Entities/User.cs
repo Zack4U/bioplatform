@@ -45,7 +45,6 @@ public class User
     /// Indicates if the user account is active (soft delete).
     /// </summary>
     public bool IsActive { get; private set; } = true;
-
     /// <summary>
     /// Unique random salt used for password hashing.
     /// </summary>

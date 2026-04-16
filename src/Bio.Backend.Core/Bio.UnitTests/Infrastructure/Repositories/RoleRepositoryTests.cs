@@ -93,7 +93,7 @@ public class RoleRepositoryTests : IDisposable
         public async Task ShouldAddRoleToDatabase()
         {
             // Arrange
-            var role = new Role(Guid.NewGuid(), "Admin");
+            var role = new Role(Guid.NewGuid(), "TestAdminX");
 
             // Act
             await _repository.AddAsync(role);
@@ -102,7 +102,7 @@ public class RoleRepositoryTests : IDisposable
             // Assert
             var savedRole = await _context.Roles.FindAsync(role.Id);
             savedRole.Should().NotBeNull();
-            savedRole!.Name.Should().Be(RoleNames.Admin);
+            savedRole!.Name.Should().Be("TESTADMINX");
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ public class RoleRepositoryTests : IDisposable
         public async Task DuplicateName_ShouldThrowException()
         {
             // Arrange
-            var commonName = "Admin";
+            var commonName = "TestDuplicateRole";
             var role1 = new Role(Guid.NewGuid(), commonName);
             var role2 = new Role(Guid.NewGuid(), commonName);
 

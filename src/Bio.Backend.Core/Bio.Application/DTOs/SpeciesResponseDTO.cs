@@ -16,6 +16,8 @@ public record SpeciesResponseDTO(
     string? TraditionalUses,
     string? EconomicPotential,
     string? ConservationStatus,
+    string? AltitudeRange,
+    bool LegalStatus,
     bool IsSensitive,
     DateTime CreatedAt,
     DateTime UpdatedAt

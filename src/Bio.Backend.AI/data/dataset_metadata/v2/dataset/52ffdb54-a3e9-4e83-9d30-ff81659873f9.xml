@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="52ffdb54-a3e9-4e83-9d30-ff81659873f9"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/v16okr</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=jbgpherbario</alternateIdentifier>
+        <alternateIdentifier>http://ipt.biodiversidad.co/sib/resource?r=jbgpherbario</alternateIdentifier>
+        <alternateIdentifier>http://ipt.biodiversidad.co/rnjb/resource?r=jbgpherbario</alternateIdentifier>
+        <alternateIdentifier>52ffdb54-a3e9-4e83-9d30-ff81659873f9</alternateIdentifier>
+        <title>Registros biológicos de especies de plantas del Bosque Seco en Colombia presentes en el Herbario JBGP</title>
+        <creator>
+            <individualName>
+                <givenName>Nicolás</givenName>
+                <surName>Rodríguez</surName>
+            </individualName>
+            <organizationName>Fundación Jardín Botánico &quot;Guillermo Piñeres&quot;</organizationName>
+            <positionName>Coordinador Herbario</positionName>
+            <address>
+                <deliveryPoint>Sector Matute</deliveryPoint>
+                <city>Turbaco</city>
+                <administrativeArea>Bolívar</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>herbario@jbgp.org.co</electronicMailAddress>
+            <onlineUrl>http://www.jbgp.org.co</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Nicolás</givenName>
+                <surName>Rodríguez</surName>
+            </individualName>
+            <organizationName>Fundación Jardín Botánico &quot;Guillermo Piñeres&quot;</organizationName>
+            <positionName>Coordinador Herbario</positionName>
+            <address>
+                <deliveryPoint>Sector Matute</deliveryPoint>
+                <city>Turbaco</city>
+                <administrativeArea>Bolívar</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>herbario@jbgp.org.co</electronicMailAddress>
+            <onlineUrl>http://www.jbgp.org.co</onlineUrl>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Maria Paula</givenName>
+                <surName>Contreras</surName>
+            </individualName>
+            <organizationName>Fundación Jardín Botánico &quot;Guillermo Piñeres&quot;</organizationName>
+            <positionName>Asistente Herbario</positionName>
+            <address>
+                <deliveryPoint>Sector Matute</deliveryPoint>
+                <city>Turbaco</city>
+                <administrativeArea>Bolívar</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Yeison</givenName>
+                <surName>Herrera</surName>
+            </individualName>
+            <organizationName>Fundación Jardín Botánico &quot;Guillermo Piñeres&quot;</organizationName>
+            <positionName>Asistente Herbario</positionName>
+            <address>
+                <deliveryPoint>Sector Matute</deliveryPoint>
+                <city>Turbaco</city>
+                <administrativeArea>Bolívar</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>yeiheme@hotmail.com</electronicMailAddress>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <surName>Infraestructura Institucional de Datos</surName>
+            </individualName>
+            <organizationName>Instituto de Investigación de Recursos Biológicos Alexander Von Humboldt</organizationName>
+            <address>
+                <deliveryPoint>Calle 28A No. 15-09</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3202767</phone>
+            <electronicMailAddress>i2d@humboldt.org.co</electronicMailAddress>
+            <onlineUrl>http://www.humboldt.org.co</onlineUrl>
+            <role>CUSTODIAN_STEWARD</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <surName>Fundación Jardín Botánico &quot;Guillermo Piñeres&quot;</surName>
+            </individualName>
+            <organizationName>Fundación Jardín Botánico &quot;Guillermo Piñeres&quot;</organizationName>
+            <address>
+                <deliveryPoint>Sector Matute</deliveryPoint>
+                <city>Turbaco</city>
+                <administrativeArea>Bolívar</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>direccion@jbgp.org.co</electronicMailAddress>
+            <onlineUrl>http://www.jbgp.org.co</onlineUrl>
+            <role>OWNER</role>
+        </associatedParty>
+        <pubDate>
+                2025-11-06
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>I2D-BIO_2016_042.
+
+Registros biológicos del herbarios de la Fundación Jardín Botánico &amp;#34;Guillermo Piñeres&amp;#34; correspondiente al producto No. 3 del convenio de cooperación Humboldt-JBGP No. 15-12-067-267CE, cuyo objeto es realizar actividades de sistematización de registros biológicos y digitalización de imágenes de especímenes botánicas referidas a la flora del bosque seco colombiano, como insumos para sentar las bases del análisis de riesgo de extinción de la flora de Colombia. Fueron 3753 registros pertenecientes a 1308 especies, 710 géneros y 140 familias, registradas en los departamentos de Amazonas, Antioquia, Archipiélago de San Andrés, Providencia y Santa Catalina, Atlántico, Bolívar, Caldas, Cesar, Chocó, Córdoba, La Guajira, Magdalena, Meta, Nariño, Quindío, Sucre, Valle del Cauca</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Specimen</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>RNJB</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>BsT</keyword>
+            <keyword>biodiversidad</keyword>
+            <keyword>Fundación Jardín Botánico &quot;Guillermo Piñeres&quot;</keyword>
+            <keyword>especies amenazadas</keyword>
+            <keyword>especies endémicas</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <additionalInfo>
+            <para>Existe un informe final y un listado taxonómico de las especies de bosque seco presentes en el Herbario JBGP. ambos incorporados a la Infraestructura Institucional de Datos del Instituto Humboldt.</para>
+        </additionalInfo>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="information">http://ipt.biodiversidad.co/rnjb/resource?r=jbgpherbario</url>
+            </online>
+        </distribution>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=jbgpherbario</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>Registros biológicos de especies de plantas de bosque seco tropical depositadas en el herbario JBGP y registradas en los departamentos de Amazonas, Antioquia, Archipiélago de San Andrés, Providencia y Santa Catalina, Atlántico, Bolívar, Caldas, Cesar, Chocó, Córdoba, La Guajira, Magdalena, Meta, Nariño, Quindío, Sucre, Valle del Cauca</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-81.718</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-70.304</eastBoundingCoordinate>
+                    <northBoundingCoordinate>13.35</northBoundingCoordinate>
+                    <southBoundingCoordinate>-3.807</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                1966-07-20
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2016-05-11
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Registro biológicos de plantas del bosque seco colombiano depositados en el Herbario JBGP, que corresponden a 3753 registros pertenecientes a 1308 especies, 710 géneros y 139 familias. Se utilizó el código APG III como sistema de clasificación de las especies. Las actualizaciones nomenclaturales se realizaron utilizando la herramienta Taxonomic Name Resolution Service v4.0 (http://tnrs.iplantcollaborative.org/TNRSapp.html)</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Acanthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Achariaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Achatocarpaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Actinidiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Aizoaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Alismataceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Amaranthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Amaryllidaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Anacardiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Annonaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Apocynaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Aquifoliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Araceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Araliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Arecaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Aristolochiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Aspleniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Asteraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Batidaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Begoniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Bignoniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Bixaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Boraginaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Bromeliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Burseraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Buxaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cactaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Calophyllaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Campanulaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cannabaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cannaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Capparaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cardiopteridaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Caryocaraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Celastraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Chrysobalanaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Clethraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Clusiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Combretaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Commelinaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Connaraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Convolvulaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Costaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cucurbitaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cyatheaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cyclanthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Cyperaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Dilleniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Dioscoreaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Ebenaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Elaeocarpaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Erythroxylaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Euphorbiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Fabaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Gentianaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Gesneriaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Gleicheniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Goupiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Haemodoraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Heliconiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Hernandiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Hymenophyllaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Hypericaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Icacinaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lacistemataceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lamiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lauraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lecythidaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Linderniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Loasaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Loganiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Loranthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Lythraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Malpighiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Malvaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Marantaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Melastomataceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Meliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Menispermaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Molluginaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Moraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Muntingiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Myristicaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Myrtaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Nyctaginaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Ochnaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Olacaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Onagraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Opiliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Orchidaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Orobanchaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Oxalidaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Passifloraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Pedaliaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Peraceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Phyllanthaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Phytolaccaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Piperaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Plantaginaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Plumbaginaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Poaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Polygalaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Polygonaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Polypodiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Pontederiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Portulacaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Primulaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Proteaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Pteridaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Rhamnaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Rubiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Rutaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Salicaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Santalaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Sapindaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Sapotaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Schizaeaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Scrophulariaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Selaginellaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Simaroubaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Siparunaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Smilacaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Solanaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Sphenocleaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Staphyleaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Surianaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Talinaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Tetrameristaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Trigoniaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Typhaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Ulmaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Urticaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Verbenaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Violaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Vitaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Vochysiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Zamiaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Zingiberaceae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Family</taxonRankName>
+                    <taxonRankValue>Zygophyllaceae</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <purpose><para>Aunar esfuerzos técnicos, administrativos y financieros entre el Instituto de Investigación de Recursos Biológicos Alexander von Humboldt y  la Fundación Jardín Botánico "Guillermo Piñeeres" (JBGP) para digitalizar, integrar y publicar al menos 3.000 registros e imágenes de colecciones botánicas de la flora del bosque seco tropical, con énfasis en la flora endémica y amenazada, como insumos para la construcción de conocimiento nacional y regional en biodiversidad.</para></purpose>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Carolina</givenName>
+                <surName>Castellanos</surName>
+            </individualName>
+            <organizationName>Instituto de Investigación de Recursos Biológicos Alexander von Humboldt</organizationName>
+            <positionName>Investigador Adjunto</positionName>
+            <address>
+                <deliveryPoint>Avenida Paseo Bolivar 16-20</deliveryPoint>
+                <city>Bogotá, D.C.</city>
+                <administrativeArea>Bogotá, D.C.</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>3202767</phone>
+            <electronicMailAddress>ccastellanos@humboldt.org.co</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Se usaron tres listas de especies de bosque seco disponibles en la literatura: una proveniente del listado de especies publicado en el libro El Bosque Seco Tropical en Colombia (Pizano y García, 2014), otra proveniente del listado de especies del caribe sensu Jacquin (Madriñan, 2013) y finalmente un listado de la ocurrencia de especies dentro de un polígono trazado en el Caribe Colombiano usando la plataforma GBIF (GBIF, 2015). De las tres bases de datos se obtuvo un listado (BsTCaribe) con 2779 especies con presencia en el Caribe y el Bosque Seco Colombiano, los nombres y los autores de esta lista fueron validados usando la Herramienta Taxonomic Name Resolution Service v4.0 (TNRS, 2015).</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Validación: se creó una matriz de Identidades. Esta matriz es un subconjunto de datos de la Matriz Madre del Herbario compuesta por los registros de cada uno de los especímenes pertenecientes a especies del bosque seco. Los campos de esta matriz corresponde a los campos de la plantilla de formato Darwin Core que presentan sólo información de registro y taxonómica, como los datos de colector, identificación y descripción de los especímenes así como la familia y el orden, ente otros. Sobre esta matriz se comenzó a trabajar el proceso de validación de los datos y su concordancia con los que presentan los especímenes en físico, este proceso consiste en completar los vacíos de información, corregir errores de escritura, completar con los nombres nuevos y correctos, y adicionar información nueva (i.e. colectores asociados, previas identificaciones, otros números de catálogo). En total se validó la información para 4568 registros biológicos, de los cuales 3753 corresponden a registros únicos, los demás son duplicados.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Georreferenciación: se creó una matriz para la Georreferenciación, pero solo con campos asociados a la localidad. Sobre esta matriz se hizo el proceso de georreferenciación, el cual estuvo dividido en varias etapas siguiendo el protocolo publicado por el Instituto de Investigación de Recursos Biológicos Alexander von Humboldt y el Instituto de Ciencias Naturales, Universidad Nacional de Colombia (Escobar et al., 2014): 1) estandarización de las localidades para que todas quedaran escritas y ordenadas de forma coherente y homogénea, 2) asignación de nivel de calidad, el cual depende de que tan completa es la información sobre el lugar donde hizo la colecta (i.e. que tenga o no coordenadas geográficas, que tenga datos de localidad específica) y 3) validación de las coordenadas – en caso de tener – o a asignar unas nuevas, ya sea porque las originales no coinciden o porque no existían. Una vez obtenida la coordenada se calculó el nivel de incertidumbre. En total se georreferenciaron 4493 registros biológicos.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Estructuración de matriz formato Darwin Core: las matrices Identidades y Georreferenciación fueron utilizadas para alimentar los datos de la Matriz Madre del Herbario la cual se reestructuró siguiendo el estándar Darwin Core. Luego de migrar los datos provenientes de ambas matrices, se hizo una última revisión del formato y se corrigieron algunas inconsistencias. De esta forma, el nuevo conjunto de datos incluyó la información complementaria proveniente de la actualización taxonómica y la georreferenciación de todos los registros de bosque seco.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Digitalización de especímenes: luego de la revisión de los protocolos de captura de Imágenes y de las sugerencias hechas por la supervisora del convenio, se desarrolló un nuevo protocolo con los siguientes parámetros:
+•	Altura del brazo de la cámara: 81.9 cm
+•	Luces: Luz lateral izquierda, luz lateral derecha y luz trasera
+•	Velocidad de obturación: 1/40
+•	Apertura del diafragma: 11 f
+•	Modo de enfoque: Automático, multifocal
+•	Tipo de luz: Personalizada, calibrada con el gris más claro de la paleta de colores
+En total se fotografiaron 4559 registro biológicos. A las imágenes generadas en formato RAW se les aplicó la receta de edición y  luego se exportan a formato JPEG. De la totalidad de las imágenes, se seleccionaron las fotografías correspondientes a los 3753 registros bilógicos únicos, estas fueron publicadas en la página del Herbario JBGP dentro del portal Flickr y se encuentran disponibles en el siguiente enlace: https://www.flickr.com/photos/134525203@N05/. Así mismo, se integró a las matriz Darwin Core el link correspondiente a cada uno de los registros.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Ejemplares botánicos del bosque seco en Colombia depositadas en el herbario de la Fundación Jardín Botánico &quot;Guillermo Piñeres&quot; (JBGP), ubicado en el municipio de de Turbaco (Bolívar)</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Los datos contenidos en este recurso pertenecen a ejemplares de bosque seco en Colombia presentes en la colección JBGP que fueron digitalizados y compartidos en el &quot;Herbario JBGP&quot;, a través de Flickr. Los exicados fueron seleccionados según un listado de especies del bosque seco tropical. Estos ejemplares se seleccionaron en la base de datos del herbario, posteriormente se ubicaron en la colección y finalmente fueron fotografiados, según protocolos proporcionados por supervisor de convenio.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Para los especímenes se hizo una revisión de la ortografía de las especies, sitios de colecta y colectores, una revisión y actualización del estado nomenclatural de los nombres científicos. Revisión, ajuste y asignación de coordenadas geográficas. Para las fotografías se controló la calidad requerida, se confirmó  el enfoque y  la exposición. Se revisaron manchas o rayas y desajustes entre los nombres de los archivos.
+
+Ajuste de vocabularios controlados en:
+- Elemento de registro: collectionID;
+- Elemento geográfico: county.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project >
+                <title>Implementación de un sistema para el análisis del riesgo de extinción de las especies silvestres de Colombia</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Carolina</givenName>
+                    <surName>Castellanos</surName>
+                    </individualName>
+                    <role>PRINCIPAL_INVESTIGATOR</role>
+                </personnel>
+                <abstract>
+                    <para></para>
+                </abstract>
+                <funding>
+                    <para>Conveio No. 15-12-067-267CE,entre el Instituto Alexander von Humboldt y Fundación Jardín Botánico “Guillermo Piñeres” (JBGP).</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>Registros biológicos de plantas del bosque seco tropical depositadas en el Herbario JBGP y registradas en los departamentos de Amazonas, Antioquia, Archipiélago de San Andrés, Providencia y Santa Catalina, Atlántico, Bolívar, Caldas, Cesar, Chocó, Córdoba, La Guajira, Magdalena, Meta, Nariño, Quindío, Sucre, Valle del Cauca</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>Diseñar un sistema de gestión que permita la consolidación, análisis y acceso libre de información biológica y ecológica de las especies silvestres de Colombia, para la evaluación de su estado de conservación a nivel nacional con una mayor rigurosidad, periodicidad, sostenibilidad e impacto. Para la conformación de este sistema se identificaron actividades a desarrollar en cuatro líneas de trabajo: operativa, metodológica, tecnológica y de impacto. La línea metodológica está relacionada con la generación de un marco técnico para la consolidación y estructuración de información biológica necesaria para el análisis de riesgo de extinción proveniente de diferentes fuentes que permita su publicación en plataformas en línea. Adicionalmente, en el marco de esta iniciativa se determinó que para realizar la evaluación del estado de conservación de la flora en el país era necesario: 1) priorizar las especies endémicas de ecosistemas estratégicos, específicamente páramos y bosque seco tropical, y 2) incrementar el apoyo en términos financieros e institucionales para la publicación de información de registros biológicos y digitalización de especímenes depositada en herbarios regionales.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:23Z</dateStamp>
+                <citation identifier="http://doi.org/10.15472/v16okr">Rodríguez N (2025). Registros biológicos de especies de plantas del Bosque Seco en Colombia presentes en el Herbario JBGP. Version 1.7. Jardín Botánico de Cartagena &quot;Guillermo Piñeres&quot;. Occurrence dataset https://doi.org/10.15472/v16okr accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Escobar D, Díaz SR, Jojoa LM, Rudas E, Albarracín RD, Ramírez C, Gómez JY, López CR, Saavedra J (2014). Georreferenciación de localidades: Una guía de referencia para colecciones biológicas. Instituto de Investigación de Recursos Biológicos Alexander von Humboldt – Instituto de Ciencias Naturales, Universidad Nacional de Colombia. Bogotá D.C., Colombia.</citation>
+                <citation>GBIF Data Portal, www.gibif.net 2015.</citation>
+                <citation>Madriñán, S. 2013. Nikolaus Joseph Jacquin’s American Plants: Botanical Expedition to the Caribbean (1754–1759) and the Publication of the Selectarum Stirpium Americanarum Historia. Brill, Leiden.</citation>
+                <citation>Pizano C. &amp; H. García. 2014. El Bosque Seco Tropical en Colombia. Instituto de Investigación de Recursos Biológicos Alexander von Humboldt (IAVH). Bogotá, Colombia.</citation>
+                <citation>The Taxonomic Name Resolution Service [Internet]. iPlant Collaborative. Version 4.0 [Ingreso: 23 Nov 2015]. Disponible en: http://tnrs.iplantcollaborative.org</citation>
+                </bibliography>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-jbgp.png</resourceLogoUrl>
+                <collection>
+                    <parentCollectionIdentifier>JBGP</parentCollectionIdentifier>
+                    <collectionIdentifier>Registro Nacional de Colecciones Biológicas: 69</collectionIdentifier>
+                    <collectionName>Colección de Herbario María Jiménez de Piñeres, Jardín Botánico &quot;Guillermo Piñeres&quot;</collectionName>
+                </collection>
+                <specimenPreservationMethod>DRIED_AND_PRESSED</specimenPreservationMethod>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

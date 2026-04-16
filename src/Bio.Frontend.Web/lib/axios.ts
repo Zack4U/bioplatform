@@ -4,7 +4,7 @@
  * Features:
  * - Base URL from environment variables
  * - JWT auth interceptor (attaches access token)
- * - Automatic token refresh on 401
+ * - Automatic token refresh on 401 (sends both accessToken + refreshToken)
  * - Global error handling with Sonner toast notifications
  * - Request/response logging in development
  *
@@ -12,6 +12,7 @@
  */
 
 import { API_BASE_URL } from "@/lib/constants";
+import { CORE_ROUTES } from "@/services/routes";
 import type { ApiErrorResponse } from "@/types";
 import axios, {
     type AxiosError,
@@ -78,11 +79,16 @@ apiClient.interceptors.response.use(
 
             try {
                 const refreshToken = localStorage.getItem("refreshToken");
-                if (refreshToken) {
+                const accessToken = localStorage.getItem("accessToken");
+
+                if (refreshToken && accessToken) {
                     const { data } = await axios.post<{
                         accessToken: string;
                         refreshToken: string;
-                    }>(`${API_BASE_URL}/auth/refresh`, { refreshToken });
+                    }>(`${API_BASE_URL}${CORE_ROUTES.AUTH.REFRESH}`, {
+                        accessToken,
+                        refreshToken,
+                    });
 
                     localStorage.setItem("accessToken", data.accessToken);
                     localStorage.setItem("refreshToken", data.refreshToken);

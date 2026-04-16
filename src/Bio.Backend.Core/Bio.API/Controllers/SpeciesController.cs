@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Bio.Application.DTOs;
+using Bio.Application.Features.Species.Commands;
 using Bio.Application.Features.Species.Commands.CreateSpecies;
 using Bio.Application.Features.Species.Commands.DeleteSpecies;
 using Bio.Application.Features.Species.Commands.UpdateSpecies;
 using Bio.Application.Features.Species.Queries.GetAllSpecies;
 using Bio.Application.Features.Species.Queries.GetSpeciesById;
 using Bio.Application.Features.Species.Queries.GetSpeciesBySlug;
+using Bio.Application.Features.Species.Queries.GetSpeciesDistributions;
+using Bio.Application.Features.Species.Queries.GetSpeciesFilterMeta;
+using Bio.Domain.Constants;
 using MediatR;
+using System.Security.Claims;
 
 namespace Bio.API.Controllers;
 
@@ -25,37 +31,75 @@ public class SpeciesController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>Lista especies con paginación opcional (skip, take).</summary>
+    /// <summary>Lista especies con paginación, filtros y ordenamiento.</summary>
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<SpeciesResponseDTO>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromQuery] int? skip, [FromQuery] int? take)
+    [ProducesResponseType(typeof(PaginatedResult<SpeciesListItemDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll([FromQuery] SpeciesFilterParams filters)
     {
-        var result = await _mediator.Send(new GetAllSpeciesQuery(skip, take));
+        var result = await _mediator.Send(new GetAllSpeciesQuery
+        {
+            Query = filters.Query,
+            Kingdom = filters.Kingdom,
+            Phylum = filters.Phylum,
+            ClassName = filters.ClassName,
+            OrderName = filters.OrderName,
+            Family = filters.Family,
+            Genus = filters.Genus,
+            IsSensitive = filters.IsSensitive,
+            ConservationStatus = filters.ConservationStatus,
+            Page = filters.Page,
+            PageSize = filters.PageSize,
+            SortBy = filters.SortBy,
+            SortOrder = filters.SortOrder,
+        });
         return Ok(result);
     }
 
-    /// <summary>Obtiene una especie por id.</summary>
+    /// <summary>Obtiene los valores disponibles para filtros del catálogo (kingdoms, families, etc.).</summary>
+    [HttpGet("filter-meta")]
+    [ProducesResponseType(typeof(SpeciesFilterMetaDTO), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetFilterMeta()
+    {
+        var result = await _mediator.Send(new GetSpeciesFilterMetaQuery());
+        return Ok(result);
+    }
+
+    /// <summary>Obtiene el detalle completo de una especie por id (incluye distribuciones y productos).</summary>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SpeciesDetailDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await _mediator.Send(new GetSpeciesByIdQuery(id));
+        var userRole = GetUserRole();
+        var result = await _mediator.Send(new GetSpeciesByIdQuery(id, userRole));
         return Ok(result);
     }
 
-    /// <summary>Obtiene una especie por slug.</summary>
+    /// <summary>Obtiene el detalle completo de una especie por slug (incluye distribuciones y productos).</summary>
     [HttpGet("slug/{slug}")]
-    [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SpeciesDetailDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBySlug(string slug)
     {
-        var result = await _mediator.Send(new GetSpeciesBySlugQuery(slug));
+        var userRole = GetUserRole();
+        var result = await _mediator.Send(new GetSpeciesBySlugQuery(slug, userRole));
+        return Ok(result);
+    }
+
+    /// <summary>Obtiene las distribuciones geográficas de una especie (coordenadas protegidas según rol).</summary>
+    [HttpGet("{id:guid}/distributions")]
+    [ProducesResponseType(typeof(IReadOnlyList<GeographicDistributionDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetDistributions(Guid id)
+    {
+        var userRole = GetUserRole();
+        var result = await _mediator.Send(new GetSpeciesDistributionsQuery(id, userRole));
         return Ok(result);
     }
 
     /// <summary>Crea una nueva especie.</summary>
     [HttpPost]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
     [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -67,6 +111,7 @@ public class SpeciesController : ControllerBase
 
     /// <summary>Actualiza una especie existente.</summary>
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
     [ProducesResponseType(typeof(SpeciesResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,11 +124,60 @@ public class SpeciesController : ControllerBase
 
     /// <summary>Elimina una especie.</summary>
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = RoleNames.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _mediator.Send(new DeleteSpeciesCommand(id));
         return NoContent();
+    }
+
+    /// <summary>
+    /// Carga masiva de especies desde un archivo CSV.
+    /// El archivo se procesa en segundo plano (Hangfire).
+    /// </summary>
+    [HttpPost("import-csv")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> ImportCsv(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { error = "A CSV file is required." });
+
+        if (!file.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { error = "Only CSV files are accepted." });
+
+        var tempPath = Path.Combine(Path.GetTempPath(), $"bio-import-{Guid.NewGuid()}.csv");
+        await using (var stream = new FileStream(tempPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        // Extract real userId from JWT claims
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? User.FindFirst("sub")?.Value;
+        var userId = Guid.TryParse(userIdClaim, out var parsedId) ? parsedId : Guid.Empty;
+
+        var jobId = await _mediator.Send(new ImportSpeciesCsvCommand
+        {
+            FilePath = tempPath,
+            UserId = userId
+        });
+
+        return Accepted(new { jobId, message = "CSV import job enqueued successfully." });
+    }
+
+    /// <summary>
+    /// Extrae el primer rol del usuario autenticado desde los claims JWT.
+    /// Retorna null si no hay usuario autenticado.
+    /// </summary>
+    private string? GetUserRole()
+    {
+        if (User.Identity?.IsAuthenticated != true) return null;
+        return User.FindFirst(ClaimTypes.Role)?.Value
+            ?? User.FindFirst("role")?.Value;
     }
 }

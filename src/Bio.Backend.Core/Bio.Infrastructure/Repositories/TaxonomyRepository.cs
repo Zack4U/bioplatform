@@ -30,9 +30,30 @@ public class TaxonomyRepository : ITaxonomyRepository
         return taxonomy;
     }
 
+    public async Task AddRangeAsync(IEnumerable<Taxonomy> taxonomies, CancellationToken cancellationToken = default)
+    {
+        await _context.Taxonomies.AddRangeAsync(taxonomies, cancellationToken);
+    }
+
     public Task DeleteAsync(Taxonomy taxonomy, CancellationToken cancellationToken = default)
     {
         _context.Taxonomies.Remove(taxonomy);
         return Task.CompletedTask;
     }
+
+    public async Task<Taxonomy?> GetByFieldsAsync(
+        string? kingdom, string? phylum, string? className,
+        string? orderName, string? family, string? genus,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Taxonomies.FirstOrDefaultAsync(t =>
+            t.Kingdom == kingdom &&
+            t.Phylum == phylum &&
+            t.ClassName == className &&
+            t.OrderName == orderName &&
+            t.Family == family &&
+            t.Genus == genus,
+            cancellationToken);
+    }
 }
+

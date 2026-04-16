@@ -5,6 +5,10 @@
  * Built on Shadcn Input primitive.
  * Reused in catalog, marketplace, and dashboard filters.
  * WCAG: labeled input, keyboard accessible clear, aria-live results count.
+ *
+ * Debounce: Internal value updates instantly for responsive typing.
+ * The parent's `onChange` is called after `debounceMs` of idle time.
+ * Controlled value syncs only when the user is not actively typing.
  */
 
 import { Button } from "@/components/ui/button";
@@ -30,32 +34,41 @@ interface SearchInputProps {
 
 export function SearchInput({
     placeholder = "Buscar...",
-    value: controlledValue,
+    value: controlledValue = "",
     onChange,
-    debounceMs = 300,
+    debounceMs = 400,
     className,
     "aria-label": ariaLabel = "Buscar",
 }: SearchInputProps) {
-    const [internalValue, setInternalValue] = useState(controlledValue ?? "");
+    const [internalValue, setInternalValue] = useState(controlledValue);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isTypingRef = useRef(false);
 
-    // Sync controlled value — derive state instead of using effect
-    if (controlledValue !== undefined && controlledValue !== internalValue) {
-        setInternalValue(controlledValue);
-    }
+    useEffect(() => {
+        if (!isTypingRef.current) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setInternalValue(controlledValue);
+        }
+    }, [controlledValue]);
 
     const handleChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value;
             setInternalValue(newValue);
+            isTypingRef.current = true;
 
             if (timerRef.current) clearTimeout(timerRef.current);
-            timerRef.current = setTimeout(() => onChange(newValue), debounceMs);
+            timerRef.current = setTimeout(() => {
+                isTypingRef.current = false;
+                onChange(newValue);
+            }, debounceMs);
         },
         [onChange, debounceMs],
     );
 
     const handleClear = useCallback(() => {
+        isTypingRef.current = false;
+        if (timerRef.current) clearTimeout(timerRef.current);
         setInternalValue("");
         onChange("");
     }, [onChange]);
@@ -74,7 +87,7 @@ export function SearchInput({
                 aria-hidden="true"
             />
             <Input
-                type="search"
+                type="text"
                 role="searchbox"
                 aria-label={ariaLabel}
                 placeholder={placeholder}

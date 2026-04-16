@@ -1,0 +1,34 @@
+============================================================
+  LLM SPECIES DATA GENERATION REPORT
+  Powered by Google Gemini (Structured Outputs)
+============================================================
+
+Total species in master list:  1,259
+Successfully processed:        1,263 (100.3%)
+Failed batches:                0
+Time elapsed:                  14.5 min
+
+────────────────────────────────────────
+DATA COMPLETENESS:
+────────────────────────────────────────
+  With common name:    1263 / 1263
+  With description:    1263 / 1263
+  With altitude range: 1261 / 1263
+  With legal status:    522 / 1263 (require permits)
+  With trad. uses:      170 / 1263
+  With econ. potential: 1185 / 1263
+  Marked sensitive:      20 / 1263
+
+────────────────────────────────────────
+BY KINGDOM:
+────────────────────────────────────────
+  Animalia             →  805
+  Plantae              →  419
+  Fungi                →   39
+
+────────────────────────────────────────
+DATA CONFIDENCE:
+────────────────────────────────────────
+  high       →  861 entries
+  medium     →  404 entries
+  low        →   90 entries

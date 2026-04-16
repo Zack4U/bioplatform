@@ -19,7 +19,7 @@ cd src/Bio.Backend.AI
 
 # 1. Activar venv
 # Windows:
-.venv\Scripts\activate
+source .venv/Scripts/activate
 # Linux/macOS:
 source .venv/bin/activate
 
@@ -78,20 +78,20 @@ dotnet test Bio.Backend.Core.sln --no-build -c Release --verbosity normal --coll
 
 # 5. Revisar el reporte con ReportGenerator (excluyendo Infrastructure y API)
 dotnet tool install -g dotnet-reportgenerator-globaltool
-reportgenerator -reports:Bio.UnitTests/TestResults/**/*.xml -targetdir:Bio.UnitTests/Report -reporttypes:Html -assemblyfilters:-Bio.Infrastructure*;-Bio.API*
+reportgenerator -reports:Bio.UnitTests/TestResults/**/*.xml -targetdir:Bio.UnitTests/Report -reporttypes:Html -assemblyfilters:"-Bio.Infrastructure*;-Bio.API*"
 start Bio.UnitTests/Report/index.html
 
 ```
 
 ### Reglas clave
 
-| Regla                  | Valor                                         |
-| ---------------------- | --------------------------------------------- |
-| Formato código         | `dotnet format` (cero diferencias)            |
-| Warnings en build      | **Tratados como errores** (`-warnaserror`)    |
+| Regla                  | Valor                                                               |
+| ---------------------- | ------------------------------------------------------------------- |
+| Formato código         | `dotnet format` (cero diferencias)                                  |
+| Warnings en build      | **Tratados como errores** (`-warnaserror`)                          |
 | Cobertura mínima tests | **70%** (solo Domain y Application, Infrastructure y API excluidas) |
-| Framework tests        | xUnit + Moq                                   |
-| Naming                 | `PascalCase` clases/métodos, `ISomeInterface` |
+| Framework tests        | xUnit + Moq                                                         |
+| Naming                 | `PascalCase` clases/métodos, `ISomeInterface`                       |
 
 ---
 
@@ -126,6 +126,38 @@ npm run build
 | ESLint warnings permitidas | **0** (cero tolerancia)              |
 | TypeScript                 | `--noEmit` strict check              |
 | Build producción           | Debe completar sin errores           |
+| Lenguaje                   | TypeScript obligatorio               |
+| Naming                     | `camelCase` para variables/funciones |
+
+---
+
+## 📱 Bio.Frontend.Mobile (Expo / React Native)
+
+**Directorio:** `src/Bio.Frontend.Mobile`
+**CI Workflow:** `.github/workflows/mobile-app.yaml`
+
+```bash
+cd src/Bio.Frontend.Mobile
+
+# 1. Instalar dependencias (si es necesario)
+// turbo
+npm ci
+
+# 2. ESLint — política de cero warnings
+// turbo
+npx eslint . --max-warnings=0
+
+# 3. Type Check con TypeScript
+// turbo
+npx tsc --noEmit
+```
+
+### Reglas clave
+
+| Regla                      | Valor                                |
+| -------------------------- | ------------------------------------ |
+| ESLint warnings permitidas | **0** (cero tolerancia)              |
+| TypeScript                 | `--noEmit` strict check              |
 | Lenguaje                   | TypeScript obligatorio               |
 | Naming                     | `camelCase` para variables/funciones |
 

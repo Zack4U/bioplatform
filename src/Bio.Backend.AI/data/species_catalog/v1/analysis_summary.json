@@ -1,0 +1,579 @@
+{
+  "master_total": 1259,
+  "economic_potential": {
+    "total_species": 836,
+    "total_entries": 836,
+    "multi_sector_species": 0,
+    "sectors": {
+      "Ecoturismo": 491,
+      "Agricultura": 81,
+      "Alimentos": 75,
+      "Ornamental": 68,
+      "Cosmética": 44,
+      "Medicina": 24,
+      "Artesanías": 23,
+      "Jardinería": 5,
+      "Biotecnología": 4,
+      "Restauración ecológica": 3,
+      "Investigación": 3,
+      "Acuariofilia": 2,
+      "Restauración": 1,
+      "Servicios": 1,
+      "Servicios ecosistémicos": 1,
+      "Mascotas": 1,
+      "Servicios ambientales": 1,
+      "Investigación científica": 1,
+      "Ciencia": 1,
+      "Construcción": 1,
+      "Biocombustibles": 1,
+      "Conservación": 1,
+      "Control biológico": 1,
+      "Educación": 1,
+      "Industria": 1
+    },
+    "market_values": {
+      "Medio": 417,
+      "Bajo": 229,
+      "Alto": 186,
+      "Desconocido": 4
+    },
+    "sustainability": {
+      "Alto": 678,
+      "Medio": 132,
+      "Bajo": 26
+    },
+    "confidence": {
+      "high": 661,
+      "medium": 166,
+      "low": 9
+    },
+    "top_products": {
+      "Avistamiento de aves": 233,
+      "Fotografía de naturaleza": 46,
+      "Mariposarios": 27,
+      "Avistamiento de fauna": 26,
+      "Plantas ornamentales": 24,
+      "Aviturismo": 22,
+      "Extractos botánicos": 19,
+      "Control biológico": 16,
+      "Plantas de interior": 13,
+      "Plantas de jardín": 11,
+      "Observación de fauna": 11,
+      "Mermeladas": 11,
+      "Plantas de colección": 10,
+      "Turismo científico": 10,
+      "Avistamiento de flora": 10,
+      "Turismo botánico": 10,
+      "Turismo de naturaleza": 8,
+      "Control biológico de plagas": 7,
+      "Educación ambiental": 7,
+      "Avistamiento especializado": 6
+    },
+    "sector_by_kingdom": {
+      "Agricultura": {
+        "Plantae": 44,
+        "Animalia": 35,
+        "Fungi": 2
+      },
+      "Ecoturismo": {
+        "Animalia": 426,
+        "Plantae": 64,
+        "Fungi": 1
+      },
+      "Alimentos": {
+        "Plantae": 44,
+        "Animalia": 23,
+        "Fungi": 8
+      },
+      "Ornamental": {
+        "Plantae": 68
+      },
+      "Medicina": {
+        "Plantae": 18,
+        "Fungi": 3,
+        "Animalia": 3
+      },
+      "Artesanías": {
+        "Plantae": 20,
+        "Animalia": 3
+      },
+      "Cosmética": {
+        "Plantae": 41,
+        "Fungi": 2,
+        "Animalia": 1
+      },
+      "Acuariofilia": {
+        "Animalia": 2
+      },
+      "Restauración": {
+        "Plantae": 1
+      },
+      "Servicios": {
+        "Animalia": 1
+      },
+      "Servicios ecosistémicos": {
+        "Animalia": 1
+      },
+      "Mascotas": {
+        "Animalia": 1
+      },
+      "Servicios ambientales": {
+        "Animalia": 1
+      },
+      "Restauración ecológica": {
+        "Plantae": 3
+      },
+      "Investigación científica": {
+        "Animalia": 1
+      },
+      "Ciencia": {
+        "Animalia": 1
+      },
+      "Construcción": {
+        "Plantae": 1
+      },
+      "Investigación": {
+        "Animalia": 2,
+        "Fungi": 1
+      },
+      "Biocombustibles": {
+        "Fungi": 1
+      },
+      "Biotecnología": {
+        "Fungi": 4
+      },
+      "Conservación": {
+        "Plantae": 1
+      },
+      "Control biológico": {
+        "Animalia": 1
+      },
+      "Jardinería": {
+        "Plantae": 5
+      },
+      "Educación": {
+        "Animalia": 1
+      },
+      "Industria": {
+        "Plantae": 1
+      }
+    },
+    "sector_market_value": {
+      "Agricultura": {
+        "Bajo": 36,
+        "Alto": 24,
+        "Medio": 19,
+        "Desconocido": 2
+      },
+      "Ecoturismo": {
+        "Medio": 258,
+        "Bajo": 119,
+        "Alto": 113,
+        "Desconocido": 1
+      },
+      "Alimentos": {
+        "Medio": 29,
+        "Alto": 24,
+        "Bajo": 22
+      },
+      "Ornamental": {
+        "Medio": 44,
+        "Bajo": 13,
+        "Alto": 11
+      },
+      "Medicina": {
+        "Medio": 14,
+        "Bajo": 7,
+        "Alto": 3
+      },
+      "Artesanías": {
+        "Medio": 11,
+        "Bajo": 7,
+        "Alto": 5
+      },
+      "Cosmética": {
+        "Medio": 30,
+        "Bajo": 13,
+        "Alto": 1
+      },
+      "Acuariofilia": {
+        "Bajo": 1,
+        "Medio": 1
+      },
+      "Restauración": {
+        "Bajo": 1
+      },
+      "Servicios": {
+        "Alto": 1
+      },
+      "Servicios ecosistémicos": {
+        "Desconocido": 1
+      },
+      "Mascotas": {
+        "Alto": 1
+      },
+      "Servicios ambientales": {
+        "Bajo": 1
+      },
+      "Restauración ecológica": {
+        "Bajo": 2,
+        "Medio": 1
+      },
+      "Investigación científica": {
+        "Bajo": 1
+      },
+      "Ciencia": {
+        "Bajo": 1
+      },
+      "Construcción": {
+        "Alto": 1
+      },
+      "Investigación": {
+        "Bajo": 2,
+        "Medio": 1
+      },
+      "Biocombustibles": {
+        "Medio": 1
+      },
+      "Biotecnología": {
+        "Medio": 4
+      },
+      "Conservación": {
+        "Alto": 1
+      },
+      "Control biológico": {
+        "Bajo": 1
+      },
+      "Jardinería": {
+        "Medio": 4,
+        "Bajo": 1
+      },
+      "Educación": {
+        "Bajo": 1
+      },
+      "Industria": {
+        "Alto": 1
+      }
+    },
+    "species_per_sector": {
+      "Agricultura": 81,
+      "Ecoturismo": 491,
+      "Alimentos": 75,
+      "Ornamental": 68,
+      "Medicina": 24,
+      "Artesanías": 23,
+      "Cosmética": 44,
+      "Acuariofilia": 2,
+      "Restauración": 1,
+      "Servicios": 1,
+      "Servicios ecosistémicos": 1,
+      "Mascotas": 1,
+      "Servicios ambientales": 1,
+      "Restauración ecológica": 3,
+      "Investigación científica": 1,
+      "Ciencia": 1,
+      "Construcción": 1,
+      "Investigación": 3,
+      "Biocombustibles": 1,
+      "Biotecnología": 4,
+      "Conservación": 1,
+      "Control biológico": 1,
+      "Jardinería": 5,
+      "Educación": 1,
+      "Industria": 1
+    }
+  },
+  "traditional_uses": {
+    "total_species": 201,
+    "total_entries": 201,
+    "multi_use_species": 0,
+    "parts": {
+      "Hojas": 57,
+      "Fruto": 40,
+      "Cuerpo entero": 30,
+      "Madera": 13,
+      "Flores": 9,
+      "Corteza": 7,
+      "Tallo": 6,
+      "Semillas": 5,
+      "Látex": 5,
+      "Miel": 4,
+      "Raíz": 4,
+      "Carne": 3,
+      "Planta entera": 3,
+      "Tallos": 2,
+      "Piel": 2,
+      "Grasa": 1,
+      "Nido": 1,
+      "Rizoma": 1,
+      "Inflorescencia": 1,
+      "Tronco": 1,
+      "Cuerpo fructífero": 1,
+      "Hojas y fruto": 1,
+      "Huevos": 1,
+      "Raíces": 1,
+      "Tubérculo": 1,
+      "Hojas y raíz": 1
+    },
+    "uses": {
+      "Alimentación": 65,
+      "Medicina tradicional": 39,
+      "Artesanías": 16,
+      "Construcción": 13,
+      "Medicina": 11,
+      "Infusiones": 9,
+      "Ornamental": 9,
+      "Medicinal": 8,
+      "Gastronomía": 4,
+      "Cercas vivas": 4,
+      "Bebidas": 3,
+      "Leña": 3,
+      "Ebanistería": 3,
+      "Decoración": 3,
+      "Condimento": 2,
+      "Limpieza": 2,
+      "Envoltura de alimentos": 2,
+      "Construcción rústica": 2,
+      "Carpintería": 2,
+      "Antiinflamatorio": 2,
+      "Curtido de pieles": 1,
+      "Extracción de aceite": 1,
+      "Aceite comestible": 1,
+      "Combustible": 1,
+      "Baños": 1,
+      "Colorante": 1,
+      "Tracción": 1,
+      "Consumo de miel": 1,
+      "Cría doméstica": 1,
+      "Envolver alimentos": 1,
+      "Compañía": 1,
+      "Pastoreo": 1,
+      "Caza": 1,
+      "Sombreros": 1,
+      "Ornamentación": 1,
+      "Celebraciones religiosas": 1,
+      "Pesca": 1,
+      "Sustrato": 1,
+      "Consumo directo": 1,
+      "Transporte de carga": 1,
+      "Labores agrícolas": 1,
+      "Transporte": 1,
+      "Equitación": 1,
+      "Tratamiento de afecciones respiratorias": 1,
+      "Problemas digestivos": 1,
+      "Cicatrizante": 1,
+      "Tratamiento de verrugas": 1,
+      "Muebles": 1,
+      "Aromaterapia": 1,
+      "Control biológico": 1,
+      "Lavados": 1,
+      "Infusión medicinal": 1,
+      "Alimento": 1,
+      "Cosmética": 1,
+      "Velas": 1,
+      "Iluminación": 1,
+      "Rituales de iniciación": 1,
+      "Alimenticio": 1,
+      "Tintura": 1,
+      "Aromatizante": 1,
+      "Fitorremediación": 1,
+      "Rituales ancestrales": 1,
+      "Analgésico": 1,
+      "Pesca artesanal": 1,
+      "Mascota": 1,
+      "Depurativo": 1,
+      "Refrescante": 1,
+      "Antiséptico": 1,
+      "Diurético": 1,
+      "Endulzante": 1,
+      "Bebida ritual": 1,
+      "Cercas": 1,
+      "Forraje": 1,
+      "Medicina veterinaria": 1,
+      "Sedante": 1,
+      "Relajante": 1,
+      "Símbolo cultural": 1
+    },
+    "communities": {
+      "Comunidades campesinas de Caldas": 93,
+      "Comunidades rurales de Caldas": 36,
+      "Comunidades rurales andinas": 7,
+      "Comunidades rurales de los Andes": 4,
+      "Comunidades rurales de Colombia": 4,
+      "Comunidades rurales": 3,
+      "Comunidades campesinas de los Andes colombianos": 3,
+      "Comunidades campesinas de alta montaña": 3,
+      "Comunidades rurales de la zona andina": 2,
+      "Comunidades campesinas de los Andes": 2,
+      "Comunidades rurales del Magdalena Medio": 2,
+      "Comunidades rurales de zonas tropicales": 2,
+      "Comunidades ribereñas del Magdalena": 2,
+      "Comunidades ribereñas de Caldas": 2,
+      "General en Colombia": 2
+    },
+    "confidence": {
+      "high": 169,
+      "medium": 32
+    },
+    "part_by_kingdom": {
+      "Corteza": {
+        "Plantae": 7
+      },
+      "Fruto": {
+        "Plantae": 40
+      },
+      "Hojas": {
+        "Plantae": 57
+      },
+      "Madera": {
+        "Plantae": 13
+      },
+      "Cuerpo entero": {
+        "Animalia": 25,
+        "Fungi": 5
+      },
+      "Miel": {
+        "Animalia": 4
+      },
+      "Tallos": {
+        "Plantae": 2
+      },
+      "Semillas": {
+        "Plantae": 5
+      },
+      "Grasa": {
+        "Animalia": 1
+      },
+      "Látex": {
+        "Plantae": 5
+      },
+      "Nido": {
+        "Animalia": 1
+      },
+      "Carne": {
+        "Animalia": 3
+      },
+      "Rizoma": {
+        "Plantae": 1
+      },
+      "Flores": {
+        "Plantae": 9
+      },
+      "Inflorescencia": {
+        "Plantae": 1
+      },
+      "Tallo": {
+        "Plantae": 6
+      },
+      "Planta entera": {
+        "Plantae": 3
+      },
+      "Raíz": {
+        "Plantae": 4
+      },
+      "Tronco": {
+        "Plantae": 1
+      },
+      "Cuerpo fructífero": {
+        "Fungi": 1
+      },
+      "Piel": {
+        "Animalia": 2
+      },
+      "Hojas y fruto": {
+        "Plantae": 1
+      },
+      "Huevos": {
+        "Animalia": 1
+      },
+      "Raíces": {
+        "Plantae": 1
+      },
+      "Tubérculo": {
+        "Plantae": 1
+      },
+      "Hojas y raíz": {
+        "Plantae": 1
+      }
+    },
+    "species_per_use": {
+      "Curtido de pieles": 1,
+      "Alimentación": 65,
+      "Bebidas": 3,
+      "Medicina tradicional": 39,
+      "Construcción": 13,
+      "Leña": 3,
+      "Ebanistería": 3,
+      "Medicina": 11,
+      "Medicinal": 8,
+      "Artesanías": 16,
+      "Gastronomía": 4,
+      "Extracción de aceite": 1,
+      "Aceite comestible": 1,
+      "Combustible": 1,
+      "Baños": 1,
+      "Cercas vivas": 4,
+      "Infusiones": 9,
+      "Condimento": 2,
+      "Colorante": 1,
+      "Tracción": 1,
+      "Consumo de miel": 1,
+      "Cría doméstica": 1,
+      "Envolver alimentos": 1,
+      "Compañía": 1,
+      "Pastoreo": 1,
+      "Caza": 1,
+      "Sombreros": 1,
+      "Ornamentación": 1,
+      "Ornamental": 9,
+      "Celebraciones religiosas": 1,
+      "Decoración": 3,
+      "Pesca": 1,
+      "Sustrato": 1,
+      "Consumo directo": 1,
+      "Limpieza": 2,
+      "Transporte de carga": 1,
+      "Labores agrícolas": 1,
+      "Transporte": 1,
+      "Equitación": 1,
+      "Tratamiento de afecciones respiratorias": 1,
+      "Problemas digestivos": 1,
+      "Cicatrizante": 1,
+      "Tratamiento de verrugas": 1,
+      "Muebles": 1,
+      "Aromaterapia": 1,
+      "Envoltura de alimentos": 2,
+      "Control biológico": 1,
+      "Construcción rústica": 2,
+      "Lavados": 1,
+      "Carpintería": 2,
+      "Infusión medicinal": 1,
+      "Alimento": 1,
+      "Cosmética": 1,
+      "Velas": 1,
+      "Iluminación": 1,
+      "Rituales de iniciación": 1,
+      "Alimenticio": 1,
+      "Tintura": 1,
+      "Aromatizante": 1,
+      "Fitorremediación": 1,
+      "Rituales ancestrales": 1,
+      "Antiinflamatorio": 2,
+      "Analgésico": 1,
+      "Pesca artesanal": 1,
+      "Mascota": 1,
+      "Depurativo": 1,
+      "Refrescante": 1,
+      "Antiséptico": 1,
+      "Diurético": 1,
+      "Endulzante": 1,
+      "Bebida ritual": 1,
+      "Cercas": 1,
+      "Forraje": 1,
+      "Medicina veterinaria": 1,
+      "Sedante": 1,
+      "Relajante": 1,
+      "Símbolo cultural": 1
+    }
+  }
+}

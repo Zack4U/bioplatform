@@ -40,13 +40,13 @@ public class TokenService : ITokenService
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(ClaimTypes.Name, user.FullName)
+            new("name", user.FullName)
         };
 
         // Add role claims
         foreach (var role in roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim("role", role));
         }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
@@ -81,7 +81,10 @@ public class TokenService : ITokenService
     public Guid GetUserIdFromToken(string token)
     {
         var principal = GetPrincipalFromExpiredToken(token);
-        var sub = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+        // Find user ID (sub or NameIdentifier due to potential claim mapping)
+        var sub = principal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                  ?? principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(sub) || !Guid.TryParse(sub, out var userId))
         {

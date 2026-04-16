@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="27c90b10-2966-4203-9774-f8b530bb5ef2"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/xbchyo</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=epm_hidrobiologico-tepuy</alternateIdentifier>
+        <title>Monitoreos hidrobiológicos asociados al proyecto Parque Solar Fotovoltaico Tepuy</title>
+        <creator>
+            <individualName>
+                <givenName>Yesenia</givenName>
+                <surName>García Morera</surName>
+            </individualName>
+            <organizationName>Empresas Públicas de Medellín E.S.P.</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743806590</phone>
+            <electronicMailAddress>yesenia.garcia@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Alejandro</givenName>
+                <surName>Patiño</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Carlos</givenName>
+                <surName>Loaiza</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Carolina</givenName>
+                <surName>Castellanos</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Carolina</givenName>
+                <surName>Uribe</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Carolina</givenName>
+                <surName>Velásquez</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Juan</givenName>
+                <surName>Burgos</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Luisa</givenName>
+                <surName>Morgan</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Daniela</givenName>
+                <surName>Aristizábal</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <positionName>Analista de Biodiversidad</positionName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(574) 370-6666</phone>
+            <electronicMailAddress>eaguilar@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Andrea Carolina</givenName>
+                <surName>Mejía Bassa</surName>
+            </individualName>
+            <organizationName>Empresas Públicas de Medellín E.S.P.</organizationName>
+            <positionName>Procesadora</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>ANDREA.MEJIA@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </creator>
+        <creator>
+            <individualName>
+                <surName>Servicios Ambientales y Geográficos S.A</surName>
+            </individualName>
+            <organizationName>Servicios Ambientales y Geográficos S.A</organizationName>
+            <address>
+                <deliveryPoint>Calle 11 B No. 40A – 130</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>57(604) 403 55 70</phone>
+            <electronicMailAddress>sag.sa@sag-sa.com</electronicMailAddress>
+            <onlineUrl>http://www.sag-sa.com/</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Yesenia</givenName>
+                <surName>García Morera</surName>
+            </individualName>
+            <organizationName>Empresas Públicas de Medellín E.S.P.</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743806590</phone>
+            <electronicMailAddress>yesenia.garcia@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </metadataProvider>
+        <pubDate>
+                2025-02-24
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>El presente conjunto de datos corresponde a la información de los dos monitoreos hidrobiológicos de la fase constructiva, en el marco del cumplimiento del PSM_B02 &amp;#34;Monitoreo y seguimiento a la protección de cuerpos de agua&amp;#34;, teniendo en cuenta la calidad del medio; esto, en dos estaciones superficiales asociadas al área de influencia del proyecto de Generación de energía solar fotovoltaica - Parque Solar Fotovoltaico TEPUY. Se realizaron monitoreos de los grupos bióticos perifiton, bentos (macroinvertebrados acuáticos), peces, plancton (fito y zoo) y macrófitas, estos monitoreos fueron ejecutados en el municipio de La Dorada, departamento de Caldas. Lo anterior, en el cumplimiento de la licencia ambiental del proyecto otorgada por CORPOCALDAS: Resolución 1018 del 30 de junio de 2021.</para><para>Para el monitoreo y seguimiento de los jagüeyes 9 y 11, se realizaron dos campañas de monitoreo, de tal forma que se cubrieran los dos períodos climáticos (aguas bajas y aguas altas).</para><para>En el mes de julio de 2023 se realizó la primera campaña de monitoreo de los grupos bióticos perifiton, bentos (macroinvertebrados acuáticos), peces, plancton (fito y zoo) y macrófitas, esta actividad se ejecutó en época seca. El muestreo fue realizado por Servicios Ambientales y Geográficos S.A. (SAG S.A.), a través de su Laboratorio de Calidad de Aguas acreditado bajo la Resolución 1598 de 2021.</para><para>En el mes de febrero de 2024, se realizó la segunda campaña de monitoreo de los grupos bióticos perifiton, bentos (macroinvertebrados acuáticos), peces, plancton (fito y zoo) y macrófitas, esta actividad se ejecutó en época húmeda. El muestreo fue realizado por Servicios Ambientales y Geográficos S.A. (SAG S.A.), a través de su Laboratorio de Calidad de Aguas acreditado bajo la Resolución 1598 de 2021.</para><para>Como resultado, se presentan 194 registros de especímenes correspondientes a bacterias, animales, cromistas plantas y protozoos. Los especímenes se encuentran agrupados en 15 fila, 18 clases y 38 ordenes.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Samplingevent</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>jaguey</keyword>
+            <keyword>hidrobiológicos</keyword>
+            <keyword>época húmeda</keyword>
+            <keyword>época seca</keyword>
+            <keyword>Monitoreo</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=epm_hidrobiologico-tepuy</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>Ambos monitoreos de llevaron a cabo en el municipio de La Dorada, en el departamento de Caldas. El primer monitoreo fue en la época seca, y el segundo monitoreo fue en la época húmeda, se realizaron en los jagueyes 9 y 11.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-74.735</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.729</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.395</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.394</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2023-07-25
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2024-02-21
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>MONITOREO1_ JULIO 2023: (8) familias, cinco (5) órdenes, dos (2) clases de perifiton; (13) familias, cinco (5) ordenes, tres (3) clases y tres (3) phyla de macroinvertebrados; (4) familias y tres (3) órdenes de peces; (2) familias, dos (2) ordenes, una (1) clase y un (1) phylum de macrófitas; 18 familias, 11 órdenes taxonómicos, cinco (5) clases y cuatro (4) divisiones de fitoplancton; (5) familias, seis (6) ordenes, cuatro (4) clases y tres (3) phyla de zooplancton.
+
+MONITOREO2_ FEBRERO 2024: 12 familias, diez (10) órdenes, cuatro (4) clases de perifiton; cinco (5) familias, tres (3) ordenes, una (1) clase y un (1) phylum de macroinvertebrados; (4) especies correspondientes con cuatro (4) familias y tres (3) órdenes taxonómicos de peces; 26 familias, 17 órdenes taxonómicos, siete (7) clases de fitoplancton; 10 familias (+2 indeterminadas), seis (6) ordenes (+ 1 indeterminado), cuatro (4) clases (+ 1 indeterminado) y tres (3) phyla de zooplancton</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Animalia</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Bacteria</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Chromista</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Plantae</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Kingdom</taxonRankName>
+                    <taxonRankValue>Protozoa</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>asNeeded</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Yesenia</givenName>
+                <surName>García Morera</surName>
+            </individualName>
+            <organizationName>Empresas Públicas de Medellín E.S.P.</organizationName>
+            <positionName>Profesional Ambiental y Social</positionName>
+            <address>
+                <deliveryPoint>Carrera 58 # 42-125</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>5743806590</phone>
+            <electronicMailAddress>yesenia.garcia@epm.com.co</electronicMailAddress>
+            <onlineUrl>https://www.epm.com.co</onlineUrl>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>PERIFITON: se efectuó mediante el raspado de diferentes sustratos sumergidos; tales como, troncos, hojarasca y vegetación acuática. Como muestreador se empleó, un cuadrante de área conocida (5*5 cm), el cual se ubicó en la parte superior del sustrato seleccionado. Se efectuó un número de raspados estandarizados (10) con la finalidad de abarcar un área conocida (250 cm2). Las muestras fueron almacenadas en frascos opacos para evitar la degradación del Lugol, debidamente rotuladas y fijadas con Lugol (entre 0,5 a 1 ml por cada 100 ml de muestra). Finalmente, se transportaron al laboratorio donde se realizó la identificación taxonómica de la comunidad.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>MACROINVERTEBRADOS: Para la toma de muestra de macroinvertebrados se tuvo en cuenta los diferentes sustratos y microhábitats presentes en el sistema evaluado, abarcando en lo posible la longitud del jagüey. Para esto se empleó la Red Surber con un ojo de malla de 300 micras y con área de 0,3 m*0,3 m. Se realizó un número estandarizado de barridos (10), teniendo así un área total de muestreo de 0,9 m2. Las muestras colectadas, se almacenaron en bolsas ziploc debidamente rotuladas, luego los organismos fueron sedados con cloruro de magnesio y fijados con alcohol al 96%, por último, se transportaron al laboratorio donde se realizó la identificación taxonómica.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>PECES: Se utilizó jama, con un esfuerzo de 10 barridos. Los peces capturados fueron almacenados temporalmente en un balde provisto con aireador y una vez terminada la faena de pesca, se procedió con la toma de medidas biométricas: cada individuo se pesó en una balanza y se midió su longitud estándar con un calibrador. Finalmente, se recolectó un pez por morfotipo y el resto los peces fueron liberados en el sitio donde fueron capturados. Los especímenes que se colectaron se colocaron en una solución de Eugenol, luego fueron fijados en formol al 10% y guardados en recipientes plásticos (apropiadamente rotulados) para su transporte.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>MACRÓFITAS: El muestreo de macrófitas contempló la interfase agua-tierra, se empleó un cuadrante de área conocida (1x1m), el cual se instaló sobre los parches con vegetación acuática, máximo de 10 veces1, para abarcar un área total de 10 m2. En cada cuadrante fue tenido en cuenta el porcentaje de cobertura de los morfotipos identificados, realizando el respectivo registro fotográfico en donde se detallaron las diferentes estructuras tales como raíces, tallos, hojas (envés y haz), flores etc. Finalmente, se recolectaron los morfotipos (preferiblemente especímenes adultos), tratando de extraer el espécimen completo (raíces, hojas, flores y frutos en caso de encontrarse). Cuando fue necesario, se emplearon instrumentos de corte como navajas, cuchillos y palas de mano. Posterior se guardaron en papel periódico, preservadas con alcohol y prensadas, para luego ser trasladadas al laboratorio.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>FITOPLANCTON: Se efectuó muestreo cuantitativo integrando un volumen de 15 litros, y de este volumen se extrajo una submuestra en un recipiente de 270 ml, posteriormente fue fijado con Lugol, entre 0,5 a 1 ml por cada 100 ml de muestra.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>ZOOPLANCTON: Se tomó una muestra de agua integrada de 15 litros y posteriormente se filtró en una red de zooplancton de 43 micras. La muestra obtenida en el colector de la red fue trasvasada a un recipiente debidamente rotulado y se preservó con Transeu.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Ambos monitoreos de llevaron a cabo en el municipio de La Dorada, en el departamento de Caldas. El primer monitoreo fue en la época seca, y el segundo monitoreo fue en la época húmeda, se realizaron en los jagueyes 9 y 11.
+
+Descripción jagüey 9 (S2): Corresponde a un jagüey, de forma irregular y con pendiente baja. Se presentó alta turbiedad, sin olores aparentes, sustrato de tipo limoso, con profundidad del agua aproximadamente de 40 cm. No se encontraron sustratos adecuados (troncos, rocas, tallos o superficies rugosas sumergidas) sobre los cuales realizar el raspado para el muestreo de la comunidad perifítica. La vegetación circundante es baja y está conformada principalmente por pastizales. En el momento del muestreo se observaron búfalos dentro del cuerpo de agua, por lo que este sistema puede ser utilizado eventualmente por este tipo de animales. Se resalta que dos (2) días previos al muestreo este sistema se encontraba seco.
+
+Descripción jagüey 11 (S1): Corresponde a un jagüey, de forma irregular y con pendiente baja. Color del agua café, baja turbiedad y sin olores aparentes, el sustrato es de tipo limoso, con profundidad del nivel del agua aproximadamente de 50 cm. La vegetación circundante es semicontinua y está conformada por árboles principalmente, con algunos arbustos y pastizales. Se observa baja erosión en las orillas.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Se hicieron tomas de muestra y análisisis de los siguientes grupos hidrobiológicos: macroinvertebrados, perifiton, peces, macrófitas, fitoplancton y zooplancton.</para>
+                </samplingDescription>
+            </sampling>
+        </methods>
+
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:25Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/xbchyo">García Morera Y, Patiño A, Loaiza C, Castellanos C, Uribe C, Velásquez C, Burgos J, Morgan L, Aristizábal D, Mejía Bassa A C, Servicios Ambientales y Geográficos S.A (2025). Monitoreos hidrobiológicos asociados al proyecto Parque Solar Fotovoltaico Tepuy. Empresas Públicas de Medellín E.S.P.. Sampling event dataset https://doi.org/10.15472/xbchyo accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>HORNER, R. R., WELCH, E. B., SEELEY, M. R., &amp; JACOBY, J. M. Responses of periphyton to changes in current velocity, suspended sediment and phosphorus concentration. Freshwater biology, 1990, vol. 24, no 2, p. 215-232</citation>
+                <citation>JIMÉNEZ-PÉREZ, Patricia; TORO-RESTREPO, Beatriz; HERNÁNDEZ-ATILANO, Esnedy. 2014. Relación entre la comunidad de fitoperifiton y diferentes fuentes de contaminación en una quebrada de los Andes colombianos relación fitoperifiton y contaminación ambiental. Boletín Científico Museo de Historia Natural, vol. 18, p. 49-66.</citation>
+                <citation>MORENO, Yimmy Montoya; AGUIRRE, Nestor. Estado del arte del conocimiento sobre perifiton en Colombia. Gestion y ambiente, 2013, vol. 16, no 3, p. 91-117.</citation>
+                <citation>OLIVEIRA, M; TORGAN, L; LOBO, E; SCHARZBOLD, A. Association of periphytic diatom species of artificial substrate in lotic enviroments in the arroio Sampaio Basin RS, Brazil: relationships with abiotic variables. Braz J Biol, 2001, 61: 523-540.</citation>
+                <citation>PLANAS, D. Anais do IV Congreso latinoamericano de Ficología. Sociedad de Ficológica da América Latina del Caribe. Sao Paulo, 1998.</citation>
+                <citation>RODRIGUES, L.; BICUDO, D. C.; MOSCHINI-CARLOS, V. O papel do perifiton em áreas alagáveis e nos diagnósticos ambientais. Ecologia e manejo de macrófitas aquáticas. Maringá: Eduem, 2003, p. 211-230.</citation>
+                <citation>ROUND, F. E. Diatoms in river water-monitoring studies. Journal of Applied Phycology, 1991, vol. 3, no 2, p. 129-145.</citation>
+                <citation>BAIRD, Rodger B., et al. Standard methods for the examination of water and wastewater. Washington, DC: American public health association, 2012.</citation>
+                <citation>BICUDO, CE de M. &amp; MENEZES, M. Gêneros de algas de águas continentais do Brasil (chave para identificacao e descricoes). Sao Carlos: Rima. 473p. 2006.</citation>
+                <citation>CASCO, María Adela; TOJA, Julia. Efecto de la fluctuación de nivel del agua en la biomasa, la diversidad y las estrategias del perifiton de los embalses. Limnetica, 2003, vol. 22, no 1- 2, p. 115-134</citation>
+                <citation>PEDRAZA-GARZÓN, Edna; DONATO-RONDÓN, John. Diversidad y distribución de diatomeas en un arroyo de montaña de los andes colombianos. Caldasia, 2011, vol. 33, no 1, p. 177-191.</citation>
+                <citation>PINILLA, Gabriel. Indicadores biológicos en ecosistemas acuáticos continentales de Colombia. Bogotá: Universidad Jorge Tadeo Lozano, 2000.</citation>
+                <citation>ROLDÁN PÉREZ, Gabriel; RAMÍREZ RESTREPO, John Jairo. Fundamentos de limnología neotropical. 2022.</citation>
+                <citation>DOMÍNGUEZ, Eduardo; FERNÁNDEZ, Hugo R. Macroinvertebrados bentónicos sudamericanos. Sistemática y biología. Fundación Miguel Lillo, Tucumán, Argentina, 2009, vol. 656.</citation>
+                <citation>EPLER, J. H. Identification manual for the water beetles of Florida. Department of Environmental Protection, Division of Water Facilities. Tallahassee, Florida. 259p, 1996.</citation>
+                <citation>FORERO, J. Macroinvertebrados bentónicos y su relación con la calidad del agua en la cuenca alta de del Río Frío (Tabio, Cundinamarca). Bogota-Colombia: PONTIFICIA UNIVERSIDAD JAVERIANA. 2017, vol. 31.</citation>
+                <citation>RIVERA-USME, John Jader, et al. Ensamblaje de macroinvertebrados acuáticos y su relación con las variables físicas y químicas en el humedal de Jaboque-Colombia. Caldasia, 2013, vol. 35, no 2, p. 389-408.</citation>
+                <citation>ROLDÁN, G. y RAMÍREZ, J. Fundamentos de Limnología Neotropical. 2a. ed. Medellín. Editorial Universidad de Antioquia, 2008.</citation>
+                <citation>CÁRDENAS, S. M. Macroinvertebrados acuáticos en ambientes lénticos y característica fisicoquímica del agua en bofedales de la cabecera del río Apacheta, Cangallo, Ayacucho 2016. 2019. Tesis Doctoral. Tesis Universidad Nacional De San Cristóbal De Huamanga.</citation>
+                <citation>MARGALEF, Ramón. Homage to Evelyn Hutchinson, or why there is an upper limit to diversity. Connecticut Academy of Arts and Sciences, 1972</citation>
+                <citation>PACHECO-CHAVES, B. Guía ilustrada para el estudio ecológico y taxonómico de los insectos acuáticos del Orden Hemiptera en El Salvador. 2010. En: Springer, M. &amp; J.M. Sermeño Chicas (eds.). Formulación de una guía metodológica estandarizada para determinar la calidad ambiental de las aguas de los ríos de El Salvador, utilizando insectos acuáticos. Proyecto Universidad de El Salvador (UES)-Organización de los Estados Americanos (OEA). Editorial Universitaria UES, San Salvador, El Salvador. 49 pág.</citation>
+                <citation>PÉREZ, Gabriel Roldán. Bioindicación de la calidad del agua en Colombia: Propuesta para el uso del método BMWP Col. Universidad de Antioquia, 2003.</citation>
+                <citation>CRUZ-RODRÍGUEZ, Cristian, et al. 2017. Resolución nacional de especies amenazadas de Colombia. Mammalogy Notes. 4(2). p 1-5.</citation>
+                <citation>DONASCIMIENTO, Carlos. et al. Checklist of the freshwater fishes of Colombia: a Darwin Core alternative to the updating problem. ZooKeys, 2017, (708), 25.</citation>
+                <citation>FRICKE, Ron. ESCHMEYER, William. VAN DER LAAN, Richard. Eschmeyer&apos;s Catalog Of Fishes: Genera, Species, References. [En línea]. http://researcharchive.calacademy.org/research /ichthyology/catalog/fishcatmain.asp. Fecha de acceso: 4 de septiembre de 2023.</citation>
+                <citation>IUCN 2023. The IUCN Red List of Threatened Species. Version 2020-3. [En línea]. https://www.iucnredlist.org/es/search?query=Geophagus%20steindachneri&amp;searchType=species. Fecha de acceso: 28 de agosto de 2023.</citation>
+                <citation>LASSO, C.; MORALES, M. Catálogo de los recursos pesqueros continentales en Colombia: memoria técnica y explicativa. Bogotá: Ministerio de Ambiente, Vivienda y Desarrollo Territorial, 2011.</citation>
+                <citation>MAGURRAN, Anne E. Measuring biological diversity. John Wiley &amp; Sons, 2003.</citation>
+                <citation>MALDONADO-OCAMPO, Javier A., et al. Peces de los Andes de Colombia. Instituto de Investigación de Recursos Biológicos Alexander von Humboldt. Bogotá, DC, Colombia, 2005, p. 346.</citation>
+                <citation>MOJICA, José Iván, et al. 2012. Libro Rojo de Peces Dulceacuícolas de Colombia. Bogotá, D. C., Colombia. Instituto de Investigación de Recursos Biológicos Alexander von Humboldt, Instituto de Ciencias Naturales de la Universidad Nacional de Colombia, WWF Colombia y Universidad de Manizales. p 319.</citation>
+                <citation>ZAPATA, Luis Alonso y USMA, José Saulo. Guía de las especies Migratorias de la Biodiversidad en Colombia. Peces. Ministerio de Ambiente y Desarrollo Sostenible / WWF-Colombia. Bogotá, D.C. Colombia, 2013, Vol. 2.</citation>
+                <citation>GALVIS Germán., MOJICA José Iván y CAMARGO M. 1997. Peces del Catatumbo. Ecopetrol-Oxy-Shell-Asociación Cravo Norte, D’Vinni Edit. Ltda., Bogotá D.C., Colombia. 188 p.</citation>
+                <citation>IUCN 2024. The IUCN Red List of Threatened Species. Version 2020-3. [En línea]. https://www.iucnredlist.org/es/search?query=Geophagus%20steindachneri&amp;searchType=s pecies. Fecha de acceso: 2 de abril de 2024.</citation>
+                <citation>RESOLUCIÓN 0126 DE 2024. Resolución nacional de especies amenazadas de Colombia. Ministerio de Ambiente y desarrollo territorial. p 70.</citation>
+                <citation>RESTREPO, Gabriel Roldán, RAMÍREZ, John Jairo. Fundamentos de limnología neotropical. Universidad de Antioquia, 2008.</citation>
+                <citation>BECARES, Eloy. Especies invasoras en humedales y su relación con la salud en zonas tropicales. Especies invasoras acuáticas y salud, 2016</citation>
+                <citation>CHAMBERS, Patricia. et al. Global diversity of aquatic macrophytes in freshwater. Freshwater animal diversity assessment. Springer, Dordrecht, 2007. p. 9-26.</citation>
+                <citation>CROW, George. Plantas acuáticas del Parque Nacional Palo Verde y el Valle del Río Tempisque Costa Rica. 2002. INBio</citation>
+                <citation>ESPEJO CRUZ, María Eliana. Determinación de la calidad fisicoquímica del agua del humedal El Juncal y su reconocimiento como ecosistema estratégico dentro de la educación básica primaria. 2017.</citation>
+                <citation>POSADA, J. A.; LÓPEZ, M. T. Plantas acuáticas del altiplano del oriente antioqueño, Colombia. Rionegro: Universidad Católica de Oriente, 2011, p. 121</citation>
+                <citation>SIERRA-MUÑOZ, José Carlos, et al. Riqueza y distribución de la familia Solanaceae en el estado de Aguascalientes, México. Botanical Sciences, 2015, vol. 93, no 1, p. 97-117.</citation>
+                <citation>AGUILAR M, G.; LÉON G, A. P.; MEJÍA F, D. B. Botánica aplicada: Fabaceae. 2021.</citation>
+                <citation>BERNAL, R., GRADSTEIN, S., CELIS, M. Catálogo de plantas y líquenes de Colombia. (2015). Instituto de Ciencias Naturales, Universidad Nacional de Colombia, Bogotá. Disponible en: http://catalogoplantasdecolombia.unal.edu.co</citation>
+                <citation>ROLDÁN PÉREZ, Gabriel y RAMÍREZ RESTREPO, John Jairo. Fundamentos de limnología neotropical. 3ª Edición. Bogotá: Academia Colombiana de Ciencias Exactas, Físicas y Naturales, 2022. 782 p.</citation>
+                <citation>SCHNEIDER, B., HADAD, HERNÁN R. Y RODRIGUEZ, ESTELA E. Plantas acuáticas del río Paraná Medio. 2021. 180p.</citation>
+                <citation>LETÁKOVÁ, Markéta; FRÁNKOVÁ, Markéta; POULÍČKOVÁ, Aloisie. Ecology and applications of freshwater epiphytic diatoms. Cryptogamie, Algologie, 2018, vol. 39, no 1, p. 3-22.</citation>
+                <citation>MONTOYA-MORENO, Yimmy, et al. Lista de las diatomeas de ambientes continentales de Colombia. Biota Colombiana, 2013, vol. 14, no 2.</citation>
+                <citation>SECKBACH, Joseph; KOCIOLEK, Patrick (ed.). The diatom world. Springer Science &amp; Business Media, 2011.</citation>
+                <citation>SIERRA, Yaneth Viviana Hernández; RAMOS, Adriana Pedroza; RIAÑO, Nelson Aranguren. Estructura del fitoplancton de lagos andinos ubicados en diferente rango altitudinal. Intropica: Revista del Instituto de Investigaciones Tropicales, 2021, vol. 16, no 2, p. 153-167.</citation>
+                <citation>Acosta-Zamurano D. et al. Efecto de las aguas residuales tratadas sobre el crecimiento, fotosíntesis y rendimiento en Vides Tempranillo (Vitis vinifera) en Baja California, México. Revista Scielo Amlytics. 2013</citation>
+                <citation>Caroline Souffreau, et al. A time-calibrated multi-gene phylogeny of the diatom genus Pinnularia. Science Direct. 2011.</citation>
+                <citation>Morillo. G et al. EFECTOS DEL NITRÓGENO Y CLORUROS EN LA DINÁMICA DEL FITOPLANCTON DEL LAGO DE MARACAIBO, VENEZUELA. Interciencia, vol. 35, núm. 8, agosto, 2010, pp. 575-580. Asociación Interciencia. 2010</citation>
+                <citation>Universidad Complutense de Madrid. Oxígeno Disuelto. Articulo Descripción de Indicadores Universidad Complutense de Madrid. 2015.</citation>
+                <citation>ARANGUREN-RIAÑO NJ, MONROY-GONZÁLEZ JD. Respuestas del zooplancton en un sistema tropical (embalse La Chapa, Colombia) con alta tensión ambiental. Acta biol. Colomb. 2014;19(2):281-290</citation>
+                <citation>CONDE-PORCUNA JM, RAMOS–RODRÍGUEZ E Y MORALES-BAQUERO R. El zooplancton como integrante de la estructura trófica de los ecosistemas lénticos. 2004. Ecosistemas 13(2). p 26.</citation>
+                <citation>LÓPEZ AMAT, Katherine Janeth; MONTOYA ISERN DE OLORTEGUI, Jennifer. Diversidad de rotiferos en fitotelmas de Aechmea nidularioides LB Sm. (BROMELIACEAE) en varillal alto seco de la reserva nacional Allpahuayo–Mishana, Iquitos.</citation>
+                <citation>ROLDÁN PÉREZ, G.  RAMÍREZ RESTREPO, J.  Fundamentos de limnología neotropical. Bogotá: Academia Colombiana de Ciencias Exactas, Físicas y Naturales, 2022. 782 p.</citation>
+                <citation>SEGERS, H. Global diversity of rotifers (Rotifera) in freshwater. 2008. Hydrobiologia. p 50.</citation>
+                <citation>VILLALBA DURÉ, Gustavo Adolfo; BENÍTEZ RODAS, Gilberto Antonio; NÚÑEZ GORALEWSKI, Karina Beatriz. Influencia de los factores ambientales en la comunidad de zooplancton de las lagunas artificiales del Parque ÑuGuasú-Departamento Central, Paraguay. Investigación Agraria, 2018, vol. 20, no 1, p. 58-66.</citation>
+                <citation>BENÍTEZ-FERNÁNDEZ, NAYELI CARMEN, VALADEZ-ROCHA, VERÓNICA, PÉREZ- LEGASPI, IGNACIO ALEJANDRO, MORALES-CASTRO, ELOÍSA, &amp; FUENTES-MEZA, CRISTINA. (2021). Variación estacional en la  distribución y diversidad de rotíferos del Sistema Lagunar de Alvarado, Veracruz, México. Hidrobiológica, 31(3), 209-219.</citation>
+                <citation>HANSON, PAUL, SPRINGER, MONIKA, &amp; RAMIREZ, ALONSO. (2010). Capítulo 1: Introducción a los grupos de macroinvertebrados acuáticos. Revista de Biología Tropical, 58(Suppl. 4), 3-37. Retrieved April 15, 2024.</citation>
+                <citation>MECALCO-HERNÁNDEZ,		ÁNGELES,	CASTILLO-RIVERA,	MANUEL ARNOLDO, SANVICENTE-AÑORVE,	LAURA,	FLORES-COTO, CÉSAR,		&amp;	ÁLVAREZ-SILVA, CARLOS. (2018). Variación estacional y nictímera en la distribución del zooplancton dominante en una laguna costera tropical. Revista de biología marina y oceanografía, 53(1), 39-49.</citation>
+                <citation>PANTALEÓN-LÓPEZ, BENIGNO, ACEVES, G., &amp; CASTELLANOS, IVÁN A.. (2005). Distribución y abundancia del zooplancton del complejo lagunar Chacahua-La Pastoría, Oaxaca, México. Revista mexicana de biodiversidad, 76(1), 63-70.</citation>
+                <citation>PINKUS RENDÓN, MIGUEL ÁNGEL. (2010). El hombre y los artrópodos: un vínculo inalienable. Península, 5(2), 81-100.</citation>
+                </bibliography>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-epm.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

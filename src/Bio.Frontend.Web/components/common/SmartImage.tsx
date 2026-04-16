@@ -72,6 +72,21 @@ function isHttpUrl(src: string | undefined): boolean {
     return src.startsWith("http://") || src.startsWith("https://");
 }
 
+function isRateLimitedHost(src: string | undefined): boolean {
+    if (!src || !isHttpUrl(src)) return false;
+
+    try {
+        const { hostname } = new URL(src);
+        return [
+            "upload.wikimedia.org",
+            "inaturalist-open-data.s3.amazonaws.com",
+            "static.inaturalist.org",
+        ].includes(hostname);
+    } catch {
+        return false;
+    }
+}
+
 function resolveProvider(
     provider: ImageProvider | undefined,
     src: SmartImageProps["src"],
@@ -95,9 +110,14 @@ export function SmartImage({
     gravity,
     quality,
     format,
+    unoptimized,
     ...rest
 }: SmartImageProps) {
     const resolvedProvider = resolveProvider(providerProp, src);
+    const shouldBypassOptimizer =
+        resolvedProvider === "next" &&
+        typeof src === "string" &&
+        isRateLimitedHost(src);
 
     /* ── Cloudinary ──────────────────────────────────────────────────────── */
     if (resolvedProvider === "cloudinary" && typeof src === "string") {
@@ -122,6 +142,7 @@ export function SmartImage({
             alt={alt}
             className={cn(className)}
             quality={quality}
+            unoptimized={unoptimized ?? shouldBypassOptimizer}
             {...rest}
         />
     );

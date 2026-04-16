@@ -15,6 +15,16 @@ import { EmptyState } from "@/components/common/EmptyState";
 import { ErrorFallback } from "@/components/common/ErrorFallback";
 import { Button } from "@/components/ui/button";
 import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
+import {
     Select,
     SelectContent,
     SelectItem,
@@ -87,7 +97,7 @@ function CatalogToolbar({
     | "mobileFilterSlot"
 >) {
     return (
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
             {/* Left: filter toggle + result count */}
             <div className="flex items-center gap-3">
                 {/* Desktop: sidebar panel toggle */}
@@ -126,24 +136,79 @@ function CatalogToolbar({
             </div>
 
             {/* Right: sort + view mode */}
-            <div className="flex items-center gap-2">
-                {/* Sort dropdown */}
-                <Select value={currentSort} onValueChange={onSortChange}>
-                    <SelectTrigger
-                        className="w-auto gap-2 text-sm"
-                        aria-label="Ordenar por"
-                    >
-                        <ArrowDownUp className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                        <SelectValue placeholder="Ordenar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {SORT_OPTIONS.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+            <div className="flex items-center gap-2 max-w-full overflow-x-auto pb-1 sm:pb-0">
+                {/* Sort dropdown (Desktop) */}
+                <div className="hidden sm:block">
+                    <Select value={currentSort} onValueChange={onSortChange}>
+                        <SelectTrigger
+                            className="w-auto gap-2 text-sm"
+                            aria-label="Ordenar por"
+                        >
+                            <ArrowDownUp className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                            <SelectValue placeholder="Ordenar" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {SORT_OPTIONS.map((opt) => (
+                                <SelectItem key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                {/* Sort modal (Mobile) */}
+                <div className="block sm:hidden">
+                    <Drawer>
+                        <DrawerTrigger asChild>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2 text-sm max-w-[140px]"
+                            >
+                                <ArrowDownUp className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                                <span className="hidden">
+                                    {SORT_OPTIONS.find(
+                                        (opt) => opt.value === currentSort,
+                                    )?.label ?? "Ordenar"}
+                                </span>
+                            </Button>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                            <DrawerHeader>
+                                <DrawerTitle>Ordenar por</DrawerTitle>
+                                <DrawerDescription>
+                                    Selecciona el criterio de ordenamiento para
+                                    el catálogo.
+                                </DrawerDescription>
+                            </DrawerHeader>
+                            <div className="px-4 py-2 flex flex-col gap-2">
+                                {SORT_OPTIONS.map((opt) => (
+                                    <DrawerClose asChild key={opt.value}>
+                                        <Button
+                                            variant={
+                                                currentSort === opt.value
+                                                    ? "secondary"
+                                                    : "ghost"
+                                            }
+                                            className="justify-start font-normal"
+                                            onClick={() =>
+                                                onSortChange(opt.value)
+                                            }
+                                        >
+                                            {opt.label}
+                                        </Button>
+                                    </DrawerClose>
+                                ))}
+                            </div>
+                            <DrawerFooter className="pt-2">
+                                <DrawerClose asChild>
+                                    <Button variant="outline">Cancelar</Button>
+                                </DrawerClose>
+                            </DrawerFooter>
+                        </DrawerContent>
+                    </Drawer>
+                </div>
 
                 {/* View mode toggle */}
                 <ToggleGroup

@@ -62,6 +62,9 @@ public class BioDbContext : DbContext
             entity.Property(e => e.Salt).IsRequired().HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
 
+            // Mapping property names to database columns from init.sql
+            entity.Property(e => e.TwoFactorSecret).HasMaxLength(100);
+
             // Ensures that no duplicate emails exist
             entity.HasIndex(e => e.Email).IsUnique();
 
@@ -228,14 +231,9 @@ public class BioDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // Seed Roles
-        modelBuilder.Entity<Role>().HasData(
-            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Admin, "System Administrator"),
-            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Researcher, "Scientific Researcher"),
-            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Entrepreneur, "Green Entrepreneur"),
-            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Community, "Local Community Member"),
-            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.Buyer, "Standard Buyer/Consumer"),
-            new Role(Guid.NewGuid(), global::Bio.Domain.Constants.RoleNames.EnvironmentalAuthority, "Environmental Regulatory Authority")
-        );
+        // -------------------------------------------------------------
+        // SEED DATA 
+        // -------------------------------------------------------------
+        modelBuilder.SeedBaseData();
     }
 }
