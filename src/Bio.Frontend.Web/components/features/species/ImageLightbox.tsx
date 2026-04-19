@@ -132,11 +132,11 @@ export function ImageLightbox({
     /* ── Drag to pan (mouse) ───────────────────────────────────────── */
     const handleMouseDown = useCallback(
         (e: React.MouseEvent) => {
+            dragStart.current = { x: e.clientX, y: e.clientY };
             if (zoom <= 1) return;
             e.preventDefault();
             isDragging.current = true;
             setIsDraggingState(true);
-            dragStart.current = { x: e.clientX, y: e.clientY };
             panStart.current = { ...pan };
         },
         [zoom, pan],
@@ -163,13 +163,14 @@ export function ImageLightbox({
     /* ── Touch pan ─────────────────────────────────────────────────── */
     const handleTouchStart = useCallback(
         (e: React.TouchEvent) => {
-            if (zoom <= 1 || e.touches.length !== 1) return;
-            isDragging.current = true;
-            setIsDraggingState(true);
+            if (e.touches.length !== 1) return;
             dragStart.current = {
                 x: e.touches[0].clientX,
                 y: e.touches[0].clientY,
             };
+            if (zoom <= 1) return;
+            isDragging.current = true;
+            setIsDraggingState(true);
             panStart.current = { ...pan };
         },
         [zoom, pan],
@@ -319,24 +320,21 @@ export function ImageLightbox({
                         className="max-h-[85vh] w-auto max-w-[90vw] select-none rounded object-contain"
                         priority
                         draggable={false}
+                        unoptimized={true}
                     />
                 </div>
             </div>
 
             {/* ── Bottom bar — zoom controls & info ────────────────── */}
-            <div className="absolute right-0 bottom-0 left-0 z-10 flex items-center justify-between bg-gradient-to-t from-black/60 to-transparent p-4">
-                <p className="text-xs text-white/60">
-                    {formattedDate}
-                </p>
-
+            <div className="absolute right-0 bottom-0 left-0 z-10 flex flex-col items-center justify-end gap-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 pb-8 pointer-events-none">
                 <TooltipProvider delayDuration={300}>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 rounded-full bg-black/50 px-4 py-2 backdrop-blur-md border border-white/10 pointer-events-auto">
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-8 w-8 text-white hover:bg-white/10"
+                                    className="h-8 w-8 text-white hover:bg-white/20 hover:text-white"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onZoomOut();
@@ -350,7 +348,7 @@ export function ImageLightbox({
                             <TooltipContent side="top">Alejar (-)</TooltipContent>
                         </Tooltip>
 
-                        <span className="min-w-[3rem] text-center text-xs text-white/80">
+                        <span className="min-w-[3rem] text-center text-xs font-medium text-white/90">
                             {Math.round(zoom * 100)}%
                         </span>
 
@@ -359,7 +357,7 @@ export function ImageLightbox({
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-8 w-8 text-white hover:bg-white/10"
+                                    className="h-8 w-8 text-white hover:bg-white/20 hover:text-white"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onZoomIn();
@@ -373,12 +371,14 @@ export function ImageLightbox({
                             <TooltipContent side="top">Acercar (+)</TooltipContent>
                         </Tooltip>
 
+                        <div className="w-px h-4 bg-white/20 mx-1"></div>
+
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-8 w-8 text-white hover:bg-white/10"
+                                    className="h-8 w-8 text-white hover:bg-white/20 hover:text-white"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onResetZoom();
@@ -392,13 +392,20 @@ export function ImageLightbox({
                         </Tooltip>
 
                         {zoom > 1 && (
-                            <div className="ml-2 flex items-center gap-1 text-xs text-white/50">
-                                <Move className="h-3 w-3" />
-                                <span>Arrastra para mover</span>
-                            </div>
+                            <>
+                                <div className="w-px h-4 bg-white/20 mx-1"></div>
+                                <div className="ml-1 flex items-center gap-1.5 text-xs text-white/70">
+                                    <Move className="h-3 w-3" />
+                                    <span className="hidden sm:inline">Arrastra para mover</span>
+                                </div>
+                            </>
                         )}
                     </div>
                 </TooltipProvider>
+
+                <p className="text-xs text-white/70 font-medium pointer-events-auto bg-black/30 px-3 py-1 rounded-full backdrop-blur-sm">
+                    {formattedDate}
+                </p>
             </div>
         </div>
     );
