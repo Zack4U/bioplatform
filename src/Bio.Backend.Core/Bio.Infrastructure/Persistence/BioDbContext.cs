@@ -12,62 +12,50 @@ public class BioDbContext : DbContext
     {
     }
 
-    /// Collection of security roles in the system.
-    public DbSet<Role> Roles { get; set; }
-
-    /// Collection of registered users in the system.
-    public DbSet<User> Users { get; set; }
-
-    /// Collection of user-role assignments.
-    public DbSet<UserRole> UserRoles { get; set; }
-
+    // --- Identity & Access Management ---
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
+    public DbSet<UserRole> UserRoles { get; set; } = null!;
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+
+    // --- Marketplace ---
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<ProductCategory> ProductCategories { get; set; } = null!;
+    public DbSet<ProductImage> ProductImages { get; set; } = null!;
     public DbSet<ProductReview> ProductReviews { get; set; } = null!;
+    public DbSet<Certification> Certifications { get; set; } = null!;
+
+    // --- Orders & Transactions ---
     public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<OrderItem> OrderItems { get; set; } = null!;
+
+    // --- Legal & Compliance ---
     public DbSet<AbsPermit> AbsPermits { get; set; } = null!;
-    public DbSet<SustainabilityCert> SustainabilityCerts { get; set; } = null!;
-    public DbSet<ProductCert> ProductCerts { get; set; } = null!;
     public DbSet<TraceabilityBatch> TraceabilityBatches { get; set; } = null!;
-    public DbSet<Certification> Certifications { get; set; } = null!;
+
+    // --- User Features ---
+    public DbSet<Address> Addresses { get; set; } = null!;
+    public DbSet<Favorite> Favorites { get; set; } = null!;
+    public DbSet<Notification> Notifications { get; set; } = null!;
 
     /// Configures the data model and mapping rules using Fluent API.
     /// Executed when the model for the context is being initialized.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<RefreshToken>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Token).IsRequired().HasMaxLength(500);
-            entity.HasIndex(e => e.Token);
-
-            entity.HasOne(rt => rt.User)
-                .WithMany()
-                .HasForeignKey(rt => rt.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
+        // =====================================================================
+        // IDENTITY & ACCESS MANAGEMENT
+        // =====================================================================
 
         modelBuilder.Entity<User>(entity =>
         {
-            // Define the primary key
             entity.HasKey(e => e.Id);
-
-            // Integrity and length rules for fields
             entity.Property(e => e.FullName).IsRequired().HasMaxLength(150);
             entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
             entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(500);
             entity.Property(e => e.Salt).IsRequired().HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
-
-            // Mapping property names to database columns from init.sql
             entity.Property(e => e.TwoFactorSecret).HasMaxLength(100);
-
-            // Ensures that no duplicate emails exist
             entity.HasIndex(e => e.Email).IsUnique();
-
-            // Ensures that no duplicate phone numbers exist, ignoring nulls and empty strings
             entity.HasIndex(u => u.PhoneNumber)
                 .IsUnique()
                 .HasFilter("[PhoneNumber] IS NOT NULL AND [PhoneNumber] <> ''");
@@ -77,36 +65,43 @@ public class BioDbContext : DbContext
         {
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Description).HasMaxLength(2000);
-
-            // Ensures that no duplicate role names exist
             entity.HasIndex(e => e.Name).IsUnique();
         });
 
         modelBuilder.Entity<UserRole>(entity =>
         {
             entity.HasKey(ur => new { ur.UserId, ur.RoleId });
-
             entity.HasOne(ur => ur.User)
                 .WithMany()
                 .HasForeignKey(ur => ur.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
             entity.HasOne(ur => ur.Role)
                 .WithMany()
                 .HasForeignKey(ur => ur.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
+        modelBuilder.Entity<RefreshToken>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Token).IsRequired().HasMaxLength(500);
+            entity.HasIndex(e => e.Token);
+            entity.HasOne(rt => rt.User)
+                .WithMany()
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
+        // =====================================================================
+        // MARKETPLACE
+        // =====================================================================
 
-        // ProductCategories
         modelBuilder.Entity<ProductCategory>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.Name).IsUnique();
         });
 
-        // Products
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -126,7 +121,18 @@ public class BioDbContext : DbContext
                   .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // ProductReviews
+        modelBuilder.Entity<ProductImage>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.ImageUrl).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.AltText).HasMaxLength(200);
+            entity.HasOne(e => e.Product)
+                  .WithMany(p => p.Images)
+                  .HasForeignKey(e => e.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => e.ProductId);
+        });
+
         modelBuilder.Entity<ProductReview>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -139,7 +145,29 @@ public class BioDbContext : DbContext
                   .HasForeignKey(e => e.UserId);
         });
 
-        // Orders
+        modelBuilder.Entity<Certification>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(150);
+            entity.Property(e => e.CertificationType).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.IssuingBody).IsRequired().HasMaxLength(150);
+            entity.Property(e => e.CertificateNumber).HasMaxLength(100);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.DocumentUrl).HasMaxLength(500);
+            entity.Property(e => e.LogoUrl).HasMaxLength(500);
+            entity.Property(e => e.VerificationCode).HasMaxLength(100);
+            entity.HasOne(e => e.Product)
+                  .WithMany(p => p.Certifications)
+                  .HasForeignKey(e => e.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => e.ProductId);
+            entity.HasIndex(e => e.CertificationType);
+        });
+
+        // =====================================================================
+        // ORDERS & TRANSACTIONS
+        // =====================================================================
+
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -157,9 +185,18 @@ public class BioDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(e => e.BuyerId)
                   .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.ShippingAddress)
+                  .WithMany()
+                  .HasForeignKey(e => e.ShippingAddressId)
+                  .OnDelete(DeleteBehavior.NoAction);
+
+            entity.HasOne(e => e.BillingAddress)
+                  .WithMany()
+                  .HasForeignKey(e => e.BillingAddressId)
+                  .OnDelete(DeleteBehavior.NoAction);
         });
 
-        // OrderItems
         modelBuilder.Entity<OrderItem>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -176,36 +213,21 @@ public class BioDbContext : DbContext
                   .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // AbsPermits
+        // =====================================================================
+        // LEGAL & COMPLIANCE
+        // =====================================================================
+
         modelBuilder.Entity<AbsPermit>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.SpeciesId); // Logical FK
             entity.HasIndex(e => e.ResolutionNumber).IsUnique();
-        });
-
-        // SustainabilityCerts
-        modelBuilder.Entity<SustainabilityCert>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.Name).IsUnique();
-        });
-
-        // ProductCerts (Many-to-Many)
-        modelBuilder.Entity<ProductCert>(entity =>
-        {
-            entity.HasKey(e => new { e.ProductId, e.CertId });
-            entity.HasOne(e => e.Product)
+            entity.HasOne(e => e.Entrepreneur)
                   .WithMany()
-                  .HasForeignKey(e => e.ProductId)
-                  .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(e => e.Cert)
-                  .WithMany()
-                  .HasForeignKey(e => e.CertId)
+                  .HasForeignKey(e => e.EntrepreneurId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // TraceabilityBatches
         modelBuilder.Entity<TraceabilityBatch>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -216,19 +238,58 @@ public class BioDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // Certifications
-        modelBuilder.Entity<Certification>(entity =>
+        // =====================================================================
+        // USER FEATURES
+        // =====================================================================
+
+        modelBuilder.Entity<Address>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Product)
-                  .WithMany(p => p.Certifications)
-                  .HasForeignKey(e => e.ProductId)
+            entity.Property(e => e.AddressType).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.RecipientName).IsRequired().HasMaxLength(150);
+            entity.Property(e => e.StreetLine1).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.StreetLine2).HasMaxLength(200);
+            entity.Property(e => e.City).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Department).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.PostalCode).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.Country).IsRequired().HasMaxLength(10);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(20);
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => e.UserId);
         });
 
-        // -------------------------------------------------------------
-        // SEED DATA 
-        // -------------------------------------------------------------
+        modelBuilder.Entity<Favorite>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.TargetType).IsRequired().HasMaxLength(20);
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => new { e.UserId, e.TargetType, e.TargetId }).IsUnique();
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Message).IsRequired().HasMaxLength(2000);
+            entity.Property(e => e.NotificationType).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.ReferenceType).HasMaxLength(50);
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.IsRead);
+        });
+
+        // =====================================================================
+        // SEED DATA
+        // =====================================================================
         modelBuilder.SeedBaseData();
     }
 }

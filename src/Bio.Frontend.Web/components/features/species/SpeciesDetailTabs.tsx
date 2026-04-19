@@ -23,6 +23,7 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import type { SpeciesDetail } from "@/types/species";
 import {
     BookOpen,
@@ -107,21 +108,107 @@ export function SpeciesDetailTabs({ species }: SpeciesDetailTabsProps) {
             </TabsContent>
 
             <TabsContent value="traditional">
-                <TabSection
-                    icon={ScrollText}
-                    title="Usos Tradicionales"
-                    content={species.traditionalUses}
-                    emptyMessage="Los usos tradicionales de esta especie aún no han sido documentados."
-                />
+                {species.traditionalUses && species.traditionalUses.length > 0 ? (
+                    <div className="space-y-4">
+                        {species.traditionalUses.map((use) => (
+                            <Card key={use.id}>
+                                <CardHeader className="pb-2">
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                        <CardTitle className="text-base text-primary">
+                                            {use.part}
+                                        </CardTitle>
+                                        <div className="flex gap-1.5 flex-wrap">
+                                            {use.category?.map(cat => (
+                                                <Badge key={cat} variant="secondary">{cat}</Badge>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="space-y-3">
+                                    {use.specificPurpose && (
+                                        <p className="text-sm text-muted-foreground"><strong className="text-foreground">Propósito:</strong> {use.specificPurpose}</p>
+                                    )}
+                                    {use.preparationMethod && (
+                                        <p className="text-sm text-muted-foreground"><strong className="text-foreground">Preparación:</strong> {use.preparationMethod}</p>
+                                    )}
+                                    {use.description && (
+                                        <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{use.description}</p>
+                                    )}
+                                    {(use.community || use.traditionalWarnings || use.confidence) && (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4 pt-4 border-t text-xs text-muted-foreground">
+                                            {use.community && <div><strong className="text-foreground">Comunidad:</strong> {use.community}</div>}
+                                            {use.traditionalWarnings && <div><strong className="text-foreground text-destructive">Precauciones:</strong> {use.traditionalWarnings}</div>}
+                                            {use.confidence && <div><strong className="text-foreground">Confianza:</strong> {use.confidence}</div>}
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <TabSection
+                        icon={ScrollText}
+                        title="Usos Tradicionales"
+                        content={null}
+                        emptyMessage="Los usos tradicionales de esta especie aún no han sido documentados."
+                    />
+                )}
             </TabsContent>
 
             <TabsContent value="economic">
-                <TabSection
-                    icon={DollarSign}
-                    title="Potencial Económico"
-                    content={species.economicPotential}
-                    emptyMessage="El potencial económico de esta especie aún no ha sido evaluado."
-                />
+                {species.economicPotentials && species.economicPotentials.length > 0 ? (
+                    <div className="space-y-4">
+                        {species.economicPotentials.map((pot) => (
+                            <Card key={pot.id}>
+                                <CardHeader className="pb-2">
+                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                        <CardTitle className="text-base text-primary">
+                                            {pot.sector}
+                                        </CardTitle>
+                                        <div className="flex gap-2">
+                                            <Badge variant="outline" className="text-[10px] uppercase">
+                                                Valor: {pot.marketValue}
+                                            </Badge>
+                                            <Badge variant="outline" className="text-[10px] uppercase">
+                                                Sustentabilidad: {pot.sustainabilityLevel}
+                                            </Badge>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="space-y-3">
+                                    {pot.description && (
+                                        <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{pot.description}</p>
+                                    )}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {pot.products && pot.products.length > 0 && (
+                                            <div>
+                                                <strong className="text-sm text-foreground block mb-1">Productos derivados:</strong>
+                                                <ul className="text-sm text-muted-foreground list-disc pl-5">
+                                                    {pot.products.map(p => <li key={p}>{p}</li>)}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {pot.activeProperties && pot.activeProperties.length > 0 && (
+                                            <div>
+                                                <strong className="text-sm text-foreground block mb-1">Propiedades activas:</strong>
+                                                <ul className="text-sm text-muted-foreground list-disc pl-5">
+                                                    {pot.activeProperties.map(p => <li key={p}>{p}</li>)}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <TabSection
+                        icon={DollarSign}
+                        title="Potencial Económico"
+                        content={null}
+                        emptyMessage="El potencial económico de esta especie aún no ha sido evaluado."
+                    />
+                )}
             </TabsContent>
 
             <TabsContent value="ecological">

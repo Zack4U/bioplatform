@@ -70,4 +70,22 @@ public interface ISpeciesRepository
         IReadOnlyList<string> ConservationStatuses,
         int TotalCount
     )> GetFilterMetaAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Reemplaza todos los potenciales económicos de una especie (delete + insert).
+    /// Garantiza idempotencia en re-ejecuciones del job de importación.
+    /// </summary>
+    Task BulkReplaceEconomicPotentialsAsync(
+        Guid speciesId,
+        IEnumerable<SpeciesEconomicPotential> potentials,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Reemplaza todos los usos tradicionales de una especie (delete + insert).
+    /// Garantiza idempotencia en re-ejecuciones del job de importación.
+    /// </summary>
+    Task BulkReplaceTraditionalUsesAsync(
+        Guid speciesId,
+        IEnumerable<SpeciesTraditionalUse> uses,
+        CancellationToken cancellationToken = default);
 }

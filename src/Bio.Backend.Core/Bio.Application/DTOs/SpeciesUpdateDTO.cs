@@ -2,6 +2,8 @@ namespace Bio.Application.DTOs;
 
 /// <summary>
 /// DTO para actualizar una especie (campos opcionales).
+/// Los datos de enriquecimiento (potencial económico y usos tradicionales)
+/// se gestionan vía POST /api/species/import-economic-potential y /import-traditional-uses.
 /// </summary>
 public record SpeciesUpdateDTO
 {
@@ -11,8 +13,6 @@ public record SpeciesUpdateDTO
     public string? CommonName { get; init; }
     public string? Description { get; init; }
     public string? EcologicalInfo { get; init; }
-    public string? TraditionalUses { get; init; }
-    public string? EconomicPotential { get; init; }
     public string? ConservationStatus { get; init; }
     public string? AltitudeRange { get; init; }
     public bool? LegalStatus { get; init; }

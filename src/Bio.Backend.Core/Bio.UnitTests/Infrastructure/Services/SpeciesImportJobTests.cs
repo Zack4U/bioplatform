@@ -50,7 +50,7 @@ public class SpeciesImportJobTests
     }
 
     [Fact]
-    public async Task ProcessBatchAsync_ValidBatch_InsertsSpeciesAndTaxonomy()
+    public async Task ProcessCsvBatchAsync_ValidBatch_InsertsSpeciesAndTaxonomy()
     {
         // Arrange
         var batch = new List<SpeciesCsvRecord>
@@ -95,7 +95,7 @@ public class SpeciesImportJobTests
             .ReturnsAsync(1);
 
         // Act
-        var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
+        var (processed, skipped) = await _sut.ProcessCsvBatchAsync(batch, Guid.NewGuid());
 
         // Assert
         processed.Should().Be(1);
@@ -110,7 +110,7 @@ public class SpeciesImportJobTests
     }
 
     [Fact]
-    public async Task ProcessBatchAsync_DuplicateScientificName_SkipsRecord()
+    public async Task ProcessCsvBatchAsync_DuplicateScientificName_SkipsRecord()
     {
         // Arrange
         var batch = new List<SpeciesCsvRecord>
@@ -124,7 +124,7 @@ public class SpeciesImportJobTests
             .ReturnsAsync(new HashSet<string> { "Cattleya trianae" });
 
         // Act
-        var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
+        var (processed, skipped) = await _sut.ProcessCsvBatchAsync(batch, Guid.NewGuid());
 
         // Assert
         processed.Should().Be(0);
@@ -134,7 +134,7 @@ public class SpeciesImportJobTests
     }
 
     [Fact]
-    public async Task ProcessBatchAsync_EmptyScientificName_SkipsRecord()
+    public async Task ProcessCsvBatchAsync_EmptyScientificName_SkipsRecord()
     {
         // Arrange
         var batch = new List<SpeciesCsvRecord>
@@ -143,7 +143,7 @@ public class SpeciesImportJobTests
         };
 
         // Act
-        var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
+        var (processed, skipped) = await _sut.ProcessCsvBatchAsync(batch, Guid.NewGuid());
 
         // Assert
         processed.Should().Be(0);
@@ -151,7 +151,7 @@ public class SpeciesImportJobTests
     }
 
     [Fact]
-    public async Task ProcessBatchAsync_ExistingTaxonomy_ReusesTaxonomy()
+    public async Task ProcessCsvBatchAsync_ExistingTaxonomy_ReusesTaxonomy()
     {
         // Arrange
         var existingTaxonomy = new Taxonomy("Plantae", "Tracheophyta", "Magnoliopsida", "Asparagales", "Orchidaceae", "Cattleya");
@@ -183,7 +183,7 @@ public class SpeciesImportJobTests
             .ReturnsAsync(1);
 
         // Act
-        var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
+        var (processed, skipped) = await _sut.ProcessCsvBatchAsync(batch, Guid.NewGuid());
 
         // Assert
         processed.Should().Be(1);
@@ -213,7 +213,7 @@ public class SpeciesImportJobTests
     }
 
     [Fact]
-    public async Task ProcessBatchAsync_MultipleMixedRecords_ProcessesValidAndSkipsDuplicates()
+    public async Task ProcessCsvBatchAsync_MultipleMixedRecords_ProcessesValidAndSkipsDuplicates()
     {
         // Arrange
         var batch = new List<SpeciesCsvRecord>
@@ -244,7 +244,7 @@ public class SpeciesImportJobTests
             .ReturnsAsync(1);
 
         // Act
-        var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
+        var (processed, skipped) = await _sut.ProcessCsvBatchAsync(batch, Guid.NewGuid());
 
         // Assert
         processed.Should().Be(1);  // Only Quercus humboldtii 
@@ -252,7 +252,7 @@ public class SpeciesImportJobTests
     }
 
     [Fact]
-    public async Task ProcessBatchAsync_MultipleRecordsSameTaxonomy_QueriesTaxonomyOnlyOnce()
+    public async Task ProcessCsvBatchAsync_MultipleRecordsSameTaxonomy_QueriesTaxonomyOnlyOnce()
     {
         // Arrange
         var batch = new List<SpeciesCsvRecord>
@@ -286,7 +286,7 @@ public class SpeciesImportJobTests
             .ReturnsAsync(1);
 
         // Act
-        var (processed, skipped) = await _sut.ProcessBatchAsync(batch, Guid.NewGuid());
+        var (processed, skipped) = await _sut.ProcessCsvBatchAsync(batch, Guid.NewGuid());
 
         // Assert
         processed.Should().Be(2);

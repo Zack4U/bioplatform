@@ -14,8 +14,6 @@ public class Species
     public string? CommonName { get; private set; }
     public string? Description { get; private set; }
     public string? EcologicalInfo { get; private set; }
-    public string? TraditionalUses { get; private set; }
-    public string? EconomicPotential { get; private set; }
     public string? ConservationStatus { get; private set; }
     public string? AltitudeRange { get; private set; }
     public bool LegalStatus { get; private set; } = false;
@@ -23,9 +21,16 @@ public class Species
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
 
+    // Navigation properties
     public Taxonomy? Taxonomy { get; private set; }
     public ICollection<GeographicDistribution> GeographicDistributions { get; private set; } = new List<GeographicDistribution>();
     public ICollection<SpeciesImage> Images { get; private set; } = new List<SpeciesImage>();
+
+    /// <summary>Potenciales económicos asociados a esta especie (1:N).</summary>
+    public ICollection<SpeciesEconomicPotential> EconomicPotentials { get; private set; } = new List<SpeciesEconomicPotential>();
+
+    /// <summary>Usos tradicionales asociados a esta especie (1:N).</summary>
+    public ICollection<SpeciesTraditionalUse> TraditionalUses { get; private set; } = new List<SpeciesTraditionalUse>();
 
     private Species() { }
 
@@ -38,8 +43,6 @@ public class Species
         string? commonName = null,
         string? description = null,
         string? ecologicalInfo = null,
-        string? traditionalUses = null,
-        string? economicPotential = null,
         string? conservationStatus = null,
         string? altitudeRange = null,
         bool legalStatus = false,
@@ -53,8 +56,6 @@ public class Species
         CommonName = commonName;
         Description = description;
         EcologicalInfo = ecologicalInfo;
-        TraditionalUses = traditionalUses;
-        EconomicPotential = economicPotential;
         ConservationStatus = conservationStatus;
         AltitudeRange = altitudeRange;
         LegalStatus = legalStatus;
@@ -69,8 +70,6 @@ public class Species
         string? commonName,
         string? description,
         string? ecologicalInfo,
-        string? traditionalUses,
-        string? economicPotential,
         string? conservationStatus,
         string? altitudeRange,
         bool? legalStatus,
@@ -82,8 +81,6 @@ public class Species
         if (commonName != null) CommonName = commonName;
         if (description != null) Description = description;
         if (ecologicalInfo != null) EcologicalInfo = ecologicalInfo;
-        if (traditionalUses != null) TraditionalUses = traditionalUses;
-        if (economicPotential != null) EconomicPotential = economicPotential;
         if (conservationStatus != null) ConservationStatus = conservationStatus;
         if (altitudeRange != null) AltitudeRange = altitudeRange;
         if (legalStatus.HasValue) LegalStatus = legalStatus.Value;

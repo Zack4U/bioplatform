@@ -2,7 +2,8 @@ namespace Bio.Application.DTOs;
 
 /// <summary>
 /// DTO de respuesta completo para el detalle de una especie.
-/// Incluye taxonomía, distribuciones (con protección) y productos relacionados.
+/// Incluye taxonomía, distribuciones (con protección), potenciales económicos,
+/// usos tradicionales y productos relacionados.
 /// </summary>
 public record SpeciesDetailDTO(
     Guid Id,
@@ -14,8 +15,6 @@ public record SpeciesDetailDTO(
     string? CommonName,
     string? Description,
     string? EcologicalInfo,
-    string? TraditionalUses,
-    string? EconomicPotential,
     string? ConservationStatus,
     string? AltitudeRange,
     bool LegalStatus,
@@ -23,5 +22,7 @@ public record SpeciesDetailDTO(
     DateTime CreatedAt,
     DateTime? UpdatedAt,
     IReadOnlyList<GeographicDistributionDTO> Distributions,
+    IReadOnlyList<SpeciesEconomicPotentialDTO> EconomicPotentials,
+    IReadOnlyList<SpeciesTraditionalUseDTO> TraditionalUses,
     IReadOnlyList<RelatedProductDTO> RelatedProducts
 );

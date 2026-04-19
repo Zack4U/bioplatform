@@ -7,7 +7,8 @@ namespace Bio.Application.Features.Species.Queries.GetSpeciesBySlug;
 
 /// <summary>
 /// Retorna el detalle completo de una especie por Slug:
-/// taxonomía, distribuciones (protegidas según rol), y productos relacionados.
+/// taxonomía, distribuciones (protegidas según rol), potenciales económicos,
+/// usos tradicionales y productos relacionados.
 /// </summary>
 public record GetSpeciesBySlugQuery(string Slug, string? UserRole = null) : IRequest<SpeciesDetailDTO>;
 
@@ -60,6 +61,35 @@ public class GetSpeciesBySlugQueryHandler : IRequestHandler<GetSpeciesBySlugQuer
                 species.Taxonomy.Genus)
             : null;
 
+        var economicPotentials = species.EconomicPotentials
+            .Select(ep => new SpeciesEconomicPotentialDTO(
+                ep.Id,
+                ep.SpeciesId,
+                ep.Sector,
+                ep.Products.ToList(),
+                ep.ActiveProperties?.ToList(),
+                ep.Description,
+                ep.MarketValue,
+                ep.SustainabilityLevel,
+                ep.Confidence,
+                ep.CreatedAt))
+            .ToList();
+
+        var traditionalUses = species.TraditionalUses
+            .Select(tu => new SpeciesTraditionalUseDTO(
+                tu.Id,
+                tu.SpeciesId,
+                tu.Part,
+                tu.Category.ToList(),
+                tu.SpecificPurpose,
+                tu.PreparationMethod,
+                tu.Description,
+                tu.Community,
+                tu.TraditionalWarnings,
+                tu.Confidence,
+                tu.CreatedAt))
+            .ToList();
+
         return new SpeciesDetailDTO(
             species.Id,
             species.TaxonomyId,
@@ -70,8 +100,6 @@ public class GetSpeciesBySlugQueryHandler : IRequestHandler<GetSpeciesBySlugQuer
             species.CommonName,
             species.Description,
             species.EcologicalInfo,
-            species.TraditionalUses,
-            species.EconomicPotential,
             species.ConservationStatus,
             species.AltitudeRange,
             species.LegalStatus,
@@ -79,6 +107,8 @@ public class GetSpeciesBySlugQueryHandler : IRequestHandler<GetSpeciesBySlugQuer
             species.CreatedAt,
             species.UpdatedAt,
             distributions,
+            economicPotentials,
+            traditionalUses,
             relatedProducts);
     }
 

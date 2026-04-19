@@ -16,10 +16,12 @@ public class Product
     public string? ThumbnailUrl { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
+    public DateTime? UpdatedAt { get; private set; }
+
     public User Entrepreneur { get; private set; } = null!;
-    // Navigation to Reviews, Certifications
     public ICollection<ProductReview> Reviews { get; private set; } = new List<ProductReview>();
     public ICollection<Certification> Certifications { get; private set; } = new List<Certification>();
+    public ICollection<ProductImage> Images { get; private set; } = new List<ProductImage>();
 
     private Product() { }
 

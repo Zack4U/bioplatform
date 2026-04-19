@@ -232,6 +232,57 @@ public class ScientificDbContextTests
     }
 
     /// <summary>
+    /// Tests for the PredictionLog entity configuration.
+    /// </summary>
+    public class PredictionLogConfiguration : ScientificDbContextTests
+    {
+        [Fact]
+        public void ShouldHavePrimaryKey()
+        {
+            var entity = _context.Model.FindEntityType(typeof(PredictionLog));
+            var primaryKey = entity?.FindPrimaryKey();
+
+            primaryKey.Should().NotBeNull();
+            primaryKey!.Properties.Should().ContainSingle(p => p.Name == "Id");
+        }
+
+        [Fact]
+        public void UserId_ShouldHaveIndex()
+        {
+            var entity = _context.Model.FindEntityType(typeof(PredictionLog));
+            var index = entity?.GetIndexes().FirstOrDefault(i => i.Properties.Any(p => p.Name == nameof(PredictionLog.UserId)));
+
+            index.Should().NotBeNull();
+        }
+    }
+
+    /// <summary>
+    /// Tests for the AiModelVersion entity configuration.
+    /// </summary>
+    public class AiModelVersionConfiguration : ScientificDbContextTests
+    {
+        [Fact]
+        public void ShouldHavePrimaryKey()
+        {
+            var entity = _context.Model.FindEntityType(typeof(AiModelVersion));
+            var primaryKey = entity?.FindPrimaryKey();
+
+            primaryKey.Should().NotBeNull();
+            primaryKey!.Properties.Should().ContainSingle(p => p.Name == "Id");
+        }
+
+        [Fact]
+        public void Version_ShouldBeUnique()
+        {
+            var entity = _context.Model.FindEntityType(typeof(AiModelVersion));
+            var index = entity?.GetIndexes().FirstOrDefault(i => i.Properties.Any(p => p.Name == nameof(AiModelVersion.Version)));
+
+            index.Should().NotBeNull();
+            index!.IsUnique.Should().BeTrue();
+        }
+    }
+
+    /// <summary>
     /// Tests that verify DbSet properties are accessible.
     /// </summary>
     public class DbSet_Properties : ScientificDbContextTests
@@ -264,6 +315,12 @@ public class ScientificDbContextTests
         public void PredictionLogs_ShouldBeAccessible()
         {
             _context.PredictionLogs.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void AiModelVersions_ShouldBeAccessible()
+        {
+            _context.AiModelVersions.Should().NotBeNull();
         }
 
         [Fact]

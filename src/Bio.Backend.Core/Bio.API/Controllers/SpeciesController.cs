@@ -186,6 +186,92 @@ public class SpeciesController : ControllerBase
     }
 
     /// <summary>
+    /// Carga masiva de Potencial Económico desde un archivo JSON.
+    /// El archivo debe seguir la estructura de species_economic_potential.json.
+    /// Cada entrada se empareja por scientific_name y reemplaza los registros existentes.
+    /// El proceso se ejecuta en segundo plano (Hangfire).
+    /// </summary>
+    [HttpPost("import-economic-potential")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> ImportEconomicPotential(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { error = "A JSON file is required." });
+
+        if (!file.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { error = "Only JSON files are accepted." });
+
+        var tempPath = Path.Combine(Path.GetTempPath(), $"bio-economic-{Guid.NewGuid()}.json");
+        await using (var stream = new FileStream(tempPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? User.FindFirst("sub")?.Value;
+        var userId = Guid.TryParse(userIdClaim, out var parsedId) ? parsedId : Guid.Empty;
+
+        var jobId = await _mediator.Send(new ImportSpeciesEconomicPotentialCommand
+        {
+            FilePath = tempPath,
+            UserId = userId
+        });
+
+        return Accepted(new
+        {
+            jobId,
+            message = "Economic potential import job enqueued successfully.",
+            hint = "Se actualizarán los registros de species_economic_potentials para cada especie encontrada."
+        });
+    }
+
+    /// <summary>
+    /// Carga masiva de Usos Tradicionales desde un archivo JSON.
+    /// El archivo debe seguir la estructura de species_traditional_uses.json.
+    /// Cada entrada se empareja por scientific_name y reemplaza los registros existentes.
+    /// El proceso se ejecuta en segundo plano (Hangfire).
+    /// </summary>
+    [HttpPost("import-traditional-uses")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> ImportTraditionalUses(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { error = "A JSON file is required." });
+
+        if (!file.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { error = "Only JSON files are accepted." });
+
+        var tempPath = Path.Combine(Path.GetTempPath(), $"bio-traditional-{Guid.NewGuid()}.json");
+        await using (var stream = new FileStream(tempPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? User.FindFirst("sub")?.Value;
+        var userId = Guid.TryParse(userIdClaim, out var parsedId) ? parsedId : Guid.Empty;
+
+        var jobId = await _mediator.Send(new ImportSpeciesTraditionalUsesCommand
+        {
+            FilePath = tempPath,
+            UserId = userId
+        });
+
+        return Accepted(new
+        {
+            jobId,
+            message = "Traditional uses import job enqueued successfully.",
+            hint = "Se actualizarán los registros de species_traditional_uses para cada especie encontrada."
+        });
+    }
+
+    /// <summary>
     /// Extrae el primer rol del usuario autenticado desde los claims JWT.
     /// Retorna null si no hay usuario autenticado.
     /// </summary>

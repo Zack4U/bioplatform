@@ -19,4 +19,16 @@ public class JobEnqueuer : IJobEnqueuer
         return _backgroundJobClient.Enqueue<ISpeciesBulkImportJob>(
             job => job.ProcessCsvImportAsync(filePath, userId));
     }
+
+    public string EnqueueEconomicPotentialImportJob(string filePath, Guid userId)
+    {
+        return _backgroundJobClient.Enqueue<ISpeciesBulkImportJob>(
+            job => job.ProcessEconomicPotentialImportAsync(filePath, userId));
+    }
+
+    public string EnqueueTraditionalUsesImportJob(string filePath, Guid userId)
+    {
+        return _backgroundJobClient.Enqueue<ISpeciesBulkImportJob>(
+            job => job.ProcessTraditionalUsesImportAsync(filePath, userId));
+    }
 }
