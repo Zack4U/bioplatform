@@ -21,6 +21,7 @@ import { SpeciesDetailHero } from "@/components/features/species/SpeciesDetailHe
 import { SpeciesDetailSkeleton } from "@/components/features/species/SpeciesDetailSkeleton";
 import { SpeciesDetailTabs } from "@/components/features/species/SpeciesDetailTabs";
 import { SpeciesDistributionMap } from "@/components/features/species/SpeciesDistributionMap";
+import { SpeciesImageGallery } from "@/components/features/species/SpeciesImageGallery";
 import { SpeciesInfoCard } from "@/components/features/species/SpeciesInfoCard";
 import { useSpeciesDetail } from "@/hooks/features/catalog/useSpeciesDetail";
 import { use } from "react";
@@ -78,6 +79,9 @@ export default function SpeciesDetailPage({ params }: SpeciesDetailPageProps) {
 
                 {/* 5. Related Products */}
                 <RelatedProducts products={species.relatedProducts} />
+
+                {/* 6. Image Gallery */}
+                <SpeciesImageGallery speciesId={species.id} />
             </div>
         </main>
     );

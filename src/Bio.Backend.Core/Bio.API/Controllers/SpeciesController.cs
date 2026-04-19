@@ -10,6 +10,7 @@ using Bio.Application.Features.Species.Queries.GetSpeciesById;
 using Bio.Application.Features.Species.Queries.GetSpeciesBySlug;
 using Bio.Application.Features.Species.Queries.GetSpeciesDistributions;
 using Bio.Application.Features.Species.Queries.GetSpeciesFilterMeta;
+using Bio.Application.Features.Species.Queries.GetSpeciesImages;
 using Bio.Domain.Constants;
 using MediatR;
 using System.Security.Claims;
@@ -94,6 +95,20 @@ public class SpeciesController : ControllerBase
     {
         var userRole = GetUserRole();
         var result = await _mediator.Send(new GetSpeciesDistributionsQuery(id, userRole));
+        return Ok(result);
+    }
+
+    /// <summary>Obtiene las imágenes de una especie con paginación y filtro de validación.</summary>
+    [HttpGet("{id:guid}/images")]
+    [ProducesResponseType(typeof(PaginatedResult<SpeciesImageDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetImages(
+        Guid id,
+        [FromQuery] bool onlyValidatedByExpert = true,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _mediator.Send(new GetSpeciesImagesQuery(id, onlyValidatedByExpert, page, pageSize));
         return Ok(result);
     }
 

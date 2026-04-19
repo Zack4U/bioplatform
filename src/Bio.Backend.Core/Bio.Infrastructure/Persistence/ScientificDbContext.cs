@@ -77,6 +77,13 @@ public class ScientificDbContext : DbContext
             entity.HasOne(e => e.Taxonomy)
                   .WithMany(t => t.Species)
                   .HasForeignKey(e => e.TaxonomyId);
+
+            // Configure Species → SpeciesImage relationship from the principal side
+            // to prevent EF Core from creating a shadow SpeciesId1 FK property.
+            entity.HasMany(e => e.Images)
+                  .WithOne(i => i.Species)
+                  .HasForeignKey(i => i.SpeciesId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<GeographicDistribution>(entity =>
@@ -99,11 +106,24 @@ public class ScientificDbContext : DbContext
 
         modelBuilder.Entity<SpeciesImage>(entity =>
         {
+            entity.ToTable("species_images");
             entity.HasKey(e => e.Id);
-            entity.HasOne(e => e.Species)
-                  .WithMany()
-                  .HasForeignKey(e => e.SpeciesId)
-                  .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.SpeciesId).HasColumnName("species_id");
+            entity.Property(e => e.UploaderUserId).HasColumnName("uploader_user_id");
+            entity.Property(e => e.ImageUrl).HasColumnName("image_url").HasMaxLength(500);
+            entity.Property(e => e.ThumbnailUrl).HasColumnName("thumbnail_url").HasMaxLength(500);
+            entity.Property(e => e.Metadata).HasColumnName("metadata").HasColumnType("jsonb");
+            entity.Property(e => e.IsPrimary).HasColumnName("is_primary").HasDefaultValue(false);
+            entity.Property(e => e.IsValidatedByExpert).HasColumnName("is_validated_by_expert").HasDefaultValue(false);
+            entity.Property(e => e.ValidatedByUserId).HasColumnName("validated_by_user_id");
+            entity.Property(e => e.ValidationDate).HasColumnName("validation_date");
+            entity.Property(e => e.LicenseType).HasColumnName("license_type").HasMaxLength(50);
+            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            // Note: Species → SpeciesImage relationship is configured in the
+            // Species entity block above to avoid shadow FK (SpeciesId1) issues.
+            entity.HasIndex(e => e.SpeciesId);
+            entity.HasIndex(e => e.IsValidatedByExpert);
         });
 
         modelBuilder.Entity<BusinessPlan>(entity =>

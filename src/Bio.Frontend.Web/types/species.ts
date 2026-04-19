@@ -129,3 +129,22 @@ export interface SpeciesFilterMeta {
     conservationStatuses: string[];
     totalSpeciesCount: number;
 }
+
+/** SpeciesImageDTO — mirrors backend SpeciesImageDTO for gallery */
+export interface SpeciesImage {
+    id: string;
+    speciesId: string;
+    imageUrl: string;
+    thumbnailUrl: string | null;
+    isPrimary: boolean;
+    isValidatedByExpert: boolean;
+    licenseType: string;
+    createdAt: string;
+}
+
+/** Query params for species images endpoint */
+export interface SpeciesImageSearchParams {
+    onlyValidatedByExpert?: boolean;
+    page?: number;
+    pageSize?: number;
+}

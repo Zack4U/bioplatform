@@ -25,6 +25,7 @@ public class Species
 
     public Taxonomy? Taxonomy { get; private set; }
     public ICollection<GeographicDistribution> GeographicDistributions { get; private set; } = new List<GeographicDistribution>();
+    public ICollection<SpeciesImage> Images { get; private set; } = new List<SpeciesImage>();
 
     private Species() { }
 

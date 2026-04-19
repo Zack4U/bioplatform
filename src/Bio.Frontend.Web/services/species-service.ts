@@ -14,6 +14,8 @@ import type {
     GeographicDistribution,
     SpeciesDetail,
     SpeciesFilterMeta,
+    SpeciesImage,
+    SpeciesImageSearchParams,
     SpeciesListItem,
     SpeciesSearchParams,
 } from "@/types/species";
@@ -81,6 +83,23 @@ export async function getSpeciesDistributions(
 export async function getSpeciesFilterMeta(): Promise<SpeciesFilterMeta> {
     const { data } = await apiClient.get<SpeciesFilterMeta>(
         CORE_ROUTES.SPECIES.FILTER_META,
+    );
+    return data;
+}
+
+// ─── Gallery Images ───────────────────────────────────────────────────────────────────
+
+/**
+ * GET /api/species/{id}/images — paginated images with optional expert-validation filter.
+ * Used by the species detail gallery with infinite scroll.
+ */
+export async function getSpeciesImages(
+    speciesId: string,
+    params: SpeciesImageSearchParams = {},
+): Promise<PaginatedResponse<SpeciesImage>> {
+    const { data } = await apiClient.get<PaginatedResponse<SpeciesImage>>(
+        CORE_ROUTES.SPECIES.IMAGES(speciesId),
+        { params },
     );
     return data;
 }
