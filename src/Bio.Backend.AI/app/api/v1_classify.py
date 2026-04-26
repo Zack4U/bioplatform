@@ -137,8 +137,6 @@ async def _enrich_from_db(species_name: str) -> SpeciesDbInfo:
         common_name=row.get("common_name"),
         description=row.get("description"),
         ecological_info=row.get("ecological_info"),
-        traditional_uses=row.get("traditional_uses"),
-        economic_potential=row.get("economic_potential"),
         conservation_status=row.get("conservation_status"),
         is_sensitive=row.get("is_sensitive", False),
         thumbnail_url=row.get("thumbnail_url"),

@@ -92,8 +92,6 @@ class TestEnrichFromDb:
             "common_name": "Abejorro de Caldas",
             "description": "Large bumblebee",
             "ecological_info": "Highland forests",
-            "traditional_uses": None,
-            "economic_potential": None,
             "conservation_status": "LC",
             "is_sensitive": False,
             "thumbnail_url": "https://example.com/img.jpg",
