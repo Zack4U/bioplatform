@@ -14,12 +14,17 @@
 "use client";
 
 import { ConfidenceRing } from "@/components/features/identification/ConfidenceRing";
+import { ContributeObservationDialog } from "@/components/features/identification/ContributeObservationDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useAuthStore } from "@/store/auth-store";
-import type { ClassificationResponse, SpeciesPrediction, UserRoleName } from "@/types";
+import type {
+    ClassificationResponse,
+    SpeciesPrediction,
+    UserRoleName,
+} from "@/types";
 import {
     AlertTriangle,
     ArrowRight,
@@ -31,19 +36,24 @@ import {
     Leaf,
     MapPin,
     RefreshCw,
-    Save,
+    Share2,
     Shield,
     ShieldAlert,
     ShoppingBag,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 interface IdentifyResultsStepProps {
     result: ClassificationResponse;
     previewUrl: string | null;
+    /** The actual File object for upload — null when coming from URL-based classification */
+    imageFile?: File | null;
     onRetake: () => void;
     topPredictionSlug: string | null;
     topPredictionSpeciesId: string | null;
+    /** Minimum CNN confidence (0–1) to show the Contribuir button. Defaults to 0.60. */
+    minConfidenceThreshold?: number;
 }
 
 // ── Role-based panel config ──────────────────────────────────────────────────
@@ -61,42 +71,48 @@ const ROLE_ACTIONS: RoleAction[] = [
     {
         label: "Solicitar Revision Taxonomica",
         icon: <BookOpen className="h-4 w-4" aria-hidden="true" />,
-        description: "Enviar esta identificacion para revision por un experto taxonomo.",
+        description:
+            "Enviar esta identificacion para revision por un experto taxonomo.",
         roles: ["ADMIN", "RESEARCHER"],
         disabled: true,
     },
     {
         label: "Exportar Datos",
         icon: <Download className="h-4 w-4" aria-hidden="true" />,
-        description: "Descargar los datos completos de la prediccion en formato CSV/JSON.",
+        description:
+            "Descargar los datos completos de la prediccion en formato CSV/JSON.",
         roles: ["ADMIN", "RESEARCHER"],
         disabled: true,
     },
     {
         label: "Ver Productos Vinculados",
         icon: <ShoppingBag className="h-4 w-4" aria-hidden="true" />,
-        description: "Explorar productos del marketplace derivados de esta especie.",
+        description:
+            "Explorar productos del marketplace derivados de esta especie.",
         href: "/marketplace",
         roles: ["ENTREPRENEUR"],
     },
     {
         label: "Generar Plan de Negocio",
         icon: <FileText className="h-4 w-4" aria-hidden="true" />,
-        description: "Crear un plan de biocomercio basado en esta especie con IA generativa.",
+        description:
+            "Crear un plan de biocomercio basado en esta especie con IA generativa.",
         href: "/advisor",
         roles: ["ENTREPRENEUR"],
     },
     {
         label: "Reportar Datos Sensibles",
         icon: <ShieldAlert className="h-4 w-4" aria-hidden="true" />,
-        description: "Reportar si esta especie requiere proteccion especial de coordenadas.",
+        description:
+            "Reportar si esta especie requiere proteccion especial de coordenadas.",
         roles: ["AUTHORITY"],
         disabled: true,
     },
     {
         label: "Verificar Coordenadas",
         icon: <MapPin className="h-4 w-4" aria-hidden="true" />,
-        description: "Revisar y validar las coordenadas geograficas de las observaciones.",
+        description:
+            "Revisar y validar las coordenadas geograficas de las observaciones.",
         roles: ["AUTHORITY"],
         disabled: true,
     },
@@ -107,12 +123,15 @@ const ROLE_ACTIONS: RoleAction[] = [
 export function IdentifyResultsStep({
     result,
     previewUrl,
+    imageFile = null,
     onRetake,
     topPredictionSlug,
     topPredictionSpeciesId,
+    minConfidenceThreshold = 0.6,
 }: IdentifyResultsStepProps) {
     const { user, isAuthenticated } = useAuthStore();
     const userRoles = user?.roles ?? [];
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     const topPred: SpeciesPrediction = result.predictions[0];
     const hasDbData = topPred.speciesData?.foundInDb ?? false;
@@ -159,7 +178,8 @@ export function IdentifyResultsStep({
                                 Especie Identificada
                             </p>
                             <h2 className="mt-1 text-2xl font-bold">
-                                {topPred.speciesData?.commonName ?? topPred.species}
+                                {topPred.speciesData?.commonName ??
+                                    topPred.species}
                             </h2>
                             <p className="text-base italic text-muted-foreground">
                                 {topPred.species}
@@ -261,30 +281,30 @@ export function IdentifyResultsStep({
             {/* ── Action Buttons (below header for accessibility) ────── */}
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
                 {catalogHref && (
-                    <Button
-                        size="lg"
-                        className="gap-3 rounded-xl px-8"
-                        asChild
-                    >
+                    <Button size="lg" className="gap-3 rounded-xl px-8" asChild>
                         <Link href={catalogHref}>
                             <ExternalLink
                                 className="h-5 w-5"
                                 aria-hidden="true"
                             />
-                            Ver en Catalogo
+                            Ver en Catálogo
                         </Link>
                     </Button>
                 )}
 
-                <Button
-                    size="lg"
-                    variant="outline"
-                    className="gap-3 rounded-xl px-8"
-                    disabled
-                >
-                    <Save className="h-5 w-5" aria-hidden="true" />
-                    Guardar para revision
-                </Button>
+                {isAuthenticated &&
+                    topPred.confidence >= minConfidenceThreshold && (
+                        <Button
+                            id="btn-open-contribute-observation"
+                            size="lg"
+                            variant="outline"
+                            className="gap-3 rounded-xl px-8"
+                            onClick={() => setDialogOpen(true)}
+                        >
+                            <Share2 className="h-5 w-5" aria-hidden="true" />
+                            Contribuir Observación
+                        </Button>
+                    )}
 
                 <Button
                     size="lg"
@@ -293,7 +313,7 @@ export function IdentifyResultsStep({
                     onClick={onRetake}
                 >
                     <RefreshCw className="h-5 w-5" aria-hidden="true" />
-                    Nueva Identificacion
+                    Nueva Identificación
                 </Button>
             </div>
 
@@ -301,7 +321,8 @@ export function IdentifyResultsStep({
             <Card>
                 <CardHeader className="pb-3">
                     <CardTitle className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                        Top {Math.min(result.predictions.length, 5)} Predicciones
+                        Top {Math.min(result.predictions.length, 5)}{" "}
+                        Predicciones
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-1 pb-4">
@@ -328,9 +349,7 @@ export function IdentifyResultsStep({
                             {/* Species name */}
                             <span
                                 className={`min-w-0 flex-1 truncate text-sm ${
-                                    i === 0
-                                        ? "font-semibold"
-                                        : ""
+                                    i === 0 ? "font-semibold" : ""
                                 }`}
                             >
                                 {pred.species}
@@ -410,9 +429,23 @@ export function IdentifyResultsStep({
             {/* ── Model Info Footer ────────────────────────────────────── */}
             <div className="text-center">
                 <p className="text-xs text-muted-foreground">
-                    Modelo: {result.model} - {result.numClasses} clases disponibles
+                    Modelo: {result.model} - {result.numClasses} clases
+                    disponibles
                 </p>
             </div>
+
+            {/* ── Contribuir Observacion Dialog ─────────────────────────── */}
+            <ContributeObservationDialog
+                open={dialogOpen}
+                onOpenChange={setDialogOpen}
+                previewUrl={previewUrl}
+                speciesId={topPredictionSpeciesId}
+                speciesPredicted={topPred.species}
+                confidenceScore={topPred.confidence}
+                modelVersion={result.model}
+                imageFile={imageFile}
+                onSuccess={() => setDialogOpen(false)}
+            />
         </div>
     );
 }
