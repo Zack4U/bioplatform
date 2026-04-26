@@ -96,3 +96,22 @@ export async function getBySlug(slug: string): Promise<SpeciesResponse> {
     );
     return data;
 }
+
+// ─── Contribute Observation ───────────────────────────────────────────────────
+
+/**
+ * POST /api/species/{id}/observations — upload a user observation image.
+ * Sends the image file and all contextual metadata as multipart/form-data.
+ * Requires a valid JWT (any authenticated user can contribute).
+ */
+export async function uploadSpeciesObservation(
+    speciesId: string,
+    formData: FormData,
+): Promise<unknown> {
+    const { data } = await apiClient.post(
+        CORE_ROUTES.SPECIES.OBSERVATIONS(speciesId),
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } },
+    );
+    return data;
+}

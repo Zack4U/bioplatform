@@ -8,10 +8,11 @@
  * - Species name + taxonomy info
  * - Conservation status + confidence alert badges
  * - Top 5 predictions list with confidence bars
- * - "Ver Detalles" navigates to species detail
- * - "Volver a Tomar" retakes photo
+ * - "View Details" navigates to species detail
+ * - "Retake Photo" retakes photo
  */
 
+import { ContributeObservationSheet } from "@/components/camera/ContributeObservationSheet";
 import { SmartImageBackground } from "@/components/common/SmartImage";
 import {
     BottomSheet,
@@ -37,11 +38,11 @@ import {
     Leaf,
     MapPin,
     RotateCcw,
-    Save,
+    Share2,
     Shield,
 } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 
 interface ResultsDrawerProps {
@@ -51,6 +52,8 @@ interface ResultsDrawerProps {
     imageUri: string | null;
     onRetake: () => void;
     onViewDetails: () => void;
+    /** Minimum CNN confidence (0–1) required to show the Contribute button. Defaults to 0.60. */
+    minConfidenceThreshold?: number;
 }
 
 export function ResultsDrawer({
@@ -60,9 +63,11 @@ export function ResultsDrawer({
     imageUri,
     onRetake,
     onViewDetails,
+    minConfidenceThreshold = 0.6,
 }: ResultsDrawerProps) {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
+    const [contribuirOpen, setContribuirOpen] = useState(false);
 
     if (!result || !result.predictions.length) return null;
 
@@ -246,7 +251,7 @@ export function ResultsDrawer({
                         </Button>
                     </View>
 
-                    {/* ─── Alerts (normalized + translated) ─────────── */}
+                    {/* ─── Alerts ─────────────────────────────────────── */}
                     {alerts.map((alert) => {
                         const style = alertStyles[alert.tone];
                         return (
@@ -331,22 +336,25 @@ export function ResultsDrawer({
                     </View>
                 </BottomSheetBody>
 
-                {/* ─── Actions ─────────────────────────────────── */}
+                {/* ─── Actions ─────────────────────────────────────── */}
                 <BottomSheetFooter>
-                    <Button
-                        variant="ghost"
-                        className="rounded-2xl h-12 mb-2"
-                        onPress={() => {}}
-                    >
-                        <Save
-                            size={16}
-                            color={theme.mutedForeground}
-                            strokeWidth={1.5}
-                        />
-                        <Text className="text-muted-foreground ml-2">
-                            Guardar para revisión experta
-                        </Text>
-                    </Button>
+                    {topPred.confidence >= minConfidenceThreshold && (
+                        <Button
+                            id="btn-contribute-observation"
+                            variant="ghost"
+                            className="rounded-2xl h-12 mb-2"
+                            onPress={() => setContribuirOpen(true)}
+                        >
+                            <Share2
+                                size={16}
+                                color={theme.primary}
+                                strokeWidth={1.5}
+                            />
+                            <Text className="text-primary ml-2 font-semibold">
+                                Contribuir Observación
+                            </Text>
+                        </Button>
+                    )}
 
                     <Button
                         variant="outline"
@@ -364,6 +372,18 @@ export function ResultsDrawer({
                     </Button>
                 </BottomSheetFooter>
             </ScrollView>
+
+            {/* ─── Contribute Observation Sheet ─────────────────── */}
+            <ContributeObservationSheet
+                open={contribuirOpen}
+                onClose={() => setContribuirOpen(false)}
+                imageUri={imageUri}
+                speciesId={topPred.speciesData?.speciesId ?? null}
+                speciesPredicted={topPred.species}
+                confidenceScore={topPred.confidence}
+                modelVersion={result.model}
+                minConfidenceThreshold={minConfidenceThreshold}
+            />
         </BottomSheet>
     );
 }
