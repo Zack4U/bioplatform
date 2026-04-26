@@ -45,4 +45,14 @@ public class SpeciesImageRepository : ISpeciesImageRepository
 
         return (items, totalCount);
     }
+
+    /// <inheritdoc />
+    public async Task<SpeciesImage> AddAsync(
+        SpeciesImage image,
+        CancellationToken cancellationToken = default)
+    {
+        await _context.SpeciesImages.AddAsync(image, cancellationToken);
+        return image;
+    }
 }
+

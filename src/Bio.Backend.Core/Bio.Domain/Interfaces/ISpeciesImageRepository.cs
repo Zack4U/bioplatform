@@ -16,4 +16,12 @@ public interface ISpeciesImageRepository
         int page = 1,
         int pageSize = 20,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Persists a new <see cref="SpeciesImage"/> observation record to the database.
+    /// </summary>
+    /// <param name="image">The image entity to persist.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The persisted entity with any DB-generated values populated.</returns>
+    Task<SpeciesImage> AddAsync(SpeciesImage image, CancellationToken cancellationToken = default);
 }
