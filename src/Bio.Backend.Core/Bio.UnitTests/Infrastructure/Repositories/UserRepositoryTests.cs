@@ -14,7 +14,7 @@ namespace Bio.UnitTests.Infrastructure.Repositories;
 /// </summary>
 public class UserRepositoryTests : IDisposable
 {
-    protected readonly BioDbContext _context;
+    protected readonly ScientificDbContext _context;
     protected readonly UserRepository _repository;
     private readonly SqliteConnection? _connection;
 
@@ -30,27 +30,27 @@ public class UserRepositoryTests : IDisposable
     /// </summary>
     protected UserRepositoryTests(bool useSqlite)
     {
-        DbContextOptions<BioDbContext> options;
+        DbContextOptions<ScientificDbContext> options;
 
         if (useSqlite)
         {
             _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
 
-            options = new DbContextOptionsBuilder<BioDbContext>()
+            options = new DbContextOptionsBuilder<ScientificDbContext>()
                 .UseSqlite(_connection)
                 .Options;
 
-            _context = new BioDbContext(options);
+            _context = new ScientificDbContext(options);
             _context.Database.EnsureCreated();
         }
         else
         {
-            options = new DbContextOptionsBuilder<BioDbContext>()
+            options = new DbContextOptionsBuilder<ScientificDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            _context = new BioDbContext(options);
+            _context = new ScientificDbContext(options);
         }
 
         _repository = new UserRepository(_context);
@@ -130,11 +130,11 @@ public class UserRepositoryTests : IDisposable
 
             // Act - Use a new context and repository instance to avoid tracking conflicts
             // but keep the same underlying SQLite connection
-            var options = new DbContextOptionsBuilder<BioDbContext>()
+            var options = new DbContextOptionsBuilder<ScientificDbContext>()
                 .UseSqlite(_context.Database.GetDbConnection())
                 .Options;
 
-            using var newContext = new BioDbContext(options);
+            using var newContext = new ScientificDbContext(options);
             var newRepository = new UserRepository(newContext);
 
             await newRepository.AddAsync(user2);

@@ -14,7 +14,7 @@ namespace Bio.UnitTests.Infrastructure.Repositories;
 /// </summary>
 public class UserRoleRepositoryTests : IDisposable
 {
-    protected readonly BioDbContext _context;
+    protected readonly ScientificDbContext _context;
     protected readonly UserRoleRepository _repository;
     private readonly SqliteConnection? _connection;
 
@@ -29,27 +29,27 @@ public class UserRoleRepositoryTests : IDisposable
     /// </summary>
     protected UserRoleRepositoryTests(bool useSqlite)
     {
-        DbContextOptions<BioDbContext> options;
+        DbContextOptions<ScientificDbContext> options;
 
         if (useSqlite)
         {
             _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
 
-            options = new DbContextOptionsBuilder<BioDbContext>()
+            options = new DbContextOptionsBuilder<ScientificDbContext>()
                 .UseSqlite(_connection)
                 .Options;
 
-            _context = new BioDbContext(options);
+            _context = new ScientificDbContext(options);
             _context.Database.EnsureCreated();
         }
         else
         {
-            options = new DbContextOptionsBuilder<BioDbContext>()
+            options = new DbContextOptionsBuilder<ScientificDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            _context = new BioDbContext(options);
+            _context = new ScientificDbContext(options);
         }
 
         _repository = new UserRoleRepository(_context);
@@ -128,11 +128,11 @@ public class UserRoleRepositoryTests : IDisposable
             await _context.SaveChangesAsync();
 
             // Act - Use separate context to trigger DB-level PK violation
-            var options = new DbContextOptionsBuilder<BioDbContext>()
+            var options = new DbContextOptionsBuilder<ScientificDbContext>()
                 .UseSqlite(_context.Database.GetDbConnection())
                 .Options;
 
-            using var newContext = new BioDbContext(options);
+            using var newContext = new ScientificDbContext(options);
             var newRepo = new UserRoleRepository(newContext);
 
             await newRepo.AddAsync(ur2);

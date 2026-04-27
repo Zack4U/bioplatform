@@ -13,7 +13,7 @@ namespace Bio.UnitTests.Infrastructure.Repositories;
 /// </summary>
 public class RefreshTokenRepositoryTests : IDisposable
 {
-    private readonly BioDbContext _context;
+    private readonly ScientificDbContext _context;
     private readonly RefreshTokenRepository _repository;
 
     /// <summary>
@@ -22,11 +22,11 @@ public class RefreshTokenRepositoryTests : IDisposable
     /// </summary>
     public RefreshTokenRepositoryTests()
     {
-        var options = new DbContextOptionsBuilder<BioDbContext>()
+        var options = new DbContextOptionsBuilder<ScientificDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        _context = new BioDbContext(options);
+        _context = new ScientificDbContext(options);
         _repository = new RefreshTokenRepository(_context);
     }
 

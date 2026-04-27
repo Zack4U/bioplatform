@@ -13,17 +13,17 @@ namespace Bio.UnitTests.Infrastructure.Persistence;
 /// </summary>
 public class UnitOfWorkTests
 {
-    private readonly Mock<BioDbContext> _contextMock;
+    private readonly Mock<ScientificDbContext> _contextMock;
     private readonly UnitOfWork _unitOfWork;
 
     public UnitOfWorkTests()
     {
         // Setup DbContext options for Mocking
-        var options = new DbContextOptionsBuilder<BioDbContext>()
+        var options = new DbContextOptionsBuilder<ScientificDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        _contextMock = new Mock<BioDbContext>(options);
+        _contextMock = new Mock<ScientificDbContext>(options);
         _unitOfWork = new UnitOfWork(_contextMock.Object);
     }
 

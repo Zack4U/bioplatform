@@ -106,7 +106,16 @@ public class ScientificDbContext : DbContext
             entity.Property(e => e.Altitude).HasColumnName("altitude");
             entity.Property(e => e.Municipality).HasColumnName("municipality").HasMaxLength(100);
             entity.Property(e => e.EcosystemType).HasColumnName("ecosystem_type").HasMaxLength(100);
-            entity.Property(e => e.LocationPoint).HasColumnName("location_point");
+            
+            if (Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && Database.ProviderName != "Microsoft.EntityFrameworkCore.Sqlite")
+            {
+                entity.Property(e => e.LocationPoint).HasColumnName("location_point");
+            }
+            else
+            {
+                entity.Ignore(e => e.LocationPoint);
+            }
+
             entity.HasOne(e => e.Species)
                   .WithMany(s => s.GeographicDistributions)
                   .HasForeignKey(e => e.SpeciesId)
@@ -182,6 +191,7 @@ public class ScientificDbContext : DbContext
             entity.Property(e => e.TwoFactorEnabled).HasColumnName("two_factor_enabled");
             entity.Property(e => e.TwoFactorSecret).HasColumnName("two_factor_secret");
             entity.HasIndex(e => e.Email).IsUnique();
+            entity.HasIndex(e => e.PhoneNumber).IsUnique();
         });
 
         modelBuilder.Entity<UserRole>(entity =>
