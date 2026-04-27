@@ -106,7 +106,7 @@ public class ScientificDbContext : DbContext
             entity.Property(e => e.Altitude).HasColumnName("altitude");
             entity.Property(e => e.Municipality).HasColumnName("municipality").HasMaxLength(100);
             entity.Property(e => e.EcosystemType).HasColumnName("ecosystem_type").HasMaxLength(100);
-            
+
             if (Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && Database.ProviderName != "Microsoft.EntityFrameworkCore.Sqlite")
             {
                 entity.Property(e => e.LocationPoint).HasColumnName("location_point");
