@@ -105,3 +105,70 @@ export function formatCurrency(amount: number): string {
 /** Number of product categories shown as "top" in the filter sidebar. */
 export const MARKETPLACE_DEFAULT_PAGE_SIZE = 12;
 
+/* ── Administration Panel ─────────────────────────────────────────────────── */
+
+/** Roles with access to the admin panel (Buyers and Communities excluded) */
+export const ADMIN_ROLES = [
+    "ADMIN",
+    "RESEARCHER",
+    "ENTREPRENEUR",
+    "AUTHORITY",
+] as const;
+
+/** Default pagination size for admin tables */
+export const ADMIN_PAGE_SIZE = 15;
+
+/** Certification types (mirrors CertificationType column) */
+export const CERTIFICATION_TYPES = {
+    SUSTAINABILITY: "Sustainability",
+    ORGANIC: "Organic",
+    QUALITY: "Quality",
+    FAIR_TRADE: "FairTrade",
+    ABS: "ABS",
+} as const;
+
+/** Request statuses for solicitudes management */
+export const REQUEST_STATUSES = {
+    PENDING: "pending",
+    APPROVED: "approved",
+    REJECTED: "rejected",
+    IN_REVIEW: "in_review",
+} as const;
+
+/** Request types for solicitudes management */
+export const REQUEST_TYPES = {
+    PERMIT_REQUEST: "permit_request",
+    SPECIES_VALIDATION: "species_validation",
+    PRODUCT_APPROVAL: "product_approval",
+    ACCOUNT_VERIFICATION: "account_verification",
+} as const;
+
+/** Notification types (mirrors NotificationType column) */
+export const NOTIFICATION_TYPES = {
+    ORDER_UPDATE: "OrderUpdate",
+    REVIEW_REPLY: "ReviewReply",
+    PERMIT_EXPIRY: "PermitExpiry",
+    SYSTEM: "System",
+} as const;
+
+/** Image validation statuses for images management */
+export const IMAGE_VALIDATION_STATUS = {
+    VALIDATED: "validated",
+    PENDING: "pending",
+    REJECTED: "rejected",
+} as const;
+
+/** Conservation status labels for display */
+export const CONSERVATION_STATUSES = {
+    LC: "Preocupacion Menor",
+    NT: "Casi Amenazada",
+    VU: "Vulnerable",
+    EN: "En Peligro",
+    CR: "En Peligro Critico",
+    EW: "Extinta en Estado Silvestre",
+    EX: "Extinta",
+    DD: "Datos Insuficientes",
+    NE: "No Evaluada",
+} as const;
+
+

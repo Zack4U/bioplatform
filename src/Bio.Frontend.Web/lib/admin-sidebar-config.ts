@@ -1,0 +1,140 @@
+/**
+ * Admin sidebar navigation configuration.
+ *
+ * Driven by constants — no magic strings.
+ * Each section's visibility is filtered by the user's roles at render time.
+ *
+ * @module lib/admin-sidebar-config
+ */
+
+import type { AdminNavSection } from "@/types";
+
+/**
+ * Complete sidebar navigation configuration.
+ * Roles array on each item controls who can see it.
+ * ADMIN sees everything.
+ */
+export const ADMIN_SIDEBAR_SECTIONS: AdminNavSection[] = [
+    {
+        titleKey: "General",
+        items: [
+            {
+                key: "dashboard",
+                labelKey: "Dashboard",
+                href: "/admin",
+                iconName: "LayoutDashboard",
+                roles: ["ADMIN", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY"],
+            },
+        ],
+    },
+    {
+        titleKey: "Biodiversidad",
+        items: [
+            {
+                key: "species",
+                labelKey: "Especies",
+                href: "/admin/species",
+                iconName: "Leaf",
+                roles: ["ADMIN", "RESEARCHER"],
+            },
+            {
+                key: "images",
+                labelKey: "Imagenes",
+                href: "/admin/images",
+                iconName: "Image",
+                roles: ["ADMIN", "RESEARCHER"],
+            },
+        ],
+    },
+    {
+        titleKey: "Marketplace",
+        items: [
+            {
+                key: "products",
+                labelKey: "Productos",
+                href: "/admin/products",
+                iconName: "Package",
+                roles: ["ADMIN", "ENTREPRENEUR"],
+            },
+            {
+                key: "orders",
+                labelKey: "Ordenes",
+                href: "/admin/orders",
+                iconName: "ShoppingCart",
+                roles: ["ADMIN", "ENTREPRENEUR"],
+            },
+            {
+                key: "reviews",
+                labelKey: "Resenas",
+                href: "/admin/reviews",
+                iconName: "Star",
+                roles: ["ADMIN", "ENTREPRENEUR"],
+            },
+        ],
+    },
+    {
+        titleKey: "Legal y Permisos",
+        items: [
+            {
+                key: "permits",
+                labelKey: "Permisos ABS",
+                href: "/admin/permits",
+                iconName: "Shield",
+                roles: ["ADMIN", "AUTHORITY", "ENTREPRENEUR"],
+            },
+            {
+                key: "requests",
+                labelKey: "Solicitudes",
+                href: "/admin/requests",
+                iconName: "FileText",
+                roles: ["ADMIN", "AUTHORITY"],
+            },
+        ],
+    },
+    {
+        titleKey: "Inteligencia Artificial",
+        items: [
+            {
+                key: "ai-model",
+                labelKey: "Modelo CNN",
+                href: "/admin/ai-model",
+                iconName: "Brain",
+                roles: ["ADMIN", "RESEARCHER"],
+            },
+            {
+                key: "chatbot",
+                labelKey: "Chatbot RAG",
+                href: "/admin/chatbot",
+                iconName: "MessageSquare",
+                roles: ["ADMIN", "RESEARCHER"],
+            },
+        ],
+    },
+    {
+        titleKey: "Sistema",
+        items: [
+            {
+                key: "users",
+                labelKey: "Usuarios",
+                href: "/admin/users",
+                iconName: "Users",
+                roles: ["ADMIN"],
+            },
+        ],
+    },
+];
+
+/**
+ * Filter sidebar sections based on user roles.
+ * Returns only sections that have at least one visible item for the given roles.
+ */
+export function getFilteredSidebarSections(
+    userRoles: string[],
+): AdminNavSection[] {
+    return ADMIN_SIDEBAR_SECTIONS.map((section) => ({
+        ...section,
+        items: section.items.filter((item) =>
+            item.roles.some((role) => userRoles.includes(role)),
+        ),
+    })).filter((section) => section.items.length > 0);
+}
