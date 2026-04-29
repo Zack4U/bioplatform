@@ -31,10 +31,14 @@ import {
 } from "@/components/ui/sheet";
 import { useLogout } from "@/hooks/features/auth";
 import { useHydration } from "@/hooks/useHydration";
+import { ADMIN_ROLES } from "@/lib/constants";
 import { useAuthStore } from "@/store/auth-store";
 import { useCartStore } from "@/store/cart-store";
-import { Leaf, LogOut, Menu, Settings, ShoppingCart, User } from "lucide-react";
+import {
+    LayoutDashboard, Leaf, LogOut, Menu, Settings, ShoppingCart, User,
+} from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
     { label: "Catalogo", href: "/catalog" },
@@ -55,6 +59,7 @@ function getInitials(fullName: string): string {
 }
 
 export function Navbar() {
+    const pathname = usePathname();
     const { isAuthenticated, user, isLoading } = useAuthStore();
     const logoutMutation = useLogout();
     const isHydrated = useHydration();
@@ -62,6 +67,16 @@ export function Navbar() {
         s.items.reduce((sum, item) => sum + item.quantity, 0),
     );
     const cartCount = isHydrated ? cartCountValue : 0;
+
+    /** User has at least one admin-eligible role (not BUYER or COMMUNITY) */
+    const hasAdminAccess =
+        isAuthenticated &&
+        user?.roles?.some((role) =>
+            (ADMIN_ROLES as readonly string[]).includes(role),
+        );
+
+    /** Hide the public Navbar inside the admin panel — it has its own header */
+    if (pathname.startsWith("/admin")) return null;
 
     return (
         <>
@@ -184,6 +199,17 @@ export function Navbar() {
                                             Configuracion
                                         </Link>
                                     </DropdownMenuItem>
+                                    {hasAdminAccess && (
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/admin">
+                                                <LayoutDashboard
+                                                    className="h-4 w-4"
+                                                    aria-hidden="true"
+                                                />
+                                                Panel de Administracion
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    )}
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                         id="logout-button"
@@ -313,6 +339,23 @@ export function Navbar() {
                                                     </Link>
                                                 </Button>
                                             </SheetClose>
+                                            {hasAdminAccess && (
+                                                <SheetClose asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        className="w-full justify-start"
+                                                        asChild
+                                                    >
+                                                        <Link href="/admin">
+                                                            <LayoutDashboard
+                                                                className="mr-2 h-4 w-4"
+                                                                aria-hidden="true"
+                                                            />
+                                                            Panel de Administracion
+                                                        </Link>
+                                                    </Button>
+                                                </SheetClose>
+                                            )}
                                             <Separator className="my-2" />
                                             <SheetClose asChild>
                                                 <Button

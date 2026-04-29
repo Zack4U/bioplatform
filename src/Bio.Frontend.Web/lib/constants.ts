@@ -171,4 +171,47 @@ export const CONSERVATION_STATUSES = {
     NE: "No Evaluada",
 } as const;
 
+/* ── Spanish Label Maps (i18n-ready) ──────────────────────────────────────── */
 
+/** Order status → Spanish label */
+export const ORDER_STATUS_LABELS: Record<string, string> = {
+    Pending: "Pendiente",
+    Paid: "Pagado",
+    Processing: "En Proceso",
+    Shipped: "Enviado",
+    Delivered: "Entregado",
+    Cancelled: "Cancelado",
+    Refunded: "Reembolsado",
+};
+
+/** ABS Permit status → Spanish label */
+export const ABS_PERMIT_STATUS_LABELS: Record<string, string> = {
+    Active: "Activo",
+    Suspended: "Suspendido",
+    Expired: "Expirado",
+    Revoked: "Revocado",
+};
+
+/** Request status → Spanish label */
+export const REQUEST_STATUS_LABELS: Record<string, string> = {
+    pending: "Pendiente",
+    approved: "Aprobada",
+    rejected: "Rechazada",
+    in_review: "En Revision",
+};
+
+/** Request type → Spanish label */
+export const REQUEST_TYPE_LABELS: Record<string, string> = {
+    permit_request: "Solicitud de Permiso",
+    species_validation: "Validacion de Especie",
+    product_approval: "Aprobacion de Producto",
+    account_verification: "Verificacion de Cuenta",
+};
+
+/** Generic translate helper — returns label or original key if not found */
+export function translateLabel(
+    map: Record<string, string>,
+    key: string,
+): string {
+    return map[key] ?? key;
+}

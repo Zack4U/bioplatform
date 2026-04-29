@@ -320,6 +320,21 @@ export interface ReviewAdminItem {
     isFlagged: boolean;
     createdAt: string;
 }
+// ─── Audit Log ──────────────────────────────────────────────────────────────
+
+/** Audit log entry for admin audit trail */
+export interface AuditLogEntry {
+    id: string;
+    action: string;
+    entityType: string;
+    entityId: string;
+    entityName: string;
+    performedBy: string;
+    performedByName: string;
+    ipAddress: string | null;
+    details: string | null;
+    createdAt: string;
+}
 
 // ─── Sidebar Navigation Config ───────────────────────────────────────────────
 

@@ -38,40 +38,38 @@ export function StatCard({
                     <span className="text-sm font-medium text-muted-foreground">
                         {label}
                     </span>
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold tracking-tight">
-                            {value}
+                    <span className="text-2xl font-bold tracking-tight">
+                        {value}
+                    </span>
+                    {trend && (
+                        <span
+                            className={cn(
+                                "flex items-center gap-0.5 text-xs font-medium",
+                                isPositive
+                                    ? "text-success"
+                                    : "text-destructive",
+                            )}
+                        >
+                            {isPositive ? (
+                                <TrendingUp
+                                    className="h-3.5 w-3.5 shrink-0"
+                                    aria-hidden="true"
+                                />
+                            ) : (
+                                <TrendingDown
+                                    className="h-3.5 w-3.5 shrink-0"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            {Math.abs(trend.value)}%
+                            {trend.label && (
+                                <span className="text-muted-foreground">
+                                    {" "}
+                                    {trend.label}
+                                </span>
+                            )}
                         </span>
-                        {trend && (
-                            <span
-                                className={cn(
-                                    "flex items-center gap-0.5 text-xs font-medium",
-                                    isPositive
-                                        ? "text-success"
-                                        : "text-destructive",
-                                )}
-                            >
-                                {isPositive ? (
-                                    <TrendingUp
-                                        className="h-3.5 w-3.5"
-                                        aria-hidden="true"
-                                    />
-                                ) : (
-                                    <TrendingDown
-                                        className="h-3.5 w-3.5"
-                                        aria-hidden="true"
-                                    />
-                                )}
-                                {Math.abs(trend.value)}%
-                                {trend.label && (
-                                    <span className="text-muted-foreground">
-                                        {" "}
-                                        {trend.label}
-                                    </span>
-                                )}
-                            </span>
-                        )}
-                    </div>
+                    )}
                 </div>
                 {icon && (
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">

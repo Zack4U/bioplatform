@@ -120,6 +120,13 @@ export const ADMIN_SIDEBAR_SECTIONS: AdminNavSection[] = [
                 iconName: "Users",
                 roles: ["ADMIN"],
             },
+            {
+                key: "audit-log",
+                labelKey: "Registro de Auditoria",
+                href: "/admin/audit-log",
+                iconName: "ClipboardList",
+                roles: ["ADMIN"],
+            },
         ],
     },
 ];
