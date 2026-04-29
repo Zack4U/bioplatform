@@ -8,6 +8,9 @@ def generate_sql(base_dir, public_bucket, output_sql):
     # We will use this set to keep track of species we've already written a thumbnail for
     processed_species = set()
     
+    # Ensure output directory exists
+    os.makedirs(os.path.dirname(output_sql), exist_ok=True)
+    
     with open(output_sql, 'w', encoding='utf-8') as sql_file:
         sql_file.write("-- =========================================================\n")
         sql_file.write("-- SQL SCRIPT PARA POBLAR GALERIA DE IMAGENES\n")
