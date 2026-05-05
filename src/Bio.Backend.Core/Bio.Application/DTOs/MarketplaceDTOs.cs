@@ -71,7 +71,7 @@ public record ProductFilterMetaDTO(
 
 // === Product Images ===
 
-public record ProductImageCreateDTO(string ImageUrl, string? AltText, int DisplayOrder = 0, bool IsPrimary = false);
+public record ProductImageCreateDTO(string? AltText, int DisplayOrder = 0, bool IsPrimary = false);
 public record ProductImageResponseDTO(Guid Id, string ImageUrl, string? AltText, int DisplayOrder, bool IsPrimary);
 
 // === Product Reviews ===

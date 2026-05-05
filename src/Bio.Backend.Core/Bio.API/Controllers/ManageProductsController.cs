@@ -83,8 +83,33 @@ public class ManageProductsController : ControllerBase
 
     [HttpPost("{productId:guid}/images")]
     [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Entrepreneur}")]
-    public async Task<IActionResult> AddImage(Guid productId, [FromBody] ProductImageCreateDTO dto)
-        => CreatedAtAction(nameof(GetImages), new { productId }, await _mediator.Send(new AddProductImageCommand(productId, dto, GetUserId(), GetUserRole())));
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> AddImage(
+        Guid productId,
+        IFormFile file,
+        [FromForm] ProductImageCreateDTO dto)
+    {
+        if (file is null || file.Length == 0)
+            return BadRequest(new { error = "An image file is required." });
+
+        await using var fileStream = file.OpenReadStream();
+
+        var command = new AddProductImageCommand
+        {
+            ProductId = productId,
+            FileStream = fileStream,
+            ContentType = file.ContentType,
+            OriginalFileName = file.FileName,
+            ActorId = GetUserId(),
+            ActorRole = GetUserRole(),
+            AltText = dto.AltText,
+            DisplayOrder = dto.DisplayOrder,
+            IsPrimary = dto.IsPrimary,
+        };
+
+        var result = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetImages), new { productId }, result);
+    }
 
     [HttpDelete("images/{imageId:guid}")]
     [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Entrepreneur}")]

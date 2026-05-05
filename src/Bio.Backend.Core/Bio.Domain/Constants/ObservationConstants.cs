@@ -32,6 +32,9 @@ public static class ObservationConstants
     /// <summary>Base path prefix inside the S3 bucket for species images.</summary>
     public const string S3SpeciesImagesBasePath = "assets/images/species";
 
+    /// <summary>Base path prefix inside the S3 bucket for product images.</summary>
+    public const string S3ProductImagesBasePath = "assets/images/products";
+
     // ── File Name Prefixes ────────────────────────────────────────────────────
 
     /// <summary>Filename prefix for observations uploaded from mobile.</summary>

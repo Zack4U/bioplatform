@@ -24,4 +24,18 @@ public interface IS3StorageService
         string objectKey,
         string contentType,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes an object from the configured S3 bucket.
+    /// </summary>
+    /// <param name="objectKey">The full S3 key of the object to delete.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    Task DeleteObjectAsync(string objectKey, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Extracts the S3 object key from a full public URL.
+    /// </summary>
+    /// <param name="publicUrl">The full HTTPS URL of the S3 object.</param>
+    /// <returns>The object key portion of the URL.</returns>
+    string ExtractObjectKey(string publicUrl);
 }
