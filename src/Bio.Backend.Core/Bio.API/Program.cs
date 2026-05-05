@@ -85,6 +85,17 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IGeographicDistributionReposito
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesImageRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.SpeciesImageRepository>();
 builder.Services.AddScoped<Bio.Application.Interfaces.IRelatedProductsQuery, Bio.Backend.Core.Bio.Infrastructure.Services.RelatedProductsQuery>();
 
+// Marketplace context (SQL Server) — Product, Order, Favorite, Address, Certification, AbsPermit
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductImageRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductImageRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductCategoryRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductCategoryRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductReviewRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductReviewRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IOrderRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.OrderRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IFavoriteRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.FavoriteRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IAddressRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.AddressRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICertificationRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CertificationRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IAbsPermitRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.AbsPermitRepository>();
+
 // AWS S3 — Species observation image uploads
 builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
 builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));
