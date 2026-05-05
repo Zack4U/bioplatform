@@ -17,7 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
     Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { ADMIN_PAGE_SIZE } from "@/lib/constants";
+
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal, Search } from "lucide-react";
 import { type ReactNode } from "react";

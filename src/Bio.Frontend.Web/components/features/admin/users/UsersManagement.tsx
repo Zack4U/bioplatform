@@ -21,7 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { USER_ROLES } from "@/lib/constants";
 import { useUsersManagement } from "@/hooks/features/admin/useUsersManagement";
 import type { UserAdminItem } from "@/types";
-import { Eye, Power, Trash2, Users } from "lucide-react";
+import { Eye, Power, Users } from "lucide-react";
 
 const columns: ColumnDef<UserAdminItem>[] = [
     {

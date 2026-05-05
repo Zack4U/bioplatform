@@ -15,7 +15,7 @@ import { Pagination } from "@/components/common";
 import { Skeleton } from "@/components/ui/skeleton";
 import { mockImages } from "@/lib/admin-mock";
 import type { ImageAdminItem } from "@/types";
-import { Check, Eye, Image, X } from "lucide-react";
+import { Check, Image as ImageIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 export function ImagesManagement() {
@@ -77,13 +77,14 @@ export function ImagesManagement() {
 
             {filtered.length === 0 ? (
                 <Card className="border-dashed"><CardContent className="flex flex-col items-center justify-center gap-4 p-12 text-center">
-                    <Image className="h-10 w-10 text-muted-foreground" /><p className="text-lg font-semibold">Sin imagenes</p>
+                    <ImageIcon className="h-10 w-10 text-muted-foreground" /><p className="text-lg font-semibold">Sin imagenes</p>
                 </CardContent></Card>
             ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {paginated.map((img) => (
                         <Card key={img.id} className="group overflow-hidden pt-0 cursor-pointer hover:shadow-md transition-shadow" onClick={() => { setSelected(img); setIsDetailOpen(true); }}>
                             <div className="relative aspect-[4/3] bg-muted">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img src={img.imageUrl} alt={img.speciesName} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
                                 <div className="absolute top-2 right-2">
                                     <StatusBadge label={img.isValidatedByExpert ? "Validada" : "Pendiente"} variant={img.isValidatedByExpert ? "success" : "warning"} />
@@ -109,6 +110,7 @@ export function ImagesManagement() {
                     {selected && (
                         <div className="space-y-4">
                             <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img src={selected.imageUrl} alt={selected.speciesName} className="h-full w-full object-contain" />
                             </div>
                             <div className="grid grid-cols-2 gap-4 text-sm">

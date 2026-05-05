@@ -7,7 +7,7 @@
 import { StatCard } from "@/components/common";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { RecentActivityItem, ResearcherMetrics } from "@/types";
-import { CheckCircle, Image, Leaf, TrendingUp } from "lucide-react";
+import { CheckCircle, Image as ImageIcon, Leaf, TrendingUp } from "lucide-react";
 import {
     Bar, BarChart, CartesianGrid, Cell, Pie, PieChart,
     ResponsiveContainer, Tooltip, XAxis, YAxis,
@@ -58,7 +58,7 @@ export function ResearcherDashboardView({ metrics, recentActivity }: Props) {
                 <StatCard
                     label="Imagenes Validadas"
                     value={metrics.imagesValidated}
-                    icon={<Image className="h-5 w-5" />}
+                    icon={<ImageIcon className="h-5 w-5" />}
                     trend={{ value: metrics.imagesGrowthPercent, label: "vs mes anterior" }}
                 />
                 <StatCard

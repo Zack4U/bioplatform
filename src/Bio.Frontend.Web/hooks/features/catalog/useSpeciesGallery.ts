@@ -107,11 +107,10 @@ export function useSpeciesGallery({
         };
     }, [allImages.length, revealedCount]);
 
-    // Reset revealed count when filter changes
-    useEffect(() => {
+    const handleSetOnlyValidated = useCallback((value: boolean | ((prev: boolean) => boolean)) => {
+        setOnlyValidated(value);
         setRevealedCount(0);
-    }, [onlyValidated]);
-
+    }, []);
     const visibleImages = useMemo(
         () => allImages.slice(0, revealedCount),
         [allImages, revealedCount],
@@ -210,7 +209,7 @@ export function useSpeciesGallery({
 
         /* Filter */
         onlyValidated,
-        setOnlyValidated,
+        setOnlyValidated: handleSetOnlyValidated,
 
         /* Lightbox controls */
         openLightbox,

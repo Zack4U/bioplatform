@@ -45,6 +45,7 @@ public class SpeciesImage
         Id = Guid.NewGuid();
         SpeciesId = speciesId;
         ImageUrl = imageUrl;
+        LicenseType = "CC-BY";
     }
 
     // ── Factory — User Observation ────────────────────────────────────────────

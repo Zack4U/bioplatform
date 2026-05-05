@@ -9,7 +9,7 @@ import { AdminDataTable, type ColumnDef, type RowAction } from "@/components/fea
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+
 import { ABS_PERMIT_STATUS, ABS_PERMIT_STATUS_LABELS, translateLabel } from "@/lib/constants";
 import { mockPermits } from "@/lib/admin-mock";
 import type { PermitAdminItem } from "@/types";

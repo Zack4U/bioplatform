@@ -190,8 +190,8 @@ public class UploadSpeciesObservationCommandHandler
     private static string GetFileExtension(string contentType) => contentType switch
     {
         "image/jpeg" => ".jpg",
-        "image/png"  => ".png",
+        "image/png" => ".png",
         "image/webp" => ".webp",
-        _            => ".jpg",
+        _ => ".jpg",
     };
 }

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
+
 import { REQUEST_STATUSES, REQUEST_TYPES, REQUEST_STATUS_LABELS, REQUEST_TYPE_LABELS, translateLabel } from "@/lib/constants";
 import { mockRequests } from "@/lib/admin-mock";
 import type { RequestAdminItem } from "@/types";
