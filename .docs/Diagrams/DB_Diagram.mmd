@@ -1,0 +1,106 @@
+graph TD
+  %% Entity-Relationship overview (grouped by database)
+
+  subgraph SQLServer["BioCommerce_Transactional (SQL Server)"]
+    Users((Users))
+    Roles((Roles))
+    UserRoles((UserRoles))
+    RefreshTokens((RefreshTokens))
+    ProductCategories((ProductCategories))
+    Products((Products))
+    ProductImages((ProductImages))
+    ProductReviews((ProductReviews))
+    Certifications((Certifications))
+    AbsPermits((AbsPermits))
+    TraceabilityBatches((TraceabilityBatches))
+    Orders((Orders))
+    OrderItems((OrderItems))
+    Addresses((Addresses))
+    Favorites((Favorites))
+    Notifications((Notifications))
+    ActivityLogs((ActivityLogs))
+    CommunityPosts((CommunityPosts))
+    CommunityPostComments((CommunityPostComments))
+    CommunityReactions((CommunityReactions))
+    UserConnections((UserConnections))
+    DirectThreads((DirectThreads))
+    DirectThreadParticipants((DirectThreadParticipants))
+    DirectMessages((DirectMessages))
+    DirectMessageReads((DirectMessageReads))
+  end
+
+  subgraph Postgres["BioCommerce_Scientific (PostgreSQL)"]
+    taxonomy((taxonomy))
+    species((species))
+    geographic_distribution((geographic_distribution))
+    species_images((species_images))
+    prediction_logs((prediction_logs))
+    ai_model_versions((ai_model_versions))
+    business_plans((business_plans))
+    rag_documents((rag_documents))
+    chat_sessions((chat_sessions))
+    chat_messages((chat_messages))
+  end
+
+  %% SQL Server relationships
+  Users --> UserRoles
+  Roles --> UserRoles
+  Users --> RefreshTokens
+
+  ProductCategories --> Products
+  Users --> Products
+  Products --> ProductImages
+  Products --> ProductReviews
+  Users --> ProductReviews
+  Products --> Certifications
+  Users --> AbsPermits
+  Products --> TraceabilityBatches
+
+  Users --> Orders
+  Orders --> OrderItems
+  Products --> OrderItems
+  Users --> Addresses
+  Addresses --> Orders
+
+  Users --> Favorites
+  Users --> Notifications
+  Users --> ActivityLogs
+
+  Users --> CommunityPosts
+  CommunityPosts --> CommunityPostComments
+  Users --> CommunityPostComments
+  Users --> CommunityReactions
+
+  Users --> UserConnections
+
+  DirectThreads --> DirectThreadParticipants
+  Users --> DirectThreadParticipants
+  DirectThreads --> DirectMessages
+  Users --> DirectMessages
+  DirectMessages --> DirectMessageReads
+  Users --> DirectMessageReads
+
+  %% PostgreSQL relationships
+  taxonomy --> species
+  species --> geographic_distribution
+  species --> species_images
+  species --> rag_documents
+  chat_sessions --> chat_messages
+
+  %% Logical foreign keys across databases (dashed)
+  Products -.-> species
+  AbsPermits -.-> species
+  Favorites -.-> species
+  species_images -.-> Users
+  prediction_logs -.-> Users
+  prediction_logs -.-> species
+  business_plans -.-> Users
+  business_plans -.-> species
+  chat_sessions -.-> Users
+
+  %% Visual grouping
+  classDef sql fill:#e8f2ff,stroke:#3366cc,stroke-width:1px,color:#0b1f44;
+  classDef pg fill:#ecfff2,stroke:#2d8a4d,stroke-width:1px,color:#0b2a16;
+
+  class Users,Roles,UserRoles,RefreshTokens,ProductCategories,Products,ProductImages,ProductReviews,Certifications,AbsPermits,TraceabilityBatches,Orders,OrderItems,Addresses,Favorites,Notifications,ActivityLogs,CommunityPosts,CommunityPostComments,CommunityReactions,UserConnections,DirectThreads,DirectThreadParticipants,DirectMessages,DirectMessageReads sql;
+  class taxonomy,species,geographic_distribution,species_images,prediction_logs,ai_model_versions,business_plans,rag_documents,chat_sessions,chat_messages pg;

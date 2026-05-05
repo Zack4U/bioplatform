@@ -104,8 +104,10 @@ _Productos derivados de la biodiversidad, listados en el marketplace._
 | BaseSpeciesId   | UNIQUEIDENTIFIER | Index, Not Null                  | **Logical FK** a PostgreSQL (Species). Especie base del producto. Critico para trazabilidad ABS. | c456...                                          |
 | CategoryId      | INT              | FK (ProductCategories), Nullable | Categoria del producto.                                                                          | 1                                                |
 | Name            | NVARCHAR(MAX)    | Not Null                         | Nombre comercial.                                                                                | Crema de Orquidea                                |
-| Description     | NVARCHAR(MAX)    | Not Null                         | Descripcion de marketing.                                                                        | Hidratante natural...                            |
-| Price           | DECIMAL(18,2)    | Not Null                         | Precio unitario en COP.                                                                          | 45000.00                                         |
+| Description     | NVARCHAR(MAX)    | Not Null                         | HTML sanitizado para marketing y ficha (imagenes como <img src="aws_url">).                   | <strong>Producto</strong> ...                    |
+| BasePrice       | DECIMAL(18,2)    | Not Null                         | Precio base en COP antes de ajustes comerciales.                                                 | 40000.00                                         |
+| SellPrice       | DECIMAL(18,2)    | Not Null                         | Precio de venta final en COP.                                                                    | 45000.00                                         |
+| Composition     | NVARCHAR(MAX)    | Nullable                         | JSON de composicion (ingredientes, porcentajes, origen); null si no aplica.                      | {"ingredients":[{"name":"Aloe","pct":30}]} |
 | StockQuantity   | INT              | Not Null                         | Inventario disponible.                                                                           | 50                                               |
 | Sku             | NVARCHAR(MAX)    | Nullable                         | Codigo de referencia unico (SKU).                                                                | CRE-ORQ-001                                      |
 | IsActive        | BIT              | Default 1                        | Indica si el producto esta visible en el marketplace.                                            | 1                                                |
@@ -290,6 +292,140 @@ _Notificaciones in-app para actualizaciones de ordenes, resenas, permisos y aler
 | IsRead           | BIT              | Default 0, Index        | Indica si fue leida.                                | 0                        |
 | CreatedAt        | DATETIME2        | Default GETUTCDATE()    | Fecha de creacion.                                  | 2025-02-20 14:00:00      |
 | ReadAt           | DATETIME2        | Nullable                | Fecha de lectura.                                   | 2025-02-20 14:05:00      |
+
+### **Tabla: ActivityLogs**
+
+_Registro centralizado de auditoria de actividad en la plataforma._
+
+| Campo         | Tipo de Dato     | Restricciones               | Descripcion                                                                 | Ejemplo                    |
+| :------------ | :--------------- | :-------------------------- | :-------------------------------------------------------------------------- | :------------------------- |
+| Id            | UNIQUEIDENTIFIER | PK                          | ID del log.                                                                 | log1...                    |
+| ActorUserId   | UNIQUEIDENTIFIER | FK (Users), Nullable, Index | Usuario que ejecuta la accion (null si es sistema).                         | a0ee...                    |
+| ActorType     | NVARCHAR(50)     | Not Null                    | Origen del actor: User, System, Service.                                    | User                       |
+| ActionType    | NVARCHAR(50)     | Not Null, Index             | Tipo: Insert, Update, Delete, Read, Login, Logout, Approve, Reject, Other.  | Update                     |
+| ImpactLevel   | NVARCHAR(20)     | Not Null, Index             | Impacto: Low, Medium, High, Critical.                                       | High                       |
+| TargetType    | NVARCHAR(50)     | Not Null, Index             | Entidad afectada: Product, Order, Species, AbsPermit, etc.                  | Product                    |
+| TargetId      | UNIQUEIDENTIFIER | Nullable, Index             | ID de la entidad afectada (Logical FK si aplica).                           | b123...                    |
+| Summary       | NVARCHAR(500)    | Not Null                    | Resumen humano de la accion.                                                | Producto actualizado       |
+| ChangeSet     | NVARCHAR(MAX)    | Nullable                    | JSON con diff de campos antes/despues.                                      | {"price":{"from":...}} |
+| Metadata      | NVARCHAR(MAX)    | Nullable                    | JSON con contexto extra (modulo, requestId, etc.).                           | {"module":"Marketplace"} |
+| IpAddress     | NVARCHAR(45)     | Nullable                    | IP del actor (IPv4/IPv6).                                                   | 190.24.1.10                |
+| UserAgent     | NVARCHAR(400)    | Nullable                    | User-Agent del cliente (si aplica).                                         | Mozilla/5.0 ...            |
+| CreatedAt     | DATETIME2        | Default GETUTCDATE()        | Fecha y hora del evento.                                                    | 2025-02-20 14:30:00        |
+
+---
+
+## **Contexto: Community & Networking**
+
+### **Tabla: CommunityPosts**
+
+_Publicaciones del foro comunitario y networking._
+
+| Campo        | Tipo de Dato     | Restricciones                     | Descripcion                                                              | Ejemplo               |
+| :----------- | :--------------- | :-------------------------------- | :----------------------------------------------------------------------- | :-------------------- |
+| Id           | UNIQUEIDENTIFIER | PK                                | ID de la publicacion.                                                    | post1...              |
+| AuthorUserId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index       | Autor de la publicacion.                                                 | a0ee...               |
+| Title        | NVARCHAR(200)    | Not Null                          | Titulo de la publicacion.                                                | Intercambio de semillas |
+| Content      | NVARCHAR(MAX)    | Not Null                          | HTML sanitizado (imagenes como <img src="aws_url">).                   | <strong>Busco</strong> alianzas... |
+| Category     | NVARCHAR(50)     | Nullable, Index                   | Categoria libre o predefinida.                                           | Networking            |
+| Status       | NVARCHAR(20)     | Default 'Published'               | Estado: Draft, Published, Archived, Hidden.                              | Published             |
+| IsPinned     | BIT              | Default 0                         | Si la publicacion esta fijada.                                           | 0                     |
+| LikesCount   | INT              | Default 0                         | Contador de reacciones positivas.                                        | 12                    |
+| DislikesCount| INT              | Default 0                         | Contador de reacciones negativas.                                        | 1                     |
+| CreatedAt    | DATETIME2        | Default GETUTCDATE()              | Fecha de creacion.                                                       | 2025-03-05 08:00:00   |
+| UpdatedAt    | DATETIME2        | Nullable                          | Ultima actualizacion.                                                    | 2025-03-05 10:00:00   |
+
+### **Tabla: CommunityPostComments**
+
+_Comentarios asociados a publicaciones del foro._
+
+| Campo        | Tipo de Dato     | Restricciones                     | Descripcion                                   | Ejemplo             |
+| :----------- | :--------------- | :-------------------------------- | :-------------------------------------------- | :------------------ |
+| Id           | UNIQUEIDENTIFIER | PK                                | ID del comentario.                            | comm1...            |
+| PostId       | UNIQUEIDENTIFIER | FK (CommunityPosts), Not Null     | Publicacion padre.                            | post1...            |
+| AuthorUserId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index       | Autor del comentario.                         | f111...             |
+| Content      | NVARCHAR(MAX)    | Not Null                          | HTML sanitizado (imagenes como <img src="aws_url">). | Estoy interesado... |
+| IsDeleted    | BIT              | Default 0                         | Soft delete.                                  | 0                   |
+| LikesCount   | INT              | Default 0                         | Contador de reacciones positivas.            | 3                   |
+| DislikesCount| INT              | Default 0                         | Contador de reacciones negativas.            | 0                   |
+| CreatedAt    | DATETIME2        | Default GETUTCDATE()              | Fecha de creacion.                            | 2025-03-05 10:15:00 |
+| UpdatedAt    | DATETIME2        | Nullable                          | Ultima actualizacion.                         | 2025-03-05 10:20:00 |
+
+### **Tabla: CommunityReactions**
+
+_Reacciones individuales para evitar votos duplicados (like/dislike) en publicaciones o comentarios._
+
+| Campo        | Tipo de Dato     | Restricciones                          | Descripcion                                         | Ejemplo        |
+| :----------- | :--------------- | :------------------------------------- | :-------------------------------------------------- | :------------- |
+| Id           | UNIQUEIDENTIFIER | PK                                     | ID de la reaccion.                                  | react1...      |
+| UserId       | UNIQUEIDENTIFIER | FK (Users), Not Null, Index            | Usuario que reacciona.                              | a0ee...        |
+| TargetType   | NVARCHAR(20)     | Not Null, Index                        | Post, Comment.                                      | Post           |
+| TargetId     | UNIQUEIDENTIFIER | Not Null, Index                        | ID de la publicacion o comentario.                  | post1...       |
+| ReactionType | NVARCHAR(10)     | Not Null                               | Like, Dislike.                                      | Like           |
+| CreatedAt    | DATETIME2        | Default GETUTCDATE()                   | Fecha de la reaccion.                               | 2025-03-05     |
+
+**Unique Index:** `(UserId, TargetType, TargetId)` — un usuario solo puede reaccionar una vez por entidad.
+
+### **Tabla: UserConnections**
+
+_Solicitudes y conexiones de networking entre usuarios._
+
+| Campo       | Tipo de Dato     | Restricciones               | Descripcion                                           | Ejemplo                   |
+| :---------- | :--------------- | :-------------------------- | :---------------------------------------------------- | :------------------------ |
+| Id          | UNIQUEIDENTIFIER | PK                          | ID de la conexion.                                    | conn1...                  |
+| RequesterId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Usuario que solicita la conexion.                    | a0ee...                   |
+| AddresseeId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Usuario que recibe la solicitud.                     | f111...                   |
+| Status      | NVARCHAR(20)     | Not Null, Index             | Pending, Accepted, Rejected, Blocked.                | Pending                  |
+| Message     | NVARCHAR(500)    | Nullable                    | Mensaje inicial de la solicitud.                      | Interesado en colaborar. |
+| CreatedAt   | DATETIME2        | Default GETUTCDATE()        | Fecha de creacion.                                   | 2025-03-05 09:00:00      |
+| RespondedAt | DATETIME2        | Nullable                    | Fecha de respuesta.                                  | 2025-03-05 12:00:00      |
+
+### **Tabla: DirectThreads**
+
+_Conversaciones directas entre usuarios (1:1 o grupos de networking)._ 
+
+| Campo      | Tipo de Dato     | Restricciones        | Descripcion                        | Ejemplo             |
+| :--------- | :--------------- | :------------------- | :--------------------------------- | :------------------ |
+| Id         | UNIQUEIDENTIFIER | PK                   | ID del hilo.                       | thread1...          |
+| Title      | NVARCHAR(200)    | Nullable             | Titulo opcional del hilo.          | Alianza eco         |
+| ThreadType | NVARCHAR(20)     | Not Null             | Direct, Group.                     | Direct              |
+| CreatedAt  | DATETIME2        | Default GETUTCDATE() | Fecha de creacion.                 | 2025-03-05 09:10:00 |
+| UpdatedAt  | DATETIME2        | Nullable             | Ultima actividad del hilo.         | 2025-03-05 09:30:00 |
+
+### **Tabla: DirectThreadParticipants**
+
+_Participantes de cada hilo de mensajes._
+
+| Campo    | Tipo de Dato     | Restricciones                           | Descripcion                    | Ejemplo     |
+| :------- | :--------------- | :-------------------------------------- | :----------------------------- | :---------- |
+| ThreadId | UNIQUEIDENTIFIER | PK (compuesta), FK (DirectThreads)      | Hilo asociado.                 | thread1...  |
+| UserId   | UNIQUEIDENTIFIER | PK (compuesta), FK (Users)              | Usuario participante.          | a0ee...     |
+| JoinedAt | DATETIME2        | Default GETUTCDATE()                    | Fecha de ingreso.              | 2025-03-05  |
+| LeftAt   | DATETIME2        | Nullable                                | Fecha de salida (si aplica).   | 2025-03-10  |
+| IsMuted  | BIT              | Default 0                               | Si el usuario silencio el hilo.| 0          |
+
+### **Tabla: DirectMessages**
+
+_Mensajes individuales dentro de un hilo._
+
+| Campo        | Tipo de Dato     | Restricciones                     | Descripcion                                   | Ejemplo                 |
+| :----------- | :--------------- | :-------------------------------- | :-------------------------------------------- | :---------------------- |
+| Id           | UNIQUEIDENTIFIER | PK                                | ID del mensaje.                               | msg1...                 |
+| ThreadId     | UNIQUEIDENTIFIER | FK (DirectThreads), Not Null      | Hilo padre.                                   | thread1...              |
+| SenderUserId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index       | Emisor del mensaje.                           | a0ee...                 |
+| Content      | NVARCHAR(MAX)    | Not Null                          | HTML sanitizado (imagenes como <img src="aws_url">). | Hola, revisemos la idea |
+| IsDeleted    | BIT              | Default 0                         | Soft delete.                                  | 0                       |
+| CreatedAt    | DATETIME2        | Default GETUTCDATE()              | Fecha de envio.                               | 2025-03-05 09:20:00     |
+
+### **Tabla: DirectMessageReads**
+
+_Registro de lectura por usuario para mensajes directos._
+
+| Campo     | Tipo de Dato     | Restricciones                             | Descripcion                  | Ejemplo             |
+| :-------- | :--------------- | :---------------------------------------- | :--------------------------- | :------------------ |
+| MessageId | UNIQUEIDENTIFIER | PK (compuesta), FK (DirectMessages)       | Mensaje leido.               | msg1...             |
+| UserId    | UNIQUEIDENTIFIER | PK (compuesta), FK (Users)                | Usuario que leyo el mensaje. | f111...             |
+| ReadAt    | DATETIME2        | Default GETUTCDATE()                      | Fecha de lectura.            | 2025-03-05 09:21:00 |
 
 ---
 
