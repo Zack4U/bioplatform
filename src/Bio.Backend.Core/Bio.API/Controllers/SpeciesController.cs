@@ -5,11 +5,13 @@ using Bio.Application.Features.Species.Commands;
 using Bio.Application.Features.Species.Commands.CreateSpecies;
 using Bio.Application.Features.Species.Commands.DeleteSpecies;
 using Bio.Application.Features.Species.Commands.UpdateSpecies;
+using Bio.Application.Features.Species.Commands.UploadSpeciesObservation;
 using Bio.Application.Features.Species.Queries.GetAllSpecies;
 using Bio.Application.Features.Species.Queries.GetSpeciesById;
 using Bio.Application.Features.Species.Queries.GetSpeciesBySlug;
 using Bio.Application.Features.Species.Queries.GetSpeciesDistributions;
 using Bio.Application.Features.Species.Queries.GetSpeciesFilterMeta;
+using Bio.Application.Features.Species.Queries.GetSpeciesImages;
 using Bio.Domain.Constants;
 using MediatR;
 using System.Security.Claims;
@@ -97,6 +99,71 @@ public class SpeciesController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>Obtiene las imágenes de una especie con paginación y filtro de validación.</summary>
+    [HttpGet("{id:guid}/images")]
+    [ProducesResponseType(typeof(PaginatedResult<SpeciesImageDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetImages(
+        Guid id,
+        [FromQuery] bool onlyValidatedByExpert = true,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20)
+    {
+        var result = await _mediator.Send(new GetSpeciesImagesQuery(id, onlyValidatedByExpert, page, pageSize));
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Contribuye una nueva observación fotográfica de una especie.
+    /// Sube la imagen a S3 y registra los metadatos en la base de datos.
+    /// Disponible para cualquier usuario autenticado, sin restricción de rol.
+    /// </summary>
+    [HttpPost("{id:guid}/observations")]
+    [Authorize]
+    [Consumes("multipart/form-data")]
+    [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UploadObservation(
+        Guid id,
+        IFormFile file,
+        [FromForm] UploadObservationRequest request)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? User.FindFirst("sub")?.Value;
+
+        if (!Guid.TryParse(userIdClaim, out var uploaderUserId))
+            return Unauthorized(new { error = "User identity could not be resolved from token." });
+
+        if (file is null || file.Length == 0)
+            return BadRequest(new { error = "An image file is required." });
+
+        await using var fileStream = file.OpenReadStream();
+
+        var command = new UploadSpeciesObservationCommand
+        {
+            SpeciesId = id,
+            FileStream = fileStream,
+            ContentType = file.ContentType,
+            OriginalFileName = file.FileName,
+            UploaderUserId = uploaderUserId,
+            LicenseType = request.LicenseType,
+            SourceType = request.SourceType,
+            Device = request.Device,
+            DeviceType = request.DeviceType,
+            OperatingSystem = request.OperatingSystem,
+            Latitude = request.Latitude,
+            Longitude = request.Longitude,
+            SpeciesPredicted = request.SpeciesPredicted,
+            ConfidenceScore = request.ConfidenceScore,
+            ModelVersion = request.ModelVersion,
+        };
+
+        var result = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetImages), new { id }, result);
+    }
+
     /// <summary>Crea una nueva especie.</summary>
     [HttpPost]
     [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
@@ -168,6 +235,92 @@ public class SpeciesController : ControllerBase
         });
 
         return Accepted(new { jobId, message = "CSV import job enqueued successfully." });
+    }
+
+    /// <summary>
+    /// Carga masiva de Potencial Económico desde un archivo JSON.
+    /// El archivo debe seguir la estructura de species_economic_potential.json.
+    /// Cada entrada se empareja por scientific_name y reemplaza los registros existentes.
+    /// El proceso se ejecuta en segundo plano (Hangfire).
+    /// </summary>
+    [HttpPost("import-economic-potential")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> ImportEconomicPotential(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { error = "A JSON file is required." });
+
+        if (!file.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { error = "Only JSON files are accepted." });
+
+        var tempPath = Path.Combine(Path.GetTempPath(), $"bio-economic-{Guid.NewGuid()}.json");
+        await using (var stream = new FileStream(tempPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? User.FindFirst("sub")?.Value;
+        var userId = Guid.TryParse(userIdClaim, out var parsedId) ? parsedId : Guid.Empty;
+
+        var jobId = await _mediator.Send(new ImportSpeciesEconomicPotentialCommand
+        {
+            FilePath = tempPath,
+            UserId = userId
+        });
+
+        return Accepted(new
+        {
+            jobId,
+            message = "Economic potential import job enqueued successfully.",
+            hint = "Se actualizarán los registros de species_economic_potentials para cada especie encontrada."
+        });
+    }
+
+    /// <summary>
+    /// Carga masiva de Usos Tradicionales desde un archivo JSON.
+    /// El archivo debe seguir la estructura de species_traditional_uses.json.
+    /// Cada entrada se empareja por scientific_name y reemplaza los registros existentes.
+    /// El proceso se ejecuta en segundo plano (Hangfire).
+    /// </summary>
+    [HttpPost("import-traditional-uses")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> ImportTraditionalUses(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest(new { error = "A JSON file is required." });
+
+        if (!file.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { error = "Only JSON files are accepted." });
+
+        var tempPath = Path.Combine(Path.GetTempPath(), $"bio-traditional-{Guid.NewGuid()}.json");
+        await using (var stream = new FileStream(tempPath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+            ?? User.FindFirst("sub")?.Value;
+        var userId = Guid.TryParse(userIdClaim, out var parsedId) ? parsedId : Guid.Empty;
+
+        var jobId = await _mediator.Send(new ImportSpeciesTraditionalUsesCommand
+        {
+            FilePath = tempPath,
+            UserId = userId
+        });
+
+        return Accepted(new
+        {
+            jobId,
+            message = "Traditional uses import job enqueued successfully.",
+            hint = "Se actualizarán los registros de species_traditional_uses para cada especie encontrada."
+        });
     }
 
     /// <summary>

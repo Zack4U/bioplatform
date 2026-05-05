@@ -44,7 +44,7 @@ OUTPUT_DIR = PROJECT_ROOT / "data" / "species_catalog"
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from app.core.config import get_settings
+from app.core.config import get_settings  # noqa: E402
 
 DEFAULT_SQL_OUTPUT = OUTPUT_DIR / "species_thumbnail_wikipedia_updates.sql"
 DEFAULT_REPORT_OUTPUT = OUTPUT_DIR / "species_thumbnail_wikipedia_report.json"

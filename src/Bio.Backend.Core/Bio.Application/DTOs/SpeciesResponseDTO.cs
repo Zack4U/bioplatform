@@ -1,7 +1,8 @@
 namespace Bio.Application.DTOs;
 
 /// <summary>
-/// DTO de respuesta para Species (incluye taxonomía si existe).
+/// DTO de respuesta resumida para Species (incluye taxonomía). Sin datos de enriquecimiento.
+/// Para el detalle completo con potenciales y usos, usa SpeciesDetailDTO.
 /// </summary>
 public record SpeciesResponseDTO(
     Guid Id,
@@ -13,8 +14,6 @@ public record SpeciesResponseDTO(
     string? CommonName,
     string? Description,
     string? EcologicalInfo,
-    string? TraditionalUses,
-    string? EconomicPotential,
     string? ConservationStatus,
     string? AltitudeRange,
     bool LegalStatus,

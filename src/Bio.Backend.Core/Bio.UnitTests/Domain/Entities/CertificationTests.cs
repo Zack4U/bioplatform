@@ -10,32 +10,37 @@ namespace Bio.UnitTests.Domain.Entities;
 public class CertificationTests
 {
     private static readonly Guid ProductId = Guid.NewGuid();
-    private const string CertificationType = "Organic";
-    private const string CertificationBody = "Ecocert";
-    private static readonly DateTime IssueDate = DateTime.UtcNow.AddMonths(-1);
+    private const string Name = "Negocios Verdes";
+    private const string CertificationType = "Sustainability";
+    private const string IssuingBody = "MinAmbiente";
+    private static readonly DateTime IssuedAt = new(2025, 1, 15, 0, 0, 0, DateTimeKind.Utc);
 
     /// <summary>
     /// Tests for the initialization of the Certification entity via its constructor.
     /// </summary>
-    public class Initialization
+    public class Constructor : CertificationTests
     {
-        /// <summary>
-        /// Verifies that a Certification is initialized with the correct properties.
-        /// </summary>
         [Fact]
-        public void ShouldSetProperties_WhenCreated()
+        public void ShouldInitializeWithCorrectProperties()
         {
-            // Act
-            var certification = new Certification(ProductId, CertificationType, CertificationBody, IssueDate);
+            var certification = new Certification(
+                ProductId, Name, CertificationType, IssuingBody, IssuedAt,
+                certificateNumber: "NV-2025-001",
+                documentUrl: "https://cdn.example.com/certs/nv.pdf",
+                logoUrl: "https://cdn.example.com/certs/nv-logo.png",
+                verificationCode: "NV-2025-00421");
 
-            // Assert
             certification.Id.Should().NotBeEmpty();
             certification.ProductId.Should().Be(ProductId);
+            certification.Name.Should().Be(Name);
             certification.CertificationType.Should().Be(CertificationType);
-            certification.CertificationBody.Should().Be(CertificationBody);
-            certification.IssueDate.Should().Be(IssueDate);
+            certification.IssuingBody.Should().Be(IssuingBody);
+            certification.IssuedAt.Should().Be(IssuedAt);
+            certification.CertificateNumber.Should().Be("NV-2025-001");
             certification.Status.Should().Be("Active");
-            certification.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+            certification.DocumentUrl.Should().Be("https://cdn.example.com/certs/nv.pdf");
+            certification.LogoUrl.Should().Be("https://cdn.example.com/certs/nv-logo.png");
+            certification.VerificationCode.Should().Be("NV-2025-00421");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CsvHelper;
@@ -36,6 +37,10 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         _unitOfWork = unitOfWork;
         _dbContext = dbContext;
     }
+
+    // =====================================================================
+    // CSV IMPORT — Carga masiva de especies desde archivo CSV
+    // =====================================================================
 
     public async Task ProcessCsvImportAsync(string filePath, Guid userId)
     {
@@ -72,19 +77,19 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
 
                 if (currentBatch.Count >= batchSize)
                 {
-                    var (processed, skipped) = await ProcessBatchAsync(currentBatch, userId);
+                    var (processed, skipped) = await ProcessCsvBatchAsync(currentBatch, userId);
                     totalProcessed += processed;
                     totalSkipped += skipped;
                     currentBatch.Clear();
 
-                    // Clear EF change tracker to prevent memory/performance degradation across batches
+                    // Clear EF change tracker to prevent memory/performance degradation
                     _dbContext.ChangeTracker.Clear();
                 }
             }
 
             if (currentBatch.Count > 0)
             {
-                var (processed, skipped) = await ProcessBatchAsync(currentBatch, userId);
+                var (processed, skipped) = await ProcessCsvBatchAsync(currentBatch, userId);
                 totalProcessed += processed;
                 totalSkipped += skipped;
             }
@@ -96,21 +101,18 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to process CSV file {FilePath}", filePath);
-            throw; // Rethrow to let Hangfire mark the job as Failed and apply retry logic
+            throw;
         }
         finally
         {
-            // Clean up the temporary file after processing to save disk space
             if (File.Exists(filePath))
-            {
                 File.Delete(filePath);
-            }
         }
     }
 
-    internal async Task<(int Processed, int Skipped)> ProcessBatchAsync(List<SpeciesCsvRecord> batch, Guid userId)
+    internal async Task<(int Processed, int Skipped)> ProcessCsvBatchAsync(List<SpeciesCsvRecord> batch, Guid userId)
     {
-        _logger.LogInformation("Processing batch of {Count} records", batch.Count);
+        _logger.LogInformation("Processing CSV batch of {Count} records", batch.Count);
 
         // 1. Pre-filter records with empty ScientificName
         var validRecords = new List<SpeciesCsvRecord>();
@@ -130,9 +132,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         }
 
         if (validRecords.Count == 0)
-        {
             return (0, skipped);
-        }
 
         // 2. Bulk duplicate check — single DB query instead of N queries
         var allNames = validRecords.Select(r => r.ScientificName.Trim()).Distinct().ToList();
@@ -153,22 +153,18 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         }
 
         if (newRecords.Count == 0)
-        {
             return (0, skipped);
-        }
 
-        // 3. Process taxonomies with in-memory cache to avoid repeated lookups
+        // 3. Process taxonomies with in-memory cache
         var taxonomyCache = new Dictionary<string, Taxonomy>();
         var speciesEntities = new List<Species>();
 
         foreach (var record in newRecords)
         {
-            // Build a cache key from the taxonomy fields
             var taxonomyKey = BuildTaxonomyKey(record);
 
             if (!taxonomyCache.TryGetValue(taxonomyKey, out var taxonomy))
             {
-                // Query DB only once per unique taxonomy combination
                 taxonomy = await _taxonomyRepository.GetByFieldsAsync(
                     NullIfEmpty(record.Kingdom),
                     NullIfEmpty(record.Phylum),
@@ -204,8 +200,6 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
                 commonName: NullIfEmpty(record.CommonName),
                 description: NullIfEmpty(record.Description),
                 ecologicalInfo: NullIfEmpty(record.EcologicalInfo),
-                traditionalUses: NullIfEmpty(record.TraditionalUses),
-                economicPotential: NullIfEmpty(record.EconomicPotential),
                 conservationStatus: NullIfEmpty(record.ConservationStatus),
                 altitudeRange: NullIfEmpty(record.AltitudeRange),
                 legalStatus: record.LegalStatus,
@@ -221,15 +215,319 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         }
 
         _logger.LogInformation(
-            "Batch complete. Inserted: {Inserted}, Skipped: {Skipped}",
+            "CSV batch complete. Inserted: {Inserted}, Skipped: {Skipped}",
             speciesEntities.Count, skipped);
 
         return (speciesEntities.Count, skipped);
     }
 
+    // =====================================================================
+    // ECONOMIC POTENTIAL — JSON bulk update → table species_economic_potentials
+    // =====================================================================
+
     /// <summary>
-    /// Builds a composite cache key from the taxonomy fields of a CSV record.
+    /// Lee el archivo JSON con la estructura de species_economic_potential.json,
+    /// busca cada especie por scientific_name y reemplaza sus registros en
+    /// la tabla species_economic_potentials (delete + insert idempotente).
+    ///
+    /// Estructura del JSON:
+    /// [{ "scientific_name": "...", "economic_potential": [...], "confidence": "..." }]
+    ///
+    /// Cada elemento del array "economic_potential":
+    /// { "sector": "...", "products": [...], "active_properties": [...], "description": "...",
+    ///   "market_value": "...", "sustainability_level": "..." }
     /// </summary>
+    public async Task ProcessEconomicPotentialImportAsync(string filePath, Guid userId)
+    {
+        _logger.LogInformation(
+            "Starting Economic Potential bulk import from {FilePath} by User {UserId}", filePath, userId);
+
+        if (!File.Exists(filePath))
+        {
+            _logger.LogError("File not found at {FilePath}", filePath);
+            return;
+        }
+
+        try
+        {
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                AllowTrailingCommas = true,
+            };
+
+            await using var stream = File.OpenRead(filePath);
+            var rawRecords = await JsonSerializer.DeserializeAsync<List<JsonElement>>(stream, jsonOptions)
+                ?? new List<JsonElement>();
+
+            int totalUpdated = 0;
+            int totalSkipped = 0;
+
+            const int batchSize = 500;
+            for (int offset = 0; offset < rawRecords.Count; offset += batchSize)
+            {
+                var batch = rawRecords.Skip(offset).Take(batchSize).ToList();
+                var (updated, skipped) = await ProcessEconomicPotentialBatchAsync(batch, jsonOptions);
+                totalUpdated += updated;
+                totalSkipped += skipped;
+
+                _dbContext.ChangeTracker.Clear();
+            }
+
+            _logger.LogInformation(
+                "Economic Potential import complete. Updated: {Updated}, Skipped (not found): {Skipped}",
+                totalUpdated, totalSkipped);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to process economic potential file {FilePath}", filePath);
+            throw;
+        }
+        finally
+        {
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+        }
+    }
+
+    internal async Task<(int Updated, int Skipped)> ProcessEconomicPotentialBatchAsync(
+        List<JsonElement> batch, JsonSerializerOptions options)
+    {
+        int updated = 0;
+        int skipped = 0;
+
+        // Pre-resolve names for bulk lookup
+        var names = ExtractScientificNames(batch);
+        var existingNames = await _speciesRepository.ExistingScientificNamesAsync(names);
+
+        foreach (var element in batch)
+        {
+            var scientificName = GetScientificName(element);
+            if (scientificName == null)
+            {
+                skipped++;
+                continue;
+            }
+
+            if (!existingNames.Contains(scientificName))
+            {
+                _logger.LogDebug("Economic potential: '{Name}' not found in DB — skipped.", scientificName);
+                skipped++;
+                continue;
+            }
+
+            if (!element.TryGetProperty("economic_potential", out var potentialArrayEl)
+                || potentialArrayEl.ValueKind != JsonValueKind.Array)
+            {
+                _logger.LogDebug("Economic potential: '{Name}' has no economic_potential array — skipped.", scientificName);
+                skipped++;
+                continue;
+            }
+
+            var confidence = element.TryGetProperty("confidence", out var confEl)
+                ? confEl.GetString() ?? "medium"
+                : "medium";
+
+            var species = await _speciesRepository.GetByScientificNameAsync(scientificName);
+            if (species == null)
+            {
+                skipped++;
+                continue;
+            }
+
+            var potentials = new List<SpeciesEconomicPotential>();
+
+            foreach (var item in potentialArrayEl.EnumerateArray())
+            {
+                var sector = item.TryGetProperty("sector", out var sEl) ? sEl.GetString()?.Trim() : null;
+                if (string.IsNullOrWhiteSpace(sector)) continue;
+
+                var products = ExtractStringArray(item, "products");
+                var activeProperties = ExtractStringArray(item, "active_properties");
+                var description = item.TryGetProperty("description", out var dEl) ? dEl.GetString() : null;
+                var marketValue = item.TryGetProperty("market_value", out var mvEl) ? mvEl.GetString() ?? "" : "";
+                var sustainabilityLevel = item.TryGetProperty("sustainability_level", out var slEl) ? slEl.GetString() ?? "" : "";
+
+                potentials.Add(new SpeciesEconomicPotential(
+                    speciesId: species.Id,
+                    sector: sector,
+                    products: products,
+                    activeProperties: activeProperties.Length > 0 ? activeProperties : null,
+                    description: description,
+                    marketValue: marketValue,
+                    sustainabilityLevel: sustainabilityLevel,
+                    confidence: confidence));
+            }
+
+            await _speciesRepository.BulkReplaceEconomicPotentialsAsync(species.Id, potentials);
+            await _unitOfWork.SaveChangesAsync();
+
+            updated++;
+        }
+
+        _logger.LogInformation(
+            "Economic potential batch complete. Updated: {Updated}, Skipped: {Skipped}", updated, skipped);
+
+        return (updated, skipped);
+    }
+
+    // =====================================================================
+    // TRADITIONAL USES — JSON bulk update → table species_traditional_uses
+    // =====================================================================
+
+    /// <summary>
+    /// Lee el archivo JSON con la estructura de species_traditional_uses.json,
+    /// busca cada especie por scientific_name y reemplaza sus registros en
+    /// la tabla species_traditional_uses (delete + insert idempotente).
+    ///
+    /// Estructura del JSON:
+    /// [{ "scientific_name": "...", "traditional_uses": [...], "confidence": "..." }]
+    ///
+    /// Cada elemento del array "traditional_uses":
+    /// { "part": "...", "category": [...], "specific_purpose": "...",
+    ///   "preparation_method": "...", "description": "...",
+    ///   "community": "...", "traditional_warnings": "..." }
+    /// </summary>
+    public async Task ProcessTraditionalUsesImportAsync(string filePath, Guid userId)
+    {
+        _logger.LogInformation(
+            "Starting Traditional Uses bulk import from {FilePath} by User {UserId}", filePath, userId);
+
+        if (!File.Exists(filePath))
+        {
+            _logger.LogError("File not found at {FilePath}", filePath);
+            return;
+        }
+
+        try
+        {
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                AllowTrailingCommas = true,
+            };
+
+            await using var stream = File.OpenRead(filePath);
+            var rawRecords = await JsonSerializer.DeserializeAsync<List<JsonElement>>(stream, jsonOptions)
+                ?? new List<JsonElement>();
+
+            int totalUpdated = 0;
+            int totalSkipped = 0;
+
+            const int batchSize = 500;
+            for (int offset = 0; offset < rawRecords.Count; offset += batchSize)
+            {
+                var batch = rawRecords.Skip(offset).Take(batchSize).ToList();
+                var (updated, skipped) = await ProcessTraditionalUsesBatchAsync(batch, jsonOptions);
+                totalUpdated += updated;
+                totalSkipped += skipped;
+
+                _dbContext.ChangeTracker.Clear();
+            }
+
+            _logger.LogInformation(
+                "Traditional Uses import complete. Updated: {Updated}, Skipped (not found): {Skipped}",
+                totalUpdated, totalSkipped);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to process traditional uses file {FilePath}", filePath);
+            throw;
+        }
+        finally
+        {
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+        }
+    }
+
+    internal async Task<(int Updated, int Skipped)> ProcessTraditionalUsesBatchAsync(
+        List<JsonElement> batch, JsonSerializerOptions options)
+    {
+        int updated = 0;
+        int skipped = 0;
+
+        var names = ExtractScientificNames(batch);
+        var existingNames = await _speciesRepository.ExistingScientificNamesAsync(names);
+
+        foreach (var element in batch)
+        {
+            var scientificName = GetScientificName(element);
+            if (scientificName == null)
+            {
+                skipped++;
+                continue;
+            }
+
+            if (!existingNames.Contains(scientificName))
+            {
+                _logger.LogDebug("Traditional uses: '{Name}' not found in DB — skipped.", scientificName);
+                skipped++;
+                continue;
+            }
+
+            if (!element.TryGetProperty("traditional_uses", out var usesArrayEl)
+                || usesArrayEl.ValueKind != JsonValueKind.Array)
+            {
+                _logger.LogDebug("Traditional uses: '{Name}' has no traditional_uses array — skipped.", scientificName);
+                skipped++;
+                continue;
+            }
+
+            var confidence = element.TryGetProperty("confidence", out var confEl)
+                ? confEl.GetString() ?? "medium"
+                : "medium";
+
+            var species = await _speciesRepository.GetByScientificNameAsync(scientificName);
+            if (species == null)
+            {
+                skipped++;
+                continue;
+            }
+
+            var uses = new List<SpeciesTraditionalUse>();
+
+            foreach (var item in usesArrayEl.EnumerateArray())
+            {
+                var part = item.TryGetProperty("part", out var pEl) ? pEl.GetString()?.Trim() : null;
+                if (string.IsNullOrWhiteSpace(part)) continue;
+
+                var category = ExtractStringArray(item, "category");
+                var specificPurpose = item.TryGetProperty("specific_purpose", out var spEl) ? spEl.GetString() : null;
+                var preparationMethod = item.TryGetProperty("preparation_method", out var pmEl) ? pmEl.GetString() : null;
+                var description = item.TryGetProperty("description", out var dEl) ? dEl.GetString() : null;
+                var community = item.TryGetProperty("community", out var cEl) ? cEl.GetString() : null;
+                var warnings = item.TryGetProperty("traditional_warnings", out var wEl) ? wEl.GetString() : null;
+
+                uses.Add(new SpeciesTraditionalUse(
+                    speciesId: species.Id,
+                    part: part,
+                    category: category,
+                    specificPurpose: specificPurpose,
+                    preparationMethod: preparationMethod,
+                    description: description,
+                    community: community,
+                    traditionalWarnings: warnings,
+                    confidence: confidence));
+            }
+
+            await _speciesRepository.BulkReplaceTraditionalUsesAsync(species.Id, uses);
+            await _unitOfWork.SaveChangesAsync();
+
+            updated++;
+        }
+
+        _logger.LogInformation(
+            "Traditional uses batch complete. Updated: {Updated}, Skipped: {Skipped}", updated, skipped);
+
+        return (updated, skipped);
+    }
+
+    // =====================================================================
+    // HELPERS PRIVADOS
+    // =====================================================================
+
+    /// <summary>Builds a composite cache key from the taxonomy fields of a CSV record.</summary>
     internal static string BuildTaxonomyKey(SpeciesCsvRecord record)
     {
         return string.Join("|",
@@ -256,7 +554,33 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
     }
 
     private static string? NullIfEmpty(string? value)
+        => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
+    private static string? GetScientificName(JsonElement element)
     {
-        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        if (!element.TryGetProperty("scientific_name", out var nameEl)) return null;
+        var name = nameEl.GetString()?.Trim();
+        return string.IsNullOrWhiteSpace(name) ? null : name;
+    }
+
+    private static List<string> ExtractScientificNames(List<JsonElement> batch)
+        => batch
+            .Where(e => e.TryGetProperty("scientific_name", out _))
+            .Select(e => e.GetProperty("scientific_name").GetString()?.Trim() ?? string.Empty)
+            .Where(n => !string.IsNullOrWhiteSpace(n))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+    private static string[] ExtractStringArray(JsonElement element, string propertyName)
+    {
+        if (!element.TryGetProperty(propertyName, out var arrayEl)
+            || arrayEl.ValueKind != JsonValueKind.Array)
+            return Array.Empty<string>();
+
+        return arrayEl.EnumerateArray()
+            .Where(e => e.ValueKind == JsonValueKind.String)
+            .Select(e => e.GetString() ?? string.Empty)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .ToArray();
     }
 }

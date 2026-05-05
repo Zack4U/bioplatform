@@ -6,6 +6,7 @@ using Bio.Application.Services;
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Bio.Backend.Core.Bio.Infrastructure.Services;
+using Bio.Domain.Constants;
 using Bio.Domain.Interfaces;
 using FluentValidation;
 using MediatR;
@@ -81,7 +82,19 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesRepository, Bio.Backend
 builder.Services.AddScoped<Bio.Domain.Interfaces.ITaxonomyRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.TaxonomyRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.IScientificUnitOfWork, Bio.Backend.Core.Bio.Infrastructure.Persistence.ScientificUnitOfWork>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.IGeographicDistributionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.GeographicDistributionRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesImageRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.SpeciesImageRepository>();
 builder.Services.AddScoped<Bio.Application.Interfaces.IRelatedProductsQuery, Bio.Backend.Core.Bio.Infrastructure.Services.RelatedProductsQuery>();
+
+// AWS S3 — Species observation image uploads
+builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
+builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));
+builder.Services.AddScoped<IS3StorageService, S3StorageService>();
+
+// Configure multipart form-data size limit to allow observation image uploads
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = ObservationConstants.MaxFileSizeBytes;
+});
 
 // Hangfire — background job processing with Redis storage
 var redisConnection = builder.Configuration.GetConnectionString("RedisConnection")

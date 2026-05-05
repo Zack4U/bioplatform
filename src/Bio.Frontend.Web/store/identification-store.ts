@@ -5,7 +5,7 @@
  * can review past identifications without hitting the backend.
  *
  * Uses Zustand `persist` middleware for automatic localStorage sync.
- * Max 20 entries — oldest entries are evicted on overflow.
+ * Max 10 entries — oldest entries are evicted on overflow.
  *
  * @module store/identification-store
  */
@@ -40,7 +40,7 @@ interface IdentificationState {
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-const MAX_HISTORY_ENTRIES = 20;
+const MAX_HISTORY_ENTRIES = 10;
 
 // ── Store ────────────────────────────────────────────────────────────────────
 

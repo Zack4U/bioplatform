@@ -41,8 +41,6 @@ async def get_species_by_scientific_name(
             s.common_name,
             s.description,
             s.ecological_info,
-            s.traditional_uses,
-            s.economic_potential,
             s.conservation_status,
             s.is_sensitive,
             s.thumbnail_url,
@@ -89,8 +87,6 @@ async def get_species_by_id(species_id: UUID) -> Optional[dict[str, Any]]:
             s.common_name,
             s.description,
             s.ecological_info,
-            s.traditional_uses,
-            s.economic_potential,
             s.conservation_status,
             s.is_sensitive,
             s.thumbnail_url,
@@ -176,10 +172,10 @@ async def log_prediction(
     import json
 
     query = sa.text("""
-        INSERT INTO "PredictionLogs"
-            ("Id", "UserId", "ImageInputUrl", "RawPredictionResult",
-             "ConfidenceScore", "TopPredictionSpeciesId",
-             "ModelVersion", "ProcessingTimeMs", "CreatedAt")
+        INSERT INTO prediction_logs
+            (id, user_id, image_input_url, raw_prediction_result,
+             confidence_score, top_prediction_species_id,
+             model_version, processing_time_ms, created_at)
         VALUES
             (gen_random_uuid(), CAST(:uid AS uuid), :img_url, CAST(:raw AS jsonb),
              :conf, CAST(:pred_sid AS uuid),

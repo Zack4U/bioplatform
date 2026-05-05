@@ -48,6 +48,8 @@ public class SpeciesRepository : ISpeciesRepository
         return await _context.Species
             .Include(s => s.Taxonomy)
             .Include(s => s.GeographicDistributions)
+            .Include(s => s.EconomicPotentials)
+            .Include(s => s.TraditionalUses)
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
@@ -56,6 +58,8 @@ public class SpeciesRepository : ISpeciesRepository
         return await _context.Species
             .Include(s => s.Taxonomy)
             .Include(s => s.GeographicDistributions)
+            .Include(s => s.EconomicPotentials)
+            .Include(s => s.TraditionalUses)
             .FirstOrDefaultAsync(s => s.Slug == slug, cancellationToken);
     }
 
@@ -234,5 +238,43 @@ public class SpeciesRepository : ISpeciesRepository
             .ToListAsync(cancellationToken);
 
         return (kingdoms, phylums, classes, orders, families, genera, conservationStatuses, totalCount);
+    }
+
+    /// <summary>
+    /// Elimina todos los potenciales económicos existentes de la especie y los reemplaza.
+    /// Patrón delete+insert garantiza idempotencia en re-ejecuciones del job.
+    /// </summary>
+    public async Task BulkReplaceEconomicPotentialsAsync(
+        Guid speciesId,
+        IEnumerable<SpeciesEconomicPotential> potentials,
+        CancellationToken cancellationToken = default)
+    {
+        var existing = await _context.SpeciesEconomicPotentials
+            .Where(ep => ep.SpeciesId == speciesId)
+            .ToListAsync(cancellationToken);
+
+        if (existing.Count > 0)
+            _context.SpeciesEconomicPotentials.RemoveRange(existing);
+
+        await _context.SpeciesEconomicPotentials.AddRangeAsync(potentials, cancellationToken);
+    }
+
+    /// <summary>
+    /// Elimina todos los usos tradicionales existentes de la especie y los reemplaza.
+    /// Patrón delete+insert garantiza idempotencia en re-ejecuciones del job.
+    /// </summary>
+    public async Task BulkReplaceTraditionalUsesAsync(
+        Guid speciesId,
+        IEnumerable<SpeciesTraditionalUse> uses,
+        CancellationToken cancellationToken = default)
+    {
+        var existing = await _context.SpeciesTraditionalUses
+            .Where(tu => tu.SpeciesId == speciesId)
+            .ToListAsync(cancellationToken);
+
+        if (existing.Count > 0)
+            _context.SpeciesTraditionalUses.RemoveRange(existing);
+
+        await _context.SpeciesTraditionalUses.AddRangeAsync(uses, cancellationToken);
     }
 }

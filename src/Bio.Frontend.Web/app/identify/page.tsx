@@ -173,6 +173,7 @@ export default function IdentifyPage() {
                         <IdentifyResultsStep
                             result={wizard.result}
                             previewUrl={wizard.previewUrl}
+                            imageFile={wizard.selectedFile}
                             onRetake={wizard.handleRetake}
                             topPredictionSlug={wizard.getTopPredictionSlug()}
                             topPredictionSpeciesId={wizard.getTopPredictionSpeciesId()}

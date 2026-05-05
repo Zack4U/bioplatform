@@ -27,8 +27,6 @@ export interface SpeciesResponse {
     commonName: string | null;
     description: string | null;
     ecologicalInfo: string | null;
-    traditionalUses: string | null;
-    economicPotential: string | null;
     conservationStatus: string | null;
     altitudeRange: string | null;
     legalStatus: boolean;
@@ -64,6 +62,35 @@ export interface RelatedProduct {
     isActive: boolean;
 }
 
+/** SpeciesEconomicPotentialDTO — mirrors backend SpeciesEconomicPotentialDTO */
+export interface SpeciesEconomicPotential {
+    id: string;
+    speciesId: string;
+    sector: string;
+    products: string[];
+    activeProperties: string[] | null;
+    description: string | null;
+    marketValue: string;
+    sustainabilityLevel: string;
+    confidence: string;
+    createdAt: string;
+}
+
+/** SpeciesTraditionalUseDTO — mirrors backend SpeciesTraditionalUseDTO */
+export interface SpeciesTraditionalUse {
+    id: string;
+    speciesId: string;
+    part: string;
+    category: string[];
+    specificPurpose: string | null;
+    preparationMethod: string | null;
+    description: string | null;
+    community: string | null;
+    traditionalWarnings: string | null;
+    confidence: string;
+    createdAt: string;
+}
+
 /** SpeciesDetailDTO — full detail response from GET /api/species/{id} or /slug/{slug} */
 export interface SpeciesDetail {
     id: string;
@@ -75,8 +102,6 @@ export interface SpeciesDetail {
     commonName: string | null;
     description: string | null;
     ecologicalInfo: string | null;
-    traditionalUses: string | null;
-    economicPotential: string | null;
     conservationStatus: string | null;
     altitudeRange: string | null;
     legalStatus: boolean;
@@ -84,6 +109,8 @@ export interface SpeciesDetail {
     createdAt: string;
     updatedAt: string | null;
     distributions: GeographicDistribution[];
+    economicPotentials: SpeciesEconomicPotential[];
+    traditionalUses: SpeciesTraditionalUse[];
     relatedProducts: RelatedProduct[];
 }
 
@@ -128,4 +155,23 @@ export interface SpeciesFilterMeta {
     genera: string[];
     conservationStatuses: string[];
     totalSpeciesCount: number;
+}
+
+/** SpeciesImageDTO — mirrors backend SpeciesImageDTO for gallery */
+export interface SpeciesImage {
+    id: string;
+    speciesId: string;
+    imageUrl: string;
+    thumbnailUrl: string | null;
+    isPrimary: boolean;
+    isValidatedByExpert: boolean;
+    licenseType: string;
+    createdAt: string;
+}
+
+/** Query params for species images endpoint */
+export interface SpeciesImageSearchParams {
+    onlyValidatedByExpert?: boolean;
+    page?: number;
+    pageSize?: number;
 }

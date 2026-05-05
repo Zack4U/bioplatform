@@ -9,6 +9,7 @@
 import { Separator } from "@/components/ui/separator";
 import { Leaf } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const FOOTER_SECTIONS = [
     {
@@ -40,6 +41,11 @@ const FOOTER_SECTIONS = [
 ] as const;
 
 export function Footer() {
+    const pathname = usePathname();
+
+    /** Hide the public Footer inside the admin panel */
+    if (pathname.startsWith("/admin")) return null;
+
     return (
         <footer className="border-t bg-muted/30" aria-label="Pie de página">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
