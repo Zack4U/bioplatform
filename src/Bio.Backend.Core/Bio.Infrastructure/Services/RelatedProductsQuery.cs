@@ -30,7 +30,8 @@ public class RelatedProductsQuery : IRelatedProductsQuery
                 p.Name,
                 p.Slug,
                 p.Description,
-                p.Price,
+                p.BasePrice,
+                p.SellPrice,
                 p.StockQuantity,
                 p.ThumbnailUrl,
                 p.IsActive

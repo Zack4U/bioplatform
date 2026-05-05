@@ -1,5 +1,9 @@
 namespace Bio.Domain.Entities;
 
+/// <summary>
+/// Purchase order header. Contains one or more order items.
+/// Table: Orders (SQL Server).
+/// </summary>
 public class Order
 {
     public Guid Id { get; private set; }
@@ -18,6 +22,7 @@ public class Order
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
 
+    // Navigation properties
     public User Buyer { get; private set; } = null!;
     public Address? ShippingAddress { get; private set; }
     public Address? BillingAddress { get; private set; }
@@ -25,13 +30,60 @@ public class Order
 
     private Order() { }
 
-    public Order(Guid buyerId, string orderNumber, decimal totalAmount, decimal subtotalAmount)
+    public Order(
+        Guid buyerId,
+        string orderNumber,
+        decimal subtotalAmount,
+        decimal totalAmount,
+        string paymentMethod,
+        decimal taxAmount = 0,
+        decimal shippingAmount = 0,
+        decimal discountAmount = 0,
+        Guid? shippingAddressId = null,
+        Guid? billingAddressId = null)
     {
         Id = Guid.NewGuid();
         BuyerId = buyerId;
         OrderNumber = orderNumber;
-        TotalAmount = totalAmount;
         SubtotalAmount = subtotalAmount;
+        TotalAmount = totalAmount;
+        PaymentMethod = paymentMethod;
+        TaxAmount = taxAmount;
+        ShippingAmount = shippingAmount;
+        DiscountAmount = discountAmount;
+        ShippingAddressId = shippingAddressId;
+        BillingAddressId = billingAddressId;
+    }
+
+    /// <summary>
+    /// Updates the order status (e.g., Pending -> Paid -> Shipped -> Delivered or Cancelled).
+    /// </summary>
+    public void UpdateStatus(string newStatus)
+    {
+        if (string.IsNullOrWhiteSpace(newStatus))
+            throw new ArgumentException("Status cannot be empty.", nameof(newStatus));
+
+        Status = newStatus;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Sets payment transaction reference after payment is processed.
+    /// </summary>
+    public void SetPaymentInfo(string transactionRef, string paymentMethod)
+    {
+        TransactionRef = transactionRef;
+        PaymentMethod = paymentMethod;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Updates shipping and billing addresses.
+    /// </summary>
+    public void SetAddresses(Guid? shippingAddressId, Guid? billingAddressId)
+    {
+        ShippingAddressId = shippingAddressId;
+        BillingAddressId = billingAddressId;
+        UpdatedAt = DateTime.UtcNow;
     }
 }
-

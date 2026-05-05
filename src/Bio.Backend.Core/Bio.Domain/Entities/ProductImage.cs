@@ -14,6 +14,7 @@ public class ProductImage
     public bool IsPrimary { get; private set; } = false;
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
+    // Navigation property
     public Product Product { get; private set; } = null!;
 
     private ProductImage() { }
@@ -25,6 +26,23 @@ public class ProductImage
         ImageUrl = imageUrl;
         AltText = altText;
         DisplayOrder = displayOrder;
+        IsPrimary = isPrimary;
+    }
+
+    /// <summary>
+    /// Updates image metadata.
+    /// </summary>
+    public void Update(string? altText, int? displayOrder)
+    {
+        if (altText != null) AltText = altText;
+        if (displayOrder.HasValue) DisplayOrder = displayOrder.Value;
+    }
+
+    /// <summary>
+    /// Sets this image as primary.
+    /// </summary>
+    public void SetPrimary(bool isPrimary)
+    {
         IsPrimary = isPrimary;
     }
 }
