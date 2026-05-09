@@ -71,10 +71,13 @@ def generate_sql(base_dir, public_bucket, output_sql):
 
 
 if __name__ == '__main__':
+    # Directorio base de Bio.Backend.AI (dos niveles arriba de scripts/tools)
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
     parser = argparse.ArgumentParser(description="Generar SQL para imagenes subidas a S3")
     parser.add_argument(
         '--base_dir',
-        default='src/Bio.Backend.AI/data/processed',
+        default=os.path.join(base_path, 'data', 'processed'),
         help='Directorio base de dataset processed'
     )
     parser.add_argument(
@@ -84,7 +87,7 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         '--out',
-        default='src/Bio.Backend.AI/data/species_catalog/insert_species_images.sql',
+        default=os.path.join(base_path, 'data', 'species_catalog', 'insert_species_images.sql'),
         help='Archivo SQL generado'
     )
 

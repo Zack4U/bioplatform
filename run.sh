@@ -16,9 +16,12 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Detectar sistema operativo
-if [[ "$OSTYPE" == "darwin"* ]]; then
+UNAME_S=$(uname -s 2>/dev/null || echo "unknown")
+if [[ "$OSTYPE" == "darwin"* ]] || [[ "$UNAME_S" == "Darwin"* ]]; then
     OS="macOS"
-    elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$UNAME_S" == "MINGW"* ]] || [[ "$UNAME_S" == "MSYS"* ]] || [[ "$UNAME_S" == "CYGWIN"* ]]; then
+    OS="git-bash-windows"
+elif grep -qi "microsoft" /proc/version 2>/dev/null || grep -qi "wsl" /proc/version 2>/dev/null; then
     OS="git-bash-windows"
 else
     OS="linux"
@@ -61,6 +64,9 @@ function open_terminal() {
             if command -v mintty &> /dev/null; then
                 # Si existe mintty (consola default de Git Bash), es mejor
                 mintty -t "$TITLE" -e bash "$TEMP_SCRIPT" &
+            elif command -v cmd.exe &> /dev/null; then
+                # Soporte para WSL u otros entornos en Windows
+                cmd.exe /c start bash "$TEMP_SCRIPT"
             else
                 # Fallback a start bash
                 start "" bash "$TEMP_SCRIPT"
