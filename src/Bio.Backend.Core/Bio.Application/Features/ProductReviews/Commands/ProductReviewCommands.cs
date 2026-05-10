@@ -12,15 +12,22 @@ public class CreateProductReviewCommandHandler : IRequestHandler<CreateProductRe
 {
     private readonly IProductReviewRepository _repo;
     private readonly IProductRepository _productRepo;
+    private readonly IOrderRepository _orderRepo;
     private readonly IUnitOfWork _uow;
 
-    public CreateProductReviewCommandHandler(IProductReviewRepository repo, IProductRepository productRepo, IUnitOfWork uow)
-    { _repo = repo; _productRepo = productRepo; _uow = uow; }
+    public CreateProductReviewCommandHandler(
+        IProductReviewRepository repo, IProductRepository productRepo,
+        IOrderRepository orderRepo, IUnitOfWork uow)
+    { _repo = repo; _productRepo = productRepo; _orderRepo = orderRepo; _uow = uow; }
 
     public async Task<ProductReviewResponseDTO> Handle(CreateProductReviewCommand request, CancellationToken ct)
     {
         _ = await _productRepo.GetByIdAsync(request.ProductId, ct)
             ?? throw new NotFoundException(nameof(Product), request.ProductId);
+
+        // Ensure the user has actually purchased the product before leaving a review
+        if (!await _orderRepo.HasPurchasedProductAsync(request.UserId, request.ProductId, ct))
+            throw new ForbiddenException("You can only review products you have purchased and received.");
 
         if (await _repo.ExistsByUserAndProductAsync(request.UserId, request.ProductId, ct))
             throw new ConflictException("You have already reviewed this product.");
@@ -31,6 +38,7 @@ public class CreateProductReviewCommandHandler : IRequestHandler<CreateProductRe
         return new ProductReviewResponseDTO(review.Id, review.UserId, review.Rating, review.Title, review.Comment, review.CreatedAt);
     }
 }
+
 
 public record UpdateProductReviewCommand(Guid ReviewId, ProductReviewUpdateDTO Dto, Guid UserId) : IRequest<ProductReviewResponseDTO>;
 

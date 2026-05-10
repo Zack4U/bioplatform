@@ -1,3 +1,5 @@
+using Bio.Domain.Exceptions;
+
 namespace Bio.Domain.Entities;
 
 /// <summary>
@@ -21,6 +23,9 @@ public class Order
     public string? TransactionRef { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
+
+    /// <summary>Row version token used by EF Core for optimistic concurrency control.</summary>
+    public byte[]? RowVersion { get; private set; }
 
     // Navigation properties
     public User Buyer { get; private set; } = null!;
@@ -55,13 +60,31 @@ public class Order
         BillingAddressId = billingAddressId;
     }
 
+    // ─── Allowed status transitions (State Machine) ───────────────────────────
+    private static readonly Dictionary<string, HashSet<string>> AllowedTransitions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Pending"]   = ["Paid", "Cancelled"],
+        ["Paid"]      = ["Shipped", "Refunded", "Cancelled"],
+        ["Shipped"]   = ["Delivered", "Returned"],
+        ["Delivered"] = ["Returned"],
+        ["Cancelled"] = [],
+        ["Refunded"]  = [],
+        ["Returned"]  = [],
+    };
+
     /// <summary>
-    /// Updates the order status (e.g., Pending -> Paid -> Shipped -> Delivered or Cancelled).
+    /// Updates the order status, enforcing valid transitions (State Machine).
+    /// Valid flow: Pending -> Paid -> Shipped -> Delivered | Returned.
+    ///             Pending | Paid -> Cancelled.
+    ///             Paid -> Refunded.
     /// </summary>
     public void UpdateStatus(string newStatus)
     {
         if (string.IsNullOrWhiteSpace(newStatus))
             throw new ArgumentException("Status cannot be empty.", nameof(newStatus));
+
+        if (!AllowedTransitions.TryGetValue(Status, out var allowed) || !allowed.Contains(newStatus))
+            throw new ValidationException($"Invalid status transition from '{Status}' to '{newStatus}'.");
 
         Status = newStatus;
         UpdatedAt = DateTime.UtcNow;

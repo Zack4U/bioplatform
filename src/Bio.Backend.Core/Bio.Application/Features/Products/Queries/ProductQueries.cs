@@ -3,10 +3,30 @@ using Bio.Domain.Interfaces;
 using MediatR;
 using Bio.Domain.Exceptions;
 using Bio.Application.Features.Products.Commands;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 namespace Bio.Application.Features.Products.Queries;
 
-// === Public Product List ===
+// ── Cache key constants ───────────────────────────────────────────────────────
+internal static class CacheKeys
+{
+    internal static string PublicProductList(object queryParams)
+    {
+        var json = JsonSerializer.Serialize(queryParams);
+        var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(json)))[..12];
+        return $"products:public:{hash}";
+    }
+    internal static string ProductById(Guid id) => $"product:id:{id}";
+    internal static string ProductBySlug(string slug) => $"product:slug:{slug}";
+    internal const string FilterMeta = "products:filter-meta";
+    internal const string PublicProductsPrefix = "products:public:";
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PUBLIC PRODUCT LIST (cached 5 min)
+// ═══════════════════════════════════════════════════════════════════════════════
 public record GetPublicProductsQuery : IRequest<PaginatedResult<ProductListItemDTO>>
 {
     public string? Query { get; init; }
@@ -23,10 +43,17 @@ public record GetPublicProductsQuery : IRequest<PaginatedResult<ProductListItemD
 public class GetPublicProductsQueryHandler : IRequestHandler<GetPublicProductsQuery, PaginatedResult<ProductListItemDTO>>
 {
     private readonly IProductRepository _repo;
-    public GetPublicProductsQueryHandler(IProductRepository repo) => _repo = repo;
+    private readonly ICacheService _cache;
+
+    public GetPublicProductsQueryHandler(IProductRepository repo, ICacheService cache)
+    { _repo = repo; _cache = cache; }
 
     public async Task<PaginatedResult<ProductListItemDTO>> Handle(GetPublicProductsQuery q, CancellationToken ct)
     {
+        var cacheKey = CacheKeys.PublicProductList(new { q.Query, q.CategoryId, q.BaseSpeciesId, q.MinPrice, q.MaxPrice, q.SortBy, q.SortOrder, q.Page, q.PageSize });
+        var cached = await _cache.GetAsync<PaginatedResult<ProductListItemDTO>>(cacheKey, ct);
+        if (cached is not null) return cached;
+
         var (items, total) = await _repo.GetPublicFilteredAsync(
             q.Query, q.CategoryId, q.BaseSpeciesId, q.MinPrice, q.MaxPrice,
             q.SortBy, q.SortOrder, q.Page, q.PageSize, ct);
@@ -38,11 +65,15 @@ public class GetPublicProductsQueryHandler : IRequestHandler<GetPublicProductsQu
             p.Reviews.Count > 0 ? p.Reviews.Average(r => r.Rating) : 0,
             p.Reviews.Count)).ToList();
 
-        return PaginatedResult<ProductListItemDTO>.Create(dtos, total, q.Page, q.PageSize);
+        var result = PaginatedResult<ProductListItemDTO>.Create(dtos, total, q.Page, q.PageSize);
+        await _cache.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5), ct);
+        return result;
     }
 }
 
-// === Managed Product List ===
+// ═══════════════════════════════════════════════════════════════════════════════
+// MANAGED PRODUCT LIST (no cache — admin/entrepreneur sees live data)
+// ═══════════════════════════════════════════════════════════════════════════════
 public record GetManagedProductsQuery : IRequest<PaginatedResult<ProductManagedListItemDTO>>
 {
     public Guid? EntrepreneurId { get; init; }
@@ -76,50 +107,86 @@ public class GetManagedProductsQueryHandler : IRequestHandler<GetManagedProducts
     }
 }
 
-// === Get Product By Id (public) ===
+// ═══════════════════════════════════════════════════════════════════════════════
+// GET BY ID (cached 10 min)
+// ═══════════════════════════════════════════════════════════════════════════════
 public record GetProductByIdQuery(Guid Id) : IRequest<ProductDetailDTO>;
 
 public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, ProductDetailDTO>
 {
     private readonly IProductRepository _repo;
-    public GetProductByIdQueryHandler(IProductRepository repo) => _repo = repo;
+    private readonly ICacheService _cache;
+
+    public GetProductByIdQueryHandler(IProductRepository repo, ICacheService cache)
+    { _repo = repo; _cache = cache; }
 
     public async Task<ProductDetailDTO> Handle(GetProductByIdQuery request, CancellationToken ct)
     {
+        var cacheKey = CacheKeys.ProductById(request.Id);
+        var cached = await _cache.GetAsync<ProductDetailDTO>(cacheKey, ct);
+        if (cached is not null) return cached;
+
         var product = await _repo.GetByIdWithDetailsAsync(request.Id, ct)
             ?? throw new NotFoundException("Product", request.Id);
-        return CreateProductCommandHandler.MapToDetail(product);
+
+        var dto = CreateProductCommandHandler.MapToDetail(product);
+        await _cache.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(10), ct);
+        return dto;
     }
 }
 
-// === Get Product By Slug (public) ===
+// ═══════════════════════════════════════════════════════════════════════════════
+// GET BY SLUG (cached 10 min)
+// ═══════════════════════════════════════════════════════════════════════════════
 public record GetProductBySlugQuery(string Slug) : IRequest<ProductDetailDTO>;
 
 public class GetProductBySlugQueryHandler : IRequestHandler<GetProductBySlugQuery, ProductDetailDTO>
 {
     private readonly IProductRepository _repo;
-    public GetProductBySlugQueryHandler(IProductRepository repo) => _repo = repo;
+    private readonly ICacheService _cache;
+
+    public GetProductBySlugQueryHandler(IProductRepository repo, ICacheService cache)
+    { _repo = repo; _cache = cache; }
 
     public async Task<ProductDetailDTO> Handle(GetProductBySlugQuery request, CancellationToken ct)
     {
+        var cacheKey = CacheKeys.ProductBySlug(request.Slug);
+        var cached = await _cache.GetAsync<ProductDetailDTO>(cacheKey, ct);
+        if (cached is not null) return cached;
+
         var product = await _repo.GetBySlugWithDetailsAsync(request.Slug, ct)
             ?? throw new NotFoundException("Product", request.Slug);
-        return CreateProductCommandHandler.MapToDetail(product);
+
+        var dto = CreateProductCommandHandler.MapToDetail(product);
+        await _cache.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(10), ct);
+        return dto;
     }
 }
 
-// === Product Filter Meta ===
+// ═══════════════════════════════════════════════════════════════════════════════
+// FILTER META (cached 15 min)
+// ═══════════════════════════════════════════════════════════════════════════════
 public record GetProductFilterMetaQuery : IRequest<ProductFilterMetaDTO>;
 
 public class GetProductFilterMetaQueryHandler : IRequestHandler<GetProductFilterMetaQuery, ProductFilterMetaDTO>
 {
     private readonly IProductRepository _repo;
-    public GetProductFilterMetaQueryHandler(IProductRepository repo) => _repo = repo;
+    private readonly ICacheService _cache;
+
+    public GetProductFilterMetaQueryHandler(IProductRepository repo, ICacheService cache)
+    { _repo = repo; _cache = cache; }
 
     public async Task<ProductFilterMetaDTO> Handle(GetProductFilterMetaQuery request, CancellationToken ct)
     {
+        var cached = await _cache.GetAsync<ProductFilterMetaDTO>(CacheKeys.FilterMeta, ct);
+        if (cached is not null) return cached;
+
         var (categories, minPrice, maxPrice, total) = await _repo.GetFilterMetaAsync(ct);
         var categoryDtos = categories.Select(c => new ProductCategoryResponseDTO(c.Id, c.Name)).ToList();
-        return new ProductFilterMetaDTO(categoryDtos, minPrice, maxPrice, total);
+        var dto = new ProductFilterMetaDTO(categoryDtos, minPrice, maxPrice, total);
+
+        await _cache.SetAsync(CacheKeys.FilterMeta, dto, TimeSpan.FromMinutes(15), ct);
+        return dto;
     }
 }
+

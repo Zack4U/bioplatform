@@ -77,6 +77,18 @@ public class ProductReviewRepository : IProductReviewRepository
 
     public async Task<bool> ExistsByUserAndProductAsync(Guid userId, Guid productId, CancellationToken ct)
         => await _ctx.ProductReviews.AnyAsync(r => r.UserId == userId && r.ProductId == productId, ct);
+
+    public async Task<(double AverageRating, int TotalCount)> GetAggregateByEntrepreneurIdAsync(
+        Guid entrepreneurId, CancellationToken ct)
+    {
+        var reviews = await _ctx.ProductReviews
+            .Where(r => r.Product != null && r.Product.EntrepreneurId == entrepreneurId)
+            .Select(r => r.Rating)
+            .ToListAsync(ct);
+
+        if (reviews.Count == 0) return (0.0, 0);
+        return (reviews.Average(), reviews.Count);
+    }
 }
 
 public class OrderRepository : IOrderRepository
@@ -114,6 +126,29 @@ public class OrderRepository : IOrderRepository
         var count = await _ctx.Orders.CountAsync(o => o.OrderNumber.StartsWith($"ORD-{date}"), ct);
         return $"ORD-{date}-{(count + 1):D4}";
     }
+
+    public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetByEntrepreneurIdAsync(
+        Guid entrepreneurId, string? status, int page, int pageSize, CancellationToken ct, DateTime? fromDate = null)
+    {
+        var q = _ctx.Orders
+            .Include(o => o.OrderItems).ThenInclude(i => i.Product)
+            .Where(o => o.OrderItems.Any(i => i.Product != null && i.Product.EntrepreneurId == entrepreneurId))
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(status)) q = q.Where(o => o.Status == status);
+        if (fromDate.HasValue) q = q.Where(o => o.CreatedAt >= fromDate.Value);
+
+        q = q.OrderByDescending(o => o.CreatedAt);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
+
+    public async Task<bool> HasPurchasedProductAsync(Guid buyerId, Guid productId, CancellationToken ct)
+        => await _ctx.Orders.AnyAsync(o =>
+            o.BuyerId == buyerId &&
+            (o.Status == "Paid" || o.Status == "Delivered" || o.Status == "Shipped") &&
+            o.OrderItems.Any(i => i.ProductId == productId), ct);
 }
 
 public class FavoriteRepository : IFavoriteRepository
@@ -204,4 +239,62 @@ public class AbsPermitRepository : IAbsPermitRepository
 
     public async Task AddAsync(AbsPermit permit, CancellationToken ct)
         => await _ctx.AbsPermits.AddAsync(permit, ct);
+}
+
+public class CartRepository : ICartRepository
+{
+    private readonly BioDbContext _ctx;
+    public CartRepository(BioDbContext ctx) => _ctx = ctx;
+
+    public async Task<Cart?> GetByUserIdAsync(Guid userId, CancellationToken ct = default)
+        => await _ctx.Carts
+            .Include(c => c.Items).ThenInclude(i => i.Product)
+            .FirstOrDefaultAsync(c => c.UserId == userId, ct);
+
+    public async Task<Cart?> GetByIdWithItemsAsync(Guid cartId, CancellationToken ct = default)
+        => await _ctx.Carts
+            .Include(c => c.Items).ThenInclude(i => i.Product)
+            .FirstOrDefaultAsync(c => c.Id == cartId, ct);
+
+    public async Task<CartItem?> GetItemByIdAsync(Guid itemId, CancellationToken ct = default)
+        => await _ctx.CartItems.FirstOrDefaultAsync(i => i.Id == itemId, ct);
+
+    public async Task AddAsync(Cart cart, CancellationToken ct = default)
+        => await _ctx.Carts.AddAsync(cart, ct);
+
+    public async Task AddItemAsync(CartItem item, CancellationToken ct = default)
+        => await _ctx.CartItems.AddAsync(item, ct);
+
+    public async Task RemoveItemAsync(CartItem item, CancellationToken ct = default)
+    { _ctx.CartItems.Remove(item); await Task.CompletedTask; }
+
+    public async Task<bool> ItemExistsAsync(Guid cartId, Guid productId, CancellationToken ct = default)
+        => await _ctx.CartItems.AnyAsync(i => i.CartId == cartId && i.ProductId == productId, ct);
+
+    public async Task<CartItem?> GetItemByProductAsync(Guid cartId, Guid productId, CancellationToken ct = default)
+        => await _ctx.CartItems.FirstOrDefaultAsync(i => i.CartId == cartId && i.ProductId == productId, ct);
+}
+
+public class TraceabilityBatchRepository : ITraceabilityBatchRepository
+{
+    private readonly BioDbContext _ctx;
+    public TraceabilityBatchRepository(BioDbContext ctx) => _ctx = ctx;
+
+    public async Task<TraceabilityBatch?> GetByIdAsync(Guid id, CancellationToken ct = default)
+        => await _ctx.TraceabilityBatches.FirstOrDefaultAsync(b => b.Id == id, ct);
+
+    public async Task<IReadOnlyList<TraceabilityBatch>> GetByProductIdAsync(Guid productId, CancellationToken ct = default)
+        => await _ctx.TraceabilityBatches
+            .Where(b => b.ProductId == productId)
+            .OrderByDescending(b => b.HarvestDate)
+            .ToListAsync(ct);
+
+    public async Task<bool> ExistsByBatchCodeAsync(string batchCode, CancellationToken ct = default)
+        => await _ctx.TraceabilityBatches.AnyAsync(b => b.BatchCode == batchCode, ct);
+
+    public async Task AddAsync(TraceabilityBatch batch, CancellationToken ct = default)
+        => await _ctx.TraceabilityBatches.AddAsync(batch, ct);
+
+    public async Task DeleteAsync(TraceabilityBatch batch, CancellationToken ct = default)
+    { _ctx.TraceabilityBatches.Remove(batch); await Task.CompletedTask; }
 }

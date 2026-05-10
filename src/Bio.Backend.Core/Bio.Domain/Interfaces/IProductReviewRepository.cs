@@ -10,4 +10,11 @@ public interface IProductReviewRepository
     Task AddAsync(ProductReview review, CancellationToken ct = default);
     Task DeleteAsync(ProductReview review, CancellationToken ct = default);
     Task<bool> ExistsByUserAndProductAsync(Guid userId, Guid productId, CancellationToken ct = default);
+
+    /// <summary>
+    /// Returns (averageRating, totalCount) for all products owned by the entrepreneur.
+    /// Used by the seller dashboard.
+    /// </summary>
+    Task<(double AverageRating, int TotalCount)> GetAggregateByEntrepreneurIdAsync(
+        Guid entrepreneurId, CancellationToken ct = default);
 }

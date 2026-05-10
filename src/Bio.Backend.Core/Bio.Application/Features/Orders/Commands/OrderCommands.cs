@@ -3,6 +3,7 @@ using Bio.Domain.Entities;
 using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Bio.Application.Features.Orders.Commands;
 
@@ -12,55 +13,102 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ord
 {
     private readonly IOrderRepository _orderRepo;
     private readonly IProductRepository _productRepo;
+    private readonly ICartRepository _cartRepo;
     private readonly IUnitOfWork _uow;
+    private readonly ILogger<CreateOrderCommandHandler> _logger;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepo, IProductRepository productRepo, IUnitOfWork uow)
-    { _orderRepo = orderRepo; _productRepo = productRepo; _uow = uow; }
+    public CreateOrderCommandHandler(
+        IOrderRepository orderRepo, IProductRepository productRepo,
+        ICartRepository cartRepo, IUnitOfWork uow,
+        ILogger<CreateOrderCommandHandler> logger)
+    { _orderRepo = orderRepo; _productRepo = productRepo; _cartRepo = cartRepo; _uow = uow; _logger = logger; }
 
     public async Task<OrderResponseDTO> Handle(CreateOrderCommand request, CancellationToken ct)
     {
         if (request.Dto.Items.Count == 0)
-            throw new Bio.Domain.Exceptions.ValidationException("Order must contain at least one item.");
+            throw new ValidationException("Order must contain at least one item.");
+
+        // Validate no duplicate product IDs in request
+        var duplicates = request.Dto.Items.GroupBy(i => i.ProductId).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+        if (duplicates.Count > 0)
+            throw new ValidationException("Duplicate products in order. Combine quantities instead.");
 
         await _uow.BeginTransactionAsync();
         try
         {
             var orderNumber = await _orderRepo.GenerateOrderNumberAsync(ct);
-            var orderItems = new List<OrderItem>();
-            decimal subtotal = 0;
 
-            foreach (var item in request.Dto.Items)
+            // Fetch all products in parallel (read-only, safe before locking)
+            var productTasks = request.Dto.Items
+                .Select(i => _productRepo.GetByIdAsync(i.ProductId, ct))
+                .ToList();
+            var products = await Task.WhenAll(productTasks);
+
+            decimal subtotal = 0;
+            var lineItems = new List<(Product Product, int Quantity, decimal UnitPrice)>();
+
+            for (int idx = 0; idx < request.Dto.Items.Count; idx++)
             {
-                var product = await _productRepo.GetByIdAsync(item.ProductId, ct)
+                var item = request.Dto.Items[idx];
+                var product = products[idx]
                     ?? throw new NotFoundException(nameof(Product), item.ProductId);
 
                 if (!product.IsActive)
-                    throw new Bio.Domain.Exceptions.ValidationException($"Product '{product.Name}' is not active.");
+                    throw new ValidationException($"Product '{product.Name}' is not currently available.");
 
-                product.DecrementStock(item.Quantity); // Validates stock
-                var orderItem = new OrderItem(Guid.Empty, product.Id, item.Quantity, product.SellPrice);
-                orderItems.Add(orderItem);
-                subtotal += orderItem.TotalPrice;
+                // DecrementStock validates quantity > 0 and sufficient stock
+                product.DecrementStock(item.Quantity);
+
+                var unitPrice = product.SellPrice;
+                subtotal += unitPrice * item.Quantity;
+                lineItems.Add((product, item.Quantity, unitPrice));
             }
 
-            var order = new Order(request.BuyerId, orderNumber, subtotal, subtotal,
-                request.Dto.PaymentMethod, shippingAddressId: request.Dto.ShippingAddressId,
+            // Create order
+            var order = new Order(
+                request.BuyerId, orderNumber, subtotal, subtotal,
+                request.Dto.PaymentMethod,
+                shippingAddressId: request.Dto.ShippingAddressId,
                 billingAddressId: request.Dto.BillingAddressId);
 
             await _orderRepo.AddAsync(order, ct);
+            await _uow.SaveChangesAsync(ct); // Persist order to get valid order.Id
 
-            // Fix OrderId on items (EF will track)
-            foreach (var item in orderItems)
+            // Add OrderItems with the actual OrderId (fixes the Guid.Empty bug)
+            foreach (var (product, qty, unitPrice) in lineItems)
             {
-                var corrected = new OrderItem(order.Id, item.ProductId, item.Quantity, item.UnitPrice);
-                order.OrderItems.Add(corrected);
+                var orderItem = new OrderItem(order.Id, product.Id, qty, unitPrice);
+                order.OrderItems.Add(orderItem);
+            }
+
+            // Clear the purchased active items from the user's cart
+            var cart = await _cartRepo.GetByUserIdAsync(request.BuyerId, ct);
+            if (cart is not null)
+            {
+                var orderedProductIds = request.Dto.Items.Select(i => i.ProductId).ToHashSet();
+                var itemsToRemove = cart.Items
+                    .Where(ci => ci.IsActive && orderedProductIds.Contains(ci.ProductId))
+                    .ToList();
+
+                foreach (var cartItem in itemsToRemove)
+                    await _cartRepo.RemoveItemAsync(cartItem, ct);
+
+                if (itemsToRemove.Count > 0) cart.Touch();
             }
 
             await _uow.SaveChangesAsync(ct);
             await _uow.CommitTransactionAsync();
 
+            _logger.LogInformation("Order {OrderNumber} created for buyer {BuyerId}", order.OrderNumber, request.BuyerId);
+
             var created = await _orderRepo.GetByIdWithItemsAsync(order.Id, ct);
             return MapToResponse(created!);
+        }
+        catch (Exception ex) when (ex.GetType().Name == "DbUpdateConcurrencyException")
+        {
+            await _uow.RollbackTransactionAsync();
+            _logger.LogWarning(ex, "Concurrency conflict while creating order for buyer {BuyerId}", request.BuyerId);
+            throw new ValidationException("One or more products were modified concurrently. Please try again.");
         }
         catch
         {
@@ -92,6 +140,8 @@ public class UpdateOrderStatusCommandHandler : IRequestHandler<UpdateOrderStatus
     {
         var order = await _repo.GetByIdWithItemsAsync(request.OrderId, ct)
             ?? throw new NotFoundException(nameof(Order), request.OrderId);
+
+        // UpdateStatus now enforces the State Machine — throws ValidationException on illegal transition
         order.UpdateStatus(request.Status);
         await _uow.SaveChangesAsync(ct);
         return CreateOrderCommandHandler.MapToResponse(order);

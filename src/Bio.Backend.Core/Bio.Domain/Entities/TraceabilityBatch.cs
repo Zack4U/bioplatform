@@ -19,7 +19,9 @@ public class TraceabilityBatch
 
     private TraceabilityBatch() { }
 
-    public TraceabilityBatch(Guid productId, string batchCode, DateTime harvestDate, string originLocation, string? processingDetails = null)
+    public TraceabilityBatch(
+        Guid productId, string batchCode, DateTime harvestDate,
+        string originLocation, string? processingDetails = null, string? blockchainHash = null)
     {
         Id = Guid.NewGuid();
         ProductId = productId;
@@ -27,13 +29,15 @@ public class TraceabilityBatch
         HarvestDate = harvestDate;
         OriginLocation = originLocation;
         ProcessingDetails = processingDetails;
+        BlockchainHash = blockchainHash;
     }
 
     /// <summary>
-    /// Updates mutable batch fields.
+    /// Updates mutable batch fields. Only non-null values are applied.
     /// </summary>
-    public void Update(string? originLocation, string? processingDetails, string? blockchainHash)
+    public void Update(DateTime? harvestDate, string? originLocation, string? processingDetails, string? blockchainHash)
     {
+        if (harvestDate.HasValue) HarvestDate = harvestDate.Value;
         if (originLocation != null) OriginLocation = originLocation;
         if (processingDetails != null) ProcessingDetails = processingDetails;
         if (blockchainHash != null) BlockchainHash = blockchainHash;

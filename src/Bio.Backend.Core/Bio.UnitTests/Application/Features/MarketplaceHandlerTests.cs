@@ -32,6 +32,7 @@ public class ProductHandlerTests
     private readonly Mock<IProductRepository> _productRepo = new();
     private readonly Mock<IAbsPermitRepository> _absRepo = new();
     private readonly Mock<IUnitOfWork> _uow = new();
+    private readonly Mock<ICacheService> _cache = new();
     private static readonly Guid EntrepreneurId = Guid.NewGuid();
     private static readonly Guid SpeciesId = Guid.NewGuid();
 
@@ -81,7 +82,7 @@ public class ProductHandlerTests
         var product = new Product(Guid.NewGuid(), SpeciesId, "Test", "test", "Desc", 10, 15, 10);
         _productRepo.Setup(x => x.GetByIdWithDetailsAsync(product.Id, default)).ReturnsAsync(product);
 
-        var handler = new UpdateProductCommandHandler(_productRepo.Object, _uow.Object);
+        var handler = new UpdateProductCommandHandler(_productRepo.Object, _uow.Object, _cache.Object);
         var act = () => handler.Handle(new UpdateProductCommand(product.Id, new ProductUpdateDTO(), EntrepreneurId, "ENTREPRENEUR"), default);
 
         await act.Should().ThrowAsync<ForbiddenException>();
@@ -94,7 +95,7 @@ public class ProductHandlerTests
         product.IsActive.Should().BeFalse();
         _productRepo.Setup(x => x.GetByIdAsync(product.Id, default)).ReturnsAsync(product);
 
-        var handler = new ActivateProductCommandHandler(_productRepo.Object, _uow.Object);
+        var handler = new ActivateProductCommandHandler(_productRepo.Object, _uow.Object, _cache.Object);
         await handler.Handle(new ActivateProductCommand(product.Id), default);
 
         product.IsActive.Should().BeTrue();
@@ -157,7 +158,10 @@ public class ProductReviewHandlerTests
         _productRepo.Setup(x => x.GetByIdAsync(ProductId, default)).ReturnsAsync(new Product(Guid.NewGuid(), Guid.NewGuid(), "P", "p", "D", 10, 15, 1));
         _reviewRepo.Setup(x => x.ExistsByUserAndProductAsync(UserId, ProductId, default)).ReturnsAsync(true);
 
-        var handler = new CreateProductReviewCommandHandler(_reviewRepo.Object, _productRepo.Object, _uow.Object);
+        var _orderRepo = new Mock<IOrderRepository>();
+        _orderRepo.Setup(x => x.HasPurchasedProductAsync(UserId, ProductId, default)).ReturnsAsync(true);
+
+        var handler = new CreateProductReviewCommandHandler(_reviewRepo.Object, _productRepo.Object, _orderRepo.Object, _uow.Object);
         var act = () => handler.Handle(new CreateProductReviewCommand(ProductId, new ProductReviewCreateDTO(5, "Great", "Loved it"), UserId), default);
 
         await act.Should().ThrowAsync<ConflictException>();

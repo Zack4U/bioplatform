@@ -22,6 +22,9 @@ public class Product
     public bool IsActive { get; private set; } = false; // Starts OFF until authority approves
     public string? ThumbnailUrl { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+
+    /// <summary>Row version token used by EF Core for optimistic concurrency — prevents stock race conditions.</summary>
+    public byte[]? RowVersion { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
     // Navigation properties

@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Application.Features.Products.Queries;
 using Bio.Domain.Entities;
 using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
@@ -61,16 +62,16 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 {
     private readonly IProductRepository _repo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public UpdateProductCommandHandler(IProductRepository repo, IUnitOfWork uow)
-    { _repo = repo; _uow = uow; }
+    public UpdateProductCommandHandler(IProductRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
 
     public async Task<ProductDetailDTO> Handle(UpdateProductCommand request, CancellationToken ct)
     {
         var product = await _repo.GetByIdWithDetailsAsync(request.Id, ct)
             ?? throw new NotFoundException(nameof(Product), request.Id);
 
-        // RBAC: Entrepreneur can only update own products
         if (request.ActorRole != "ADMIN" && product.EntrepreneurId != request.ActorId)
             throw new ForbiddenException("You can only update your own products.");
 
@@ -85,6 +86,13 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             request.Dto.CategoryId, request.Dto.Sku, request.Dto.Composition, request.Dto.ThumbnailUrl);
 
         await _uow.SaveChangesAsync(ct);
+
+        // Invalidate product caches
+        await Task.WhenAll(
+            _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
+            _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct));
+
         return CreateProductCommandHandler.MapToDetail(product);
     }
 }
@@ -96,9 +104,10 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
 {
     private readonly IProductRepository _repo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public DeleteProductCommandHandler(IProductRepository repo, IUnitOfWork uow)
-    { _repo = repo; _uow = uow; }
+    public DeleteProductCommandHandler(IProductRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
 
     public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken ct)
     {
@@ -110,6 +119,12 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
 
         product.Deactivate(); // Soft delete via deactivation
         await _uow.SaveChangesAsync(ct);
+
+        await Task.WhenAll(
+            _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
+            _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct));
+
         return Unit.Value;
     }
 }
@@ -121,9 +136,10 @@ public class ActivateProductCommandHandler : IRequestHandler<ActivateProductComm
 {
     private readonly IProductRepository _repo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public ActivateProductCommandHandler(IProductRepository repo, IUnitOfWork uow)
-    { _repo = repo; _uow = uow; }
+    public ActivateProductCommandHandler(IProductRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
 
     public async Task<Unit> Handle(ActivateProductCommand request, CancellationToken ct)
     {
@@ -131,6 +147,10 @@ public class ActivateProductCommandHandler : IRequestHandler<ActivateProductComm
             ?? throw new NotFoundException(nameof(Product), request.Id);
         product.Activate();
         await _uow.SaveChangesAsync(ct);
+        await Task.WhenAll(
+            _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
+            _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct));
         return Unit.Value;
     }
 }
@@ -142,9 +162,10 @@ public class DeactivateProductCommandHandler : IRequestHandler<DeactivateProduct
 {
     private readonly IProductRepository _repo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public DeactivateProductCommandHandler(IProductRepository repo, IUnitOfWork uow)
-    { _repo = repo; _uow = uow; }
+    public DeactivateProductCommandHandler(IProductRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
 
     public async Task<Unit> Handle(DeactivateProductCommand request, CancellationToken ct)
     {
@@ -152,6 +173,10 @@ public class DeactivateProductCommandHandler : IRequestHandler<DeactivateProduct
             ?? throw new NotFoundException(nameof(Product), request.Id);
         product.Deactivate();
         await _uow.SaveChangesAsync(ct);
+        await Task.WhenAll(
+            _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
+            _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct));
         return Unit.Value;
     }
 }

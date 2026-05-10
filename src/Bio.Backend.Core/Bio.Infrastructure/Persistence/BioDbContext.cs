@@ -39,6 +39,10 @@ public class BioDbContext : DbContext
     public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<ActivityLog> ActivityLogs { get; set; } = null!;
 
+    // --- Shopping Cart ---
+    public DbSet<Cart> Carts { get; set; } = null!;
+    public DbSet<CartItem> CartItems { get; set; } = null!;
+
     // --- Community & Networking ---
     public DbSet<CommunityPost> CommunityPosts { get; set; } = null!;
     public DbSet<CommunityPostComment> CommunityPostComments { get; set; } = null!;
@@ -132,6 +136,8 @@ public class BioDbContext : DbContext
                   .WithMany(pc => pc.Products)
                   .HasForeignKey(e => e.CategoryId)
                   .OnDelete(DeleteBehavior.SetNull);
+
+            entity.Property(e => e.RowVersion).IsRowVersion();
         });
 
         modelBuilder.Entity<ProductImage>(entity =>
@@ -210,6 +216,8 @@ public class BioDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(e => e.BillingAddressId)
                   .OnDelete(DeleteBehavior.NoAction);
+
+            entity.Property(e => e.RowVersion).IsRowVersion();
         });
 
         modelBuilder.Entity<OrderItem>(entity =>
@@ -285,6 +293,34 @@ public class BioDbContext : DbContext
                   .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
             entity.HasIndex(e => new { e.UserId, e.TargetType, e.TargetId }).IsUnique();
+        });
+
+        // =====================================================================
+        // SHOPPING CART
+        // =====================================================================
+
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.UserId).IsUnique(); // One cart per user
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<CartItem>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasOne(e => e.Cart)
+                  .WithMany(c => c.Items)
+                  .HasForeignKey(e => e.CartId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Product)
+                  .WithMany()
+                  .HasForeignKey(e => e.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => new { e.CartId, e.ProductId }).IsUnique(); // No duplicate products per cart
         });
 
         modelBuilder.Entity<Notification>(entity =>
