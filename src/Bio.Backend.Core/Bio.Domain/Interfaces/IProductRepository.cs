@@ -35,4 +35,14 @@ public interface IProductRepository
 
     /// <summary>Returns available filter metadata: categories, price range.</summary>
     Task<(IReadOnlyList<ProductCategory> Categories, decimal MinPrice, decimal MaxPrice, int TotalCount)> GetFilterMetaAsync(CancellationToken ct = default);
+
+    /// <summary>
+    /// Returns active products related to the given product.
+    /// Strategy: same category first; if none, same BaseSpeciesId.
+    /// Excludes the source product. Results are ordered by average rating desc, then by name.
+    /// </summary>
+    Task<IReadOnlyList<Product>> GetRelatedAsync(
+        Guid productId, int? categoryId, Guid baseSpeciesId,
+        int limit = 6, CancellationToken ct = default);
 }
+

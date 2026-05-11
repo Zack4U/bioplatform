@@ -66,6 +66,17 @@ public class ProductReviewRepository : IProductReviewRepository
         return (items, total);
     }
 
+    public async Task<(IReadOnlyList<ProductReview> Items, int TotalCount)> GetByUserIdAsync(Guid userId, int page, int pageSize, CancellationToken ct)
+    {
+        var q = _ctx.ProductReviews
+            .Include(r => r.Product)
+            .Where(r => r.UserId == userId)
+            .OrderByDescending(r => r.CreatedAt);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
+
     public async Task<ProductReview?> GetByIdAsync(Guid id, CancellationToken ct)
         => await _ctx.ProductReviews.FirstOrDefaultAsync(r => r.Id == id, ct);
 

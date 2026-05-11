@@ -75,4 +75,22 @@ public class CartController : ControllerBase
         await _mediator.Send(new ClearCartCommand(UserId), ct);
         return NoContent();
     }
+
+    /// <summary>
+    /// Syncs local (guest) cart items with the server cart after login.
+    /// Called once when the user authenticates. Server quantity wins on conflicts.
+    /// </summary>
+    [HttpPost("sync")]
+    [ProducesResponseType(typeof(CartResponseDTO), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Sync([FromBody] CartSyncRequestDTO dto, CancellationToken ct)
+        => Ok(await _mediator.Send(new SyncCartCommand(UserId, dto), ct));
+
+    /// <summary>
+    /// Validates current prices and availability for the given cart items.
+    /// Does NOT mutate state. Call before rendering the cart panel or entering checkout.
+    /// </summary>
+    [HttpPost("validate-prices")]
+    [ProducesResponseType(typeof(CartValidatePricesResponseDTO), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ValidatePrices([FromBody] CartValidatePricesRequestDTO dto, CancellationToken ct)
+        => Ok(await _mediator.Send(new ValidateCartPricesQuery(dto), ct));
 }

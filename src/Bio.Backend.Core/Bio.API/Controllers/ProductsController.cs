@@ -42,4 +42,13 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBySlug(string slug)
         => Ok(await _mediator.Send(new GetProductBySlugQuery(slug)));
+
+    /// <summary>
+    /// Returns up to <paramref name="limit"/> active products related to the given product.
+    /// Similarity is determined by category first, then biological species.
+    /// </summary>
+    [HttpGet("{id:guid}/related")]
+    [ProducesResponseType(typeof(IReadOnlyList<ProductListItemDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetRelated(Guid id, [FromQuery] int limit = 6)
+        => Ok(await _mediator.Send(new GetRelatedProductsQuery(id, Math.Clamp(limit, 1, 12))));
 }

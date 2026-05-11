@@ -210,3 +210,50 @@ public record AbsPermitResponseDTO(
 public record ProductCategoryCreateDTO(string Name);
 public record ProductCategoryUpdateDTO(string Name);
 public record ProductCategoryResponseDTO(int Id, string Name);
+
+// === My Reviews (profile tab) ===
+
+/// <summary>Review with product context — used in the user's "My Reviews" profile tab.</summary>
+public record MyReviewResponseDTO(
+    Guid ReviewId,
+    Guid ProductId,
+    string ProductName,
+    string ProductSlug,
+    string? ProductThumbnailUrl,
+    int Rating,
+    string? Title,
+    string? Comment,
+    DateTime CreatedAt);
+
+// === Cart Validation / Sync ===
+
+public record CartValidatePricesRequestItemDTO(Guid ProductId, int Quantity);
+
+public record CartValidatePricesRequestDTO
+{
+    public IReadOnlyList<CartValidatePricesRequestItemDTO> Items { get; init; }
+        = Array.Empty<CartValidatePricesRequestItemDTO>();
+}
+
+public record CartPriceValidationItemDTO(
+    Guid ProductId,
+    string ProductName,
+    decimal CurrentPrice,
+    bool IsActive,
+    int AvailableStock,
+    bool PriceChanged,
+    decimal? OldPrice);
+
+public record CartValidatePricesResponseDTO(
+    IReadOnlyList<CartPriceValidationItemDTO> Items,
+    bool AnyPriceChanged,
+    bool AnyUnavailable);
+
+public record CartSyncItemDTO(Guid ProductId, int Quantity);
+
+public record CartSyncRequestDTO
+{
+    public IReadOnlyList<CartSyncItemDTO> Items { get; init; }
+        = Array.Empty<CartSyncItemDTO>();
+}
+

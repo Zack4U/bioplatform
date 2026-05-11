@@ -6,6 +6,14 @@ public interface IProductReviewRepository
 {
     Task<(IReadOnlyList<ProductReview> Items, int TotalCount)> GetByProductIdAsync(
         Guid productId, int page = 1, int pageSize = 10, CancellationToken ct = default);
+
+    /// <summary>
+    /// Returns paginated reviews submitted by a specific user, with product info included.
+    /// Used in the "My Reviews" profile tab.
+    /// </summary>
+    Task<(IReadOnlyList<ProductReview> Items, int TotalCount)> GetByUserIdAsync(
+        Guid userId, int page = 1, int pageSize = 10, CancellationToken ct = default);
+
     Task<ProductReview?> GetByIdAsync(Guid id, CancellationToken ct = default);
     Task AddAsync(ProductReview review, CancellationToken ct = default);
     Task DeleteAsync(ProductReview review, CancellationToken ct = default);

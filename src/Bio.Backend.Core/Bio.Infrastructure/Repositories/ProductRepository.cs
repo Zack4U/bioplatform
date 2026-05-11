@@ -91,4 +91,40 @@ public class ProductRepository : IProductRepository
         var total = any ? await activeProducts.CountAsync(ct) : 0;
         return (categories, minPrice, maxPrice, total);
     }
+
+    public async Task<IReadOnlyList<Product>> GetRelatedAsync(
+        Guid productId, int? categoryId, Guid baseSpeciesId,
+        int limit = 6, CancellationToken ct = default)
+    {
+        // Strategy 1: same category (if available)
+        if (categoryId.HasValue)
+        {
+            var byCat = await _ctx.Products
+                .Include(p => p.Category)
+                .Include(p => p.Reviews)
+                .Where(p => p.IsActive && p.Id != productId && p.CategoryId == categoryId)
+                .ToListAsync(ct);
+
+            if (byCat.Count >= 2)
+                return byCat
+                    .OrderByDescending(p => p.Reviews.Count > 0 ? p.Reviews.Average(r => r.Rating) : 0)
+                    .ThenBy(p => p.Name)
+                    .Take(limit)
+                    .ToList();
+        }
+
+        // Strategy 2: same biological species (cross-category fallback)
+        var bySpecies = await _ctx.Products
+            .Include(p => p.Category)
+            .Include(p => p.Reviews)
+            .Where(p => p.IsActive && p.Id != productId && p.BaseSpeciesId == baseSpeciesId)
+            .ToListAsync(ct);
+
+        return bySpecies
+            .OrderByDescending(p => p.Reviews.Count > 0 ? p.Reviews.Average(r => r.Rating) : 0)
+            .ThenBy(p => p.Name)
+            .Take(limit)
+            .ToList();
+    }
 }
+

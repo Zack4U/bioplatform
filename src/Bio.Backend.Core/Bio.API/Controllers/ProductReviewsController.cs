@@ -45,3 +45,25 @@ public class ProductReviewsController : ControllerBase
         return NoContent();
     }
 }
+
+/// <summary>
+/// User-scoped reviews endpoint — returns all reviews written by the authenticated user.
+/// Route: GET /api/reviews/my
+/// </summary>
+[ApiController]
+[Route("api/reviews")]
+[Authorize]
+[Produces("application/json")]
+public class ReviewsController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    public ReviewsController(IMediator mediator) => _mediator = mediator;
+
+    private Guid GetUserId() => Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")!.Value);
+
+    /// <summary>Returns a paginated list of reviews submitted by the authenticated user, with product context.</summary>
+    [HttpGet("my")]
+    [ProducesResponseType(typeof(PaginatedResult<MyReviewResponseDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMy([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        => Ok(await _mediator.Send(new GetMyReviewsQuery(GetUserId(), page, pageSize)));
+}

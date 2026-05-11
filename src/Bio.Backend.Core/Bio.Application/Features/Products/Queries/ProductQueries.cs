@@ -190,3 +190,41 @@ public class GetProductFilterMetaQueryHandler : IRequestHandler<GetProductFilter
     }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// GET RELATED PRODUCTS (cached 10 min per product)
+// Strategy: same category (preferred) → same species (fallback) → empty list
+// ═══════════════════════════════════════════════════════════════════════════════
+public record GetRelatedProductsQuery(Guid ProductId, int Limit = 6) : IRequest<IReadOnlyList<ProductListItemDTO>>;
+
+public class GetRelatedProductsQueryHandler : IRequestHandler<GetRelatedProductsQuery, IReadOnlyList<ProductListItemDTO>>
+{
+    private readonly IProductRepository _productRepo;
+    private readonly ICacheService _cache;
+
+    public GetRelatedProductsQueryHandler(IProductRepository productRepo, ICacheService cache)
+    { _productRepo = productRepo; _cache = cache; }
+
+    public async Task<IReadOnlyList<ProductListItemDTO>> Handle(GetRelatedProductsQuery request, CancellationToken ct)
+    {
+        var cacheKey = $"products:related:{request.ProductId}:{request.Limit}";
+        var cached = await _cache.GetAsync<IReadOnlyList<ProductListItemDTO>>(cacheKey, ct);
+        if (cached is not null) return cached;
+
+        // Fetch source product to get category and species context
+        var source = await _productRepo.GetByIdAsync(request.ProductId, ct);
+        if (source is null) return Array.Empty<ProductListItemDTO>();
+
+        var related = await _productRepo.GetRelatedAsync(
+            request.ProductId, source.CategoryId, source.BaseSpeciesId, request.Limit, ct);
+
+        var dtos = related.Select(p => new ProductListItemDTO(
+            p.Id, p.Slug, p.Name, p.ThumbnailUrl,
+            p.BasePrice, p.SellPrice, p.StockQuantity, p.IsActive,
+            p.Category?.Name,
+            p.Reviews.Count > 0 ? p.Reviews.Average(r => r.Rating) : 0,
+            p.Reviews.Count)).ToList();
+
+        await _cache.SetAsync(cacheKey, (IReadOnlyList<ProductListItemDTO>)dtos, TimeSpan.FromMinutes(10), ct);
+        return dtos;
+    }
+}
