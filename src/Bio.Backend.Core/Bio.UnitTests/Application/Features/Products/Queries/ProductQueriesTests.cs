@@ -24,11 +24,11 @@ public class ProductQueriesTests
     {
         var q = new GetPublicProductsQuery { Page = 1, PageSize = 10 };
         var products = new List<Product> { CreateSampleProduct(Guid.NewGuid()) };
-        
+
         _cacheMock.Setup(c => c.GetAsync<PaginatedResult<ProductListItemDTO>>(It.IsAny<string>(), default))
             .ReturnsAsync((PaginatedResult<ProductListItemDTO>?)null);
-            
-        _repoMock.Setup(r => r.GetPublicFilteredAsync(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<Guid?>(), 
+
+        _repoMock.Setup(r => r.GetPublicFilteredAsync(It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<Guid?>(),
             It.IsAny<decimal?>(), It.IsAny<decimal?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), default))
             .ReturnsAsync((products, 1));
 
@@ -46,8 +46,8 @@ public class ProductQueriesTests
     {
         var q = new GetManagedProductsQuery { Page = 1, PageSize = 10 };
         var products = new List<Product> { CreateSampleProduct(Guid.NewGuid()) };
-        
-        _repoMock.Setup(r => r.GetManagedFilteredAsync(It.IsAny<Guid?>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<int?>(), 
+
+        _repoMock.Setup(r => r.GetManagedFilteredAsync(It.IsAny<Guid?>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<int?>(),
             It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), default))
             .ReturnsAsync((products, 1));
 
@@ -65,7 +65,7 @@ public class ProductQueriesTests
     {
         var id = Guid.NewGuid();
         var product = CreateSampleProduct(id);
-        
+
         _cacheMock.Setup(c => c.GetAsync<ProductDetailDTO>(It.IsAny<string>(), default))
             .ReturnsAsync((ProductDetailDTO?)null);
         _repoMock.Setup(r => r.GetByIdWithDetailsAsync(id, default)).ReturnsAsync(product);
@@ -95,7 +95,7 @@ public class ProductQueriesTests
     public async Task GetProductBySlug_WhenFound_ShouldReturnDetailDto()
     {
         var product = CreateSampleProduct(Guid.NewGuid(), slug: "my-slug");
-        
+
         _cacheMock.Setup(c => c.GetAsync<ProductDetailDTO>(It.IsAny<string>(), default))
             .ReturnsAsync((ProductDetailDTO?)null);
         _repoMock.Setup(r => r.GetBySlugWithDetailsAsync("my-slug", default)).ReturnsAsync(product);
@@ -113,7 +113,7 @@ public class ProductQueriesTests
     {
         _cacheMock.Setup(c => c.GetAsync<ProductFilterMetaDTO>(It.IsAny<string>(), default))
             .ReturnsAsync((ProductFilterMetaDTO?)null);
-            
+
         var cats = new List<ProductCategory> { new ProductCategory("Cat") };
         _repoMock.Setup(r => r.GetFilterMetaAsync(default)).ReturnsAsync((cats, 10m, 100m, 5));
 
@@ -135,7 +135,7 @@ public class ProductQueriesTests
 
         _cacheMock.Setup(c => c.GetAsync<IReadOnlyList<ProductListItemDTO>>(It.IsAny<string>(), default))
             .ReturnsAsync((IReadOnlyList<ProductListItemDTO>?)null);
-            
+
         _repoMock.Setup(r => r.GetByIdAsync(id, default)).ReturnsAsync(source);
         _repoMock.Setup(r => r.GetRelatedAsync(id, It.IsAny<int?>(), It.IsAny<Guid>(), It.IsAny<int>(), default))
             .ReturnsAsync(related);

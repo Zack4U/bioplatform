@@ -18,14 +18,14 @@ public class AbsPermitCommandsTests
     public async Task CreateAbsPermit_ShouldCreate()
     {
         var handler = new CreateAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
-        var dto = new AbsPermitCreateDTO 
-        { 
-            EntrepreneurId = Guid.NewGuid(), 
-            SpeciesId = Guid.NewGuid(), 
-            ResolutionNumber = "RES", 
-            EmissionDate = DateTime.UtcNow, 
-            ExpirationDate = DateTime.UtcNow.AddYears(1), 
-            GrantingAuthority = "Auth" 
+        var dto = new AbsPermitCreateDTO
+        {
+            EntrepreneurId = Guid.NewGuid(),
+            SpeciesId = Guid.NewGuid(),
+            ResolutionNumber = "RES",
+            EmissionDate = DateTime.UtcNow,
+            ExpirationDate = DateTime.UtcNow.AddYears(1),
+            GrantingAuthority = "Auth"
         };
 
         var result = await handler.Handle(new CreateAbsPermitCommand(dto), default);

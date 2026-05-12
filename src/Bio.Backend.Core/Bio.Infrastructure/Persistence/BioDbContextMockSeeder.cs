@@ -9,7 +9,7 @@ public static class BioDbContextMockSeeder
     public static void SeedMockData(this ModelBuilder modelBuilder)
     {
         var seedDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        
+
         // 1. Categories
         var catFood = new { Id = 1, Name = "Alimentación Viva y Superalimentos" };
         var catHoney = new { Id = 2, Name = "Mieles y Derivados Apícolas" };
@@ -37,12 +37,12 @@ public static class BioDbContextMockSeeder
         var users = new List<object>();
         var userRoles = new List<object>();
         var addresses = new List<object>();
-        
+
         var firstNames = new[] { "Carlos", "María", "Juan", "Ana", "Luis", "Laura", "Andrés", "Daniela", "Jorge", "Camila", "Diego", "Valentina", "Pedro", "Sofia", "Miguel", "Isabella", "José", "Mariana", "Fernando", "Lucia" };
         var lastNames = new[] { "Gómez", "Rodríguez", "López", "Martínez", "Pérez", "García", "Sánchez", "Romero", "Torres", "Ruiz", "Ramírez", "Flores", "Benítez", "Herrera", "Medina", "Rojas", "Díaz", "Castro", "Ortiz", "Silva" };
         var cities = new[] { "Bogotá", "Medellín", "Cali", "Barranquilla", "Cartagena", "Bucaramanga", "Manizales", "Pereira", "Santa Marta", "Cúcuta" };
         var depts = new[] { "Cundinamarca", "Antioquia", "Valle del Cauca", "Atlántico", "Bolívar", "Santander", "Caldas", "Risaralda", "Magdalena", "Norte de Santander" };
-        
+
         var buyerIds = new List<Guid>();
         var userAddresses = new Dictionary<Guid, Guid>();
 
@@ -50,33 +50,35 @@ public static class BioDbContextMockSeeder
         {
             var userId = Guid.NewGuid();
             buyerIds.Add(userId);
-            
+
             var name = $"{firstNames[i]} {lastNames[i]}";
-            var email = $"buyer{i+1}@example.com";
-            
-            users.Add(new { 
-                Id = userId, 
-                Email = email, 
-                FullName = name, 
-                PasswordHash = hash, 
-                Salt = salt, 
-                PhoneNumber = $"+57311{i:D7}", 
-                IsActive = true, 
-                IsVerified = true, 
-                TwoFactorEnabled = false, 
-                CreatedAt = seedDate 
+            var email = $"buyer{i + 1}@example.com";
+
+            users.Add(new
+            {
+                Id = userId,
+                Email = email,
+                FullName = name,
+                PasswordHash = hash,
+                Salt = salt,
+                PhoneNumber = $"+57311{i:D7}",
+                IsActive = true,
+                IsVerified = true,
+                TwoFactorEnabled = false,
+                CreatedAt = seedDate
             });
 
             userRoles.Add(new { UserId = userId, RoleId = buyerRoleId, AssignedAt = seedDate });
 
             var addressId = Guid.NewGuid();
             userAddresses[userId] = addressId;
-            addresses.Add(new {
+            addresses.Add(new
+            {
                 Id = addressId,
                 UserId = userId,
                 AddressType = "Shipping",
                 RecipientName = name,
-                StreetLine1 = $"Calle {i+10} # {i+20} - {i+30}",
+                StreetLine1 = $"Calle {i + 10} # {i + 20} - {i + 30}",
                 StreetLine2 = $"Apto {i}01",
                 City = cities[i % cities.Length],
                 Department = depts[i % depts.Length],
@@ -95,7 +97,7 @@ public static class BioDbContextMockSeeder
         // 3. Products
         var products = new List<object>();
         var productIds = new List<Guid>();
-        
+
         var productDefinitions = new[]
         {
             new { Cat = 1, Name = "Harina de Coca Tradicional", Slug = "harina-coca-tradicional", Price = 25000m, Sku = "HC-001" },
@@ -118,7 +120,8 @@ public static class BioDbContextMockSeeder
         {
             var pid = Guid.NewGuid();
             productIds.Add(pid);
-            products.Add(new {
+            products.Add(new
+            {
                 Id = pid,
                 Slug = pd.Slug,
                 EntrepreneurId = entrepreneurId,
@@ -152,7 +155,7 @@ public static class BioDbContextMockSeeder
 
             // 1 to 3 reviews per product
             int reviewCount = random.Next(1, 4);
-            
+
             for (int r = 0; r < reviewCount; r++)
             {
                 var buyerId = buyerIds[random.Next(buyerIds.Count)];
@@ -161,7 +164,8 @@ public static class BioDbContextMockSeeder
                 var qty = random.Next(1, 4);
 
                 // Create Order
-                orders.Add(new {
+                orders.Add(new
+                {
                     Id = orderId,
                     OrderNumber = $"ORD-2025-{orderCounter:D5}",
                     BuyerId = buyerId,
@@ -178,7 +182,8 @@ public static class BioDbContextMockSeeder
                 });
 
                 // Create OrderItem
-                orderItems.Add(new {
+                orderItems.Add(new
+                {
                     Id = Guid.NewGuid(),
                     OrderId = orderId,
                     ProductId = productId,
@@ -190,7 +195,8 @@ public static class BioDbContextMockSeeder
                 // Create Review
                 int rating = random.Next(4, 6); // 4 or 5 stars
                 var comments = new[] { "Excelente calidad, muy recomendado.", "Me encantó este producto, apoya a las comunidades.", "El envío fue rápido y el producto es tal como se describe.", "Muy bueno, lo compraré de nuevo.", "Increíble, una maravilla de la biodiversidad colombiana." };
-                reviews.Add(new {
+                reviews.Add(new
+                {
                     Id = Guid.NewGuid(),
                     ProductId = productId,
                     UserId = buyerId,

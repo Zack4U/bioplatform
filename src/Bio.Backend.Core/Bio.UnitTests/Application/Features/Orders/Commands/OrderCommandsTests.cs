@@ -33,9 +33,13 @@ public class OrderCommandsTests
     {
         var handler = new CreateOrderCommandHandler(_orderRepoMock.Object, _productRepoMock.Object, _cartRepoMock.Object, _uowMock.Object, _loggerMock.Object);
         var pid = Guid.NewGuid();
-        var dto = new OrderCreateDTO { PaymentMethod = "Card", Items = new List<OrderItemCreateDTO> {
+        var dto = new OrderCreateDTO
+        {
+            PaymentMethod = "Card",
+            Items = new List<OrderItemCreateDTO> {
             new(pid, 1), new(pid, 2)
-        } };
+        }
+        };
 
         await FluentActions.Awaiting(() => handler.Handle(new CreateOrderCommand(dto, Guid.NewGuid()), default))
             .Should().ThrowAsync<ValidationException>().WithMessage("*Duplicate products*");
@@ -47,7 +51,7 @@ public class OrderCommandsTests
         var handler = new CreateOrderCommandHandler(_orderRepoMock.Object, _productRepoMock.Object, _cartRepoMock.Object, _uowMock.Object, _loggerMock.Object);
         var pid = Guid.NewGuid();
         var dto = new OrderCreateDTO { PaymentMethod = "Card", Items = new List<OrderItemCreateDTO> { new(pid, 2) } };
-        
+
         var product = new Product(Guid.NewGuid(), Guid.NewGuid(), "P", "p", "D", 10, 10, 5, null, null, null, null);
         product.Activate();
 
@@ -55,7 +59,7 @@ public class OrderCommandsTests
         _productRepoMock.Setup(r => r.GetByIdAsync(pid, default)).ReturnsAsync(product);
         _cartRepoMock.Setup(r => r.GetByUserIdAsync(It.IsAny<Guid>(), default)).ReturnsAsync((Cart?)null);
         _orderRepoMock.Setup(r => r.GetByIdWithItemsAsync(It.IsAny<Guid>(), default)).ReturnsAsync(new Order(Guid.NewGuid(), "ORD-123", 20m, 20m, "Card"));
-        
+
         var result = await handler.Handle(new CreateOrderCommand(dto, Guid.NewGuid()), default);
 
         result.Should().NotBeNull();
@@ -68,12 +72,12 @@ public class OrderCommandsTests
     {
         var orderId = Guid.NewGuid();
         var order = new Order(Guid.NewGuid(), "ORD", 10m, 10m, "Card");
-        
+
         _orderRepoMock.Setup(r => r.GetByIdWithItemsAsync(orderId, default)).ReturnsAsync(order);
         var handler = new UpdateOrderStatusCommandHandler(_orderRepoMock.Object, _uowMock.Object);
-        
+
         var result = await handler.Handle(new UpdateOrderStatusCommand(orderId, "Paid"), default);
-        
+
         result.Status.Should().Be("Paid");
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
     }

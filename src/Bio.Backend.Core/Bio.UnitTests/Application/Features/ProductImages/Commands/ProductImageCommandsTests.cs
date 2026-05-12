@@ -32,10 +32,14 @@ public class ProductImageCommandsTests
             .ReturnsAsync("https://s3.url/image.jpg");
 
         var handler = new AddProductImageCommandHandler(_productRepoMock.Object, _imageRepoMock.Object, _s3Mock.Object, _uowMock.Object);
-        var cmd = new AddProductImageCommand 
-        { 
-            ProductId = productId, ActorId = entrepreneurId, ActorRole = "ENTREPRENEUR", 
-            FileStream = new MemoryStream(), ContentType = "image/jpeg", IsPrimary = true 
+        var cmd = new AddProductImageCommand
+        {
+            ProductId = productId,
+            ActorId = entrepreneurId,
+            ActorRole = "ENTREPRENEUR",
+            FileStream = new MemoryStream(),
+            ContentType = "image/jpeg",
+            IsPrimary = true
         };
 
         var result = await handler.Handle(cmd, default);

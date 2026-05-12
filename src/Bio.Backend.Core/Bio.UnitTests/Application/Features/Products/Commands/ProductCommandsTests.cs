@@ -64,10 +64,10 @@ public class ProductCommandsTests
         var id = Guid.NewGuid();
         var entrepreneurId = Guid.NewGuid();
         var product = CreateSampleProduct(id, entrepreneurId);
-        
+
         _repoMock.Setup(r => r.GetByIdWithDetailsAsync(id, default)).ReturnsAsync(product);
         _repoMock.Setup(r => r.ExistsBySlugExcludingIdAsync("new-slug", id, default)).ReturnsAsync(false);
-        
+
         var handler = new UpdateProductCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
         var dto = new ProductUpdateDTO { Name = "New Name", Slug = "new-slug", Description = "Desc", BasePrice = 200, SellPrice = 250, StockQuantity = 20 };
         var cmd = new UpdateProductCommand(id, dto, entrepreneurId, "ENTREPRENEUR");
@@ -84,7 +84,7 @@ public class ProductCommandsTests
     {
         var id = Guid.NewGuid();
         var product = CreateSampleProduct(id, Guid.NewGuid());
-        
+
         _repoMock.Setup(r => r.GetByIdWithDetailsAsync(id, default)).ReturnsAsync(product);
         var handler = new UpdateProductCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
         var cmd = new UpdateProductCommand(id, new ProductUpdateDTO { Name = "N" }, Guid.NewGuid(), "BUYER");
@@ -99,9 +99,9 @@ public class ProductCommandsTests
         var id = Guid.NewGuid();
         var entrepreneurId = Guid.NewGuid();
         var product = CreateSampleProduct(id, entrepreneurId);
-        
+
         _repoMock.Setup(r => r.GetByIdAsync(id, default)).ReturnsAsync(product);
-        
+
         var handler = new DeleteProductCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
         var cmd = new DeleteProductCommand(id, entrepreneurId, "ENTREPRENEUR");
 
@@ -117,9 +117,9 @@ public class ProductCommandsTests
         var id = Guid.NewGuid();
         var product = CreateSampleProduct(id, Guid.NewGuid());
         product.Deactivate();
-        
+
         _repoMock.Setup(r => r.GetByIdAsync(id, default)).ReturnsAsync(product);
-        
+
         var handler = new ActivateProductCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         await handler.Handle(new ActivateProductCommand(id), default);
@@ -133,9 +133,9 @@ public class ProductCommandsTests
     {
         var id = Guid.NewGuid();
         var product = CreateSampleProduct(id, Guid.NewGuid());
-        
+
         _repoMock.Setup(r => r.GetByIdAsync(id, default)).ReturnsAsync(product);
-        
+
         var handler = new DeactivateProductCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         await handler.Handle(new DeactivateProductCommand(id), default);

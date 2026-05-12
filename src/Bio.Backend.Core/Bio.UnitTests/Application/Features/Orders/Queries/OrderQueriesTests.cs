@@ -60,7 +60,7 @@ public class OrderQueriesTests
         _repoMock.Setup(r => r.GetByIdWithItemsAsync(orderId, default)).ReturnsAsync(order);
 
         var handler = new GetOrderByIdQueryHandler(_repoMock.Object);
-        
+
         await FluentActions.Awaiting(() => handler.Handle(new GetOrderByIdQuery(orderId, Guid.NewGuid(), "BUYER"), default))
             .Should().ThrowAsync<ForbiddenException>();
     }
