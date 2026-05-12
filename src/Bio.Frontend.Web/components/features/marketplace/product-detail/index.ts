@@ -1,2 +1,3 @@
-export { ProductDetailHero } from "./ProductDetailHero";
-export { ProductDetailTabs } from "./ProductDetailTabs";
+export * from "./ProductDetailHero";
+export * from "./ProductDetailTabs";
+export * from "./ReviewForm";

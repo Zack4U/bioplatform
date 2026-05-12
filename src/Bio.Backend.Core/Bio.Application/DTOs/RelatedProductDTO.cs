@@ -9,7 +9,8 @@ public record RelatedProductDTO(
     string Name,
     string? Slug,
     string Description,
-    decimal Price,
+    decimal BasePrice,
+    decimal SellPrice,
     int StockQuantity,
     string? ThumbnailUrl,
     bool IsActive

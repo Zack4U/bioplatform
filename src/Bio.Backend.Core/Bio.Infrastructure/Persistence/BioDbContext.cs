@@ -37,6 +37,21 @@ public class BioDbContext : DbContext
     public DbSet<Address> Addresses { get; set; } = null!;
     public DbSet<Favorite> Favorites { get; set; } = null!;
     public DbSet<Notification> Notifications { get; set; } = null!;
+    public DbSet<ActivityLog> ActivityLogs { get; set; } = null!;
+
+    // --- Shopping Cart ---
+    public DbSet<Cart> Carts { get; set; } = null!;
+    public DbSet<CartItem> CartItems { get; set; } = null!;
+
+    // --- Community & Networking ---
+    public DbSet<CommunityPost> CommunityPosts { get; set; } = null!;
+    public DbSet<CommunityPostComment> CommunityPostComments { get; set; } = null!;
+    public DbSet<CommunityReaction> CommunityReactions { get; set; } = null!;
+    public DbSet<UserConnection> UserConnections { get; set; } = null!;
+    public DbSet<DirectThread> DirectThreads { get; set; } = null!;
+    public DbSet<DirectThreadParticipant> DirectThreadParticipants { get; set; } = null!;
+    public DbSet<DirectMessage> DirectMessages { get; set; } = null!;
+    public DbSet<DirectMessageRead> DirectMessageReads { get; set; } = null!;
 
     /// Configures the data model and mapping rules using Fluent API.
     /// Executed when the model for the context is being initialized.
@@ -99,6 +114,7 @@ public class BioDbContext : DbContext
         modelBuilder.Entity<ProductCategory>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(450);
             entity.HasIndex(e => e.Name).IsUnique();
         });
 
@@ -108,17 +124,20 @@ public class BioDbContext : DbContext
             entity.HasIndex(e => e.Slug).IsUnique();
             entity.HasIndex(e => e.EntrepreneurId);
             entity.HasIndex(e => e.BaseSpeciesId); // Logical FK to PostgreSQL
-            entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.BasePrice).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.SellPrice).HasColumnType("decimal(18,2)");
 
             entity.HasOne(e => e.Entrepreneur)
                   .WithMany()
                   .HasForeignKey(e => e.EntrepreneurId)
                   .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne<ProductCategory>()
+            entity.HasOne(e => e.Category)
                   .WithMany(pc => pc.Products)
                   .HasForeignKey(e => e.CategoryId)
                   .OnDelete(DeleteBehavior.SetNull);
+
+            entity.Property(e => e.RowVersion).IsRowVersion();
         });
 
         modelBuilder.Entity<ProductImage>(entity =>
@@ -142,7 +161,8 @@ public class BioDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.User)
                   .WithMany()
-                  .HasForeignKey(e => e.UserId);
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.NoAction);
         });
 
         modelBuilder.Entity<Certification>(entity =>
@@ -175,6 +195,7 @@ public class BioDbContext : DbContext
             entity.HasIndex(e => e.Status);
             entity.HasIndex(e => e.CreatedAt);
             entity.HasIndex(e => e.OrderNumber).IsUnique();
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(450);
             entity.Property(e => e.TotalAmount).HasColumnType("decimal(18,2)");
             entity.Property(e => e.SubtotalAmount).HasColumnType("decimal(18,2)");
             entity.Property(e => e.TaxAmount).HasColumnType("decimal(18,2)");
@@ -195,6 +216,8 @@ public class BioDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(e => e.BillingAddressId)
                   .OnDelete(DeleteBehavior.NoAction);
+
+            entity.Property(e => e.RowVersion).IsRowVersion();
         });
 
         modelBuilder.Entity<OrderItem>(entity =>
@@ -208,7 +231,7 @@ public class BioDbContext : DbContext
             entity.Property(e => e.TotalPrice).HasColumnType("decimal(18,2)");
 
             entity.HasOne(e => e.Product)
-                  .WithMany()
+                  .WithMany(p => p.OrderItems)
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Restrict);
         });
@@ -233,7 +256,7 @@ public class BioDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.BatchCode).IsUnique();
             entity.HasOne(e => e.Product)
-                  .WithMany()
+                  .WithMany(p => p.TraceabilityBatches)
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
@@ -272,6 +295,34 @@ public class BioDbContext : DbContext
             entity.HasIndex(e => new { e.UserId, e.TargetType, e.TargetId }).IsUnique();
         });
 
+        // =====================================================================
+        // SHOPPING CART
+        // =====================================================================
+
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.UserId).IsUnique(); // One cart per user
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<CartItem>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasOne(e => e.Cart)
+                  .WithMany(c => c.Items)
+                  .HasForeignKey(e => e.CartId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Product)
+                  .WithMany()
+                  .HasForeignKey(e => e.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => new { e.CartId, e.ProductId }).IsUnique(); // No duplicate products per cart
+        });
+
         modelBuilder.Entity<Notification>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -287,9 +338,143 @@ public class BioDbContext : DbContext
             entity.HasIndex(e => e.IsRead);
         });
 
+        modelBuilder.Entity<ActivityLog>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.ActorType).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.ActionType).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.ImpactLevel).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.TargetType).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Summary).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.IpAddress).HasMaxLength(45);
+            entity.Property(e => e.UserAgent).HasMaxLength(400);
+            entity.HasOne(e => e.ActorUser)
+                  .WithMany()
+                  .HasForeignKey(e => e.ActorUserId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasIndex(e => e.ActorUserId);
+            entity.HasIndex(e => e.ActionType);
+            entity.HasIndex(e => e.ImpactLevel);
+            entity.HasIndex(e => e.TargetType);
+            entity.HasIndex(e => e.TargetId);
+        });
+
+        // =====================================================================
+        // COMMUNITY & NETWORKING
+        // =====================================================================
+
+        modelBuilder.Entity<CommunityPost>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.Category).HasMaxLength(50);
+            entity.HasOne(e => e.AuthorUser)
+                  .WithMany()
+                  .HasForeignKey(e => e.AuthorUserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => e.AuthorUserId);
+            entity.HasIndex(e => e.Category);
+        });
+
+        modelBuilder.Entity<CommunityPostComment>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasOne(e => e.Post)
+                  .WithMany(p => p.Comments)
+                  .HasForeignKey(e => e.PostId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.AuthorUser)
+                  .WithMany()
+                  .HasForeignKey(e => e.AuthorUserId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasIndex(e => e.AuthorUserId);
+        });
+
+        modelBuilder.Entity<CommunityReaction>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.TargetType).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.ReactionType).IsRequired().HasMaxLength(10);
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.TargetType);
+            entity.HasIndex(e => e.TargetId);
+            entity.HasIndex(e => new { e.UserId, e.TargetType, e.TargetId }).IsUnique();
+        });
+
+        modelBuilder.Entity<UserConnection>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.Message).HasMaxLength(500);
+            entity.HasOne(e => e.Requester)
+                  .WithMany()
+                  .HasForeignKey(e => e.RequesterId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasOne(e => e.Addressee)
+                  .WithMany()
+                  .HasForeignKey(e => e.AddresseeId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasIndex(e => e.RequesterId);
+            entity.HasIndex(e => e.AddresseeId);
+            entity.HasIndex(e => e.Status);
+        });
+
+        modelBuilder.Entity<DirectThread>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).HasMaxLength(200);
+            entity.Property(e => e.ThreadType).IsRequired().HasMaxLength(20);
+        });
+
+        modelBuilder.Entity<DirectThreadParticipant>(entity =>
+        {
+            entity.HasKey(e => new { e.ThreadId, e.UserId });
+            entity.HasOne(e => e.Thread)
+                  .WithMany(t => t.Participants)
+                  .HasForeignKey(e => e.ThreadId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.NoAction);
+        });
+
+        modelBuilder.Entity<DirectMessage>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasOne(e => e.Thread)
+                  .WithMany(t => t.Messages)
+                  .HasForeignKey(e => e.ThreadId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.SenderUser)
+                  .WithMany()
+                  .HasForeignKey(e => e.SenderUserId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasIndex(e => e.SenderUserId);
+        });
+
+        modelBuilder.Entity<DirectMessageRead>(entity =>
+        {
+            entity.HasKey(e => new { e.MessageId, e.UserId });
+            entity.HasOne(e => e.Message)
+                  .WithMany(m => m.Reads)
+                  .HasForeignKey(e => e.MessageId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)
+                  .WithMany()
+                  .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.NoAction);
+        });
+
         // =====================================================================
         // SEED DATA
         // =====================================================================
         modelBuilder.SeedBaseData();
+        modelBuilder.SeedMockData();
     }
 }

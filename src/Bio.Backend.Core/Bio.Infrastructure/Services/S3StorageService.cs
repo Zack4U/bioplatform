@@ -61,6 +61,27 @@ public class S3StorageService : IS3StorageService
         return BuildPublicUrl(objectKey);
     }
 
+    /// <inheritdoc />
+    public async Task DeleteObjectAsync(string objectKey, CancellationToken cancellationToken = default)
+    {
+        var deleteRequest = new DeleteObjectRequest
+        {
+            BucketName = _settings.BucketName,
+            Key = objectKey,
+        };
+
+        await _s3Client.DeleteObjectAsync(deleteRequest, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public string ExtractObjectKey(string publicUrl)
+    {
+        var prefix = $"https://{_settings.BucketName}.s3.amazonaws.com/";
+        return publicUrl.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+            ? publicUrl[prefix.Length..]
+            : publicUrl;
+    }
+
     // ── Private Helpers ───────────────────────────────────────────────────────
 
     /// <summary>

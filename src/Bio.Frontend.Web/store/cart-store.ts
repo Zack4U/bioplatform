@@ -55,6 +55,12 @@ interface CartState {
 
     /* ── Reset checkout state (after successful order) ─────────────────── */
     resetCheckout: () => void;
+
+    /* ── Price refresh (from server validation) ─────────────────────────── */
+    /** Update a cart item's stored price with the current server price. */
+    updateItemPrice: (productId: string, newPrice: number) => void;
+    /** Remove an item that the server reports as inactive or out of stock. */
+    markItemUnavailable: (productId: string) => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -173,7 +179,7 @@ export const useCartStore = create<CartState>()(
 
             totalAmount: () =>
                 get().items.reduce(
-                    (sum, item) => sum + item.price * item.quantity,
+                    (sum, item) => sum + item.sellPrice * item.quantity,
                     0,
                 ),
 
@@ -188,7 +194,7 @@ export const useCartStore = create<CartState>()(
                 const { items, selectedItemIds } = get();
                 return items
                     .filter((i) => selectedItemIds.includes(i.productId))
-                    .reduce((sum, item) => sum + item.price * item.quantity, 0);
+                    .reduce((sum, item) => sum + item.sellPrice * item.quantity, 0);
             },
 
             // ── Reset checkout ───────────────────────────────────────
@@ -201,6 +207,22 @@ export const useCartStore = create<CartState>()(
                     appliedCoupon: null,
                     orderNotes: "",
                 }),
+
+            // ── Price refresh ────────────────────────────────────────
+            updateItemPrice: (productId, newPrice) =>
+                set((state) => ({
+                    items: state.items.map((item) =>
+                        item.productId === productId
+                            ? { ...item, price: newPrice }
+                            : item,
+                    ),
+                })),
+
+            markItemUnavailable: (productId) =>
+                set((state) => ({
+                    items: state.items.filter((item) => item.productId !== productId),
+                    selectedItemIds: state.selectedItemIds.filter((id) => id !== productId),
+                })),
         }),
         {
             name: "bio-cart-storage",

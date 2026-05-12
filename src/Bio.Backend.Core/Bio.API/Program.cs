@@ -1,4 +1,5 @@
 using Bio.API.Middlewares;
+using Bio.Application.Behaviors;
 using Bio.Application.Common.Models;
 using Bio.Application.DTOs;
 using Bio.Application.Interfaces;
@@ -18,7 +19,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.RateLimiting;
+using StackExchange.Redis;
 using System.Text;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +89,19 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IGeographicDistributionReposito
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesImageRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.SpeciesImageRepository>();
 builder.Services.AddScoped<Bio.Application.Interfaces.IRelatedProductsQuery, Bio.Backend.Core.Bio.Infrastructure.Services.RelatedProductsQuery>();
 
+// Marketplace context (SQL Server) — Product, Order, Favorite, Address, Certification, AbsPermit, Cart, Traceability
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductImageRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductImageRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductCategoryRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductCategoryRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IProductReviewRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductReviewRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IOrderRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.OrderRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IFavoriteRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.FavoriteRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IAddressRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.AddressRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICertificationRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CertificationRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IAbsPermitRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.AbsPermitRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICartRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CartRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ITraceabilityBatchRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.TraceabilityBatchRepository>();
+
 // AWS S3 — Species observation image uploads
 builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
 builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));
@@ -102,12 +119,38 @@ var redisConnection = builder.Configuration.GetConnectionString("RedisConnection
 // Ensure abortConnect=false so Hangfire retries instead of crashing when Redis is momentarily unavailable
 if (!redisConnection.Contains("abortConnect", StringComparison.OrdinalIgnoreCase))
     redisConnection += ",abortConnect=false";
+
+// Redis — Distributed Cache & IConnectionMultiplexer (for prefix invalidation)
+var redisOptions = ConfigurationOptions.Parse(redisConnection);
+redisOptions.AbortOnConnectFail = false;
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(redisOptions));
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisConnection;
+    options.InstanceName = "bioplatform:";
+});
+builder.Services.AddScoped<ICacheService, RedisCacheService>();
+
 builder.Services.AddHangfire(config => config
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
     .UseRedisStorage(redisConnection));
 builder.Services.AddHangfireServer();
+
+// Rate Limiting — fixed window per IP
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("api", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 120;
+        limiterOptions.Window = TimeSpan.FromMinutes(1);
+        limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 10;
+    });
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
 
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesBulkImportJob, Bio.Infrastructure.Services.SpeciesImportJob>();
 builder.Services.AddScoped<Bio.Application.Common.Interfaces.IJobEnqueuer, Bio.Infrastructure.Services.JobEnqueuer>();
@@ -130,7 +173,12 @@ builder.Services.AddCors(options =>
 
 // MediatR, AutoMapper, FluentValidation, Controllers
 builder.Services.AddControllers();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Bio.Application.Features.Species.Commands.ImportSpeciesCsvCommand).Assembly));
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(Bio.Application.Features.Species.Commands.ImportSpeciesCsvCommand).Assembly);
+    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(Bio.Application.Behaviors.ValidationBehavior<,>));
+    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(HtmlSanitizationBehavior<,>));
+});
 builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Bio.Application.Mappings.MappingProfile).Assembly));
 builder.Services.AddValidatorsFromAssembly(typeof(Bio.Application.Features.Species.Commands.ImportSpeciesCsvCommand).Assembly);
 
@@ -182,6 +230,8 @@ app.UseHttpsRedirection();
 
 // CORS must be before Authentication/Authorization
 app.UseCors();
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

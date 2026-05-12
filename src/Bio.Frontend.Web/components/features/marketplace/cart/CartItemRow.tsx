@@ -45,7 +45,7 @@ export function CartItemRow({ item, compact = false }: CartItemRowProps) {
     );
 
     const hasDiscount =
-        item.originalPrice && item.originalPrice > item.price;
+        item.basePrice && item.basePrice > item.sellPrice;
 
     return (
         <div
@@ -95,11 +95,11 @@ export function CartItemRow({ item, compact = false }: CartItemRowProps) {
                     </Link>
                     <div className="flex items-baseline gap-1.5 mt-0.5">
                         <span className="text-xs font-semibold text-primary">
-                            {formatCurrency(item.price)}
+                            {formatCurrency(item.sellPrice)}
                         </span>
                         {hasDiscount && (
                             <span className="text-[11px] text-muted-foreground line-through">
-                                {formatCurrency(item.originalPrice!)}
+                                {formatCurrency(item.basePrice!)}
                             </span>
                         )}
                         <span className="text-[10px] text-muted-foreground">
@@ -141,7 +141,7 @@ export function CartItemRow({ item, compact = false }: CartItemRowProps) {
             {/* Line total + remove (right column, vertically spread) */}
             <div className="flex flex-col items-end justify-between shrink-0">
                 <span className="text-sm font-bold">
-                    {formatCurrency(item.price * item.quantity)}
+                    {formatCurrency(item.sellPrice * item.quantity)}
                 </span>
                 <Button
                     variant="ghost"

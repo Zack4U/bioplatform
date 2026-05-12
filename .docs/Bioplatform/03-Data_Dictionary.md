@@ -621,3 +621,56 @@ _Mensajes individuales dentro de una sesion de chat. Historial del chatbot._
 9. **MLOps:** La tabla `ai_model_versions` permite rollback de modelos. Solo una version puede tener `is_active = True` en cualquier momento dado.
 10. **Naming Conventions:** SQL Server usa **PascalCase** para tablas y columnas (EF Core default). PostgreSQL usa **snake_case** para tablas y columnas (configurado via Fluent API en ScientificDbContext).
 11. **Certificaciones Unificadas:** La tabla `Certifications` reemplaza las anteriores tablas `SustainabilityCerts`, `ProductCerts`, y `Certification` con un modelo unificado que usa `CertificationType` como discriminador.
+12. **Carrito de Compras:** Un usuario solo puede tener **un** carrito (indice unico en `Carts.UserId`). Los precios NO se almacenan en el carrito; se resuelven desde `Products.SellPrice` en el momento del checkout para reflejar precios actuales.
+13. **Concurrencia Optimista:** Las tablas `Products` y `Orders` usan columna `RowVersion` (`ROWVERSION` en SQL Server) para detectar conflictos concurrentes en actualizaciones de stock durante creacion de ordenes.
+14. **Maquina de Estados de Ordenes:** Las transiciones de estado en `Orders` son validadas por la entidad de dominio. Flujo valido: `Pending → Paid → Shipped → Delivered | Returned`. `Pending|Paid → Cancelled`. `Paid → Refunded`.
+15. **Caché Redis:** Las consultas publicas de productos (`GetPublicProducts`, `GetProductById`, `GetProductBySlug`, `GetFilterMeta`) se cachean en Redis. La invalidacion ocurre automaticamente cuando un producto es mutado (Update/Activate/Deactivate).
+
+---
+
+## **Contexto: Shopping Cart (SQL Server)**
+
+### **Tabla: Carts**
+
+_Carrito de compras persistente por usuario. Un usuario tiene maximo un carrito activo. Los precios NO se almacenan aqui para garantizar que siempre reflejen el precio actual del producto._
+
+| Campo     | Tipo de Dato     | Restricciones              | Descripcion                                | Ejemplo             |
+| :-------- | :--------------- | :------------------------- | :----------------------------------------- | :------------------ |
+| Id        | UNIQUEIDENTIFIER | PK, Not Null               | Identificador unico del carrito.           | c0a80101-...        |
+| UserId    | UNIQUEIDENTIFIER | FK (Users), UK, Not Null   | Propietario del carrito. Maximo uno/usuario.| a0eebc99-...        |
+| CreatedAt | DATETIME2        | Default GETUTCDATE()       | Fecha de creacion del carrito.             | 2026-01-15 10:00:00 |
+| UpdatedAt | DATETIME2        | Default GETUTCDATE()       | Ultima vez que se modifico el carrito.     | 2026-02-20 14:30:00 |
+
+**Indices:**
+- `IX_Carts_UserId` (UNIQUE) — garantiza un carrito por usuario.
+
+**Relaciones:**
+- `UserId → Users.Id` (CASCADE DELETE)
+
+---
+
+### **Tabla: CartItems**
+
+_Lineas del carrito. Cada item puede estar activo (seleccionado para checkout) o inactivo (guardado para despues), sin necesidad de eliminarlo._
+
+| Campo     | Tipo de Dato     | Restricciones                   | Descripcion                                                        | Ejemplo             |
+| :-------- | :--------------- | :------------------------------ | :----------------------------------------------------------------- | :------------------ |
+| Id        | UNIQUEIDENTIFIER | PK, Not Null                    | Identificador unico del item.                                      | d1b2c3...           |
+| CartId    | UNIQUEIDENTIFIER | FK (Carts), Not Null            | Carrito al que pertenece.                                          | c0a80101-...        |
+| ProductId | UNIQUEIDENTIFIER | FK (Products), Not Null         | Producto referenciado. Sin precio almacenado.                      | f47ac10b-...        |
+| Quantity  | INT              | Not Null, CHECK (Quantity >= 1) | Cantidad de unidades del producto.                                 | 3                   |
+| IsActive  | BIT              | Default 1                       | Si = 1: incluido en checkout. Si = 0: guardado para despues.       | 1                   |
+| CreatedAt | DATETIME2        | Default GETUTCDATE()            | Fecha en que se agrego el item al carrito.                         | 2026-02-01 09:00:00 |
+| UpdatedAt | DATETIME2        | Default GETUTCDATE()            | Ultima modificacion (cambio de cantidad o toggle de IsActive).     | 2026-02-01 09:30:00 |
+
+**Indices:**
+- `IX_CartItems_CartId_ProductId` (UNIQUE) — previene duplicados del mismo producto en un carrito (el upsert incrementa la cantidad en su lugar).
+
+**Relaciones:**
+- `CartId → Carts.Id` (CASCADE DELETE)
+- `ProductId → Products.Id` (CASCADE DELETE) — si el producto se elimina, se limpia del carrito.
+
+**Reglas de Negocio:**
+- Los precios se resuelven en tiempo real desde `Products.SellPrice` al momento del checkout.
+- Al crear una orden, los items activos correspondientes se eliminan automaticamente del carrito.
+- Un usuario puede desactivar items (`IsActive = 0`) para excluirlos del checkout sin perder la referencia.

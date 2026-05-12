@@ -20,10 +20,12 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 import { useHydration } from "@/hooks/useHydration";
+import { useCartPriceRefresh } from "@/hooks/features/marketplace/useCartPriceRefresh";
+import { FavoritesCarousel } from "@/components/features/marketplace/cart/FavoritesCarousel";
 import { formatCurrency } from "@/lib/constants";
 import { useCartStore } from "@/store/cart-store";
 import type { CartItem } from "@/types/marketplace";
-import { Leaf, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { Leaf, Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback } from "react";
@@ -34,7 +36,7 @@ function PreviewItem({ item }: { item: CartItem }) {
     const updateQuantity = useCartStore((s) => s.updateQuantity);
     const removeItem = useCartStore((s) => s.removeItem);
 
-    const hasDiscount = item.originalPrice && item.originalPrice > item.price;
+    const hasDiscount = item.basePrice && item.basePrice > item.sellPrice;
 
     return (
         <div className="flex gap-3 py-3">
@@ -74,11 +76,11 @@ function PreviewItem({ item }: { item: CartItem }) {
                     </Link>
                     <div className="flex items-baseline gap-1.5 mt-0.5">
                         <span className="text-xs font-semibold text-primary">
-                            {formatCurrency(item.price)}
+                            {formatCurrency(item.sellPrice)}
                         </span>
                         {hasDiscount && (
                             <span className="text-[11px] text-muted-foreground line-through">
-                                {formatCurrency(item.originalPrice!)}
+                                {formatCurrency(item.basePrice!)}
                             </span>
                         )}
                     </div>
@@ -137,7 +139,7 @@ function PreviewItem({ item }: { item: CartItem }) {
             {/* Line total */}
             <div className="shrink-0 text-right self-center">
                 <span className="text-sm font-bold">
-                    {formatCurrency(item.price * item.quantity)}
+                    {formatCurrency(item.sellPrice * item.quantity)}
                 </span>
             </div>
         </div>
@@ -156,11 +158,14 @@ export function CartPreview() {
         s.items.reduce((sum, item) => sum + item.quantity, 0),
     );
     const totalValue = useCartStore((s) =>
-        s.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        s.items.reduce((sum, item) => sum + item.sellPrice * item.quantity, 0),
     );
 
     const count = isHydrated ? countValue : 0;
     const total = isHydrated ? totalValue : 0;
+
+    // Validate prices every time the panel opens (throttled 60s)
+    const { isRefreshing } = useCartPriceRefresh(isOpen && isHydrated);
 
     const handleClearCart = useCallback(() => {
         clearCart();
@@ -180,12 +185,21 @@ export function CartPreview() {
                             <ShoppingBag className="h-5 w-5" />
                             Carrito
                         </span>
-                        {count > 0 && (
-                            <span className="text-xs font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                                {count} {count === 1 ? "articulo" : "articulos"}
-                            </span>
-                        )}
+                        <span className="flex items-center gap-2">
+                            {isRefreshing && (
+                                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                    Actualizando precios
+                                </span>
+                            )}
+                            {count > 0 && (
+                                <span className="text-xs font-normal text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                                    {count} {count === 1 ? "articulo" : "articulos"}
+                                </span>
+                            )}
+                        </span>
                     </SheetTitle>
+
                     <SheetDescription className="sr-only">
                         {count > 0
                             ? "Revisa tus productos antes de continuar"
@@ -290,9 +304,13 @@ export function CartPreview() {
                                 Vaciar carrito
                             </Button>
                         </div>
+
+                        {/* ── Favorites carousel ────────────────────────── */}
+                        <FavoritesCarousel />
                     </>
                 )}
             </SheetContent>
         </Sheet>
     );
 }
+

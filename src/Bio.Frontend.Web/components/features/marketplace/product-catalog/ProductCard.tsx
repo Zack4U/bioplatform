@@ -5,7 +5,7 @@
  * Built on Shadcn Card + Badge primitives.
  *
  * 3 clear sections:
- *   1. Image — fixed aspect ratio with discount/stock overlays
+ *   1. Image — fixed aspect ratio with discount/stock overlays + favorite button
  *   2. Details — name, entrepreneur, rating, badges, certifications
  *   3. Price + Action — price with discount, add-to-cart / quantity controls
  *
@@ -41,7 +41,7 @@ import { formatCurrency } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cart-store";
 import type { ProductListItem } from "@/types/marketplace";
-import { Leaf, Minus, Plus, ShoppingCart, Star } from "lucide-react";
+import { Heart, Leaf, Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import Link from "next/link";
 import { useCallback } from "react";
 import { toast } from "sonner";
@@ -149,6 +149,8 @@ function QuantityControls({
 interface ProductCardProps {
     product: ProductListItem;
     viewMode?: ViewMode;
+    isFavorite?: boolean;
+    onToggleFavorite?: (productId: string) => void;
     className?: string;
 }
 
@@ -157,6 +159,8 @@ interface ProductCardProps {
 export function ProductCard({
     product,
     viewMode = "grid",
+    isFavorite = false,
+    onToggleFavorite,
     className,
 }: ProductCardProps) {
     const isListView = viewMode === "list";
@@ -177,8 +181,8 @@ export function ProductCard({
                 productId: product.id,
                 slug: product.slug,
                 name: product.name,
-                price: product.price,
-                originalPrice: product.originalPrice ?? undefined,
+                sellPrice: product.sellPrice,
+                basePrice: product.basePrice,
                 quantity: 1,
                 thumbnailUrl: product.thumbnailUrl,
                 sku: product.sku,
@@ -189,12 +193,20 @@ export function ProductCard({
         [addItem, product],
     );
 
+    const handleToggleFavorite = useCallback(
+        (e: React.MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onToggleFavorite?.(product.id);
+        },
+        [onToggleFavorite, product.id],
+    );
+
     const hasDiscount =
-        product.originalPrice && product.originalPrice > product.price;
+        product.basePrice && product.basePrice > product.sellPrice;
     const discountPercent = hasDiscount
         ? Math.round(
-              ((product.originalPrice! - product.price) /
-                  product.originalPrice!) *
+              ((product.basePrice! - product.sellPrice) / product.basePrice!) *
                   100,
           )
         : 0;
@@ -258,7 +270,12 @@ export function ProductCard({
                     {/* Stock warning */}
                     {product.stockQuantity <= 5 &&
                         product.stockQuantity > 0 && (
-                            <div className="absolute right-2 top-2">
+                            <div
+                                className={cn(
+                                    "absolute top-2",
+                                    hasDiscount ? "right-2" : "right-2",
+                                )}
+                            >
                                 <Badge
                                     variant="outline"
                                     className="bg-background/80 backdrop-blur text-xs border-amber-500/50 text-amber-600 dark:text-amber-400 shadow-sm"
@@ -267,6 +284,39 @@ export function ProductCard({
                                 </Badge>
                             </div>
                         )}
+
+                    {/* Favorite button — top-right corner */}
+                    {onToggleFavorite && (
+                        <button
+                            type="button"
+                            onClick={handleToggleFavorite}
+                            aria-label={
+                                isFavorite
+                                    ? `Quitar ${product.name} de favoritos`
+                                    : `Agregar ${product.name} a favoritos`
+                            }
+                            aria-pressed={isFavorite}
+                            className={cn(
+                                "absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-background/80 backdrop-blur shadow-sm transition-colors",
+                                "hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                                // Push down when stock badge is visible
+                                product.stockQuantity <= 5 &&
+                                    product.stockQuantity > 0
+                                    ? "top-10"
+                                    : "top-2",
+                            )}
+                        >
+                            <Heart
+                                className={cn(
+                                    "h-3.5 w-3.5 transition-colors",
+                                    isFavorite
+                                        ? "fill-rose-500 text-rose-500"
+                                        : "text-muted-foreground",
+                                )}
+                                aria-hidden="true"
+                            />
+                        </button>
+                    )}
                 </div>
 
                 {/* ═══════════════════════════════════════════════════════
@@ -293,7 +343,7 @@ export function ProductCard({
                     <CardContent className="pb-0 pt-0 space-y-1.5 flex-1">
                         {/* Rating */}
                         <StarRating
-                            rating={product.rating}
+                            rating={product.averageRating}
                             reviewCount={product.reviewCount}
                         />
 
@@ -351,11 +401,11 @@ export function ProductCard({
                         {/* Price block */}
                         <div className="flex flex-col">
                             <span className="text-lg font-bold text-primary leading-tight">
-                                {formatCurrency(product.price)}
+                                {formatCurrency(product.sellPrice)}
                             </span>
                             {hasDiscount && (
                                 <span className="text-xs font-medium text-muted-foreground line-through">
-                                    {formatCurrency(product.originalPrice!)}
+                                    {formatCurrency(product.basePrice!)}
                                 </span>
                             )}
                         </div>

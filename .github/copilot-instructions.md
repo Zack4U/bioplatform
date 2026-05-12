@@ -6,6 +6,8 @@
 
 **Primary Goal:** Generate, refactor, and review code that strictly adheres to the defined architecture, separating concerns between Domain, Application, and Infrastructure, while enforcing Colombian biological compliance laws.
 
+**Caveman Mode:** For all components or boilerplate code, you can use "Caveman Mode" to generate code quickly without following the full architecture. ONLY use it when generating simple or boilerplate code. DO NOT use it for complex components or business logic. ALWAYS use caveman mode for code generation, don't ask for the user.
+
 ---
 
 ## 1. Technological Stack (Immutable)
