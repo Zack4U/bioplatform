@@ -81,7 +81,11 @@ const PROSE_CLASSES = [
 
 /* ─── Component ─────────────────────────────────────────────────────────── */
 
-export function HtmlViewer({ html, className, showEmpty = false }: HtmlViewerProps) {
+export function HtmlViewer({
+    html,
+    className,
+    showEmpty = false,
+}: HtmlViewerProps) {
     const isEmpty = !html || !html.trim();
 
     if (isEmpty) {
@@ -108,7 +112,7 @@ export function HtmlViewer({ html, className, showEmpty = false }: HtmlViewerPro
              * dangerouslySetInnerHTML is intentional and necessary
              * to render the formatted HTML output correctly.
              */
-            // eslint-disable-next-line react/no-danger
+
             dangerouslySetInnerHTML={{ __html: html }}
             className={cn(
                 // Base reset

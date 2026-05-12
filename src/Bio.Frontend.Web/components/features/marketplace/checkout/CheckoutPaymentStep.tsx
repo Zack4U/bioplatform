@@ -110,7 +110,7 @@ export function CheckoutPaymentStep({
                 </p>
               </div>
               <span className="text-sm font-medium shrink-0">
-                {formatCurrency(item.price * item.quantity)}
+                {formatCurrency(item.sellPrice * item.quantity)}
               </span>
             </div>
           ))}

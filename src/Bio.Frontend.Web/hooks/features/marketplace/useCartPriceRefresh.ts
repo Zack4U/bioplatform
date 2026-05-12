@@ -65,7 +65,7 @@ export function useCartPriceRefresh(enabled: boolean) {
 
                     // Find the stored price for this product
                     const stored = items.find((i) => i.productId === validation.productId);
-                    if (stored && Math.abs(stored.price - validation.currentPrice) > 0.001) {
+                    if (stored && Math.abs(stored.sellPrice - validation.currentPrice) > 0.001) {
                         updateItemPrice(validation.productId, validation.currentPrice);
                         priceChangedCount++;
                     }

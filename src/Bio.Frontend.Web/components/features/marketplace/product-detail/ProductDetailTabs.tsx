@@ -121,7 +121,7 @@ export function ProductDetailTabs({
                 ) : (
                   product.certifications.map((cert) => (
                     <div
-                      key={cert.certId}
+                      key={cert.id}
                       className="flex items-start gap-3 rounded-lg border p-3"
                     >
                       <CheckCircle
@@ -129,14 +129,14 @@ export function ProductDetailTabs({
                         aria-hidden="true"
                       />
                       <div className="min-w-0">
-                        <p className="font-medium text-sm">{cert.certName}</p>
+                        <p className="font-medium text-sm">{cert.name}</p>
                         <p className="text-xs text-muted-foreground">
-                          Emitido por: {cert.issuer}
+                          Emitido por: {cert.issuingBody}
                         </p>
-                        {cert.validUntil && (
+                        {cert.expiresAt && (
                           <p className="text-xs text-muted-foreground">
                             Valido hasta:{" "}
-                            {new Date(cert.validUntil).toLocaleDateString(
+                            {new Date(cert.expiresAt).toLocaleDateString(
                               "es-CO",
                               {
                                 year: "numeric",
@@ -237,12 +237,12 @@ export function ProductDetailTabs({
             <CardContent className="pt-6 space-y-6">
               {/* Summary + write review button */}
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                {product.rating != null && (
+                {product.averageRating != null && (
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                     {/* Score */}
                     <div className="text-center shrink-0">
                       <p className="text-4xl font-bold">
-                        {product.rating.toFixed(1)}
+                        {product.averageRating.toFixed(1)}
                       </p>
                       <div className="flex items-center gap-0.5 mt-1 justify-center">
                         {Array.from({ length: 5 }, (_, i) => (
@@ -250,7 +250,7 @@ export function ProductDetailTabs({
                             key={i}
                             className={cn(
                               "h-4 w-4",
-                              i < Math.round(product.rating ?? 0)
+                              i < Math.round(product.averageRating ?? 0)
                                 ? "fill-amber-400 text-amber-400"
                                 : "fill-muted text-muted",
                             )}
@@ -344,7 +344,7 @@ export function ProductDetailTabs({
                     const initials = review.userName
                       .split(" ")
                       .slice(0, 2)
-                      .map((w) => w.charAt(0).toUpperCase())
+                      .map((w: string) => w.charAt(0).toUpperCase())
                       .join("");
 
                     return (

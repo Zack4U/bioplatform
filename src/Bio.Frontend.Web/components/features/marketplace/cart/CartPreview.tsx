@@ -36,7 +36,7 @@ function PreviewItem({ item }: { item: CartItem }) {
     const updateQuantity = useCartStore((s) => s.updateQuantity);
     const removeItem = useCartStore((s) => s.removeItem);
 
-    const hasDiscount = item.originalPrice && item.originalPrice > item.price;
+    const hasDiscount = item.basePrice && item.basePrice > item.sellPrice;
 
     return (
         <div className="flex gap-3 py-3">
@@ -76,11 +76,11 @@ function PreviewItem({ item }: { item: CartItem }) {
                     </Link>
                     <div className="flex items-baseline gap-1.5 mt-0.5">
                         <span className="text-xs font-semibold text-primary">
-                            {formatCurrency(item.price)}
+                            {formatCurrency(item.sellPrice)}
                         </span>
                         {hasDiscount && (
                             <span className="text-[11px] text-muted-foreground line-through">
-                                {formatCurrency(item.originalPrice!)}
+                                {formatCurrency(item.basePrice!)}
                             </span>
                         )}
                     </div>
@@ -139,7 +139,7 @@ function PreviewItem({ item }: { item: CartItem }) {
             {/* Line total */}
             <div className="shrink-0 text-right self-center">
                 <span className="text-sm font-bold">
-                    {formatCurrency(item.price * item.quantity)}
+                    {formatCurrency(item.sellPrice * item.quantity)}
                 </span>
             </div>
         </div>
@@ -158,7 +158,7 @@ export function CartPreview() {
         s.items.reduce((sum, item) => sum + item.quantity, 0),
     );
     const totalValue = useCartStore((s) =>
-        s.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        s.items.reduce((sum, item) => sum + item.sellPrice * item.quantity, 0),
     );
 
     const count = isHydrated ? countValue : 0;

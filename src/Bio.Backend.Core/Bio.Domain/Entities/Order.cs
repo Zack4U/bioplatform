@@ -63,13 +63,13 @@ public class Order
     // ─── Allowed status transitions (State Machine) ───────────────────────────
     private static readonly Dictionary<string, HashSet<string>> AllowedTransitions = new(StringComparer.OrdinalIgnoreCase)
     {
-        ["Pending"]   = ["Paid", "Cancelled"],
-        ["Paid"]      = ["Shipped", "Refunded", "Cancelled"],
-        ["Shipped"]   = ["Delivered", "Returned"],
+        ["Pending"] = ["Paid", "Cancelled"],
+        ["Paid"] = ["Shipped", "Refunded", "Cancelled"],
+        ["Shipped"] = ["Delivered", "Returned"],
         ["Delivered"] = ["Returned"],
         ["Cancelled"] = [],
-        ["Refunded"]  = [],
-        ["Returned"]  = [],
+        ["Refunded"] = [],
+        ["Returned"] = [],
     };
 
     /// <summary>

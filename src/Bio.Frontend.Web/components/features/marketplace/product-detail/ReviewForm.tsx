@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Star } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 /* ─── Validation schema ─────────────────────────────────────────────────── */
@@ -141,7 +141,7 @@ export function ReviewForm({
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     reset,
     formState: { errors },
   } = useForm<ReviewFormValues>({
@@ -152,8 +152,8 @@ export function ReviewForm({
     },
   });
 
-  const ratingValue = watch("rating");
-  const commentValue = watch("comment") ?? "";
+  const ratingValue = useWatch({ control, name: "rating" });
+  const commentValue = useWatch({ control, name: "comment" }) ?? "";
 
   const handleRatingChange = (rating: number) => {
     setValue("rating", rating, { shouldValidate: true });

@@ -20,10 +20,15 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetAll([FromQuery] ProductFilterParams filters)
         => Ok(await _mediator.Send(new GetPublicProductsQuery
         {
-            Query = filters.Query, CategoryId = filters.CategoryId, BaseSpeciesId = filters.BaseSpeciesId,
-            MinPrice = filters.MinPrice, MaxPrice = filters.MaxPrice,
-            SortBy = filters.SortBy, SortOrder = filters.SortOrder,
-            Page = filters.Page, PageSize = filters.PageSize,
+            Query = filters.Query,
+            CategoryId = filters.CategoryId,
+            BaseSpeciesId = filters.BaseSpeciesId,
+            MinPrice = filters.MinPrice,
+            MaxPrice = filters.MaxPrice,
+            SortBy = filters.SortBy,
+            SortOrder = filters.SortOrder,
+            Page = filters.Page,
+            PageSize = filters.PageSize,
         }));
 
     [HttpGet("filter-meta")]

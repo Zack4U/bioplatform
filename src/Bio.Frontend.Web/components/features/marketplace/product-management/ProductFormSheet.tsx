@@ -139,7 +139,7 @@ export function ProductFormSheet({
       reset({
         name: editingProduct.name,
         description: editingProduct.description,
-        price: editingProduct.price,
+        price: editingProduct.sellPrice,
         stockQuantity: editingProduct.stockQuantity,
         sku: editingProduct.sku,
         categoryId: editingProduct.categoryId,
@@ -165,10 +165,11 @@ export function ProductFormSheet({
   // ── Submit handler ─────────────────────────────────────────────────────
 
   function handleFormSubmit(values: ProductFormValues) {
-    const payload: CreateProductRequest = {
+    const payload: CreateProductRequest | UpdateProductRequest = {
       name: values.name,
       description: values.description,
-      price: values.price,
+      sellPrice: values.price,
+      basePrice: values.price,
       stockQuantity: values.stockQuantity,
       sku: values.sku,
       categoryId: values.categoryId ?? null,

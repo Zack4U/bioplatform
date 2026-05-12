@@ -61,7 +61,7 @@ public class CartHandlerTests
     }
 
     [Fact]
-    public async Task CartItem_Toggle_ShouldFlipIsActive()
+    public void CartItem_Toggle_ShouldFlipIsActive()
     {
         var item = new CartItem(Guid.NewGuid(), ProductId, 2);
         item.IsActive.Should().BeTrue("Items start active");
@@ -72,7 +72,7 @@ public class CartHandlerTests
     }
 
     [Fact]
-    public async Task CartItem_UpdateQuantity_ShouldThrow_WhenZeroOrNegative()
+    public void CartItem_UpdateQuantity_ShouldThrow_WhenZeroOrNegative()
     {
         var item = new CartItem(Guid.NewGuid(), ProductId, 2);
 

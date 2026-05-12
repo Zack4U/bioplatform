@@ -97,12 +97,12 @@ export function FavoritesGrid() {
                             )}
                             <div className="mt-2 flex items-center justify-between">
                                 <span className="font-semibold text-primary">
-                                    {formatCurrency(product.price)}
+                                    {formatCurrency(product.sellPrice)}
                                 </span>
-                                {(product.rating ?? 0) > 0 && (
+                                {(product.averageRating ?? 0) > 0 && (
                                     <span className="flex items-center gap-1 text-xs text-muted-foreground">
                                         <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                                        {product.rating?.toFixed(1)}
+                                        {product.averageRating?.toFixed(1)}
                                     </span>
                                 )}
                             </div>

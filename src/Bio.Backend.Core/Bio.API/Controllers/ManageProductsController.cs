@@ -34,8 +34,13 @@ public class ManageProductsController : ControllerBase
         Guid? entrepreneurId = role == RoleNames.Admin ? null : GetUserId();
         return Ok(await _mediator.Send(new GetManagedProductsQuery
         {
-            EntrepreneurId = entrepreneurId, Query = filters.Query, CategoryId = filters.CategoryId,
-            SortBy = filters.SortBy, SortOrder = filters.SortOrder, Page = filters.Page, PageSize = filters.PageSize,
+            EntrepreneurId = entrepreneurId,
+            Query = filters.Query,
+            CategoryId = filters.CategoryId,
+            SortBy = filters.SortBy,
+            SortOrder = filters.SortOrder,
+            Page = filters.Page,
+            PageSize = filters.PageSize,
         }));
     }
 

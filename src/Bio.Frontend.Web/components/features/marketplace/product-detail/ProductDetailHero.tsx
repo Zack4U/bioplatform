@@ -77,8 +77,9 @@ export function ProductDetailHero({
       productId: product.id,
       slug: product.slug,
       name: product.name,
-      price: product.price,
-      originalPrice: product.originalPrice ?? undefined,
+      sellPrice: product.sellPrice,
+        basePrice: product.basePrice,
+      
       quantity,
       thumbnailUrl: product.images.find((i) => i.isPrimary)?.imageUrl ?? null,
       sku: product.sku,
@@ -90,10 +91,10 @@ export function ProductDetailHero({
   }, [addItem, product, quantity]);
 
   const hasDiscount =
-    product.originalPrice && product.originalPrice > product.price;
+    product.basePrice && product.basePrice > product.sellPrice;
   const discountPercent = hasDiscount
     ? Math.round(
-        ((product.originalPrice! - product.price) / product.originalPrice!) *
+        ((product.basePrice! - product.sellPrice) / product.basePrice!) *
           100,
       )
     : 0;
@@ -158,12 +159,12 @@ export function ProductDetailHero({
             )}
             {product.certifications.map((cert) => (
               <Badge
-                key={cert.certId}
+                key={cert.id}
                 variant="outline"
                 className="gap-1 bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-xs"
               >
                 <CheckCircle className="h-3 w-3" aria-hidden="true" />
-                {cert.certName}
+                {cert.name}
               </Badge>
             ))}
           </div>
@@ -212,7 +213,7 @@ export function ProductDetailHero({
           </p>
 
           {/* Rating */}
-          {product.rating !== null && (
+          {product.averageRating !== null && (
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }, (_, i) => (
@@ -220,7 +221,7 @@ export function ProductDetailHero({
                     key={i}
                     className={cn(
                       "h-4 w-4",
-                      i < Math.round(product.rating ?? 0)
+                      i < Math.round(product.averageRating ?? 0)
                         ? "fill-amber-400 text-amber-400"
                         : "fill-muted text-muted",
                     )}
@@ -229,7 +230,7 @@ export function ProductDetailHero({
                 ))}
               </div>
               <span className="text-sm text-muted-foreground">
-                {product.rating?.toFixed(1)} ({product.reviewCount}{" "}
+                {product.averageRating?.toFixed(1)} ({product.reviewCount}{" "}
                 {product.reviewCount === 1 ? "resena" : "resenas"})
               </span>
             </div>
@@ -240,12 +241,12 @@ export function ProductDetailHero({
           {/* Price */}
           <div className="flex items-baseline gap-3">
             <span className="text-3xl font-bold text-primary">
-              {formatCurrency(product.price)}
+              {formatCurrency(product.sellPrice)}
             </span>
             {hasDiscount && (
               <>
                 <span className="text-lg text-muted-foreground line-through">
-                  {formatCurrency(product.originalPrice!)}
+                  {formatCurrency(product.basePrice!)}
                 </span>
                 <Badge className="bg-red-500 text-white hover:bg-red-500">
                   -{discountPercent}%

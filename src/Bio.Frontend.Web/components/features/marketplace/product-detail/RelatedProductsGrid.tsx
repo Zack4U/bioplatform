@@ -91,12 +91,12 @@ export function RelatedProductsGrid({ productId }: RelatedProductsGridProps) {
                                 </Link>
                                 <div className="mt-2 flex items-center justify-between">
                                     <span className="text-xs font-semibold text-primary">
-                                        {formatCurrency(product.price)}
+                                        {formatCurrency(product.sellPrice)}
                                     </span>
-                                    {(product.rating ?? 0) > 0 && (
+                                    {(product.averageRating ?? 0) > 0 && (
                                         <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
                                             <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
-                                            {product.rating?.toFixed(1)}
+                                            {product.averageRating?.toFixed(1)}
                                         </span>
                                     )}
                                 </div>
@@ -112,7 +112,8 @@ export function RelatedProductsGrid({ productId }: RelatedProductsGridProps) {
                                         addItem({
                                             productId: product.id,
                                             name: product.name,
-                                            price: product.price,
+                                            sellPrice: product.sellPrice,
+                                            basePrice: product.basePrice,
                                             quantity: 1,
                                             maxStock: product.stockQuantity,
                                             thumbnailUrl: product.thumbnailUrl,

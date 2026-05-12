@@ -12,11 +12,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { useCartStore } from "@/store/cart-store";
 import { useFavorites } from "@/hooks/features/marketplace";
-import { useAuthStore } from "@/store/auth-store";
 import { formatCurrency } from "@/lib/constants";
+import { useAuthStore } from "@/store/auth-store";
+import { useCartStore } from "@/store/cart-store";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -49,7 +48,8 @@ function FavoriteCardMini({
         addItem({
             productId: id,
             name,
-            price: price,
+            sellPrice: price,
+            basePrice: price,
             quantity: 1,
             maxStock: 99,
             thumbnailUrl: thumbnailUrl,
@@ -75,7 +75,9 @@ function FavoriteCardMini({
                 )}
             </div>
             <div className="p-2 space-y-1">
-                <p className="text-xs font-medium leading-tight line-clamp-2">{name}</p>
+                <p className="text-xs font-medium leading-tight line-clamp-2">
+                    {name}
+                </p>
                 <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-primary">
                         {formatCurrency(price)}
@@ -145,8 +147,8 @@ export function FavoritesCarousel() {
                             slug={product.slug}
                             name={product.name}
                             thumbnailUrl={product.thumbnailUrl}
-                            price={product.price}
-                            rating={product.rating ?? 0}
+                            price={product.sellPrice}
+                            rating={product.averageRating ?? 0}
                             sku={product.sku}
                         />
                     ))}

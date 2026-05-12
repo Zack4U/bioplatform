@@ -224,8 +224,13 @@ public class AddressHandlerTests
         var handler = new CreateAddressCommandHandler(_repo.Object, _uow.Object);
         var dto = new AddressCreateDTO
         {
-            AddressType = "Shipping", RecipientName = "John", StreetLine1 = "St 1",
-            City = "Manizales", Department = "Caldas", PostalCode = "170001", IsDefault = true
+            AddressType = "Shipping",
+            RecipientName = "John",
+            StreetLine1 = "St 1",
+            City = "Manizales",
+            Department = "Caldas",
+            PostalCode = "170001",
+            IsDefault = true
         };
 
         var result = await handler.Handle(new CreateAddressCommand(dto, UserId), default);
@@ -260,9 +265,12 @@ public class AbsPermitHandlerTests
         var handler = new CreateAbsPermitCommandHandler(_repo.Object, _uow.Object);
         var dto = new AbsPermitCreateDTO
         {
-            EntrepreneurId = Guid.NewGuid(), SpeciesId = Guid.NewGuid(),
-            ResolutionNumber = "RES-123", EmissionDate = DateTime.UtcNow,
-            ExpirationDate = DateTime.UtcNow.AddYears(1), GrantingAuthority = "MinAmbiente"
+            EntrepreneurId = Guid.NewGuid(),
+            SpeciesId = Guid.NewGuid(),
+            ResolutionNumber = "RES-123",
+            EmissionDate = DateTime.UtcNow,
+            ExpirationDate = DateTime.UtcNow.AddYears(1),
+            GrantingAuthority = "MinAmbiente"
         };
 
         var result = await handler.Handle(new CreateAbsPermitCommand(dto), default);

@@ -149,6 +149,7 @@ export interface TraceabilityBatch {
 export interface ProductReviewResponseDTO {
   id: string;
   userId: string;
+  userName: string;
   rating: number;
   title: string | null;
   comment: string | null;

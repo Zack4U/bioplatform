@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAddresses } from "@/hooks/features/marketplace";
 import type { Address, CreateAddressRequest } from "@/types";
-import { Building, Home, MapPin, Plus, Star, Trash2, Pencil } from "lucide-react";
+import { MapPin, Plus, Star, Trash2, Pencil } from "lucide-react";
 import { useState } from "react";
 
 type AddressFormState = CreateAddressRequest & { id?: string };

@@ -247,11 +247,11 @@ function ProductRow({
       <TableCell>
         <div className="flex flex-col gap-0.5">
           <span className="font-semibold tabular-nums">
-            {formatCOP(product.price)}
+            {formatCOP(product.sellPrice)}
           </span>
-          {product.originalPrice && product.originalPrice > product.price && (
+          {product.basePrice && product.basePrice > product.sellPrice && (
             <span className="text-xs text-muted-foreground line-through tabular-nums">
-              {formatCOP(product.originalPrice)}
+              {formatCOP(product.basePrice)}
             </span>
           )}
         </div>
@@ -282,13 +282,13 @@ function ProductRow({
 
       {/* ── Rating ─────────────────────────────────────────────────────── */}
       <TableCell className="hidden lg:table-cell">
-        {product.rating !== null ? (
+        {product.averageRating !== null ? (
           <div className="flex items-center gap-1 text-sm tabular-nums">
             <Star
               className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
               aria-hidden="true"
             />
-            <span>{product.rating.toFixed(1)}</span>
+            <span>{product.averageRating.toFixed(1)}</span>
             <span className="text-muted-foreground">
               ({product.reviewCount})
             </span>

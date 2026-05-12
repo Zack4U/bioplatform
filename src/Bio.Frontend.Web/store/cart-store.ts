@@ -179,7 +179,7 @@ export const useCartStore = create<CartState>()(
 
             totalAmount: () =>
                 get().items.reduce(
-                    (sum, item) => sum + item.price * item.quantity,
+                    (sum, item) => sum + item.sellPrice * item.quantity,
                     0,
                 ),
 
@@ -194,7 +194,7 @@ export const useCartStore = create<CartState>()(
                 const { items, selectedItemIds } = get();
                 return items
                     .filter((i) => selectedItemIds.includes(i.productId))
-                    .reduce((sum, item) => sum + item.price * item.quantity, 0);
+                    .reduce((sum, item) => sum + item.sellPrice * item.quantity, 0);
             },
 
             // ── Reset checkout ───────────────────────────────────────

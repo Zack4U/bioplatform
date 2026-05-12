@@ -148,7 +148,7 @@ export function ProductImageManager({
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
     if (file) handleFileSelect(file);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];

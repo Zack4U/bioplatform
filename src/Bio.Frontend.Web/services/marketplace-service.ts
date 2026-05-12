@@ -37,12 +37,12 @@ import type {
   Order,
   PaginatedResponse,
   ProductCategory,
-  ProductCert,
+  CertificationResponseDTO,
   ProductDetailDTO,
   ProductImage,
   ProductListItem,
   ProductSearchParams,
-  Review,
+  ProductReviewResponseDTO,
   UpdateAddressRequest,
   UpdateProductRequest,
 } from "@/types";
@@ -113,8 +113,8 @@ export async function getCategories(): Promise<ProductCategory[]> {
  * Get all approved reviews for a product.
  * GET /api/products/:productId/reviews
  */
-export async function getProductReviews(productId: string): Promise<Review[]> {
-  return apiGet<Review[]>(CORE_ROUTES.PRODUCTS.REVIEWS(productId));
+export async function getProductReviews(productId: string): Promise<ProductReviewResponseDTO[]> {
+  return apiGet<ProductReviewResponseDTO[]>(CORE_ROUTES.PRODUCTS.REVIEWS(productId));
 }
 
 /**
@@ -124,8 +124,8 @@ export async function getProductReviews(productId: string): Promise<Review[]> {
 export async function createReview(
   productId: string,
   data: CreateReviewRequest,
-): Promise<Review> {
-  return apiPost<CreateReviewRequest, Review>(
+): Promise<ProductReviewResponseDTO> {
+  return apiPost<CreateReviewRequest, ProductReviewResponseDTO>(
     CORE_ROUTES.PRODUCTS.REVIEWS(productId),
     data,
   );
@@ -418,8 +418,8 @@ export async function createAbsPermit(data: FormData): Promise<AbsPermit> {
  */
 export async function getProductCertifications(
   productId: string,
-): Promise<ProductCert[]> {
-  return apiGet<ProductCert[]>(CORE_ROUTES.CERTIFICATIONS.BASE, {
+): Promise<CertificationResponseDTO[]> {
+  return apiGet<CertificationResponseDTO[]>(CORE_ROUTES.CERTIFICATIONS.BASE, {
     productId,
   });
 }

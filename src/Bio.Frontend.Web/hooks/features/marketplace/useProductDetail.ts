@@ -29,7 +29,7 @@ import type {
   CreateReviewRequest,
   FavoriteStatus,
   ProductDetailDTO,
-  Review,
+  ProductReviewResponseDTO,
 } from "@/types/marketplace";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -66,7 +66,7 @@ export function useProductDetail(slug: string) {
   // ── Reviews ────────────────────────────────────────────────────────────
 
   const { data: reviews = [], isLoading: isLoadingReviews } = useQuery<
-    Review[]
+    ProductReviewResponseDTO[]
   >({
     queryKey: ["marketplace", "reviews", product?.id],
     queryFn: () => getProductReviews(product!.id),
