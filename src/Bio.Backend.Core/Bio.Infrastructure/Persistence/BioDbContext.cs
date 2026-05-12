@@ -475,5 +475,6 @@ public class BioDbContext : DbContext
         // SEED DATA
         // =====================================================================
         modelBuilder.SeedBaseData();
+        modelBuilder.SeedMockData();
     }
 }
