@@ -12,7 +12,7 @@ export async function apiGet<T>(
     params?: Record<string, unknown>,
 ): Promise<T> {
     const { data } = await apiClient.get<ApiResponse<T>>(url, { params });
-    return data.data;
+    return data && (data as any).data !== undefined ? (data as any).data : (data as unknown as T);
 }
 
 /** GET a paginated list */
@@ -30,7 +30,7 @@ export async function apiPost<TRequest, TResponse>(
     body: TRequest,
 ): Promise<TResponse> {
     const { data } = await apiClient.post<ApiResponse<TResponse>>(url, body);
-    return data.data;
+    return data && (data as any).data !== undefined ? (data as any).data : (data as unknown as TResponse);
 }
 
 /** PUT (full update) a resource */
@@ -39,7 +39,7 @@ export async function apiPut<TRequest, TResponse>(
     body: TRequest,
 ): Promise<TResponse> {
     const { data } = await apiClient.put<ApiResponse<TResponse>>(url, body);
-    return data.data;
+    return data && (data as any).data !== undefined ? (data as any).data : (data as unknown as TResponse);
 }
 
 /** PATCH (partial update) a resource */
@@ -48,13 +48,13 @@ export async function apiPatch<TRequest, TResponse>(
     body: Partial<TRequest>,
 ): Promise<TResponse> {
     const { data } = await apiClient.patch<ApiResponse<TResponse>>(url, body);
-    return data.data;
+    return data && (data as any).data !== undefined ? (data as any).data : (data as unknown as TResponse);
 }
 
 /** DELETE a resource */
 export async function apiDelete<T = void>(url: string): Promise<T> {
     const { data } = await apiClient.delete<ApiResponse<T>>(url);
-    return data.data;
+    return data && (data as any).data !== undefined ? (data as any).data : (data as unknown as T);
 }
 
 /** POST with multipart/form-data (file uploads) */
@@ -71,5 +71,5 @@ export async function apiUpload<T>(
             }
         },
     });
-    return data.data;
+    return data && (data as any).data !== undefined ? (data as any).data : (data as unknown as T);
 }
