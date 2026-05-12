@@ -32,7 +32,7 @@ public class CartQueriesTests
     {
         var handler = new ValidateCartPricesQueryHandler(_productRepoMock.Object);
         var pid = Guid.NewGuid();
-        var dto = new CartValidatePricesRequestDTO(new List<CartValidatePricesRequestItemDTO> { new(pid) });
+        var dto = new CartValidatePricesRequestDTO { Items = new List<CartValidatePricesRequestItemDTO> { new(pid, 1) } };
         var product = new Bio.Domain.Entities.Product(Guid.NewGuid(), Guid.NewGuid(), "P", "p", "D", 10, 10, 5, null, null, null, null);
         product.Activate();
 

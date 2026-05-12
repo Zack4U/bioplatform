@@ -12,7 +12,7 @@ public class TraceabilityCommandValidatorsTests
     [Fact]
     public void CreateTraceabilityBatch_ShouldHaveError_WhenBatchCodeIsEmpty()
     {
-        var cmd = new CreateTraceabilityBatchCommand(Guid.NewGuid(), new TraceabilityBatchCreateDTO("", DateTime.UtcNow, "L", "D", "H"), Guid.NewGuid(), "ADMIN");
+        var cmd = new CreateTraceabilityBatchCommand(Guid.NewGuid(), new TraceabilityBatchCreateDTO { BatchCode = "", HarvestDate = DateTime.UtcNow, OriginLocation = "L", ProcessingDetails = "D", BlockchainHash = "H" }, Guid.NewGuid(), "ADMIN");
         var result = _validator.TestValidate(cmd);
         result.ShouldHaveValidationErrorFor(x => x.Dto.BatchCode);
     }
@@ -20,7 +20,7 @@ public class TraceabilityCommandValidatorsTests
     [Fact]
     public void CreateTraceabilityBatch_ShouldHaveError_WhenHarvestDateIsInFuture()
     {
-        var cmd = new CreateTraceabilityBatchCommand(Guid.NewGuid(), new TraceabilityBatchCreateDTO("B001", DateTime.UtcNow.AddDays(2), "L", "D", "H"), Guid.NewGuid(), "ADMIN");
+        var cmd = new CreateTraceabilityBatchCommand(Guid.NewGuid(), new TraceabilityBatchCreateDTO { BatchCode = "B001", HarvestDate = DateTime.UtcNow.AddDays(2), OriginLocation = "L", ProcessingDetails = "D", BlockchainHash = "H" }, Guid.NewGuid(), "ADMIN");
         var result = _validator.TestValidate(cmd);
         result.ShouldHaveValidationErrorFor(x => x.Dto.HarvestDate);
     }

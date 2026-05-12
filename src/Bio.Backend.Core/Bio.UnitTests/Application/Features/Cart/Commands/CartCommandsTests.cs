@@ -29,7 +29,7 @@ public class CartCommandsTests
     public async Task AddCartItem_WhenProductNotFound_ShouldThrowNotFound()
     {
         var handler = new AddCartItemCommandHandler(_cartRepoMock.Object, _productRepoMock.Object, _uowMock.Object, _addLoggerMock.Object);
-        var dto = new CartItemAddDTO(Guid.NewGuid(), 1);
+        var dto = new CartItemAddDTO { ProductId = Guid.NewGuid(), Quantity = 1 };
 
         _productRepoMock.Setup(r => r.GetByIdAsync(dto.ProductId, default)).ReturnsAsync((Product?)null);
 
@@ -42,7 +42,7 @@ public class CartCommandsTests
     {
         var handler = new AddCartItemCommandHandler(_cartRepoMock.Object, _productRepoMock.Object, _uowMock.Object, _addLoggerMock.Object);
         var pid = Guid.NewGuid();
-        var dto = new CartItemAddDTO(pid, 1);
+        var dto = new CartItemAddDTO { ProductId = pid, Quantity = 1 };
         var product = CreateProduct(pid, false);
 
         _productRepoMock.Setup(r => r.GetByIdAsync(pid, default)).ReturnsAsync(product);
@@ -57,7 +57,7 @@ public class CartCommandsTests
         var handler = new AddCartItemCommandHandler(_cartRepoMock.Object, _productRepoMock.Object, _uowMock.Object, _addLoggerMock.Object);
         var pid = Guid.NewGuid();
         var uid = Guid.NewGuid();
-        var dto = new CartItemAddDTO(pid, 2);
+        var dto = new CartItemAddDTO { ProductId = pid, Quantity = 2 };
         var product = CreateProduct(pid);
         var cart = new Bio.Domain.Entities.Cart(uid);
 
@@ -88,7 +88,7 @@ public class CartCommandsTests
         _cartRepoMock.Setup(r => r.GetByIdWithItemsAsync(item.CartId, default)).ReturnsAsync(cart);
         _cartRepoMock.Setup(r => r.GetByUserIdAsync(uid, default)).ReturnsAsync(cart);
 
-        var result = await handler.Handle(new UpdateCartItemCommand(uid, item.Id, new CartItemUpdateDTO(5)), default);
+        var result = await handler.Handle(new UpdateCartItemCommand(uid, item.Id, new CartItemUpdateDTO { Quantity = 5 }), default);
 
         item.Quantity.Should().Be(5);
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);

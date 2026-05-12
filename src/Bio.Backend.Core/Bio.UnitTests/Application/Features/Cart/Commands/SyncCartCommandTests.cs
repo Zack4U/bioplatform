@@ -30,7 +30,7 @@ public class SyncCartCommandTests
 
         _cartRepoMock.Setup(r => r.GetByUserIdAsync(uid, default)).ReturnsAsync(cart);
 
-        var result = await handler.Handle(new SyncCartCommand(uid, new CartSyncRequestDTO(new List<CartSyncItemDTO>())), default);
+        var result = await handler.Handle(new SyncCartCommand(uid, new CartSyncRequestDTO { Items = new List<CartSyncItemDTO>() }), default);
 
         result.Should().NotBeNull();
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Never);
@@ -42,7 +42,7 @@ public class SyncCartCommandTests
         var handler = new SyncCartCommandHandler(_cartRepoMock.Object, _productRepoMock.Object, _uowMock.Object);
         var uid = Guid.NewGuid();
         var pid = Guid.NewGuid();
-        var dto = new CartSyncRequestDTO(new List<CartSyncItemDTO> { new(pid, 2) });
+        var dto = new CartSyncRequestDTO { Items = new List<CartSyncItemDTO> { new(pid, 2) } };
         var cart = new Bio.Domain.Entities.Cart(uid);
         var product = CreateProduct(pid, 10, true);
 

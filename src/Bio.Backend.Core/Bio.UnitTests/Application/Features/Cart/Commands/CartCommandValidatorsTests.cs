@@ -13,7 +13,7 @@ public class CartCommandValidatorsTests
     [Fact]
     public void AddCartItem_ShouldHaveError_WhenQuantityIsZero()
     {
-        var cmd = new AddCartItemCommand(Guid.NewGuid(), new CartItemAddDTO(Guid.NewGuid(), 0));
+        var cmd = new AddCartItemCommand(Guid.NewGuid(), new CartItemAddDTO { ProductId = Guid.NewGuid(), Quantity = 0 });
         var result = _addValidator.TestValidate(cmd);
         result.ShouldHaveValidationErrorFor(x => x.Dto.Quantity);
     }
@@ -21,7 +21,7 @@ public class CartCommandValidatorsTests
     [Fact]
     public void UpdateCartItem_ShouldHaveError_WhenQuantityIsZero()
     {
-        var cmd = new UpdateCartItemCommand(Guid.NewGuid(), Guid.NewGuid(), new CartItemUpdateDTO(0));
+        var cmd = new UpdateCartItemCommand(Guid.NewGuid(), Guid.NewGuid(), new CartItemUpdateDTO { Quantity = 0 });
         var result = _updateValidator.TestValidate(cmd);
         result.ShouldHaveValidationErrorFor(x => x.Dto.Quantity);
     }

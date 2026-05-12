@@ -28,9 +28,7 @@ public class HtmlSanitizationBehaviorTests
             Dto = new DummyNested { Description = "<b>Bold</b><iframe src='bad'></iframe>" }
         };
 
-        var next = new RequestHandlerDelegate<string>(() => Task.FromResult("OK"));
-
-        await behavior.Handle(command, next, default);
+        await behavior.Handle(command, ct => Task.FromResult("OK"), default);
 
         command.Name.Should().Be("Test");
         command.Dto.Description.Should().Be("<b>Bold</b>");

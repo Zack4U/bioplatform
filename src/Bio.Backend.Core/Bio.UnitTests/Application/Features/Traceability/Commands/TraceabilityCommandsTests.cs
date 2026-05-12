@@ -26,7 +26,7 @@ public class TraceabilityCommandsTests
         var handler = new CreateTraceabilityBatchCommandHandler(_repoMock.Object, _productRepoMock.Object, _uowMock.Object);
         var pid = Guid.NewGuid();
         var uid = Guid.NewGuid();
-        var dto = new TraceabilityBatchCreateDTO("B001", DateTime.UtcNow, "Loc", "Details", "Hash");
+        var dto = new TraceabilityBatchCreateDTO { BatchCode = "B001", HarvestDate = DateTime.UtcNow, OriginLocation = "Loc", ProcessingDetails = "Details", BlockchainHash = "Hash" };
 
         _productRepoMock.Setup(r => r.GetByIdAsync(pid, default)).ReturnsAsync(CreateProduct(uid));
         _repoMock.Setup(r => r.ExistsByBatchCodeAsync("B001", default)).ReturnsAsync(false);
@@ -47,7 +47,7 @@ public class TraceabilityCommandsTests
 
         _productRepoMock.Setup(r => r.GetByIdAsync(pid, default)).ReturnsAsync(CreateProduct(Guid.NewGuid()));
 
-        await FluentActions.Awaiting(() => handler.Handle(new CreateTraceabilityBatchCommand(pid, new TraceabilityBatchCreateDTO("B", DateTime.UtcNow, "", "", ""), Guid.NewGuid(), "ENTREPRENEUR"), default))
+        await FluentActions.Awaiting(() => handler.Handle(new CreateTraceabilityBatchCommand(pid, new TraceabilityBatchCreateDTO { BatchCode = "B", HarvestDate = DateTime.UtcNow, OriginLocation = "", ProcessingDetails = "", BlockchainHash = "" }, Guid.NewGuid(), "ENTREPRENEUR"), default))
             .Should().ThrowAsync<ForbiddenException>();
     }
 
@@ -63,7 +63,7 @@ public class TraceabilityCommandsTests
         _repoMock.Setup(r => r.GetByIdAsync(bid, default)).ReturnsAsync(batch);
         _productRepoMock.Setup(r => r.GetByIdAsync(pid, default)).ReturnsAsync(CreateProduct(uid));
 
-        var result = await handler.Handle(new UpdateTraceabilityBatchCommand(bid, new TraceabilityBatchUpdateDTO(DateTime.UtcNow, "NewLoc", "NewD", "NewH"), uid, "ENTREPRENEUR"), default);
+        var result = await handler.Handle(new UpdateTraceabilityBatchCommand(bid, new TraceabilityBatchUpdateDTO { HarvestDate = DateTime.UtcNow, OriginLocation = "NewLoc", ProcessingDetails = "NewD", BlockchainHash = "NewH" }, uid, "ENTREPRENEUR"), default);
 
         result.OriginLocation.Should().Be("NewLoc");
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);

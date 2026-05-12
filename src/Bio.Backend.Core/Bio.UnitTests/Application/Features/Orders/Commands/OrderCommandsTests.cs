@@ -57,7 +57,7 @@ public class OrderCommandsTests
 
         _orderRepoMock.Setup(r => r.GenerateOrderNumberAsync(default)).ReturnsAsync("ORD-123");
         _productRepoMock.Setup(r => r.GetByIdAsync(pid, default)).ReturnsAsync(product);
-        _cartRepoMock.Setup(r => r.GetByUserIdAsync(It.IsAny<Guid>(), default)).ReturnsAsync((Cart?)null);
+        _cartRepoMock.Setup(r => r.GetByUserIdAsync(It.IsAny<Guid>(), default)).ReturnsAsync((Bio.Domain.Entities.Cart?)null);
         _orderRepoMock.Setup(r => r.GetByIdWithItemsAsync(It.IsAny<Guid>(), default)).ReturnsAsync(new Order(Guid.NewGuid(), "ORD-123", 20m, 20m, "Card"));
 
         var result = await handler.Handle(new CreateOrderCommand(dto, Guid.NewGuid()), default);
