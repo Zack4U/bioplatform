@@ -17,4 +17,7 @@ public interface IUserConnectionRepository
         Guid addresseeId, int page, int pageSize, CancellationToken ct = default);
     Task AddAsync(UserConnection connection, CancellationToken ct = default);
     Task DeleteAsync(UserConnection connection, CancellationToken ct = default);
+
+    /// <summary>Returns all connections (as requester or addressee) for a user — used by Social Dashboard.</summary>
+    Task<IReadOnlyList<UserConnection>> GetByUserIdAsync(Guid userId, CancellationToken ct = default);
 }

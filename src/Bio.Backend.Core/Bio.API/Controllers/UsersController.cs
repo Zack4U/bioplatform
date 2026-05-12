@@ -8,6 +8,8 @@ using Bio.Application.Features.Users.Queries.GetAllUsers;
 using Bio.Application.Features.Users.Queries.GetUserByEmail;
 using Bio.Application.Features.Users.Queries.GetUserById;
 using Bio.Application.Features.Users.Queries.GetUserByPhoneNumber;
+using Bio.Application.Features.Users.Commands;
+using Bio.Application.Features.Users.Queries;
 using Bio.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -195,6 +197,50 @@ public class UsersController : ControllerBase
         }
 
         await _mediator.Send(new DeleteUserCommand(id));
+        return NoContent();
+    }
+
+    // =========================================================================
+    // ADMIN USER MANAGEMENT
+    // =========================================================================
+
+    /// <summary>
+    /// Admin endpoint to retrieve users with advanced filtering and pagination.
+    /// </summary>
+    [Authorize(Roles = RoleNames.Admin)]
+    [HttpGet("filtered")]
+    [ProducesResponseType(typeof(PaginatedResult<UserListItemDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilterParams filters)
+    {
+        var result = await _mediator.Send(new GetUsersQuery(filters));
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Activates a previously deactivated user account.
+    /// </summary>
+    [Authorize(Roles = RoleNames.Admin)]
+    [HttpPut("{id:guid}/activate")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> ActivateUser(Guid id)
+    {
+        await _mediator.Send(new ActivateUserCommand(id));
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Deactivates a user account (soft-delete).
+    /// </summary>
+    [Authorize(Roles = RoleNames.Admin)]
+    [HttpPut("{id:guid}/deactivate")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> DeactivateUser(Guid id)
+    {
+        await _mediator.Send(new DeactivateUserCommand(id));
         return NoContent();
     }
 }

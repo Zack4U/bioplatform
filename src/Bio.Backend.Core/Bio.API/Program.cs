@@ -111,6 +111,10 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.ICommunityReactionRepository, B
 builder.Services.AddScoped<Bio.Domain.Interfaces.IUserConnectionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.UserConnectionRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.IDirectThreadRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.DirectThreadRepository>();
 
+// User Features context (SQL Server) — Notifications, ActivityLogs
+builder.Services.AddScoped<Bio.Domain.Interfaces.INotificationRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.NotificationRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IActivityLogRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ActivityLogRepository>();
+
 // AWS S3 — Species observation image uploads
 builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
 builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));

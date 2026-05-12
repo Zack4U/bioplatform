@@ -14,4 +14,8 @@ public interface ICommunityPostRepository
         string? category, string? status, int page, int pageSize, CancellationToken ct = default);
     Task AddAsync(CommunityPost post, CancellationToken ct = default);
     Task DeleteAsync(CommunityPost post, CancellationToken ct = default);
+
+    /// <summary>Returns posts by a specific author with their comments loaded — used by Social Dashboard.</summary>
+    Task<(IReadOnlyList<CommunityPost> Items, int TotalCount)> GetByAuthorIdPagedAsync(
+        Guid authorUserId, int page, int pageSize, CancellationToken ct = default);
 }

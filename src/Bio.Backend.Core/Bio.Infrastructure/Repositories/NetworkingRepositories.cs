@@ -67,6 +67,11 @@ public class UserConnectionRepository : IUserConnectionRepository
         _ctx.UserConnections.Remove(connection);
         await Task.CompletedTask;
     }
+
+    public async Task<IReadOnlyList<UserConnection>> GetByUserIdAsync(Guid userId, CancellationToken ct)
+        => await _ctx.UserConnections
+            .Where(c => c.RequesterId == userId || c.AddresseeId == userId)
+            .ToListAsync(ct);
 }
 
 /// <summary>
@@ -127,6 +132,9 @@ public class DirectThreadRepository : IDirectThreadRepository
                 m.Thread.Participants.Any(p => p.UserId == userId && p.LeftAt == null) &&
                 !m.Reads.Any(r => r.UserId == userId))
             .CountAsync(ct);
+
+    public async Task<int> GetUnreadMessageCountAsync(Guid userId, CancellationToken ct)
+        => await GetUnreadCountAsync(userId, ct);
 
     public async Task<bool> IsParticipantAsync(Guid threadId, Guid userId, CancellationToken ct)
         => await _ctx.DirectThreadParticipants

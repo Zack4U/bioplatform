@@ -65,4 +65,21 @@ public interface IUserRepository
     /// <param name="user">The user entity to remove.</param>
     /// <returns>A task representing the asynchronous delete operation.</returns>
     Task DeleteAsync(User user);
+
+    /// <summary>
+    /// Admin paginated query with optional filters: role name, isActive, isVerified, and text search.
+    /// </summary>
+    Task<(IReadOnlyList<User> Items, int TotalCount)> GetFilteredPagedAsync(
+        string? search = null,
+        string? roleName = null,
+        bool? isActive = null,
+        bool? isVerified = null,
+        DateTime? fromDate = null,
+        DateTime? toDate = null,
+        int page = 1,
+        int pageSize = 20,
+        CancellationToken ct = default);
+
+    /// <summary>Gets total count of users grouped by role name (for Admin dashboard).</summary>
+    Task<IReadOnlyList<(string RoleName, int Count)>> GetCountByRoleAsync(CancellationToken ct = default);
 }

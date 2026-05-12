@@ -57,6 +57,18 @@ public class CommunityPostRepository : ICommunityPostRepository
         _ctx.CommunityPosts.Remove(post);
         await Task.CompletedTask;
     }
+
+    public async Task<(IReadOnlyList<CommunityPost> Items, int TotalCount)> GetByAuthorIdPagedAsync(
+        Guid authorUserId, int page, int pageSize, CancellationToken ct)
+    {
+        var q = _ctx.CommunityPosts
+            .Include(p => p.Comments.Where(c => !c.IsDeleted))
+            .Where(p => p.AuthorUserId == authorUserId)
+            .OrderByDescending(p => p.CreatedAt);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
 }
 
 /// <summary>

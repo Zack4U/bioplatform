@@ -16,6 +16,7 @@ public interface IDirectThreadRepository
     Task<(IReadOnlyList<DirectMessage> Items, int TotalCount)> GetMessagesByThreadAsync(
         Guid threadId, int page, int pageSize, CancellationToken ct = default);
     Task<int> GetUnreadCountAsync(Guid userId, CancellationToken ct = default);
+    Task<int> GetUnreadMessageCountAsync(Guid userId, CancellationToken ct = default);
     Task<bool> IsParticipantAsync(Guid threadId, Guid userId, CancellationToken ct = default);
     Task AddThreadAsync(DirectThread thread, CancellationToken ct = default);
     Task AddMessageAsync(DirectMessage message, CancellationToken ct = default);

@@ -49,4 +49,8 @@ public class GeographicDistributionRepository : IGeographicDistributionRepositor
             Math.Abs(g.Longitude - longitude) < tolerance,
             cancellationToken);
     }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<GeographicDistribution>> GetAllAsync(CancellationToken cancellationToken = default)
+        => await _context.GeographicDistributions.AsNoTracking().ToListAsync(cancellationToken);
 }
