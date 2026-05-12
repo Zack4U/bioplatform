@@ -35,7 +35,7 @@ import {
 import { useProfile } from "@/hooks/features/auth";
 import { useAuthStore } from "@/store/auth-store";
 import { Loader2 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 /** Extract initials from a full name (max 2 chars) */
 function getInitials(fullName: string): string {
@@ -54,11 +54,20 @@ export default function ProfilePage() {
     const { user } = useAuthStore();
     const { isLoading: isProfileLoading } = useProfile();
     const searchParams = useSearchParams();
-    const defaultTab = searchParams.get("tab") ?? "personal";
+    const router = useRouter();
+    const pathname = usePathname();
+    
+    const currentTab = searchParams.get("tab") ?? "personal";
 
     const isEntrepreneur = user?.roles?.some((r) =>
         ENTREPRENEUR_ROLES.includes(r),
     );
+
+    const handleTabChange = (value: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("tab", value);
+        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    };
 
     if (isProfileLoading) {
         return (
@@ -102,7 +111,7 @@ export default function ProfilePage() {
             <Separator className="my-6" />
 
             {/* ── Tabs ────────────────────────────────────────── */}
-            <Tabs defaultValue={defaultTab} className="space-y-6">
+            <Tabs value={currentTab} onValueChange={handleTabChange} className="space-y-6">
                 <TabsList className="flex flex-wrap h-auto gap-1 bg-transparent p-0">
                     <TabsTrigger
                         value="personal"
