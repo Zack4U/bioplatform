@@ -37,4 +37,16 @@ public class GeographicDistributionRepository : IGeographicDistributionRepositor
         _context.GeographicDistributions.Remove(distribution);
         return Task.CompletedTask;
     }
+
+    public async Task<bool> ExistsBySpeciesAndCoordinatesAsync(
+        Guid speciesId, double latitude, double longitude, CancellationToken cancellationToken = default)
+    {
+        // Use a small tolerance (6 decimal places ≈ 0.1m precision) to detect near-duplicates
+        const double tolerance = 0.000001;
+        return await _context.GeographicDistributions.AnyAsync(g =>
+            g.SpeciesId == speciesId &&
+            Math.Abs(g.Latitude - latitude) < tolerance &&
+            Math.Abs(g.Longitude - longitude) < tolerance,
+            cancellationToken);
+    }
 }

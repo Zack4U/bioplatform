@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Bio.Application.DTOs;
 using Bio.Application.Features.Species.Commands;
+using Bio.Application.Features.Species.Commands.AddDistribution;
 using Bio.Application.Features.Species.Commands.CreateSpecies;
 using Bio.Application.Features.Species.Commands.DeleteSpecies;
 using Bio.Application.Features.Species.Commands.UpdateSpecies;
@@ -323,6 +324,52 @@ public class SpeciesController : ControllerBase
         });
     }
 
+    // ── GEOGRAPHIC DISTRIBUTIONS ──────────────────────────────────────────────
+
+    /// <summary>
+    /// Adds a geographic distribution point (coordinate) for a species.
+    /// Restricted to Admin, Researcher, and EnvironmentalAuthority.
+    /// Duplicate coordinates for the same species are rejected.
+    /// Coordinates are masked in the response for sensitive species if caller lacks privileges.
+    /// </summary>
+    [HttpPost("{speciesId:guid}/distributions")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher},{RoleNames.EnvironmentalAuthority}")]
+    [ProducesResponseType(typeof(GeographicDistributionDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> AddDistribution(
+        Guid speciesId,
+        [FromBody] GeographicDistributionCreateDTO dto,
+        CancellationToken ct = default)
+    {
+        var actorId = GetActorId();
+        var userRole = GetUserRole() ?? string.Empty;
+        var result = await _mediator.Send(
+            new AddGeographicDistributionCommand(speciesId, dto, actorId, userRole), ct);
+        return CreatedAtAction(nameof(GetDistributions), new { id = speciesId }, result);
+    }
+
+    /// <summary>
+    /// Deletes (hard-delete) a geographic distribution record.
+    /// Restricted to Admin, Researcher, and EnvironmentalAuthority.
+    /// </summary>
+    [HttpDelete("distributions/{distributionId:guid}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher},{RoleNames.EnvironmentalAuthority}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteDistribution(
+        Guid distributionId, CancellationToken ct = default)
+    {
+        var actorId = GetActorId();
+        var userRole = GetUserRole() ?? string.Empty;
+        await _mediator.Send(
+            new DeleteGeographicDistributionCommand(distributionId, actorId, userRole), ct);
+        return NoContent();
+    }
+
     /// <summary>
     /// Extrae el primer rol del usuario autenticado desde los claims JWT.
     /// Retorna null si no hay usuario autenticado.
@@ -330,7 +377,14 @@ public class SpeciesController : ControllerBase
     private string? GetUserRole()
     {
         if (User.Identity?.IsAuthenticated != true) return null;
-        return User.FindFirst(ClaimTypes.Role)?.Value
-            ?? User.FindFirst("role")?.Value;
+        return User.FindFirstValue("role") ?? User.FindFirst(ClaimTypes.Role)?.Value;
+    }
+
+    private Guid GetActorId()
+    {
+        var claim = User.FindFirstValue("sub")
+            ?? User.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? throw new UnauthorizedAccessException("User identity missing.");
+        return Guid.Parse(claim);
     }
 }

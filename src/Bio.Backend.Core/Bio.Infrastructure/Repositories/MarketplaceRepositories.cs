@@ -248,9 +248,24 @@ public class AbsPermitRepository : IAbsPermitRepository
             p.EntrepreneurId == entrepreneurId && p.SpeciesId == speciesId &&
             p.Status == "Active" && p.ExpirationDate > DateTime.UtcNow, ct);
 
+    public async Task<(IReadOnlyList<AbsPermit> Items, int TotalCount)> GetAllPagedAsync(
+        Guid? entrepreneurId, string? status, int page, int pageSize, CancellationToken ct)
+    {
+        var q = _ctx.AbsPermits.AsQueryable();
+        if (entrepreneurId.HasValue)
+            q = q.Where(p => p.EntrepreneurId == entrepreneurId.Value);
+        if (!string.IsNullOrWhiteSpace(status))
+            q = q.Where(p => p.Status == status);
+        q = q.OrderByDescending(p => p.EmissionDate);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
+
     public async Task AddAsync(AbsPermit permit, CancellationToken ct)
         => await _ctx.AbsPermits.AddAsync(permit, ct);
 }
+
 
 public class CartRepository : ICartRepository
 {
