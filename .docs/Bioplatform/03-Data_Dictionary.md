@@ -27,33 +27,33 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 
 _Gestion de usuarios y credenciales. Soporte para 2FA (TOTP)._
 
-| Campo              | Tipo de Dato (SQL) | Restricciones        | Descripcion                                     | Ejemplo                  |
-| :----------------- | :----------------- | :------------------- | :---------------------------------------------- | :----------------------- |
-| Id                 | UNIQUEIDENTIFIER   | PK, Not Null         | Identificador unico global del usuario.         | a0eebc99-9c0b...         |
-| Email              | NVARCHAR(255)      | UK, Not Null         | Correo electronico (Username).                  | researcher@caldas.gov.co |
-| PasswordHash       | NVARCHAR(500)      | Not Null             | Hash de contrasena (PBKDF2).                    | $2a$12$R9h/cO...         |
-| Salt               | NVARCHAR(100)      | Not Null             | Semilla aleatoria unica usada para hashing.     | a3b4c5...                |
-| FullName           | NVARCHAR(150)      | Not Null             | Nombre legal completo.                          | Maria Rodriguez          |
-| PhoneNumber        | NVARCHAR(20)       | Nullable, UK (filtered) | Telefono para contacto o SMS 2FA.            | +573001234567            |
-| IsVerified         | BIT                | Default 0            | Indica si el email/telefono ha sido confirmado. | 1 (True)                 |
-| LastLogin          | DATETIME2          | Nullable             | Ultimo inicio de sesion exitoso.                | 2025-02-20 14:30:00      |
-| IsActive           | BIT                | Default 1            | Soft delete.                                    | 1                        |
-| CreatedAt          | DATETIME2          | Default GETUTCDATE() | Fecha de registro.                              | 2025-01-15 10:00:00      |
-| UpdatedAt          | DATETIME2          | Nullable             | Ultima actualizacion del perfil.                | 2025-02-20 14:30:00      |
-| TwoFactorEnabled   | BIT                | Default 0            | Indica si 2FA esta activo.                      | 1                        |
-| TwoFactorSecret    | NVARCHAR(100)      | Nullable             | Semilla secreta para TOTP (Google Auth).        | JBSWY3DPEHPK3...         |
+| Campo            | Tipo de Dato (SQL) | Restricciones           | Descripcion                                     | Ejemplo                  |
+| :--------------- | :----------------- | :---------------------- | :---------------------------------------------- | :----------------------- |
+| Id               | UNIQUEIDENTIFIER   | PK, Not Null            | Identificador unico global del usuario.         | a0eebc99-9c0b...         |
+| Email            | NVARCHAR(255)      | UK, Not Null            | Correo electronico (Username).                  | researcher@caldas.gov.co |
+| PasswordHash     | NVARCHAR(500)      | Not Null                | Hash de contrasena (PBKDF2).                    | $2a$12$R9h/cO...         |
+| Salt             | NVARCHAR(100)      | Not Null                | Semilla aleatoria unica usada para hashing.     | a3b4c5...                |
+| FullName         | NVARCHAR(150)      | Not Null                | Nombre legal completo.                          | Maria Rodriguez          |
+| PhoneNumber      | NVARCHAR(20)       | Nullable, UK (filtered) | Telefono para contacto o SMS 2FA.               | +573001234567            |
+| IsVerified       | BIT                | Default 0               | Indica si el email/telefono ha sido confirmado. | 1 (True)                 |
+| LastLogin        | DATETIME2          | Nullable                | Ultimo inicio de sesion exitoso.                | 2025-02-20 14:30:00      |
+| IsActive         | BIT                | Default 1               | Soft delete.                                    | 1                        |
+| CreatedAt        | DATETIME2          | Default GETUTCDATE()    | Fecha de registro.                              | 2025-01-15 10:00:00      |
+| UpdatedAt        | DATETIME2          | Nullable                | Ultima actualizacion del perfil.                | 2025-02-20 14:30:00      |
+| TwoFactorEnabled | BIT                | Default 0               | Indica si 2FA esta activo.                      | 1                        |
+| TwoFactorSecret  | NVARCHAR(100)      | Nullable                | Semilla secreta para TOTP (Google Auth).        | JBSWY3DPEHPK3...         |
 
 ### **Tabla: Roles**
 
 _Roles del sistema. Soporta RBAC con 6 roles base._
 
-| Campo       | Tipo de Dato  | Restricciones | Descripcion                                                                            | Ejemplo                                |
-| :---------- | :------------ | :------------ | :------------------------------------------------------------------------------------- | :------------------------------------- |
-| Id          | UNIQUEIDENTIFIER | PK         | ID unico del rol.                                                                      | 11111111-1111-...                      |
-| Name        | NVARCHAR(100) | UK, Not Null  | Nombre del rol. Valores: ADMIN, RESEARCHER, ENTREPRENEUR, COMMUNITY, BUYER, AUTHORITY. | RESEARCHER                             |
-| Description | NVARCHAR(2000)| Nullable      | Descripcion funcional del rol.                                                         | Can validate species and upload images |
-| CreatedAt   | DATETIME2     | Default       | Fecha de creacion.                                                                     | 2025-01-01 00:00:00                    |
-| UpdatedAt   | DATETIME2     | Nullable      | Ultima actualizacion.                                                                  | 2025-02-20 14:30:00                    |
+| Campo       | Tipo de Dato     | Restricciones | Descripcion                                                                            | Ejemplo                                |
+| :---------- | :--------------- | :------------ | :------------------------------------------------------------------------------------- | :------------------------------------- |
+| Id          | UNIQUEIDENTIFIER | PK            | ID unico del rol.                                                                      | 11111111-1111-...                      |
+| Name        | NVARCHAR(100)    | UK, Not Null  | Nombre del rol. Valores: ADMIN, RESEARCHER, ENTREPRENEUR, COMMUNITY, BUYER, AUTHORITY. | RESEARCHER                             |
+| Description | NVARCHAR(2000)   | Nullable      | Descripcion funcional del rol.                                                         | Can validate species and upload images |
+| CreatedAt   | DATETIME2        | Default       | Fecha de creacion.                                                                     | 2025-01-01 00:00:00                    |
+| UpdatedAt   | DATETIME2        | Nullable      | Ultima actualizacion.                                                                  | 2025-02-20 14:30:00                    |
 
 ### **Tabla: UserRoles**
 
@@ -69,15 +69,15 @@ _Tabla de union muchos-a-muchos entre Users y Roles. Un usuario puede tener mult
 
 _Tokens de refresco para renovar JWTs sin re-autenticacion._
 
-| Campo           | Tipo de Dato     | Restricciones        | Descripcion                            | Ejemplo          |
-| :-------------- | :--------------- | :------------------- | :------------------------------------- | :--------------- |
-| Id              | UNIQUEIDENTIFIER | PK                   | ID del token.                          | tok1...          |
-| UserId          | UNIQUEIDENTIFIER | FK (Users), Not Null | Usuario propietario.                   | a0ee...          |
-| Token           | NVARCHAR(500)    | Not Null, Index      | Valor del token.                       | eyJhbGc...       |
-| ExpiresAt       | DATETIME2        | Not Null             | Fecha de expiracion.                   | 2025-03-20       |
-| CreatedAt       | DATETIME2        | Not Null             | Fecha de creacion.                     | 2025-02-20       |
-| RevokedAt       | DATETIME2        | Nullable             | Fecha de revocacion.                   | null             |
-| ReplacedByToken | NVARCHAR(MAX)    | Nullable             | Token que reemplazo a este.            | eyJhbGc...       |
+| Campo           | Tipo de Dato     | Restricciones        | Descripcion                 | Ejemplo    |
+| :-------------- | :--------------- | :------------------- | :-------------------------- | :--------- |
+| Id              | UNIQUEIDENTIFIER | PK                   | ID del token.               | tok1...    |
+| UserId          | UNIQUEIDENTIFIER | FK (Users), Not Null | Usuario propietario.        | a0ee...    |
+| Token           | NVARCHAR(500)    | Not Null, Index      | Valor del token.            | eyJhbGc... |
+| ExpiresAt       | DATETIME2        | Not Null             | Fecha de expiracion.        | 2025-03-20 |
+| CreatedAt       | DATETIME2        | Not Null             | Fecha de creacion.          | 2025-02-20 |
+| RevokedAt       | DATETIME2        | Nullable             | Fecha de revocacion.        | null       |
+| ReplacedByToken | NVARCHAR(MAX)    | Nullable             | Token que reemplazo a este. | eyJhbGc... |
 
 ---
 
@@ -96,73 +96,73 @@ _Categorias de productos del marketplace._
 
 _Productos derivados de la biodiversidad, listados en el marketplace._
 
-| Campo           | Tipo de Dato     | Restricciones                    | Descripcion                                                                                      | Ejemplo                                          |
-| :-------------- | :--------------- | :------------------------------- | :----------------------------------------------------------------------------------------------- | :----------------------------------------------- |
-| Id              | UNIQUEIDENTIFIER | PK                               | ID del producto.                                                                                 | b123...                                          |
-| Slug            | NVARCHAR(450)    | UK, Not Null                     | Slug URL-friendly para rutas SEO del producto.                                                   | crema-de-orquidea                                |
-| EntrepreneurId  | UNIQUEIDENTIFIER | FK (Users), Not Null, Index      | Usuario vendedor.                                                                                | a0ee...                                          |
-| BaseSpeciesId   | UNIQUEIDENTIFIER | Index, Not Null                  | **Logical FK** a PostgreSQL (Species). Especie base del producto. Critico para trazabilidad ABS. | c456...                                          |
-| CategoryId      | INT              | FK (ProductCategories), Nullable | Categoria del producto.                                                                          | 1                                                |
-| Name            | NVARCHAR(MAX)    | Not Null                         | Nombre comercial.                                                                                | Crema de Orquidea                                |
-| Description     | NVARCHAR(MAX)    | Not Null                         | HTML sanitizado para marketing y ficha (imagenes como <img src="aws_url">).                   | <strong>Producto</strong> ...                    |
-| BasePrice       | DECIMAL(18,2)    | Not Null                         | Precio base en COP antes de ajustes comerciales.                                                 | 40000.00                                         |
-| SellPrice       | DECIMAL(18,2)    | Not Null                         | Precio de venta final en COP.                                                                    | 45000.00                                         |
-| Composition     | NVARCHAR(MAX)    | Nullable                         | JSON de composicion (ingredientes, porcentajes, origen); null si no aplica.                      | {"ingredients":[{"name":"Aloe","pct":30}]} |
-| StockQuantity   | INT              | Not Null                         | Inventario disponible.                                                                           | 50                                               |
-| Sku             | NVARCHAR(MAX)    | Nullable                         | Codigo de referencia unico (SKU).                                                                | CRE-ORQ-001                                      |
-| IsActive        | BIT              | Default 1                        | Indica si el producto esta visible en el marketplace.                                            | 1                                                |
-| ThumbnailUrl    | NVARCHAR(MAX)    | Nullable                         | URL de imagen miniatura para listados del marketplace.                                           | https://cdn.example.com/products/b123/thumb.webp |
-| CreatedAt       | DATETIME2        | Default GETUTCDATE()             | Fecha de creacion.                                                                               | 2025-01-20 08:00:00                              |
-| UpdatedAt       | DATETIME2        | Nullable                         | Ultima actualizacion.                                                                            | 2025-02-20 14:30:00                              |
+| Campo          | Tipo de Dato     | Restricciones                    | Descripcion                                                                                      | Ejemplo                                          |
+| :------------- | :--------------- | :------------------------------- | :----------------------------------------------------------------------------------------------- | :----------------------------------------------- |
+| Id             | UNIQUEIDENTIFIER | PK                               | ID del producto.                                                                                 | b123...                                          |
+| Slug           | NVARCHAR(450)    | UK, Not Null                     | Slug URL-friendly para rutas SEO del producto.                                                   | crema-de-orquidea                                |
+| EntrepreneurId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index      | Usuario vendedor.                                                                                | a0ee...                                          |
+| BaseSpeciesId  | UNIQUEIDENTIFIER | Index, Not Null                  | **Logical FK** a PostgreSQL (Species). Especie base del producto. Critico para trazabilidad ABS. | c456...                                          |
+| CategoryId     | INT              | FK (ProductCategories), Nullable | Categoria del producto.                                                                          | 1                                                |
+| Name           | NVARCHAR(MAX)    | Not Null                         | Nombre comercial.                                                                                | Crema de Orquidea                                |
+| Description    | NVARCHAR(MAX)    | Not Null                         | HTML sanitizado para marketing y ficha (imagenes como <img src="aws_url">).                      | <strong>Producto</strong> ...                    |
+| BasePrice      | DECIMAL(18,2)    | Not Null                         | Precio base en COP antes de ajustes comerciales.                                                 | 40000.00                                         |
+| SellPrice      | DECIMAL(18,2)    | Not Null                         | Precio de venta final en COP.                                                                    | 45000.00                                         |
+| Composition    | NVARCHAR(MAX)    | Nullable                         | JSON de composicion (ingredientes, porcentajes, origen); null si no aplica.                      | {"ingredients":[{"name":"Aloe","pct":30}]}       |
+| StockQuantity  | INT              | Not Null                         | Inventario disponible.                                                                           | 50                                               |
+| Sku            | NVARCHAR(MAX)    | Nullable                         | Codigo de referencia unico (SKU).                                                                | CRE-ORQ-001                                      |
+| IsActive       | BIT              | Default 1                        | Indica si el producto esta visible en el marketplace.                                            | 1                                                |
+| ThumbnailUrl   | NVARCHAR(MAX)    | Nullable                         | URL de imagen miniatura para listados del marketplace.                                           | https://cdn.example.com/products/b123/thumb.webp |
+| CreatedAt      | DATETIME2        | Default GETUTCDATE()             | Fecha de creacion.                                                                               | 2025-01-20 08:00:00                              |
+| UpdatedAt      | DATETIME2        | Nullable                         | Ultima actualizacion.                                                                            | 2025-02-20 14:30:00                              |
 
 ### **Tabla: ProductImages**
 
 _Galeria de imagenes para productos del marketplace._
 
-| Campo        | Tipo de Dato     | Restricciones           | Descripcion                         | Ejemplo                                          |
-| :----------- | :--------------- | :---------------------- | :---------------------------------- | :----------------------------------------------- |
-| Id           | UNIQUEIDENTIFIER | PK                      | ID de la imagen.                    | img1...                                          |
-| ProductId    | UNIQUEIDENTIFIER | FK (Products), Not Null | Producto al que pertenece.          | b123...                                          |
-| ImageUrl     | NVARCHAR(500)    | Not Null                | URL de la imagen en almacenamiento. | https://cdn.../product-img.webp                  |
-| AltText      | NVARCHAR(200)    | Nullable                | Texto alternativo para accesibilidad. | Crema de orquidea empaque frontal              |
-| DisplayOrder | INT              | Default 0               | Orden de visualizacion en galeria.  | 0                                                |
-| IsPrimary    | BIT              | Default 0               | Indica si es la imagen principal.   | 1                                                |
-| CreatedAt    | DATETIME2        | Default GETUTCDATE()    | Fecha de carga.                     | 2025-01-20 08:00:00                              |
+| Campo        | Tipo de Dato     | Restricciones           | Descripcion                           | Ejemplo                           |
+| :----------- | :--------------- | :---------------------- | :------------------------------------ | :-------------------------------- |
+| Id           | UNIQUEIDENTIFIER | PK                      | ID de la imagen.                      | img1...                           |
+| ProductId    | UNIQUEIDENTIFIER | FK (Products), Not Null | Producto al que pertenece.            | b123...                           |
+| ImageUrl     | NVARCHAR(500)    | Not Null                | URL de la imagen en almacenamiento.   | https://cdn.../product-img.webp   |
+| AltText      | NVARCHAR(200)    | Nullable                | Texto alternativo para accesibilidad. | Crema de orquidea empaque frontal |
+| DisplayOrder | INT              | Default 0               | Orden de visualizacion en galeria.    | 0                                 |
+| IsPrimary    | BIT              | Default 0               | Indica si es la imagen principal.     | 1                                 |
+| CreatedAt    | DATETIME2        | Default GETUTCDATE()    | Fecha de carga.                       | 2025-01-20 08:00:00               |
 
 ### **Tabla: ProductReviews**
 
 _Calificaciones y resenas de productos por compradores._
 
-| Campo      | Tipo de Dato     | Restricciones           | Descripcion                              | Ejemplo              |
-| :--------- | :--------------- | :---------------------- | :--------------------------------------- | :------------------- |
-| Id         | UNIQUEIDENTIFIER | PK                      | ID de la resena.                         | rev1...              |
-| ProductId  | UNIQUEIDENTIFIER | FK (Products), Not Null | Producto resenado.                       | b123...              |
-| UserId     | UNIQUEIDENTIFIER | FK (Users), Not Null    | Usuario que escribe la resena.           | f111...              |
-| Rating     | INT              | Not Null                | Calificacion numerica (1 a 5 estrellas). | 4                    |
-| Title      | NVARCHAR(MAX)    | Nullable                | Titulo de la resena.                     | Excelente producto   |
-| Comment    | NVARCHAR(MAX)    | Nullable                | Comentario textual del comprador.        | Excelente calidad... |
-| CreatedAt  | DATETIME2        | Default GETUTCDATE()    | Fecha de la resena.                      | 2025-03-01 09:00:00  |
+| Campo     | Tipo de Dato     | Restricciones           | Descripcion                              | Ejemplo              |
+| :-------- | :--------------- | :---------------------- | :--------------------------------------- | :------------------- |
+| Id        | UNIQUEIDENTIFIER | PK                      | ID de la resena.                         | rev1...              |
+| ProductId | UNIQUEIDENTIFIER | FK (Products), Not Null | Producto resenado.                       | b123...              |
+| UserId    | UNIQUEIDENTIFIER | FK (Users), Not Null    | Usuario que escribe la resena.           | f111...              |
+| Rating    | INT              | Not Null                | Calificacion numerica (1 a 5 estrellas). | 4                    |
+| Title     | NVARCHAR(MAX)    | Nullable                | Titulo de la resena.                     | Excelente producto   |
+| Comment   | NVARCHAR(MAX)    | Nullable                | Comentario textual del comprador.        | Excelente calidad... |
+| CreatedAt | DATETIME2        | Default GETUTCDATE()    | Fecha de la resena.                      | 2025-03-01 09:00:00  |
 
 ### **Tabla: Certifications** _(Unified)_
 
 _Certificaciones unificadas para productos. Cubre certificaciones de sostenibilidad, organicas, calidad, y cumplimiento ABS. Documentos almacenados por URL._
 
-| Campo              | Tipo de Dato     | Restricciones           | Descripcion                                                   | Ejemplo                    |
-| :----------------- | :--------------- | :---------------------- | :------------------------------------------------------------ | :------------------------- |
-| Id                 | UNIQUEIDENTIFIER | PK                      | ID de la certificacion.                                       | cert1...                   |
-| ProductId          | UNIQUEIDENTIFIER | FK (Products), Not Null | Producto certificado.                                         | b123...                    |
-| Name               | NVARCHAR(150)    | Not Null                | Nombre de la certificacion.                                   | Negocios Verdes            |
-| CertificationType  | NVARCHAR(50)     | Not Null, Index         | Tipo: Sustainability, Organic, Quality, FairTrade, ABS.       | Sustainability             |
-| IssuingBody        | NVARCHAR(150)    | Not Null                | Entidad emisora.                                              | MinAmbiente                |
-| CertificateNumber  | NVARCHAR(100)    | Nullable                | Numero de certificado.                                        | NV-2025-001                |
-| IssuedAt           | DATETIME2        | Not Null                | Fecha de emision.                                             | 2025-01-15                 |
-| ExpiresAt          | DATETIME2        | Nullable                | Fecha de vencimiento.                                         | 2026-12-31                 |
-| Status             | NVARCHAR(20)     | Not Null, Default 'Active' | Estado: Active, Expired, Suspended, Revoked.               | Active                     |
-| DocumentUrl        | NVARCHAR(500)    | Nullable                | URL del documento de certificacion.                           | https://cdn.../cert.pdf    |
-| LogoUrl            | NVARCHAR(500)    | Nullable                | URL del logo de la certificacion.                             | https://cdn.../nv-logo.png |
-| VerificationCode   | NVARCHAR(100)    | Nullable                | Codigo verificable de la certificacion.                       | NV-2025-00421              |
-| CreatedAt          | DATETIME2        | Default GETUTCDATE()    | Fecha de registro.                                            | 2025-01-20 08:00:00        |
-| UpdatedAt          | DATETIME2        | Nullable                | Ultima actualizacion.                                         | 2025-02-20 14:30:00        |
+| Campo             | Tipo de Dato     | Restricciones              | Descripcion                                             | Ejemplo                    |
+| :---------------- | :--------------- | :------------------------- | :------------------------------------------------------ | :------------------------- |
+| Id                | UNIQUEIDENTIFIER | PK                         | ID de la certificacion.                                 | cert1...                   |
+| ProductId         | UNIQUEIDENTIFIER | FK (Products), Not Null    | Producto certificado.                                   | b123...                    |
+| Name              | NVARCHAR(150)    | Not Null                   | Nombre de la certificacion.                             | Negocios Verdes            |
+| CertificationType | NVARCHAR(50)     | Not Null, Index            | Tipo: Sustainability, Organic, Quality, FairTrade, ABS. | Sustainability             |
+| IssuingBody       | NVARCHAR(150)    | Not Null                   | Entidad emisora.                                        | MinAmbiente                |
+| CertificateNumber | NVARCHAR(100)    | Nullable                   | Numero de certificado.                                  | NV-2025-001                |
+| IssuedAt          | DATETIME2        | Not Null                   | Fecha de emision.                                       | 2025-01-15                 |
+| ExpiresAt         | DATETIME2        | Nullable                   | Fecha de vencimiento.                                   | 2026-12-31                 |
+| Status            | NVARCHAR(20)     | Not Null, Default 'Active' | Estado: Active, Expired, Suspended, Revoked.            | Active                     |
+| DocumentUrl       | NVARCHAR(500)    | Nullable                   | URL del documento de certificacion.                     | https://cdn.../cert.pdf    |
+| LogoUrl           | NVARCHAR(500)    | Nullable                   | URL del logo de la certificacion.                       | https://cdn.../nv-logo.png |
+| VerificationCode  | NVARCHAR(100)    | Nullable                   | Codigo verificable de la certificacion.                 | NV-2025-00421              |
+| CreatedAt         | DATETIME2        | Default GETUTCDATE()       | Fecha de registro.                                      | 2025-01-20 08:00:00        |
+| UpdatedAt         | DATETIME2        | Nullable                   | Ultima actualizacion.                                   | 2025-02-20 14:30:00        |
 
 ---
 
@@ -172,31 +172,31 @@ _Certificaciones unificadas para productos. Cubre certificaciones de sostenibili
 
 _Permisos de Acceso a Recursos Geneticos. Cumplimiento Decision 391 / Protocolo de Nagoya._
 
-| Campo              | Tipo de Dato     | Restricciones        | Descripcion                                                | Ejemplo                    |
-| :----------------- | :--------------- | :------------------- | :--------------------------------------------------------- | :------------------------- |
-| Id                 | UNIQUEIDENTIFIER | PK                   | ID del permiso.                                            | d789...                    |
-| EntrepreneurId     | UNIQUEIDENTIFIER | FK (Users), Not Null | Titular del permiso.                                       | a0ee...                    |
-| SpeciesId          | UNIQUEIDENTIFIER | Not Null, Index      | **Logical FK** a PostgreSQL (Species). Especie autorizada. | c456...                    |
-| ResolutionNumber   | NVARCHAR(450)    | UK, Not Null         | Numero de resolucion (ANLA/CAR/MinAmbiente).               | Res-1348-2024              |
-| EmissionDate       | DATETIME2        | Not Null             | Fecha de emision del permiso.                              | 2024-01-15                 |
-| ExpirationDate     | DATETIME2        | Not Null             | Fecha de vencimiento.                                      | 2029-01-15                 |
-| GrantingAuthority  | NVARCHAR(MAX)    | Not Null             | Entidad que otorga el permiso.                             | Corpocaldas                |
-| Status             | NVARCHAR(MAX)    | Not Null             | Estado legal: 'Active', 'Expired', 'Suspended'.            | Active                     |
-| LegalFramework     | NVARCHAR(MAX)    | Nullable             | Marco normativo aplicable.                                 | Decreto 3016, Decision 391 |
+| Campo             | Tipo de Dato     | Restricciones        | Descripcion                                                | Ejemplo                    |
+| :---------------- | :--------------- | :------------------- | :--------------------------------------------------------- | :------------------------- |
+| Id                | UNIQUEIDENTIFIER | PK                   | ID del permiso.                                            | d789...                    |
+| EntrepreneurId    | UNIQUEIDENTIFIER | FK (Users), Not Null | Titular del permiso.                                       | a0ee...                    |
+| SpeciesId         | UNIQUEIDENTIFIER | Not Null, Index      | **Logical FK** a PostgreSQL (Species). Especie autorizada. | c456...                    |
+| ResolutionNumber  | NVARCHAR(450)    | UK, Not Null         | Numero de resolucion (ANLA/CAR/MinAmbiente).               | Res-1348-2024              |
+| EmissionDate      | DATETIME2        | Not Null             | Fecha de emision del permiso.                              | 2024-01-15                 |
+| ExpirationDate    | DATETIME2        | Not Null             | Fecha de vencimiento.                                      | 2029-01-15                 |
+| GrantingAuthority | NVARCHAR(MAX)    | Not Null             | Entidad que otorga el permiso.                             | Corpocaldas                |
+| Status            | NVARCHAR(MAX)    | Not Null             | Estado legal: 'Active', 'Expired', 'Suspended'.            | Active                     |
+| LegalFramework    | NVARCHAR(MAX)    | Nullable             | Marco normativo aplicable.                                 | Decreto 3016, Decision 391 |
 
 ### **Tabla: TraceabilityBatches**
 
 _Lotes de trazabilidad de origen para productos. Cumple requisito de trazabilidad desde origen._
 
-| Campo              | Tipo de Dato     | Restricciones           | Descripcion                                  | Ejemplo                        |
-| :----------------- | :--------------- | :---------------------- | :------------------------------------------- | :----------------------------- |
-| Id                 | UNIQUEIDENTIFIER | PK                      | ID del lote.                                 | batch1...                      |
-| ProductId          | UNIQUEIDENTIFIER | FK (Products), Not Null | Producto trazado.                            | b123...                        |
-| BatchCode          | NVARCHAR(450)    | UK, Not Null            | Codigo unico del lote.                       | LOT-2025-001                   |
-| HarvestDate        | DATETIME2        | Not Null                | Fecha de cosecha/recoleccion.                | 2025-03-10                     |
-| OriginLocation     | NVARCHAR(MAX)    | Not Null                | Ubicacion de origen (municipio, vereda).     | Vereda La Esperanza, Manizales |
-| ProcessingDetails  | NVARCHAR(MAX)    | Nullable                | Descripcion del procesamiento.               | Secado al sol, 5 dias...       |
-| BlockchainHash     | NVARCHAR(MAX)    | Nullable                | Hash de integridad en blockchain (opcional). | 0x4a3b...                      |
+| Campo             | Tipo de Dato     | Restricciones           | Descripcion                                  | Ejemplo                        |
+| :---------------- | :--------------- | :---------------------- | :------------------------------------------- | :----------------------------- |
+| Id                | UNIQUEIDENTIFIER | PK                      | ID del lote.                                 | batch1...                      |
+| ProductId         | UNIQUEIDENTIFIER | FK (Products), Not Null | Producto trazado.                            | b123...                        |
+| BatchCode         | NVARCHAR(450)    | UK, Not Null            | Codigo unico del lote.                       | LOT-2025-001                   |
+| HarvestDate       | DATETIME2        | Not Null                | Fecha de cosecha/recoleccion.                | 2025-03-10                     |
+| OriginLocation    | NVARCHAR(MAX)    | Not Null                | Ubicacion de origen (municipio, vereda).     | Vereda La Esperanza, Manizales |
+| ProcessingDetails | NVARCHAR(MAX)    | Nullable                | Descripcion del procesamiento.               | Secado al sol, 5 dias...       |
+| BlockchainHash    | NVARCHAR(MAX)    | Nullable                | Hash de integridad en blockchain (opcional). | 0x4a3b...                      |
 
 ---
 
@@ -206,23 +206,23 @@ _Lotes de trazabilidad de origen para productos. Cumple requisito de trazabilida
 
 _Cabecera de transacciones de compra._
 
-| Campo              | Tipo de Dato     | Restricciones            | Descripcion                                                   | Ejemplo             |
-| :----------------- | :--------------- | :----------------------- | :------------------------------------------------------------ | :------------------ |
-| Id                 | UNIQUEIDENTIFIER | PK                       | ID de la orden.                                               | e999...             |
-| OrderNumber        | NVARCHAR(450)    | UK, Not Null             | Referencia legible de la orden.                               | ORD-2025-001        |
-| BuyerId            | UNIQUEIDENTIFIER | FK (Users), Not Null     | Usuario comprador.                                            | f111...             |
-| ShippingAddressId  | UNIQUEIDENTIFIER | FK (Addresses), Nullable | Direccion de envio utilizada.                                 | addr1...            |
-| BillingAddressId   | UNIQUEIDENTIFIER | FK (Addresses), Nullable | Direccion de facturacion.                                     | addr2...            |
-| TotalAmount        | DECIMAL(18,2)    | Not Null                 | Total pagado en COP.                                          | 90000.00            |
-| SubtotalAmount     | DECIMAL(18,2)    | Not Null                 | Subtotal antes de impuestos/descuentos.                       | 80000.00            |
-| TaxAmount          | DECIMAL(18,2)    | Default 0                | Impuestos aplicados.                                          | 10000.00            |
-| ShippingAmount     | DECIMAL(18,2)    | Default 0                | Costo de envio.                                               | 0.00                |
-| DiscountAmount     | DECIMAL(18,2)    | Default 0                | Descuentos aplicados.                                         | 0.00                |
-| Status             | NVARCHAR(450)    | Not Null, Index          | Estado del pedido: 'Pending', 'Paid', 'Shipped', 'Cancelled'. | Paid                |
-| PaymentMethod      | NVARCHAR(MAX)    | Not Null                 | Pasarela usada.                                               | Stripe, PSE         |
-| TransactionRef     | NVARCHAR(MAX)    | Nullable                 | ID de transaccion de la pasarela (Stripe payment intent ID).  | pi_1De...           |
-| CreatedAt          | DATETIME2        | Default GETUTCDATE()     | Fecha de creacion de la orden.                                | 2025-02-20 14:00:00 |
-| UpdatedAt          | DATETIME2        | Nullable                 | Ultima actualizacion.                                         | 2025-02-20 14:30:00 |
+| Campo             | Tipo de Dato     | Restricciones            | Descripcion                                                   | Ejemplo             |
+| :---------------- | :--------------- | :----------------------- | :------------------------------------------------------------ | :------------------ |
+| Id                | UNIQUEIDENTIFIER | PK                       | ID de la orden.                                               | e999...             |
+| OrderNumber       | NVARCHAR(450)    | UK, Not Null             | Referencia legible de la orden.                               | ORD-2025-001        |
+| BuyerId           | UNIQUEIDENTIFIER | FK (Users), Not Null     | Usuario comprador.                                            | f111...             |
+| ShippingAddressId | UNIQUEIDENTIFIER | FK (Addresses), Nullable | Direccion de envio utilizada.                                 | addr1...            |
+| BillingAddressId  | UNIQUEIDENTIFIER | FK (Addresses), Nullable | Direccion de facturacion.                                     | addr2...            |
+| TotalAmount       | DECIMAL(18,2)    | Not Null                 | Total pagado en COP.                                          | 90000.00            |
+| SubtotalAmount    | DECIMAL(18,2)    | Not Null                 | Subtotal antes de impuestos/descuentos.                       | 80000.00            |
+| TaxAmount         | DECIMAL(18,2)    | Default 0                | Impuestos aplicados.                                          | 10000.00            |
+| ShippingAmount    | DECIMAL(18,2)    | Default 0                | Costo de envio.                                               | 0.00                |
+| DiscountAmount    | DECIMAL(18,2)    | Default 0                | Descuentos aplicados.                                         | 0.00                |
+| Status            | NVARCHAR(450)    | Not Null, Index          | Estado del pedido: 'Pending', 'Paid', 'Shipped', 'Cancelled'. | Paid                |
+| PaymentMethod     | NVARCHAR(MAX)    | Not Null                 | Pasarela usada.                                               | Stripe, PSE         |
+| TransactionRef    | NVARCHAR(MAX)    | Nullable                 | ID de transaccion de la pasarela (Stripe payment intent ID).  | pi_1De...           |
+| CreatedAt         | DATETIME2        | Default GETUTCDATE()     | Fecha de creacion de la orden.                                | 2025-02-20 14:00:00 |
+| UpdatedAt         | DATETIME2        | Nullable                 | Ultima actualizacion.                                         | 2025-02-20 14:30:00 |
 
 ### **Tabla: OrderItems**
 
@@ -245,34 +245,34 @@ _Lineas de detalle de cada orden. Una orden contiene uno o mas items._
 
 _Direcciones fisicas de usuarios para envio y facturacion._
 
-| Campo         | Tipo de Dato     | Restricciones           | Descripcion                          | Ejemplo                  |
-| :------------ | :--------------- | :---------------------- | :----------------------------------- | :----------------------- |
-| Id            | UNIQUEIDENTIFIER | PK                      | ID de la direccion.                  | addr1...                 |
-| UserId        | UNIQUEIDENTIFIER | FK (Users), Not Null    | Usuario propietario.                 | a0ee...                  |
-| AddressType   | NVARCHAR(20)     | Not Null                | Tipo: 'Shipping' o 'Billing'.        | Shipping                 |
-| RecipientName | NVARCHAR(150)    | Not Null                | Nombre del destinatario.             | Maria Rodriguez          |
-| StreetLine1   | NVARCHAR(200)    | Not Null                | Direccion linea 1.                   | Cra 23 # 65-12           |
-| StreetLine2   | NVARCHAR(200)    | Nullable                | Direccion linea 2.                   | Apto 301                 |
-| City          | NVARCHAR(100)    | Not Null                | Ciudad.                              | Manizales                |
-| Department    | NVARCHAR(100)    | Not Null                | Departamento colombiano.             | Caldas                   |
-| PostalCode    | NVARCHAR(20)     | Not Null                | Codigo postal.                       | 170001                   |
-| Country       | NVARCHAR(10)     | Not Null, Default 'CO'  | Codigo ISO de pais.                  | CO                       |
-| PhoneNumber   | NVARCHAR(20)     | Nullable                | Telefono de contacto.                | +573001234567            |
-| IsDefault     | BIT              | Default 0               | Indica si es la direccion por defecto. | 1                      |
-| CreatedAt     | DATETIME2        | Default GETUTCDATE()    | Fecha de creacion.                   | 2025-01-15 10:00:00      |
-| UpdatedAt     | DATETIME2        | Nullable                | Ultima actualizacion.                | 2025-02-20 14:30:00      |
+| Campo         | Tipo de Dato     | Restricciones          | Descripcion                            | Ejemplo             |
+| :------------ | :--------------- | :--------------------- | :------------------------------------- | :------------------ |
+| Id            | UNIQUEIDENTIFIER | PK                     | ID de la direccion.                    | addr1...            |
+| UserId        | UNIQUEIDENTIFIER | FK (Users), Not Null   | Usuario propietario.                   | a0ee...             |
+| AddressType   | NVARCHAR(20)     | Not Null               | Tipo: 'Shipping' o 'Billing'.          | Shipping            |
+| RecipientName | NVARCHAR(150)    | Not Null               | Nombre del destinatario.               | Maria Rodriguez     |
+| StreetLine1   | NVARCHAR(200)    | Not Null               | Direccion linea 1.                     | Cra 23 # 65-12      |
+| StreetLine2   | NVARCHAR(200)    | Nullable               | Direccion linea 2.                     | Apto 301            |
+| City          | NVARCHAR(100)    | Not Null               | Ciudad.                                | Manizales           |
+| Department    | NVARCHAR(100)    | Not Null               | Departamento colombiano.               | Caldas              |
+| PostalCode    | NVARCHAR(20)     | Not Null               | Codigo postal.                         | 170001              |
+| Country       | NVARCHAR(10)     | Not Null, Default 'CO' | Codigo ISO de pais.                    | CO                  |
+| PhoneNumber   | NVARCHAR(20)     | Nullable               | Telefono de contacto.                  | +573001234567       |
+| IsDefault     | BIT              | Default 0              | Indica si es la direccion por defecto. | 1                   |
+| CreatedAt     | DATETIME2        | Default GETUTCDATE()   | Fecha de creacion.                     | 2025-01-15 10:00:00 |
+| UpdatedAt     | DATETIME2        | Nullable               | Ultima actualizacion.                  | 2025-02-20 14:30:00 |
 
 ### **Tabla: Favorites**
 
 _Favoritos/wishlist de usuarios. Soporta como objetivo Productos y Especies._
 
-| Campo      | Tipo de Dato     | Restricciones                    | Descripcion                                         | Ejemplo          |
-| :--------- | :--------------- | :------------------------------- | :-------------------------------------------------- | :--------------- |
-| Id         | UNIQUEIDENTIFIER | PK                               | ID del favorito.                                    | fav1...          |
-| UserId     | UNIQUEIDENTIFIER | FK (Users), Not Null             | Usuario.                                            | a0ee...          |
-| TargetType | NVARCHAR(20)     | Not Null                         | Tipo: 'Product' o 'Species'.                        | Product          |
-| TargetId   | UNIQUEIDENTIFIER | Not Null                         | ID del producto o especie (Logical FK si Species).  | b123...          |
-| CreatedAt  | DATETIME2        | Default GETUTCDATE()             | Fecha de marcado.                                   | 2025-02-20       |
+| Campo      | Tipo de Dato     | Restricciones        | Descripcion                                        | Ejemplo    |
+| :--------- | :--------------- | :------------------- | :------------------------------------------------- | :--------- |
+| Id         | UNIQUEIDENTIFIER | PK                   | ID del favorito.                                   | fav1...    |
+| UserId     | UNIQUEIDENTIFIER | FK (Users), Not Null | Usuario.                                           | a0ee...    |
+| TargetType | NVARCHAR(20)     | Not Null             | Tipo: 'Product' o 'Species'.                       | Product    |
+| TargetId   | UNIQUEIDENTIFIER | Not Null             | ID del producto o especie (Logical FK si Species). | b123...    |
+| CreatedAt  | DATETIME2        | Default GETUTCDATE() | Fecha de marcado.                                  | 2025-02-20 |
 
 **Unique Index:** `(UserId, TargetType, TargetId)` — un usuario no puede duplicar un favorito.
 
@@ -280,38 +280,38 @@ _Favoritos/wishlist de usuarios. Soporta como objetivo Productos y Especies._
 
 _Notificaciones in-app para actualizaciones de ordenes, resenas, permisos y alertas del sistema._
 
-| Campo            | Tipo de Dato     | Restricciones           | Descripcion                                         | Ejemplo                  |
-| :--------------- | :--------------- | :---------------------- | :-------------------------------------------------- | :----------------------- |
-| Id               | UNIQUEIDENTIFIER | PK                      | ID de la notificacion.                              | notif1...                |
-| UserId           | UNIQUEIDENTIFIER | FK (Users), Not Null    | Usuario destinatario.                               | a0ee...                  |
-| Title            | NVARCHAR(200)    | Not Null                | Titulo de la notificacion.                          | Pedido enviado           |
-| Message          | NVARCHAR(2000)   | Not Null                | Contenido del mensaje.                              | Tu pedido ORD-001 fue... |
-| NotificationType | NVARCHAR(50)     | Not Null                | Tipo: OrderUpdate, ReviewReply, PermitExpiry, System. | OrderUpdate            |
-| ReferenceType    | NVARCHAR(50)     | Nullable                | Tipo de entidad referenciada.                       | Order                    |
-| ReferenceId      | UNIQUEIDENTIFIER | Nullable                | ID de la entidad referenciada.                      | e999...                  |
-| IsRead           | BIT              | Default 0, Index        | Indica si fue leida.                                | 0                        |
-| CreatedAt        | DATETIME2        | Default GETUTCDATE()    | Fecha de creacion.                                  | 2025-02-20 14:00:00      |
-| ReadAt           | DATETIME2        | Nullable                | Fecha de lectura.                                   | 2025-02-20 14:05:00      |
+| Campo            | Tipo de Dato     | Restricciones        | Descripcion                                           | Ejemplo                  |
+| :--------------- | :--------------- | :------------------- | :---------------------------------------------------- | :----------------------- |
+| Id               | UNIQUEIDENTIFIER | PK                   | ID de la notificacion.                                | notif1...                |
+| UserId           | UNIQUEIDENTIFIER | FK (Users), Not Null | Usuario destinatario.                                 | a0ee...                  |
+| Title            | NVARCHAR(200)    | Not Null             | Titulo de la notificacion.                            | Pedido enviado           |
+| Message          | NVARCHAR(2000)   | Not Null             | Contenido del mensaje.                                | Tu pedido ORD-001 fue... |
+| NotificationType | NVARCHAR(50)     | Not Null             | Tipo: OrderUpdate, ReviewReply, PermitExpiry, System. | OrderUpdate              |
+| ReferenceType    | NVARCHAR(50)     | Nullable             | Tipo de entidad referenciada.                         | Order                    |
+| ReferenceId      | UNIQUEIDENTIFIER | Nullable             | ID de la entidad referenciada.                        | e999...                  |
+| IsRead           | BIT              | Default 0, Index     | Indica si fue leida.                                  | 0                        |
+| CreatedAt        | DATETIME2        | Default GETUTCDATE() | Fecha de creacion.                                    | 2025-02-20 14:00:00      |
+| ReadAt           | DATETIME2        | Nullable             | Fecha de lectura.                                     | 2025-02-20 14:05:00      |
 
 ### **Tabla: ActivityLogs**
 
 _Registro centralizado de auditoria de actividad en la plataforma._
 
-| Campo         | Tipo de Dato     | Restricciones               | Descripcion                                                                 | Ejemplo                    |
-| :------------ | :--------------- | :-------------------------- | :-------------------------------------------------------------------------- | :------------------------- |
-| Id            | UNIQUEIDENTIFIER | PK                          | ID del log.                                                                 | log1...                    |
-| ActorUserId   | UNIQUEIDENTIFIER | FK (Users), Nullable, Index | Usuario que ejecuta la accion (null si es sistema).                         | a0ee...                    |
-| ActorType     | NVARCHAR(50)     | Not Null                    | Origen del actor: User, System, Service.                                    | User                       |
-| ActionType    | NVARCHAR(50)     | Not Null, Index             | Tipo: Insert, Update, Delete, Read, Login, Logout, Approve, Reject, Other.  | Update                     |
-| ImpactLevel   | NVARCHAR(20)     | Not Null, Index             | Impacto: Low, Medium, High, Critical.                                       | High                       |
-| TargetType    | NVARCHAR(50)     | Not Null, Index             | Entidad afectada: Product, Order, Species, AbsPermit, etc.                  | Product                    |
-| TargetId      | UNIQUEIDENTIFIER | Nullable, Index             | ID de la entidad afectada (Logical FK si aplica).                           | b123...                    |
-| Summary       | NVARCHAR(500)    | Not Null                    | Resumen humano de la accion.                                                | Producto actualizado       |
-| ChangeSet     | NVARCHAR(MAX)    | Nullable                    | JSON con diff de campos antes/despues.                                      | {"price":{"from":...}} |
-| Metadata      | NVARCHAR(MAX)    | Nullable                    | JSON con contexto extra (modulo, requestId, etc.).                           | {"module":"Marketplace"} |
-| IpAddress     | NVARCHAR(45)     | Nullable                    | IP del actor (IPv4/IPv6).                                                   | 190.24.1.10                |
-| UserAgent     | NVARCHAR(400)    | Nullable                    | User-Agent del cliente (si aplica).                                         | Mozilla/5.0 ...            |
-| CreatedAt     | DATETIME2        | Default GETUTCDATE()        | Fecha y hora del evento.                                                    | 2025-02-20 14:30:00        |
+| Campo       | Tipo de Dato     | Restricciones               | Descripcion                                                                | Ejemplo                  |
+| :---------- | :--------------- | :-------------------------- | :------------------------------------------------------------------------- | :----------------------- |
+| Id          | UNIQUEIDENTIFIER | PK                          | ID del log.                                                                | log1...                  |
+| ActorUserId | UNIQUEIDENTIFIER | FK (Users), Nullable, Index | Usuario que ejecuta la accion (null si es sistema).                        | a0ee...                  |
+| ActorType   | NVARCHAR(50)     | Not Null                    | Origen del actor: User, System, Service.                                   | User                     |
+| ActionType  | NVARCHAR(50)     | Not Null, Index             | Tipo: Insert, Update, Delete, Read, Login, Logout, Approve, Reject, Other. | Update                   |
+| ImpactLevel | NVARCHAR(20)     | Not Null, Index             | Impacto: Low, Medium, High, Critical.                                      | High                     |
+| TargetType  | NVARCHAR(50)     | Not Null, Index             | Entidad afectada: Product, Order, Species, AbsPermit, etc.                 | Product                  |
+| TargetId    | UNIQUEIDENTIFIER | Nullable, Index             | ID de la entidad afectada (Logical FK si aplica).                          | b123...                  |
+| Summary     | NVARCHAR(500)    | Not Null                    | Resumen humano de la accion.                                               | Producto actualizado     |
+| ChangeSet   | NVARCHAR(MAX)    | Nullable                    | JSON con diff de campos antes/despues.                                     | {"price":{"from":...}}   |
+| Metadata    | NVARCHAR(MAX)    | Nullable                    | JSON con contexto extra (modulo, requestId, etc.).                         | {"module":"Marketplace"} |
+| IpAddress   | NVARCHAR(45)     | Nullable                    | IP del actor (IPv4/IPv6).                                                  | 190.24.1.10              |
+| UserAgent   | NVARCHAR(400)    | Nullable                    | User-Agent del cliente (si aplica).                                        | Mozilla/5.0 ...          |
+| CreatedAt   | DATETIME2        | Default GETUTCDATE()        | Fecha y hora del evento.                                                   | 2025-02-20 14:30:00      |
 
 ---
 
@@ -321,48 +321,48 @@ _Registro centralizado de auditoria de actividad en la plataforma._
 
 _Publicaciones del foro comunitario y networking._
 
-| Campo        | Tipo de Dato     | Restricciones                     | Descripcion                                                              | Ejemplo               |
-| :----------- | :--------------- | :-------------------------------- | :----------------------------------------------------------------------- | :-------------------- |
-| Id           | UNIQUEIDENTIFIER | PK                                | ID de la publicacion.                                                    | post1...              |
-| AuthorUserId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index       | Autor de la publicacion.                                                 | a0ee...               |
-| Title        | NVARCHAR(200)    | Not Null                          | Titulo de la publicacion.                                                | Intercambio de semillas |
-| Content      | NVARCHAR(MAX)    | Not Null                          | HTML sanitizado (imagenes como <img src="aws_url">).                   | <strong>Busco</strong> alianzas... |
-| Category     | NVARCHAR(50)     | Nullable, Index                   | Categoria libre o predefinida.                                           | Networking            |
-| Status       | NVARCHAR(20)     | Default 'Published'               | Estado: Draft, Published, Archived, Hidden.                              | Published             |
-| IsPinned     | BIT              | Default 0                         | Si la publicacion esta fijada.                                           | 0                     |
-| LikesCount   | INT              | Default 0                         | Contador de reacciones positivas.                                        | 12                    |
-| DislikesCount| INT              | Default 0                         | Contador de reacciones negativas.                                        | 1                     |
-| CreatedAt    | DATETIME2        | Default GETUTCDATE()              | Fecha de creacion.                                                       | 2025-03-05 08:00:00   |
-| UpdatedAt    | DATETIME2        | Nullable                          | Ultima actualizacion.                                                    | 2025-03-05 10:00:00   |
+| Campo         | Tipo de Dato     | Restricciones               | Descripcion                                          | Ejemplo                            |
+| :------------ | :--------------- | :-------------------------- | :--------------------------------------------------- | :--------------------------------- |
+| Id            | UNIQUEIDENTIFIER | PK                          | ID de la publicacion.                                | post1...                           |
+| AuthorUserId  | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Autor de la publicacion.                             | a0ee...                            |
+| Title         | NVARCHAR(200)    | Not Null                    | Titulo de la publicacion.                            | Intercambio de semillas            |
+| Content       | NVARCHAR(MAX)    | Not Null                    | HTML sanitizado (imagenes como <img src="aws_url">). | <strong>Busco</strong> alianzas... |
+| Category      | NVARCHAR(50)     | Nullable, Index             | Categoria libre o predefinida.                       | Networking                         |
+| Status        | NVARCHAR(20)     | Default 'Published'         | Estado: Draft, Published, Archived, Hidden.          | Published                          |
+| IsPinned      | BIT              | Default 0                   | Si la publicacion esta fijada.                       | 0                                  |
+| LikesCount    | INT              | Default 0                   | Contador de reacciones positivas.                    | 12                                 |
+| DislikesCount | INT              | Default 0                   | Contador de reacciones negativas.                    | 1                                  |
+| CreatedAt     | DATETIME2        | Default GETUTCDATE()        | Fecha de creacion.                                   | 2025-03-05 08:00:00                |
+| UpdatedAt     | DATETIME2        | Nullable                    | Ultima actualizacion.                                | 2025-03-05 10:00:00                |
 
 ### **Tabla: CommunityPostComments**
 
 _Comentarios asociados a publicaciones del foro._
 
-| Campo        | Tipo de Dato     | Restricciones                     | Descripcion                                   | Ejemplo             |
-| :----------- | :--------------- | :-------------------------------- | :-------------------------------------------- | :------------------ |
-| Id           | UNIQUEIDENTIFIER | PK                                | ID del comentario.                            | comm1...            |
-| PostId       | UNIQUEIDENTIFIER | FK (CommunityPosts), Not Null     | Publicacion padre.                            | post1...            |
-| AuthorUserId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index       | Autor del comentario.                         | f111...             |
-| Content      | NVARCHAR(MAX)    | Not Null                          | HTML sanitizado (imagenes como <img src="aws_url">). | Estoy interesado... |
-| IsDeleted    | BIT              | Default 0                         | Soft delete.                                  | 0                   |
-| LikesCount   | INT              | Default 0                         | Contador de reacciones positivas.            | 3                   |
-| DislikesCount| INT              | Default 0                         | Contador de reacciones negativas.            | 0                   |
-| CreatedAt    | DATETIME2        | Default GETUTCDATE()              | Fecha de creacion.                            | 2025-03-05 10:15:00 |
-| UpdatedAt    | DATETIME2        | Nullable                          | Ultima actualizacion.                         | 2025-03-05 10:20:00 |
+| Campo         | Tipo de Dato     | Restricciones                 | Descripcion                                          | Ejemplo             |
+| :------------ | :--------------- | :---------------------------- | :--------------------------------------------------- | :------------------ |
+| Id            | UNIQUEIDENTIFIER | PK                            | ID del comentario.                                   | comm1...            |
+| PostId        | UNIQUEIDENTIFIER | FK (CommunityPosts), Not Null | Publicacion padre.                                   | post1...            |
+| AuthorUserId  | UNIQUEIDENTIFIER | FK (Users), Not Null, Index   | Autor del comentario.                                | f111...             |
+| Content       | NVARCHAR(2000)   | Not Null                      | Texto plano o HTML ligero saneado del comentario.    | Estoy interesado... |
+| IsDeleted     | BIT              | Default 0                     | Soft delete.                                         | 0                   |
+| LikesCount    | INT              | Default 0                     | Contador de reacciones positivas.                    | 3                   |
+| DislikesCount | INT              | Default 0                     | Contador de reacciones negativas.                    | 0                   |
+| CreatedAt     | DATETIME2        | Default GETUTCDATE()          | Fecha de creacion.                                   | 2025-03-05 10:15:00 |
+| UpdatedAt     | DATETIME2        | Nullable                      | Ultima actualizacion.                                | 2025-03-05 10:20:00 |
 
 ### **Tabla: CommunityReactions**
 
 _Reacciones individuales para evitar votos duplicados (like/dislike) en publicaciones o comentarios._
 
-| Campo        | Tipo de Dato     | Restricciones                          | Descripcion                                         | Ejemplo        |
-| :----------- | :--------------- | :------------------------------------- | :-------------------------------------------------- | :------------- |
-| Id           | UNIQUEIDENTIFIER | PK                                     | ID de la reaccion.                                  | react1...      |
-| UserId       | UNIQUEIDENTIFIER | FK (Users), Not Null, Index            | Usuario que reacciona.                              | a0ee...        |
-| TargetType   | NVARCHAR(20)     | Not Null, Index                        | Post, Comment.                                      | Post           |
-| TargetId     | UNIQUEIDENTIFIER | Not Null, Index                        | ID de la publicacion o comentario.                  | post1...       |
-| ReactionType | NVARCHAR(10)     | Not Null                               | Like, Dislike.                                      | Like           |
-| CreatedAt    | DATETIME2        | Default GETUTCDATE()                   | Fecha de la reaccion.                               | 2025-03-05     |
+| Campo        | Tipo de Dato     | Restricciones               | Descripcion                        | Ejemplo    |
+| :----------- | :--------------- | :-------------------------- | :--------------------------------- | :--------- |
+| Id           | UNIQUEIDENTIFIER | PK                          | ID de la reaccion.                 | react1...  |
+| UserId       | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Usuario que reacciona.             | a0ee...    |
+| TargetType   | NVARCHAR(20)     | Not Null, Index             | Post, Comment.                     | Post       |
+| TargetId     | UNIQUEIDENTIFIER | Not Null, Index             | ID de la publicacion o comentario. | post1...   |
+| ReactionType | NVARCHAR(10)     | Not Null                    | Like, Dislike.                     | Like       |
+| CreatedAt    | DATETIME2        | Default GETUTCDATE()        | Fecha de la reaccion.              | 2025-03-05 |
 
 **Unique Index:** `(UserId, TargetType, TargetId)` — un usuario solo puede reaccionar una vez por entidad.
 
@@ -370,62 +370,68 @@ _Reacciones individuales para evitar votos duplicados (like/dislike) en publicac
 
 _Solicitudes y conexiones de networking entre usuarios._
 
-| Campo       | Tipo de Dato     | Restricciones               | Descripcion                                           | Ejemplo                   |
-| :---------- | :--------------- | :-------------------------- | :---------------------------------------------------- | :------------------------ |
-| Id          | UNIQUEIDENTIFIER | PK                          | ID de la conexion.                                    | conn1...                  |
-| RequesterId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Usuario que solicita la conexion.                    | a0ee...                   |
-| AddresseeId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Usuario que recibe la solicitud.                     | f111...                   |
-| Status      | NVARCHAR(20)     | Not Null, Index             | Pending, Accepted, Rejected, Blocked.                | Pending                  |
-| Message     | NVARCHAR(500)    | Nullable                    | Mensaje inicial de la solicitud.                      | Interesado en colaborar. |
-| CreatedAt   | DATETIME2        | Default GETUTCDATE()        | Fecha de creacion.                                   | 2025-03-05 09:00:00      |
-| RespondedAt | DATETIME2        | Nullable                    | Fecha de respuesta.                                  | 2025-03-05 12:00:00      |
+| Campo       | Tipo de Dato     | Restricciones               | Descripcion                           | Ejemplo                  |
+| :---------- | :--------------- | :-------------------------- | :------------------------------------ | :----------------------- |
+| Id          | UNIQUEIDENTIFIER | PK                          | ID de la conexion.                    | conn1...                 |
+| RequesterId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Usuario que solicita la conexion.     | a0ee...                  |
+| AddresseeId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Usuario que recibe la solicitud.      | f111...                  |
+| Status      | NVARCHAR(20)     | Not Null, Index             | Pending, Accepted, Rejected, Blocked. | Pending                  |
+| Message     | NVARCHAR(500)    | Nullable                    | Mensaje inicial de la solicitud.      | Interesado en colaborar. |
+| CreatedAt   | DATETIME2        | Default GETUTCDATE()        | Fecha de creacion.                    | 2025-03-05 09:00:00      |
+| RespondedAt | DATETIME2        | Nullable                    | Fecha de respuesta.                   | 2025-03-05 12:00:00      |
 
 ### **Tabla: DirectThreads**
 
-_Conversaciones directas entre usuarios (1:1 o grupos de networking)._ 
+_Conversaciones directas entre usuarios (1:1 o grupos de networking)._
 
-| Campo      | Tipo de Dato     | Restricciones        | Descripcion                        | Ejemplo             |
-| :--------- | :--------------- | :------------------- | :--------------------------------- | :------------------ |
-| Id         | UNIQUEIDENTIFIER | PK                   | ID del hilo.                       | thread1...          |
-| Title      | NVARCHAR(200)    | Nullable             | Titulo opcional del hilo.          | Alianza eco         |
-| ThreadType | NVARCHAR(20)     | Not Null             | Direct, Group.                     | Direct              |
-| CreatedAt  | DATETIME2        | Default GETUTCDATE() | Fecha de creacion.                 | 2025-03-05 09:10:00 |
-| UpdatedAt  | DATETIME2        | Nullable             | Ultima actividad del hilo.         | 2025-03-05 09:30:00 |
+| Campo      | Tipo de Dato     | Restricciones        | Descripcion                | Ejemplo             |
+| :--------- | :--------------- | :------------------- | :------------------------- | :------------------ |
+| Id         | UNIQUEIDENTIFIER | PK                   | ID del hilo.               | thread1...          |
+| Title      | NVARCHAR(200)    | Nullable             | Titulo opcional del hilo.  | Alianza eco         |
+| ThreadType | NVARCHAR(20)     | Not Null             | Direct, Group.             | Direct              |
+| CreatedAt  | DATETIME2        | Default GETUTCDATE() | Fecha de creacion.         | 2025-03-05 09:10:00 |
+| UpdatedAt  | DATETIME2        | Nullable             | Ultima actividad del hilo. | 2025-03-05 09:30:00 |
 
 ### **Tabla: DirectThreadParticipants**
 
 _Participantes de cada hilo de mensajes._
 
-| Campo    | Tipo de Dato     | Restricciones                           | Descripcion                    | Ejemplo     |
-| :------- | :--------------- | :-------------------------------------- | :----------------------------- | :---------- |
-| ThreadId | UNIQUEIDENTIFIER | PK (compuesta), FK (DirectThreads)      | Hilo asociado.                 | thread1...  |
-| UserId   | UNIQUEIDENTIFIER | PK (compuesta), FK (Users)              | Usuario participante.          | a0ee...     |
-| JoinedAt | DATETIME2        | Default GETUTCDATE()                    | Fecha de ingreso.              | 2025-03-05  |
-| LeftAt   | DATETIME2        | Nullable                                | Fecha de salida (si aplica).   | 2025-03-10  |
-| IsMuted  | BIT              | Default 0                               | Si el usuario silencio el hilo.| 0          |
+| Campo    | Tipo de Dato     | Restricciones                          | Descripcion                                      | Ejemplo    |
+| :------- | :--------------- | :------------------------------------- | :----------------------------------------------- | :--------- |
+| Id       | UNIQUEIDENTIFIER | PK                                     | ID unico del registro de participante.           | dtp1...    |
+| ThreadId | UNIQUEIDENTIFIER | FK (DirectThreads), Not Null, Index    | Hilo asociado.                                   | thread1... |
+| UserId   | UNIQUEIDENTIFIER | FK (Users), Not Null, Index            | Usuario participante.                            | a0ee...    |
+| JoinedAt | DATETIME2        | Default GETUTCDATE()                   | Fecha de ingreso al hilo.                        | 2025-03-05 |
+| IsActive | BIT              | Default 1                              | 0 = el usuario salio del hilo (soft-leave).      | 1          |
+
+**Unique Index:** `(ThreadId, UserId)` — un usuario aparece una sola vez por hilo.
 
 ### **Tabla: DirectMessages**
 
 _Mensajes individuales dentro de un hilo._
 
-| Campo        | Tipo de Dato     | Restricciones                     | Descripcion                                   | Ejemplo                 |
-| :----------- | :--------------- | :-------------------------------- | :-------------------------------------------- | :---------------------- |
-| Id           | UNIQUEIDENTIFIER | PK                                | ID del mensaje.                               | msg1...                 |
-| ThreadId     | UNIQUEIDENTIFIER | FK (DirectThreads), Not Null      | Hilo padre.                                   | thread1...              |
-| SenderUserId | UNIQUEIDENTIFIER | FK (Users), Not Null, Index       | Emisor del mensaje.                           | a0ee...                 |
-| Content      | NVARCHAR(MAX)    | Not Null                          | HTML sanitizado (imagenes como <img src="aws_url">). | Hola, revisemos la idea |
-| IsDeleted    | BIT              | Default 0                         | Soft delete.                                  | 0                       |
-| CreatedAt    | DATETIME2        | Default GETUTCDATE()              | Fecha de envio.                               | 2025-03-05 09:20:00     |
+| Campo     | Tipo de Dato     | Restricciones                | Descripcion                                       | Ejemplo                 |
+| :-------- | :--------------- | :--------------------------- | :------------------------------------------------ | :---------------------- |
+| Id        | UNIQUEIDENTIFIER | PK                           | ID del mensaje.                                   | msg1...                 |
+| ThreadId  | UNIQUEIDENTIFIER | FK (DirectThreads), Not Null | Hilo padre.                                       | thread1...              |
+| SenderId  | UNIQUEIDENTIFIER | FK (Users), Not Null, Index  | Emisor del mensaje.                               | a0ee...                 |
+| Content   | NVARCHAR(MAX)    | Not Null                     | Texto plano o HTML saneado del mensaje.           | Hola, revisemos la idea |
+| IsEdited  | BIT              | Default 0                    | Indica si el mensaje fue editado post-envio.      | 0                       |
+| IsDeleted | BIT              | Default 0                    | Soft delete. Se muestra como [Mensaje eliminado]. | 0                       |
+| SentAt    | DATETIME2        | Default GETUTCDATE()         | Timestamp de envio del mensaje.                   | 2025-03-05 09:20:00     |
 
 ### **Tabla: DirectMessageReads**
 
 _Registro de lectura por usuario para mensajes directos._
 
-| Campo     | Tipo de Dato     | Restricciones                             | Descripcion                  | Ejemplo             |
-| :-------- | :--------------- | :---------------------------------------- | :--------------------------- | :------------------ |
-| MessageId | UNIQUEIDENTIFIER | PK (compuesta), FK (DirectMessages)       | Mensaje leido.               | msg1...             |
-| UserId    | UNIQUEIDENTIFIER | PK (compuesta), FK (Users)                | Usuario que leyo el mensaje. | f111...             |
-| ReadAt    | DATETIME2        | Default GETUTCDATE()                      | Fecha de lectura.            | 2025-03-05 09:21:00 |
+| Campo     | Tipo de Dato     | Restricciones                  | Descripcion                  | Ejemplo             |
+| :-------- | :--------------- | :----------------------------- | :--------------------------- | :------------------ |
+| Id        | UNIQUEIDENTIFIER | PK                             | ID unico del recibo.         | dmr1...             |
+| MessageId | UNIQUEIDENTIFIER | FK (DirectMessages), Not Null  | Mensaje leido.               | msg1...             |
+| UserId    | UNIQUEIDENTIFIER | FK (Users), Not Null           | Usuario que leyo el mensaje. | f111...             |
+| ReadAt    | DATETIME2        | Default GETUTCDATE()           | Fecha de lectura.            | 2025-03-05 09:21:00 |
+
+**Unique Index:** `(MessageId, UserId)` — un recibo por mensaje/usuario.
 
 ---
 
@@ -439,72 +445,72 @@ _Registro de lectura por usuario para mensajes directos._
 
 _Clasificacion biologica jerarquica completa (hasta Genero)._
 
-| Campo      | Tipo de Dato (Postgres) | Restricciones   | Descripcion                     | Ejemplo                |
-| :--------- | :---------------------- | :-------------- | :------------------------------ | :--------------------- |
-| id         | SERIAL                  | PK              | ID numerico interno.            | 101                    |
-| kingdom    | VARCHAR(50)             | Nullable        | Reino.                          | Plantae                |
-| phylum     | VARCHAR(50)             | Nullable        | Filo/Division.                  | Tracheophyta           |
-| class_name | VARCHAR(50)             | Nullable        | Clase taxonomica.               | Magnoliopsida          |
-| order_name | VARCHAR(50)             | Nullable        | Orden taxonomico.               | Asparagales            |
-| family     | VARCHAR(50)             | Index, Nullable | Familia (clave para busquedas). | Orchidaceae            |
-| genus      | VARCHAR(50)             | Nullable        | Genero.                         | Cattleya               |
+| Campo      | Tipo de Dato (Postgres) | Restricciones   | Descripcion                     | Ejemplo       |
+| :--------- | :---------------------- | :-------------- | :------------------------------ | :------------ |
+| id         | SERIAL                  | PK              | ID numerico interno.            | 101           |
+| kingdom    | VARCHAR(50)             | Nullable        | Reino.                          | Plantae       |
+| phylum     | VARCHAR(50)             | Nullable        | Filo/Division.                  | Tracheophyta  |
+| class_name | VARCHAR(50)             | Nullable        | Clase taxonomica.               | Magnoliopsida |
+| order_name | VARCHAR(50)             | Nullable        | Orden taxonomico.               | Asparagales   |
+| family     | VARCHAR(50)             | Index, Nullable | Familia (clave para busquedas). | Orchidaceae   |
+| genus      | VARCHAR(50)             | Nullable        | Genero.                         | Cattleya      |
 
 ### **Tabla: species**
 
 _Entidad central del catalogo de biodiversidad._
 
-| Campo               | Tipo de Dato | Restricciones                 | Descripcion                                                                                                                     | Ejemplo                                          |
-| :------------------ | :----------- | :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------- |
-| id                  | UUID         | PK, Default gen_random_uuid() | Identificador unico de especie.                                                                                                 | c456...                                          |
-| taxonomy_id         | INT          | FK (taxonomy), Nullable       | Relacion taxonomica.                                                                                                            | 101                                              |
-| slug                | VARCHAR(150) | UK, Not Null                  | Slug URL-friendly generado del nombre comun o cientifico.                                                                       | cattleya-trianae                                 |
-| thumbnail_url       | VARCHAR(500) | Nullable                      | URL de imagen miniatura.                                                                                                        | https://cdn.example.com/species/c456/thumb.webp  |
-| scientific_name     | VARCHAR(255) | UK, Not Null                  | Nombre cientifico unico (binominal).                                                                                            | Cattleya trianae                                 |
-| common_name         | VARCHAR(255) | Nullable                      | Nombre vernaculo en la region.                                                                                                  | Flor de Mayo                                     |
-| description         | TEXT         | Nullable                      | Descripcion morfologica.                                                                                                        | Epifita con pseudobulbos...                      |
-| ecological_info     | TEXT         | Nullable                      | Datos de habitat y ecologia.                                                                                                    | Bosque de niebla entre 1800-2500m...             |
-| altitude_range      | VARCHAR(100) | Nullable                      | Rango altitudinal tipico en msnm.                                                                                               | 1500-2800 msnm                                   |
-| traditional_uses    | JSONB        | Nullable                      | Usos etnobotanicos y conocimiento ancestral.                                                                                    | `[{"part":"Hojas","uses":["Medicina"],...}]`     |
-| economic_potential  | JSONB        | Nullable                      | Potencial de aprovechamiento economico sostenible.                                                                              | `[{"sector":"Ecoturismo","products":[...],...}]` |
-| conservation_status | VARCHAR(100) | Nullable                      | Estado de conservacion (IUCN / Libros Rojos de Colombia).                                                                       | VU                                               |
-| legal_status        | BOOLEAN      | Default False                 | Indica si la especie requiere permisos legales especiales.                                                                      | true                                             |
-| is_sensitive        | BOOLEAN      | Default False                 | Si es True, se enmascara la ubicacion exacta.                                                                                   | true                                             |
-| created_at          | TIMESTAMPTZ  | Default NOW()                 | Fecha de creacion del registro.                                                                                                 | 2025-01-10 08:00:00+00                           |
-| updated_at          | TIMESTAMPTZ  | Nullable                      | Ultima actualizacion del registro.                                                                                              | 2025-02-15 12:00:00+00                           |
+| Campo               | Tipo de Dato | Restricciones                 | Descripcion                                                | Ejemplo                                          |
+| :------------------ | :----------- | :---------------------------- | :--------------------------------------------------------- | :----------------------------------------------- |
+| id                  | UUID         | PK, Default gen_random_uuid() | Identificador unico de especie.                            | c456...                                          |
+| taxonomy_id         | INT          | FK (taxonomy), Nullable       | Relacion taxonomica.                                       | 101                                              |
+| slug                | VARCHAR(150) | UK, Not Null                  | Slug URL-friendly generado del nombre comun o cientifico.  | cattleya-trianae                                 |
+| thumbnail_url       | VARCHAR(500) | Nullable                      | URL de imagen miniatura.                                   | https://cdn.example.com/species/c456/thumb.webp  |
+| scientific_name     | VARCHAR(255) | UK, Not Null                  | Nombre cientifico unico (binominal).                       | Cattleya trianae                                 |
+| common_name         | VARCHAR(255) | Nullable                      | Nombre vernaculo en la region.                             | Flor de Mayo                                     |
+| description         | TEXT         | Nullable                      | Descripcion morfologica.                                   | Epifita con pseudobulbos...                      |
+| ecological_info     | TEXT         | Nullable                      | Datos de habitat y ecologia.                               | Bosque de niebla entre 1800-2500m...             |
+| altitude_range      | VARCHAR(100) | Nullable                      | Rango altitudinal tipico en msnm.                          | 1500-2800 msnm                                   |
+| traditional_uses    | JSONB        | Nullable                      | Usos etnobotanicos y conocimiento ancestral.               | `[{"part":"Hojas","uses":["Medicina"],...}]`     |
+| economic_potential  | JSONB        | Nullable                      | Potencial de aprovechamiento economico sostenible.         | `[{"sector":"Ecoturismo","products":[...],...}]` |
+| conservation_status | VARCHAR(100) | Nullable                      | Estado de conservacion (IUCN / Libros Rojos de Colombia).  | VU                                               |
+| legal_status        | BOOLEAN      | Default False                 | Indica si la especie requiere permisos legales especiales. | true                                             |
+| is_sensitive        | BOOLEAN      | Default False                 | Si es True, se enmascara la ubicacion exacta.              | true                                             |
+| created_at          | TIMESTAMPTZ  | Default NOW()                 | Fecha de creacion del registro.                            | 2025-01-10 08:00:00+00                           |
+| updated_at          | TIMESTAMPTZ  | Nullable                      | Ultima actualizacion del registro.                         | 2025-02-15 12:00:00+00                           |
 
 ### **Tabla: geographic_distribution**
 
 _Distribucion geografica de especies con soporte PostGIS._
 
-| Campo            | Tipo de Dato           | Restricciones                 | Descripcion                          | Ejemplo                          |
-| :--------------- | :--------------------- | :---------------------------- | :----------------------------------- | :------------------------------- |
-| id               | UUID                   | PK, Default gen_random_uuid() | ID del registro de distribucion.     | d555...                          |
-| species_id       | UUID                   | FK (species), Not Null        | Especie avistada/registrada.         | c456...                          |
-| latitude         | DOUBLE PRECISION       | Not Null                      | Latitud.                             | 5.0689                           |
-| longitude        | DOUBLE PRECISION       | Not Null                      | Longitud.                            | -75.5174                         |
-| altitude         | DOUBLE PRECISION       | Nullable                      | Metros sobre el nivel del mar.       | 2150                             |
-| municipality     | VARCHAR(100)           | Nullable                      | Municipio de Caldas.                 | Manizales                        |
-| ecosystem_type   | VARCHAR(100)           | Nullable                      | Tipo de ecosistema.                  | Bosque de Niebla                 |
-| location_point   | GEOMETRY(Point, 4326)  | Nullable                      | Punto PostGIS para geolocalizacion.  | SRID=4326;POINT(-75.5174 5.0689) |
+| Campo          | Tipo de Dato          | Restricciones                 | Descripcion                         | Ejemplo                          |
+| :------------- | :-------------------- | :---------------------------- | :---------------------------------- | :------------------------------- |
+| id             | UUID                  | PK, Default gen_random_uuid() | ID del registro de distribucion.    | d555...                          |
+| species_id     | UUID                  | FK (species), Not Null        | Especie avistada/registrada.        | c456...                          |
+| latitude       | DOUBLE PRECISION      | Not Null                      | Latitud.                            | 5.0689                           |
+| longitude      | DOUBLE PRECISION      | Not Null                      | Longitud.                           | -75.5174                         |
+| altitude       | DOUBLE PRECISION      | Nullable                      | Metros sobre el nivel del mar.      | 2150                             |
+| municipality   | VARCHAR(100)          | Nullable                      | Municipio de Caldas.                | Manizales                        |
+| ecosystem_type | VARCHAR(100)          | Nullable                      | Tipo de ecosistema.                 | Bosque de Niebla                 |
+| location_point | GEOMETRY(Point, 4326) | Nullable                      | Punto PostGIS para geolocalizacion. | SRID=4326;POINT(-75.5174 5.0689) |
 
 ### **Tabla: species_images**
 
 _Dataset de imagenes para entrenamiento, validacion y galeria del catalogo._
 
-| Campo                  | Tipo de Dato | Restricciones                 | Descripcion                                                                        | Ejemplo                          |
-| :--------------------- | :----------- | :---------------------------- | :--------------------------------------------------------------------------------- | :------------------------------- |
-| id                     | UUID         | PK, Default gen_random_uuid() | ID de la imagen.                                                                   | img1...                          |
-| species_id             | UUID         | FK (species), Not Null, Index | Especie etiquetada (Ground Truth).                                                 | c456...                          |
-| uploader_user_id       | UUID         | Nullable                      | **Logical FK** a SQL Server (Users). Quien subio la foto.                          | a0ee...                          |
-| image_url              | VARCHAR(500) | Not Null                      | URL en Object Storage.                                                             | https://bucket.../img.jpg        |
-| thumbnail_url          | VARCHAR(500) | Nullable                      | URL de miniatura.                                                                  | https://bucket.../thumb.jpg      |
-| metadata               | JSONB        | Nullable                      | Metadatos EXIF.                                                                    | {"iso": 100, "model": "Pixel 7"} |
-| is_primary             | BOOLEAN      | Default False                 | Si es la imagen principal de la especie.                                           | false                            |
-| is_validated_by_expert | BOOLEAN      | Default False, Index          | Indica si un investigador valido la etiqueta.                                      | false                            |
-| validated_by_user_id   | UUID         | Nullable                      | **Logical FK** a SQL Server (Users). Investigador que valido.                      | b0ee...                          |
-| validation_date        | TIMESTAMPTZ  | Nullable                      | Fecha de validacion.                                                               | 2025-02-20 14:35:00+00           |
-| license_type           | VARCHAR(50)  | Default 'CC-BY'               | Licencia de uso de la imagen.                                                      | CC-BY-NC                         |
-| created_at             | TIMESTAMPTZ  | Default NOW()                 | Fecha de carga.                                                                    | 2025-01-16 10:00:00+00           |
+| Campo                  | Tipo de Dato | Restricciones                 | Descripcion                                                   | Ejemplo                          |
+| :--------------------- | :----------- | :---------------------------- | :------------------------------------------------------------ | :------------------------------- |
+| id                     | UUID         | PK, Default gen_random_uuid() | ID de la imagen.                                              | img1...                          |
+| species_id             | UUID         | FK (species), Not Null, Index | Especie etiquetada (Ground Truth).                            | c456...                          |
+| uploader_user_id       | UUID         | Nullable                      | **Logical FK** a SQL Server (Users). Quien subio la foto.     | a0ee...                          |
+| image_url              | VARCHAR(500) | Not Null                      | URL en Object Storage.                                        | https://bucket.../img.jpg        |
+| thumbnail_url          | VARCHAR(500) | Nullable                      | URL de miniatura.                                             | https://bucket.../thumb.jpg      |
+| metadata               | JSONB        | Nullable                      | Metadatos EXIF.                                               | {"iso": 100, "model": "Pixel 7"} |
+| is_primary             | BOOLEAN      | Default False                 | Si es la imagen principal de la especie.                      | false                            |
+| is_validated_by_expert | BOOLEAN      | Default False, Index          | Indica si un investigador valido la etiqueta.                 | false                            |
+| validated_by_user_id   | UUID         | Nullable                      | **Logical FK** a SQL Server (Users). Investigador que valido. | b0ee...                          |
+| validation_date        | TIMESTAMPTZ  | Nullable                      | Fecha de validacion.                                          | 2025-02-20 14:35:00+00           |
+| license_type           | VARCHAR(50)  | Default 'CC-BY'               | Licencia de uso de la imagen.                                 | CC-BY-NC                         |
+| created_at             | TIMESTAMPTZ  | Default NOW()                 | Fecha de carga.                                               | 2025-01-16 10:00:00+00           |
 
 ---
 
@@ -514,34 +520,34 @@ _Dataset de imagenes para entrenamiento, validacion y galeria del catalogo._
 
 _Registro de inferencias del modelo CNN para monitoreo y feedback loop._
 
-| Campo                      | Tipo de Dato  | Restricciones                 | Descripcion                                                            | Ejemplo                                       |
-| :------------------------- | :------------ | :---------------------------- | :--------------------------------------------------------------------- | :--------------------------------------------- |
-| id                         | UUID          | PK, Default gen_random_uuid() | ID del log de prediccion.                                              | log1...                                       |
-| user_id                    | UUID          | Index, Nullable               | **Logical FK** a SQL Server (Users). Quien solicito la prediccion.     | a0ee...                                       |
-| image_input_url            | VARCHAR(500)  | Not Null                      | URL de la imagen analizada.                                            | https://.../temp.jpg                          |
-| raw_prediction_result      | JSONB         | Not Null                      | Salida cruda del modelo (Top-K probabilidades).                        | [{"class": "Cattleya trianae", "prob": 0.92}] |
-| top_prediction_species_id  | UUID          | Nullable                      | Especie predicha con mayor confianza.                                  | c456...                                       |
-| confidence_score           | NUMERIC(5,4)  | Not Null                      | Confianza de la prediccion principal (0.0000 a 1.0000).                | 0.9250                                        |
-| feedback_correct           | BOOLEAN       | Nullable                      | Feedback del usuario/experto: Acerto el modelo?                        | true                                          |
-| feedback_actual_species_id | UUID          | Nullable                      | ID de especie real si el modelo fallo.                                 | d789...                                       |
-| processing_time_ms         | INT           | Nullable                      | Tiempo de procesamiento en milisegundos.                               | 450                                           |
-| model_version              | VARCHAR(50)   | Nullable                      | Version del modelo usada.                                              | v1.0.0                                        |
-| created_at                 | TIMESTAMPTZ   | Default NOW()                 | Momento de la inferencia.                                              | 2025-02-20 14:35:00+00                        |
+| Campo                      | Tipo de Dato | Restricciones                 | Descripcion                                                        | Ejemplo                                       |
+| :------------------------- | :----------- | :---------------------------- | :----------------------------------------------------------------- | :-------------------------------------------- |
+| id                         | UUID         | PK, Default gen_random_uuid() | ID del log de prediccion.                                          | log1...                                       |
+| user_id                    | UUID         | Index, Nullable               | **Logical FK** a SQL Server (Users). Quien solicito la prediccion. | a0ee...                                       |
+| image_input_url            | VARCHAR(500) | Not Null                      | URL de la imagen analizada.                                        | https://.../temp.jpg                          |
+| raw_prediction_result      | JSONB        | Not Null                      | Salida cruda del modelo (Top-K probabilidades).                    | [{"class": "Cattleya trianae", "prob": 0.92}] |
+| top_prediction_species_id  | UUID         | Nullable                      | Especie predicha con mayor confianza.                              | c456...                                       |
+| confidence_score           | NUMERIC(5,4) | Not Null                      | Confianza de la prediccion principal (0.0000 a 1.0000).            | 0.9250                                        |
+| feedback_correct           | BOOLEAN      | Nullable                      | Feedback del usuario/experto: Acerto el modelo?                    | true                                          |
+| feedback_actual_species_id | UUID         | Nullable                      | ID de especie real si el modelo fallo.                             | d789...                                       |
+| processing_time_ms         | INT          | Nullable                      | Tiempo de procesamiento en milisegundos.                           | 450                                           |
+| model_version              | VARCHAR(50)  | Nullable                      | Version del modelo usada.                                          | v1.0.0                                        |
+| created_at                 | TIMESTAMPTZ  | Default NOW()                 | Momento de la inferencia.                                          | 2025-02-20 14:35:00+00                        |
 
 ### **Tabla: ai_model_versions**
 
 _Versionado de modelos de IA desplegados. Soporte para MLOps y rollback._
 
-| Campo           | Tipo de Dato  | Restricciones | Descripcion                                            | Ejemplo                |
-| :-------------- | :------------ | :------------ | :----------------------------------------------------- | :--------------------- |
-| id              | SERIAL        | PK            | ID numerico del modelo.                                | 1                      |
-| model_name      | VARCHAR(100)  | Not Null      | Arquitectura del modelo.                               | ResNet50               |
-| version         | VARCHAR(20)   | UK, Not Null  | Version semantica del modelo.                          | v1.0.0                 |
-| accuracy_metric | NUMERIC(5,4)  | Not Null      | Metrica de accuracy en el dataset de validacion.       | 0.8750                 |
-| deployed_at     | TIMESTAMPTZ   | Not Null      | Fecha de despliegue en produccion.                     | 2025-03-01 00:00:00+00 |
-| is_active       | BOOLEAN       | Default False | Indica si es la version activa sirviendo predicciones. | true                   |
-| notes           | TEXT          | Nullable      | Notas sobre la version.                                | Initial release        |
-| created_at      | TIMESTAMPTZ   | Default NOW() | Fecha de registro.                                     | 2025-03-01 00:00:00+00 |
+| Campo           | Tipo de Dato | Restricciones | Descripcion                                            | Ejemplo                |
+| :-------------- | :----------- | :------------ | :----------------------------------------------------- | :--------------------- |
+| id              | SERIAL       | PK            | ID numerico del modelo.                                | 1                      |
+| model_name      | VARCHAR(100) | Not Null      | Arquitectura del modelo.                               | ResNet50               |
+| version         | VARCHAR(20)  | UK, Not Null  | Version semantica del modelo.                          | v1.0.0                 |
+| accuracy_metric | NUMERIC(5,4) | Not Null      | Metrica de accuracy en el dataset de validacion.       | 0.8750                 |
+| deployed_at     | TIMESTAMPTZ  | Not Null      | Fecha de despliegue en produccion.                     | 2025-03-01 00:00:00+00 |
+| is_active       | BOOLEAN      | Default False | Indica si es la version activa sirviendo predicciones. | true                   |
+| notes           | TEXT         | Nullable      | Notas sobre la version.                                | Initial release        |
+| created_at      | TIMESTAMPTZ  | Default NOW() | Fecha de registro.                                     | 2025-03-01 00:00:00+00 |
 
 ---
 
@@ -570,18 +576,18 @@ _Planes de negocio generados por el asistente de IA (GPT-4)._
 
 _Documentos indexados para RAG (Retrieval-Augmented Generation). Cada chunk tiene un embedding en ChromaDB._
 
-| Campo        | Tipo de Dato | Restricciones                 | Descripcion                                           | Ejemplo                    |
-| :----------- | :----------- | :---------------------------- | :---------------------------------------------------- | :------------------------- |
-| id           | UUID         | PK, Default gen_random_uuid() | ID del documento/chunk.                               | doc1...                    |
-| title        | VARCHAR(200) | Not Null                      | Titulo del documento fuente.                          | Cattleya trianae - Ficha   |
-| content      | TEXT         | Not Null                      | Contenido del chunk de texto.                         | La Cattleya trianae es...  |
-| source_type  | VARCHAR(50)  | Nullable                      | Tipo de fuente: Species, Paper, Manual.               | Species                    |
-| source_url   | VARCHAR(500) | Nullable                      | URL del recurso original.                             | https://sib.../cattleya    |
-| species_id   | UUID         | FK (species), Nullable        | Especie relacionada (si aplica).                      | c456...                    |
-| embedding_id | VARCHAR(100) | Nullable                      | ID del embedding en ChromaDB.                         | chroma-abc123              |
-| chunk_index  | INT          | Default 0                     | Indice del chunk dentro del documento.                | 0                          |
-| metadata     | JSONB        | Nullable                      | Metadatos adicionales del chunk.                      | {"tokens": 512}            |
-| created_at   | TIMESTAMPTZ  | Default NOW()                 | Fecha de indexacion.                                  | 2025-02-25 10:00:00+00     |
+| Campo        | Tipo de Dato | Restricciones                 | Descripcion                             | Ejemplo                   |
+| :----------- | :----------- | :---------------------------- | :-------------------------------------- | :------------------------ |
+| id           | UUID         | PK, Default gen_random_uuid() | ID del documento/chunk.                 | doc1...                   |
+| title        | VARCHAR(200) | Not Null                      | Titulo del documento fuente.            | Cattleya trianae - Ficha  |
+| content      | TEXT         | Not Null                      | Contenido del chunk de texto.           | La Cattleya trianae es... |
+| source_type  | VARCHAR(50)  | Nullable                      | Tipo de fuente: Species, Paper, Manual. | Species                   |
+| source_url   | VARCHAR(500) | Nullable                      | URL del recurso original.               | https://sib.../cattleya   |
+| species_id   | UUID         | FK (species), Nullable        | Especie relacionada (si aplica).        | c456...                   |
+| embedding_id | VARCHAR(100) | Nullable                      | ID del embedding en ChromaDB.           | chroma-abc123             |
+| chunk_index  | INT          | Default 0                     | Indice del chunk dentro del documento.  | 0                         |
+| metadata     | JSONB        | Nullable                      | Metadatos adicionales del chunk.        | {"tokens": 512}           |
+| created_at   | TIMESTAMPTZ  | Default NOW()                 | Fecha de indexacion.                    | 2025-02-25 10:00:00+00    |
 
 ### **Tabla: chat_sessions**
 
@@ -598,13 +604,13 @@ _Sesiones de conversacion con el chatbot RAG de asesoria en biocomercio._
 
 _Mensajes individuales dentro de una sesion de chat. Historial del chatbot._
 
-| Campo      | Tipo de Dato | Restricciones                     | Descripcion                           | Ejemplo                                              |
-| :--------- | :----------- | :-------------------------------- | :------------------------------------ | :--------------------------------------------------- |
-| id         | UUID         | PK, Default gen_random_uuid()     | ID del mensaje.                       | msg1...                                              |
-| session_id | UUID         | FK (chat_sessions), Not Null      | Sesion padre.                         | sess1...                                             |
-| role       | VARCHAR(20)  | Not Null                          | Rol del emisor: 'user' o 'assistant'. | user                                                 |
-| content    | TEXT         | Not Null                          | Contenido del mensaje.                | Que permisos necesito para comercializar orquideas?   |
-| created_at | TIMESTAMPTZ  | Default NOW()                     | Timestamp del mensaje.                | 2025-02-20 09:01:00+00                               |
+| Campo      | Tipo de Dato | Restricciones                 | Descripcion                           | Ejemplo                                             |
+| :--------- | :----------- | :---------------------------- | :------------------------------------ | :-------------------------------------------------- |
+| id         | UUID         | PK, Default gen_random_uuid() | ID del mensaje.                       | msg1...                                             |
+| session_id | UUID         | FK (chat_sessions), Not Null  | Sesion padre.                         | sess1...                                            |
+| role       | VARCHAR(20)  | Not Null                      | Rol del emisor: 'user' o 'assistant'. | user                                                |
+| content    | TEXT         | Not Null                      | Contenido del mensaje.                | Que permisos necesito para comercializar orquideas? |
+| created_at | TIMESTAMPTZ  | Default NOW()                 | Timestamp del mensaje.                | 2025-02-20 09:01:00+00                              |
 
 ---
 
@@ -634,17 +640,19 @@ _Mensajes individuales dentro de una sesion de chat. Historial del chatbot._
 
 _Carrito de compras persistente por usuario. Un usuario tiene maximo un carrito activo. Los precios NO se almacenan aqui para garantizar que siempre reflejen el precio actual del producto._
 
-| Campo     | Tipo de Dato     | Restricciones              | Descripcion                                | Ejemplo             |
-| :-------- | :--------------- | :------------------------- | :----------------------------------------- | :------------------ |
-| Id        | UNIQUEIDENTIFIER | PK, Not Null               | Identificador unico del carrito.           | c0a80101-...        |
-| UserId    | UNIQUEIDENTIFIER | FK (Users), UK, Not Null   | Propietario del carrito. Maximo uno/usuario.| a0eebc99-...        |
-| CreatedAt | DATETIME2        | Default GETUTCDATE()       | Fecha de creacion del carrito.             | 2026-01-15 10:00:00 |
-| UpdatedAt | DATETIME2        | Default GETUTCDATE()       | Ultima vez que se modifico el carrito.     | 2026-02-20 14:30:00 |
+| Campo     | Tipo de Dato     | Restricciones            | Descripcion                                  | Ejemplo             |
+| :-------- | :--------------- | :----------------------- | :------------------------------------------- | :------------------ |
+| Id        | UNIQUEIDENTIFIER | PK, Not Null             | Identificador unico del carrito.             | c0a80101-...        |
+| UserId    | UNIQUEIDENTIFIER | FK (Users), UK, Not Null | Propietario del carrito. Maximo uno/usuario. | a0eebc99-...        |
+| CreatedAt | DATETIME2        | Default GETUTCDATE()     | Fecha de creacion del carrito.               | 2026-01-15 10:00:00 |
+| UpdatedAt | DATETIME2        | Default GETUTCDATE()     | Ultima vez que se modifico el carrito.       | 2026-02-20 14:30:00 |
 
 **Indices:**
+
 - `IX_Carts_UserId` (UNIQUE) — garantiza un carrito por usuario.
 
 **Relaciones:**
+
 - `UserId → Users.Id` (CASCADE DELETE)
 
 ---
@@ -653,24 +661,27 @@ _Carrito de compras persistente por usuario. Un usuario tiene maximo un carrito 
 
 _Lineas del carrito. Cada item puede estar activo (seleccionado para checkout) o inactivo (guardado para despues), sin necesidad de eliminarlo._
 
-| Campo     | Tipo de Dato     | Restricciones                   | Descripcion                                                        | Ejemplo             |
-| :-------- | :--------------- | :------------------------------ | :----------------------------------------------------------------- | :------------------ |
-| Id        | UNIQUEIDENTIFIER | PK, Not Null                    | Identificador unico del item.                                      | d1b2c3...           |
-| CartId    | UNIQUEIDENTIFIER | FK (Carts), Not Null            | Carrito al que pertenece.                                          | c0a80101-...        |
-| ProductId | UNIQUEIDENTIFIER | FK (Products), Not Null         | Producto referenciado. Sin precio almacenado.                      | f47ac10b-...        |
-| Quantity  | INT              | Not Null, CHECK (Quantity >= 1) | Cantidad de unidades del producto.                                 | 3                   |
-| IsActive  | BIT              | Default 1                       | Si = 1: incluido en checkout. Si = 0: guardado para despues.       | 1                   |
-| CreatedAt | DATETIME2        | Default GETUTCDATE()            | Fecha en que se agrego el item al carrito.                         | 2026-02-01 09:00:00 |
-| UpdatedAt | DATETIME2        | Default GETUTCDATE()            | Ultima modificacion (cambio de cantidad o toggle de IsActive).     | 2026-02-01 09:30:00 |
+| Campo     | Tipo de Dato     | Restricciones                   | Descripcion                                                    | Ejemplo             |
+| :-------- | :--------------- | :------------------------------ | :------------------------------------------------------------- | :------------------ |
+| Id        | UNIQUEIDENTIFIER | PK, Not Null                    | Identificador unico del item.                                  | d1b2c3...           |
+| CartId    | UNIQUEIDENTIFIER | FK (Carts), Not Null            | Carrito al que pertenece.                                      | c0a80101-...        |
+| ProductId | UNIQUEIDENTIFIER | FK (Products), Not Null         | Producto referenciado. Sin precio almacenado.                  | f47ac10b-...        |
+| Quantity  | INT              | Not Null, CHECK (Quantity >= 1) | Cantidad de unidades del producto.                             | 3                   |
+| IsActive  | BIT              | Default 1                       | Si = 1: incluido en checkout. Si = 0: guardado para despues.   | 1                   |
+| CreatedAt | DATETIME2        | Default GETUTCDATE()            | Fecha en que se agrego el item al carrito.                     | 2026-02-01 09:00:00 |
+| UpdatedAt | DATETIME2        | Default GETUTCDATE()            | Ultima modificacion (cambio de cantidad o toggle de IsActive). | 2026-02-01 09:30:00 |
 
 **Indices:**
+
 - `IX_CartItems_CartId_ProductId` (UNIQUE) — previene duplicados del mismo producto en un carrito (el upsert incrementa la cantidad en su lugar).
 
 **Relaciones:**
+
 - `CartId → Carts.Id` (CASCADE DELETE)
 - `ProductId → Products.Id` (CASCADE DELETE) — si el producto se elimina, se limpia del carrito.
 
 **Reglas de Negocio:**
+
 - Los precios se resuelven en tiempo real desde `Products.SellPrice` al momento del checkout.
 - Al crear una orden, los items activos correspondientes se eliminan automaticamente del carrito.
 - Un usuario puede desactivar items (`IsActive = 0`) para excluirlos del checkout sin perder la referencia.

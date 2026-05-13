@@ -34,3 +34,29 @@ public class GetAbsPermitByIdQueryHandler : IRequestHandler<GetAbsPermitByIdQuer
         return CreateAbsPermitCommandHandler.MapToResponse(permit);
     }
 }
+
+// =============================================================================
+// GET ALL ABS PERMITS (Admin & EnvironmentalAuthority — paginated)
+// =============================================================================
+
+public record GetAllAbsPermitsQuery(
+    Guid? EntrepreneurId,
+    string? Status,
+    int Page,
+    int PageSize) : IRequest<PaginatedResult<AbsPermitResponseDTO>>;
+
+public class GetAllAbsPermitsQueryHandler
+    : IRequestHandler<GetAllAbsPermitsQuery, PaginatedResult<AbsPermitResponseDTO>>
+{
+    private readonly IAbsPermitRepository _repo;
+    public GetAllAbsPermitsQueryHandler(IAbsPermitRepository repo) => _repo = repo;
+
+    public async Task<PaginatedResult<AbsPermitResponseDTO>> Handle(
+        GetAllAbsPermitsQuery request, CancellationToken ct)
+    {
+        var (items, total) = await _repo.GetAllPagedAsync(
+            request.EntrepreneurId, request.Status, request.Page, request.PageSize, ct);
+        var dtos = items.Select(CreateAbsPermitCommandHandler.MapToResponse).ToList();
+        return PaginatedResult<AbsPermitResponseDTO>.Create(dtos, total, request.Page, request.PageSize);
+    }
+}

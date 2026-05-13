@@ -102,6 +102,19 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IAbsPermitRepository, Bio.Backe
 builder.Services.AddScoped<Bio.Domain.Interfaces.ICartRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CartRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ITraceabilityBatchRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.TraceabilityBatchRepository>();
 
+// Community context (SQL Server) — Posts, Comments, Reactions, Connections, Messaging
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICommunityPostRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CommunityPostRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICommunityPostCommentRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CommunityPostCommentRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICommunityReactionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CommunityReactionRepository>();
+
+// Networking context (SQL Server) — User Connections, Direct Threads & Messages
+builder.Services.AddScoped<Bio.Domain.Interfaces.IUserConnectionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.UserConnectionRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IDirectThreadRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.DirectThreadRepository>();
+
+// User Features context (SQL Server) — Notifications, ActivityLogs
+builder.Services.AddScoped<Bio.Domain.Interfaces.INotificationRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.NotificationRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IActivityLogRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ActivityLogRepository>();
+
 // AWS S3 — Species observation image uploads
 builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
 builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));

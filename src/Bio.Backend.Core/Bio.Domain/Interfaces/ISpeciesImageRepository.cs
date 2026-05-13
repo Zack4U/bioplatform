@@ -24,4 +24,7 @@ public interface ISpeciesImageRepository
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The persisted entity with any DB-generated values populated.</returns>
     Task<SpeciesImage> AddAsync(SpeciesImage image, CancellationToken cancellationToken = default);
+
+    /// <summary>Returns all species images for dashboard aggregation (Researcher Dashboard).</summary>
+    Task<IReadOnlyList<SpeciesImage>> GetAllAsync(CancellationToken cancellationToken = default);
 }

@@ -54,5 +54,9 @@ public class SpeciesImageRepository : ISpeciesImageRepository
         await _context.SpeciesImages.AddAsync(image, cancellationToken);
         return image;
     }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<SpeciesImage>> GetAllAsync(CancellationToken cancellationToken = default)
+        => await _context.SpeciesImages.AsNoTracking().ToListAsync(cancellationToken);
 }
 
