@@ -2,6 +2,8 @@ using Bio.Application.DTOs;
 using Bio.Application.Features.Dashboard.Queries;
 using Bio.Domain.Entities;
 using Bio.Domain.Interfaces;
+using Bio.Domain.ReadModels;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -17,49 +19,51 @@ public class AdminDashboardQueriesTests
     private readonly Mock<ICommunityPostRepository> _postRepoMock = new();
     private readonly Mock<IUserConnectionRepository> _connRepoMock = new();
     private readonly Mock<ICommunityPostCommentRepository> _commentRepoMock = new();
-    private readonly GetAdminDashboardQueryHandler _handler;
-
-    public AdminDashboardQueriesTests()
-    {
-        _handler = new GetAdminDashboardQueryHandler(
-            _userRepoMock.Object, _productRepoMock.Object, _orderRepoMock.Object,
-            _absRepoMock.Object, _certRepoMock.Object, _postRepoMock.Object,
-            _connRepoMock.Object, _commentRepoMock.Object);
-    }
 
     [Fact]
-    public async Task Handle_ReturnsValidAdminDashboardDTO()
+    public async Task GetAdminDashboard_ShouldReturnMetrics()
     {
-        // Arrange
-        var query = new GetAdminDashboardQuery();
-        var ct = CancellationToken.None;
+        var entrepreneurId = Guid.NewGuid();
+        var user = new User(entrepreneurId, "John", "john@example.com", "hash", "salt", null);
+        var users = new List<User> { user };
 
-        var users = new List<User> { new User(Guid.NewGuid(), "Test User", "test@bio.com", "hash", "salt", null) };
-        _userRepoMock.Setup(x => x.GetAllAsync()).ReturnsAsync(users);
-        _userRepoMock.Setup(x => x.GetCountByRoleAsync(ct)).ReturnsAsync(new List<(string, int)> { ("Admin", 1) });
+        var roleDetails = new List<(string RoleName, int Count)> { ("Admin", 1) };
+        IReadOnlyList<(string RoleName, int Count)> roleDetailsList = roleDetails;
 
-        var products = new List<Product>();
-        _productRepoMock.Setup(x => x.GetManagedFilteredAsync(It.IsAny<Guid?>(), It.IsAny<bool?>(), It.IsAny<string?>(), It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<string>(), 1, 10000, ct))
-            .ReturnsAsync((products, 0));
+        var product = new Product(entrepreneurId, Guid.NewGuid(), "Prod", "prod", "Desc", 10, 10, 10);
+        var products = new List<Product> { product };
 
-        var orders = new List<Order>();
-        _orderRepoMock.Setup(x => x.GetManagedAsync(It.IsAny<string?>(), 1, 10000, ct))
-            .ReturnsAsync((orders, 0));
+        var order = new Order(Guid.NewGuid(), "ORD1", 10m, 10m, "Card");
+        var orders = new List<Order> { order };
 
-        var permits = new List<AbsPermit>();
-        _absRepoMock.Setup(x => x.GetAllPagedAsync(It.IsAny<Guid?>(), It.IsAny<string?>(), 1, 10000, ct))
-            .ReturnsAsync((permits, 0));
+        var permit = new AbsPermit(entrepreneurId, Guid.NewGuid(), "RES1", DateTime.UtcNow, DateTime.UtcNow.AddDays(40), "Auth");
+        var permits = new List<AbsPermit> { permit };
 
-        var posts = new List<CommunityPost>();
-        _postRepoMock.Setup(x => x.GetPagedAsync(It.IsAny<string?>(), It.IsAny<string?>(), 1, 10000, ct))
-            .ReturnsAsync((posts, 0));
+        var post = new CommunityPost(Guid.NewGuid(), "Title", "content", "Category");
+        var posts = new List<CommunityPost> { post };
 
-        // Act
-        var result = await _handler.Handle(query, ct);
+        _userRepoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(users);
+        _userRepoMock.Setup(r => r.GetCountByRoleAsync(default)).ReturnsAsync(roleDetailsList);
+        _productRepoMock.Setup(r => r.GetManagedFilteredAsync(null, null, null, null, "createdAt", "desc", 1, 10000, default))
+            .ReturnsAsync((products, 1));
+        _orderRepoMock.Setup(r => r.GetManagedAsync(null, 1, 10000, default))
+            .ReturnsAsync((orders, 1));
+        _absRepoMock.Setup(r => r.GetAllPagedAsync(null, null, 1, 10000, default))
+            .ReturnsAsync((permits, 1));
+        _postRepoMock.Setup(r => r.GetPagedAsync(null, null, 1, 10000, default))
+            .ReturnsAsync((posts, 1));
 
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(1, result.Users.TotalUsers);
-        Assert.Empty(result.TopEntrepreneurs);
+        var handler = new GetAdminDashboardQueryHandler(
+            _userRepoMock.Object, _productRepoMock.Object, _orderRepoMock.Object, _absRepoMock.Object,
+            _certRepoMock.Object, _postRepoMock.Object, _connRepoMock.Object, _commentRepoMock.Object);
+
+        var result = await handler.Handle(new GetAdminDashboardQuery(), default);
+
+        result.Should().NotBeNull();
+        result.Users.TotalUsers.Should().Be(1);
+        result.Marketplace.TotalProducts.Should().Be(1);
+        result.Orders.TotalOrders.Should().Be(1);
+        result.Compliance.TotalAbsPermits.Should().Be(1);
+        result.Community.TotalPosts.Should().Be(1);
     }
 }
