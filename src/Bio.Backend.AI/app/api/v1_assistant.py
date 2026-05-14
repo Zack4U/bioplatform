@@ -178,6 +178,17 @@ async def ask_assistant(request: AskRequest):
         
         # Extraer texto de la respuesta final
         answer_text = response.text
+        
+        if not answer_text:
+            logger.warning("La IA devolvió una respuesta de texto vacía. Revisando partes...")
+            # Intentar reconstruir si hay partes de texto
+            parts = []
+            for candidate in response.candidates:
+                for part in candidate.content.parts:
+                    if part.text:
+                        parts.append(part.text)
+            answer_text = "\n".join(parts) if parts else "La IA procesó la información pero no generó un resumen textual. Por favor, intenta reformular la pregunta."
+
         return AskResponse(answer=answer_text)
 
     except Exception as e:
