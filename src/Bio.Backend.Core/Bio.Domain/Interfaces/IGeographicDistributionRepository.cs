@@ -11,4 +11,8 @@ public interface IGeographicDistributionRepository
     Task<IEnumerable<GeographicDistribution>> GetBySpeciesIdAsync(Guid speciesId, CancellationToken cancellationToken = default);
     Task<GeographicDistribution> AddAsync(GeographicDistribution distribution, CancellationToken cancellationToken = default);
     Task DeleteAsync(GeographicDistribution distribution, CancellationToken cancellationToken = default);
+    Task<bool> ExistsBySpeciesAndCoordinatesAsync(Guid speciesId, double latitude, double longitude, CancellationToken cancellationToken = default);
+
+    /// <summary>Returns all geographic distribution records for dashboard aggregation (Researcher Dashboard).</summary>
+    Task<IReadOnlyList<GeographicDistribution>> GetAllAsync(CancellationToken cancellationToken = default);
 }

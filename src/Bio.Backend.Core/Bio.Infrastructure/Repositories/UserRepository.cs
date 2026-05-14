@@ -95,4 +95,39 @@ public class UserRepository : IUserRepository
         _context.Users.Remove(user);
         return Task.CompletedTask;
     }
+
+    /// <summary>
+    /// Admin paginated query with optional filters.
+    /// </summary>
+    public async Task<(IReadOnlyList<User> Items, int TotalCount)> GetFilteredPagedAsync(
+        string? search, string? roleName, bool? isActive, bool? isVerified,
+        DateTime? fromDate, DateTime? toDate, int page, int pageSize, CancellationToken ct)
+    {
+        var q = _context.Users.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(search))
+            q = q.Where(u => u.FullName.Contains(search) || u.Email.Contains(search));
+        if (isActive.HasValue) q = q.Where(u => u.IsActive == isActive.Value);
+        if (isVerified.HasValue) q = q.Where(u => u.IsVerified == isVerified.Value);
+        if (fromDate.HasValue) q = q.Where(u => u.CreatedAt >= fromDate.Value);
+        if (toDate.HasValue) q = q.Where(u => u.CreatedAt <= toDate.Value);
+        if (!string.IsNullOrWhiteSpace(roleName))
+            q = q.Where(u => _context.UserRoles
+                .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => new { ur.UserId, r.Name })
+                .Any(x => x.UserId == u.Id && x.Name == roleName));
+        q = q.OrderByDescending(u => u.CreatedAt);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
+
+    /// <summary>Gets count of users grouped by role name.</summary>
+    public async Task<IReadOnlyList<(string RoleName, int Count)>> GetCountByRoleAsync(CancellationToken ct)
+    {
+        var result = await _context.UserRoles
+            .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r.Name)
+            .GroupBy(name => name)
+            .Select(g => new { RoleName = g.Key, Count = g.Count() })
+            .ToListAsync(ct);
+        return result.Select(x => (x.RoleName, x.Count)).ToList();
+    }
 }
