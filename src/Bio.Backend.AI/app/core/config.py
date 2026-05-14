@@ -58,6 +58,13 @@ class Settings(BaseSettings):
     aws_access_key_id: Optional[str] = None
     aws_secret_access_key: Optional[str] = None
     aws_region: Optional[str] = None
+    google_ai_api_key: Optional[str] = None
+    google_model_name: str = "gemini-2.5-flash"
+
+    # ── ChromaDB (Vector Store) ───────────────────────────────
+    chroma_host: str = "localhost"
+    chroma_port: int = 8001
+    chroma_collection_name: str = "bioplatform_species_dev"
 
     @property
     def pg_dsn(self) -> str:

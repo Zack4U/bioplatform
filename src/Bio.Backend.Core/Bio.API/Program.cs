@@ -7,6 +7,7 @@ using Bio.Application.Services;
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Bio.Backend.Core.Bio.Infrastructure.Services;
+using Bio.Infrastructure.Services;
 using Bio.Domain.Constants;
 using Bio.Domain.Interfaces;
 using FluentValidation;
@@ -106,6 +107,9 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.ITraceabilityBatchRepository, B
 builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
 builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));
 builder.Services.AddScoped<IS3StorageService, S3StorageService>();
+
+// AI Assistant Bot (RAG with Gemini)
+builder.Services.AddHttpClient<IAiAssistantService, AiAssistantService>();
 
 // Configure multipart form-data size limit to allow observation image uploads
 builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>

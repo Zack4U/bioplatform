@@ -9,9 +9,9 @@ export const APP_DESCRIPTION =
 
 /** API base URLs — sourced from .env */
 export const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000/api";
+    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5070/api";
 export const AI_API_BASE_URL =
-    process.env.NEXT_PUBLIC_AI_API_BASE_URL ?? "http://localhost:8000/api/v1";
+    process.env.NEXT_PUBLIC_AI_API_URL ?? "http://localhost:8000/api/v1";
 
 /** Pagination defaults */
 export const DEFAULT_PAGE_SIZE = 12;

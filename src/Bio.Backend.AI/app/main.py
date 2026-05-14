@@ -10,7 +10,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 
-load_dotenv()
+import os
+from dotenv import load_dotenv
+
+# Search for .env in current, parent, or grandparent directories
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../../.env"))
+load_dotenv() # Also load local .env if exists
 
 logging.basicConfig(
     level=logging.INFO,
@@ -87,9 +92,11 @@ app.add_middleware(
 # ── Register Routers ──────────────────────────────────────────
 from app.api.v1_classify import router as classify_router  # noqa: E402
 from app.api.v1_metrics import router as metrics_router  # noqa: E402
+from app.api.v1_assistant import router as assistant_router  # noqa: E402
 
 app.include_router(classify_router)
 app.include_router(metrics_router)
+app.include_router(assistant_router)
 
 
 @app.get("/health", tags=["Infrastructure"])
