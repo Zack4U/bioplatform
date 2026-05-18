@@ -26,6 +26,7 @@ public class ScientificDbContext : DbContext
     // --- Computer Vision & AI (MLOps) ---
     public DbSet<PredictionLog> PredictionLogs { get; set; } = null!;
     public DbSet<AiModelVersion> AiModelVersions { get; set; } = null!;
+    public DbSet<AiTrainingJob> AiTrainingJobs { get; set; } = null!;
 
     // --- GenAI & Business Assistant ---
     public DbSet<BusinessPlan> BusinessPlans { get; set; } = null!;
@@ -203,13 +204,37 @@ public class ScientificDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
             entity.Property(e => e.ModelName).HasColumnName("model_name").HasMaxLength(100);
-            entity.Property(e => e.Version).HasColumnName("version").HasMaxLength(20);
+            entity.Property(e => e.Version).HasColumnName("version").HasMaxLength(50);
             entity.Property(e => e.AccuracyMetric).HasColumnName("accuracy_metric").HasColumnType("numeric(5,4)");
             entity.Property(e => e.DeployedAt).HasColumnName("deployed_at");
             entity.Property(e => e.IsActive).HasColumnName("is_active").HasDefaultValue(false);
             entity.Property(e => e.Notes).HasColumnName("notes");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
+            entity.Property(e => e.IsDeleted).HasColumnName("is_deleted").HasDefaultValue(false);
+            entity.Property(e => e.ConfigJson).HasColumnName("config_json").HasColumnType("jsonb");
+            entity.Property(e => e.MetricsJson).HasColumnName("metrics_json").HasColumnType("jsonb");
+            entity.Property(e => e.ValidationAccuracy).HasColumnName("validation_accuracy").HasColumnType("numeric(5,4)");
             entity.HasIndex(e => e.Version).IsUnique();
+            entity.HasQueryFilter(e => !e.IsDeleted);
+        });
+
+        modelBuilder.Entity<AiTrainingJob>(entity =>
+        {
+            entity.ToTable("ai_training_jobs");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.StartedAt).HasColumnName("started_at");
+            entity.Property(e => e.CompletedAt).HasColumnName("completed_at");
+            entity.Property(e => e.Status).HasColumnName("status").HasMaxLength(20);
+            entity.Property(e => e.StatusMessage).HasColumnName("status_message");
+            entity.Property(e => e.TriggeredByUserId).HasColumnName("triggered_by_user_id");
+            entity.Property(e => e.ResultingModelVersionId).HasColumnName("resulting_model_version_id");
+            entity.HasOne(e => e.ResultingModelVersion)
+                  .WithMany(m => m.TrainingJobs)
+                  .HasForeignKey(e => e.ResultingModelVersionId)
+                  .OnDelete(DeleteBehavior.SetNull);
+            entity.HasIndex(e => e.Status);
+            entity.HasIndex(e => e.TriggeredByUserId);
         });
 
         // =====================================================================
