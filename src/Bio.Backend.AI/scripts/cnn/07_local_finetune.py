@@ -3,7 +3,8 @@ Script 07: Local Fine-Tuning CLI
 ==================================
 Convenience wrapper for manual local fine-tuning of the species CNN.
 Automates the full pipeline:
-    1. Organize dataset (optional, with --skip-organize)
+    0. Delta download: fetch new validated images from S3 (optional)
+    1. Organize dataset with Replay Buffer (100% new + replay% old)
     2. Run training with warm-start from active checkpoint
     3. Evaluate the new model
     4. Export to ONNX
@@ -12,7 +13,8 @@ Automates the full pipeline:
 Usage:
     python scripts/cnn/07_local_finetune.py
     python scripts/cnn/07_local_finetune.py --epochs 20 --lr 0.00005
-    python scripts/cnn/07_local_finetune.py --skip-organize --version v2.0
+    python scripts/cnn/07_local_finetune.py --skip-download --skip-organize
+    python scripts/cnn/07_local_finetune.py --replay-ratio 0.20
 
 Output:
     data/weights/{version}/
@@ -29,10 +31,18 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+import os
+
+from dotenv import load_dotenv
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+ANALYSIS_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
+DELTA_MANIFEST = ANALYSIS_DIR / "delta_manifest.json"
+
+load_dotenv(PROJECT_ROOT / ".env")
 
 
 def _find_latest_checkpoint() -> Path | None:
@@ -107,7 +117,21 @@ def main() -> None:
         "--no-warm-start", action="store_true",
         help="Train from scratch (ImageNet) instead of warm-starting",
     )
+    parser.add_argument(
+        "--skip-download", action="store_true",
+        help="Skip delta download step (use existing raw images)",
+    )
+    parser.add_argument(
+        "--replay-ratio", type=float, default=None,
+        help="Fraction of old images to keep in Replay Buffer "
+             "(default: REPLAY_BUFFER_RATIO from .env, typically 0.15)",
+    )
     args = parser.parse_args()
+
+    # Resolve replay ratio from env
+    if args.replay_ratio is None:
+        args.replay_ratio = float(os.environ.get("REPLAY_BUFFER_RATIO", "0.15"))
+    seed = int(os.environ.get("DATASET_SPLIT_SEED", "42"))
 
     # Generate version tag
     ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
@@ -154,16 +178,61 @@ def main() -> None:
 
     start_time = time.time()
 
-    # Step 1: Organize dataset
+    # Step 0: Delta download
+    if not args.skip_download:
+        delta_script = SCRIPT_DIR.parent / "dataset" / "02f_download_delta.py"
+        if delta_script.exists():
+            ok = _run(
+                [sys.executable, str(delta_script)],
+                "Step 0/5: Delta Download (validated images from S3)",
+            )
+            if not ok:
+                print("[ERROR] Delta download failed. Aborting.")
+                sys.exit(1)
+
+            # Check if any new images were downloaded
+            if DELTA_MANIFEST.exists():
+                import json
+                try:
+                    with open(DELTA_MANIFEST, "r", encoding="utf-8") as f:
+                        manifest_data = json.load(f)
+                    
+                    if manifest_data.get("total_downloaded", 0) == 0:
+                        ans = input("\n[PROMPT] No new images were downloaded. Do you want to continue training with the existing dataset? [y/N]: ")
+                        if ans.lower() not in ["y", "yes"]:
+                            print("\n[INFO] Aborting fine-tuning process as per user request.")
+                            sys.exit(0)
+                except Exception as e:
+                    print(f"[WARN] Could not read manifest to verify downloaded images: {e}")
+                    
+        else:
+            print("[WARN] Delta download script not found. Skipping.")
+    else:
+        print("\n[INFO] Skipping delta download (--skip-download)")
+
+    # Step 1: Organize dataset (with Replay Buffer)
     if not args.skip_organize:
         organize_script = SCRIPT_DIR.parent / "dataset" / "03_organize_dataset.py"
         if organize_script.exists():
+            organize_cmd = [
+                sys.executable, str(organize_script),
+                "--clean",
+                "--seed", str(seed),
+            ]
+            # Enable Replay Buffer if manifest exists
+            if DELTA_MANIFEST.exists() and not args.skip_download:
+                organize_cmd.extend([
+                    "--new-images-manifest", str(DELTA_MANIFEST),
+                    "--replay-ratio", str(args.replay_ratio),
+                ])
+
             ok = _run(
-                [sys.executable, str(organize_script), "--clean"],
-                "Step 1/4: Organizing Dataset",
+                organize_cmd,
+                f"Step 1/5: Organizing Dataset (replay={args.replay_ratio:.0%})",
             )
             if not ok:
-                print("[WARN] Dataset organization had issues. Continuing...")
+                print("[ERROR] Dataset organization failed. Aborting.")
+                sys.exit(1)
         else:
             print("[WARN] Organize script not found. Skipping.")
     else:
@@ -191,7 +260,7 @@ def main() -> None:
     if checkpoint_path and not args.no_warm_start:
         train_cmd.extend(["--resume-checkpoint", str(checkpoint_path)])
 
-    ok = _run(train_cmd, "Step 2/4: Training CNN (Fine-Tuning)")
+    ok = _run(train_cmd, "Step 2/5: Training CNN (Fine-Tuning)")
     if not ok:
         print("[ERROR] Training failed. Aborting.")
         sys.exit(1)
@@ -200,10 +269,13 @@ def main() -> None:
     if not args.skip_eval:
         eval_script = SCRIPT_DIR / "05_evaluate_model.py"
         if eval_script.exists():
-            _run(
+            ok = _run(
                 [sys.executable, str(eval_script), "--weights-dir", str(output_dir)],
-                "Step 3/4: Evaluating Model",
+                "Step 3/5: Evaluating Model",
             )
+            if not ok:
+                print("[ERROR] Evaluation failed. Aborting.")
+                sys.exit(1)
         else:
             print("[WARN] Evaluation script not found. Skipping.")
     else:
@@ -213,10 +285,13 @@ def main() -> None:
     if not args.skip_onnx:
         onnx_script = SCRIPT_DIR / "06_export_onnx.py"
         if onnx_script.exists():
-            _run(
+            ok = _run(
                 [sys.executable, str(onnx_script), "--weights-dir", str(output_dir)],
-                "Step 4/4: Exporting ONNX",
+                "Step 4/5: Exporting ONNX",
             )
+            if not ok:
+                print("[ERROR] ONNX export failed. Aborting.")
+                sys.exit(1)
         else:
             print("[WARN] ONNX export script not found. Skipping.")
     else:

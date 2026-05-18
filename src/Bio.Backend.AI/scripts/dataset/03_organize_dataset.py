@@ -10,9 +10,14 @@ Características:
   - Valida integridad de imágenes (descarta corruptas)
   - Genera class_mapping.json (label → idx) y dataset_stats.json
   - Organiza en formato ImageFolder (compatible con PyTorch/torchvision)
+  - Replay Buffer: usa 100% imágenes nuevas + muestreo estratificado
+    de imágenes antiguas (configurable vía --replay-ratio)
+  - Semilla configurable vía DATASET_SPLIT_SEED en .env (default: 42)
 
 Uso:
-    python scripts/03_organize_dataset.py [--min-images 10] [--seed 42]
+    python scripts/dataset/03_organize_dataset.py [--min-images 10] [--seed 42]
+    python scripts/dataset/03_organize_dataset.py --replay-ratio 0.15 \\
+        --new-images-manifest data/dataset_analysis/delta_manifest.json
 
 Salida:
     data/processed/
@@ -35,6 +40,7 @@ Salida:
 
 import argparse
 import json
+import os
 import random
 import shutil
 import sys
@@ -46,11 +52,17 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 RAW_IMAGES_DIR = PROJECT_ROOT / "data" / "raw_images"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 ANALYSIS_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
 SPECIES_CSV = ANALYSIS_DIR / "species_summary.csv"
+
+# ── Default seed from environment ──────────────────────────────────
+_DEFAULT_SEED = int(os.environ.get("DATASET_SPLIT_SEED", "42"))
+
+# ── Image extensions ───────────────────────────────────────────────
+_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 
 
 def validate_image(filepath: Path) -> bool:
@@ -69,7 +81,7 @@ def validate_image(filepath: Path) -> bool:
 def scan_raw_images(raw_dir: Path) -> dict[str, list[Path]]:
     """
     Scan the raw images directory and group images by species.
-    Expected structure: Kingdom/Phylum/Class/Family/SpeciesName/image.jpg
+    Expected structure: raw_images/Kingdom/Phylum/Class/Family/SpeciesName/image.jpg
     Returns: { "Species_name": [path1, path2, ...] }
     """
     species_images: dict[str, list[Path]] = defaultdict(list)
@@ -79,6 +91,7 @@ def scan_raw_images(raw_dir: Path) -> dict[str, list[Path]]:
         sys.exit(1)
 
     # Walk the taxonomy tree - species folders are at depth 5
+    # Structure: Kingdom/Phylum/Class/Family/Species/
     for kingdom_dir in sorted(raw_dir.iterdir()):
         if not kingdom_dir.is_dir():
             continue
@@ -97,10 +110,10 @@ def scan_raw_images(raw_dir: Path) -> dict[str, list[Path]]:
                         species_name = species_dir.name  # e.g., "Bombus_funebris"
                         images = sorted(
                             p for p in species_dir.iterdir()
-                            if p.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp")
+                            if p.suffix.lower() in _IMAGE_EXTENSIONS
                         )
                         if images:
-                            species_images[species_name] = images
+                            species_images[species_name].extend(images)
 
     return species_images
 
@@ -128,6 +141,92 @@ def load_taxonomy_info() -> dict[str, dict]:
                 "iucn_status": row.get("iucn_status", ""),
             }
     return info
+
+
+def _load_new_images_manifest(manifest_path: Path) -> set[str]:
+    """
+    Load a delta manifest JSON and return the set of new image file paths.
+
+    Expected format:
+        { "new_images": [ { "path": "/abs/path/to/img.jpg", ... }, ... ] }
+    """
+    if not manifest_path.exists():
+        print(f"[WARN] Manifest not found: {manifest_path}. "
+              "Treating ALL images as new.")
+        return set()
+
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+
+    return {
+        str(Path(entry["path"]).resolve())
+        for entry in manifest.get("new_images", [])
+        if "path" in entry
+    }
+
+
+def apply_replay_buffer(
+    species_images: dict[str, list[Path]],
+    new_image_paths: set[str],
+    replay_ratio: float,
+    seed: int,
+) -> dict[str, list[Path]]:
+    """
+    Apply the Replay Buffer strategy:
+      - Keep 100% of NEW images (from delta download).
+      - Sample `replay_ratio` (e.g. 15%) of OLD images per class.
+
+    This prevents catastrophic forgetting while keeping training
+    efficient (no full retrain on 10K+ images).
+
+    Args:
+        species_images: All discovered images grouped by species.
+        new_image_paths: Absolute paths of images considered "new".
+        replay_ratio: Fraction of old images to keep (0.0 to 1.0).
+        seed: Random seed for reproducible sampling.
+
+    Returns:
+        Filtered dict with the replay buffer applied.
+    """
+    rng = random.Random(seed)
+    buffered: dict[str, list[Path]] = {}
+    total_new = 0
+    total_old_sampled = 0
+    total_old_skipped = 0
+
+    for species_name, images in species_images.items():
+        new_imgs = [
+            p for p in images
+            if str(p.resolve()) in new_image_paths
+        ]
+        old_imgs = [
+            p for p in images
+            if str(p.resolve()) not in new_image_paths
+        ]
+
+        # Sample old images
+        if old_imgs and replay_ratio < 1.0:
+            sample_size = max(1, int(len(old_imgs) * replay_ratio))
+            sampled_old = rng.sample(old_imgs, min(sample_size, len(old_imgs)))
+        else:
+            sampled_old = old_imgs
+
+        combined = new_imgs + sampled_old
+        if combined:
+            buffered[species_name] = combined
+
+        total_new += len(new_imgs)
+        total_old_sampled += len(sampled_old)
+        total_old_skipped += len(old_imgs) - len(sampled_old)
+
+    print(f"  → Replay Buffer applied:")
+    print(f"    New images (100%):      {total_new:,}")
+    print(f"    Old images sampled:     {total_old_sampled:,} "
+          f"({replay_ratio:.0%} of {total_old_sampled + total_old_skipped:,})")
+    print(f"    Old images skipped:     {total_old_skipped:,}")
+    print(f"    Total for training:     {total_new + total_old_sampled:,}")
+
+    return buffered
 
 
 def split_dataset(
@@ -231,8 +330,9 @@ def main() -> None:
         help="Minimum images per species to include (default: 10)"
     )
     parser.add_argument(
-        "--seed", type=int, default=42,
-        help="Random seed for reproducible splits (default: 42)"
+        "--seed", type=int, default=_DEFAULT_SEED,
+        help=f"Random seed for reproducible splits (default: {_DEFAULT_SEED}, "
+             f"from DATASET_SPLIT_SEED env var)"
     )
     parser.add_argument(
         "--max-species", type=int, default=0,
@@ -242,11 +342,27 @@ def main() -> None:
         "--clean", action="store_true",
         help="Remove existing processed directory before organizing"
     )
+    parser.add_argument(
+        "--new-images-manifest", type=str, default=None,
+        help="Path to delta_manifest.json from 02f_download_delta.py. "
+             "Enables Replay Buffer: 100%% new + replay-ratio%% old."
+    )
+    parser.add_argument(
+        "--replay-ratio", type=float, default=None,
+        help="Fraction of old images to keep when Replay Buffer is active "
+             "(0.0-1.0). Reads REPLAY_BUFFER_RATIO from .env if not set. "
+             "Only used when --new-images-manifest is provided."
+    )
     args = parser.parse_args()
+
+    # Resolve replay ratio from env if not provided
+    if args.replay_ratio is None:
+        args.replay_ratio = float(os.environ.get("REPLAY_BUFFER_RATIO", "0.15"))
 
     print("=" * 60)
     print("  DATASET ORGANIZATION FOR CNN TRAINING")
     print("=" * 60)
+    print(f"  Seed: {args.seed}")
 
     # Optionally clean
     if args.clean and PROCESSED_DIR.exists():
@@ -258,6 +374,26 @@ def main() -> None:
     species_images = scan_raw_images(RAW_IMAGES_DIR)
     total_images = sum(len(v) for v in species_images.values())
     print(f"  → Found {total_images:,} images across {len(species_images)} species")
+
+    if total_images == 0:
+        print("\n[ERROR] No images found in raw_images directory!")
+        print(f"  Expected structure: {RAW_IMAGES_DIR}/Kingdom/Phylum/Class/Family/Species/*.jpg")
+        print("  Run: python scripts/dataset/02f_download_delta.py")
+        sys.exit(1)
+
+    # 1b. Apply Replay Buffer if manifest provided
+    if args.new_images_manifest:
+        manifest_path = Path(args.new_images_manifest)
+        print(f"\n[STEP 1b] Applying Replay Buffer (ratio={args.replay_ratio:.0%})...")
+        new_paths = _load_new_images_manifest(manifest_path)
+
+        if new_paths:
+            species_images = apply_replay_buffer(
+                species_images, new_paths, args.replay_ratio, args.seed,
+            )
+            total_images = sum(len(v) for v in species_images.values())
+        else:
+            print("  → No new images in manifest; using all images (no buffer)")
 
     # 2. Split dataset
     print(f"\n[STEP 2/4] Splitting dataset (min {args.min_images} imgs/species)...")
@@ -327,6 +463,10 @@ def main() -> None:
         "num_classes": num_classes,
         "min_images_threshold": args.min_images,
         "random_seed": args.seed,
+        "replay_buffer": {
+            "enabled": args.new_images_manifest is not None,
+            "ratio": args.replay_ratio,
+        },
         "splits": {
             "train": {
                 "total_images": sum(len(v) for v in train.values()),
@@ -366,7 +506,7 @@ def main() -> None:
     print(f"  Val imgs:    {dataset_stats['splits']['val']['total_images']:,}")
     print(f"  Test imgs:   {dataset_stats['splits']['test']['total_images']:,}")
     print(f"  Output dir:  {PROCESSED_DIR}")
-    print("\n  Ready for training! Use: python scripts/04_train_cnn.py")
+    print("\n  Ready for training! Use: python scripts/cnn/04_train_cnn.py")
 
 
 if __name__ == "__main__":

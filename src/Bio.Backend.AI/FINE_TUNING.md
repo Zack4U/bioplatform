@@ -44,9 +44,11 @@ Fine-tuning es el proceso de **ajustar un modelo ya entrenado** con datos nuevos
 
 El sistema usa un **Replay Buffer** para evitar que el modelo olvide lo que ya aprendió:
 
-- Se entrena con **100% de datos nuevos** + **15% de datos antiguos** (muestreo aleatorio).
+- Se entrena con **100% de datos nuevos** + **15% de datos antiguos** (muestreo aleatorio estratificado).
 - Proporción configurable vía `REPLAY_BUFFER_RATIO` (default: `0.15`).
-- El script `03_organize_dataset.py` se encarga de armar el dataset combinado.
+- El script `03_organize_dataset.py` implementa el Replay Buffer cuando recibe un
+  `--new-images-manifest` (generado por `02f_download_delta.py`).
+- Sin manifiesto, se usa el comportamiento legacy (todas las imágenes).
 
 ### Pointer Swap (Zero-Downtime Reload)
 
@@ -89,16 +91,26 @@ python -c "import torch; print(f'GPU: {torch.cuda.get_device_name(0)}' if torch.
 
 ```
 data/
-├── raw_images/           ← Imágenes nuevas organizadas por especie
-│   ├── Especie_A/
-│   │   ├── img_001.jpg
-│   │   └── img_002.jpg
-│   └── Especie_B/
-│       └── img_003.jpg
+├── raw_images/           ← Imágenes organizadas por taxonomía
+│   ├── Animalia/
+│   │   └── Arthropoda/
+│   │       └── Insecta/
+│   │           └── Apidae/
+│   │               └── Bombus_funebris/
+│   │                   ├── img_001.jpg
+│   │                   └── img_002.jpg
+│   └── Plantae/
+│       └── Tracheophyta/
+│           └── Magnoliopsida/
+│               └── Orchidaceae/
+│                   └── Cattleya_trianae/
+│                       └── img_003.jpg
 ├── processed/            ← Dataset listo para entrenar (lo genera 03_organize_dataset.py)
 │   ├── train/
 │   ├── val/
 │   └── test/
+├── dataset_analysis/     ← Manifiestos y análisis
+│   └── delta_manifest.json  ← Generado por 02f_download_delta.py
 └── weights/              ← Pesos del modelo (versionados)
     ├── best_model.pth    ← Modelo activo (flat layout)
     ├── training_config.json
@@ -123,7 +135,8 @@ python scripts/cnn/07_local_finetune.py
 ```
 
 Este comando ejecuta en secuencia:
-1. ✅ Organizar dataset (con Replay Buffer)
+0. ✅ Descargar imágenes nuevas validadas (Delta Download desde S3)
+1. ✅ Organizar dataset (con Replay Buffer: 100% nuevas + 15% antiguas)
 2. ✅ Entrenar modelo (warm-start desde último checkpoint)
 3. ✅ Evaluar métricas (accuracy, F1, confusion matrix)
 4. ✅ Exportar a ONNX
@@ -138,11 +151,16 @@ python scripts/cnn/07_local_finetune.py \
     --batch-size 16 \
     --version v2.0
 
+# Controlar el Replay Buffer
+python scripts/cnn/07_local_finetune.py \
+    --replay-ratio 0.25       # 25% de imágenes antiguas (default: 15%)
+
 # Omitir pasos específicos
 python scripts/cnn/07_local_finetune.py \
-    --skip-organize \      # Ya organizaste el dataset manualmente
-    --skip-eval \          # No quieres evaluar aún
-    --skip-onnx            # No necesitas ONNX
+    --skip-download \         # Usar imágenes ya descargadas
+    --skip-organize \         # Ya organizaste el dataset manualmente
+    --skip-eval \             # No quieres evaluar aún
+    --skip-onnx               # No necesitas ONNX
 
 # Entrenar desde cero (sin warm-start)
 python scripts/cnn/07_local_finetune.py \
@@ -157,8 +175,13 @@ python scripts/cnn/07_local_finetune.py \
 Si necesitas control paso a paso:
 
 ```bash
-# Paso 1: Organizar dataset
-python scripts/dataset/03_organize_dataset.py --clean
+# Paso 0: Descargar imágenes nuevas validadas (Delta Download)
+python scripts/dataset/02f_download_delta.py
+
+# Paso 1: Organizar dataset con Replay Buffer
+python scripts/dataset/03_organize_dataset.py --clean \
+    --new-images-manifest data/dataset_analysis/delta_manifest.json \
+    --replay-ratio 0.15
 
 # Paso 2: Entrenar con warm-start
 python scripts/cnn/04_train_cnn.py \
@@ -173,6 +196,7 @@ python scripts/cnn/04_train_cnn.py \
 
 # Paso 3: Evaluar
 python scripts/cnn/05_evaluate_model.py \
+    --weights-dir data/weights/v1.0.20260517 \
     --batch-size 32 \
     --top-k 5
 
@@ -428,9 +452,14 @@ curl -X POST http://localhost:8000/api/v1/model/reload \
    POST /api/v1/ai/training/start
 3. El backend crea AiTrainingJob → llama al AI service
 4. El AI service entrena en background:
-   - Warm-start desde último checkpoint
-   - Replay Buffer (15% antiguo + 100% nuevo)
-   - Guarda a data/weights/{version}/
+   Step 1: Delta Download (descarga imágenes nuevas validadas de S3)
+   Step 2: Replay Buffer (100% nuevas + 15% antiguas)
+   Step 3: Organizar dataset (split train/val/test)
+   Step 4: Warm-start desde último checkpoint
+   Step 5: Entrenar modelo
+   Step 6: Evaluar métricas
+   Step 7: Exportar ONNX
+   Step 8: DVC push
 5. Al terminar, notifica al backend vía webhook:
    POST /api/webhooks/ai/training-completed
 6. El backend crea AiModelVersion en PostgreSQL
@@ -529,6 +558,8 @@ grep DOTNET_WEBHOOK_URL .env
 | Variable | Default | Descripción |
 |----------|---------|-------------|
 | `REPLAY_BUFFER_RATIO` | `0.15` | Proporción de datos antiguos en Replay Buffer |
+| `DATASET_SPLIT_SEED` | `42` | Semilla para splits reproducibles del dataset |
+| `S3_BUCKET_NAME` | `bioplatform-public` | Nombre del bucket público S3 |
 | `PREFIX_AI_VERSION` | `v1.0` | Prefijo para tags de versión |
 | `MIN_VRAM_GB` | `4.0` | VRAM mínima para permitir training |
 | `FINETUNE_DEFAULT_EPOCHS` | `15` | Épocas por defecto |
@@ -549,11 +580,18 @@ python scripts/cnn/07_local_finetune.py
 # ─── Con parámetros personalizados ──────────────────────
 python scripts/cnn/07_local_finetune.py --epochs 20 --lr 0.00005
 
-# ─── Solo entrenar (sin organizar ni exportar) ──────────
-python scripts/cnn/07_local_finetune.py --skip-organize --skip-onnx
+# ─── Sin delta download (imágenes ya locales) ───────────
+python scripts/cnn/07_local_finetune.py --skip-download
+
+# ─── Solo organizar y entrenar (sin descarga ni export) ─
+python scripts/cnn/07_local_finetune.py --skip-download --skip-onnx
 
 # ─── Desde cero con otra arquitectura ──────────────────
 python scripts/cnn/07_local_finetune.py --no-warm-start --model efficientnet_b2 --epochs 50
+
+# ─── Solo Delta Download (sin entrenar) ─────────────────
+python scripts/dataset/02f_download_delta.py
+python scripts/dataset/02f_download_delta.py --dry-run  # Solo calcular, no descargar
 
 # ─── Recargar modelo en el servicio ─────────────────────
 curl -X POST http://localhost:8000/api/v1/model/reload -d '{"version": "v1.0.20260517"}'

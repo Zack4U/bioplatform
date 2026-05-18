@@ -41,7 +41,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 ANALYSIS_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
 RAW_IMAGES_DIR = PROJECT_ROOT / "data" / "raw_images"
 SPECIES_JSON = ANALYSIS_DIR / "species_with_urls.json"

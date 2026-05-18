@@ -42,7 +42,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 EVAL_DIR = PROJECT_ROOT / "data" / "evaluation"
@@ -406,12 +406,28 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument(
+        "--weights-dir", type=str, default=None,
+        help="Versioned weights directory (default: data/weights/)",
+    )
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+    # Resolve weights directory (versioned or legacy flat)
+    weights_dir = Path(args.weights_dir) if args.weights_dir else WEIGHTS_DIR
+
+    # Resolve eval output directory alongside weights
+    if args.weights_dir:
+        eval_dir = Path(args.weights_dir)  # Save eval artifacts next to weights
+    else:
+        eval_dir = EVAL_DIR
+
     # ── Load config ────────────────────────────────────────────────
-    config_path = WEIGHTS_DIR / "training_config.json"
+    config_path = weights_dir / "training_config.json"
+    if not config_path.exists():
+        # Fallback to flat layout
+        config_path = WEIGHTS_DIR / "training_config.json"
     if not config_path.exists():
         print(f"[ERROR] Training config not found: {config_path}")
         sys.exit(1)
@@ -419,7 +435,10 @@ def main() -> None:
     with open(config_path) as f:
         config = json.load(f)
 
-    weights_path = WEIGHTS_DIR / "best_model.pth"
+    weights_path = weights_dir / "best_model.pth"
+    if not weights_path.exists():
+        # Fallback to flat layout
+        weights_path = WEIGHTS_DIR / "best_model.pth"
     if not weights_path.exists():
         print(f"[ERROR] Model weights not found: {weights_path}")
         sys.exit(1)
@@ -427,9 +446,11 @@ def main() -> None:
     print(f"\n{'=' * 60}")
     print("  MODEL EVALUATION - BioPlatform Caldas CNN")
     print(f"{'=' * 60}")
-    print(f"  Model:   {config['model_name']}")
-    print(f"  Classes: {config['num_classes']}")
-    print(f"  Device:  {device}")
+    print(f"  Model:      {config['model_name']}")
+    print(f"  Classes:    {config['num_classes']}")
+    print(f"  Device:     {device}")
+    print(f"  Weights:    {weights_path}")
+    print(f"  Eval dir:   {eval_dir}")
 
     # ── Load model ─────────────────────────────────────────────────
     model = build_model_from_config(config, weights_path, device)
@@ -475,21 +496,21 @@ def main() -> None:
     )
 
     # ── Save outputs ───────────────────────────────────────────────
-    EVAL_DIR.mkdir(parents=True, exist_ok=True)
+    eval_dir.mkdir(parents=True, exist_ok=True)
 
     # Classification report
     report = generate_classification_report(metrics)
-    with open(EVAL_DIR / "classification_report.txt", "w", encoding="utf-8") as f:
+    with open(eval_dir / "classification_report.txt", "w", encoding="utf-8") as f:
         f.write(report)
     print(f"\n{report}")
 
     # JSON metrics
-    with open(EVAL_DIR / "evaluation_metrics.json", "w") as f:
+    with open(eval_dir / "evaluation_metrics.json", "w") as f:
         json.dump(metrics, f, indent=2)
-    print(f"\n  → Metrics saved to {EVAL_DIR / 'evaluation_metrics.json'}")
+    print(f"\n  → Metrics saved to {eval_dir / 'evaluation_metrics.json'}")
 
     # Per-class CSV
-    with open(EVAL_DIR / "per_class_metrics.csv", "w", newline="", encoding="utf-8") as f:
+    with open(eval_dir / "per_class_metrics.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["species", "precision", "recall", "f1_score", "support"])
         for name, m in sorted(metrics["per_class"].items()):
@@ -499,7 +520,7 @@ def main() -> None:
     # Confusion matrix
     plot_confusion_matrix(
         results["labels"], results["predictions"],
-        class_names, EVAL_DIR / "confusion_matrix.png",
+        class_names, eval_dir / "confusion_matrix.png",
     )
 
     # Misclassified samples
@@ -507,7 +528,7 @@ def main() -> None:
         results["labels"], results["predictions"],
         results["probabilities"], test_dataset, class_names,
     )
-    with open(EVAL_DIR / "misclassified_samples.json", "w") as f:
+    with open(eval_dir / "misclassified_samples.json", "w") as f:
         json.dump(misclassified, f, indent=2)
     print(f"  → {len(misclassified)} misclassified samples saved")
 
@@ -522,8 +543,9 @@ def main() -> None:
     print(f"  Weighted F1: {metrics['weighted_avg']['f1_score']:.4f}")
     target = "✅ PASSED" if metrics['accuracy'] >= 0.85 else "⚠️ BELOW TARGET (85%)"
     print(f"  Target >85%: {target}")
-    print(f"\n  Results in:  {EVAL_DIR}")
+    print(f"\n  Results in:  {eval_dir}")
 
 
 if __name__ == "__main__":
     main()
+

@@ -50,6 +50,8 @@ class Settings(BaseSettings):
     finetune_default_epochs: int = 15
     finetune_default_lr: float = 1e-5
     validation_accuracy_drop_threshold: float = 0.05
+    dataset_split_seed: int = 42
+    s3_bucket_name: str = "bioplatform-public"
 
     # ── .NET Backend Integration ──────────────────────────────
     dotnet_webhook_url: str = "http://bio-backend-api:5000/api/webhooks/ai/training-completed"

@@ -57,7 +57,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 

@@ -26,7 +26,7 @@ except ImportError:
     sys.exit(1)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 
 

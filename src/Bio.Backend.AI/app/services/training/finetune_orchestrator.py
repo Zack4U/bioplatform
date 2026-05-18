@@ -37,7 +37,9 @@ _PROJECT_ROOT = _APP_DIR.parent
 _WEIGHTS_DIR = _PROJECT_ROOT / "data" / "weights"
 _PROCESSED_DIR = _PROJECT_ROOT / "data" / "processed"
 _EVALUATION_DIR = _PROJECT_ROOT / "data" / "evaluation"
+_ANALYSIS_DIR = _PROJECT_ROOT / "data" / "dataset_analysis"
 _SCRIPTS_DIR = _PROJECT_ROOT / "scripts"
+_DELTA_MANIFEST = _ANALYSIS_DIR / "delta_manifest.json"
 
 
 # -- SIGTERM Graceful Shutdown ------------------------------------------------
@@ -188,22 +190,33 @@ def run_finetune(
     start_time = time.time()
 
     try:
-        # -- Step 1: Find active model checkpoint for warm-start --
+        # -- Step 1: Delta download (only new validated images) --
+        logger.info("Step 1: Downloading delta images from S3...")
+        _run_delta_download()
+
+        # -- Step 2: Find active model checkpoint for warm-start --
         active_checkpoint = _find_active_checkpoint()
         logger.info("Active checkpoint for warm-start: %s", active_checkpoint)
 
-        # -- Step 2: Organize dataset (with Replay Buffer) --
-        logger.info("Step 2: Organizing dataset with replay buffer...")
-        _run_dataset_organization()
+        # -- Step 3: Organize dataset (with Replay Buffer) --
+        logger.info(
+            "Step 3: Organizing dataset with replay buffer (ratio=%.2f)...",
+            effective_replay,
+        )
+        _run_dataset_organization(
+            replay_ratio=effective_replay,
+            seed=settings.dataset_split_seed,
+            manifest_path=_DELTA_MANIFEST,
+        )
 
-        # -- Step 3: Read training config from active version --
+        # -- Step 4: Read training config from active version --
         active_config = _load_active_config(active_checkpoint)
         model_name = active_config.get("model_name", "efficientnet_b0")
         image_size = active_config.get("image_size", 224)
         batch_size = active_config.get("batch_size", 32)
 
-        # -- Step 4: Run training --
-        logger.info("Step 4: Starting training (warm-start)...")
+        # -- Step 5: Run training --
+        logger.info("Step 5: Starting training (warm-start)...")
         output_dir.mkdir(parents=True, exist_ok=True)
 
         train_cmd = [
@@ -239,8 +252,8 @@ def run_finetune(
 
         logger.info("Training completed successfully.")
 
-        # -- Step 5: Evaluate model --
-        logger.info("Step 5: Evaluating model...")
+        # -- Step 6: Evaluate model --
+        logger.info("Step 6: Evaluating model...")
         eval_dir.mkdir(parents=True, exist_ok=True)
 
         eval_script = _SCRIPTS_DIR / "cnn" / "05_evaluate_model.py"
@@ -259,8 +272,8 @@ def run_finetune(
             if eval_result.returncode != 0:
                 logger.warning("Evaluation script failed: %s", eval_result.stderr[-300:])
 
-        # -- Step 6: Export ONNX --
-        logger.info("Step 6: Exporting ONNX...")
+        # -- Step 7: Export ONNX --
+        logger.info("Step 7: Exporting ONNX...")
         onnx_script = _SCRIPTS_DIR / "cnn" / "06_export_onnx.py"
         if onnx_script.exists():
             onnx_cmd = [
@@ -277,8 +290,8 @@ def run_finetune(
             if onnx_result.returncode != 0:
                 logger.warning("ONNX export failed: %s", onnx_result.stderr[-300:])
 
-        # -- Step 7: DVC add + push --
-        logger.info("Step 7: DVC add + push...")
+        # -- Step 8: DVC add + push --
+        logger.info("Step 8: DVC add + push...")
         try:
             subprocess.run(
                 ["dvc", "add", str(output_dir)],
@@ -298,7 +311,7 @@ def run_finetune(
         except (subprocess.CalledProcessError, FileNotFoundError) as dvc_exc:
             logger.warning("DVC operation failed (non-fatal): %s", dvc_exc)
 
-        # -- Step 8: Read results and notify .NET --
+        # -- Step 9: Read results and notify .NET --
         elapsed = time.time() - start_time
         config_json = _read_json_safe(output_dir / "training_config.json")
         metrics_json = _read_json_safe(eval_dir / "evaluation_metrics.json")
@@ -401,22 +414,76 @@ def _load_active_config(checkpoint_path: Path | None) -> dict[str, Any]:
     return {}
 
 
-def _run_dataset_organization() -> None:
-    """Run the dataset organization script with --clean flag."""
-    organize_script = _SCRIPTS_DIR / "dataset" / "03_organize_dataset.py"
-    if not organize_script.exists():
-        logger.warning("Dataset organization script not found: %s", organize_script)
+def _run_delta_download() -> None:
+    """Run the delta download script to fetch new validated images from S3."""
+    delta_script = _SCRIPTS_DIR / "dataset" / "02f_download_delta.py"
+    if not delta_script.exists():
+        logger.warning("Delta download script not found: %s", delta_script)
         return
 
     result = subprocess.run(
-        [sys.executable, str(organize_script), "--clean"],
+        [sys.executable, str(delta_script)],
         cwd=str(_PROJECT_ROOT),
         capture_output=True,
         text=True,
     )
 
     if result.returncode != 0:
-        logger.warning("Dataset organization warnings: %s", result.stderr[-300:])
+        error_msg = f"Delta download failed: {result.stderr[-300:]}"
+        logger.error(error_msg)
+        raise RuntimeError(error_msg)
+    else:
+        logger.info("Delta download completed. Manifest: %s", _DELTA_MANIFEST)
+
+
+def _run_dataset_organization(
+    replay_ratio: float = 0.15,
+    seed: int = 42,
+    manifest_path: Path | None = None,
+) -> None:
+    """
+    Run the dataset organization script with Replay Buffer support.
+
+    Args:
+        replay_ratio: Fraction of old images to retain (0.0-1.0).
+        seed: Random seed for reproducible splits.
+        manifest_path: Path to delta_manifest.json (enables Replay Buffer).
+    """
+    organize_script = _SCRIPTS_DIR / "dataset" / "03_organize_dataset.py"
+    if not organize_script.exists():
+        logger.warning("Dataset organization script not found: %s", organize_script)
+        return
+
+    cmd = [
+        sys.executable, str(organize_script),
+        "--clean",
+        "--seed", str(seed),
+    ]
+
+    # Enable Replay Buffer if manifest exists
+    if manifest_path and manifest_path.exists():
+        cmd.extend([
+            "--new-images-manifest", str(manifest_path),
+            "--replay-ratio", str(replay_ratio),
+        ])
+        logger.info(
+            "Replay Buffer enabled: ratio=%.2f, manifest=%s",
+            replay_ratio, manifest_path,
+        )
+    else:
+        logger.info("No delta manifest found. Using all images (no Replay Buffer).")
+
+    result = subprocess.run(
+        cmd,
+        cwd=str(_PROJECT_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    if result.returncode != 0:
+        error_msg = f"Dataset organization failed: {result.stderr[-300:]}"
+        logger.error(error_msg)
+        raise RuntimeError(error_msg)
     else:
         logger.info("Dataset organization completed.")
 
