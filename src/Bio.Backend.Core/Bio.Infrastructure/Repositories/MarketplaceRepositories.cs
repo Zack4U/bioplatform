@@ -180,6 +180,9 @@ public class FavoriteRepository : IFavoriteRepository
     public async Task<Favorite?> GetByIdAsync(Guid id, CancellationToken ct)
         => await _ctx.Favorites.FirstOrDefaultAsync(f => f.Id == id, ct);
 
+    public async Task<Favorite?> GetByUserAndTargetAsync(Guid userId, string targetType, Guid targetId, CancellationToken ct)
+        => await _ctx.Favorites.FirstOrDefaultAsync(f => f.UserId == userId && f.TargetType == targetType && f.TargetId == targetId, ct);
+
     public async Task AddAsync(Favorite favorite, CancellationToken ct)
         => await _ctx.Favorites.AddAsync(favorite, ct);
 
