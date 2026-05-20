@@ -27,6 +27,10 @@ class HardwareStatusResponse(BaseModel):
     can_train_models: bool = Field(
         ..., description="True when GPU meets minimum VRAM threshold"
     )
+    cuda_version: Optional[str] = Field(None, description="CUDA Toolkit version")
+    compute_capability: Optional[str] = Field(None, description="CUDA Compute Capability")
+    multiprocessors: Optional[int] = Field(None, description="CUDA Multiprocessor count")
+
 
 
 # -- Training -----------------------------------------------------------------
