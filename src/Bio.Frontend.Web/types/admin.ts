@@ -252,11 +252,79 @@ export interface CnnModelVersion {
     modelName: string;
     version: string;
     accuracyMetric: number;
+    validationAccuracy: number | null;
     deployedAt: string;
     isActive: boolean;
     notes: string | null;
     createdAt: string;
 }
+
+/** GPU/VRAM hardware status of the AI server */
+export interface AiHardwareStatus {
+    hasGpu: boolean;
+    gpuName: string | null;
+    vramTotalGb: number;
+    vramFreeGb: number;
+    canTrainModels: boolean;
+    cudaVersion?: string | null;
+    computeCapability?: string | null;
+    multiprocessors?: number | null;
+}
+
+/** Active AI model metrics summary */
+export interface ActiveModelMetrics {
+    hasActiveModel: boolean;
+    modelVersionId: number | null;
+    modelName: string | null;
+    version: string | null;
+    accuracyMetric: number | null;
+    validationAccuracy: number | null;
+    deployedAt: string | null;
+    notes: string | null;
+}
+
+/** AI model fine-tuning training job */
+export interface AiTrainingJob {
+    id: string;
+    startedAt: string;
+    completedAt: string | null;
+    status: "Pending" | "Running" | "Completed" | "Failed" | "Interrupted";
+    statusMessage: string | null;
+    triggeredByUserId: string;
+    resultingVersion: string | null;
+}
+
+/** Response shape for starting fine-tuning */
+export interface StartFineTuningResponse {
+    jobId: string;
+    status: string;
+    message: string;
+}
+
+/** Response shape for manual model upload */
+export interface ModelUploadResponse {
+    status: string;
+    version: string;
+    message: string;
+}
+
+/** Response shape for pre-activation validation */
+export interface ModelValidateResponse {
+    version: string;
+    accuracy: number;
+    currentActiveAccuracy: number | null;
+    accuracyDrop: number | null;
+    isSafeToActivate: boolean;
+    message: string;
+}
+
+/** Response shape for activating model version */
+export interface ActivateModelVersionResponse {
+    success: boolean;
+    message: string;
+    activatedVersion: string | null;
+}
+
 
 // ─── Chatbot Management ─────────────────────────────────────────────────────
 

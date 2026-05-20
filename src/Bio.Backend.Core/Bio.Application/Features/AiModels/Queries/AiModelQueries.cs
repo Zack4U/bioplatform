@@ -1,5 +1,6 @@
 using Bio.Domain.Interfaces;
 using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using MediatR;
 
 namespace Bio.Application.Features.AiModels.Queries;
@@ -15,7 +16,21 @@ public record AiHardwareStatusResult(
     string? GpuName,
     double VramTotalGb,
     double VramFreeGb,
-    bool CanTrainModels
+    bool CanTrainModels,
+    string? CudaVersion = null,
+    string? ComputeCapability = null,
+    int? Multiprocessors = null
+);
+
+internal record FastAPIHardwareResponse(
+    [property: JsonPropertyName("has_gpu")] bool HasGpu,
+    [property: JsonPropertyName("gpu_name")] string? GpuName,
+    [property: JsonPropertyName("vram_total_gb")] double VramTotalGb,
+    [property: JsonPropertyName("vram_free_gb")] double VramFreeGb,
+    [property: JsonPropertyName("can_train_models")] bool CanTrainModels,
+    [property: JsonPropertyName("cuda_version")] string? CudaVersion = null,
+    [property: JsonPropertyName("compute_capability")] string? ComputeCapability = null,
+    [property: JsonPropertyName("multiprocessors")] int? Multiprocessors = null
 );
 
 public class GetAiHardwareStatusQueryHandler
@@ -39,8 +54,22 @@ public class GetAiHardwareStatusQueryHandler
             var response = await client.GetAsync("/api/v1/system/hardware", cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            var json = await response.Content.ReadFromJsonAsync<AiHardwareStatusResult>(cancellationToken);
-            return json ?? new AiHardwareStatusResult(false, null, 0, 0, false);
+            var fastapi = await response.Content.ReadFromJsonAsync<FastAPIHardwareResponse>(cancellationToken);
+            if (fastapi is null)
+            {
+                return new AiHardwareStatusResult(false, null, 0, 0, false);
+            }
+
+            return new AiHardwareStatusResult(
+                fastapi.HasGpu,
+                fastapi.GpuName,
+                fastapi.VramTotalGb,
+                fastapi.VramFreeGb,
+                fastapi.CanTrainModels,
+                fastapi.CudaVersion,
+                fastapi.ComputeCapability,
+                fastapi.Multiprocessors
+            );
         }
         catch
         {

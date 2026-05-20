@@ -143,10 +143,10 @@ export function mockRequests(): RequestAdminItem[] {
 
 export function mockCnnModels(): CnnModelVersion[] {
     return [
-        { id: 1, modelName: "EfficientNet-B4", version: "v2.1.0", accuracyMetric: 0.9120, deployedAt: "2026-04-01T00:00:00Z", isActive: true, notes: "Improved accuracy with augmented dataset", createdAt: "2026-04-01T00:00:00Z" },
-        { id: 2, modelName: "EfficientNet-B4", version: "v2.0.0", accuracyMetric: 0.8950, deployedAt: "2026-02-15T00:00:00Z", isActive: false, notes: "Added 50 new species classes", createdAt: "2026-02-15T00:00:00Z" },
-        { id: 3, modelName: "ResNet50", version: "v1.2.0", accuracyMetric: 0.8750, deployedAt: "2025-12-01T00:00:00Z", isActive: false, notes: "ResNet baseline with transfer learning", createdAt: "2025-12-01T00:00:00Z" },
-        { id: 4, modelName: "ResNet50", version: "v1.0.0", accuracyMetric: 0.8520, deployedAt: "2025-09-01T00:00:00Z", isActive: false, notes: "Initial release", createdAt: "2025-09-01T00:00:00Z" },
+        { id: 1, modelName: "EfficientNet-B4", version: "v2.1.0", accuracyMetric: 0.9120, validationAccuracy: null, deployedAt: "2026-04-01T00:00:00Z", isActive: true, notes: "Improved accuracy with augmented dataset", createdAt: "2026-04-01T00:00:00Z" },
+        { id: 2, modelName: "EfficientNet-B4", version: "v2.0.0", accuracyMetric: 0.8950, validationAccuracy: null, deployedAt: "2026-02-15T00:00:00Z", isActive: false, notes: "Added 50 new species classes", createdAt: "2026-02-15T00:00:00Z" },
+        { id: 3, modelName: "ResNet50", version: "v1.2.0", accuracyMetric: 0.8750, validationAccuracy: null, deployedAt: "2025-12-01T00:00:00Z", isActive: false, notes: "ResNet baseline with transfer learning", createdAt: "2025-12-01T00:00:00Z" },
+        { id: 4, modelName: "ResNet50", version: "v1.0.0", accuracyMetric: 0.8520, validationAccuracy: null, deployedAt: "2025-09-01T00:00:00Z", isActive: false, notes: "Initial release", createdAt: "2025-09-01T00:00:00Z" },
     ];
 }
 
