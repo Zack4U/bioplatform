@@ -37,6 +37,7 @@ import {
 
 export function CnnModelManagement() {
     const {
+        refetchAll,
         // Queries
         hardware,
         isHardwareLoading,
@@ -46,6 +47,8 @@ export function CnnModelManagement() {
         refetchVersions,
         activeMetrics,
         isActiveMetricsLoading,
+        observationsSummary,
+        isObservationsSummaryLoading,
         recentJobs,
         isJobsLoading,
         refetchJobs,
@@ -476,6 +479,8 @@ export function CnnModelManagement() {
                     <ActiveModelStats
                         activeMetrics={currentActiveMetrics}
                         isLoading={isActiveMetricsLoading}
+                        observationsSummary={observationsSummary}
+                        isObservationsSummaryLoading={isObservationsSummaryLoading}
                     />
                 </div>
 
@@ -531,7 +536,7 @@ export function CnnModelManagement() {
                                 variant="ghost" 
                                 size="icon" 
                                 className="h-8 w-8 text-muted-foreground hover:text-foreground shrink-0"
-                                onClick={() => refetchJobs()}
+                                onClick={() => refetchAll()}
                                 title="Actualizar trabajos"
                                 disabled={isJobsFetching}
                             >

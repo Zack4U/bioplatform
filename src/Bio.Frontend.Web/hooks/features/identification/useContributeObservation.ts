@@ -18,7 +18,13 @@ import { useCallback, useState } from "react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type LocationStatus = "idle" | "requesting" | "granted" | "denied";
+export type LocationStatus = "idle" | "requesting" | "granted" | "denied" | "default";
+
+/** Default coordinates for Manizales, Colombia (used when geolocation is denied) */
+export const MANIZALES_DEFAULT_COORDS: ObservationCoords = {
+    latitude: 5.0703,
+    longitude: -75.5138,
+};
 
 export interface ObservationCoords {
     latitude: number;
@@ -76,9 +82,10 @@ export function useContributeObservation() {
                         resolve(result);
                     },
                     () => {
-                        setCoords(null);
-                        setLocationStatus("denied");
-                        resolve(null);
+                        // Use Manizales default when geolocation is denied
+                        setCoords(MANIZALES_DEFAULT_COORDS);
+                        setLocationStatus("default");
+                        resolve(MANIZALES_DEFAULT_COORDS);
                     },
                     { timeout: 10_000, maximumAge: 60_000 },
                 );

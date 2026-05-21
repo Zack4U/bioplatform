@@ -22,6 +22,7 @@ import {
     startFineTuning,
     uploadManualModel,
     validateModel,
+    getNewObservationsSummary,
 } from "@/services/ai-admin-service";
 import type {
     AiHardwareStatus,
@@ -32,6 +33,7 @@ import type {
     ModelUploadResponse,
     ModelValidateResponse,
     ActivateModelVersionResponse,
+    NewObservationsSummary,
 } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -44,6 +46,7 @@ export const AI_ADMIN_KEYS = {
     models: ["ai-admin", "models"] as const,
     active: ["ai-admin", "active"] as const,
     jobs: ["ai-admin", "jobs"] as const,
+    observationsSummary: ["ai-admin", "observations-summary"] as const,
 };
 
 // ── Queries ──────────────────────────────────────────────────────────────────
@@ -53,8 +56,7 @@ export function useAiHardwareStatus() {
     return useQuery<AiHardwareStatus>({
         queryKey: AI_ADMIN_KEYS.hardware,
         queryFn: getAiHardwareStatus,
-        staleTime: 30 * 1000, // 30 seconds
-        refetchInterval: 30 * 1000, // Poll every 30 seconds to update GPU status in real time
+        staleTime: 5 * 60 * 1000, // 5 minutes
     });
 }
 
@@ -89,6 +91,18 @@ export function useRecentTrainingJobs(count = 10) {
             );
             return hasActiveJob ? 3000 : false;
         },
+    });
+}
+
+/**
+ * Hook to fetch count of new species images and affected species since
+ * the active model was deployed. Used in the admin production metrics panel.
+ */
+export function useNewObservationsSummary() {
+    return useQuery<NewObservationsSummary>({
+        queryKey: AI_ADMIN_KEYS.observationsSummary,
+        queryFn: getNewObservationsSummary,
+        staleTime: 5 * 60 * 1000, // 5 minutes — this data changes rarely
     });
 }
 

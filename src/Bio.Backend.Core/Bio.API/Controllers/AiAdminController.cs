@@ -56,6 +56,17 @@ public class AiAdminController : ControllerBase
         return Ok(await _mediator.Send(new GetActiveModelMetricsQuery(), ct));
     }
 
+    /// <summary>
+    /// Get count of new observation images and affected species since the active model was deployed.
+    /// Used by the admin panel to surface how much new training data has accumulated.
+    /// </summary>
+    [HttpGet("observations/summary")]
+    [ProducesResponseType(typeof(NewObservationsSummaryResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetNewObservationsSummary(CancellationToken ct)
+    {
+        return Ok(await _mediator.Send(new GetNewObservationsSummaryQuery(), ct));
+    }
+
     /// <summary>Activate a specific model version (deactivates all others, triggers hot-reload).</summary>
     [HttpPost("models/{id}/activate")]
     [ProducesResponseType(typeof(ActivateModelVersionResult), StatusCodes.Status200OK)]

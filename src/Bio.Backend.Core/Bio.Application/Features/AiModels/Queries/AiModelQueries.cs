@@ -225,3 +225,51 @@ public class GetRecentTrainingJobsQueryHandler
             j.ResultingModelVersion?.Version));
     }
 }
+
+// ==========================================================================
+// GetNewObservationsSummary — images contributed since last model deployment
+// ==========================================================================
+
+/// <summary>
+/// Returns the count of new species images uploaded after the active model's
+/// deployment date, and the number of distinct species those images belong to.
+/// Used to estimate "new training data available" in the admin metrics panel.
+/// </summary>
+public record GetNewObservationsSummaryQuery() : IRequest<NewObservationsSummaryResult>;
+
+public record NewObservationsSummaryResult(
+    int TotalNewImages,
+    int AffectedSpeciesCount,
+    DateTime? Since
+);
+
+public class GetNewObservationsSummaryQueryHandler
+    : IRequestHandler<GetNewObservationsSummaryQuery, NewObservationsSummaryResult>
+{
+    private readonly IAiModelRepository _aiRepo;
+    private readonly ISpeciesImageRepository _imageRepo;
+
+    public GetNewObservationsSummaryQueryHandler(
+        IAiModelRepository aiRepo,
+        ISpeciesImageRepository imageRepo)
+    {
+        _aiRepo = aiRepo;
+        _imageRepo = imageRepo;
+    }
+
+    public async Task<NewObservationsSummaryResult> Handle(
+        GetNewObservationsSummaryQuery request,
+        CancellationToken cancellationToken)
+    {
+        var active = await _aiRepo.GetActiveVersionAsync(cancellationToken);
+
+        // If no model is deployed yet, count all images in the system
+        var since = active?.DeployedAt;
+
+        var (count, speciesCount) = await _imageRepo.CountNewObservationsSinceAsync(
+            since,
+            cancellationToken);
+
+        return new NewObservationsSummaryResult(count, speciesCount, since);
+    }
+}

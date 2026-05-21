@@ -58,5 +58,31 @@ public class SpeciesImageRepository : ISpeciesImageRepository
     /// <inheritdoc />
     public async Task<IReadOnlyList<SpeciesImage>> GetAllAsync(CancellationToken cancellationToken = default)
         => await _context.SpeciesImages.AsNoTracking().ToListAsync(cancellationToken);
-}
 
+    /// <inheritdoc />
+    public async Task<(int ImageCount, int SpeciesCount)> CountNewObservationsSinceAsync(
+        DateTime? since,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.SpeciesImages.AsNoTracking();
+
+        if (since.HasValue)
+        {
+            query = query.Where(img => img.CreatedAt > since.Value);
+        }
+
+        // Single round-trip: aggregate both totals in one query using GroupBy trick
+        var result = await query
+            .GroupBy(_ => 1)
+            .Select(g => new
+            {
+                ImageCount = g.Count(),
+                SpeciesCount = g.Select(img => img.SpeciesId).Distinct().Count(),
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return result is null
+            ? (0, 0)
+            : (result.ImageCount, result.SpeciesCount);
+    }
+}

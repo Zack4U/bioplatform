@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.RateLimiting;
 using StackExchange.Redis;
 using System.Text;
 using System.Threading.RateLimiting;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -249,6 +251,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Force InvariantCulture for all requests so multipart/form-data numeric
+// fields (latitude, longitude, confidenceScore) are always parsed with '.' as
+// the decimal separator, regardless of the server's OS locale.
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(CultureInfo.InvariantCulture),
+    SupportedCultures = [CultureInfo.InvariantCulture],
+    SupportedUICultures = [CultureInfo.InvariantCulture],
+});
 
 // CORS must be before Authentication/Authorization
 app.UseCors();

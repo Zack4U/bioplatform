@@ -283,6 +283,19 @@ export interface ActiveModelMetrics {
     notes: string | null;
 }
 
+/**
+ * Summary of new observation images accumulated since the last model deployment.
+ * Consumed by the admin metrics panel to quantify new available training data.
+ */
+export interface NewObservationsSummary {
+    /** Total number of species images uploaded after the active model's deployedAt date */
+    totalNewImages: number;
+    /** Number of distinct species represented in those new images */
+    affectedSpeciesCount: number;
+    /** ISO date of the active model's deployment (null = all-time) */
+    since: string | null;
+}
+
 /** AI model fine-tuning training job */
 export interface AiTrainingJob {
     id: string;

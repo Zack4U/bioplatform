@@ -6,6 +6,7 @@ import {
     useRecentTrainingJobs,
     useStartFineTuning,
     useUploadManualModel,
+    useNewObservationsSummary,
 } from "@/hooks/features/admin/useAiModelManagement";
 import type { CnnModelVersion } from "@/types";
 
@@ -15,6 +16,7 @@ export function useCnnModelManagementPage() {
     const versionsQuery = useAiModelVersions();
     const activeMetricsQuery = useActiveModelMetrics();
     const recentJobsQuery = useRecentTrainingJobs(10);
+    const observationsSummaryQuery = useNewObservationsSummary();
 
     const startTuningMutation = useStartFineTuning();
     const uploadManualMutation = useUploadManualModel();
@@ -95,6 +97,22 @@ export function useCnnModelManagementPage() {
         return list;
     }, [versionsQuery.data, search, sortBy, sortOrder]);
 
+    const refetchAll = useCallback(async () => {
+        await Promise.all([
+            hardwareQuery.refetch(),
+            versionsQuery.refetch(),
+            activeMetricsQuery.refetch(),
+            recentJobsQuery.refetch(),
+            observationsSummaryQuery.refetch(),
+        ]);
+    }, [
+        hardwareQuery,
+        versionsQuery,
+        activeMetricsQuery,
+        recentJobsQuery,
+        observationsSummaryQuery,
+    ]);
+
     const totalPages = Math.ceil(filteredVersions.length / 10);
     const paginatedVersions = useMemo(() => {
         const start = (page - 1) * 10;
@@ -102,6 +120,7 @@ export function useCnnModelManagementPage() {
     }, [filteredVersions, page]);
 
     return {
+        refetchAll,
         // Queries
         hardware: hardwareQuery.data,
         isHardwareLoading: hardwareQuery.isLoading,
@@ -114,6 +133,9 @@ export function useCnnModelManagementPage() {
 
         activeMetrics: activeMetricsQuery.data,
         isActiveMetricsLoading: activeMetricsQuery.isLoading,
+
+        observationsSummary: observationsSummaryQuery.data,
+        isObservationsSummaryLoading: observationsSummaryQuery.isLoading,
 
         recentJobs: recentJobsQuery.data,
         isJobsLoading: recentJobsQuery.isLoading,

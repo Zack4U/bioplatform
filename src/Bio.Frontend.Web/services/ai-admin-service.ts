@@ -16,6 +16,7 @@ import type {
     ModelUploadResponse,
     ModelValidateResponse,
     ActivateModelVersionResponse,
+    NewObservationsSummary,
 } from "@/types";
 
 // ─── .NET Backend Admin Endpoints (via apiClient) ──────────────────────────
@@ -44,6 +45,15 @@ export async function getAiModelVersions(): Promise<CnnModelVersion[]> {
  */
 export async function getActiveModelMetrics(): Promise<ActiveModelMetrics> {
     const { data } = await apiClient.get<ActiveModelMetrics>("v1/ai/models/active");
+    return data;
+}
+
+/**
+ * GET /api/v1/ai/observations/summary
+ * Fetch count of new observation images and affected species since active model deployment.
+ */
+export async function getNewObservationsSummary(): Promise<NewObservationsSummary> {
+    const { data } = await apiClient.get<NewObservationsSummary>("v1/ai/observations/summary");
     return data;
 }
 
