@@ -20,11 +20,15 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import signal
 import subprocess
 import sys
 import time
 from datetime import datetime, timezone
+
+# Forzar UTF-8 en los subprocesos para evitar UnicodeEncodeError en Windows
+os.environ["PYTHONIOENCODING"] = "utf-8"
 from pathlib import Path
 from typing import Any, Optional
 
@@ -167,9 +171,14 @@ def run_finetune(
     6. Pushes to DVC.
     7. Notifies .NET with results.
     """
-    # Register SIGTERM handler for graceful shutdown
-    original_handler = signal.getsignal(signal.SIGTERM)
-    signal.signal(signal.SIGTERM, _sigterm_handler)
+    # Register SIGTERM handler for graceful shutdown (only if in main thread)
+    import threading
+    original_handler = None
+    if threading.current_thread() is threading.main_thread():
+        original_handler = signal.getsignal(signal.SIGTERM)
+        signal.signal(signal.SIGTERM, _sigterm_handler)
+    else:
+        logger.info("Running in worker thread, skipping SIGTERM handler registration.")
 
     from app.core.config import get_settings
 
@@ -191,14 +200,44 @@ def run_finetune(
 
     try:
         # -- Step 1: Delta download (only new validated images) --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message="Paso 1/9: Descargando imágenes delta desde S3...",
+            version=version,
+        )
         logger.info("Step 1: Downloading delta images from S3...")
         _run_delta_download()
 
+        # Abortar si no hay delta
+        manifest_data = _read_json_safe(_DELTA_MANIFEST)
+        if manifest_data and len(manifest_data.get("new_images", [])) == 0:
+            logger.info("No delta detected. Aborting fine-tuning gracefully.")
+            _notify_dotnet_sync(
+                job_id=job_id,
+                status="Failed",
+                message="No hay imágenes nuevas para entrenar (delta = 0). Entrenamiento cancelado.",
+                version=version,
+            )
+            return
+
         # -- Step 2: Find active model checkpoint for warm-start --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message="Paso 2/9: Buscando checkpoint activo de warm-start...",
+            version=version,
+        )
         active_checkpoint = _find_active_checkpoint()
         logger.info("Active checkpoint for warm-start: %s", active_checkpoint)
 
         # -- Step 3: Organize dataset (with Replay Buffer) --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message=f"Paso 3/9: Organizando dataset con Replay Buffer (anti-olvido, ratio={effective_replay:.2f})...",
+            version=version,
+        )
         logger.info(
             "Step 3: Organizing dataset with replay buffer (ratio=%.2f)...",
             effective_replay,
@@ -210,12 +249,24 @@ def run_finetune(
         )
 
         # -- Step 4: Read training config from active version --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message="Paso 4/9: Cargando configuración del modelo activo...",
+            version=version,
+        )
         active_config = _load_active_config(active_checkpoint)
         model_name = active_config.get("model_name", "efficientnet_b0")
         image_size = active_config.get("image_size", 224)
         batch_size = active_config.get("batch_size", 32)
 
         # -- Step 5: Run training --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message=f"Paso 5/9: Entrenando modelo cnn ({model_name}) en GPU con warm-start por {effective_epochs} épocas...",
+            version=version,
+        )
         logger.info("Step 5: Starting training (warm-start)...")
         output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -243,6 +294,7 @@ def run_finetune(
             cwd=str(_PROJECT_ROOT),
             capture_output=True,
             text=True,
+            encoding="utf-8",
         )
 
         if result.returncode != 0:
@@ -253,6 +305,12 @@ def run_finetune(
         logger.info("Training completed successfully.")
 
         # -- Step 6: Evaluate model --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message="Paso 6/9: Evaluando modelo entrenado con subset de validación...",
+            version=version,
+        )
         logger.info("Step 6: Evaluating model...")
         eval_dir.mkdir(parents=True, exist_ok=True)
 
@@ -268,11 +326,18 @@ def run_finetune(
                 cwd=str(_PROJECT_ROOT),
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
             )
             if eval_result.returncode != 0:
                 logger.warning("Evaluation script failed: %s", eval_result.stderr[-300:])
 
         # -- Step 7: Export ONNX --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message="Paso 7/9: Exportando modelo optimizado a formato ONNX...",
+            version=version,
+        )
         logger.info("Step 7: Exporting ONNX...")
         onnx_script = _SCRIPTS_DIR / "cnn" / "06_export_onnx.py"
         if onnx_script.exists():
@@ -286,11 +351,18 @@ def run_finetune(
                 cwd=str(_PROJECT_ROOT),
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
             )
             if onnx_result.returncode != 0:
                 logger.warning("ONNX export failed: %s", onnx_result.stderr[-300:])
 
         # -- Step 8: DVC add + push --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message="Paso 8/9: Subiendo versión de modelo al almacenamiento DVC...",
+            version=version,
+        )
         logger.info("Step 8: DVC add + push...")
         try:
             subprocess.run(
@@ -299,6 +371,7 @@ def run_finetune(
                 check=True,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
             )
             subprocess.run(
                 ["dvc", "push"],
@@ -306,12 +379,19 @@ def run_finetune(
                 check=True,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
             )
             logger.info("DVC push completed.")
         except (subprocess.CalledProcessError, FileNotFoundError) as dvc_exc:
             logger.warning("DVC operation failed (non-fatal): %s", dvc_exc)
 
         # -- Step 9: Read results and notify .NET --
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Running",
+            message="Paso 9/9: Registrando nueva versión y finalizando entrenamiento...",
+            version=version,
+        )
         elapsed = time.time() - start_time
         config_json = _read_json_safe(output_dir / "training_config.json")
         metrics_json = _read_json_safe(eval_dir / "evaluation_metrics.json")
@@ -363,7 +443,8 @@ def run_finetune(
 
     finally:
         # Restore original signal handler
-        signal.signal(signal.SIGTERM, original_handler)
+        if original_handler is not None and threading.current_thread() is threading.main_thread():
+            signal.signal(signal.SIGTERM, original_handler)
 
 
 # -- Helper Functions ---------------------------------------------------------
@@ -371,6 +452,33 @@ def run_finetune(
 
 def _find_active_checkpoint() -> Path | None:
     """Find the active model checkpoint for warm-start."""
+    # First, try to query the running classifier to ensure we load the checkpoint
+    # of the model that is currently active and loaded in memory.
+    try:
+        from app.services.vision.classifier import get_classifier
+        classifier = get_classifier()
+        if classifier.is_loaded and classifier.active_version:
+            vname = classifier.active_version
+            if vname == "legacy":
+                flat_ckpt = _WEIGHTS_DIR / "checkpoint.pth"
+                if flat_ckpt.exists():
+                    return flat_ckpt
+                flat_best = _WEIGHTS_DIR / "best_model.pth"
+                if flat_best.exists():
+                    return flat_best
+            else:
+                vdir = _WEIGHTS_DIR / vname
+                if vdir.exists() and vdir.is_dir():
+                    ckpt = vdir / "checkpoint.pth"
+                    if ckpt.exists():
+                        return ckpt
+                    best = vdir / "best_model.pth"
+                    if best.exists():
+                        return best
+    except Exception as e:
+        logger.warning("Could not query active classifier for checkpoint: %s", e)
+
+    # Fallback to filesystem scanning
     # Look for versioned dirs first (sorted by name = newest last)
     version_dirs = sorted(
         [d for d in _WEIGHTS_DIR.iterdir() if d.is_dir() and d.name.startswith("v")],
@@ -399,6 +507,16 @@ def _find_active_checkpoint() -> Path | None:
 
 def _load_active_config(checkpoint_path: Path | None) -> dict[str, Any]:
     """Load training config from the active model version."""
+    # First, if the running classifier is loaded, use its configuration.
+    try:
+        from app.services.vision.classifier import get_classifier
+        classifier = get_classifier()
+        if classifier.is_loaded and classifier.config:
+            logger.info("Loaded active training config from running classifier")
+            return classifier.config
+    except Exception as e:
+        logger.warning("Could not query active classifier for config: %s", e)
+
     if checkpoint_path:
         config_path = checkpoint_path.parent / "training_config.json"
         if config_path.exists():
@@ -426,6 +544,7 @@ def _run_delta_download() -> None:
         cwd=str(_PROJECT_ROOT),
         capture_output=True,
         text=True,
+        encoding="utf-8",
     )
 
     if result.returncode != 0:
@@ -456,7 +575,6 @@ def _run_dataset_organization(
 
     cmd = [
         sys.executable, str(organize_script),
-        "--clean",
         "--seed", str(seed),
     ]
 
@@ -467,17 +585,19 @@ def _run_dataset_organization(
             "--replay-ratio", str(replay_ratio),
         ])
         logger.info(
-            "Replay Buffer enabled: ratio=%.2f, manifest=%s",
+            "Replay Buffer enabled (incremental sync): ratio=%.2f, manifest=%s",
             replay_ratio, manifest_path,
         )
     else:
-        logger.info("No delta manifest found. Using all images (no Replay Buffer).")
+        cmd.append("--clean")
+        logger.info("No delta manifest found. Doing a clean rebuild of the dataset.")
 
     result = subprocess.run(
         cmd,
         cwd=str(_PROJECT_ROOT),
         capture_output=True,
         text=True,
+        encoding="utf-8",
     )
 
     if result.returncode != 0:

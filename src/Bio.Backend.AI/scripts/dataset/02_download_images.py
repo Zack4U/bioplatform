@@ -7,7 +7,7 @@ taxonomía: Kingdom/Phylum/Class/Family/Species/
 Requiere ejecutar 01_analyze_dataset.py primero.
 
 Uso:
-    python scripts/02_download_images.py [--min-images 10] [--max-per-species 100]
+    python scripts/02_download_images.py [--min-images 50] [--max-per-species 100]
                                           [--workers 8] [--image-size 512]
                                           [--resume]
 
@@ -155,8 +155,8 @@ def main() -> None:
         description="Download biodiversity images from iNaturalist/GBIF dataset"
     )
     parser.add_argument(
-        "--min-images", type=int, default=10,
-        help="Minimum images a species must have to be included (default: 10)"
+        "--min-images", type=int, default=50,
+        help="Minimum images a species must have to be included (default: 50)"
     )
     parser.add_argument(
         "--max-per-species", type=int, default=150,

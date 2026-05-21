@@ -15,7 +15,7 @@ Características:
   - Semilla configurable vía DATASET_SPLIT_SEED en .env (default: 42)
 
 Uso:
-    python scripts/dataset/03_organize_dataset.py [--min-images 10] [--seed 42]
+    python scripts/dataset/03_organize_dataset.py [--min-images 50] [--seed 42]
     python scripts/dataset/03_organize_dataset.py --replay-ratio 0.15 \\
         --new-images-manifest data/dataset_analysis/delta_manifest.json
 
@@ -44,8 +44,14 @@ import os
 import random
 import shutil
 import sys
+import io
 from collections import defaultdict
 from pathlib import Path
+
+# Force UTF-8 encoding for standard output/error to prevent UnicodeEncodeError on Windows
+if sys.platform.startswith('win'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from PIL import Image
 from tqdm import tqdm
@@ -229,6 +235,21 @@ def apply_replay_buffer(
     return buffered
 
 
+def count_processed_images(processed_dir: Path) -> dict[str, int]:
+    """Count the total number of images already processed per species."""
+    counts = defaultdict(int)
+    for split in ["train", "val", "test"]:
+        split_dir = processed_dir / split
+        if not split_dir.exists():
+            continue
+        for species_dir in split_dir.iterdir():
+            if not species_dir.is_dir():
+                continue
+            images = [p for p in species_dir.iterdir() if p.suffix.lower() in _IMAGE_EXTENSIONS]
+            counts[species_dir.name] += len(images)
+    return counts
+
+
 def split_dataset(
     species_images: dict[str, list[Path]],
     min_images: int,
@@ -236,6 +257,7 @@ def split_dataset(
     max_species: int = 0,
     train_ratio: float = 0.80,
     val_ratio: float = 0.10,
+    existing_counts: dict[str, int] = None,
 ) -> tuple[dict, dict, dict]:
     """
     Stratified split: cada especie se divide individualmente en train/val/test.
@@ -245,8 +267,13 @@ def split_dataset(
     random.seed(seed)
 
     # Sort by image count descending so --max-species takes the richest ones
+    def get_sort_key(kv):
+        species_name, images = kv
+        existing_cnt = existing_counts.get(species_name, 0) if existing_counts else 0
+        return len(images) + existing_cnt
+
     sorted_species = sorted(
-        species_images.items(), key=lambda kv: len(kv[1]), reverse=True
+        species_images.items(), key=get_sort_key, reverse=True
     )
 
     train_split: dict[str, list[Path]] = {}
@@ -256,7 +283,8 @@ def split_dataset(
     included = 0
 
     for species_name, images in sorted_species:
-        if len(images) < min_images:
+        existing_cnt = existing_counts.get(species_name, 0) if existing_counts else 0
+        if len(images) + existing_cnt < min_images:
             skipped.append(species_name)
             continue
 
@@ -268,20 +296,29 @@ def split_dataset(
         random.shuffle(shuffled)
 
         n = len(shuffled)
-        n_train = max(1, int(n * train_ratio))
-        n_val = max(1, int(n * val_ratio))
-        # Ensure at least 1 in each split
-        if n_train + n_val >= n:
-            n_train = max(1, n - 2)
-            n_val = 1
+        if n == 1:
+            train_split[species_name] = shuffled
+            val_split[species_name] = []
+            test_split[species_name] = []
+        elif n == 2:
+            train_split[species_name] = shuffled[:1]
+            val_split[species_name] = shuffled[1:]
+            test_split[species_name] = []
+        else:
+            n_train = max(1, int(n * train_ratio))
+            n_val = max(1, int(n * val_ratio))
+            # Ensure at least 1 in each split
+            if n_train + n_val >= n:
+                n_train = max(1, n - 2)
+                n_val = 1
 
-        train_split[species_name] = shuffled[:n_train]
-        val_split[species_name] = shuffled[n_train:n_train + n_val]
-        test_split[species_name] = shuffled[n_train + n_val:]
+            train_split[species_name] = shuffled[:n_train]
+            val_split[species_name] = shuffled[n_train:n_train + n_val]
+            test_split[species_name] = shuffled[n_train + n_val:]
         included += 1
 
     if skipped:
-        print(f"[INFO] Skipped {len(skipped)} species with <{min_images} images")
+        print(f"[INFO] Skipped {len(skipped)} species with <{min_images} total images")
 
     return train_split, val_split, test_split
 
@@ -315,7 +352,15 @@ def copy_with_validation(
         dest_path = species_dir / source_path.name
 
         if not dest_path.exists():
-            shutil.copy2(source_path, dest_path)
+            try:
+                shutil.copyfile(source_path, dest_path)
+            except Exception:
+                try:
+                    shutil.copy(source_path, dest_path)
+                except Exception as e:
+                    print(f"\n[WARN] Failed to copy {source_path} to {dest_path}: {e}")
+                    corrupted += 1
+                    continue
         copied += 1
 
     return copied, corrupted
@@ -326,8 +371,8 @@ def main() -> None:
         description="Organize raw images into train/val/test splits"
     )
     parser.add_argument(
-        "--min-images", type=int, default=10,
-        help="Minimum images per species to include (default: 10)"
+        "--min-images", type=int, default=50,
+        help="Minimum images per species to include (default: 50)"
     )
     parser.add_argument(
         "--seed", type=int, default=_DEFAULT_SEED,
@@ -364,8 +409,25 @@ def main() -> None:
     print("=" * 60)
     print(f"  Seed: {args.seed}")
 
-    # Optionally clean
-    if args.clean and PROCESSED_DIR.exists():
+    # Determine if we should clean and if delta mode is active
+    has_delta = False
+    new_paths = set()
+    is_fine_tuning_mode = args.new_images_manifest is not None
+
+    if is_fine_tuning_mode:
+        manifest_path = Path(args.new_images_manifest)
+        if manifest_path.exists():
+            new_paths = _load_new_images_manifest(manifest_path)
+            if len(new_paths) > 0:
+                has_delta = True
+
+        if not has_delta:
+            print("\n[INFO] No new delta images detected in manifest. Fine-tuning organization skipped.")
+            print("[INFO] Existing processed dataset is kept intact.")
+            sys.exit(0)
+
+    # Optionally clean - only if we are not in fine-tuning/delta mode
+    if args.clean and not is_fine_tuning_mode and PROCESSED_DIR.exists():
         print(f"[INFO] Cleaning {PROCESSED_DIR}...")
         shutil.rmtree(PROCESSED_DIR)
 
@@ -381,8 +443,25 @@ def main() -> None:
         print("  Run: python scripts/dataset/02f_download_delta.py")
         sys.exit(1)
 
-    # 1b. Apply Replay Buffer if manifest provided
-    if args.new_images_manifest:
+    # Load existing counts from processed directory to calculate min_images accurately
+    existing_counts = {}
+    if PROCESSED_DIR.exists():
+        existing_counts = count_processed_images(PROCESSED_DIR)
+
+    # 1b. Apply Replay Buffer or Delta Filter if manifest provided
+    if is_fine_tuning_mode and has_delta:
+        # In delta fine-tuning mode, we ONLY split and copy the delta images.
+        # The existing images in PROCESSED_DIR are kept intact.
+        print(f"\n[STEP 1b] Delta mode active. Filtering to organize ONLY the {len(new_paths):,} new images.")
+        species_images_delta = {}
+        for species_name, images in species_images.items():
+            new_imgs = [p for p in images if str(p.resolve()) in new_paths]
+            if new_imgs:
+                species_images_delta[species_name] = new_imgs
+        species_images = species_images_delta
+        total_images = sum(len(v) for v in species_images.values())
+    elif args.new_images_manifest:
+        # Legacy/Fallback if manifest was empty but not captured by has_delta logic
         manifest_path = Path(args.new_images_manifest)
         print(f"\n[STEP 1b] Applying Replay Buffer (ratio={args.replay_ratio:.0%})...")
         new_paths = _load_new_images_manifest(manifest_path)
@@ -400,13 +479,13 @@ def main() -> None:
     if args.max_species > 0:
         print(f"  → Limiting to top {args.max_species} species (test mode)")
     train, val, test = split_dataset(
-        species_images, args.min_images, args.seed, max_species=args.max_species
+        species_images, args.min_images, args.seed, max_species=args.max_species, existing_counts=existing_counts
     )
     num_classes = len(train)
-    print(f"  → {num_classes} classes included in final dataset")
-    print(f"  → Train: {sum(len(v) for v in train.values()):,} images")
-    print(f"  → Val:   {sum(len(v) for v in val.values()):,} images")
-    print(f"  → Test:  {sum(len(v) for v in test.values()):,} images")
+    print(f"  → {num_classes} classes included in delta organization")
+    print(f"  → Train delta: {sum(len(v) for v in train.values()):,} images")
+    print(f"  → Val delta:   {sum(len(v) for v in val.values()):,} images")
+    print(f"  → Test delta:  {sum(len(v) for v in test.values()):,} images")
 
     # 3. Copy and validate
     print("\n[STEP 3/4] Copying and validating images...")
@@ -426,8 +505,24 @@ def main() -> None:
     # 4. Generate metadata files
     print("\n[STEP 4/4] Generating metadata files...")
 
-    # Class mapping: species_name → class_idx (sorted alphabetically)
-    class_names = sorted(train.keys())
+    # Scan the actual processed directory to get the consolidated counts
+    actual_train = defaultdict(list)
+    actual_val = defaultdict(list)
+    actual_test = defaultdict(list)
+
+    for split_name, split_dict in [("train", actual_train), ("val", actual_val), ("test", actual_test)]:
+        split_path = PROCESSED_DIR / split_name
+        if split_path.exists():
+            for species_dir in split_path.iterdir():
+                if species_dir.is_dir():
+                    species_name = species_dir.name
+                    files = [p for p in species_dir.iterdir() if p.suffix.lower() in _IMAGE_EXTENSIONS]
+                    if files:
+                        split_dict[species_name] = files
+
+    # Class names are sorted alphabetically
+    class_names = sorted(list(set(actual_train.keys()) | set(actual_val.keys()) | set(actual_test.keys())))
+    num_classes = len(class_names)
     class_mapping = {name.replace("_", " "): idx for idx, name in enumerate(class_names)}
 
     with open(PROCESSED_DIR / "class_mapping.json", "w", encoding="utf-8") as f:
@@ -448,9 +543,9 @@ def main() -> None:
         class_info[display_name] = {
             "class_idx": class_mapping[display_name],
             "folder_name": folder_name,
-            "train_count": len(train.get(folder_name, [])),
-            "val_count": len(val.get(folder_name, [])),
-            "test_count": len(test.get(folder_name, [])),
+            "train_count": len(actual_train.get(folder_name, [])),
+            "val_count": len(actual_val.get(folder_name, [])),
+            "test_count": len(actual_test.get(folder_name, [])),
             **tax,
         }
 
@@ -469,25 +564,25 @@ def main() -> None:
         },
         "splits": {
             "train": {
-                "total_images": sum(len(v) for v in train.values()),
-                "num_classes": len(train),
+                "total_images": sum(len(v) for v in actual_train.values()),
+                "num_classes": len(actual_train),
             },
             "val": {
-                "total_images": sum(len(v) for v in val.values()),
-                "num_classes": len(val),
+                "total_images": sum(len(v) for v in actual_val.values()),
+                "num_classes": len(actual_val),
             },
             "test": {
-                "total_images": sum(len(v) for v in test.values()),
-                "num_classes": len(test),
+                "total_images": sum(len(v) for v in actual_test.values()),
+                "num_classes": len(actual_test),
             },
         },
         "corrupted_removed": total_corrupted,
         "images_per_class": {
             name.replace("_", " "): {
-                "train": len(train.get(name, [])),
-                "val": len(val.get(name, [])),
-                "test": len(test.get(name, [])),
-                "total": len(train.get(name, [])) + len(val.get(name, [])) + len(test.get(name, [])),
+                "train": len(actual_train.get(name, [])),
+                "val": len(actual_val.get(name, [])),
+                "test": len(actual_test.get(name, [])),
+                "total": len(actual_train.get(name, [])) + len(actual_val.get(name, [])) + len(actual_test.get(name, [])),
             }
             for name in class_names
         },

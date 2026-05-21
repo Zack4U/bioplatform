@@ -25,7 +25,13 @@ import argparse
 import csv
 import json
 import sys
+import io
 from pathlib import Path
+
+# Force UTF-8 encoding for standard output/error to prevent UnicodeEncodeError on Windows
+if sys.platform.startswith('win'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 import numpy as np
 
@@ -415,11 +421,26 @@ def main() -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Resolve weights directory (versioned or legacy flat)
-    weights_dir = Path(args.weights_dir) if args.weights_dir else WEIGHTS_DIR
+    weights_dir = Path(args.weights_dir) if args.weights_dir else None
+
+    if weights_dir is None:
+        # Try to auto-detect versioned weights directories
+        candidates = []
+        if WEIGHTS_DIR.exists():
+            for p in WEIGHTS_DIR.iterdir():
+                if p.is_dir() and (p / "best_model.pth").exists():
+                    candidates.append(p)
+        if candidates:
+            # Sort alphabetically (since version tags format allows chronological sorting)
+            candidates.sort()
+            weights_dir = candidates[-1]
+            print(f"  [INFO] Auto-detected active versioned model: {weights_dir.name}")
+        else:
+            weights_dir = WEIGHTS_DIR
 
     # Resolve eval output directory alongside weights
-    if args.weights_dir:
-        eval_dir = Path(args.weights_dir)  # Save eval artifacts next to weights
+    if args.weights_dir or weights_dir != WEIGHTS_DIR:
+        eval_dir = weights_dir  # Save eval artifacts next to weights
     else:
         eval_dir = EVAL_DIR
 
@@ -473,12 +494,34 @@ def main() -> None:
     ])
 
     test_dataset = datasets.ImageFolder(str(test_dir), transform=test_transform)
+
+    # Force alignment of dataset classes with training config class names
+    class_names = config.get("class_names")
+    if not class_names:
+        print("[ERROR] No class_names found in training config!")
+        sys.exit(1)
+
+    config_class_to_idx = {name: idx for idx, name in enumerate(class_names)}
+    valid_samples = []
+    skipped_classes = set()
+    for path, target_idx in test_dataset.samples:
+        class_name = test_dataset.classes[target_idx]
+        if class_name in config_class_to_idx:
+            valid_samples.append((path, config_class_to_idx[class_name]))
+        else:
+            skipped_classes.add(class_name)
+
+    if skipped_classes:
+        print(f"  [WARN] Skipping {len(skipped_classes)} species in test set not present in training config.")
+
+    test_dataset.samples = valid_samples
+    test_dataset.targets = [t for _, t in valid_samples]
+
     test_loader = DataLoader(
         test_dataset, batch_size=args.batch_size,
         shuffle=False, num_workers=args.workers, pin_memory=True,
     )
 
-    class_names = config.get("class_names", test_dataset.classes)
     print(f"  Test images: {len(test_dataset):,}")
 
     # ── Evaluate ───────────────────────────────────────────────────

@@ -112,13 +112,17 @@ data/
 ├── dataset_analysis/     ← Manifiestos y análisis
 │   └── delta_manifest.json  ← Generado por 02f_download_delta.py
 └── weights/              ← Pesos del modelo (versionados)
-    ├── best_model.pth    ← Modelo activo (flat layout)
+    ├── best_model.pth    ← Modelo activo (flat layout de fallback/legacy)
     ├── training_config.json
     └── v1.0.20260517/    ← Versión específica
         ├── best_model.pth
         ├── checkpoint.pth
         ├── training_config.json
-        └── model.onnx
+        ├── model.onnx
+        ├── classification_report.txt  ← Reporte detallado de la evaluación
+        ├── confusion_matrix.png       ← Matriz de confusión visual
+        └── evaluation_metrics.json    ← Métricas completas en JSON
+
 ```
 
 ---
@@ -194,11 +198,14 @@ python scripts/cnn/04_train_cnn.py \
     --output-dir data/weights/v1.0.20260517 \
     --resume-checkpoint data/weights/checkpoint.pth
 
-# Paso 3: Evaluar
+# Paso 3: Evaluar (se auto-detecta la versión del modelo activo si no se pasa --weights-dir)
 python scripts/cnn/05_evaluate_model.py \
-    --weights-dir data/weights/v1.0.20260517 \
     --batch-size 32 \
     --top-k 5
+
+# O especificando un directorio manualmente (guarda los resultados en esa misma subcarpeta):
+# python scripts/cnn/05_evaluate_model.py --weights-dir data/weights/v1.0.20260517
+
 
 # Paso 4: Exportar ONNX
 python scripts/cnn/06_export_onnx.py \
@@ -323,14 +330,20 @@ Cada fine-tuning crea un directorio con el formato `{PREFIX}.{TIMESTAMP}`:
 
 ```
 data/weights/
-├── best_model.pth              ← Modelo activo (flat, legacy)
+├── best_model.pth              ← Modelo activo (flat, legacy/fallback)
 ├── training_config.json        ← Config del modelo activo
 ├── v1.0.20260501120000/        ← Versión 1 (entrenamiento inicial)
 │   ├── best_model.pth          ← Mejores pesos (solo model_state_dict)
 │   ├── checkpoint.pth          ← Checkpoint completo (model + optimizer + scheduler)
 │   ├── training_config.json    ← Hiperparámetros y métricas
 │   ├── training_history.json   ← Loss/accuracy por época
-│   └── model.onnx              ← Modelo exportado para inferencia
+│   ├── model.onnx              ← Modelo exportado para inferencia
+│   ├── classification_report.txt   ← Reporte detallado de métricas Precision/Recall/F1 por especie
+│   ├── confusion_matrix.png        ← Matriz de confusión visual
+│   ├── confusion_matrix.txt        ← Reporte de los 20 pares de especies más confundidos
+│   ├── evaluation_metrics.json     ← Métricas globales y por clase en JSON (leído por FastAPI/Auditor)
+│   ├── per_class_metrics.csv       ← Métricas de precisión en formato CSV
+│   └── misclassified_samples.json  ← Top errores de clasificación de alta confianza
 ├── v1.0.20260510080000/        ← Versión 2 (primer fine-tuning)
 │   ├── best_model.pth
 │   ├── checkpoint.pth
@@ -350,6 +363,12 @@ data/weights/
 | `training_config.json` | Arquitectura, num_classes, hiperparámetros, class_names, métricas | Reconstruir el modelo para evaluación |
 | `training_history.json` | Loss y accuracy por época | Debugging, visualización del progreso |
 | `model.onnx` | Modelo exportado a ONNX | Inferencia optimizada (opcional) |
+| `classification_report.txt` | Precision, Recall, F1-Score agrupados por umbral de desempeño | Reporte legible de auditoría técnica |
+| `confusion_matrix.png` | Heatmap visual de aciertos y confusiones del modelo | Análisis visual de confusiones |
+| `confusion_matrix.txt` | Lista ordenada de los 20 pares más confundidos con su tasa y cantidad | Identificación de especies similares conflictivas |
+| `evaluation_metrics.json` | Métricas globales y per-class completas en formato JSON estructurado | Servido por FastAPI en el endpoint `/api/v1/model-metrics` |
+| `misclassified_samples.json` | Muestras del set de test mal clasificadas con sus rutas e índices de confianza | Auditoría fina de fallas visuales |
+
 
 ---
 

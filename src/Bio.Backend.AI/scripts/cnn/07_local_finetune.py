@@ -216,11 +216,14 @@ def main() -> None:
         if organize_script.exists():
             organize_cmd = [
                 sys.executable, str(organize_script),
-                "--clean",
                 "--seed", str(seed),
             ]
-            # Enable Replay Buffer if manifest exists
-            if DELTA_MANIFEST.exists() and not args.skip_download:
+            # Clean only if training from scratch (no-warm-start)
+            if args.no_warm_start:
+                organize_cmd.append("--clean")
+
+            # Enable Replay Buffer / incremental delta organization if manifest exists
+            if DELTA_MANIFEST.exists():
                 organize_cmd.extend([
                     "--new-images-manifest", str(DELTA_MANIFEST),
                     "--replay-ratio", str(args.replay_ratio),

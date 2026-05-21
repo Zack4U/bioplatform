@@ -54,8 +54,8 @@ class Settings(BaseSettings):
     s3_bucket_name: str = "bioplatform-public"
 
     # ── .NET Backend Integration ──────────────────────────────
-    dotnet_webhook_url: str = "http://bio-backend-api:5000/api/webhooks/ai/training-completed"
-    dotnet_api_base_url: str = "http://bio-backend-api:5000"
+    dotnet_webhook_url: str = "http://localhost:5070/api/webhooks/ai/training-completed"
+    dotnet_api_base_url: str = "http://localhost:5070"
 
     # ── DVC ────────────────────────────────────────────────────
     dvc_remote_name: str = "myremote"

@@ -39,14 +39,22 @@ export function AutomaticTrainingForm({ hardware, activeJob, isPending, onSubmit
             </div>
 
             {activeJob && (
-                <div className="p-3.5 rounded-lg border bg-yellow-500/10 text-yellow-600 dark:text-yellow-555 flex items-center gap-3">
-                    <Loader2 className="h-4 w-4 animate-spin shrink-0" />
-                    <div className="text-xs">
-                        <p className="font-semibold">Entrenamiento en Curso</p>
-                        <p className="text-muted-foreground mt-0.5">
-                            Existe un trabajo con ID <span className="font-mono">{activeJob.id.substring(0, 8)}</span> en estado <span className="font-semibold">{activeJob.status}</span>. Espere a que termine.
-                        </p>
+                <div className="p-4 rounded-lg border border-amber-500/20 bg-amber-500/5 text-amber-600 dark:text-amber-400 flex flex-col gap-3.5 shadow-xs">
+                    <div className="flex items-center gap-3">
+                        <Loader2 className="h-5 w-5 animate-spin shrink-0 text-amber-500" />
+                        <div className="text-xs">
+                            <p className="font-semibold text-foreground">Entrenamiento Automático en Curso</p>
+                            <p className="text-muted-foreground mt-0.5">
+                                Identificador del trabajo: <span className="font-mono bg-muted/60 px-1 py-0.5 rounded text-[10px]">#{activeJob.id.substring(0, 8)}</span>
+                            </p>
+                        </div>
                     </div>
+                    {activeJob.statusMessage && (
+                        <div className="text-[11px] font-mono leading-relaxed bg-black/40 border border-amber-500/10 p-2.5 rounded-md text-slate-300">
+                            <span className="text-[9px] font-semibold text-amber-500 block uppercase tracking-wider mb-1">PROGRESO ACTUAL:</span>
+                            <span className="inline-block animate-pulse mr-1">▶</span> {activeJob.statusMessage}
+                        </div>
+                    )}
                 </div>
             )}
 

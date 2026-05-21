@@ -32,6 +32,12 @@ public class AiTrainingJob
         Status = "Running";
     }
 
+    public void UpdateStatusMessage(string message)
+    {
+        Status = "Running";
+        StatusMessage = message;
+    }
+
     public void MarkCompleted(string statusMessage, int? modelVersionId = null)
     {
         Status = "Completed";

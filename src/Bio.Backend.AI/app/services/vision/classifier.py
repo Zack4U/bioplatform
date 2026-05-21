@@ -206,7 +206,23 @@ class SpeciesClassifier:
         Called once at startup.
         """
         if weights_path is None:
-            weights_path = WEIGHTS_DIR / "best_model.pth"
+            default_weights = WEIGHTS_DIR / "best_model.pth"
+            if default_weights.exists():
+                weights_path = default_weights
+            else:
+                # Try to auto-detect versioned weights directories
+                candidates = []
+                for p in WEIGHTS_DIR.iterdir():
+                    if p.is_dir() and (p / "best_model.pth").exists():
+                        candidates.append(p)
+                if candidates:
+                    # Sort alphabetically (since version tags format allows chronological sorting)
+                    candidates.sort()
+                    weights_path = candidates[-1] / "best_model.pth"
+                    logger.info("Auto-detected latest versioned model: %s", candidates[-1].name)
+                else:
+                    weights_path = default_weights
+
         config_path = weights_path.parent / "training_config.json"
         if not config_path.exists():
             # Fallback to flat structure

@@ -95,6 +95,9 @@ public class ReceiveTrainingWebhookCommandHandler
                 job.MarkCompleted(request.StatusMessage, modelVersionId);
                 break;
             }
+            case "Running":
+                job.UpdateStatusMessage(request.StatusMessage);
+                break;
             case "Failed":
                 job.MarkFailed(request.StatusMessage);
                 break;

@@ -82,6 +82,13 @@ export function useRecentTrainingJobs(count = 10) {
         queryKey: [...AI_ADMIN_KEYS.jobs, count],
         queryFn: () => getRecentTrainingJobs(count),
         staleTime: 10 * 1000, // 10 seconds
+        refetchInterval: (query) => {
+            const jobs = query.state.data;
+            const hasActiveJob = jobs?.some(
+                (j) => j.status === "Running" || j.status === "Pending"
+            );
+            return hasActiveJob ? 3000 : false;
+        },
     });
 }
 

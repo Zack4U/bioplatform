@@ -161,10 +161,10 @@ def generate_report(species_list: list[dict]) -> str:
     family_counts = Counter(sp["family"] for sp in species_list)
 
     # Especies con suficientes imágenes para CNN
-    MIN_IMAGES_CNN = 10
+    MIN_IMAGES_CNN = 50
     species_with_enough = [sp for sp in species_list if sp["image_count"] >= MIN_IMAGES_CNN]
+    species_10plus = [sp for sp in species_list if sp["image_count"] >= 10]
     species_20plus = [sp for sp in species_list if sp["image_count"] >= 20]
-    species_50plus = [sp for sp in species_list if sp["image_count"] >= 50]
 
     lines = [
         "=" * 70,
@@ -208,10 +208,10 @@ def generate_report(species_list: list[dict]) -> str:
         "─" * 40,
         "APTITUD PARA CNN (mín. imágenes por especie):",
         "─" * 40,
-        f"  ≥10 imágenes: {len(species_with_enough):4d} especies "
+        f"  ≥50 imágenes: {len(species_with_enough):4d} especies "
         f"({sum(sp['image_count'] for sp in species_with_enough):,} imgs)",
         f"  ≥20 imágenes: {len(species_20plus):4d} especies ({sum(sp['image_count'] for sp in species_20plus):,} imgs)",
-        f"  ≥50 imágenes: {len(species_50plus):4d} especies ({sum(sp['image_count'] for sp in species_50plus):,} imgs)",
+        f"  ≥10 imágenes: {len(species_10plus):4d} especies ({sum(sp['image_count'] for sp in species_10plus):,} imgs)",
         "",
         "─" * 40,
         "TOP 20 ESPECIES CON MÁS IMÁGENES:",
