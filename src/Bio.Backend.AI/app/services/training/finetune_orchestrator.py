@@ -27,10 +27,11 @@ import sys
 import time
 from datetime import datetime, timezone
 
+from pathlib import Path
+from typing import Any
+
 # Forzar UTF-8 en los subprocesos para evitar UnicodeEncodeError en Windows
 os.environ["PYTHONIOENCODING"] = "utf-8"
-from pathlib import Path
-from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -87,8 +88,8 @@ async def _notify_dotnet(
         "statusMessage": message,
         "version": version,
         "accuracy": accuracy,
-        "configJson": config_json,
-        "metricsJson": metrics_json,
+        "configJson": json.dumps(config_json) if isinstance(config_json, dict) else config_json,
+        "metricsJson": json.dumps(metrics_json) if isinstance(metrics_json, dict) else metrics_json,
     }
 
     try:
@@ -124,8 +125,8 @@ def _notify_dotnet_sync(
         "statusMessage": message,
         "version": version,
         "accuracy": accuracy,
-        "configJson": config_json,
-        "metricsJson": metrics_json,
+        "configJson": json.dumps(config_json) if isinstance(config_json, dict) else config_json,
+        "metricsJson": json.dumps(metrics_json) if isinstance(metrics_json, dict) else metrics_json,
     }
 
     try:
@@ -151,6 +152,139 @@ def _generate_version(prefix: str) -> str:
 
 
 # -- Main Orchestrator --------------------------------------------------------
+
+
+def _step_download_delta(job_id: str, version: str) -> bool:
+    """Download delta images. Returns True if there are new images, False otherwise."""
+    _notify_dotnet_sync(
+        job_id=job_id,
+        status="Running",
+        message="Paso 1/9: Descargando imágenes delta desde S3...",
+        version=version,
+    )
+    logger.info("Step 1: Downloading delta images from S3...")
+    _run_delta_download()
+
+    manifest_data = _read_json_safe(_DELTA_MANIFEST)
+    if manifest_data and len(manifest_data.get("new_images", [])) == 0:
+        logger.info("No delta detected. Aborting fine-tuning gracefully.")
+        _notify_dotnet_sync(
+            job_id=job_id,
+            status="Failed",
+            message="No hay imágenes nuevas para entrenar (delta = 0). Entrenamiento cancelado.",
+            version=version,
+        )
+        return False
+    return True
+
+
+def _execute_training(
+    output_dir: Path,
+    effective_epochs: int,
+    effective_lr: float,
+    active_config: dict[str, Any],
+    active_checkpoint: Path | None,
+) -> None:
+    """Execute training script as a subprocess."""
+    model_name = active_config.get("model_name", "efficientnet_b0")
+    image_size = active_config.get("image_size", 224)
+    batch_size = active_config.get("batch_size", 32)
+
+    train_cmd = [
+        sys.executable,
+        str(_SCRIPTS_DIR / "cnn" / "04_train_cnn.py"),
+        "--model", model_name,
+        "--epochs", str(effective_epochs),
+        "--lr", str(effective_lr),
+        "--unfreeze-lr", str(effective_lr),
+        "--freeze-epochs", "0",  # Skip freeze phase for fine-tuning
+        "--image-size", str(image_size),
+        "--batch-size", str(batch_size),
+        "--label-smoothing", str(active_config.get("label_smoothing", 0.1)),
+        "--mixup-alpha", str(active_config.get("mixup_alpha", 0.2)),
+        "--cutmix-alpha", str(active_config.get("cutmix_alpha", 0.0)),
+        "--output-dir", str(output_dir),
+    ]
+
+    if active_checkpoint:
+        train_cmd.extend(["--resume-checkpoint", str(active_checkpoint)])
+
+    result = subprocess.run(
+        train_cmd,
+        cwd=str(_PROJECT_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Training failed (exit={result.returncode}): {result.stderr[-500:]}"
+        )
+
+
+def _execute_evaluation(output_dir: Path) -> None:
+    """Execute evaluation script as a subprocess."""
+    eval_script = _SCRIPTS_DIR / "cnn" / "05_evaluate_model.py"
+    if eval_script.exists():
+        eval_cmd = [
+            sys.executable,
+            str(eval_script),
+            "--weights-dir", str(output_dir),
+        ]
+        eval_result = subprocess.run(
+            eval_cmd,
+            cwd=str(_PROJECT_ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        if eval_result.returncode != 0:
+            logger.warning("Evaluation script failed: %s", eval_result.stderr[-300:])
+
+
+def _execute_onnx_export(output_dir: Path) -> None:
+    """Execute ONNX export script as a subprocess."""
+    onnx_script = _SCRIPTS_DIR / "cnn" / "06_export_onnx.py"
+    if onnx_script.exists():
+        onnx_cmd = [
+            sys.executable,
+            str(onnx_script),
+            "--weights-dir", str(output_dir),
+        ]
+        onnx_result = subprocess.run(
+            onnx_cmd,
+            cwd=str(_PROJECT_ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        if onnx_result.returncode != 0:
+            logger.warning("ONNX export failed: %s", onnx_result.stderr[-300:])
+
+
+def _execute_dvc_push(output_dir: Path) -> None:
+    """Execute DVC add and push commands."""
+    try:
+        subprocess.run(
+            ["dvc", "add", str(output_dir)],
+            cwd=str(_PROJECT_ROOT),
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        subprocess.run(
+            ["dvc", "push"],
+            cwd=str(_PROJECT_ROOT),
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        logger.info("DVC push completed.")
+    except (subprocess.CalledProcessError, FileNotFoundError) as dvc_exc:
+        logger.warning("DVC operation failed (non-fatal): %s", dvc_exc)
 
 
 def run_finetune(
@@ -200,25 +334,7 @@ def run_finetune(
 
     try:
         # -- Step 1: Delta download (only new validated images) --
-        _notify_dotnet_sync(
-            job_id=job_id,
-            status="Running",
-            message="Paso 1/9: Descargando imágenes delta desde S3...",
-            version=version,
-        )
-        logger.info("Step 1: Downloading delta images from S3...")
-        _run_delta_download()
-
-        # Abortar si no hay delta
-        manifest_data = _read_json_safe(_DELTA_MANIFEST)
-        if manifest_data and len(manifest_data.get("new_images", [])) == 0:
-            logger.info("No delta detected. Aborting fine-tuning gracefully.")
-            _notify_dotnet_sync(
-                job_id=job_id,
-                status="Failed",
-                message="No hay imágenes nuevas para entrenar (delta = 0). Entrenamiento cancelado.",
-                version=version,
-            )
+        if not _step_download_delta(job_id, version):
             return
 
         # -- Step 2: Find active model checkpoint for warm-start --
@@ -257,8 +373,6 @@ def run_finetune(
         )
         active_config = _load_active_config(active_checkpoint)
         model_name = active_config.get("model_name", "efficientnet_b0")
-        image_size = active_config.get("image_size", 224)
-        batch_size = active_config.get("batch_size", 32)
 
         # -- Step 5: Run training --
         _notify_dotnet_sync(
@@ -269,39 +383,13 @@ def run_finetune(
         )
         logger.info("Step 5: Starting training (warm-start)...")
         output_dir.mkdir(parents=True, exist_ok=True)
-
-        train_cmd = [
-            sys.executable,
-            str(_SCRIPTS_DIR / "cnn" / "04_train_cnn.py"),
-            "--model", model_name,
-            "--epochs", str(effective_epochs),
-            "--lr", str(effective_lr),
-            "--unfreeze-lr", str(effective_lr),
-            "--freeze-epochs", "0",  # Skip freeze phase for fine-tuning
-            "--image-size", str(image_size),
-            "--batch-size", str(batch_size),
-            "--label-smoothing", str(active_config.get("label_smoothing", 0.1)),
-            "--mixup-alpha", str(active_config.get("mixup_alpha", 0.2)),
-            "--cutmix-alpha", str(active_config.get("cutmix_alpha", 0.0)),
-            "--output-dir", str(output_dir),
-        ]
-
-        if active_checkpoint:
-            train_cmd.extend(["--resume-checkpoint", str(active_checkpoint)])
-
-        result = subprocess.run(
-            train_cmd,
-            cwd=str(_PROJECT_ROOT),
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
+        _execute_training(
+            output_dir=output_dir,
+            effective_epochs=effective_epochs,
+            effective_lr=effective_lr,
+            active_config=active_config,
+            active_checkpoint=active_checkpoint,
         )
-
-        if result.returncode != 0:
-            raise RuntimeError(
-                f"Training failed (exit={result.returncode}): {result.stderr[-500:]}"
-            )
-
         logger.info("Training completed successfully.")
 
         # -- Step 6: Evaluate model --
@@ -313,23 +401,7 @@ def run_finetune(
         )
         logger.info("Step 6: Evaluating model...")
         eval_dir.mkdir(parents=True, exist_ok=True)
-
-        eval_script = _SCRIPTS_DIR / "cnn" / "05_evaluate_model.py"
-        if eval_script.exists():
-            eval_cmd = [
-                sys.executable,
-                str(eval_script),
-                "--weights-dir", str(output_dir),
-            ]
-            eval_result = subprocess.run(
-                eval_cmd,
-                cwd=str(_PROJECT_ROOT),
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-            )
-            if eval_result.returncode != 0:
-                logger.warning("Evaluation script failed: %s", eval_result.stderr[-300:])
+        _execute_evaluation(output_dir=output_dir)
 
         # -- Step 7: Export ONNX --
         _notify_dotnet_sync(
@@ -339,22 +411,7 @@ def run_finetune(
             version=version,
         )
         logger.info("Step 7: Exporting ONNX...")
-        onnx_script = _SCRIPTS_DIR / "cnn" / "06_export_onnx.py"
-        if onnx_script.exists():
-            onnx_cmd = [
-                sys.executable,
-                str(onnx_script),
-                "--weights-dir", str(output_dir),
-            ]
-            onnx_result = subprocess.run(
-                onnx_cmd,
-                cwd=str(_PROJECT_ROOT),
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-            )
-            if onnx_result.returncode != 0:
-                logger.warning("ONNX export failed: %s", onnx_result.stderr[-300:])
+        _execute_onnx_export(output_dir=output_dir)
 
         # -- Step 8: DVC add + push --
         _notify_dotnet_sync(
@@ -364,26 +421,7 @@ def run_finetune(
             version=version,
         )
         logger.info("Step 8: DVC add + push...")
-        try:
-            subprocess.run(
-                ["dvc", "add", str(output_dir)],
-                cwd=str(_PROJECT_ROOT),
-                check=True,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-            )
-            subprocess.run(
-                ["dvc", "push"],
-                cwd=str(_PROJECT_ROOT),
-                check=True,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-            )
-            logger.info("DVC push completed.")
-        except (subprocess.CalledProcessError, FileNotFoundError) as dvc_exc:
-            logger.warning("DVC operation failed (non-fatal): %s", dvc_exc)
+        _execute_dvc_push(output_dir=output_dir)
 
         # -- Step 9: Read results and notify .NET --
         _notify_dotnet_sync(
@@ -450,35 +488,33 @@ def run_finetune(
 # -- Helper Functions ---------------------------------------------------------
 
 
-def _find_active_checkpoint() -> Path | None:
-    """Find the active model checkpoint for warm-start."""
-    # First, try to query the running classifier to ensure we load the checkpoint
-    # of the model that is currently active and loaded in memory.
+def _get_classifier_active_checkpoint() -> Path | None:
+    """Query the running classifier for the active checkpoint path."""
     try:
         from app.services.vision.classifier import get_classifier
         classifier = get_classifier()
-        if classifier.is_loaded and classifier.active_version:
-            vname = classifier.active_version
-            if vname == "legacy":
-                flat_ckpt = _WEIGHTS_DIR / "checkpoint.pth"
-                if flat_ckpt.exists():
-                    return flat_ckpt
-                flat_best = _WEIGHTS_DIR / "best_model.pth"
-                if flat_best.exists():
-                    return flat_best
-            else:
-                vdir = _WEIGHTS_DIR / vname
-                if vdir.exists() and vdir.is_dir():
-                    ckpt = vdir / "checkpoint.pth"
-                    if ckpt.exists():
-                        return ckpt
-                    best = vdir / "best_model.pth"
-                    if best.exists():
-                        return best
+        if not (classifier.is_loaded and classifier.active_version):
+            return None
+
+        vname = classifier.active_version
+        if vname == "legacy":
+            return _get_flat_checkpoint()
+
+        vdir = _WEIGHTS_DIR / vname
+        if vdir.exists() and vdir.is_dir():
+            ckpt = vdir / "checkpoint.pth"
+            if ckpt.exists():
+                return ckpt
+            best = vdir / "best_model.pth"
+            if best.exists():
+                return best
     except Exception as e:
         logger.warning("Could not query active classifier for checkpoint: %s", e)
+    return None
 
-    # Fallback to filesystem scanning
+
+def _find_latest_versioned_checkpoint() -> Path | None:
+    """Scan versioned directories in filesystem and return the newest checkpoint."""
     # Look for versioned dirs first (sorted by name = newest last)
     version_dirs = sorted(
         [d for d in _WEIGHTS_DIR.iterdir() if d.is_dir() and d.name.startswith("v")],
@@ -493,16 +529,31 @@ def _find_active_checkpoint() -> Path | None:
         best = vdir / "best_model.pth"
         if best.exists():
             return best
+    return None
 
-    # Fallback to flat layout
+
+def _get_flat_checkpoint() -> Path | None:
+    """Get checkpoint path from flat layout in weights directory."""
     flat_ckpt = _WEIGHTS_DIR / "checkpoint.pth"
     if flat_ckpt.exists():
         return flat_ckpt
     flat_best = _WEIGHTS_DIR / "best_model.pth"
     if flat_best.exists():
         return flat_best
-
     return None
+
+
+def _find_active_checkpoint() -> Path | None:
+    """Find the active model checkpoint for warm-start."""
+    ckpt = _get_classifier_active_checkpoint()
+    if ckpt:
+        return ckpt
+
+    ckpt = _find_latest_versioned_checkpoint()
+    if ckpt:
+        return ckpt
+
+    return _get_flat_checkpoint()
 
 
 def _load_active_config(checkpoint_path: Path | None) -> dict[str, Any]:

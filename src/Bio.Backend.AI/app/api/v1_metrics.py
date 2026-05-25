@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1", tags=["Vision - Model Metrics"])
 
+
 def _get_metrics_path() -> Path:
     """Dynamically get the evaluation metrics path based on active model version."""
     from app.services.vision.classifier import get_classifier

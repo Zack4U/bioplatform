@@ -12,7 +12,7 @@ import json
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated, Any, Optional
 
 from fastapi import (
     APIRouter,
@@ -251,6 +251,35 @@ async def reload_model(
 # -- Validate (Pre-activation) -----------------------------------------------
 
 
+def _collect_test_images(test_dir: Path) -> list[tuple[Path, str]]:
+    """Gather all image paths and their corresponding expected class names from test directory."""
+    test_images: list[tuple[Path, str]] = []
+    for class_dir in test_dir.iterdir():
+        if not class_dir.is_dir():
+            continue
+        images = list(class_dir.glob("*.jpg")) + list(class_dir.glob("*.png"))
+        for img_path in images:
+            test_images.append((img_path, class_dir.name))
+    return test_images
+
+
+def _evaluate_candidate(candidate: Any, sample: list[tuple[Path, str]]) -> float:
+    """Evaluate candidate model on a sample of images and return accuracy."""
+    correct = 0
+    sample_size = len(sample)
+    for img_path, expected_class in sample:
+        try:
+            img_bytes = img_path.read_bytes()
+            result = candidate.classify(img_bytes, top_k=1)
+            if result["predictions"]:
+                predicted = result["predictions"][0]["species"].replace(" ", "_")
+                if predicted == expected_class:
+                    correct += 1
+        except Exception:
+            pass
+    return correct / sample_size if sample_size > 0 else 0.0
+
+
 @router.post(
     "/validate",
     response_model=ModelValidateResponse,
@@ -305,17 +334,7 @@ async def validate_model(
             message="No test directory found. Skipping validation.",
         )
 
-    # Sample up to 50 images for fast validation
-    import random
-
-    test_images: list[tuple[Path, str]] = []
-    for class_dir in test_dir.iterdir():
-        if not class_dir.is_dir():
-            continue
-        images = list(class_dir.glob("*.jpg")) + list(class_dir.glob("*.png"))
-        for img_path in images:
-            test_images.append((img_path, class_dir.name))
-
+    test_images = _collect_test_images(test_dir)
     if not test_images:
         return ModelValidateResponse(
             version=version,
@@ -327,22 +346,11 @@ async def validate_model(
         )
 
     # Sample subset
+    import random
     sample_size = min(50, len(test_images))
     sample = random.sample(test_images, sample_size)
 
-    correct = 0
-    for img_path, expected_class in sample:
-        try:
-            img_bytes = img_path.read_bytes()
-            result = candidate.classify(img_bytes, top_k=1)
-            if result["predictions"]:
-                predicted = result["predictions"][0]["species"].replace(" ", "_")
-                if predicted == expected_class:
-                    correct += 1
-        except Exception:
-            pass
-
-    accuracy = correct / sample_size if sample_size > 0 else 0.0
+    accuracy = _evaluate_candidate(candidate, sample)
 
     # Compare with active model
     active_classifier = get_classifier()

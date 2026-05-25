@@ -32,7 +32,6 @@ class HardwareStatusResponse(BaseModel):
     multiprocessors: Optional[int] = Field(None, description="CUDA Multiprocessor count")
 
 
-
 # -- Training -----------------------------------------------------------------
 
 

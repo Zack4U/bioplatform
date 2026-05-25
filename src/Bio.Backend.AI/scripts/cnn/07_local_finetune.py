@@ -196,15 +196,17 @@ def main() -> None:
                 try:
                     with open(DELTA_MANIFEST, "r", encoding="utf-8") as f:
                         manifest_data = json.load(f)
-                    
+
                     if manifest_data.get("total_downloaded", 0) == 0:
-                        ans = input("\n[PROMPT] No new images were downloaded. Do you want to continue training with the existing dataset? [y/N]: ")
+                        ans = input(
+                            "\n[PROMPT] No new images were downloaded. "
+                            "Do you want to continue training with the existing dataset? [y/N]: "
+                        )
                         if ans.lower() not in ["y", "yes"]:
                             print("\n[INFO] Aborting fine-tuning process as per user request.")
                             sys.exit(0)
                 except Exception as e:
                     print(f"[WARN] Could not read manifest to verify downloaded images: {e}")
-                    
         else:
             print("[WARN] Delta download script not found. Skipping.")
     else:
@@ -312,7 +314,7 @@ def main() -> None:
     print("  To activate this model:")
     print(f"    1. Upload: POST /api/v1/model/upload (files from {output_dir})")
     print(f"    2. Validate: POST /api/v1/model/validate?version={version}")
-    print(f"    3. Activate: POST /api/v1/ai/models/{{id}}/activate")
+    print("    3. Activate: POST /api/v1/ai/models/{id}/activate")
     print()
     print("  Or manually reload:")
     print(f'    POST /api/v1/model/reload  {{"version": "{version}"}}')

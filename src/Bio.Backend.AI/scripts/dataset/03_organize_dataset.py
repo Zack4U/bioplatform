@@ -225,7 +225,7 @@ def apply_replay_buffer(
         total_old_sampled += len(sampled_old)
         total_old_skipped += len(old_imgs) - len(sampled_old)
 
-    print(f"  → Replay Buffer applied:")
+    print("  → Replay Buffer applied:")
     print(f"    New images (100%):      {total_new:,}")
     print(f"    Old images sampled:     {total_old_sampled:,} "
           f"({replay_ratio:.0%} of {total_old_sampled + total_old_skipped:,})")
