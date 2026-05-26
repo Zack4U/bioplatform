@@ -161,9 +161,8 @@ def test_get_classifier_active_checkpoint(mock_classifier):
         patch("pathlib.Path.exists", mock_exists_side_effect),
         patch("pathlib.Path.is_dir", return_value=True),
     ):
-        expected = Path(
-            "e:/Projects/bioplatform/src/Bio.Backend.AI/data/weights/v1.0.0/checkpoint.pth"
-        )
+        from app.services.training.finetune_orchestrator import _WEIGHTS_DIR
+        expected = _WEIGHTS_DIR / "v1.0.0" / "checkpoint.pth"
         assert _get_classifier_active_checkpoint() == expected
 
 
