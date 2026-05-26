@@ -44,5 +44,27 @@ public class AiModelVersionTests
             model.Deactivate();
             model.IsActive.Should().BeFalse();
         }
+
+        [Fact]
+        public void SoftDelete_ShouldSetIsDeletedAndDeactivate()
+        {
+            var model = new AiModelVersion(ModelName, Version, AccuracyMetric, DeployedAt, true);
+            model.IsActive.Should().BeTrue();
+            model.IsDeleted.Should().BeFalse();
+
+            model.SoftDelete();
+            model.IsDeleted.Should().BeTrue();
+            model.IsActive.Should().BeFalse();
+        }
+
+        [Fact]
+        public void SetValidationAccuracy_ShouldSetValidationAccuracy()
+        {
+            var model = new AiModelVersion(ModelName, Version, AccuracyMetric, DeployedAt);
+            model.ValidationAccuracy.Should().BeNull();
+
+            model.SetValidationAccuracy(0.92m);
+            model.ValidationAccuracy.Should().Be(0.92m);
+        }
     }
 }

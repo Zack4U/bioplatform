@@ -58,43 +58,43 @@ public class ReceiveTrainingWebhookCommandHandler
         switch (request.Status)
         {
             case "Completed":
-            {
-                // Create AiModelVersion record
-                int? modelVersionId = null;
-
-                if (!string.IsNullOrEmpty(request.Version))
                 {
-                    // Extract model name from config JSON
-                    var modelName = "efficientnet_b0"; // default
-                    if (!string.IsNullOrEmpty(request.ConfigJson))
+                    // Create AiModelVersion record
+                    int? modelVersionId = null;
+
+                    if (!string.IsNullOrEmpty(request.Version))
                     {
-                        try
+                        // Extract model name from config JSON
+                        var modelName = "efficientnet_b0"; // default
+                        if (!string.IsNullOrEmpty(request.ConfigJson))
                         {
-                            var configDoc = System.Text.Json.JsonDocument.Parse(request.ConfigJson);
-                            if (configDoc.RootElement.TryGetProperty("model_name", out var mnProp))
-                                modelName = mnProp.GetString() ?? modelName;
+                            try
+                            {
+                                var configDoc = System.Text.Json.JsonDocument.Parse(request.ConfigJson);
+                                if (configDoc.RootElement.TryGetProperty("model_name", out var mnProp))
+                                    modelName = mnProp.GetString() ?? modelName;
+                            }
+                            catch { /* ignore parse errors */ }
                         }
-                        catch { /* ignore parse errors */ }
+
+                        var modelVersion = new AiModelVersion(
+                            modelName: modelName,
+                            version: request.Version,
+                            accuracyMetric: request.Accuracy ?? 0m,
+                            deployedAt: DateTime.UtcNow,
+                            isActive: false,
+                            notes: request.StatusMessage,
+                            configJson: request.ConfigJson,
+                            metricsJson: request.MetricsJson);
+
+                        await _repo.AddVersionAsync(modelVersion, cancellationToken);
+                        await _unitOfWork.SaveChangesAsync(cancellationToken);
+                        modelVersionId = modelVersion.Id;
                     }
 
-                    var modelVersion = new AiModelVersion(
-                        modelName: modelName,
-                        version: request.Version,
-                        accuracyMetric: request.Accuracy ?? 0m,
-                        deployedAt: DateTime.UtcNow,
-                        isActive: false,
-                        notes: request.StatusMessage,
-                        configJson: request.ConfigJson,
-                        metricsJson: request.MetricsJson);
-
-                    await _repo.AddVersionAsync(modelVersion, cancellationToken);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
-                    modelVersionId = modelVersion.Id;
+                    job.MarkCompleted(request.StatusMessage, modelVersionId);
+                    break;
                 }
-
-                job.MarkCompleted(request.StatusMessage, modelVersionId);
-                break;
-            }
             case "Running":
                 job.UpdateStatusMessage(request.StatusMessage);
                 break;
