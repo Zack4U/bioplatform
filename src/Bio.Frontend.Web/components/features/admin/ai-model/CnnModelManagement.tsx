@@ -23,7 +23,7 @@ import { StatusBadge } from "@/components/common";
 import { AdminDataTable, type ColumnDef } from "@/components/features/admin/shared/AdminDataTable";
 import { useCnnModelManagementPage } from "@/hooks/features/admin/useCnnModelManagementPage";
 import type { CnnModelVersion } from "@/types";
-import { Brain, Upload, Activity, Server, History, Power, Trash2, AlertTriangle, RefreshCcw } from "lucide-react";
+import { Brain, Upload, Activity, History, Power, Trash2, AlertTriangle, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import {
@@ -45,13 +45,11 @@ export function CnnModelManagement() {
         versions,
         isVersionsLoading,
         refetchVersions,
-        activeMetrics,
         isActiveMetricsLoading,
         observationsSummary,
         isObservationsSummaryLoading,
         recentJobs,
         isJobsLoading,
-        refetchJobs,
         isJobsFetching,
 
         // Mutations
@@ -60,7 +58,6 @@ export function CnnModelManagement() {
 
         // Context
         activeJob,
-        activeModel,
 
         // Dialog state controllers
         isAutoOpen,

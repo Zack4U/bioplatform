@@ -96,24 +96,7 @@ export function Navbar() {
     /** Hide the public Navbar inside the admin panel */
     if (pathname.startsWith("/admin")) return null;
 
-    const userMenuLinks = (
-        <>
-            <Link href="/profile" className="flex items-center gap-2 w-full">
-                <User className="h-4 w-4" aria-hidden="true" />
-                Mi perfil
-            </Link>
-            <Link href="/settings" className="flex items-center gap-2 w-full">
-                <Settings className="h-4 w-4" aria-hidden="true" />
-                Configuracion
-            </Link>
-            {hasAdminAccess && (
-                <Link href="/admin" className="flex items-center gap-2 w-full">
-                    <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
-                    Panel de Administracion
-                </Link>
-            )}
-        </>
-    );
+
 
     return (
         <>

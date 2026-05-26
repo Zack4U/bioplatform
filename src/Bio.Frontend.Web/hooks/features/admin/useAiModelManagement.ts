@@ -118,7 +118,7 @@ export function useStartFineTuning() {
         { epochs?: number; learningRate?: number; replayBufferRatio?: number }
     >({
         mutationFn: startFineTuning,
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Trabajo de entrenamiento iniciado con éxito en el servidor.");
             queryClient.invalidateQueries({ queryKey: AI_ADMIN_KEYS.jobs });
         },
@@ -139,7 +139,7 @@ export function useUploadManualModel() {
     >({
         mutationFn: ({ weightsFile, configFile, metricsFile, notes }) =>
             uploadManualModel(weightsFile, configFile, metricsFile, notes),
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Archivos del modelo subidos correctamente. Procesando e integrando en DVC...");
             queryClient.invalidateQueries({ queryKey: AI_ADMIN_KEYS.models });
             queryClient.invalidateQueries({ queryKey: AI_ADMIN_KEYS.jobs });

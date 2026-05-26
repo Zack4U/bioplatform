@@ -74,24 +74,29 @@ export function useCnnModelManagementPage() {
         }
 
         list.sort((a, b) => {
-            let valA = (a as Record<string, any>)[sortBy];
-            let valB = (b as Record<string, any>)[sortBy];
+            const valA = a[sortBy as keyof CnnModelVersion];
+            const valB = b[sortBy as keyof CnnModelVersion];
 
             if (sortBy === "deployedAt") {
-                valA = new Date(valA).getTime();
-                valB = new Date(valB).getTime();
+                const timeA = valA ? new Date(valA as string | number | Date).getTime() : 0;
+                const timeB = valB ? new Date(valB as string | number | Date).getTime() : 0;
+                return sortOrder === "asc" ? timeA - timeB : timeB - timeA;
             }
 
             if (valA === undefined || valA === null) return 1;
             if (valB === undefined || valB === null) return -1;
 
-            if (typeof valA === "string") {
+            if (typeof valA === "string" && typeof valB === "string") {
                 return sortOrder === "asc"
                     ? valA.localeCompare(valB)
                     : valB.localeCompare(valA);
             }
 
-            return sortOrder === "asc" ? valA - valB : valB - valA;
+            if (typeof valA === "number" && typeof valB === "number") {
+                return sortOrder === "asc" ? valA - valB : valB - valA;
+            }
+
+            return 0;
         });
 
         return list;

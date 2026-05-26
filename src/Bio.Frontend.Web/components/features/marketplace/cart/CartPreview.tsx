@@ -165,14 +165,12 @@ function CartBody({
     items,
     count,
     total,
-    isRefreshing,
     closeCart,
     handleClearCart,
 }: {
     items: CartItem[];
     count: number;
     total: number;
-    isRefreshing: boolean;
     closeCart: () => void;
     handleClearCart: () => void;
 }) {
@@ -305,7 +303,7 @@ export function CartPreview() {
         closeCart();
     }, [clearCart, closeCart]);
 
-    const bodyProps = { items, count, total, isRefreshing, closeCart, handleClearCart };
+    const bodyProps = { items, count, total, closeCart, handleClearCart };
 
     const headerContent = (
         <>
