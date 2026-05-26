@@ -9,7 +9,6 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
-from fastapi import HTTPException
 
 from app.api.v1_metrics import (
     _build_f1_histogram,

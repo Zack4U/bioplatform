@@ -5,10 +5,9 @@ Tests for app.api.v1_training.
 from __future__ import annotations
 
 import sys
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
-from fastapi import HTTPException
 
 
 class TestTrainingEndpoint:
@@ -61,7 +60,7 @@ class TestTrainingEndpoint:
         with (
             patch("torch.cuda.is_available", return_value=True),
             patch("torch.cuda.mem_get_info", return_value=(10 * 1024**3, 16 * 1024**3)),
-            patch("app.services.training.finetune_orchestrator.run_finetune") as mock_run,
+            patch("app.services.training.finetune_orchestrator.run_finetune"),
         ):
             resp = await app_client.post(
                 "/api/v1/training/finetune",

@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import json
 import signal
-import subprocess
 from pathlib import Path
 from unittest.mock import ANY, AsyncMock, MagicMock, patch
 
@@ -80,7 +79,7 @@ def test_run_delta_download():
 
     # Case 2: Script doesn't exist
     with patch("pathlib.Path.exists", return_value=False):
-        _run_delta_download() # Should log warning and return
+        _run_delta_download()  # Should log warning and return
 
     # Case 3: Script failure
     mock_run.returncode = 1
@@ -153,6 +152,7 @@ def test_get_classifier_active_checkpoint(mock_classifier):
 
     # Classifier loaded, custom version, exists
     mock_classifier.active_version = "v1.0.0"
+
     def mock_exists_side_effect(self):
         return True
 
@@ -161,7 +161,10 @@ def test_get_classifier_active_checkpoint(mock_classifier):
         patch("pathlib.Path.exists", mock_exists_side_effect),
         patch("pathlib.Path.is_dir", return_value=True),
     ):
-        assert _get_classifier_active_checkpoint() == Path("e:/Projects/bioplatform/src/Bio.Backend.AI/data/weights/v1.0.0/checkpoint.pth")
+        expected = Path(
+            "e:/Projects/bioplatform/src/Bio.Backend.AI/data/weights/v1.0.0/checkpoint.pth"
+        )
+        assert _get_classifier_active_checkpoint() == expected
 
 
 def test_find_latest_versioned_checkpoint():
@@ -342,7 +345,10 @@ class TestRunFinetuneOrchestration:
             patch("app.core.config.get_settings", return_value=mock_settings),
             patch("app.services.training.finetune_orchestrator._step_download_delta", return_value=True),
             patch("app.services.training.finetune_orchestrator._find_active_checkpoint", return_value=None),
-            patch("app.services.training.finetune_orchestrator._run_dataset_organization", side_effect=RuntimeError("Zip failed")),
+            patch(
+                "app.services.training.finetune_orchestrator._run_dataset_organization",
+                side_effect=RuntimeError("Zip failed"),
+            ),
             patch("app.services.training.finetune_orchestrator._notify_dotnet_sync") as mock_notify,
         ):
             run_finetune("job-123")

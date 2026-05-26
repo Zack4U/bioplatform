@@ -4,12 +4,10 @@ Tests for app.api.v1_model_registry.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from fastapi import HTTPException, UploadFile
 
 from app.api.v1_model_registry import (
     _collect_test_images,
@@ -17,7 +15,6 @@ from app.api.v1_model_registry import (
     _evaluate_candidate,
     _generate_version_tag,
 )
-from app.models.training import ModelReloadRequest
 
 
 def test_generate_version_tag(mock_settings):
@@ -243,7 +240,10 @@ class TestModelRegistryEndpoints:
             patch.object(Path, "exists", return_value=True),
             patch("app.services.vision.classifier.SpeciesClassifier.load_model"),
             patch("app.api.v1_model_registry._collect_test_images", return_value=[(Path("img1.jpg"), "Bombus_funebris")]),
-            patch("app.api.v1_model_registry._evaluate_candidate", return_value=0.80), # accuracy = 0.80, drop = -0.10 (threshold 0.05)
+            patch(
+                "app.api.v1_model_registry._evaluate_candidate",
+                return_value=0.80,
+            ),  # accuracy = 0.80, drop = -0.10 (threshold 0.05)
             patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier),
             patch("app.core.config.get_settings", return_value=mock_settings),
         ):
