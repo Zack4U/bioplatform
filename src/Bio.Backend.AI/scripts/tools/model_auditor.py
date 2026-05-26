@@ -70,12 +70,36 @@ def _load_env_f1_threshold() -> float:
     return 0.65
 
 
+def _get_auditor_eval_dir(weights_path: Path | None = None) -> Path:
+    """Resolve the evaluation directory for the auditor dynamically."""
+    if weights_path is not None:
+        if weights_path.is_file():
+            return weights_path.parent
+        if weights_path.is_dir():
+            return weights_path
+
+    # Auto-detect latest versioned folder in data/weights
+    weights_dir = PROJECT_ROOT / "data" / "weights"
+    if weights_dir.exists():
+        candidates = []
+        for p in weights_dir.iterdir():
+            if p.is_dir() and (p / "best_model.pth").exists():
+                candidates.append(p)
+        if candidates:
+            candidates.sort()
+            return candidates[-1]
+
+    # Fallback to legacy evaluation path
+    return PROJECT_ROOT / "data" / "evaluation"
+
+
 def _load_species_f1_data(min_f1: float) -> tuple[set[str] | None, dict[str, float]]:
     """Load evaluation metrics. Returns (allowed_set_or_None, f1_scores_dict)."""
     global _species_stats
-    eval_path = PROJECT_ROOT / "data" / "evaluation" / "evaluation_metrics.json"
+    eval_dir = _get_auditor_eval_dir(_weights_path)
+    eval_path = eval_dir / "evaluation_metrics.json"
     if not eval_path.exists():
-        print("  [WARN] evaluation_metrics.json not found, F1 filter disabled.")
+        print(f"  [WARN] evaluation_metrics.json not found in {eval_dir}, F1 filter disabled.")
         return None, {}
     import json as _json
 
@@ -193,9 +217,10 @@ async def metrics_summary():
     """Return full evaluation metrics summary for the dashboard."""
     import json as _json
 
-    eval_path = PROJECT_ROOT / "data" / "evaluation" / "evaluation_metrics.json"
+    eval_dir = _get_auditor_eval_dir(_weights_path)
+    eval_path = eval_dir / "evaluation_metrics.json"
     if not eval_path.exists():
-        return JSONResponse(status_code=404, content={"error": "evaluation_metrics.json not found"})
+        return JSONResponse(status_code=404, content={"error": f"evaluation_metrics.json not found in {eval_dir}"})
     with open(eval_path, encoding="utf-8") as f:
         metrics = _json.load(f)
 
@@ -245,9 +270,10 @@ async def metrics_misclassified():
     """Return misclassified samples from evaluation."""
     import json as _json
 
-    path = PROJECT_ROOT / "data" / "evaluation" / "misclassified_samples.json"
+    eval_dir = _get_auditor_eval_dir(_weights_path)
+    path = eval_dir / "misclassified_samples.json"
     if not path.exists():
-        return JSONResponse(status_code=404, content={"error": "misclassified_samples.json not found"})
+        return JSONResponse(status_code=404, content={"error": f"misclassified_samples.json not found in {eval_dir}"})
     with open(path, encoding="utf-8") as f:
         samples = _json.load(f)
     return {"samples": samples, "total": len(samples)}
@@ -258,9 +284,10 @@ async def metrics_confusion():
     """Return top confused species pairs from evaluation."""
     import re
 
-    path = PROJECT_ROOT / "data" / "evaluation" / "confusion_matrix.txt"
+    eval_dir = _get_auditor_eval_dir(_weights_path)
+    path = eval_dir / "confusion_matrix.txt"
     if not path.exists():
-        return JSONResponse(status_code=404, content={"error": "confusion_matrix.txt not found"})
+        return JSONResponse(status_code=404, content={"error": f"confusion_matrix.txt not found in {eval_dir}"})
     pairs = []
     with open(path, encoding="utf-8") as f:
         for line in f:
@@ -1671,7 +1698,18 @@ def main() -> None:
 
     global _weights_path, _min_f1, _allowed_species, _species_f1, _f1_warn_threshold
     if args.weights:
-        _weights_path = PROJECT_ROOT / "data" / "weights" / args.weights
+        cand = Path(args.weights)
+        if cand.exists():
+            if cand.is_dir():
+                _weights_path = cand / "best_model.pth"
+            else:
+                _weights_path = cand
+        else:
+            cand_w = PROJECT_ROOT / "data" / "weights" / args.weights
+            if cand_w.is_dir():
+                _weights_path = cand_w / "best_model.pth"
+            else:
+                _weights_path = cand_w
 
     _f1_warn_threshold = _load_env_f1_threshold()
     _min_f1 = args.min_f1

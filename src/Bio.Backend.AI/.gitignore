@@ -84,3 +84,5 @@ data/processed/val*
 *.rar
 data/reports*
 #data/species_catalog
+data/weights/*.pth
+*.pth

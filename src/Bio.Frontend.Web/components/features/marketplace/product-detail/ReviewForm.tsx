@@ -1,29 +1,40 @@
 /**
- * ReviewForm — slide-in Sheet for submitting a product review.
+ * ReviewForm — responsive review submission overlay.
  *
- * Opens from the right on desktop, from the bottom on mobile.
+ * Desktop (md+) → Dialog (centered modal).
+ * Mobile        → Drawer (bottom sheet — vaul).
+ *
+ * Uses useIsMd() from the global useMediaQuery hook for uniform
+ * breakpoint detection across the entire application.
+ *
  * Contains a 5-star rating selector and an optional comment textarea.
- *
  * Validation: rating is required (1–5), comment is optional (max 1000 chars).
  *
  * UI ONLY — receives onSubmit from the parent hook, shows isSubmitting state.
- *
  * Architecture: Hook Pattern (copilot-instructions.md §2.2)
  */
 
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useIsMd } from "@/hooks/useMediaQuery";
 import type { CreateReviewRequest } from "@/types/marketplace";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -128,6 +139,119 @@ function StarSelector({
   );
 }
 
+/* ─── Shared form body ───────────────────────────────────────────────────── */
+
+function ReviewFormBody({
+  ratingValue,
+  commentValue,
+  errors,
+  isSubmitting,
+  onClose,
+  handleRatingChange,
+  handleFormSubmit,
+  register,
+}: {
+  ratingValue: number;
+  commentValue: string;
+  errors: ReturnType<typeof useForm<ReviewFormValues>>["formState"]["errors"];
+  isSubmitting: boolean;
+  onClose: () => void;
+  handleRatingChange: (r: number) => void;
+  handleFormSubmit: (e: React.FormEvent) => void;
+  register: ReturnType<typeof useForm<ReviewFormValues>>["register"];
+}) {
+  return (
+    <form
+      onSubmit={handleFormSubmit}
+      className="flex flex-col flex-1 gap-6 px-4 py-6 md:px-0"
+      noValidate
+    >
+      {/* ── Star rating ─────────────────────────────────── */}
+      <div className="space-y-2">
+        <Label htmlFor="rating-group" className="text-sm font-medium">
+          Calificacion{" "}
+          <span className="text-destructive" aria-hidden="true">
+            *
+          </span>
+        </Label>
+        <div id="rating-group">
+          <StarSelector
+            value={ratingValue}
+            onChange={handleRatingChange}
+            error={errors.rating?.message}
+          />
+        </div>
+      </div>
+
+      {/* ── Comment textarea ─────────────────────────────── */}
+      <div className="space-y-2 flex-1">
+        <Label htmlFor="comment" className="text-sm font-medium">
+          Comentario{" "}
+          <span className="text-muted-foreground font-normal text-xs">
+            (opcional)
+          </span>
+        </Label>
+        <Textarea
+          id="comment"
+          placeholder="Cuéntanos tu experiencia con este producto..."
+          className="resize-none min-h-[120px]"
+          maxLength={1000}
+          aria-describedby="comment-count"
+          aria-invalid={!!errors.comment}
+          {...register("comment")}
+        />
+        <div className="flex items-start justify-between gap-2">
+          {errors.comment ? (
+            <p className="text-sm text-destructive" role="alert">
+              {errors.comment.message}
+            </p>
+          ) : (
+            <span />
+          )}
+          <p
+            id="comment-count"
+            className="text-xs text-muted-foreground text-right shrink-0"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {commentValue.length}/1000
+          </p>
+        </div>
+      </div>
+
+      {/* ── Footer actions ───────────────────────────────── */}
+      <div className="flex flex-col-reverse sm:flex-row gap-2 mt-auto">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onClose}
+          disabled={isSubmitting}
+          className="w-full sm:w-auto"
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full sm:w-auto gap-2"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2
+                className="h-4 w-4 animate-spin"
+                aria-hidden="true"
+              />
+              Enviando...
+            </>
+          ) : (
+            "Publicar resena"
+          )}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
 /* ─── Component ─────────────────────────────────────────────────────────── */
 
 export function ReviewForm({
@@ -137,6 +261,8 @@ export function ReviewForm({
   isSubmitting,
   productName,
 }: ReviewFormProps) {
+  const isDesktop = useIsMd();
+
   const {
     register,
     handleSubmit,
@@ -171,112 +297,61 @@ export function ReviewForm({
     onClose();
   };
 
-  return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <SheetContent
-        side="right"
-        className="w-full sm:max-w-md flex flex-col"
-        aria-labelledby="review-form-title"
-        aria-describedby="review-form-description"
-      >
-        <SheetHeader>
-          <SheetTitle id="review-form-title">Escribir resena</SheetTitle>
-          <SheetDescription id="review-form-description">
-            Comparte tu opinion sobre{" "}
-            <span className="font-medium text-foreground">{productName}</span>.
-            Tu resena ayuda a otros compradores.
-          </SheetDescription>
-        </SheetHeader>
+  const formProps = {
+    ratingValue,
+    commentValue,
+    errors,
+    isSubmitting,
+    onClose: handleClose,
+    handleRatingChange,
+    handleFormSubmit,
+    register,
+  };
 
-        <form
-          onSubmit={handleFormSubmit}
-          className="flex flex-col flex-1 gap-6 py-6"
-          noValidate
+  const subtitle = (
+    <>
+      Comparte tu opinion sobre{" "}
+      <span className="font-medium text-foreground">{productName}</span>.
+      Tu resena ayuda a otros compradores.
+    </>
+  );
+
+  /* Desktop: centered Dialog */
+  if (isDesktop) {
+    return (
+      <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+        <DialogContent
+          className="sm:max-w-md"
+          aria-labelledby="review-form-title"
+          aria-describedby="review-form-description"
         >
-          {/* ── Star rating ─────────────────────────────────── */}
-          <div className="space-y-2">
-            <Label htmlFor="rating-group" className="text-sm font-medium">
-              Calificacion{" "}
-              <span className="text-destructive" aria-hidden="true">
-                *
-              </span>
-            </Label>
-            <div id="rating-group">
-              <StarSelector
-                value={ratingValue}
-                onChange={handleRatingChange}
-                error={errors.rating?.message}
-              />
-            </div>
-          </div>
+          <DialogHeader>
+            <DialogTitle id="review-form-title">Escribir resena</DialogTitle>
+            <DialogDescription id="review-form-description">
+              {subtitle}
+            </DialogDescription>
+          </DialogHeader>
+          <ReviewFormBody {...formProps} />
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
-          {/* ── Comment textarea ─────────────────────────────── */}
-          <div className="space-y-2 flex-1">
-            <Label htmlFor="comment" className="text-sm font-medium">
-              Comentario{" "}
-              <span className="text-muted-foreground font-normal text-xs">
-                (opcional)
-              </span>
-            </Label>
-            <Textarea
-              id="comment"
-              placeholder="Cuéntanos tu experiencia con este producto..."
-              className="resize-none min-h-[120px]"
-              maxLength={1000}
-              aria-describedby="comment-count"
-              aria-invalid={!!errors.comment}
-              {...register("comment")}
-            />
-            <div className="flex items-start justify-between gap-2">
-              {errors.comment ? (
-                <p className="text-sm text-destructive" role="alert">
-                  {errors.comment.message}
-                </p>
-              ) : (
-                <span />
-              )}
-              <p
-                id="comment-count"
-                className="text-xs text-muted-foreground text-right shrink-0"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                {commentValue.length}/1000
-              </p>
-            </div>
-          </div>
-
-          {/* ── Footer actions ───────────────────────────────── */}
-          <SheetFooter className="flex-col-reverse sm:flex-row gap-2 mt-auto">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={isSubmitting}
-              className="w-full sm:w-auto"
-            >
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full sm:w-auto gap-2"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2
-                    className="h-4 w-4 animate-spin"
-                    aria-hidden="true"
-                  />
-                  Enviando...
-                </>
-              ) : (
-                "Publicar resena"
-              )}
-            </Button>
-          </SheetFooter>
-        </form>
-      </SheetContent>
-    </Sheet>
+  /* Mobile: bottom Drawer */
+  return (
+    <Drawer open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+      <DrawerContent aria-labelledby="review-drawer-title" aria-describedby="review-drawer-description">
+        <DrawerHeader className="text-left">
+          <DrawerTitle id="review-drawer-title">Escribir resena</DrawerTitle>
+          <DrawerDescription id="review-drawer-description">
+            {subtitle}
+          </DrawerDescription>
+        </DrawerHeader>
+        <div className="overflow-y-auto">
+          <ReviewFormBody {...formProps} />
+        </div>
+        <DrawerFooter className="pt-0" />
+      </DrawerContent>
+    </Drawer>
   );
 }

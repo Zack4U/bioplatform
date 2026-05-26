@@ -109,6 +109,8 @@ public record OrderFilterParams
 
 public record FavoriteCreateDTO(string TargetType, Guid TargetId);
 public record FavoriteResponseDTO(Guid Id, string TargetType, Guid TargetId, DateTime CreatedAt);
+/// <summary>Returned by the /toggle endpoint — tells the client whether the item is now a favourite.</summary>
+public record ToggleFavoriteStatusDTO(Guid ProductId, bool IsFavorite);
 
 // === Addresses ===
 

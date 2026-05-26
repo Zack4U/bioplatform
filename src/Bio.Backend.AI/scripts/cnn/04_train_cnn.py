@@ -57,7 +57,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 
@@ -401,6 +401,37 @@ def validate(
     return avg_loss, accuracy
 
 
+# ── Checkpoint Saving ─────────────────────────────────────────────
+
+
+def _save_checkpoint(
+    model: nn.Module,
+    optimizer: optim.Optimizer,
+    scheduler: optim.lr_scheduler.LRScheduler | None,
+    epoch: int,
+    best_val_acc: float,
+    output_dir: Path,
+) -> None:
+    """
+    Save a full training checkpoint (model + optimizer + scheduler state).
+
+    Saves two files:
+    - checkpoint.pth: Full state for warm-start resume (prevents loss spikes).
+    - best_model.pth: Plain state_dict for inference (used by classifier.py).
+    """
+    checkpoint = {
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "epoch": epoch,
+        "best_val_acc": best_val_acc,
+    }
+    if scheduler is not None:
+        checkpoint["scheduler_state_dict"] = scheduler.state_dict()
+
+    torch.save(checkpoint, output_dir / "checkpoint.pth")
+    torch.save(model.state_dict(), output_dir / "best_model.pth")
+
+
 # ── Main Training Pipeline ────────────────────────────────────────
 
 def main() -> None:
@@ -437,10 +468,23 @@ def main() -> None:
                         help="Epoch to start SWA (0 = disabled, e.g. 70)")
     parser.add_argument("--swa-lr", type=float, default=1e-5,
                         help="SWA learning rate")
+    parser.add_argument("--resume-checkpoint", type=str, default=None,
+                        help="Path to checkpoint.pth for warm-start (loads model+optimizer+scheduler)")
+    parser.add_argument("--output-dir", type=str, default=None,
+                        help="Versioned output directory (e.g. data/weights/v1.0.20260516). "
+                             "Defaults to data/weights/ for backward compat.")
     args = parser.parse_args()
 
     # ── Setup ──────────────────────────────────────────────────────
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Resolve output directory (versioned or legacy flat)
+    if args.output_dir:
+        output_dir = Path(args.output_dir)
+    else:
+        output_dir = WEIGHTS_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     print(f"\n{'=' * 60}")
     print("  CNN TRAINING PIPELINE - BioPlatform Caldas")
     print(f"{'=' * 60}")
@@ -452,11 +496,14 @@ def main() -> None:
     print(f"  Image size: {args.image_size}px")
     print(f"  Batch size: {args.batch_size}")
     print(f"  Epochs:     {args.epochs} (freeze: {args.freeze_epochs})")
-    print(f"  LR:         {args.lr} → {args.unfreeze_lr} (after unfreeze)")
+    print(f"  LR:         {args.lr} -> {args.unfreeze_lr} (after unfreeze)")
     print(f"  Mixup:      alpha={args.mixup_alpha}")
     print(f"  CutMix:     alpha={args.cutmix_alpha}")
     print(f"  Warmup:     {args.warmup_epochs} epochs")
     print(f"  LR Decay:   {args.lr_decay_factor}")
+    print(f"  Output:     {output_dir}")
+    if args.resume_checkpoint:
+        print(f"  Resume:     {args.resume_checkpoint}")
     if args.swa_start > 0:
         print(f"  SWA:        start={args.swa_start}, lr={args.swa_lr}")
     print(f"{'=' * 60}\n")
@@ -504,7 +551,32 @@ def main() -> None:
     )
 
     # ── Model ──────────────────────────────────────────────────────
-    model = build_model(args.model, num_classes, pretrained=True)
+    resumed_epoch = 0
+
+    if args.resume_checkpoint:
+        # Warm-Start: load model from checkpoint (fine-tuning existing model)
+        ckpt_path = Path(args.resume_checkpoint)
+        if not ckpt_path.exists():
+            print(f"[ERROR] Checkpoint not found: {ckpt_path}")
+            sys.exit(1)
+
+        print(f"[INFO] Loading warm-start checkpoint: {ckpt_path}")
+        model = build_model(args.model, num_classes, pretrained=False)
+        checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
+
+        if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
+            model.load_state_dict(checkpoint["model_state_dict"])
+            resumed_epoch = checkpoint.get("epoch", 0)
+            print(f"[INFO] Resumed from epoch {resumed_epoch}, "
+                  f"best_val_acc={checkpoint.get('best_val_acc', 'N/A')}")
+        else:
+            # Plain state_dict (legacy format)
+            model.load_state_dict(checkpoint)
+            print("[INFO] Loaded legacy state_dict (no optimizer state)")
+    else:
+        # Fresh training from ImageNet pretrained weights
+        model = build_model(args.model, num_classes, pretrained=True)
+
     model = model.to(device)
 
     # Count parameters
@@ -523,11 +595,16 @@ def main() -> None:
         lr=args.lr, weight_decay=args.weight_decay,
     )
 
-    WEIGHTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     history: list[dict] = []
     best_val_acc = 0.0
     patience_counter = 0
     start_time = time.time()
+
+    # Restore optimizer state if available (prevents loss spike on resume)
+    if args.resume_checkpoint and isinstance(checkpoint, dict):
+        if "best_val_acc" in checkpoint:
+            best_val_acc = checkpoint["best_val_acc"]
 
     print(f"\n{'─' * 50}")
     print("  Phase 1: Training classifier head (backbone frozen)")
@@ -557,7 +634,10 @@ def main() -> None:
 
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            torch.save(model.state_dict(), WEIGHTS_DIR / "best_model.pth")
+            _save_checkpoint(
+                model, optimizer, None, epoch, best_val_acc,
+                output_dir,
+            )
 
     # ── Phase 2: Fine-tune Entire Model ────────────────────────────
     print(f"\n{'─' * 50}")
@@ -648,9 +728,9 @@ def main() -> None:
                 )
                 if swa_val_acc > best_val_acc:
                     best_val_acc = swa_val_acc
-                    torch.save(
-                        swa_model.module.state_dict(),
-                        WEIGHTS_DIR / "best_model.pth",
+                    _save_checkpoint(
+                        swa_model.module, optimizer, scheduler,
+                        epoch, best_val_acc, output_dir,
                     )
                     improved = f" ★ SWA BEST ({swa_val_acc:.4f})"
                 else:
@@ -659,7 +739,10 @@ def main() -> None:
             if val_acc > best_val_acc:
                 best_val_acc = val_acc
                 patience_counter = 0
-                torch.save(model.state_dict(), WEIGHTS_DIR / "best_model.pth")
+                _save_checkpoint(
+                    model, optimizer, scheduler, epoch,
+                    best_val_acc, output_dir,
+                )
                 improved = " ★ BEST"
             else:
                 patience_counter += 1
@@ -671,7 +754,7 @@ def main() -> None:
 
         # Early stopping (only active before SWA phase)
         if not in_swa_phase and patience_counter >= args.patience:
-            print(f"\n  ⏹ Early stopping at epoch {epoch} (patience={args.patience})")
+            print(f"\n  [STOP] Early stopping at epoch {epoch} (patience={args.patience})")
             break
 
     # ── Finalize SWA model ──────────────────────────────────────────
@@ -683,14 +766,16 @@ def main() -> None:
         print(f"  [INFO] SWA Val Accuracy: {swa_val_acc:.4f} ({swa_val_acc * 100:.1f}%)")
         if swa_val_acc > best_val_acc:
             best_val_acc = swa_val_acc
-            # SWA averaged model wraps the module, extract inner state_dict
-            torch.save(swa_model.module.state_dict(), WEIGHTS_DIR / "best_model.pth")
-            print("  [INFO] SWA model is BETTER → saved as best_model.pth ★")
-        torch.save(swa_model.module.state_dict(), WEIGHTS_DIR / "swa_model.pth")
+            _save_checkpoint(
+                swa_model.module, optimizer, scheduler,
+                len(history), best_val_acc, output_dir,
+            )
+            print("  [INFO] SWA model is BETTER -> saved as best_model.pth")
+        torch.save(swa_model.module.state_dict(), output_dir / "swa_model.pth")
 
     # ── Save final model and metadata ──────────────────────────────
     elapsed = time.time() - start_time
-    torch.save(model.state_dict(), WEIGHTS_DIR / "final_model.pth")
+    torch.save(model.state_dict(), output_dir / "final_model.pth")
 
     # Save training config
     config = {
@@ -717,11 +802,11 @@ def main() -> None:
         "imagenet_mean": [0.485, 0.456, 0.406],
         "imagenet_std": [0.229, 0.224, 0.225],
     }
-    with open(WEIGHTS_DIR / "training_config.json", "w", encoding="utf-8") as f:
+    with open(output_dir / "training_config.json", "w", encoding="utf-8") as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
 
     # Save training history
-    with open(WEIGHTS_DIR / "training_history.json", "w", encoding="utf-8") as f:
+    with open(output_dir / "training_history.json", "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
     # ── Summary ────────────────────────────────────────────────────
@@ -731,8 +816,10 @@ def main() -> None:
     print(f"  Best Val Accuracy: {best_val_acc:.4f} ({best_val_acc * 100:.1f}%)")
     print(f"  Total Epochs:      {len(history)}")
     print(f"  Training Time:     {elapsed / 60:.1f} minutes")
-    print(f"  Model saved:       {WEIGHTS_DIR / 'best_model.pth'}")
-    print(f"  Config saved:      {WEIGHTS_DIR / 'training_config.json'}")
+    print(f"  Output dir:        {output_dir}")
+    print(f"  Model saved:       {output_dir / 'best_model.pth'}")
+    print(f"  Checkpoint saved:  {output_dir / 'checkpoint.pth'}")
+    print(f"  Config saved:      {output_dir / 'training_config.json'}")
     print("\n  Next: python scripts/05_evaluate_model.py")
 
 

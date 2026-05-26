@@ -30,7 +30,7 @@ from typing import Any
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 DEFAULT_V1 = PROJECT_ROOT / "data" / "comparation" / "v2"
 DEFAULT_V2 = PROJECT_ROOT / "data" / "comparation" / "v3"
 DEFAULT_OUTPUT = PROJECT_ROOT / "data" / "comparation" / "report"

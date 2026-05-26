@@ -26,7 +26,7 @@ except ImportError:
     sys.exit(1)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 
 
@@ -42,8 +42,19 @@ class _DropoutLinear(nn.Linear):
 
 
 def main() -> None:
-    config_path = WEIGHTS_DIR / "training_config.json"
-    weights_path = WEIGHTS_DIR / "best_model.pth"
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Export CNN model to ONNX format")
+    parser.add_argument(
+        "--weights-dir", type=str, default=None,
+        help="Versioned weights directory (default: data/weights/)",
+    )
+    args = parser.parse_args()
+
+    weights_dir = Path(args.weights_dir) if args.weights_dir else WEIGHTS_DIR
+
+    config_path = weights_dir / "training_config.json"
+    weights_path = weights_dir / "best_model.pth"
 
     if not config_path.exists() or not weights_path.exists():
         print("[ERROR] Model not found. Train first with 04_train_cnn.py")
@@ -81,12 +92,17 @@ def main() -> None:
         print(f"[ERROR] ONNX export not implemented for {model_name}")
         sys.exit(1)
 
-    model.load_state_dict(torch.load(weights_path, map_location="cpu", weights_only=True))
+    # Support both full checkpoint and plain state_dict
+    checkpoint = torch.load(weights_path, map_location="cpu", weights_only=False)
+    if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
+        model.load_state_dict(checkpoint["model_state_dict"])
+    else:
+        model.load_state_dict(checkpoint)
     model.eval()
 
     # Dummy input
     dummy_input = torch.randn(1, 3, image_size, image_size)
-    onnx_path = WEIGHTS_DIR / "model.onnx"
+    onnx_path = weights_dir / "model.onnx"
 
     torch.onnx.export(
         model, (dummy_input,), str(onnx_path),

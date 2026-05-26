@@ -30,6 +30,17 @@ public class FavoritesController : ControllerBase
         return CreatedAtAction(nameof(GetMine), result);
     }
 
+    /// <summary>
+    /// Toggles a product's favourite status for the authenticated user.
+    /// Returns { productId, isFavorite } — matching the frontend FavoriteStatus type.
+    /// </summary>
+    [HttpPost("{productId:guid}/toggle")]
+    public async Task<IActionResult> Toggle(Guid productId)
+    {
+        var result = await _mediator.Send(new ToggleFavoriteCommand(productId, GetUserId()));
+        return Ok(result);
+    }
+
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Remove(Guid id)
     {

@@ -62,7 +62,7 @@ function snakeToCamelDeep(value: unknown): unknown {
 
 // ── AI-specific Axios client ─────────────────────────────────────────────────
 
-const aiClient = axios.create({
+export const aiClient = axios.create({
     baseURL: AI_API_BASE_URL,
     timeout: 60_000, // CNN inference can be slow on CPU
     headers: { Accept: "application/json" },

@@ -27,4 +27,13 @@ public interface ISpeciesImageRepository
 
     /// <summary>Returns all species images for dashboard aggregation (Researcher Dashboard).</summary>
     Task<IReadOnlyList<SpeciesImage>> GetAllAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns the count of images uploaded after <paramref name="since"/> and the number
+    /// of distinct species those images belong to.
+    /// When <paramref name="since"/> is null, counts all images in the system.
+    /// </summary>
+    Task<(int ImageCount, int SpeciesCount)> CountNewObservationsSinceAsync(
+        DateTime? since,
+        CancellationToken cancellationToken = default);
 }

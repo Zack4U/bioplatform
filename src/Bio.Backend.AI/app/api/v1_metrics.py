@@ -18,8 +18,21 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1", tags=["Vision - Model Metrics"])
 
-# Path to the evaluation metrics file
-_EVAL_METRICS_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "evaluation" / "evaluation_metrics.json"
+
+def _get_metrics_path() -> Path:
+    """Dynamically get the evaluation metrics path based on active model version."""
+    from app.services.vision.classifier import get_classifier
+
+    classifier = get_classifier()
+    if classifier.is_loaded and classifier.active_version and classifier.active_version != "legacy":
+        version_dir = Path(__file__).resolve().parent.parent.parent / "data" / "weights" / classifier.active_version
+        version_metrics_path = version_dir / "evaluation_metrics.json"
+        if version_metrics_path.exists():
+            return version_metrics_path
+
+    # Fallback to the root evaluation directory
+    return Path(__file__).resolve().parent.parent.parent / "data" / "evaluation" / "evaluation_metrics.json"
+
 
 # ── Histogram constants ───────────────────────────────────────────────
 _F1_BINS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.01]
@@ -70,8 +83,8 @@ async def model_metrics() -> dict[str, Any]:
     """
     Return evaluation metrics summary for the CNN model.
 
-    Reads from ``data/evaluation/evaluation_metrics.json`` which is
-    generated during model evaluation (05_evaluate_model.py).
+    Reads dynamically from ``data/weights/{version}/evaluation_metrics.json``
+    which is generated during model evaluation (05_evaluate_model.py).
 
     Response includes:
       - accuracy, top_5_accuracy
@@ -81,14 +94,15 @@ async def model_metrics() -> dict[str, Any]:
       - support_distribution: { "≤5": N, "6-10": N, "11-15": N, "16+": N }
       - per_class: { species: { precision, recall, f1_score, support } }
     """
-    if not _EVAL_METRICS_PATH.exists():
+    metrics_path = _get_metrics_path()
+    if not metrics_path.exists():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Evaluation metrics not found. Run model evaluation first.",
         )
 
     try:
-        with open(_EVAL_METRICS_PATH, encoding="utf-8") as f:
+        with open(metrics_path, encoding="utf-8") as f:
             metrics = json.load(f)
     except Exception as exc:
         logger.error(f"Failed to read evaluation metrics: {exc}")

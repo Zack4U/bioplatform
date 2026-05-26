@@ -938,18 +938,24 @@ python scripts/04_train_cnn.py \
 ## 10. Paso 5: Evaluación
 
 ```bash
-python scripts/05_evaluate_model.py --top-k 5
+# Auto-detecta de forma dinámica el modelo activo y guarda las métricas en su carpeta versionada:
+python scripts/cnn/05_evaluate_model.py --top-k 5
+
+# O puedes evaluar una carpeta versionada específica:
+# python scripts/cnn/05_evaluate_model.py --weights-dir data/weights/v1.0.20260518021229/ --top-k 5
 ```
 
 ### Métricas Generadas
 
+Todos estos archivos se guardan **directamente en el directorio del modelo versionado** (`data/weights/<version>/`) para mantener la independencia de cada versión:
+
 | Archivo | Contenido |
 |---|---|
-| `classification_report.txt` | Precision, Recall, F1 por clase + macro/weighted avg |
-| `evaluation_metrics.json` | Todas las métricas en formato JSON (para CI/CD) |
-| `confusion_matrix.png` | Heatmap de confusion matrix (o texto si >30 clases) |
-| `per_class_metrics.csv` | CSV con métricas por clase |
-| `misclassified_samples.json` | Top 50 errores con mayor confianza |
+| `classification_report.txt` | Precision, Recall, F1 por clase agrupados por desempeño |
+| `evaluation_metrics.json` | Todas las métricas en formato JSON (leído por FastAPI y el Auditor) |
+| `confusion_matrix.png` | Heatmap de confusion matrix (o lista de top confundidas en txt si >30 clases) |
+| `per_class_metrics.csv` | CSV con métricas detalladas por clase |
+| `misclassified_samples.json` | Top 50 errores de clasificación con mayor nivel de confianza |
 
 ### Interpretación
 
@@ -1258,11 +1264,11 @@ Los siguientes archivos se generan automáticamente para documentación:
 
 | Entregable | Archivo | Ubicación |
 |---|---|---|
-| Métricas del modelo | `evaluation_metrics.json` | `data/evaluation/` |
-| Classification Report | `classification_report.txt` | `data/evaluation/` |
-| Confusion Matrix | `confusion_matrix.png` | `data/evaluation/` |
-| Configuración de entrenamiento | `training_config.json` | `data/weights/` |
-| Historial de entrenamiento | `training_history.json` | `data/weights/` |
+| Métricas del modelo | `evaluation_metrics.json` | `data/weights/<version>/` *(o `data/evaluation/` en legacy)* |
+| Classification Report | `classification_report.txt` | `data/weights/<version>/` *(o `data/evaluation/` en legacy)* |
+| Confusion Matrix | `confusion_matrix.png` | `data/weights/<version>/` *(o `data/evaluation/` en legacy)* |
+| Configuración de entrenamiento | `training_config.json` | `data/weights/<version>/` *(o `data/weights/` en legacy)* |
+| Historial de entrenamiento | `training_history.json` | `data/weights/<version>/` *(o `data/weights/` en legacy)* |
 | Distribución del dataset | `dataset_stats.json` | `data/processed/` |
 | Análisis taxonómico | `species_summary.csv` | `data/dataset_analysis/` |
 | Reporte filtrado imágenes | `non_photo_suspects.json` | `data/dataset_analysis/` |
@@ -1294,49 +1300,50 @@ git commit -m "feat(vision): implement CNN species classification pipeline
 cd src/Bio.Backend.AI
 
 # 1. Analizar dataset
-python scripts/01_analyze_dataset.py
+python scripts/dataset/01_analyze_dataset.py
 
 # 2. Descargar imágenes (esto toma horas)
-python scripts/02_download_images.py --min-images 10 --max-per-species 150 --workers 6
+python scripts/dataset/02_download_images.py --min-images 10 --max-per-species 150 --workers 6
 
 # 2.5 Filtrar imágenes no-fotográficas (waveforms, espectrogramas)
-python scripts/filter_bad_images.py --mode report
-python scripts/filter_bad_images.py --mode quarantine --target both
+python scripts/dataset/filter_bad_images.py --mode report
+python scripts/dataset/filter_bad_images.py --mode quarantine --target both
 
 # 2.6 (Opcional) Suplementar especies con pocas imágenes
-python scripts/02b_supplement_images.py --dry-run               # ver preview
-python scripts/02b_supplement_images.py                         # ejecutar (target=20, max=50)
+python scripts/dataset/02b_supplement_images.py --dry-run               # ver preview
+python scripts/dataset/02b_supplement_images.py                         # ejecutar (target=20, max=50)
 
 # 2.7 Ver reporte de imágenes descargadas
-python scripts/02c_raw_images_summary.py                        # reporte completo
-python scripts/02c_raw_images_summary.py --sort count_asc       # ver las más escasas primero
+python scripts/dataset/02c_raw_images_summary.py                        # reporte completo
+python scripts/dataset/02c_raw_images_summary.py --sort count_asc       # ver las más escasas primero
 
 # 2.8 (Opcional) Augmentation offline masiva
-python scripts/02d_offline_augment.py --dry-run                 # preview
-python scripts/02d_offline_augment.py --target 50               # completar a 50 imgs/especie
+python scripts/dataset/02d_offline_augment.py --dry-run                 # preview
+python scripts/dataset/02d_offline_augment.py --target 50               # completar a 50 imgs/especie
 
 # 3. Organizar en train/val/test
-python scripts/03_organize_dataset.py --min-images 10
+python scripts/dataset/03_organize_dataset.py --min-images 10
 
 # 3.5 (Opcional) Prueba rápida con 10 especies antes de entrenar todo
-python scripts/03_organize_dataset.py --min-images 10 --max-species 10 --clean
-python scripts/04_train_cnn.py --epochs 10 --batch-size 32
-python scripts/05_evaluate_model.py
+python scripts/dataset/03_organize_dataset.py --min-images 10 --max-species 10 --clean
+python scripts/cnn/04_train_cnn.py --epochs 10 --batch-size 32
+python scripts/cnn/05_evaluate_model.py
 # Si todo funciona, reorganizar con todas las especies:
-python scripts/03_organize_dataset.py --min-images 10 --clean
+python scripts/dataset/03_organize_dataset.py --min-images 10 --clean
 
 # 4. Entrenar (GPU recomendada)
 # Estándar:
-python scripts/04_train_cnn.py --model efficientnet_b0 --epochs 50 --batch-size 32
+python scripts/cnn/04_train_cnn.py --model efficientnet_b0 --epochs 50 --batch-size 32
 # Avanzado (para >85% de accuracy):
-python scripts/04_train_cnn.py --model efficientnet_b2 --epochs 60 --batch-size 32 \
+python scripts/cnn/04_train_cnn.py --model efficientnet_b2 --epochs 60 --batch-size 32 \
   --image-size 260 --unfreeze-lr 5e-5 --mixup-alpha 0.2 --warmup-epochs 3 --patience 15
 
-# 5. Evaluar
-python scripts/05_evaluate_model.py
+# 5. Evaluar (se auto-detecta la versión del modelo activo si no se pasa --weights-dir)
+python scripts/cnn/05_evaluate_model.py
 
 # 5.5 (Opcional) Auditoría visual interactiva
-python scripts/model_auditor.py
+python scripts/tools/model_auditor.py
+
 
 # 6. Iniciar API
 uvicorn app.main:app --reload --port 8000

@@ -252,21 +252,45 @@ Formato: `model-vMAJOR.MINOR.PATCH`
 | Descargar por URL | `python scripts/download_model.py --method url` |
 | Ver configuración del modelo | `cat data/weights/training_config.json` |
 
+## 8. Despliegue en Servidor de Producción y Sincronización
+
+Cuando el proyecto se despliega o sube a un servidor de producción nuevo o existente, el flujo de restauración y sincronización de los pesos y metadatos funciona de la siguiente manera:
+
+### 8.1 Creación de la Carpeta del Modelo Versionado
+**Sí, se genera automáticamente.**
+Dado que el archivo puntero DVC (`best_model.pth.dvc`) y los archivos de metadatos (`training_config.json`, etc.) se encuentran dentro del subdirectorio versionado (ej: `data/weights/v1.0.20260518021229/`) y están comprometidos en Git, al hacer un `git pull` o clonar el repositorio en el servidor, Git creará físicamente la carpeta correspondiente. Al ejecutar el comando:
+```bash
+dvc pull
+```
+DVC leerá el archivo puntero y descargará el archivo pesado de pesos (`best_model.pth`) directamente en el subdirectorio de versión correcto.
+
+### 8.2 Archivos de Evaluación y Métricas
+**No es necesario volver a evaluar.**
+Los archivos de reporte y métricas de evaluación (como `evaluation_metrics.json`, `classification_report.txt`, `confusion_matrix.txt`, etc.) son archivos livianos de texto. Por lo tanto, **están comprometidos directamente en Git** dentro del directorio de la versión. Al hacer `git pull` en el servidor, estos archivos ya estarán presentes y listos para ser consumidos por FastAPI, el dashboard del Auditor de Modelos y la base de datos.
+
+### 8.3 Entrada en la Base de Datos (PostgreSQL)
+**No se genera automáticamente por DVC o Git.** El comando `dvc pull` solo actúa sobre el sistema de archivos y no tiene interacción alguna con la base de datos. La sincronización de la metadata en PostgreSQL depende del escenario:
+
+1. **Modelo Activo Inicial/Semilla (`v1.0.20260518021229`)**:
+   Se proporciona el script SQL [seed_ai_metadata.sql](file:///e:/Projects/bioplatform/src/Bio.Backend.AI/data/weights/seed_ai_metadata.sql). Al desplegar la base de datos de producción por primera vez, se debe ejecutar este script para registrar el modelo activo semilla, sus métricas y su historial inicial en las tablas `ai_model_versions` y `ai_training_jobs`.
+2. **Modelos Entrenados Automáticamente en el Servidor (Fine-Tuning)**:
+   El orquestador (`finetune_orchestrator.py`) realiza el push a DVC e invoca automáticamente al webhook de `.NET Core` al finalizar el entrenamiento. El backend de `.NET Core` captura la llamada y **crea la entrada en la base de datos de forma automática** en la tabla `ai_model_versions` vinculándola al job de entrenamiento.
+3. **Modelos Subidos Manualmente por el Administrador**:
+   Al subir los archivos por la interfaz administrativa (endpoint `/api/v1/model/upload`), FastAPI guarda localmente los archivos en una nueva versión, inicia la subida a DVC y notifica al webhook de `.NET Core` para que registre automáticamente el modelo y sus métricas en la base de datos.
+
 ---
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 ### "Model weights not found" al iniciar el servicio
 
 ```bash
-# Verificar que existan los archivos
-ls -la data/weights/
+# Verificar que exista el subdirectorio versionado y contenga best_model.pth
+ls -la data/weights/v1.0.20260518021229/
 # → Debe contener best_model.pth y training_config.json
 
 # Si faltan, descargarlos
 dvc pull
-# o
-python scripts/download_model.py
 ```
 
 ### "Hash mismatch" al verificar
@@ -274,14 +298,12 @@ python scripts/download_model.py
 El archivo descargado está corrupto o es una versión diferente. Volver a descargar:
 
 ```bash
-rm data/weights/best_model.pth
-python scripts/download_model.py --method url
+# Borrar pesos locales corruptos y volver a traerlos con DVC
+rm data/weights/v1.0.20260518021229/best_model.pth
+dvc pull
 ```
-
-### DVC pide autenticación de Google Drive
-
-La primera vez que se usa `dvc push` o `dvc pull` con Google Drive, se abre un navegador para autenticarse con OAuth. El token se guarda localmente en `~/.config/dvc/`.
 
 ### El modelo es demasiado grande para la RAM
 
-Verificar que `training_config.json` especifica el modelo correcto. Los modelos más grandes (ResNet101, EfficientNet-B2) requieren más memoria. En producción, usar 2+ GB de RAM libre.
+Verificar que el archivo `training_config.json` en el directorio de la versión especifica el modelo correcto. Los modelos más grandes (ResNet101, EfficientNet-B2) requieren más memoria. En producción, usar 2+ GB de RAM libre.
+```
