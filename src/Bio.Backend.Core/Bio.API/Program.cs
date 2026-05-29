@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.RateLimiting;
 using StackExchange.Redis;
 using System.Text;
 using System.Threading.RateLimiting;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,6 +90,15 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IScientificUnitOfWork, Bio.Back
 builder.Services.AddScoped<Bio.Domain.Interfaces.IGeographicDistributionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.GeographicDistributionRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesImageRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.SpeciesImageRepository>();
 builder.Services.AddScoped<Bio.Application.Interfaces.IRelatedProductsQuery, Bio.Backend.Core.Bio.Infrastructure.Services.RelatedProductsQuery>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IAiModelRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.AiModelRepository>();
+
+// AI Microservice HttpClient — used by AiModels CQRS handlers
+builder.Services.AddHttpClient("AiService", client =>
+{
+    var aiBaseUrl = builder.Configuration.GetValue<string>("AiService:BaseUrl") ?? "http://localhost:8000";
+    client.BaseAddress = new Uri(aiBaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
 
 // Marketplace context (SQL Server) — Product, Order, Favorite, Address, Certification, AbsPermit, Cart, Traceability
 builder.Services.AddScoped<Bio.Domain.Interfaces.IProductRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductRepository>();
@@ -240,6 +251,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Force InvariantCulture for all requests so multipart/form-data numeric
+// fields (latitude, longitude, confidenceScore) are always parsed with '.' as
+// the decimal separator, regardless of the server's OS locale.
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(CultureInfo.InvariantCulture),
+    SupportedCultures = [CultureInfo.InvariantCulture],
+    SupportedUICultures = [CultureInfo.InvariantCulture],
+});
 
 // CORS must be before Authentication/Authorization
 app.UseCors();

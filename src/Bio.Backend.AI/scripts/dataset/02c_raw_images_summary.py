@@ -13,7 +13,7 @@ Salida:
 
 Uso:
     python scripts/02c_raw_images_summary.py
-    python scripts/02c_raw_images_summary.py --min-images 10   # resaltar umbral
+    python scripts/02c_raw_images_summary.py --min-images 50   # resaltar umbral
     python scripts/02c_raw_images_summary.py --sort count_desc  # ordenar por cantidad
     python scripts/02c_raw_images_summary.py --kingdom Plantae  # filtrar por reino
 """
@@ -122,8 +122,8 @@ def main() -> None:
         description="Analyze raw_images directory and generate summary report"
     )
     parser.add_argument(
-        "--min-images", type=int, default=20,
-        help="Highlight threshold for 'trainable' species (default: 20)",
+        "--min-images", type=int, default=50,
+        help="Highlight threshold for 'trainable' species (default: 50)",
     )
     parser.add_argument(
         "--sort", choices=["name", "count_asc", "count_desc", "kingdom"],

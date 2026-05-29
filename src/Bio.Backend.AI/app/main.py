@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Startup/Shutdown lifecycle: load CNN model and check DB on startup."""
     settings = get_settings()
 
-    # ── Startup ────────────────────────────────────────────────
+    # -- Startup --------------------------------------------------------
     logger.info("Starting BioPlatform AI Service...")
 
     # Load CNN model
@@ -56,7 +56,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     yield
 
-    # ── Shutdown ───────────────────────────────────────────────
+    # -- Shutdown -------------------------------------------------------
     logger.info("Shutting down BioPlatform AI Service.")
     try:
         from app.core.database import dispose_engine
@@ -70,7 +70,7 @@ settings = get_settings()
 
 app = FastAPI(
     title=settings.app_name,
-    description="Microservicio de IA para identificación de especies y biocomercio – Caldas, Colombia",
+    description="Microservicio de IA para identificacion de especies y biocomercio - Caldas, Colombia",
     version=settings.app_version,
     lifespan=lifespan,
 )
@@ -84,48 +84,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Register Routers ──────────────────────────────────────────
+# -- Register Routers ----------------------------------------------------------
 from app.api.v1_classify import router as classify_router  # noqa: E402
 from app.api.v1_metrics import router as metrics_router  # noqa: E402
+from app.api.v1_model_registry import router as model_registry_router  # noqa: E402
+from app.api.v1_system import router as system_router  # noqa: E402
+from app.api.v1_training import router as training_router  # noqa: E402
 
 app.include_router(classify_router)
 app.include_router(metrics_router)
-
-
-@app.get("/health", tags=["Infrastructure"])
-async def health() -> dict[str, Any]:
-    """
-    Health check endpoint for Docker / load balancer probes.
-    Reports CNN model status and PostgreSQL connectivity.
-    """
-    from app.core.database import check_db_connection, get_db_session
-    from app.services.vision.classifier import get_classifier
-
-    import sqlalchemy as sa
-
-    classifier = get_classifier()
-    db_connected = await check_db_connection()
-
-    # Count species in the database (best-effort)
-    db_species_count = 0
-    if db_connected:
-        try:
-            async with get_db_session() as session:
-                result = await session.execute(
-                    sa.text("SELECT COUNT(*) FROM species")
-                )
-                db_species_count = result.scalar() or 0
-        except Exception:
-            pass
-
-    return {
-        "status": "healthy" if classifier.is_loaded else "degraded",
-        "service": "bio-ai",
-        "model_loaded": classifier.is_loaded,
-        "num_classes": classifier.num_classes,
-        "database_connected": db_connected,
-        "db_species_count": db_species_count,
-    }
+app.include_router(system_router)
+app.include_router(training_router)
+app.include_router(model_registry_router)
 
 
 @app.get("/", tags=["Infrastructure"])
@@ -137,7 +107,15 @@ async def root() -> dict[str, Any]:
         "endpoints": {
             "classify": "POST /api/v1/classify",
             "model_info": "GET /api/v1/model-info",
+            "hardware": "GET /api/v1/system/hardware",
+            "finetune": "POST /api/v1/training/finetune",
+            "upload": "POST /api/v1/model/upload",
+            "reload": "POST /api/v1/model/reload",
+            "validate": "POST /api/v1/model/validate",
             "health": "GET /health",
+            "liveness": "GET /health/liveness",
+            "readiness": "GET /health/readiness",
+            "startup": "GET /health/startup",
         },
     }
 

@@ -8,6 +8,9 @@
  * Lazy-loaded with Next.js dynamic() to avoid SSR issues with Leaflet.
  *
  * UI ONLY — receives distributions via props.
+ *
+ * Rule: if there are no distributions at all (empty array), the map is
+ * NOT rendered — only the empty-state message is shown.
  */
 
 "use client";
@@ -115,6 +118,31 @@ export function SpeciesDistributionMap({
         [distributions],
     );
 
+    /* ── Empty state: no data at all — skip the map entirely ── */
+    if (!isLoading && distributions.length === 0) {
+        return (
+            <Card className="overflow-hidden">
+                <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 text-base">
+                        <MapPin className="h-4 w-4 text-primary" />
+                        Distribución Geográfica
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-col items-center justify-center py-10 text-center">
+                        <MapPin className="mb-3 h-10 w-10 text-muted-foreground/30" />
+                        <p className="text-sm font-medium text-muted-foreground">
+                            Sin datos de distribución
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground/70">
+                            No hay registros geográficos para esta especie todavía.
+                        </p>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
+
     return (
         <Card className="overflow-hidden">
             <CardHeader className="pb-3">
@@ -197,17 +225,6 @@ export function SpeciesDistributionMap({
                                 </LeafletMarker>
                             ))}
                         </MapContainer>
-                    </div>
-                )}
-
-                {/* Empty state */}
-                {!isLoading && distributions.length === 0 && (
-                    <div className="mx-4 sm:mx-0 flex flex-col items-center justify-center py-8 text-center">
-                        <MapPin className="mb-2 h-8 w-8 text-muted-foreground/40" />
-                        <p className="text-sm text-muted-foreground">
-                            No hay datos de distribución geográfica registrados para esta
-                            especie.
-                        </p>
                     </div>
                 )}
             </CardContent>

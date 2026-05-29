@@ -16,7 +16,6 @@ import { HtmlViewer } from "@/components/common/HtmlViewer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -173,7 +172,7 @@ export function ProductDetailTabs({
                 </h3>
               </CardHeader>
               <CardContent className="space-y-3">
-                {product.traceability.length === 0 ? (
+                {!product.traceability || product.traceability.length === 0 ? (
                   <p className="text-sm text-muted-foreground">
                     Sin informacion de trazabilidad disponible.
                   </p>
@@ -263,15 +262,14 @@ export function ProductDetailTabs({
                         {product.reviewCount === 1 ? "resena" : "resenas"}
                       </p>
                     </div>
-
-                    {/* Rating distribution bars */}
+                    {/* Rating distribution bars
                     <div className="flex-1 space-y-1.5 w-full max-w-xs">
                       {[5, 4, 3, 2, 1].map((stars) => {
-                        const count = product.reviews.filter(
+                        const count = product.reviews?.filter(
                           (r) => Math.round(r.rating) === stars,
                         ).length;
                         const percent =
-                          product.reviews.length > 0
+                          product.reviews?.length > 0
                             ? (count / product.reviews.length) * 100
                             : 0;
                         return (
@@ -298,7 +296,7 @@ export function ProductDetailTabs({
                           </div>
                         );
                       })}
-                    </div>
+                    </div> */}
                   </div>
                 )}
 
@@ -320,7 +318,7 @@ export function ProductDetailTabs({
               <Separator />
 
               {/* Review list */}
-              {product.reviews.length === 0 ? (
+              {!product.reviews || product.reviews.length === 0 ? (
                 <div className="text-center py-8 space-y-3">
                   <p className="text-sm text-muted-foreground">
                     Aun no hay resenas para este producto.

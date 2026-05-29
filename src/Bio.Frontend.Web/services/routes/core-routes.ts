@@ -56,7 +56,7 @@ export const CORE_ROUTES = {
     BASE: "/products",
     BY_ID: (id: string) => `/products/${id}` as const,
     BY_SLUG: (slug: string) => `/products/slug/${slug}` as const,
-    CATEGORIES: "/products/categories",
+    CATEGORIES: "/product-categories",
     FILTER_META: "/products/filter-meta",
     REVIEWS: (productId: string) => `/products/${productId}/reviews` as const,
     /** Paginated list of the authenticated entrepreneur's own products */

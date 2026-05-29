@@ -50,3 +50,37 @@ public class RemoveFavoriteCommandHandler : IRequestHandler<RemoveFavoriteComman
         return Unit.Value;
     }
 }
+
+/// <summary>
+/// Atomically toggles a product's favourite status for the current user.
+/// If the product is already a favourite, removes it and returns IsFavorite = false.
+/// Otherwise adds it and returns IsFavorite = true.
+/// </summary>
+public record ToggleFavoriteCommand(Guid ProductId, Guid UserId) : IRequest<ToggleFavoriteStatusDTO>;
+
+public class ToggleFavoriteCommandHandler : IRequestHandler<ToggleFavoriteCommand, ToggleFavoriteStatusDTO>
+{
+    private readonly IFavoriteRepository _repo;
+    private readonly IUnitOfWork _uow;
+
+    public ToggleFavoriteCommandHandler(IFavoriteRepository repo, IUnitOfWork uow)
+    { _repo = repo; _uow = uow; }
+
+    public async Task<ToggleFavoriteStatusDTO> Handle(ToggleFavoriteCommand request, CancellationToken ct)
+    {
+        const string targetType = "product";
+        var existing = await _repo.GetByUserAndTargetAsync(request.UserId, targetType, request.ProductId, ct);
+
+        if (existing is not null)
+        {
+            await _repo.DeleteAsync(existing, ct);
+            await _uow.SaveChangesAsync(ct);
+            return new ToggleFavoriteStatusDTO(request.ProductId, false);
+        }
+
+        var favorite = new Favorite(request.UserId, targetType, request.ProductId);
+        await _repo.AddAsync(favorite, ct);
+        await _uow.SaveChangesAsync(ct);
+        return new ToggleFavoriteStatusDTO(request.ProductId, true);
+    }
+}
