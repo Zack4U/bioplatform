@@ -171,7 +171,54 @@ export const CONSERVATION_STATUSES = {
     NE: "No Evaluada",
 } as const;
 
+/* ── Community & Networking ───────────────────────────────────────────────── */
+
+/** Post categories for the community feed filter tabs */
+export const POST_CATEGORIES = [
+    "General",
+    "Biodiversidad",
+    "Investigacion",
+    "Emprendimiento",
+    "Conservacion",
+    "Avistamientos",
+    "Eventos",
+] as const;
+
+export type PostCategoryKey = (typeof POST_CATEGORIES)[number];
+
+/** Post status → Spanish label */
+export const POST_STATUS_LABELS: Record<string, string> = {
+    Draft: "Borrador",
+    Published: "Publicado",
+    Archived: "Archivado",
+    Hidden: "Oculto",
+};
+
+/** Connection status → Spanish label */
+export const CONNECTION_STATUS_LABELS: Record<string, string> = {
+    Pending: "Pendiente",
+    Accepted: "Conectado",
+    Rejected: "Rechazado",
+    Blocked: "Bloqueado",
+};
+
+/** Polling intervals for real-time updates (ms) */
+export const POLLING_INTERVALS = {
+    MESSAGES: 30_000,
+    UNREAD_COUNT: 60_000,
+} as const;
+
+/** Max simultaneous floating chat popups on desktop */
+export const MAX_OPEN_CHATS = 3;
+
+/** Community feed page size */
+export const COMMUNITY_PAGE_SIZE = 10;
+
+/** Comments per page */
+export const COMMENTS_PAGE_SIZE = 20;
+
 /* ── Spanish Label Maps (i18n-ready) ──────────────────────────────────────── */
+
 
 /** Order status → Spanish label */
 export const ORDER_STATUS_LABELS: Record<string, string> = {

@@ -18,8 +18,8 @@ import { useAdminLayoutStore } from "@/store/admin-layout-store";
 import { useAuthStore } from "@/store/auth-store";
 import {
     Brain, ChevronLeft, ChevronRight, ClipboardList, FileText, House, Image as ImageIcon, Leaf,
-    LayoutDashboard, MessageSquare, Package, Shield, ShoppingCart,
-    Star, Users,
+    LayoutDashboard, MessageCircle, MessageSquare, Package, Shield, ShoppingCart,
+    Star, UserPlus, Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,7 +36,9 @@ const ICON_MAP: Record<string, ReactNode> = {
     FileText: <FileText className="h-5 w-5" />,
     Brain: <Brain className="h-5 w-5" />,
     MessageSquare: <MessageSquare className="h-5 w-5" />,
+    MessageCircle: <MessageCircle className="h-5 w-5" />,
     Users: <Users className="h-5 w-5" />,
+    UserPlus: <UserPlus className="h-5 w-5" />,
     ClipboardList: <ClipboardList className="h-5 w-5" />,
 };
 

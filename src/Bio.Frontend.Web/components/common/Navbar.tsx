@@ -15,6 +15,7 @@
  */
 
 import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { NotificationBell } from "@/components/features/community/NotificationBell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,6 +60,7 @@ import { useState } from "react";
 const NAV_LINKS = [
     { label: "Catalogo", href: "/catalog" },
     { label: "Marketplace", href: "/marketplace" },
+    { label: "Comunidad", href: "/community" },
     { label: "Identificacion IA", href: "/identify" },
     { label: "Asesor IA", href: "/advisor" },
 ] as const;
@@ -131,6 +133,11 @@ export function Navbar() {
                     {/* Actions */}
                     <div className="flex items-center gap-2">
                         <ThemeToggle />
+
+                        {/* Notification Bell — only for authenticated users */}
+                        {!isLoading && isAuthenticated && (
+                            <NotificationBell />
+                        )}
 
                         <Button
                             variant="outline"
