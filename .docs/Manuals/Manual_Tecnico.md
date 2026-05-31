@@ -1,5 +1,10 @@
-# Manual Técnico - BioPlatform Caldas
+---
+title: "Manual Técnico"
+description: "Arquitectura, instalación y estándares de desarrollo de BioPlatform Caldas"
+icon: "code"
+---
 
+# Manual Técnico - BioPlatform Caldas
 ## 1. Introducción
 
 Este manual técnico proporciona información detallada para la instalación, configuración, mantenimiento y desarrollo de la plataforma BioPlatform Caldas. Está dirigido a administradores de sistemas, desarrolladores y personal de operaciones encargado de mantener y evolucionar la plataforma.
@@ -21,12 +26,14 @@ BioPlatform Caldas sigue una arquitectura basada en microservicios con separaci�
 La plataforma utiliza dos bases de datos principales para optimizar rendimiento y cumplimiento normativo:
 
 1. **BioCommerce_Transactional (SQL Server)**: 
+   - **DbContext:** `BioDbContext` (Contexto principal para datos operativos).
    - Gestión de identidad y acceso (IAM)
    - Marketplace y transacciones financieras
    - Gestión de permisos ABS y aspectos legales
    - Direcciones, favoritos y notificaciones
 
 2. **BioCommerce_Scientific (PostgreSQL)**:
+   - **DbContext:** `ScientificDbContext` (Es crucial usar este contexto exclusivamente en los repositorios del dominio científico/biodiversidad para evitar errores de arquitectura y *mismatch* en pruebas).
    - Taxonomía y información de especies
    - Geolocalización con PostGIS
    - Computer vision y MLOps
@@ -141,8 +148,11 @@ docker-compose down -v
    - Verificar que las bases de datos estén en estado healthy
 
 2. **Crear usuario administrador inicial**:
-   - Acceder a: http://localhost:5070/swagger
-   - Utilizar el endpoint de creación de usuario inicial
+   - Acceder a la interfaz de Swagger en: http://localhost:5070/swagger
+   
+   ![Interfaz General de Swagger](../images/swagger.jpeg)
+   
+   - Utilizar el endpoint de creación de usuario inicial (`/api/auth/register` u homologado).
    - O ejecutar script de seeding si está disponible
 
 3. **Configurar el frontend**:
@@ -264,6 +274,9 @@ El sistema utiliza Seq para agregación y visualización de logs:
 
 ### 6.2 Flujo de Trabajo de Desarrollo
 
+#### Herramientas de Desarrollo Asistido por IA:
+- **Stitch MCP**: Utilizamos el servidor Stitch MCP para la interacción automatizada y generación de componentes de la interfaz de usuario. Al crear o modificar pantallas (especialmente para el frontend), asegúrate de tener configurado el servidor (`mcp_config.json`) para sincronizar el diseño del proyecto de manera eficiente.
+
 #### Git Workflow:
 - Rama `main`: Código de producción estable
 - Rama `develop`: Integración para el sprint actual
@@ -309,7 +322,11 @@ chore: tareas de build, dependencias, etc.
 ### 6.4 Depuración y Troubleshooting
 
 #### Backend (.NET):
-- Swagger UI para probar endpoints: http://localhost:5070/swagger
+- Swagger UI para probar endpoints interactivamente: http://localhost:5070/swagger
+  
+  ![Detalle de Endpoint en Swagger](../images/swaggerexpandido.jpeg)
+  
+- **Pruebas de rutas protegidas:** Para utilizar endpoints que requieren autenticación, primero usa la ruta correspondiente para obtener tu token JWT, cópialo, y utiliza el botón "Authorize" en la parte superior derecha de Swagger para inyectar el token Bearer en tus peticiones.
 - Logs detallados en consola y Seq
 - Puntos de interrupción con Visual Studio/VS Code y .NET debugger
 - Diagnosticador de Entity Framework para consultas SQL

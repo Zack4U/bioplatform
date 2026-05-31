@@ -1,5 +1,10 @@
-# Manual de Usuario - BioPlatform Caldas
+---
+title: "Manual de Usuario"
+description: "Guía completa para navegar y utilizar eficazmente BioPlatform Caldas"
+icon: "user"
+---
 
+# Manual de Usuario - BioPlatform Caldas
 ## 1. Introducción
 
 BioPlatform Caldas es una plataforma digital integral para la identificación, catalogación y aprovechamiento sostenible de la biodiversidad del departamento de Caldas, Colombia. Esta guía está diseñada para ayudar a los usuarios finales a navegar y utilizar eficazmente las funcionalidades principales de la plataforma.
@@ -32,6 +37,8 @@ BioPlatform Caldas es una plataforma digital integral para la identificación, c
 
 ## 3. Primeros Pasos
 
+![Página de Inicio](../images/paginainicio.png)
+
 ### 3.1 Registro de Usuario
 1. Acceder a la plataforma (http://localhost:3000 para desarrollo local)
 2. Hacer clic en "Registrarse"
@@ -49,9 +56,17 @@ BioPlatform Caldas es una plataforma digital integral para la identificación, c
 3. Ingresar correo electrónico y contraseña
 4. Opcional: Autenticación de dos factores (si está habilitada)
 
+### 3.3 Personalización de la Interfaz
+La plataforma permite adaptar la visualización para una mayor comodidad. Puedes alternar entre el **Modo Claro** y el **Modo Oscuro** (iluminación) desde las opciones del sistema, mejorando así la legibilidad y reduciendo la fatiga visual.
+
+![Función de Modo de Iluminación](../images/funcionmodoiluminacion.png)
+
 ## 4. Uso de las Funcionalidades
 
 ### 4.1 Catálogo de Biodiversidad
+
+![Vista del Catálogo](../images/catalogo.png)
+
 1. Desde el menú principal, seleccionar "Catálogo"
 2. Utilizar la barra de búsqueda para encontrar especies por nombre
 3. Filtrar por reino (Plantae, Animalia, Fungi), categoría de conservación, etc.
@@ -64,6 +79,9 @@ BioPlatform Caldas es una plataforma digital integral para la identificación, c
    - Imágenes y referencias
 
 ### 4.2 Identificación con IA
+
+![Identificador con IA](../images/identificadorIA.png)
+
 1. Seleccionar "Identificar Especie" desde el menú
 2. Elegir entre:
    - Subir una imagen desde el dispositivo
@@ -77,6 +95,9 @@ BioPlatform Caldas es una plataforma digital integral para la identificación, c
 5. Opcional: Guardar la identificación en "Mis observaciones"
 
 ### 4.3 Marketplace
+
+![Vista del Marketplace](../images/marketplace.png)
+
 1. Acceder a "Marketplace" desde el menú principal
 2. Navegar por categorías:
    - Ingredientes naturales
@@ -121,6 +142,9 @@ BioPlatform Caldas es una plataforma digital integral para la identificación, c
 ## 5. Gestión de Perfil
 
 ### 5.1 Edición de Perfil
+
+![Perfil de Usuario](../images/PerfilUsuario.png)
+
 1. Acceder al menú de usuario (esquina superior derecha)
 2. Seleccionar "Mi Perfil"
 3. Editar:
@@ -142,6 +166,13 @@ BioPlatform Caldas es una plataforma digital integral para la identificación, c
    - Transacciones en el marketplace
    - Interacciones con el chatbot
    - Descargas de recursos
+
+### 5.4 Gestión de Productos (CRUD de Vendedores)
+Si tienes el rol de **Emprendedor** o **Comunidad** y participas en el marketplace, tienes acceso a la gestión de tu propio inventario:
+1. Acceder al panel de "Mis Productos" desde el menú principal o tu perfil.
+2. **Crear Producto**: Haz clic en "Añadir Nuevo Producto", llena los detalles (nombre, descripción, precio, categoría y sube fotografías de calidad).
+3. **Editar Producto**: Puedes actualizar el stock disponible, modificar precios o mejorar la descripción en cualquier momento seleccionando el producto en tu lista y dando clic en "Editar".
+4. **Eliminar/Ocultar**: Si un producto ya no está disponible, puedes desactivarlo para que no aparezca en el catálogo público sin perder su historial.
 
 ## 6. Preguntas Frecuentes (FAQ)
 

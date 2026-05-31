@@ -1,0 +1,38 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "BioCommerce",
+  "logo": {
+    "light": "/images/logo-light.svg",
+    "dark": "/images/logo-dark.svg"
+  },
+  "colors": {
+    "primary": "#16a34a",
+    "light": "#22c55e",
+    "dark": "#15803d"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Manuales Principales",
+        "pages": [
+          "manuals/Manual_de_Usuario",
+          "manuals/Manual_Tecnico"
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Plataforma Web",
+        "href": "http://localhost:3001"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/tu-organizacion/bioplatform"
+    }
+  }
+}
