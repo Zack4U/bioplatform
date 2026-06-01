@@ -27,14 +27,14 @@ import type { ConnectionStatus, UserConnectionResponse } from "@/types";
 import { Trash2, Users } from "lucide-react";
 import { useState } from "react";
 
-function getConnectionStatusVariant(
-    status: string,
-): "default" | "secondary" | "destructive" | "outline" {
+type BadgeVariant = "success" | "warning" | "destructive" | "info" | "default" | "outline";
+
+function getConnectionStatusVariant(status: string): BadgeVariant {
     switch (status) {
         case "Accepted":
-            return "default";
+            return "success";
         case "Pending":
-            return "secondary";
+            return "warning";
         case "Rejected":
             return "outline";
         case "Blocked":

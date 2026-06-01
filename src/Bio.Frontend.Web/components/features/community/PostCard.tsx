@@ -41,10 +41,6 @@ function getInitials(name: string): string {
     return parts[0].charAt(0).toUpperCase() + parts[parts.length - 1].charAt(0).toUpperCase();
 }
 
-/** Strip HTML tags for content preview */
-function stripHtml(html: string): string {
-    return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-}
 
 export function PostCard({
     post,
@@ -57,8 +53,6 @@ export function PostCard({
     isReacting,
 }: PostCardProps) {
     const isAuthor = currentUserId === post.authorUserId;
-    const preview = stripHtml(post.content).slice(0, 180);
-    const hasMore = stripHtml(post.content).length > 180;
 
     return (
         <Card
@@ -140,19 +134,11 @@ export function PostCard({
             <CardContent className="pb-3">
                 <Link
                     href={`/community/posts/${post.id}`}
-                    className="group block space-y-2"
+                    className="group block"
                 >
                     <h2 className="text-base font-semibold leading-snug group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}
                     </h2>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                        {preview}
-                        {hasMore && (
-                            <span className="text-primary font-medium ml-1">
-                                Ver mas
-                            </span>
-                        )}
-                    </p>
                 </Link>
             </CardContent>
 

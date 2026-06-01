@@ -38,3 +38,4 @@ export { GroupsPlaceholder } from "./GroupsPlaceholder";
 export { CommunityLayout } from "./CommunityLayout";
 export { CommunityLeftSidebar } from "./CommunityLeftSidebar";
 export { CommunityRightSidebar } from "./CommunityRightSidebar";
+export { CommunityMobileNav } from "./CommunityMobileNav";

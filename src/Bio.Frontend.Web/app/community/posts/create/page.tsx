@@ -109,7 +109,7 @@ export default function CreatePostPage() {
                             setValue("content", val, { shouldValidate: true })
                         }
                         placeholder="Comparte algo con la comunidad..."
-                        minHeight={300}
+                        className="min-h-[300px]"
                     />
                     {errors.content && (
                         <p className="text-xs text-destructive">{errors.content.message}</p>

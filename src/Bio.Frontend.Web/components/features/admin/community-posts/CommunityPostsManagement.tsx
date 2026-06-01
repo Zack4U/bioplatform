@@ -42,12 +42,14 @@ import type { CommunityPostListItem, PostStatus } from "@/types";
 import { Eye, FileText, Pin, PinOff, Trash2, Archive, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-function getPostStatusVariant(status: string): "default" | "secondary" | "destructive" | "outline" {
+type BadgeVariant = "success" | "warning" | "destructive" | "info" | "default" | "outline";
+
+function getPostStatusVariant(status: string): BadgeVariant {
     switch (status) {
         case "Published":
-            return "default";
+            return "success";
         case "Draft":
-            return "secondary";
+            return "default";
         case "Archived":
             return "outline";
         case "Hidden":

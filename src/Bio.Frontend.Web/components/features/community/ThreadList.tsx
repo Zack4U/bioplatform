@@ -65,7 +65,7 @@ export function ThreadList() {
                     </div>
                 ) : threads.length === 0 ? (
                     <EmptyState
-                        icon={MessageCircle}
+                        icon={<MessageCircle className="h-6 w-6" />}
                         title="Sin mensajes"
                         description="Inicia una conversacion con algun contacto."
                     />
