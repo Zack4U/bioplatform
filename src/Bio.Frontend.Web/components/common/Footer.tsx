@@ -43,8 +43,9 @@ const FOOTER_SECTIONS = [
 export function Footer() {
     const pathname = usePathname();
 
-    /** Hide the public Footer inside the admin panel */
-    if (pathname.startsWith("/admin")) return null;
+    /** Hide the public Footer inside the admin panel or full-page chat threads */
+    const isMessageThread = pathname.startsWith("/community/messages/") && pathname !== "/community/messages";
+    if (pathname.startsWith("/admin") || isMessageThread) return null;
 
     return (
         <footer className="border-t bg-muted/30" aria-label="Pie de página">

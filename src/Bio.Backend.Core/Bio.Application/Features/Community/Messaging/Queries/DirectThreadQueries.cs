@@ -29,8 +29,9 @@ public class GetMyThreadsQueryHandler
         var dtos = new List<DirectThreadSummaryDTO>();
         foreach (var thread in items)
         {
-            var unread = await _repo.GetUnreadCountAsync(request.UserId, ct);
-            dtos.Add(MessagingMapper.ToThreadSummary(thread, unread));
+            var unreadList = await _repo.GetUnreadMessagesAsync(thread.Id, request.UserId, ct);
+            var unread = unreadList.Count;
+            dtos.Add(MessagingMapper.ToThreadSummary(thread, unread, request.UserId));
         }
 
         return PaginatedResult<DirectThreadSummaryDTO>.Create(dtos, total, request.Page, request.PageSize);

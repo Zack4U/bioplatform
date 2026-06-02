@@ -27,6 +27,7 @@ public record CommunityPostListItemDTO(
     Guid AuthorUserId,
     string AuthorName,
     string Title,
+    string Content,
     string? Category,
     string Status,
     bool IsPinned,
@@ -150,7 +151,10 @@ public record DirectThreadSummaryDTO(
     int ParticipantCount,
     int UnreadCount,
     DateTime CreatedAt,
-    DateTime? UpdatedAt);
+    DateTime? UpdatedAt,
+    /// <summary>Full name of the other participant for Direct threads. Null for Group threads.</summary>
+    string? OtherParticipantName = null,
+    Guid? OtherParticipantId = null);
 
 /// <summary>Request DTO to send a message in a thread.</summary>
 public record SendDirectMessageDTO

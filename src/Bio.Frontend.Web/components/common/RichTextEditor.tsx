@@ -91,6 +91,11 @@ interface RichTextEditorProps {
      * @default "400px"
      */
     maxHeight?: string;
+    /**
+     * CSS value or number (in px) for the editor's minimum height.
+     * @default "120px"
+     */
+    minHeight?: string | number;
 }
 
 /* ─── Small internal types ───────────────────────────────────────────────── */
@@ -157,6 +162,7 @@ export function RichTextEditor({
     disabled = false,
     onImageUpload,
     maxHeight = "400px",
+    minHeight = "120px",
 }: RichTextEditorProps) {
     /* ── Hook ──────────────────────────────────────────────────────────── */
 
@@ -169,7 +175,6 @@ export function RichTextEditor({
         handlePaste,
         handleInput,
         handleFocus,
-        handleBlur,
         execFormat,
         insertLink,
         handleFileSelect,
@@ -514,8 +519,10 @@ export function RichTextEditor({
                         onKeyDown={handleKeyDown}
                         onPaste={handlePaste}
                         onFocus={handleFocus}
-                        onBlur={handleBlur}
-                        style={{ maxHeight }}
+                        style={{
+                            maxHeight,
+                            minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight,
+                        }}
                         className={cn(
                             // Layout
                             "min-h-[120px] w-full overflow-y-auto px-3 py-3 text-sm text-foreground",

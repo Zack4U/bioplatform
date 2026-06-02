@@ -14,6 +14,7 @@ public class CommunityPostCommandsTests
 {
     private readonly Mock<ICommunityPostRepository> _repoMock = new();
     private readonly Mock<IUnitOfWork> _uowMock = new();
+    private readonly Mock<ICacheService> _cacheMock = new();
 
     private static CommunityPost MakePost(Guid? authorId = null, string status = "Published")
     {
@@ -27,7 +28,7 @@ public class CommunityPostCommandsTests
     [Fact]
     public async Task CreatePost_WhenValid_ShouldCreateAndReturn()
     {
-        var handler = new CreateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new CreateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
         var actorId = Guid.NewGuid();
         var dto = new CommunityPostCreateDTO
         {
@@ -54,7 +55,7 @@ public class CommunityPostCommandsTests
         var post = MakePost(actorId);
         _repoMock.Setup(r => r.GetByIdWithCommentsAsync(post.Id, default)).ReturnsAsync(post);
 
-        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
         var dto = new CommunityPostUpdateDTO { Title = "Updated" };
 
         var result = await handler.Handle(
@@ -69,7 +70,7 @@ public class CommunityPostCommandsTests
     {
         var post = MakePost();
         _repoMock.Setup(r => r.GetByIdWithCommentsAsync(post.Id, default)).ReturnsAsync(post);
-        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         await FluentActions
             .Awaiting(() => handler.Handle(
@@ -83,7 +84,7 @@ public class CommunityPostCommandsTests
     {
         var post = MakePost();
         _repoMock.Setup(r => r.GetByIdWithCommentsAsync(post.Id, default)).ReturnsAsync(post);
-        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         var result = await handler.Handle(
             new UpdateCommunityPostCommand(
@@ -100,7 +101,7 @@ public class CommunityPostCommandsTests
         var actorId = Guid.NewGuid();
         var post = MakePost(actorId);
         _repoMock.Setup(r => r.GetByIdWithCommentsAsync(post.Id, default)).ReturnsAsync(post);
-        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new UpdateCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         await FluentActions
             .Awaiting(() => handler.Handle(
@@ -118,7 +119,7 @@ public class CommunityPostCommandsTests
         var actorId = Guid.NewGuid();
         var post = MakePost(actorId);
         _repoMock.Setup(r => r.GetByIdAsync(post.Id, default)).ReturnsAsync(post);
-        var handler = new DeleteCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new DeleteCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         await handler.Handle(new DeleteCommunityPostCommand(post.Id, actorId, RoleNames.Community), default);
 
@@ -131,7 +132,7 @@ public class CommunityPostCommandsTests
     {
         var post = MakePost();
         _repoMock.Setup(r => r.GetByIdAsync(post.Id, default)).ReturnsAsync(post);
-        var handler = new DeleteCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new DeleteCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         await handler.Handle(
             new DeleteCommunityPostCommand(post.Id, Guid.NewGuid(), RoleNames.Admin), default);
@@ -143,7 +144,7 @@ public class CommunityPostCommandsTests
     public async Task DeletePost_WhenNotFound_ShouldThrowNotFound()
     {
         _repoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), default)).ReturnsAsync((CommunityPost?)null);
-        var handler = new DeleteCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object);
+        var handler = new DeleteCommunityPostCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
         await FluentActions
             .Awaiting(() => handler.Handle(

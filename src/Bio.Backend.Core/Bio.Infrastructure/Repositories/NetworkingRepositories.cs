@@ -91,7 +91,7 @@ public class DirectThreadRepository : IDirectThreadRepository
     public async Task<DirectThread?> GetDirectThreadBetweenUsersAsync(
         Guid userAId, Guid userBId, CancellationToken ct)
         => await _ctx.DirectThreads
-            .Include(t => t.Participants)
+            .Include(t => t.Participants).ThenInclude(p => p.User)
             .Where(t => t.ThreadType == "Direct"
                 && t.Participants.Any(p => p.UserId == userAId && p.LeftAt == null)
                 && t.Participants.Any(p => p.UserId == userBId && p.LeftAt == null))

@@ -13,10 +13,29 @@ namespace Bio.Application.Features.Community.Messaging.Commands;
 
 internal static class MessagingMapper
 {
-    internal static DirectThreadSummaryDTO ToThreadSummary(DirectThread t, int unreadCount) => new(
-        t.Id, t.Title, t.ThreadType,
-        t.Participants.Count(p => p.LeftAt == null),
-        unreadCount, t.CreatedAt, t.UpdatedAt);
+    internal static DirectThreadSummaryDTO ToThreadSummary(DirectThread t, int unreadCount, Guid? actorId = null)
+    {
+        string? otherName = null;
+        Guid? otherId = null;
+
+        // For Direct threads, find the other participant's name
+        if (t.ThreadType == "Direct" && actorId.HasValue)
+        {
+            var other = t.Participants
+                .FirstOrDefault(p => p.UserId != actorId.Value && p.LeftAt == null);
+            if (other is not null)
+            {
+                otherName = other.User?.FullName;
+                otherId = other.UserId;
+            }
+        }
+
+        return new DirectThreadSummaryDTO(
+            t.Id, t.Title, t.ThreadType,
+            t.Participants.Count(p => p.LeftAt == null),
+            unreadCount, t.CreatedAt, t.UpdatedAt,
+            otherName, otherId);
+    }
 
     internal static DirectMessageResponseDTO ToMessageResponse(DirectMessage m, bool isRead) => new(
         m.Id, m.ThreadId, m.SenderUserId,
@@ -63,7 +82,7 @@ public class CreateDirectThreadCommandHandler
             var existing = await _repo.GetDirectThreadBetweenUsersAsync(
                 request.ActorId, otherUserId, ct);
             if (existing is not null)
-                return MessagingMapper.ToThreadSummary(existing, 0);
+                return MessagingMapper.ToThreadSummary(existing, 0, request.ActorId);
 
             _ = await _userRepo.GetByIdAsync(otherUserId)
                 ?? throw new NotFoundException(nameof(User), otherUserId);
@@ -85,7 +104,7 @@ public class CreateDirectThreadCommandHandler
         }
 
         await _uow.SaveChangesAsync(ct);
-        return MessagingMapper.ToThreadSummary(thread, 0);
+        return MessagingMapper.ToThreadSummary(thread, 0, request.ActorId);
     }
 }
 
