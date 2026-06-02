@@ -13,6 +13,9 @@
 import { CommunityLeftSidebar } from "@/components/features/community/CommunityLeftSidebar";
 import { CommunityRightSidebar } from "@/components/features/community/CommunityRightSidebar";
 import { CommunityMobileNav } from "@/components/features/community/CommunityMobileNav";
+import { Suspense } from "react";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface CommunityLayoutProps {
     children: React.ReactNode;
@@ -20,10 +23,18 @@ interface CommunityLayoutProps {
 }
 
 export function CommunityLayout({ children, hideRightSidebar }: CommunityLayoutProps) {
+    const pathname = usePathname();
+    const isMessageThread = pathname.startsWith("/community/messages/") && pathname !== "/community/messages";
+
     return (
         <>
             <div className="min-h-[calc(100vh-4rem)] bg-muted/30">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 pb-20 md:pb-6">
+                <div className={cn(
+                    "mx-auto max-w-7xl",
+                    isMessageThread
+                        ? "px-0 py-0 pb-0 md:px-6 md:py-6 md:pb-6"
+                        : "px-4 sm:px-6 lg:px-8 py-6 pb-20 md:pb-6"
+                )}>
                     <div className="flex gap-6">
                         {/* Left sidebar — hidden on mobile, shown on md+ */}
                         <div className="hidden md:block w-64 shrink-0">
@@ -50,7 +61,9 @@ export function CommunityLayout({ children, hideRightSidebar }: CommunityLayoutP
             </div>
 
             {/* Mobile bottom navigation — only shown on mobile/tablet for authenticated users */}
-            <CommunityMobileNav />
+            <Suspense fallback={null}>
+                <CommunityMobileNav />
+            </Suspense>
         </>
     );
 }

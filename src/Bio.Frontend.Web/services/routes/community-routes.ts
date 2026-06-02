@@ -27,6 +27,8 @@ export const COMMUNITY_ROUTES = {
         PENDING: "/v1/networking/connections/pending",
         BY_ID: (id: string) => `/v1/networking/connections/${id}` as const,
         RESPOND: (id: string) => `/v1/networking/connections/${id}/respond` as const,
+        /** Sent pending requests: same endpoint as CONNECTIONS but filtered by status=Pending */
+        SENT: "/v1/networking/connections",
     },
 
     /** MessagingController — /api/v1/messaging */

@@ -22,7 +22,6 @@ import {
 import { POLLING_INTERVALS } from "@/lib/constants";
 import { notificationService } from "@/lib/notifications";
 import { useNotificationStore } from "@/store/notification-store";
-import { useChatStore } from "@/store/chat-store";
 import type {
     CreateDirectThreadDTO,
     DirectMessageResponse,
@@ -114,16 +113,14 @@ export function useSendMessage(threadId: string) {
     });
 }
 
-/** Create a new thread */
+/** Create a new thread. Callers should handle onSuccess to openChat with enriched data. */
 export function useCreateThread() {
     const queryClient = useQueryClient();
-    const openChat = useChatStore((s) => s.openChat);
 
     return useMutation<DirectThreadSummary, Error, CreateDirectThreadDTO>({
         mutationFn: (dto) => createThread(dto),
-        onSuccess: (thread) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["messaging", "threads"] });
-            openChat(thread);
         },
         onError: () => {
             notificationService.error("No se pudo crear la conversacion.");

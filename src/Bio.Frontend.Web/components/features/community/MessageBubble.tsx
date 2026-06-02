@@ -8,7 +8,7 @@
  */
 
 import { cn } from "@/lib/utils";
-import { formatRelativeTime } from "@/lib/formatters";
+import { formatRelativeTime, stripHtml } from "@/lib/formatters";
 import type { DirectMessageResponse } from "@/types";
 
 interface MessageBubbleProps {
@@ -42,7 +42,7 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
                         : "bg-muted text-foreground rounded-bl-sm",
                 )}
             >
-                {message.content}
+                {stripHtml(message.content)}
             </div>
             <span className="text-[10px] text-muted-foreground px-1">
                 {formatRelativeTime(message.createdAt)}

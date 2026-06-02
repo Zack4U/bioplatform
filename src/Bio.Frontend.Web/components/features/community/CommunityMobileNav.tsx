@@ -12,9 +12,9 @@
 import { useNotificationStore } from "@/store/notification-store";
 import { useAuthStore } from "@/store/auth-store";
 import { cn } from "@/lib/utils";
-import { LayoutList, Users, MessageCircle, Bell, Users2 } from "lucide-react";
+import { LayoutList, Users, MessageCircle, Users2, FileText } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface MobileNavItem {
     label: string;
@@ -26,22 +26,27 @@ interface MobileNavItem {
 export function CommunityMobileNav() {
     const { isAuthenticated } = useAuthStore();
     const unreadMessages = useNotificationStore((s) => s.unreadMessageCount);
-    const unreadNotifications = useNotificationStore((s) => s.unreadNotificationCount);
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     // Only show for authenticated users on mobile/tablet
     if (!isAuthenticated) return null;
 
     const items: MobileNavItem[] = [
         { label: "Feed", href: "/community", icon: LayoutList },
+        { label: "Mis Posts", href: "/community?tab=mine", icon: FileText },
         { label: "Amigos", href: "/community/friends", icon: Users },
         { label: "Mensajes", href: "/community/messages", icon: MessageCircle, badge: unreadMessages },
         { label: "Grupos", href: "/community/groups", icon: Users2 },
-        { label: "Alertas", href: "/notifications", icon: Bell, badge: unreadNotifications },
     ];
 
     function isActive(href: string): boolean {
-        if (href === "/community") return pathname === "/community";
+        if (href === "/community?tab=mine") {
+            return pathname === "/community" && searchParams.get("tab") === "mine";
+        }
+        if (href === "/community") {
+            return pathname === "/community" && searchParams.get("tab") !== "mine";
+        }
         return pathname.startsWith(href);
     }
 

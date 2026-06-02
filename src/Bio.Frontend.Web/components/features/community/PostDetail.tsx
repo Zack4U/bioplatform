@@ -94,7 +94,7 @@ export function PostDetail({ postId }: PostDetailProps) {
 
                 <CardContent className="space-y-4 pb-3">
                     <h1 className="text-xl font-bold leading-snug">{post.title}</h1>
-                    <HtmlViewer content={post.content} />
+                    <HtmlViewer html={post.content} />
                 </CardContent>
 
                 <CardFooter className="pt-0 flex-col items-start gap-3">

@@ -4,7 +4,7 @@
  * Format to local time (Colombia GMT-5) ONLY in the client UI.
  */
 
-import { format, formatDistanceToNow, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 
 /** Format an ISO UTC date string to local Colombian display */
@@ -22,10 +22,29 @@ export function formatDateTime(dateStr: string): string {
     return format(date, "d 'de' MMM, yyyy · h:mm a", { locale: es });
 }
 
-/** Relative time ("hace 2 horas") */
+/**
+ * Relative time with clean Spanish labels — no verbose date-fns strings.
+ *
+ * - < 60 s    → "hace menos de un minuto"
+ * - < 60 min  → "hace X minuto(s)"
+ * - < 24 h    → "hace X hora(s)"
+ * - < 7 days  → "hace X día(s)"
+ * - ≥ 7 days  → "DD/MM/YYYY"
+ */
 export function formatRelativeTime(dateStr: string): string {
     const date = parseISO(dateStr);
-    return formatDistanceToNow(date, { addSuffix: true, locale: es });
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+
+    if (diffSec < 60) return "hace menos de un minuto";
+    if (diffMin < 60) return diffMin === 1 ? "hace 1 minuto" : `hace ${diffMin} minutos`;
+    if (diffHour < 24) return diffHour === 1 ? "hace 1 hora" : `hace ${diffHour} horas`;
+    if (diffDay < 7) return diffDay === 1 ? "hace 1 día" : `hace ${diffDay} días`;
+    return format(date, "d/M/yyyy");
 }
 
 /** Format price in COP */
@@ -62,6 +81,12 @@ export function slugify(text: string): string {
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
+}
+
+/** Strip all HTML tags from a string (for displaying rich-text content as plain text) */
+export function stripHtml(html: string | null | undefined): string {
+    if (!html) return '';
+    return html.replace(/<[^>]*>/g, '').trim();
 }
 
 /* ─── Conservation Status (IUCN Red List) ─────────────────────────────── */

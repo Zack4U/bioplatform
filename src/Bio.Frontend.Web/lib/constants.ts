@@ -173,15 +173,34 @@ export const CONSERVATION_STATUSES = {
 
 /* ── Community & Networking ───────────────────────────────────────────────── */
 
+/** Maps backend English category values → Spanish display labels */
+export const CATEGORY_LABELS: Record<string, string> = {
+    General: 'General',
+    Tradition: 'Tradición',
+    Science: 'Investigación',
+    Conservation: 'Conservación',
+    Market: 'Emprendimiento',
+    Education: 'Educación',
+    Sighting: 'Avistamientos',
+    Event: 'Eventos',
+    Biodiversidad: 'Biodiversidad',
+};
+
+/** Maps Spanish display labels → backend English category values (reverse of CATEGORY_LABELS) */
+export const CATEGORY_KEYS: Record<string, string> = Object.fromEntries(
+    Object.entries(CATEGORY_LABELS).map(([k, v]) => [v, k])
+);
+
 /** Post categories for the community feed filter tabs */
 export const POST_CATEGORIES = [
-    "General",
-    "Biodiversidad",
-    "Investigacion",
-    "Emprendimiento",
-    "Conservacion",
-    "Avistamientos",
-    "Eventos",
+    'General',
+    'Tradición',
+    'Investigación',
+    'Emprendimiento',
+    'Conservación',
+    'Avistamientos',
+    'Educación',
+    'Eventos',
 ] as const;
 
 export type PostCategoryKey = (typeof POST_CATEGORIES)[number];

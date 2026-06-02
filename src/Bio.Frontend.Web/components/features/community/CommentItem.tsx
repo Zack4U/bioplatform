@@ -10,10 +10,9 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ReactionButtons } from "@/components/features/community/ReactionButtons";
-import { formatRelativeTime } from "@/lib/formatters";
+import { formatRelativeTime, getInitials, stripHtml } from "@/lib/formatters";
 import type { CommunityCommentResponse } from "@/types";
 import { Trash2 } from "lucide-react";
-import { getInitials } from "@/lib/formatters";
 
 interface CommentItemProps {
     comment: CommunityCommentResponse;
@@ -59,7 +58,7 @@ export function CommentItem({
                         {comment.authorName}
                     </p>
                     <p className="text-sm leading-relaxed break-words">
-                        {comment.content}
+                        {stripHtml(comment.content)}
                     </p>
                 </div>
 

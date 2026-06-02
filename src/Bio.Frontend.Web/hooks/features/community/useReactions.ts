@@ -10,6 +10,7 @@
 
 import { toggleReaction } from "@/services/community-service";
 import type {
+    CommunityCommentResponse,
     CommunityPostListItem,
     CommunityReactionResult,
     CommunityReactionToggleDTO,
@@ -63,6 +64,37 @@ export function useReactions() {
                     });
                 });
             }
+            if (dto.targetType === "Comment") {
+                const commentKeys = queryClient.getQueriesData<PaginatedResponse<CommunityCommentResponse>>(
+                    { queryKey: ["community", "comments"] },
+                );
+                commentKeys.forEach(([key, old]) => {
+                    if (!old) return;
+                    queryClient.setQueryData<PaginatedResponse<CommunityCommentResponse>>(key, {
+                        ...old,
+                        items: old.items.map((c) => {
+                            if (c.id !== dto.targetId) return c;
+                            const isCurrentlyLiked = dto.reactionType === "Like" && c.likesCount > 0;
+                            const isCurrentlyDisliked = dto.reactionType === "Dislike" && c.dislikesCount > 0;
+                            return {
+                                ...c,
+                                likesCount:
+                                    dto.reactionType === "Like"
+                                        ? isCurrentlyLiked
+                                            ? c.likesCount - 1
+                                            : c.likesCount + 1
+                                        : c.likesCount,
+                                dislikesCount:
+                                    dto.reactionType === "Dislike"
+                                        ? isCurrentlyDisliked
+                                            ? c.dislikesCount - 1
+                                            : c.dislikesCount + 1
+                                        : c.dislikesCount,
+                            };
+                        }),
+                    });
+                });
+            }
         },
         onSuccess: (result, dto) => {
             // Sync authoritative counts from server
@@ -97,6 +129,22 @@ export function useReactions() {
                               }
                             : old,
                 );
+            }
+            if (dto.targetType === "Comment") {
+                const commentKeys = queryClient.getQueriesData<PaginatedResponse<CommunityCommentResponse>>(
+                    { queryKey: ["community", "comments"] },
+                );
+                commentKeys.forEach(([key, old]) => {
+                    if (!old) return;
+                    queryClient.setQueryData<PaginatedResponse<CommunityCommentResponse>>(key, {
+                        ...old,
+                        items: old.items.map((c) =>
+                            c.id === dto.targetId
+                                ? { ...c, likesCount: result.likesCount, dislikesCount: result.dislikesCount }
+                                : c,
+                        ),
+                    });
+                });
             }
         },
     });

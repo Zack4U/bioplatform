@@ -98,12 +98,13 @@ export function NotificationBell() {
     const isDesktop = useIsMd();
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const bellButton = (
+    const renderBellButton = (onClick?: () => void) => (
         <Button
             id="notification-bell-btn"
             variant="outline"
             size="icon"
             className="relative"
+            onClick={onClick}
             aria-label={`Notificaciones: ${unreadCount} sin leer`}
         >
             <Bell className="h-4 w-4" aria-hidden="true" />
@@ -123,7 +124,7 @@ export function NotificationBell() {
     if (isDesktop) {
         return (
             <Popover>
-                <PopoverTrigger asChild>{bellButton}</PopoverTrigger>
+                <PopoverTrigger asChild>{renderBellButton()}</PopoverTrigger>
                 <PopoverContent
                     align="end"
                     className="w-80 p-0"
@@ -137,14 +138,7 @@ export function NotificationBell() {
 
     return (
         <>
-            <button
-                type="button"
-                onClick={() => setDrawerOpen(true)}
-                className="contents"
-                aria-label="Abrir notificaciones"
-            >
-                {bellButton}
-            </button>
+            {renderBellButton(() => setDrawerOpen(true))}
             <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
                 <DrawerContent>
                     <DrawerHeader className="pb-0">

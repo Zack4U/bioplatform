@@ -13,9 +13,11 @@ import { MessageInput } from "@/components/features/community/MessageInput";
 import { useMessages, useSendMessage, useMarkThreadRead } from "@/hooks/features/community";
 import { useAuthStore } from "@/store/auth-store";
 import { getInitials } from "@/lib/formatters";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useIsMd } from "@/hooks/useMediaQuery";
+import { cn } from "@/lib/utils";
 
 interface MessagesFullPageProps {
     threadId: string;
@@ -25,12 +27,27 @@ interface MessagesFullPageProps {
 export function MessagesFullPage({ threadId, threadTitle }: MessagesFullPageProps) {
     const router = useRouter();
     const { user } = useAuthStore();
-    const { messages, isLoading } = useMessages(threadId);
+    const { messages, isLoading, invalidateMessages } = useMessages(threadId);
     const sendMessage = useSendMessage(threadId);
     const markRead = useMarkThreadRead();
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const isDesktop = useIsMd();
 
     const displayName = threadTitle ?? "Conversacion";
+
+    useEffect(() => {
+        if (!isDesktop) {
+            window.scrollTo(0, 0);
+            const originalOverflow = document.body.style.overflow;
+            const originalHeight = document.body.style.height;
+            document.body.style.overflow = "hidden";
+            document.body.style.height = "100%";
+            return () => {
+                document.body.style.overflow = originalOverflow;
+                document.body.style.height = originalHeight;
+            };
+        }
+    }, [isDesktop]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -38,12 +55,12 @@ export function MessagesFullPage({ threadId, threadTitle }: MessagesFullPageProp
 
     useEffect(() => {
         markRead.mutate(threadId);
-    }, [threadId]);
+    }, [threadId, markRead]);
 
     return (
-        <div className="flex flex-col h-[calc(100dvh-4rem)]">
+        <div className="fixed md:relative inset-x-0 top-16 md:top-0 bottom-14 md:bottom-auto h-auto md:h-[calc(100dvh-4rem)] flex flex-col bg-background z-30 md:z-0">
             {/* Header */}
-            <div className="flex items-center gap-3 px-3 py-3 border-b bg-background sticky top-16 z-10">
+            <div className="flex items-center gap-3 px-3 py-3 border-b bg-background">
                 <Button
                     variant="ghost"
                     size="icon"
@@ -59,9 +76,19 @@ export function MessagesFullPage({ threadId, threadTitle }: MessagesFullPageProp
                     </AvatarFallback>
                 </Avatar>
                 <span className="font-semibold text-sm">{displayName}</span>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 ml-auto text-muted-foreground"
+                    onClick={invalidateMessages}
+                    aria-label="Actualizar mensajes"
+                    disabled={isLoading}
+                >
+                    <RefreshCw className={cn('h-4 w-4', isLoading && 'animate-spin')} aria-hidden="true" />
+                </Button>
             </div>
 
-            {/* Messages */}
+            {/* Messages — oldest at top, newest at bottom (WhatsApp style) */}
             <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-1.5 overscroll-contain">
                 {isLoading ? (
                     <div className="flex items-center justify-center h-full">
@@ -74,7 +101,7 @@ export function MessagesFullPage({ threadId, threadTitle }: MessagesFullPageProp
                         </p>
                     </div>
                 ) : (
-                    messages.map((msg) => (
+                    [...messages].reverse().map((msg) => (
                         <MessageBubble
                             key={msg.id}
                             message={msg}

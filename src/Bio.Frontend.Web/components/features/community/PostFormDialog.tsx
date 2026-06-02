@@ -40,7 +40,7 @@ export function PostFormDialog({ open, onOpenChange, editPost }: PostFormDialogP
         defaultValues: editPost
             ? {
                   title: editPost.title,
-                  content: "",
+                  content: editPost.content || "",
                   category: editPost.category,
               }
             : undefined,

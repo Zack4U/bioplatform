@@ -1,28 +1,32 @@
 "use client";
 
 /**
- * ConnectionTabs — 3 tabs for connections, pending requests, and suggestions.
+ * ConnectionTabs — tabs for: Mis Conexiones, Solicitudes Recibidas, Pendientes Enviadas.
  *
  * @module components/features/community/ConnectionTabs
  */
 
+import { EmptyState } from "@/components/common/EmptyState";
+import { ConnectionCard } from "@/components/features/community/ConnectionCard";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EmptyState } from "@/components/common/EmptyState";
-import { ConnectionCard } from "@/components/features/community/ConnectionCard";
 import {
     useMyConnections,
     usePendingRequests,
+    useSentRequests,
     useRespondToRequest,
     useDeleteConnection,
-    useSendConnectionRequest,
+    useCancelRequest,
+    useCreateThread,
 } from "@/hooks/features/community";
-import { useChatStore } from "@/store/chat-store";
 import { useAuthStore } from "@/store/auth-store";
+import { useChatStore } from "@/store/chat-store";
+import { useRouter } from "next/navigation";
+import { useIsMd } from "@/hooks/useMediaQuery";
 import type { UserConnectionResponse } from "@/types";
-import { Users, Search } from "lucide-react";
+import { Clock, Search, Users } from "lucide-react";
 import { useState } from "react";
 
 function ConnectionGrid({ children }: { children: React.ReactNode }) {
@@ -37,7 +41,10 @@ function ConnectionSkeletons() {
     return (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="rounded-xl border p-4 space-y-3 flex flex-col items-center">
+                <div
+                    key={i}
+                    className="rounded-xl border p-4 space-y-3 flex flex-col items-center"
+                >
                     <Skeleton className="h-16 w-16 rounded-full" />
                     <Skeleton className="h-3.5 w-24" />
                     <Skeleton className="h-8 w-full" />
@@ -51,27 +58,47 @@ export function ConnectionTabs() {
     const { user } = useAuthStore();
     const [search, setSearch] = useState("");
     const openChat = useChatStore((s) => s.openChat);
+    const router = useRouter();
+    const isDesktop = useIsMd();
 
     const { connections, isLoading: loadingConnections } = useMyConnections();
     const { pending, isLoading: loadingPending } = usePendingRequests();
+    const { sent, isLoading: loadingSent } = useSentRequests(user?.id);
     const respondMutation = useRespondToRequest();
     const deleteMutation = useDeleteConnection();
-    const sendMutation = useSendConnectionRequest();
+    const cancelMutation = useCancelRequest();
+    const createThread = useCreateThread();
 
+    /**
+     * Opens a direct chat with the other party of a connection.
+     * Calls createThread (idempotent — returns existing thread if already created)
+     * to get a real messaging thread ID, then enriches it with the participant name.
+     */
     function handleMessage(conn: UserConnectionResponse) {
-        const otherId = conn.requesterId === user?.id ? conn.addresseeId : conn.requesterId;
-        const otherName = conn.requesterId === user?.id ? conn.addresseeName : conn.requesterName;
-        openChat({
-            id: conn.id,
-            title: otherName,
-            threadType: "Direct",
-            participantCount: 2,
-            unreadCount: 0,
-            createdAt: conn.createdAt,
-            updatedAt: null,
-            otherParticipantName: otherName,
-            otherParticipantId: otherId,
-        });
+        const otherId =
+            conn.requesterId === user?.id ? conn.addresseeId : conn.requesterId;
+        const otherName =
+            conn.requesterId === user?.id
+                ? conn.addresseeName
+                : conn.requesterName;
+
+        createThread.mutate(
+            { threadType: "Direct", participantIds: [otherId] },
+            {
+                onSuccess: (thread) => {
+                    if (isDesktop) {
+                        openChat({
+                            ...thread,
+                            otherParticipantId: otherId,
+                            otherParticipantName: otherName,
+                            title: thread.title ?? otherName,
+                        });
+                    } else {
+                        router.push(`/community/messages/${thread.id}?name=${encodeURIComponent(otherName)}`);
+                    }
+                },
+            },
+        );
     }
 
     const filteredConnections = connections.filter((c) => {
@@ -99,8 +126,16 @@ export function ConnectionTabs() {
                         </Badge>
                     )}
                 </TabsTrigger>
-                <TabsTrigger value="suggestions" id="tab-suggestions">
-                    Sugerencias
+                <TabsTrigger value="sent" id="tab-sent">
+                    Pendientes
+                    {sent.length > 0 && (
+                        <Badge
+                            variant="outline"
+                            className="ml-1.5 text-xs border-amber-400 text-amber-600"
+                        >
+                            {sent.length}
+                        </Badge>
+                    )}
                 </TabsTrigger>
             </TabsList>
 
@@ -147,7 +182,7 @@ export function ConnectionTabs() {
                 )}
             </TabsContent>
 
-            {/* Pending Requests */}
+            {/* Pending Received Requests */}
             <TabsContent value="pending" className="mt-4">
                 {loadingPending ? (
                     <ConnectionSkeletons />
@@ -183,13 +218,29 @@ export function ConnectionTabs() {
                 )}
             </TabsContent>
 
-            {/* Suggestions — placeholder */}
-            <TabsContent value="suggestions" className="mt-4">
-                <EmptyState
-                    icon={<Users className="h-6 w-6" />}
-                    title="Sugerencias de conexion"
-                    description="Proximamente podras ver sugerencias de personas para conectar."
-                />
+            {/* Sent Pending Requests */}
+            <TabsContent value="sent" className="mt-4 space-y-4">
+                {loadingSent ? (
+                    <ConnectionSkeletons />
+                ) : sent.length === 0 ? (
+                    <EmptyState
+                        icon={<Clock className="h-6 w-6" />}
+                        title="Sin solicitudes enviadas"
+                        description="No tienes solicitudes de conexion pendientes de respuesta."
+                    />
+                ) : (
+                    <ConnectionGrid>
+                        {sent.map((conn) => (
+                            <ConnectionCard
+                                key={conn.id}
+                                connection={conn}
+                                actions={["cancel"]}
+                                onCancel={() => cancelMutation.mutate(conn.id)}
+                                isPending={cancelMutation.isPending}
+                            />
+                        ))}
+                    </ConnectionGrid>
+                )}
             </TabsContent>
         </Tabs>
     );

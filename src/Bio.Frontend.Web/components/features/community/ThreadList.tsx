@@ -30,7 +30,8 @@ export function ThreadList() {
         if (isDesktop) {
             openChat(thread);
         } else {
-            router.push(`/community/messages/${thread.id}`);
+            const name = thread.otherParticipantName ?? thread.title ?? 'Conversacion';
+            router.push(`/community/messages/${thread.id}?name=${encodeURIComponent(name)}`);
         }
     }
 

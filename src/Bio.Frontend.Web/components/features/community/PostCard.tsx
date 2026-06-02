@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ReactionButtons } from "@/components/features/community/ReactionButtons";
 import { formatRelativeTime } from "@/lib/formatters";
+import { CATEGORY_LABELS } from "@/lib/constants";
 import type { CommunityPostListItem } from "@/types";
 import { MessageCircle, MoreHorizontal, Pin, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -64,21 +65,25 @@ export function PostCard({
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
                     {/* Author info */}
-                    <div className="flex items-center gap-3 min-w-0">
+                    <Link
+                        href={`/community/profile/${post.authorUserId}`}
+                        className="flex items-center gap-3 min-w-0 group/author"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <Avatar className="h-10 w-10 shrink-0">
                             <AvatarFallback className="bg-primary/10 text-primary font-semibold text-sm">
                                 {getInitials(post.authorName)}
                             </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0">
-                            <p className="text-sm font-semibold leading-none truncate">
+                            <p className="text-sm font-semibold leading-none truncate group-hover/author:text-primary transition-colors">
                                 {post.authorName}
                             </p>
                             <p className="text-xs text-muted-foreground mt-0.5">
                                 {formatRelativeTime(post.createdAt)}
                             </p>
                         </div>
-                    </div>
+                    </Link>
 
                     {/* Badges + actions */}
                     <div className="flex items-center gap-2 shrink-0">
@@ -90,7 +95,7 @@ export function PostCard({
                         )}
                         {post.category && (
                             <Badge variant="secondary" className="text-xs">
-                                {post.category}
+                                {CATEGORY_LABELS[post.category] ?? post.category}
                             </Badge>
                         )}
                         {isAuthor && (

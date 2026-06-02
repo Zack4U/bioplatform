@@ -61,6 +61,73 @@ export function usePendingRequests(params?: { page?: number }) {
     };
 }
 
+/** Hook for outgoing (sent) pending connection requests */
+export function useSentRequests(userId?: string) {
+    const { data, isLoading, isError } = useQuery<PaginatedResponse<UserConnectionResponse>>(
+        {
+            queryKey: ["networking", "connections", "sent", userId],
+            queryFn: () => getMyConnections({ status: "Pending", pageSize: 50 }),
+            staleTime: 30 * 1000,
+            enabled: !!userId,
+        },
+    );
+
+    // Only the ones where the current user is the requester
+    const sent = (data?.items ?? []).filter((c) => c.requesterId === userId);
+
+    return {
+        sent,
+        totalCount: sent.length,
+        isLoading,
+        isError,
+    };
+}
+
+/**
+ * Hook to check if the current user already has a pending or accepted
+ * connection with a target user. Returns the connection if found.
+ */
+export function useConnectionStatus(currentUserId?: string, targetUserId?: string) {
+    // Fetch pending connections (includes sent and received)
+    const { data: pendingData, isLoading: loadingPending } = useQuery<PaginatedResponse<UserConnectionResponse>>(
+        {
+            queryKey: ["networking", "connections", "status-pending", currentUserId, targetUserId],
+            queryFn: () => getMyConnections({ status: "Pending", pageSize: 100 }),
+            staleTime: 30 * 1000,
+            enabled: !!currentUserId && !!targetUserId,
+        },
+    );
+
+    // Fetch accepted connections
+    const { data: acceptedData, isLoading: loadingAccepted } = useQuery<PaginatedResponse<UserConnectionResponse>>(
+        {
+            queryKey: ["networking", "connections", "status-accepted", currentUserId, targetUserId],
+            queryFn: () => getMyConnections({ status: "Accepted", pageSize: 100 }),
+            staleTime: 60 * 1000,
+            enabled: !!currentUserId && !!targetUserId,
+        },
+    );
+
+    const allItems = [...(pendingData?.items ?? []), ...(acceptedData?.items ?? [])];
+
+    const existing = allItems.find(
+        (c) =>
+            (c.requesterId === currentUserId && c.addresseeId === targetUserId) ||
+            (c.requesterId === targetUserId && c.addresseeId === currentUserId),
+    );
+
+    return {
+        isLoading: loadingPending || loadingAccepted,
+        existing,
+        /** Current user sent a request to targetUser and it's still pending */
+        isSentPending: existing?.status === "Pending" && existing?.requesterId === currentUserId,
+        /** Current user received a request from targetUser */
+        isReceivedPending: existing?.status === "Pending" && existing?.requesterId === targetUserId,
+        /** Both users are connected */
+        isAccepted: existing?.status === "Accepted",
+    };
+}
+
 /** Hook to send a connection request */
 export function useSendConnectionRequest() {
     const queryClient = useQueryClient();
@@ -103,7 +170,7 @@ export function useRespondToRequest() {
     });
 }
 
-/** Hook to remove/cancel a connection */
+/** Hook to remove an accepted connection */
 export function useDeleteConnection() {
     const queryClient = useQueryClient();
 
@@ -115,6 +182,22 @@ export function useDeleteConnection() {
         },
         onError: () => {
             notificationService.error("No se pudo eliminar la conexion.");
+        },
+    });
+}
+
+/** Hook to cancel a sent pending request */
+export function useCancelRequest() {
+    const queryClient = useQueryClient();
+
+    return useMutation<void, Error, string>({
+        mutationFn: (connectionId) => deleteConnection(connectionId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["networking", "connections"] });
+            notificationService.success("Solicitud cancelada.");
+        },
+        onError: () => {
+            notificationService.error("No se pudo cancelar la solicitud.");
         },
     });
 }

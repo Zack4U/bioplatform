@@ -87,7 +87,7 @@ export function CommunityCommentsManagement() {
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
     // Get post list for filter dropdown
-    const { posts: postOptions, isLoading: loadingPosts } = useAdminPosts({
+    const { posts: postOptions } = useAdminPosts({
         status: "Published",
         pageSize: 50,
     });

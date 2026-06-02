@@ -11,11 +11,17 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getInitials } from "@/lib/formatters";
-import { UserPlus, UserCheck, UserX, MessageCircle } from "lucide-react";
-import type { UserConnectionResponse } from "@/types";
 import { useAuthStore } from "@/store/auth-store";
+import type { UserConnectionResponse } from "@/types";
+import { Clock, MessageCircle, UserCheck, UserPlus, UserX } from "lucide-react";
 
-type ConnectionCardAction = "connect" | "accept" | "reject" | "remove" | "message";
+type ConnectionCardAction =
+    | "connect"
+    | "accept"
+    | "reject"
+    | "remove"
+    | "message"
+    | "cancel";
 
 interface ConnectionCardProps {
     connection: UserConnectionResponse;
@@ -25,6 +31,7 @@ interface ConnectionCardProps {
     onReject?: () => void;
     onRemove?: () => void;
     onMessage?: () => void;
+    onCancel?: () => void;
     isPending?: boolean;
 }
 
@@ -36,6 +43,7 @@ export function ConnectionCard({
     onReject,
     onRemove,
     onMessage,
+    onCancel,
     isPending,
 }: ConnectionCardProps) {
     const { user } = useAuthStore();
@@ -56,7 +64,9 @@ export function ConnectionCard({
                     </Avatar>
 
                     <div className="min-w-0 w-full">
-                        <p className="font-semibold text-sm truncate">{displayName}</p>
+                        <p className="font-semibold text-sm truncate">
+                            {displayName}
+                        </p>
                         <p className="text-xs text-muted-foreground mt-0.5">
                             Miembro de BioCommerce
                         </p>
@@ -70,7 +80,10 @@ export function ConnectionCard({
                                 onClick={onConnect}
                                 disabled={isPending}
                             >
-                                <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
+                                <UserPlus
+                                    className="h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                />
                                 Conectar
                             </Button>
                         )}
@@ -81,7 +94,10 @@ export function ConnectionCard({
                                 onClick={onAccept}
                                 disabled={isPending}
                             >
-                                <UserCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                                <UserCheck
+                                    className="h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                />
                                 Aceptar
                             </Button>
                         )}
@@ -93,7 +109,10 @@ export function ConnectionCard({
                                 onClick={onReject}
                                 disabled={isPending}
                             >
-                                <UserX className="h-3.5 w-3.5" aria-hidden="true" />
+                                <UserX
+                                    className="h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                />
                                 Rechazar
                             </Button>
                         )}
@@ -105,7 +124,10 @@ export function ConnectionCard({
                                 onClick={onRemove}
                                 disabled={isPending}
                             >
-                                <UserX className="h-3.5 w-3.5" aria-hidden="true" />
+                                <UserX
+                                    className="h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                />
                                 Eliminar
                             </Button>
                         )}
@@ -117,8 +139,26 @@ export function ConnectionCard({
                                 onClick={onMessage}
                                 disabled={isPending}
                             >
-                                <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                                <MessageCircle
+                                    className="h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                />
                                 Mensaje
+                            </Button>
+                        )}
+                        {actions.includes("cancel") && (
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="flex-1 gap-1.5 text-amber-600 border-amber-300 hover:bg-amber-50 hover:text-amber-700"
+                                onClick={onCancel}
+                                disabled={isPending}
+                            >
+                                <Clock
+                                    className="h-3.5 w-3.5"
+                                    aria-hidden="true"
+                                />
+                                Cancelar
                             </Button>
                         )}
                     </div>

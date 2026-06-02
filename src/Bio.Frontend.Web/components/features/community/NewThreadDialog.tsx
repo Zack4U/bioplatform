@@ -17,9 +17,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useMyConnections, useCreateThread } from "@/hooks/features/community";
 import { getInitials } from "@/lib/formatters";
 import { useAuthStore } from "@/store/auth-store";
+import { useChatStore } from "@/store/chat-store";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useIsMd } from "@/hooks/useMediaQuery";
 
 interface NewThreadDialogProps {
     open: boolean;
@@ -31,6 +34,9 @@ export function NewThreadDialog({ open, onOpenChange }: NewThreadDialogProps) {
     const [search, setSearch] = useState("");
     const { connections } = useMyConnections();
     const createThread = useCreateThread();
+    const openChat = useChatStore((s) => s.openChat);
+    const router = useRouter();
+    const isDesktop = useIsMd();
 
     const filtered = connections.filter((c) => {
         const name =
@@ -38,11 +44,24 @@ export function NewThreadDialog({ open, onOpenChange }: NewThreadDialogProps) {
         return name.toLowerCase().includes(search.toLowerCase());
     });
 
-    function handleSelect(targetId: string) {
-        createThread.mutate({
-            threadType: "Direct",
-            participantIds: [targetId],
-        });
+    function handleSelect(targetId: string, contactName: string) {
+        createThread.mutate(
+            { threadType: "Direct", participantIds: [targetId] },
+            {
+                onSuccess: (thread) => {
+                    if (isDesktop) {
+                        openChat({
+                            ...thread,
+                            otherParticipantId: targetId,
+                            otherParticipantName: contactName,
+                            title: thread.title ?? contactName,
+                        });
+                    } else {
+                        router.push(`/community/messages/${thread.id}?name=${encodeURIComponent(contactName)}`);
+                    }
+                },
+            },
+        );
         onOpenChange(false);
     }
 
@@ -87,7 +106,7 @@ export function NewThreadDialog({ open, onOpenChange }: NewThreadDialogProps) {
                                     key={conn.id}
                                     variant="ghost"
                                     className="w-full justify-start gap-3 h-auto py-2.5"
-                                    onClick={() => handleSelect(targetId)}
+                                    onClick={() => handleSelect(targetId, name)}
                                     disabled={createThread.isPending}
                                 >
                                     <Avatar className="h-8 w-8 shrink-0">

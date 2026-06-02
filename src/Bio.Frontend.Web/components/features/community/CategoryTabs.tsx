@@ -7,7 +7,7 @@
  * @module components/features/community/CategoryTabs
  */
 
-import { POST_CATEGORIES } from "@/lib/constants";
+import { POST_CATEGORIES, CATEGORY_KEYS, CATEGORY_LABELS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -27,8 +27,11 @@ export function CategoryTabs({ activeCategory, onCategoryChange }: CategoryTabsP
             aria-label="Filtro de categorias de comunidad"
         >
             {tabs.map((tab) => {
+                // activeCategory is a backend English key or null; tab is a Spanish label
                 const isActive =
-                    tab === ALL_LABEL ? activeCategory === null : activeCategory === tab;
+                    tab === ALL_LABEL
+                        ? activeCategory === null
+                        : CATEGORY_LABELS[activeCategory ?? ''] === tab || activeCategory === tab;
                 return (
                     <Button
                         key={tab}
@@ -41,9 +44,15 @@ export function CategoryTabs({ activeCategory, onCategoryChange }: CategoryTabsP
                                 ? "bg-primary text-primary-foreground shadow-sm"
                                 : "text-muted-foreground hover:text-foreground",
                         )}
-                        onClick={() =>
-                            onCategoryChange(tab === ALL_LABEL ? null : tab)
-                        }
+                        onClick={() => {
+                            if (tab === ALL_LABEL) {
+                                onCategoryChange(null);
+                            } else {
+                                // Send backend English key to API, display Spanish in UI
+                                const backendKey = CATEGORY_KEYS[tab] ?? tab;
+                                onCategoryChange(backendKey);
+                            }
+                        }}
                         aria-current={isActive ? "true" : undefined}
                     >
                         {tab}

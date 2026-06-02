@@ -24,8 +24,9 @@ export function CartFloatingButton() {
     const toggleCart = useCartStore((s) => s.toggleCart);
     const pathname = usePathname();
 
-    // Hide on cart/checkout page
-    if (pathname === "/cart") return null;
+    // Only show on home page or marketplace pages
+    const showCart = pathname === "/" || pathname === "/marketplace" || pathname.startsWith("/marketplace/");
+    if (!showCart) return null;
 
     const count = isHydrated ? cartCountValue : 0;
 

@@ -20,12 +20,13 @@ import { deletePost } from "@/services/community-service";
 import { notificationService } from "@/lib/notifications";
 import type { CommunityPostListItem } from "@/types";
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function CommunityPage() {
     const { user, isAuthenticated } = useAuthStore();
     const isDesktop = useIsMd();
-    const queryClient = useQueryClient();
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
     const {
         posts,
@@ -37,6 +38,19 @@ export default function CommunityPage() {
     } = useCommunityFeed();
 
     const { togglePostReaction, isPending: isReacting } = useReactions();
+
+    // 'Mis Posts' tab: filter by current user client-side when ?tab=mine
+    const showMine = searchParams.get("tab") === "mine";
+    const displayPosts = showMine ? posts.filter((p) => p.authorUserId === user?.id) : posts;
+
+    // Auth guard — redirect unauthenticated users to profile (login) page
+    function requireAuth(action: () => void) {
+        if (!isAuthenticated) {
+            router.push("/profile");
+            return;
+        }
+        action();
+    }
 
     // Create/Edit dialog
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -81,12 +95,12 @@ export default function CommunityPage() {
 
             {/* Feed */}
             <PostFeed
-                posts={posts}
+                posts={displayPosts}
                 isLoading={isLoading}
                 isError={isError}
                 currentUserId={user?.id}
-                onLike={(postId) => togglePostReaction(postId, "Like")}
-                onDislike={(postId) => togglePostReaction(postId, "Dislike")}
+                onLike={(postId) => requireAuth(() => togglePostReaction(postId, "Like"))}
+                onDislike={(postId) => requireAuth(() => togglePostReaction(postId, "Dislike"))}
                 onEdit={isAuthenticated ? handleEdit : undefined}
                 onDelete={isAuthenticated ? handleDelete : undefined}
                 onOpenComments={handleOpenComments}

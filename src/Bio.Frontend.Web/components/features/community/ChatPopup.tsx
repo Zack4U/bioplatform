@@ -16,9 +16,9 @@ import { useChatStore } from "@/store/chat-store";
 import { useAuthStore } from "@/store/auth-store";
 import { getInitials } from "@/lib/formatters";
 import type { ChatPopupEntry } from "@/store/chat-store";
-import { Minus, X } from "lucide-react";
+import { Minus, X, RefreshCw } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
+
 
 interface ChatPopupProps {
     entry: ChatPopupEntry;
@@ -32,7 +32,7 @@ export function ChatPopup({ entry, index }: ChatPopupProps) {
     const { user } = useAuthStore();
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const { messages, isLoading } = useMessages(thread.id);
+    const { messages, isLoading, invalidateMessages } = useMessages(thread.id);
     const sendMessage = useSendMessage(thread.id);
     const markRead = useMarkThreadRead();
 
@@ -48,7 +48,7 @@ export function ChatPopup({ entry, index }: ChatPopupProps) {
         if (thread.unreadCount > 0) {
             markRead.mutate(thread.id);
         }
-    }, [thread.id, thread.unreadCount]);
+    }, [thread.id, thread.unreadCount, markRead]);
 
     // Position: stack from right, 10px gap between popups
     const rightOffset = 16 + index * (350 + 12);
@@ -75,6 +75,15 @@ export function ChatPopup({ entry, index }: ChatPopupProps) {
                         variant="ghost"
                         size="icon"
                         className="h-6 w-6 text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/20"
+                        onClick={invalidateMessages}
+                        aria-label="Actualizar mensajes"
+                    >
+                        <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/20"
                         onClick={() => minimizeChat(thread.id)}
                         aria-label="Minimizar chat"
                     >
@@ -92,7 +101,7 @@ export function ChatPopup({ entry, index }: ChatPopupProps) {
                 </div>
             </div>
 
-            {/* Messages */}
+            {/* Messages — oldest at top, newest at bottom (WhatsApp style) */}
             <div className="flex flex-col gap-1 overflow-y-auto p-3 h-[380px] overscroll-contain">
                 {isLoading ? (
                     <div className="flex items-center justify-center h-full">
@@ -105,7 +114,7 @@ export function ChatPopup({ entry, index }: ChatPopupProps) {
                         </p>
                     </div>
                 ) : (
-                    messages.map((msg) => (
+                    [...messages].reverse().map((msg) => (
                         <MessageBubble
                             key={msg.id}
                             message={msg}

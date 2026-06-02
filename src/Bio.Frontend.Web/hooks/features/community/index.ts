@@ -13,9 +13,12 @@ export { useReactions } from "./useReactions";
 export {
     useMyConnections,
     usePendingRequests,
+    useSentRequests,
+    useConnectionStatus,
     useSendConnectionRequest,
     useRespondToRequest,
     useDeleteConnection,
+    useCancelRequest,
 } from "./useConnections";
 export {
     useThreads,

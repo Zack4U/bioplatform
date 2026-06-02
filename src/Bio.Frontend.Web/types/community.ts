@@ -44,6 +44,7 @@ export interface CommunityPostListItem {
     authorUserId: string;
     authorName: string;
     title: string;
+    content: string;
     category: string | null;
     status: PostStatus;
     isPinned: boolean;
