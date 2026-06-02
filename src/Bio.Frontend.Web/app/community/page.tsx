@@ -21,8 +21,9 @@ import { notificationService } from "@/lib/notifications";
 import type { CommunityPostListItem } from "@/types";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function CommunityPage() {
+function CommunityPageContent() {
     const { user, isAuthenticated } = useAuthStore();
     const isDesktop = useIsMd();
     const router = useRouter();
@@ -134,5 +135,13 @@ export default function CommunityPage() {
                 />
             )}
         </div>
+    );
+}
+
+export default function CommunityPage() {
+    return (
+        <Suspense fallback={null}>
+            <CommunityPageContent />
+        </Suspense>
     );
 }

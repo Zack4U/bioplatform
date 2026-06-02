@@ -38,7 +38,9 @@ export function CommunityLayout({ children, hideRightSidebar }: CommunityLayoutP
                     <div className="flex gap-6">
                         {/* Left sidebar — hidden on mobile, shown on md+ */}
                         <div className="hidden md:block w-64 shrink-0">
-                            <CommunityLeftSidebar />
+                            <Suspense fallback={null}>
+                                <CommunityLeftSidebar />
+                            </Suspense>
                         </div>
 
                         {/* Main content */}
