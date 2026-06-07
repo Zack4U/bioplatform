@@ -15,16 +15,10 @@
  */
 
 import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { NotificationBell } from "@/components/features/community/NotificationBell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerHeader,
-    DrawerTitle,
-} from "@/components/ui/drawer";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -54,11 +48,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+
 
 const NAV_LINKS = [
     { label: "Catalogo", href: "/catalog" },
     { label: "Marketplace", href: "/marketplace" },
+    { label: "Comunidad", href: "/community" },
     { label: "Identificacion IA", href: "/identify" },
     { label: "Asesor IA", href: "/advisor" },
 ] as const;
@@ -80,7 +75,6 @@ export function Navbar() {
     const logoutMutation = useLogout();
     const isHydrated = useHydration();
     const isDesktop = useIsMd();
-    const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
 
     const cartCountValue = useCartStore((s) =>
         s.items.reduce((sum, item) => sum + item.quantity, 0),
@@ -132,6 +126,10 @@ export function Navbar() {
                     <div className="flex items-center gap-2">
                         <ThemeToggle />
 
+                        {/* Notification Bell — only for authenticated users */}
+                        {!isLoading && isAuthenticated && (
+                            <NotificationBell />
+                        )}
                         <Button
                             variant="outline"
                             size="icon"
@@ -149,75 +147,15 @@ export function Navbar() {
                             </Link>
                         </Button>
 
-                        {/* ── Profile: DropdownMenu on desktop, Drawer on mobile ── */}
-                        {!isLoading && isAuthenticated && user ? (
-                            isDesktop ? (
-                                /* Desktop → DropdownMenu */
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button
-                                            id="user-menu-trigger"
-                                            variant="ghost"
-                                            className="relative h-9 w-9 rounded-full"
-                                            aria-label="Menu de usuario"
-                                        >
-                                            <Avatar className="h-9 w-9">
-                                                <AvatarFallback className="bg-primary/10 text-primary text-sm font-semibold">
-                                                    {getInitials(user.fullName)}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56">
-                                        <DropdownMenuLabel className="flex flex-col gap-0.5">
-                                            <span className="font-medium text-sm">{user.fullName}</span>
-                                            <span className="text-xs text-muted-foreground font-normal">{user.email}</span>
-                                        </DropdownMenuLabel>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem asChild>
-                                            <Link href="/profile" className="flex items-center gap-2 cursor-pointer">
-                                                <User className="h-4 w-4" aria-hidden="true" />
-                                                Mi perfil
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem asChild>
-                                            <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
-                                                <Settings className="h-4 w-4" aria-hidden="true" />
-                                                Configuracion
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        {hasAdminAccess && (
-                                            <>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem asChild>
-                                                    <Link href="/admin" className="flex items-center gap-2 cursor-pointer">
-                                                        <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
-                                                        Panel de Administracion
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                            </>
-                                        )}
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem
-                                            id="logout-button"
-                                            className="text-destructive focus:text-destructive cursor-pointer gap-2"
-                                            onClick={() => logoutMutation.mutate()}
-                                            disabled={logoutMutation.isPending}
-                                        >
-                                            <LogOut className="h-4 w-4" aria-hidden="true" />
-                                            Cerrar sesion
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            ) : (
-                                /* Mobile → Drawer */
-                                <>
+                        {/* ── Profile: DropdownMenu on desktop only ── */}
+                        {!isLoading && isAuthenticated && user && isDesktop && (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
                                     <Button
                                         id="user-menu-trigger"
                                         variant="ghost"
                                         className="relative h-9 w-9 rounded-full"
                                         aria-label="Menu de usuario"
-                                        onClick={() => setProfileDrawerOpen(true)}
                                     >
                                         <Avatar className="h-9 w-9">
                                             <AvatarFallback className="bg-primary/10 text-primary text-sm font-semibold">
@@ -225,66 +163,51 @@ export function Navbar() {
                                             </AvatarFallback>
                                         </Avatar>
                                     </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-56">
+                                    <DropdownMenuLabel className="flex flex-col gap-0.5">
+                                        <span className="font-medium text-sm">{user.fullName}</span>
+                                        <span className="text-xs text-muted-foreground font-normal">{user.email}</span>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/profile" className="flex items-center gap-2 cursor-pointer">
+                                            <User className="h-4 w-4" aria-hidden="true" />
+                                            Mi perfil
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
+                                            <Settings className="h-4 w-4" aria-hidden="true" />
+                                            Configuracion
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    {hasAdminAccess && (
+                                        <>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/admin" className="flex items-center gap-2 cursor-pointer">
+                                                    <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
+                                                    Panel de Administracion
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        </>
+                                    )}
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem
+                                        id="logout-button"
+                                        className="text-destructive focus:text-destructive cursor-pointer gap-2"
+                                        onClick={() => logoutMutation.mutate()}
+                                        disabled={logoutMutation.isPending}
+                                    >
+                                        <LogOut className="h-4 w-4" aria-hidden="true" />
+                                        Cerrar sesion
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )}
 
-                                    <Drawer open={profileDrawerOpen} onOpenChange={setProfileDrawerOpen}>
-                                        <DrawerContent>
-                                            <DrawerHeader className="text-left">
-                                                <div className="flex items-center gap-3 mb-1">
-                                                    <Avatar>
-                                                        <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                                                            {getInitials(user.fullName)}
-                                                        </AvatarFallback>
-                                                    </Avatar>
-                                                    <div>
-                                                        <DrawerTitle className="text-base leading-tight">{user.fullName}</DrawerTitle>
-                                                        <DrawerDescription className="text-xs mt-0.5">{user.email}</DrawerDescription>
-                                                    </div>
-                                                </div>
-                                            </DrawerHeader>
-                                            <Separator />
-                                            <nav className="flex flex-col gap-1 px-4 py-3">
-                                                <DrawerClose asChild>
-                                                    <Button variant="ghost" className="w-full justify-start" asChild>
-                                                        <Link href="/profile">
-                                                            <User className="mr-2 h-4 w-4" aria-hidden="true" />Mi perfil
-                                                        </Link>
-                                                    </Button>
-                                                </DrawerClose>
-                                                <DrawerClose asChild>
-                                                    <Button variant="ghost" className="w-full justify-start" asChild>
-                                                        <Link href="/settings">
-                                                            <Settings className="mr-2 h-4 w-4" aria-hidden="true" />Configuracion
-                                                        </Link>
-                                                    </Button>
-                                                </DrawerClose>
-                                                {hasAdminAccess && (
-                                                    <DrawerClose asChild>
-                                                        <Button variant="ghost" className="w-full justify-start" asChild>
-                                                            <Link href="/admin">
-                                                                <LayoutDashboard className="mr-2 h-4 w-4" aria-hidden="true" />Panel de Administracion
-                                                            </Link>
-                                                        </Button>
-                                                    </DrawerClose>
-                                                )}
-                                                <Separator className="my-1" />
-                                                <DrawerClose asChild>
-                                                    <Button
-                                                        id="logout-button"
-                                                        variant="destructive"
-                                                        className="w-full justify-start"
-                                                        onClick={() => logoutMutation.mutate()}
-                                                        disabled={logoutMutation.isPending}
-                                                    >
-                                                        <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
-                                                        Cerrar sesion
-                                                    </Button>
-                                                </DrawerClose>
-                                            </nav>
-                                        </DrawerContent>
-                                    </Drawer>
-                                </>
-                            )
-                        ) : (
+                        {!isLoading && (!isAuthenticated || !user) && (
                             <Button id="login-nav-button" size="sm" className="hidden sm:inline-flex" asChild>
                                 <Link href="/login">Ingresar</Link>
                             </Button>

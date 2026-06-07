@@ -17,7 +17,7 @@ internal static class CommunityPostMapper
     internal static CommunityPostListItemDTO ToListItem(CommunityPost p, int commentCount) => new(
         p.Id, p.AuthorUserId,
         p.AuthorUser?.FullName ?? string.Empty,
-        p.Title, p.Category, p.Status,
+        p.Title, p.Content, p.Category, p.Status,
         p.IsPinned, p.LikesCount, p.DislikesCount,
         commentCount, p.CreatedAt, p.UpdatedAt);
 
@@ -42,9 +42,10 @@ public class CreateCommunityPostCommandHandler
 {
     private readonly ICommunityPostRepository _repo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public CreateCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow)
-    { _repo = repo; _uow = uow; }
+    public CreateCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
 
     public async Task<CommunityPostDetailDTO> Handle(
         CreateCommunityPostCommand request, CancellationToken ct)
@@ -57,6 +58,8 @@ public class CreateCommunityPostCommandHandler
 
         await _repo.AddAsync(post, ct);
         await _uow.SaveChangesAsync(ct);
+        // Bust all community:posts cache entries so new post appears immediately
+        await _cache.RemoveByPrefixAsync("community:posts", ct);
         return CommunityPostMapper.ToDetail(post, 0);
     }
 }
@@ -76,9 +79,10 @@ public class UpdateCommunityPostCommandHandler
 {
     private readonly ICommunityPostRepository _repo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public UpdateCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow)
-    { _repo = repo; _uow = uow; }
+    public UpdateCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
 
     public async Task<CommunityPostDetailDTO> Handle(
         UpdateCommunityPostCommand request, CancellationToken ct)
@@ -96,6 +100,8 @@ public class UpdateCommunityPostCommandHandler
 
         post.Update(request.Dto.Title, request.Dto.Content, request.Dto.Category, newStatus);
         await _uow.SaveChangesAsync(ct);
+        // Bust all list cache entries so updated post appears immediately
+        await _cache.RemoveByPrefixAsync("community:posts", ct);
         return CommunityPostMapper.ToDetail(post, post.Comments.Count(c => !c.IsDeleted));
     }
 }
@@ -114,9 +120,10 @@ public class DeleteCommunityPostCommandHandler
 {
     private readonly ICommunityPostRepository _repo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public DeleteCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow)
-    { _repo = repo; _uow = uow; }
+    public DeleteCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
 
     public async Task<Unit> Handle(DeleteCommunityPostCommand request, CancellationToken ct)
     {
@@ -128,6 +135,8 @@ public class DeleteCommunityPostCommandHandler
 
         await _repo.DeleteAsync(post, ct);
         await _uow.SaveChangesAsync(ct);
+        // Bust all list cache entries
+        await _cache.RemoveByPrefixAsync("community:posts", ct);
         return Unit.Value;
     }
 }

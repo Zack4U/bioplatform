@@ -129,6 +129,37 @@ export const ADMIN_SIDEBAR_SECTIONS: AdminNavSection[] = [
             },
         ],
     },
+    {
+        titleKey: "Comunidad",
+        items: [
+            {
+                key: "community-posts",
+                labelKey: "Posts",
+                href: "/admin/community-posts",
+                iconName: "MessageSquare",
+                roles: ["ADMIN"],
+            },
+            {
+                key: "community-comments",
+                labelKey: "Comentarios",
+                href: "/admin/community-comments",
+                iconName: "MessageCircle",
+                roles: ["ADMIN"],
+            },
+        ],
+    },
+    {
+        titleKey: "Networking",
+        items: [
+            {
+                key: "connections",
+                labelKey: "Conexiones",
+                href: "/admin/connections",
+                iconName: "UserPlus",
+                roles: ["ADMIN"],
+            },
+        ],
+    },
 ];
 
 /**
