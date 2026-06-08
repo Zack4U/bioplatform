@@ -208,12 +208,25 @@ Los pesos del clasificador CNN **no** están en git; se versionan con **DVC** en
 - **Pesos**: el servicio de IA carga `data/weights/<version>/best_model.pth` autodetectando la última versión presente en disco. `dvc pull` trae la carpeta versionada (`v1.0.*`).
 - **Registro en BD**: `seed_ai_metadata.sql` inserta el modelo activo (`efficientnet_b2`, `v1.0.20260518021229`, accuracy 0.8739) en `ai_model_versions` para el dashboard/backend. La inferencia en Python usa el archivo, no la BD.
 
-Requisitos del paso `weights`:
+Requisitos del paso `weights` — instalar DVC con soporte S3 y configurar credenciales:
 
 ```bash
+# 1. Instalar DVC con backend S3
 pip install 'dvc[s3]'
-# Credenciales AWS: el instalador exporta AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION desde .env
+
+# 2. Configurar credenciales del remoto (se guardan en .dvc/config.local, NO versionado)
+cd src/Bio.Backend.AI
+dvc remote modify --local s3-remote access_key_id  TU_ACCESS_KEY_AQUI
+dvc remote modify --local s3-remote secret_access_key TU_SECRET_KEY_AQUI
+
+# 3. Descargar los pesos
+dvc pull
+cd ../..
 ```
+
+> Alternativa: el instalador (`install.sh` sección `weights`) también exporta
+> `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `AWS_REGION` desde `.env` antes de `dvc pull`,
+> así que si esas variables tienen valores reales no necesitas el paso 2.
 
 > Si no tienes acceso al bucket DVC, copia manualmente un `best_model.pth` en
 > `src/Bio.Backend.AI/data/weights/<version>/` antes de la sección `apps`; el instalador detecta los pesos presentes y salta `dvc pull`.
