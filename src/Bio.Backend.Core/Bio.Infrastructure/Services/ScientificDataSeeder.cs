@@ -171,8 +171,27 @@ public class ScientificDataSeeder : IScientificDataSeeder
         }
 
         _logger.LogInformation("Seeding AI model registry from {File} ...", AiMetadataSqlFile);
-        var affected = await _dbContext.Database.ExecuteSqlRawAsync(sql, ct);
-        _logger.LogInformation("AI model registry seed affected {Rows} rows.", affected);
+
+        // NOTE: do NOT use ExecuteSqlRawAsync here. EF's RawSqlCommandBuilder runs the SQL through
+        // string.Format to substitute {0}-style placeholders, so the JSON literals in this file
+        // ('{"model_name": ...}') are parsed as malformed format items and throw FormatException.
+        // Run the script through a raw DbCommand so the braces are treated as plain text.
+        var connection = _dbContext.Database.GetDbConnection();
+        var wasClosed = connection.State != System.Data.ConnectionState.Open;
+        if (wasClosed)
+            await connection.OpenAsync(ct);
+        try
+        {
+            await using var command = connection.CreateCommand();
+            command.CommandText = sql;
+            var affected = await command.ExecuteNonQueryAsync(ct);
+            _logger.LogInformation("AI model registry seed affected {Rows} rows.", affected);
+        }
+        finally
+        {
+            if (wasClosed)
+                await connection.CloseAsync();
+        }
     }
 
     // =====================================================================

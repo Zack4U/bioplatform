@@ -79,56 +79,6 @@ DevOps:     Docker | GitHub Actions | Nginx
 - Node.js 18+
 - Python 3.11+
 
-### Instalación
-
-```bash
-# 1. Clonar repositorio
-git clone https://github.com/tu-organizacion/bioplatform.git
-cd bioplatform
-
-# 2. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales (DB, OpenAI, Stripe, etc.)
-
-# 3. Setup inicial (restaurar dependencias)
-# Windows:
-.\setup.ps1
-
-# macOS/Linux:
-bash setup.sh
-```
-
-### Ejecutar Servicios Locales
-
-**Recomendación:** Usa el script bash que abre una terminal por cada servicio.
-
-```bash
-# macOS/Linux/Git Bash en Windows:
-bash run.sh           # Levanta todo (docker + core + ai + web)
-bash run.sh core ai   # Levanta solo backend y AI
-```
-
-**Servicios disponibles:** `docker`, `core`, `ai`, `web`, `mobile`, `all`
-
-Ver [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) para más detalles.
-
-### Verificar Servicios (Alternativo)
-
-### Puertos
-
-| Servicio                | Puerto                |
-| ----------------------- | --------------------- |
-| Frontend Web            | http://localhost:3000 |
-| Backend API             | http://localhost:5070 |
-| AI Service              | http://localhost:8000 |
-| ChromaDB (Vector Store) | http://localhost:8001 |
-| PostgreSQL              | localhost:5433        |
-| SQL Server              | localhost:1433        |
-| Redis                   | localhost:6379        |
-| Adminer (DB UI)         | http://localhost:8090 |
-| pgAdmin                 | http://localhost:5050 |
-| Seq (Logs)              | http://localhost:5341 |
-
 ---
 
 ## Despliegue en Producción (Docker)
@@ -200,6 +150,33 @@ Seguir el progreso del poblado:
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend-core
 ```
+
+### PyTorch — CPU vs GPU
+
+El Dockerfile del servicio de IA instala PyTorch según la variable `TORCH_DEVICE` del `.env`:
+
+| Valor | Cuándo usar |
+|-------|-------------|
+| `cpu` | Sin GPU (default). Funciona en cualquier servidor. |
+| `cu121` | NVIDIA GPU con CUDA 12.1. Requiere `nvidia-container-toolkit` en el host. |
+| `cu124` | NVIDIA GPU con CUDA 12.4. |
+
+**Configuración en `.env`:**
+```env
+# cpu (default) — sin GPU
+TORCH_DEVICE=cpu
+
+# GPU NVIDIA
+TORCH_DEVICE=cu121
+```
+
+**Override puntual sin tocar `.env`:**
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml build \
+  --build-arg TORCH_DEVICE=cu121 ai-service
+```
+
+> Para GPU, instalar `nvidia-container-toolkit` en el host y agregar `deploy.resources.reservations.devices` al servicio `ai-service` en el compose.
 
 ### Modelo de IA (pesos DVC + registro en BD)
 

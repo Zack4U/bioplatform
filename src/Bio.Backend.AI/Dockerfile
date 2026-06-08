@@ -6,7 +6,14 @@
 # ===========================================
 
 # ── Stage 1: Builder ──────────────────────────────────────────
+# TORCH_DEVICE options: cpu | cu121 | cu124
+# GPU build: docker compose build --build-arg TORCH_DEVICE=cu121 ai-service
+# Or set TORCH_DEVICE=cu121 in .env
+ARG TORCH_DEVICE=cpu
+
 FROM python:3.11-slim AS builder
+
+ARG TORCH_DEVICE
 
 WORKDIR /build
 
@@ -15,6 +22,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install \
+    torch==2.2.0 torchvision==0.17.0 \
+    --index-url https://download.pytorch.org/whl/${TORCH_DEVICE}
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # ── Stage 2: Runtime ──────────────────────────────────────────

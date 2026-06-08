@@ -140,6 +140,8 @@ services:
     build:
       context: ./src/Bio.Backend.AI
       dockerfile: Dockerfile
+      args:
+        TORCH_DEVICE: ${TORCH_DEVICE:-cpu}
     container_name: bioplatform-ai-service-prod
     environment:
       # Names MUST match app/core/config.py (pydantic Settings).
