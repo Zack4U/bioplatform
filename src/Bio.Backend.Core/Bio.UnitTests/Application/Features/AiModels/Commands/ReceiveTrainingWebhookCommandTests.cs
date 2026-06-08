@@ -258,4 +258,61 @@ public class ReceiveTrainingWebhookCommandTests
 
         _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
     }
+
+    [Fact]
+    public async Task Handle_WhenEmptyJobIdManualUpload_ShouldRegisterInactiveVersion()
+    {
+        // Arrange — manual upload notifies with an empty jobId (no training job).
+        _repoMock.Setup(r => r.GetVersionByTagAsync("v3.0", It.IsAny<CancellationToken>()))
+            .ReturnsAsync((AiModelVersion?)null);
+
+        var handler = new ReceiveTrainingWebhookCommandHandler(_repoMock.Object, _uowMock.Object);
+        var cmd = new ReceiveTrainingWebhookCommand("", "Completed", "Manual upload", "v3.0", 0.85m, null, null);
+
+        // Act
+        var result = await handler.Handle(cmd, default);
+
+        // Assert
+        result.Accepted.Should().BeTrue();
+        _repoMock.Verify(r => r.AddVersionAsync(
+            It.Is<AiModelVersion>(v => v.Version == "v3.0" && !v.IsActive && v.AccuracyMetric == 0.85m),
+            It.IsAny<CancellationToken>()), Times.Once);
+        _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task Handle_WhenEmptyJobIdAlreadyRegistered_ShouldBeIdempotent()
+    {
+        // Arrange
+        var existing = new AiModelVersion("efficientnet_b0", "v3.0", 0.85m, DateTime.UtcNow);
+        _repoMock.Setup(r => r.GetVersionByTagAsync("v3.0", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(existing);
+
+        var handler = new ReceiveTrainingWebhookCommandHandler(_repoMock.Object, _uowMock.Object);
+        var cmd = new ReceiveTrainingWebhookCommand("", "Completed", "Manual upload", "v3.0", 0.85m, null, null);
+
+        // Act
+        var result = await handler.Handle(cmd, default);
+
+        // Assert
+        result.Accepted.Should().BeTrue();
+        result.Message.Should().Contain("already registered");
+        _repoMock.Verify(r => r.AddVersionAsync(It.IsAny<AiModelVersion>(), It.IsAny<CancellationToken>()), Times.Never);
+        _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Handle_WhenEmptyJobIdWithoutVersion_ShouldReturnFailure()
+    {
+        // Arrange
+        var handler = new ReceiveTrainingWebhookCommandHandler(_repoMock.Object, _uowMock.Object);
+        var cmd = new ReceiveTrainingWebhookCommand("", "Completed", "Manual upload", null, null, null, null);
+
+        // Act
+        var result = await handler.Handle(cmd, default);
+
+        // Assert
+        result.Accepted.Should().BeFalse();
+        _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+    }
 }

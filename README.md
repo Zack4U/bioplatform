@@ -3,7 +3,7 @@
 ## Plataforma de Biodiversidad y Biocomercio con IA Generativa
 
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)]()
-[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)]()
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)]()
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)]()
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB)]()
 
@@ -16,7 +16,7 @@ Plataforma digital integral para la identificación, catalogación y aprovechami
 | Módulo                        | Descripción                                                          |
 | ----------------------------- | -------------------------------------------------------------------- |
 | **Catálogo de Biodiversidad** | Flora, fauna y hongos con información taxonómica y ecológica         |
-| **Identificación con IA**     | CNN (ResNet50/EfficientNet) con >85% de precisión para 300+ especies |
+| **Identificación con IA**     | CNN (EfficientNet-B2) con ~87% de precisión para 719 especies        |
 | **Marketplace**               | Conexión productores-compradores con trazabilidad y pagos integrados |
 | **RAG & Chatbot**             | Consultas especializadas y generación de planes de negocio           |
 | **Compliance**                | Gestión de permisos ABS según normativa colombiana                   |
@@ -29,8 +29,8 @@ Plataforma digital integral para la identificación, catalogación y aprovechami
 ```
 Backend:    .NET 8 (Clean Architecture) + FastAPI (Python)
 Frontend:   Next.js 14 + React Native (Expo)
-Databases:  PostgreSQL (PostGIS) | SQL Server | Redis | MongoDB
-AI/ML:      TensorFlow/PyTorch | LangChain | ChromaDB | OpenAI GPT-4
+Databases:  PostgreSQL (PostGIS) | SQL Server | Redis | ChromaDB (vector)
+AI/ML:      PyTorch (CNN) | LangChain | ChromaDB | OpenAI
 DevOps:     Docker | GitHub Actions | Nginx
 ```
 
@@ -182,8 +182,15 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml build \
 
 Los pesos del clasificador CNN **no** están en git; se versionan con **DVC** en S3 (`s3://bioplatform-private/dvc-storage`) y se descargan con `dvc pull` (sección `weights` del instalador).
 
-- **Pesos**: el servicio de IA carga `data/weights/<version>/best_model.pth` autodetectando la última versión presente en disco. `dvc pull` trae la carpeta versionada (`v1.0.*`).
-- **Registro en BD**: `seed_ai_metadata.sql` inserta el modelo activo (`efficientnet_b2`, `v1.0.20260518021229`, accuracy 0.8739) en `ai_model_versions` para el dashboard/backend. La inferencia en Python usa el archivo, no la BD.
+- **Fuente de verdad = la BD.** Al arrancar, el servicio de IA consulta `ai_model_versions` y carga **solo** la versión marcada como activa (`is_active = true`), desde `data/weights/<version>/best_model.pth`. Si **ninguna** versión está activa, el clasificador queda **suspendido** y `/api/v1/classify` devuelve 503 hasta que un admin active una versión. (Ya no autodetecta "la más nueva en disco".)
+- **Pesos**: `dvc pull` trae las carpetas versionadas (`v1.0.*`) a `data/weights/`. El Dockerfile del `ai-service` las copia a la imagen en el build (por eso la sección `weights` corre **antes** que `apps`).
+- **Registro en BD**: `seed_ai_metadata.sql` inserta el modelo activo (`efficientnet_b2`, `v1.0.20260518021229`) en `ai_model_versions` para el dashboard/backend.
+
+> **Primer arranque (importante):** el `ai-service` solo depende de Postgres, mientras que el registro del modelo (`ai_model_versions`) lo siembra `backend-core` durante su propio arranque en la sección `apps`. Si el `ai-service` arranca **antes** de que termine el seed, no encontrará modelo activo y quedará suspendido. Tras el primer despliegue, reinícialo para que cargue el modelo recién sembrado:
+> ```bash
+> docker compose -f docker-compose.yml -f docker-compose.prod.yml restart ai-service
+> ```
+> (Alternativa: activar la versión desde el panel admin → dispara hot-reload sin reinicio.)
 
 Requisitos del paso `weights` — instalar DVC con soporte S3 y configurar credenciales:
 
@@ -297,13 +304,14 @@ eas submit --platform android --latest
 | ---------------------------------------------------------- | ---------------------------------------------- |
 | [DEVELOPMENT.md](./DEVELOPMENT.md)                         | Guía completa para desarrollo local            |
 | [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md)                     | Uso de scripts de ejecución (run.sh / run.ps1) |
-| [SETUP_SUMMARY.md](./SETUP_SUMMARY.md)                     | Resumen visual del setup                       |
-| [CHANGELOG_DOCKER.md](./CHANGELOG_DOCKER.md)               | Cambios en estrategia Docker                   |
-| [Getting Started](.docs/GETTING_STARTED.md)                | Guía completa de configuración inicial         |
-| [Requirements](.docs/bioplatform/01-Requirements.md)       | Requerimientos funcionales y técnicos          |
-| [Guidelines](.docs/bioplatform/02-Guidelines%20.md)        | Lineamientos generales del proyecto            |
-| [Data Dictionary](.docs/bioplatform/03-Data_Dictionary.md) | Estructura de bases de datos                   |
-| [Dev Guidelines](.docs/bioplatform/05-Dev_Guidelines.md)   | Estándares de desarrollo                       |
+| [Quickstart](.docs/QUICKSTART.md)                          | Guía rápida de configuración inicial           |
+| [CNN_GUIDE](src/Bio.Backend.AI/CNN_GUIDE.md)               | Pipeline de entrenamiento de la CNN            |
+| [FINE_TUNING](src/Bio.Backend.AI/FINE_TUNING.md)           | Reentrenamiento / fine-tuning del modelo       |
+| [MODEL_VERSIONING](src/Bio.Backend.AI/MODEL_VERSIONING.md) | Versionado de pesos (DVC) y registro en BD     |
+| [Requirements](.docs/Bioplatform/01-Requirements.md)       | Requerimientos funcionales y técnicos          |
+| [Guidelines](.docs/Bioplatform/02-Guidelines%20.md)        | Lineamientos generales del proyecto            |
+| [Data Dictionary](.docs/Bioplatform/03-Data_Dictionary.md) | Estructura de bases de datos                   |
+| [Dev Guidelines](.docs/Bioplatform/05-Dev_Guidelines.md)   | Estándares de desarrollo                       |
 
 ---
 

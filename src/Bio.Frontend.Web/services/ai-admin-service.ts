@@ -76,6 +76,15 @@ export async function deactivateModelVersion(id: number): Promise<{ success: boo
 }
 
 /**
+ * DELETE /api/v1/ai/models/{id}
+ * Soft-delete a model version. Suspends the AI service if it was active.
+ */
+export async function deleteModelVersion(id: number): Promise<{ success: boolean; message: string }> {
+    const { data } = await apiClient.delete<{ success: boolean; message: string }>(`v1/ai/models/${id}`);
+    return data;
+}
+
+/**
  * GET /api/v1/ai/training/jobs
  * Fetch list of recent training jobs (automatic fine-tuning history).
  */

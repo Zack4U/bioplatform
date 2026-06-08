@@ -7,6 +7,8 @@ import {
     useStartFineTuning,
     useUploadManualModel,
     useNewObservationsSummary,
+    useDeactivateModel,
+    useDeleteModel,
 } from "@/hooks/features/admin/useAiModelManagement";
 import type { CnnModelVersion } from "@/types";
 
@@ -20,6 +22,8 @@ export function useCnnModelManagementPage() {
 
     const startTuningMutation = useStartFineTuning();
     const uploadManualMutation = useUploadManualModel();
+    const deactivateMutation = useDeactivateModel();
+    const deleteMutation = useDeleteModel();
 
     // ─── Local Dialog/Sheet States ────────────────────────────────────────────
     const [isAutoOpen, setIsAutoOpen] = useState<boolean>(false);
@@ -150,6 +154,8 @@ export function useCnnModelManagementPage() {
         // Mutations
         startTuningMutation,
         uploadManualMutation,
+        deactivateMutation,
+        deleteMutation,
 
         // Context
         activeJob,

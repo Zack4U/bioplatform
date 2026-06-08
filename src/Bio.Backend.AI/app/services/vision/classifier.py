@@ -200,28 +200,33 @@ class SpeciesClassifier:
 
         return model, config, class_names, device, transform
 
-    def load_model(self, weights_path: Optional[Path] = None) -> None:
+    def load_model(
+        self,
+        weights_path: Optional[Path] = None,
+        version: Optional[str] = None,
+    ) -> None:
         """
         Load model weights, config, and class mappings.
-        Called once at startup.
+
+        The active version is dictated by the DB registry (ai_model_versions),
+        NOT by whatever is newest on disk. Callers must pass the version tag
+        resolved from the DB (``version``) or an explicit ``weights_path``
+        (used by pre-activation validation).
+
+        Resolution order:
+            1. explicit ``weights_path`` (validation flow)
+            2. ``WEIGHTS_DIR/{version}/best_model.pth`` when ``version`` is given
+            3. flat ``WEIGHTS_DIR/best_model.pth`` (legacy single-model layout)
+
+        There is intentionally NO "auto-detect newest version" fallback:
+        loading an unregistered/inactive model silently is exactly the bug
+        this avoids.
         """
         if weights_path is None:
-            default_weights = WEIGHTS_DIR / "best_model.pth"
-            if default_weights.exists():
-                weights_path = default_weights
+            if version:
+                weights_path = WEIGHTS_DIR / version / "best_model.pth"
             else:
-                # Try to auto-detect versioned weights directories
-                candidates = []
-                for p in WEIGHTS_DIR.iterdir():
-                    if p.is_dir() and (p / "best_model.pth").exists():
-                        candidates.append(p)
-                if candidates:
-                    # Sort alphabetically (since version tags format allows chronological sorting)
-                    candidates.sort()
-                    weights_path = candidates[-1] / "best_model.pth"
-                    logger.info("Auto-detected latest versioned model: %s", candidates[-1].name)
-                else:
-                    weights_path = default_weights
+                weights_path = WEIGHTS_DIR / "best_model.pth"
 
         config_path = weights_path.parent / "training_config.json"
         if not config_path.exists():
@@ -303,6 +308,34 @@ class SpeciesClassifier:
             "Hot-reload complete. Version=%s, classes=%d, device=%s",
             self._active_version, len(new_class_names), new_device,
         )
+
+    def suspend(self) -> None:
+        """
+        Unload the active model and pause classification.
+
+        Used when an admin deactivates/deletes the active version and no
+        other model is active. After this, ``is_loaded`` is False and
+        /classify returns 503 until a model is activated again.
+        """
+        old_model = self.model
+        self.model = None
+        self.config = {}
+        self.class_names = []
+        self.class_info = {}
+        self.transform = None
+        self._loaded = False
+        self._active_version = None
+
+        del old_model
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except Exception:
+            pass
+
+        logger.info("Model suspended. Classification paused until a version is activated.")
 
     def preprocess_image(self, image_bytes: bytes) -> "torch.Tensor":
         """Convert raw image bytes to a preprocessed tensor."""

@@ -27,17 +27,31 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # -- Startup --------------------------------------------------------
     logger.info("Starting BioPlatform AI Service...")
 
-    # Load CNN model
+    # Load CNN model dictated by the DB registry (ai_model_versions).
+    # The active version is the single source of truth: if no version is
+    # active, the CNN stays suspended (it must NOT load the newest weights
+    # on disk).
     try:
+        from app.services.model_registry_repository import get_active_model_version
         from app.services.vision.classifier import get_classifier
 
         classifier = get_classifier()
-        classifier.load_model()
-        logger.info(f"CNN model loaded: {classifier.num_classes} classes")
-    except FileNotFoundError:
+        active = await get_active_model_version()
+
+        if active is None:
+            logger.warning(
+                "No active model version in the registry. CNN suspended — "
+                "/api/v1/classify will return 503 until an admin activates a version."
+            )
+        else:
+            classifier.load_model(version=active["version"])
+            logger.info(
+                "CNN model loaded from registry: version=%s, %d classes",
+                active["version"], classifier.num_classes,
+            )
+    except FileNotFoundError as e:
         logger.warning(
-            "CNN model weights not found. /api/v1/classify will return 503. "
-            "Train the model first: python scripts/04_train_cnn.py"
+            f"Active model weights not found on disk: {e}. /api/v1/classify will return 503."
         )
     except Exception as e:
         logger.warning(f"Failed to load CNN model: {e}. Classify endpoint unavailable.")

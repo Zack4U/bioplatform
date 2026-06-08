@@ -18,6 +18,8 @@ import {
     getAiModelVersions,
     getActiveModelMetrics,
     activateModelVersion,
+    deactivateModelVersion,
+    deleteModelVersion,
     getRecentTrainingJobs,
     startFineTuning,
     uploadManualModel,
@@ -163,6 +165,48 @@ export function useValidateModel() {
         },
         onError: (error) => {
             toast.error(error.message || "Error al validar el modelo.");
+        },
+    });
+}
+
+/** Hook to deactivate (suspend) a model version */
+export function useDeactivateModel() {
+    const queryClient = useQueryClient();
+
+    return useMutation<{ success: boolean; message: string }, Error, { id: number }>({
+        mutationFn: ({ id }) => deactivateModelVersion(id),
+        onSuccess: (data) => {
+            if (data.success) {
+                toast.success(data.message || "Modelo apagado correctamente.");
+                queryClient.invalidateQueries({ queryKey: AI_ADMIN_KEYS.models });
+                queryClient.invalidateQueries({ queryKey: AI_ADMIN_KEYS.active });
+            } else {
+                toast.error(data.message || "Error al apagar el modelo.");
+            }
+        },
+        onError: (error) => {
+            toast.error(error.message || "Error al apagar la versión del modelo.");
+        },
+    });
+}
+
+/** Hook to soft-delete a model version */
+export function useDeleteModel() {
+    const queryClient = useQueryClient();
+
+    return useMutation<{ success: boolean; message: string }, Error, { id: number }>({
+        mutationFn: ({ id }) => deleteModelVersion(id),
+        onSuccess: (data) => {
+            if (data.success) {
+                toast.success(data.message || "Modelo eliminado correctamente.");
+                queryClient.invalidateQueries({ queryKey: AI_ADMIN_KEYS.models });
+                queryClient.invalidateQueries({ queryKey: AI_ADMIN_KEYS.active });
+            } else {
+                toast.error(data.message || "Error al eliminar el modelo.");
+            }
+        },
+        onError: (error) => {
+            toast.error(error.message || "Error al eliminar la versión del modelo.");
         },
     });
 }

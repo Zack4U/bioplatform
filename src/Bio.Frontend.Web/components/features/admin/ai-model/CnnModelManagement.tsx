@@ -55,6 +55,8 @@ export function CnnModelManagement() {
         // Mutations
         startTuningMutation,
         uploadManualMutation,
+        deactivateMutation,
+        deleteMutation,
 
         // Context
         activeJob,
@@ -208,15 +210,18 @@ export function CnnModelManagement() {
 
     const handleConfirmDeactivation = () => {
         if (!modelToDeactivate) return;
-        setDeactivatedIds((prev) => [...prev, modelToDeactivate.id]);
-        if (localActiveId === modelToDeactivate.id) {
+        const target = modelToDeactivate;
+        // Optimistic local override for instant feedback; the mutation invalidates
+        // the versions/active queries so the server state reconciles on refetch.
+        setDeactivatedIds((prev) => [...prev, target.id]);
+        if (localActiveId === target.id) {
             setLocalActiveId(-1);
-        } else if (modelToDeactivate.isActive && localActiveId === null) {
+        } else if (target.isActive && localActiveId === null) {
             setLocalActiveId(-1);
         }
         setIsDeactivateConfirmOpen(false);
-        toast.success(`La versión del modelo ${modelToDeactivate.version} ha sido apagada correctamente.`);
         setModelToDeactivate(null);
+        deactivateMutation.mutate({ id: target.id });
     };
 
     const handleTriggerDeleteClick = (model: CnnModelVersion) => {
@@ -226,13 +231,16 @@ export function CnnModelManagement() {
 
     const handleConfirmDeletion = () => {
         if (!modelToDelete) return;
-        setDeletedModelIds((prev) => [...prev, modelToDelete.id]);
-        if (modelToDelete.isActive || modelToDelete.id === localActiveId) {
+        const target = modelToDelete;
+        // Optimistic local override; the mutation invalidates the versions/active
+        // queries so the soft-deleted row drops out on refetch.
+        setDeletedModelIds((prev) => [...prev, target.id]);
+        if (target.isActive || target.id === localActiveId) {
             setLocalActiveId(-1);
         }
         setIsDeleteConfirmOpen(false);
-        toast.success(`La versión del modelo ${modelToDelete.version} ha sido eliminada correctamente.`);
         setModelToDelete(null);
+        deleteMutation.mutate({ id: target.id });
     };
 
     // Columns Definition for AdminDataTable

@@ -1,5 +1,6 @@
 using Bio.Application.Features.AiModels.Commands.ActivateModelVersion;
 using Bio.Application.Features.AiModels.Commands.DeactivateModelVersion;
+using Bio.Application.Features.AiModels.Commands.DeleteModelVersion;
 using Bio.Application.Features.AiModels.Commands.StartFineTuning;
 using Bio.Application.Features.AiModels.Queries;
 using MediatR;
@@ -82,6 +83,15 @@ public class AiAdminController : ControllerBase
     public async Task<IActionResult> DeactivateModelVersion(int id, CancellationToken ct)
     {
         var result = await _mediator.Send(new DeactivateModelVersionCommand(id), ct);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    /// <summary>Soft-delete a model version (suspends AI if it was active).</summary>
+    [HttpDelete("models/{id}")]
+    [ProducesResponseType(typeof(DeleteModelVersionResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteModelVersion(int id, CancellationToken ct)
+    {
+        var result = await _mediator.Send(new DeleteModelVersionCommand(id), ct);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 

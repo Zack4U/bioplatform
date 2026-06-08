@@ -391,10 +391,11 @@ curl -X POST http://localhost:8000/api/v1/model/reload \
     -H "Content-Type: application/json" \
     -d '{"version": "v1.0.20260517210000"}'
 
-# Hot-reload del modelo por defecto (flat layout)
+# Version null/vacía == SUSPENDER: descarga el modelo y pausa la clasificación
+# (/api/v1/classify devuelve 503). Lo usa el backend al desactivar/eliminar el activo.
 curl -X POST http://localhost:8000/api/v1/model/reload \
     -H "Content-Type: application/json" \
-    -d '{}'
+    -d '{"version": null}'
 ```
 
 ### Método 3: Validar antes de activar
@@ -568,6 +569,8 @@ grep DOTNET_WEBHOOK_URL .env
 | `GET` | `/api/v1/ai/models` | Admin | Listar todas las versiones |
 | `GET` | `/api/v1/ai/models/active` | Admin | Modelo activo actual |
 | `POST` | `/api/v1/ai/models/{id}/activate` | Admin | Activar versión + reload |
+| `POST` | `/api/v1/ai/models/{id}/deactivate` | Admin | Desactivar versión + suspender AI |
+| `DELETE` | `/api/v1/ai/models/{id}` | Admin | Soft-delete versión (suspende si era activa) |
 | `GET` | `/api/v1/ai/training/jobs` | Admin | Trabajos recientes |
 | `POST` | `/api/v1/ai/training/start` | Admin | Iniciar fine-tuning |
 | `POST` | `/api/webhooks/ai/training-completed` | Internal | Webhook de AI service |

@@ -271,6 +271,12 @@ Los archivos de reporte y métricas de evaluación (como `evaluation_metrics.jso
 ### 8.3 Entrada en la Base de Datos (PostgreSQL)
 **No se genera automáticamente por DVC o Git.** El comando `dvc pull` solo actúa sobre el sistema de archivos y no tiene interacción alguna con la base de datos. La sincronización de la metadata en PostgreSQL depende del escenario:
 
+> **La BD es la fuente de verdad para la inferencia.** Al arrancar, FastAPI consulta
+> `ai_model_versions` y carga **solo** la versión activa (`is_active = true`) desde su
+> carpeta de pesos. Si la tabla no tiene una fila activa (p. ej. el `ai-service` arrancó
+> antes de que `.NET` ejecutara el seed/registro), el clasificador queda suspendido;
+> reinicia el `ai-service` o activa una versión desde el panel admin.
+
 1. **Modelo Activo Inicial/Semilla (`v1.0.20260518021229`)**:
    Se proporciona el script SQL [seed_ai_metadata.sql](file:///e:/Projects/bioplatform/src/Bio.Backend.AI/data/weights/seed_ai_metadata.sql). Al desplegar la base de datos de producción por primera vez, se debe ejecutar este script para registrar el modelo activo semilla, sus métricas y su historial inicial en las tablas `ai_model_versions` y `ai_training_jobs`.
 2. **Modelos Entrenados Automáticamente en el Servidor (Fine-Tuning)**:
