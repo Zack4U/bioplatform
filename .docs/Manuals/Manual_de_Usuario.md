@@ -35,6 +35,30 @@ BioPlatform Caldas es una plataforma digital integral para la identificación, c
 - Identificación de especies en campo con soporte offline
 - Registro de avistamientos y contribución al catálogo
 
+### 2.6 Requisitos Previos
+
+Antes de comenzar a usar la plataforma, asegúrate de cumplir con los siguientes requisitos:
+
+#### Hardware y Conexión
+- **Dispositivo**: Computadora de escritorio, laptop, tablet o smartphone
+- **Conexión a internet**: Estable (mínimo 2 Mbps) para la versión web
+- **Navegador**: Google Chrome 90+, Firefox 90+, Edge 90+ o Safari 14+
+
+#### Cuenta de Usuario
+- **Correo electrónico** válido para el registro
+- **Número de teléfono** móvil (opcional, para 2FA)
+- **Documento de identidad** para roles de investigador/emprendedor (verificación posterior)
+
+#### Software Adicional (Funcionalidades Específicas)
+- **App Móvil**: Descargar desde tienda oficial (iOS/Android) o usar Expo Go para desarrollo
+- **Cámara**: Necesaria para la identificación de especies con IA
+- **GPS**: Recomendado para registro de avistamientos con ubicación geográfica
+
+#### Conocimientos Básicos Recomendados
+- Navegación web básica
+- Manejo de archivos de imagen (para subir fotos de especies)
+- Lectura de términos y condiciones (para permisos ABS)
+
 ## 3. Primeros Pasos
 
 ![Página de Inicio](../images/paginainicio.png)
@@ -212,7 +236,45 @@ La plataforma cumple con los estándares WCAG 2.1 Nivel AA:
 - Compatibilidad con lectores de pantalla
 - Diseño responsive para diferentes tamaños de pantalla
 
-## 8. Glosario de Términos
+## 8. Solución a Problemas Comunes
+
+### 8.1 No puedo iniciar sesión
+- Verifica que tu correo y contraseña sean correctos
+- Revisa que no tengas bloqueadas las cookies del navegador
+- Si olvidaste tu contraseña, usa la opción **"¿Olvidaste tu contraseña?"** en la pantalla de inicio de sesión
+- Si el problema persiste, contacta al soporte técnico
+
+### 8.2 Error al registrar un nuevo usuario
+- Asegúrate de que todos los campos obligatorios estén completos
+- La contraseña debe cumplir con los requisitos de seguridad (mínimo 8 caracteres, mayúsculas, números y símbolos)
+- Verifica que el correo electrónico no haya sido registrado previamente
+- Confirma que aceptaste los términos y condiciones
+
+### 8.3 No se cargan las imágenes de especies
+- Verifica tu conexión a internet
+- Refresca la página con **F5** o el botón de recarga del navegador
+- Limpia la caché del navegador (Configuración → Privacidad → Borrar datos de navegación)
+- Si usas la app móvil, verifica que tenga permisos de almacenamiento
+
+### 8.4 La identificación por IA no funciona
+- Asegúrate de que la imagen sea clara y esté bien iluminada
+- La especie debe estar visible y centrada en la foto
+- Verifica que el formato de imagen sea compatible (JPG, PNG)
+- Si el resultado no es preciso, puedes refinar la búsqueda manualmente desde el catálogo
+
+### 8.5 La app móvil no responde
+- Cierra y vuelve a abrir la aplicación
+- Verifica que tengas la versión más reciente instalada
+- Reinicia el dispositivo si el problema continúa
+- Reinstala la aplicación como último recurso
+
+### 8.6 Problemas con el mercado o pagos
+- Verifica tu conexión a internet antes de realizar una transacción
+- Asegúrate de tener fondos suficientes en tu método de pago
+- Si el pago se rechaza sin motivo aparente, contacta a tu banco
+- Los reembolsos y devoluciones siguen la política establecida en el mercado
+
+## 9. Glosario de Términos
 
 - **ABS**: Acceso y Participación en Beneficios (según el Protocolo de Nagoya)
 - **CNN**: Red Neuronal Convolucional (tecnología de IA para identificación de imágenes)
@@ -220,5 +282,39 @@ La plataforma cumple con los estándares WCAG 2.1 Nivel AA:
 - **RBAC**: Control de Acceso basado en Roles
 - **TOTP**: Contraseña Única Basada en Tiempo (para autenticación de dos factores)
 
+## 10. Información de Contacto y Soporte
+
+### 10.1 Canales de Atención
+
+| Canal | Disponibilidad | Tiempo de Respuesta |
+|-------|---------------|---------------------|
+| Correo electrónico: soporte@bioplatformcaldas.co | Lun–Vie 8:00–18:00 | 24 horas hábiles |
+| Chat en plataforma | Lun–Vie 8:00–18:00 | Inmediato |
+| Formulario web | 24/7 | 48 horas hábiles |
+| Teléfono: +57 (6) 878 3060 | Lun–Vie 9:00–17:00 | En horario laboral |
+
+### 10.2 Soporte Especializado
+
+- **Problemas técnicos con la plataforma**: soporte@bioplatformcaldas.co
+- **Incidencias con identificación de especies**: ciencia@bioplatformcaldas.co
+- **Asuntos legales y ABS**: legal@bioplatformcaldas.co
+- **Reporte de seguridad**: seguridad@bioplatformcaldas.co
+
+### 10.3 Recursos Adicionales
+
+- **Página web oficial**: [www.bioplatformcaldas.co](https://www.bioplatformcaldas.co)
+- **Documentación completa**: Disponible en el repositorio del proyecto
+- **Guías y tutoriales**: Sección de ayuda dentro de la plataforma
+- **Reporte de errores**: Sistema de incidencias integrado en la plataforma
+
+### 10.4 Dirección Física
+
+**Universidad de Caldas**  
+Facultad de Ingenierías  
+Calle 65 # 26-10, Manizales, Caldas, Colombia  
+Teléfono: +57 (6) 878 3060
+
 ---
+*Manual de Usuario - Versión 1.0*
 *Última actualización: Mayo 2026*
+*Plataforma BioPlatform Caldas - Universidad de Caldas*

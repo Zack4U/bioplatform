@@ -159,6 +159,77 @@ docker-compose down -v
    - El frontend web debería estar disponible en http://localhost:3000
    - Verificar conexión con el backend en http://localhost:5070
 
+### 4.4 APIs y Endpoints Documentados (Swagger/OpenAPI)
+
+El backend expone su documentación interactiva mediante Swagger UI (OpenAPI 3.0), accesible en:
+
+```
+http://localhost:5070/swagger
+```
+
+#### Endpoints Principales
+
+| Grupo | Prefijo | Descripción |
+|-------|---------|-------------|
+| Autenticación | `/api/auth` | Registro, inicio de sesión, refresh tokens |
+| Usuarios | `/api/users` | Gestión de perfil, roles y preferencias |
+| Catálogo de Especies | `/api/species` | CRUD de especies, búsqueda y filtros |
+| Taxonomía | `/api/taxonomy` | Clasificación taxonómica (reino, filo, clase, etc.) |
+| Georreferenciación | `/api/geolocation` | Registro y consulta de ubicaciones con PostGIS |
+| Visión por Computadora | `/api/vision` | Identificación de especies mediante IA |
+| RAG / Consultas IA | `/api/rag` | Preguntas y respuestas sobre biodatos |
+| Mercado | `/api/marketplace` | Publicación de productos, órdenes y pagos |
+| Notificaciones | `/api/notifications` | Alertas y comunicaciones al usuario |
+| Planes de Negocio | `/api/business-plans` | Generación y gestión de planes |
+| Administración | `/api/admin` | Panel de administración y reportes |
+
+#### Esquema de Autenticación
+
+1. **Obtener token**: `POST /api/auth/login` con credenciales
+2. **Respuesta**: `{ "accessToken": "...", "refreshToken": "...", "expiresIn": 3600 }`
+3. **Uso en Swagger**: Botón **"Authorize"** → pegar `Bearer <token>`
+4. **Refresh**: `POST /api/auth/refresh` cuando el token expire
+
+#### Formato de Respuestas
+
+Todas las respuestas siguen el estándar JSON con envoltura consistente:
+
+```json
+{
+  "success": true,
+  "data": { ... },
+  "message": "Operación exitosa",
+  "errors": null
+}
+```
+
+En caso de error:
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Error de validación",
+  "errors": {
+    "email": ["El correo ya está registrado"]
+  }
+}
+```
+
+#### Códigos de Estado HTTP
+
+| Código | Significado |
+|--------|-------------|
+| 200 | Éxito |
+| 201 | Creado |
+| 400 | Solicitud incorrecta (validación) |
+| 401 | No autenticado |
+| 403 | No autorizado (permisos insuficientes) |
+| 404 | Recurso no encontrado |
+| 409 | Conflicto (ej. recurso duplicado) |
+| 429 | Demasiadas solicitudes (rate limiting) |
+| 500 | Error interno del servidor |
+
 ## 5. Mantenimiento del Sistema
 
 ### 5.1 Monitoreo y Salud del Sistema
@@ -349,6 +420,70 @@ chore: tareas de build, dependencias, etc.
 3. **Memoria insuficiente**: Ajustar límites en Docker o aumentar recursos del host
 4. **Problemas de CORS**: Verificar configuración en backend y frontend
 5. **Fallos de autenticación**: Verificar secretos JWT y configuración de 2FA
+
+### 6.5 Proceso de CI/CD
+
+El proyecto utiliza **GitHub Actions** como plataforma de integración y despliegue continuos. Los pipelines están definidos en `.github/workflows/`.
+
+#### Pipeline de Integración Continua (CI)
+
+Se ejecuta automáticamente en cada push a ramas `feature/*`, `bugfix/*` y `develop`:
+
+```yaml
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - checkout
+      - setup .NET 8
+      - restore && build
+      - test (xUnit con cobertura > 70%)
+      - sonarcloud analysis
+
+  frontend-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - checkout
+      - setup Node 18
+      - npm ci
+      - lint (ESLint) && format check (Prettier)
+
+  ai-service-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - checkout
+      - setup Python 3.11
+      - pip install -r requirements.txt
+      - pytest con cobertura
+```
+
+#### Pipeline de Despliegue Continuo (CD)
+
+Se ejecuta al hacer merge a `main` (producción) o `develop` (staging):
+
+1. **Build**: Compilar y empaquetar artefactos (Docker images)
+2. **Test**: Ejecutar suite completa de pruebas
+3. **Security Scan**: Escaneo con CodeQL y Dependabot
+4. **Deploy**:
+   - **Staging** (develop): Despliegue automático en entorno de pruebas
+   - **Producción** (main): Aprobación manual + despliegue en producción
+
+#### Entornos
+
+| Entorno | Rama | URL | Uso |
+|---------|------|-----|-----|
+| Local | N/A | localhost | Desarrollo individual |
+| Desarrollo | feature/* | dev.bioplatformcaldas.co | Integración de features |
+| Staging | develop | staging.bioplatformcaldas.co | Validación pre-producción |
+| Producción | main | bioplatformcaldas.co | Entorno productivo |
+
+#### Calidad y Seguridad
+
+- **SonarCloud**: Análisis estático de código y calidad
+- **CodeQL**: Escaneo de vulnerabilidades
+- **Dependabot**: Alertas de dependencias obsoletas o inseguras
+- **Secret Scanning**: Detección de credenciales expuestas
+- **Coverage Gate**: Bloqueo si cobertura baja del 70%
 
 ## 7. Escalabilidad y Optimización
 
@@ -581,6 +716,49 @@ bioplatform/
 ├── run.sh                    # Script de ejecución de servicios
 └── README.md                 # Vista general del proyecto
 ```
+
+## 11. Contribución al Proyecto
+
+### 11.1 Cómo Contribuir
+
+Agradecemos las contribuciones de la comunidad. Para mantener la calidad del código y la cohesión del proyecto, sigue estos lineamientos:
+
+1. **Revisa la documentación existente** en `.docs/` y la sección de issues
+2. **Discute los cambios grandes** abriendo un issue antes de implementar
+3. **Sigue el flujo de trabajo Git** establecido en la sección 6.2
+4. **Respeta los estándares de codificación** de la sección 6.1
+5. **Incluye pruebas** para todo el código nuevo o modificado
+6. **Actualiza la documentación** si tu cambio afecta APIs, configuraciones o flujos
+
+### 11.2 Estándares para Pull Requests
+
+- **Título descriptivo**: `feat(scope): descripción breve`
+- **Descripción**: Qué cambia, por qué, cómo se probó
+- **Checklist**:
+  - [ ] Código sigue los estándares del proyecto
+  - [ ] Pruebas unitarias agregadas/pasando
+  - [ ] Documentación actualizada
+  - [ ] No hay secretos ni credenciales en el código
+  - [ ] Linting y build pasan correctamente
+- **Tamaño**: Máximo 400 líneas (excluyendo archivos generados)
+- **Revisiones**: Mínimo 1 aprobación del equipo correspondiente
+
+### 11.3 Reporte de Issues
+
+Al reportar un issue, incluye:
+
+- **Bug**: Pasos para reproducir, comportamiento esperado vs actual, logs/evidencia
+- **Feature**: Descripción de la funcionalidad, caso de uso, alternativas consideradas
+- **Mejora**: Área de mejora, impacto esperado, sugerencia de implementación
+
+### 11.4 Configuración del Entorno de Desarrollo
+
+Para contribuir, necesitas configurar tu entorno local siguiendo los pasos de la **Sección 4** de este manual. Recursos adicionales:
+
+- **Código de conducta**: Revisar `CODE_OF_CONDUCT.md` en la raíz del proyecto
+- **Guía de inicio rápido**: Ver `QUICKSTART.md`
+- **Checklist de PR**: Ver `.docs/pr-checklist.md`
+- **Dudas técnicas**: Contactar a los líderes de cada módulo (ver Sección 9.2)
 
 ---
 *Manual Técnico - Versión 1.0*
