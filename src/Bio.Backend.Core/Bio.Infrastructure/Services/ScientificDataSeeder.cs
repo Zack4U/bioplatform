@@ -26,6 +26,8 @@ public class ScientificDataSeeder : IScientificDataSeeder
     private const string EconomicJsonFile = "species_economic_potential.json";
     private const string TraditionalJsonFile = "species_traditional_uses.json";
     private const string SpeciesImagesSqlFile = "insert_species_images.sql";
+    // Lives in data/weights (sibling of the species_catalog dir), not in the data dir itself.
+    private const string AiMetadataSqlFile = "seed_ai_metadata.sql";
 
     // System actor for seed-time imports (the import job only uses this for logging).
     private static readonly Guid SystemUserId = Guid.Parse("A1111111-1111-1111-1111-111111111111");
@@ -86,7 +88,10 @@ public class ScientificDataSeeder : IScientificDataSeeder
         // ── 2. Species images gallery (raw SQL, keyed by scientific_name) ────
         await SeedSpeciesImagesAsync(dataDir, cancellationToken);
 
-        // ── 3. Geographic distributions — only when none exist ───────────────
+        // ── 3. AI model registry — first active model version + training jobs ─
+        await SeedAiModelMetadataAsync(dataDir, cancellationToken);
+
+        // ── 4. Geographic distributions — only when none exist ───────────────
         await SeedDistributionsAsync(cancellationToken);
 
         _logger.LogInformation("Scientific seeding finished.");
@@ -136,6 +141,38 @@ public class ScientificDataSeeder : IScientificDataSeeder
         _logger.LogInformation("Importing species image gallery from {File} ...", SpeciesImagesSqlFile);
         var affected = await _dbContext.Database.ExecuteSqlRawAsync(sql, ct);
         _logger.LogInformation("Species image gallery import affected {Rows} rows.", affected);
+    }
+
+    // =====================================================================
+    // AI MODEL REGISTRY — first active model version + mock training jobs
+    // =====================================================================
+
+    private async Task SeedAiModelMetadataAsync(string dataDir, CancellationToken ct)
+    {
+        if (await _dbContext.AiModelVersions.AnyAsync(ct))
+        {
+            _logger.LogInformation("AI model registry already seeded — skipping.");
+            return;
+        }
+
+        // seed_ai_metadata.sql lives in data/weights, a sibling of the species_catalog dir.
+        var path = Path.GetFullPath(Path.Combine(dataDir, "..", "weights", AiMetadataSqlFile));
+        if (!File.Exists(path))
+        {
+            _logger.LogWarning("Seed file not found: {Path} — skipped AI model registry.", path);
+            return;
+        }
+
+        var sql = await File.ReadAllTextAsync(path, ct);
+        if (string.IsNullOrWhiteSpace(sql))
+        {
+            _logger.LogWarning("AI metadata SQL file is empty — skipped.");
+            return;
+        }
+
+        _logger.LogInformation("Seeding AI model registry from {File} ...", AiMetadataSqlFile);
+        var affected = await _dbContext.Database.ExecuteSqlRawAsync(sql, ct);
+        _logger.LogInformation("AI model registry seed affected {Rows} rows.", affected);
     }
 
     // =====================================================================

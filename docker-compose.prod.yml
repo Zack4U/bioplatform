@@ -1,15 +1,15 @@
 # ===========================================
 # BioPlatform Caldas - Docker Compose (Producción)
 # ===========================================
-# USO: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-# 
-# Incluye TODOS los servicios compilados y optimizados para producción
+# USO: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# Variables se leen de .env (ver .env.prod.example).
+# Incluye TODOS los servicios compilados y optimizados para producción.
 
 version: "3.8"
 
 services:
   # ===========================================
-  # INFRAESTRUCTURA (igual que desarrollo)
+  # INFRAESTRUCTURA
   # ===========================================
 
   sqlserver:
@@ -26,7 +26,7 @@ services:
     networks:
       - bioplatform-network
     healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -Q "SELECT 1" || exit 1
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}" -C -Q "SELECT 1" || exit 1
       interval: 10s
       timeout: 5s
       retries: 10
@@ -63,7 +63,7 @@ services:
     networks:
       - bioplatform-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -95,15 +95,31 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000
-      - ConnectionStrings__SqlServer=${DB_CONNECTION_STRING_SQL}
-      - ConnectionStrings__PostgreSQL=${DB_CONNECTION_STRING_PG}
-      - ConnectionStrings__Redis=${REDIS_CONNECTION_STRING}
-      - Jwt__Secret=${JWT_SECRET}
-      - Jwt__Issuer=${JWT_ISSUER}
-      - Jwt__Audience=${JWT_AUDIENCE}
-      - Jwt__ExpirationMinutes=${JWT_EXPIRATION_MINUTES}
-      - OpenAI__ApiKey=${OPENAI_API_KEY}
-      - Stripe__SecretKey=${STRIPE_SECRET_KEY}
+      # Connection strings — names MUST match Program.cs (GetConnectionString).
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING_SQL}
+      - ConnectionStrings__ScientificConnection=${DB_CONNECTION_STRING_PG}
+      - ConnectionStrings__RedisConnection=${REDIS_CONNECTION_STRING}
+      # JWT (section: JwtSettings)
+      - JwtSettings__Secret=${JWT_SECRET}
+      - JwtSettings__Issuer=${JWT_ISSUER}
+      - JwtSettings__Audience=${JWT_AUDIENCE}
+      - JwtSettings__ExpiryMinutes=${JWT_EXPIRATION_MINUTES}
+      - JwtSettings__RefreshTokenExpiryDays=${JWT_REFRESH_EXPIRATION_DAYS}
+      # AWS S3 (section: AwsSettings) — species/product image uploads
+      - AwsSettings__BucketName=${S3_BUCKET_NAME}
+      - AwsSettings__Region=${AWS_REGION}
+      - AwsSettings__AccessKeyId=${AWS_ACCESS_KEY_ID}
+      - AwsSettings__SecretAccessKey=${AWS_SECRET_ACCESS_KEY}
+      # AI microservice base URL (internal docker network)
+      - AiService__BaseUrl=http://ai-service:8000
+      # CORS allowed origins
+      - CorsSettings__AllowedOrigins__0=${WEB_APP_URL}
+      # Scientific catalog auto-seeding (idempotent). Data mounted read-only below.
+      - SeedSettings__SeedScientificOnStartup=${SEED_SCIENTIFIC_ON_STARTUP:-true}
+      - SeedSettings__ScientificDataPath=/seed/species_catalog
+    volumes:
+      # Seed data files (species CSV/JSON + image gallery SQL) for the startup seeder.
+      - ./src/Bio.Backend.AI/data/species_catalog:/seed/species_catalog:ro
     ports:
       - "5000:5000"
     depends_on:
@@ -123,12 +139,20 @@ services:
       dockerfile: Dockerfile
     container_name: bioplatform-ai-service-prod
     environment:
-      - ENVIRONMENT=production
-      - DATABASE_URL=postgresql://${DB_PG_USER}:${DB_PG_PASSWORD}@postgres:5432/${DB_PG_DATABASE}
+      # Names MUST match app/core/config.py (pydantic Settings).
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=${DB_PG_USER}
+      - PG_PASSWORD=${DB_PG_PASSWORD}
+      - PG_DATABASE=${DB_PG_DATABASE}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_AUDIENCE=${JWT_AUDIENCE}
+      - CORS_ORIGINS=${CORS_ORIGINS}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - OPENAI_MODEL=${OPENAI_MODEL}
-      - CHROMA_HOST=chromadb
-      - CHROMA_PORT=8000
+      - DOTNET_API_BASE_URL=http://backend-core:5000
+      - DOTNET_WEBHOOK_URL=http://backend-core:5000/api/webhooks/ai/training-completed
+      - LOG_LEVEL=INFO
     ports:
       - "8000:8000"
     depends_on:
@@ -137,7 +161,6 @@ services:
     networks:
       - bioplatform-network
     restart: always
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
   # ===========================================
   # FRONTEND SERVICES (compilados)
@@ -147,11 +170,17 @@ services:
     build:
       context: ./src/Bio.Frontend.Web
       dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* are inlined at build time. Names MUST match the app.
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+        NEXT_PUBLIC_AI_API_BASE_URL: ${NEXT_PUBLIC_AI_API_BASE_URL}
+        NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}
+        NEXT_PUBLIC_TAX_RATE: ${NEXT_PUBLIC_TAX_RATE}
+        NEXT_PUBLIC_SHIPPING_COST_COP: ${NEXT_PUBLIC_SHIPPING_COST_COP}
+        NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: ${NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD}
     container_name: bioplatform-frontend-web-prod
     environment:
-      - NEXT_PUBLIC_API_URL=/api
-      - NEXT_PUBLIC_AI_API_URL=http://ai-service:8000/api
-      - NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${STRIPE_PUBLIC_KEY}
+      - NODE_ENV=production
     ports:
       - "3000:3000"
     depends_on:
@@ -161,9 +190,8 @@ services:
       - bioplatform-network
     restart: always
 
-  # NOTA: Frontend Mobile (React Native + Expo) corre SIEMPRE localmente
-  # No se incluye en Docker porque Expo requiere metro bundler activo
-  # Ver: DEVELOPMENT.md para instrucciones de ejecución local
+  # NOTA: Frontend Mobile (React Native + Expo) NO se incluye en Docker.
+  # Se distribuye como APK/AAB vía EAS Build. Ver README (sección Mobile / APK).
 
   # ===========================================
   # REVERSE PROXY (Producción)

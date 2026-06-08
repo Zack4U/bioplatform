@@ -131,6 +131,176 @@ Ver [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) para más detalles.
 
 ---
 
+## Despliegue en Producción (Docker)
+
+Despliegue completo del stack (bases de datos + backend .NET + servicio de IA + frontend web + Nginx) en un servidor **Linux** o **Windows Server** con Docker.
+
+> El **Frontend Mobile (Expo)** no se despliega en Docker; se distribuye como APK/AAB (ver sección siguiente).
+
+### Requisitos del servidor
+
+- Docker Engine 24+ con **contenedores Linux** y el plugin `docker compose`.
+- Puertos abiertos: `80`, `443` (Nginx). El resto son internos a la red de Docker.
+- No requiere instalar .NET/Node/Python en el host: todo se compila dentro de imágenes.
+
+### Paso a paso (script de instalación)
+
+El instalador es **idempotente** y **reanudable por secciones**: `env → infra → migrate → apps → verify`.
+
+```bash
+# 1. Clonar y entrar al repositorio
+git clone https://github.com/Zack4U/bioplatform.git
+cd bioplatform
+
+# 2. Crear el archivo de entorno (la 1ª corrida lo copia desde la plantilla y se detiene)
+cp .env.prod.example .env
+#    EDITA .env con secretos reales (contraseñas de BD, JWT, OpenAI, AWS, dominio).
+
+# 3. Ejecutar el instalador completo
+#    Linux / macOS / WSL:
+bash install.sh
+#    Windows Server (PowerShell, con contenedores Linux):
+.\install.ps1
+```
+
+Qué hace cada sección:
+
+| Sección   | Acción                                                                                          |
+| --------- | ----------------------------------------------------------------------------------------------- |
+| `env`     | Verifica `.env` (lo crea desde `.env.prod.example` si falta y se detiene para que lo edites).    |
+| `infra`   | Levanta SQL Server, PostgreSQL (PostGIS), Redis y ChromaDB; espera a que estén `healthy`.        |
+| `migrate` | Aplica migraciones EF Core a **BioDbContext** (SQL Server) y **ScientificDbContext** (Postgres). Crea el esquema; los datos mock del marketplace vienen embebidos en la migración de BioDb. |
+| `weights` | `dvc pull` de los pesos del modelo CNN desde el remoto S3 (`s3://bioplatform-private/dvc-storage`). Salta si los pesos ya están presentes. Requiere `dvc[s3]` y credenciales AWS. |
+| `apps`    | Compila y levanta `backend-core`, `ai-service`, `frontend-web` y `nginx`. En el primer arranque el backend **puebla automáticamente el catálogo científico** (especies, imágenes, distribuciones, **registro del modelo de IA**) — idempotente. |
+| `verify`  | Muestra el estado de los contenedores.                                                          |
+
+### Reanudar desde una sección
+
+```bash
+bash install.sh --from migrate   # corre migrate, apps, verify
+bash install.sh --only apps      # corre solo apps
+# PowerShell:
+.\install.ps1 -From migrate
+.\install.ps1 -Only apps
+```
+
+### Poblado de la base científica (PostgreSQL)
+
+Lo realiza el backend al arrancar cuando `SEED_SCIENTIFIC_ON_STARTUP=true` (valor por defecto en producción). Es **idempotente** (no duplica) y usa los archivos montados desde `src/Bio.Backend.AI/data/species_catalog`:
+
+1. `species_import_llm.csv` — catálogo completo de especies (IDs deterministas UUIDv5 derivados del nombre científico).
+2. `species_economic_potential.json` — potencial económico.
+3. `species_traditional_uses.json` — usos tradicionales.
+4. `insert_species_images.sql` — galería de imágenes (por `scientific_name`).
+5. `seed_ai_metadata.sql` — registro del modelo de IA: primer `ai_model_versions` activo + `ai_training_jobs`.
+6. Distribuciones geográficas — 10 puntos por especie generados en municipios reales de Caldas.
+
+Seguir el progreso del poblado:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend-core
+```
+
+### Modelo de IA (pesos DVC + registro en BD)
+
+Los pesos del clasificador CNN **no** están en git; se versionan con **DVC** en S3 (`s3://bioplatform-private/dvc-storage`) y se descargan con `dvc pull` (sección `weights` del instalador).
+
+- **Pesos**: el servicio de IA carga `data/weights/<version>/best_model.pth` autodetectando la última versión presente en disco. `dvc pull` trae la carpeta versionada (`v1.0.*`).
+- **Registro en BD**: `seed_ai_metadata.sql` inserta el modelo activo (`efficientnet_b2`, `v1.0.20260518021229`, accuracy 0.8739) en `ai_model_versions` para el dashboard/backend. La inferencia en Python usa el archivo, no la BD.
+
+Requisitos del paso `weights`:
+
+```bash
+pip install 'dvc[s3]'
+# Credenciales AWS: el instalador exporta AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / AWS_REGION desde .env
+```
+
+> Si no tienes acceso al bucket DVC, copia manualmente un `best_model.pth` en
+> `src/Bio.Backend.AI/data/weights/<version>/` antes de la sección `apps`; el instalador detecta los pesos presentes y salta `dvc pull`.
+
+### Verificación post-despliegue
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml ps   # estado
+curl http://localhost/api/health                                     # API vía Nginx
+```
+
+| Servicio (vía Nginx en `:80`) | Ruta        |
+| ----------------------------- | ----------- |
+| Frontend Web                  | `/`         |
+| Backend API                   | `/api/`     |
+| Servicio IA (FastAPI)         | `/ai/`      |
+| Dashboard Hangfire            | `/hangfire` |
+
+### HTTPS
+
+Coloca `fullchain.pem` y `privkey.pem` en `docker/nginx/ssl/`, descomenta el bloque `server { listen 443 ssl; ... }` de `docker/nginx/nginx.conf` y recarga Nginx:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml restart nginx
+```
+
+### Operación
+
+```bash
+# Detener todo
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+# Detener y BORRAR datos (¡destruye las BD!)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down -v
+# Actualizar tras un git pull
+git pull && bash install.sh --from migrate
+```
+
+---
+
+## Aplicación Móvil (APK / AAB)
+
+La app móvil (React Native + Expo) se compila y publica con **EAS Build**, no con Docker.
+
+### Requisitos
+
+- Node.js 18+, cuenta de [Expo](https://expo.dev).
+- EAS CLI: `npm install -g eas-cli`
+- Para publicar en Google Play: cuenta de Google Play Console.
+
+### Configuración
+
+```bash
+cd src/Bio.Frontend.Mobile
+npm install
+
+# Apuntar la app al backend de producción (API pública / dominio)
+cp .env.example .env
+#    Edita EXPO_PUBLIC_API_BASE_URL y EXPO_PUBLIC_AI_API_BASE_URL con la URL pública del backend.
+
+# Autenticarse y vincular el proyecto EAS
+eas login
+eas build:configure
+```
+
+### Generar la APK (instalación directa / pruebas)
+
+```bash
+# APK lista para instalar en un dispositivo (perfil preview)
+eas build --platform android --profile preview
+```
+
+EAS devuelve una URL de descarga del `.apk`. Instálalo en el dispositivo (habilita "orígenes desconocidos").
+
+### Generar el AAB y subir a Google Play (producción)
+
+```bash
+# Android App Bundle firmado para la tienda
+eas build --platform android --profile production
+
+# Subir automáticamente a Google Play (requiere service account configurada)
+eas submit --platform android --latest
+```
+
+> El perfil de build (`preview`, `production`) y las credenciales de firma se definen en `eas.json`. Para la primera subida manual, descarga el `.aab` y súbelo desde Google Play Console → *Producción → Crear versión*.
+
+---
+
 ## Documentación y Guías
 
 | Documento                                                  | Descripción                                    |
@@ -153,20 +323,22 @@ Ver [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) para más detalles.
 
 ```
 bioplatform/
-├── .docs/                    # Documentación
-├── .github/workflows/        # CI/CD
+├── .docs/                       # Documentación
+├── .github/workflows/           # CI/CD
 ├── docker/
-│   ├── nginx/               # Configuración reverse proxy
-│   ├── postgres/            # Scripts init PostgreSQL
-│   └── sqlserver/           # Scripts init SQL Server
+│   └── nginx/                   # Reverse proxy (nginx.conf + ssl/)
 ├── src/
-│   ├── Bio.Backend.Core/    # API .NET 8 (Clean Architecture)
-│   ├── Bio.Backend.AI/      # Microservicio Python (FastAPI)
-│   ├── Bio.Frontend.Web/    # Next.js 14
-│   └── Bio.Frontend.Mobile/ # React Native (Expo)
-├── .env.example
-├── docker-compose.yml
-└── docker-compose.override.yml
+│   ├── Bio.Backend.Core/        # API .NET 8 (Clean Architecture) + Dockerfile
+│   ├── Bio.Backend.AI/          # Microservicio Python (FastAPI) + Dockerfile
+│   │   └── data/species_catalog/# Datos de poblado (CSV/JSON/SQL de especies)
+│   ├── Bio.Frontend.Web/        # Next.js 14 + Dockerfile
+│   └── Bio.Frontend.Mobile/     # React Native (Expo) — APK vía EAS
+├── .env.example                 # Plantilla dev
+├── .env.prod.example            # Plantilla producción
+├── install.sh / install.ps1     # Instalador de producción (reanudable)
+├── docker-compose.yml           # Infraestructura (dev)
+├── docker-compose.override.yml  # Herramientas UI (dev)
+└── docker-compose.prod.yml      # Stack completo (producción)
 ```
 
 ---
