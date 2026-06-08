@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using Bio.Domain.Common;
 
 namespace Bio.Backend.Core.Bio.Infrastructure.Persistence;
 
@@ -52,6 +53,12 @@ internal sealed class MockSeedContext
     // =========================================================================
     public static Guid Det(int prefix, int counter)
         => new Guid(string.Format("C{0:D7}-0000-0000-0000-{1:D12}", prefix, counter));
+
+    /// <summary>
+    /// Resolves a species id the SAME way the catalog importer does (UUIDv5 of the scientific name),
+    /// so product/permit seed rows always point at species that actually exist in PostgreSQL after import.
+    /// </summary>
+    public static Guid SpeciesIdFor(string scientificName) => DeterministicGuid.ForSpecies(scientificName);
 
     // =========================================================================
     // VERIFIED IMAGE POOL (all return HTTP 200 — checked at seed-authoring time)
@@ -126,12 +133,14 @@ internal sealed class MockSeedContext
     // ── 6 base species (real PostgreSQL species.id values) ───────────────────
     private static void BuildSpecies(MockSeedContext ctx)
     {
-        ctx.Species.Add(new SeedSpecies(Guid.Parse("1c0dd32a-a9df-452b-8ede-d63614393289"), "Abracris flavolineata", "Saltamontes de rayas amarillas", ImgGrasshopper, 0));
-        ctx.Species.Add(new SeedSpecies(Guid.Parse("ae5264fb-7571-4e06-a03d-e817c25637ee"), "Acacia decurrens", "Acacia negra", ImgAcacia, 1));
-        ctx.Species.Add(new SeedSpecies(Guid.Parse("9d148360-9799-443a-b0b5-db5b9814514e"), "Acaena elongata", "Cadillo de páramo", ImgAcaena, 2));
-        ctx.Species.Add(new SeedSpecies(Guid.Parse("83a36487-5f3f-4cc7-bec2-6414dcc92501"), "Accipiter striatus", "Gavilán acollarado", ImgHawk, 3));
-        ctx.Species.Add(new SeedSpecies(Guid.Parse("601768f6-fe6e-4117-ad71-a595b5f8f08c"), "Achlyodes pallida", "Saltarina pálida", ImgButterfly, 4));
-        ctx.Species.Add(new SeedSpecies(Guid.Parse("5ae1db94-f349-4a61-906d-ad2e0a3ee7e0"), "Acrocomia aculeata", "Corozo", ImgCorozo, 5));
+        // Ids are derived from the scientific name (UUIDv5) — identical to what the catalog
+        // importer assigns — so these base species line up with the real PostgreSQL rows.
+        ctx.Species.Add(new SeedSpecies(SpeciesIdFor("Abracris flavolineata"), "Abracris flavolineata", "Saltamontes de rayas amarillas", ImgGrasshopper, 0));
+        ctx.Species.Add(new SeedSpecies(SpeciesIdFor("Acacia decurrens"), "Acacia decurrens", "Acacia negra", ImgAcacia, 1));
+        ctx.Species.Add(new SeedSpecies(SpeciesIdFor("Acaena elongata"), "Acaena elongata", "Cadillo de páramo", ImgAcaena, 2));
+        ctx.Species.Add(new SeedSpecies(SpeciesIdFor("Accipiter striatus"), "Accipiter striatus", "Gavilán acollarado", ImgHawk, 3));
+        ctx.Species.Add(new SeedSpecies(SpeciesIdFor("Achlyodes pallida"), "Achlyodes pallida", "Saltarina pálida", ImgButterfly, 4));
+        ctx.Species.Add(new SeedSpecies(SpeciesIdFor("Acrocomia aculeata"), "Acrocomia aculeata", "Corozo", ImgCorozo, 5));
     }
 
     // ── 30 products (5 per seller / species) ─────────────────────────────────

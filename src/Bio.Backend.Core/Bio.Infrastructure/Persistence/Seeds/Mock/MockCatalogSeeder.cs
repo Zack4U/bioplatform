@@ -141,12 +141,13 @@ public static partial class BioDbContextMockSeeder
         }
 
         // 5.2 Pending requests (appear in the "Solicitudes" inbox).
+        // Species referenced by scientific name → UUIDv5 (same ids the catalog importer produces).
         var pending = new (Guid SpeciesId, int SellerIndex, string Justification)[]
         {
-            (Guid.Parse("d836f24e-445b-420b-b68b-62f02bf9c251"), 1, "Solicitud de acceso para investigar el potencial de Alnus acuminata (aliso) en sistemas agroforestales y restauración de microcuencas."),
-            (Guid.Parse("874da790-7c1f-428a-af1e-58649adb03e7"), 3, "Acceso con fines de ecoturismo de observación de Adelomyia melanogenys (colibrí) en senderos interpretativos de Caldas."),
-            (Guid.Parse("5b1b4c6d-cc8a-4a96-b419-1960a86e822e"), 2, "Estudio del potencial cosmético de metabolitos de hongos del bosque andino; se solicita acceso para fase de investigación."),
-            (Guid.Parse("ae5264fb-7571-4e06-a03d-e817c25637ee"), 4, "Solicitud para incorporar tintes naturales de Acacia decurrens en una nueva línea textil artesanal."),
+            (MockSeedContext.SpeciesIdFor("Alnus acuminata"), 1, "Solicitud de acceso para investigar el potencial de Alnus acuminata (aliso) en sistemas agroforestales y restauración de microcuencas."),
+            (MockSeedContext.SpeciesIdFor("Adelomyia melanogenys"), 3, "Acceso con fines de ecoturismo de observación de Adelomyia melanogenys (colibrí) en senderos interpretativos de Caldas."),
+            (MockSeedContext.SpeciesIdFor("Armillaria mellea"), 2, "Estudio del potencial cosmético de metabolitos de Armillaria mellea (hongo del bosque andino); se solicita acceso para fase de investigación."),
+            (MockSeedContext.SpeciesIdFor("Acacia decurrens"), 4, "Solicitud para incorporar tintes naturales de Acacia decurrens en una nueva línea textil artesanal."),
         };
         foreach (var r in pending)
         {
@@ -175,8 +176,8 @@ public static partial class BioDbContextMockSeeder
         // 5.3 Rejected requests.
         var rejected = new (Guid SpeciesId, int SellerIndex, string Justification, string Reason)[]
         {
-            (Guid.Parse("f1d6bb4c-ce60-492c-a546-b123159e2b25"), 5, "Solicitud de aprovechamiento comercial de Alouatta seniculus (mono aullador).", "La especie corresponde a fauna silvestre protegida; no se autoriza su aprovechamiento comercial conforme a la normativa vigente."),
-            (Guid.Parse("9d148360-9799-443a-b0b5-db5b9814514e"), 0, "Solicitud de acceso a recurso genético de Acaena elongata para línea de extractos.", "Documentación incompleta: falta el soporte de procedencia legal del material biológico. Se invita a subsanar y radicar nuevamente."),
+            (MockSeedContext.SpeciesIdFor("Alouatta seniculus"), 5, "Solicitud de aprovechamiento comercial de Alouatta seniculus (mono aullador).", "La especie corresponde a fauna silvestre protegida; no se autoriza su aprovechamiento comercial conforme a la normativa vigente."),
+            (MockSeedContext.SpeciesIdFor("Acaena elongata"), 0, "Solicitud de acceso a recurso genético de Acaena elongata para línea de extractos.", "Documentación incompleta: falta el soporte de procedencia legal del material biológico. Se invita a subsanar y radicar nuevamente."),
         };
         foreach (var r in rejected)
         {

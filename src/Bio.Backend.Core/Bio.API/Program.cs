@@ -178,6 +178,7 @@ builder.Services.AddRateLimiter(options =>
 
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesBulkImportJob, Bio.Infrastructure.Services.SpeciesImportJob>();
 builder.Services.AddScoped<Bio.Application.Common.Interfaces.IJobEnqueuer, Bio.Infrastructure.Services.JobEnqueuer>();
+builder.Services.AddScoped<Bio.Application.Common.Interfaces.IScientificDataSeeder, Bio.Infrastructure.Services.ScientificDataSeeder>();
 
 // CORS — allow configured frontend origins
 var corsOrigins = builder.Configuration
@@ -274,5 +275,25 @@ app.UseAuthorization();
 app.UseHangfireDashboard("/hangfire");
 
 app.MapControllers();
+
+// Optional, idempotent seeding of the PostgreSQL scientific catalog (species, enrichment,
+// distributions). Enable with SeedSettings:SeedScientificOnStartup=true or the --seed-scientific arg.
+// Requires the scientific schema to already exist (migrations are applied manually).
+var seedScientific = app.Configuration.GetValue<bool>("SeedSettings:SeedScientificOnStartup")
+    || args.Contains("--seed-scientific");
+if (seedScientific)
+{
+    using var scope = app.Services.CreateScope();
+    try
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<Bio.Application.Common.Interfaces.IScientificDataSeeder>();
+        await seeder.SeedAsync();
+    }
+    catch (Exception ex)
+    {
+        scope.ServiceProvider.GetRequiredService<ILogger<Program>>()
+            .LogError(ex, "Scientific data seeding failed during startup.");
+    }
+}
 
 app.Run();

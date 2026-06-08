@@ -42,7 +42,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
     // CSV IMPORT — Carga masiva de especies desde archivo CSV
     // =====================================================================
 
-    public async Task ProcessCsvImportAsync(string filePath, Guid userId)
+    public async Task ProcessCsvImportAsync(string filePath, Guid userId, bool deleteSourceFile = true)
     {
         _logger.LogInformation("Starting CSV Bulk Import from {FilePath} by User {UserId}", filePath, userId);
 
@@ -105,7 +105,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         }
         finally
         {
-            if (File.Exists(filePath))
+            if (deleteSourceFile && File.Exists(filePath))
                 File.Delete(filePath);
         }
     }
@@ -192,7 +192,9 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
             var slug = GenerateSlug(record.ScientificName);
 
             var species = new Species(
-                id: Guid.NewGuid(),
+                // Deterministic id derived from the scientific name (UUIDv5). Keeps species.id stable
+                // across re-imports so cross-DB logical FKs (Product.BaseSpeciesId) never break.
+                id: Bio.Domain.Common.DeterministicGuid.ForSpecies(record.ScientificName),
                 slug: slug,
                 scientificName: record.ScientificName.Trim(),
                 taxonomyId: taxonomy.Id,
@@ -237,7 +239,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
     /// { "sector": "...", "products": [...], "active_properties": [...], "description": "...",
     ///   "market_value": "...", "sustainability_level": "..." }
     /// </summary>
-    public async Task ProcessEconomicPotentialImportAsync(string filePath, Guid userId)
+    public async Task ProcessEconomicPotentialImportAsync(string filePath, Guid userId, bool deleteSourceFile = true)
     {
         _logger.LogInformation(
             "Starting Economic Potential bulk import from {FilePath} by User {UserId}", filePath, userId);
@@ -285,7 +287,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         }
         finally
         {
-            if (File.Exists(filePath))
+            if (deleteSourceFile && File.Exists(filePath))
                 File.Delete(filePath);
         }
     }
@@ -388,7 +390,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
     ///   "preparation_method": "...", "description": "...",
     ///   "community": "...", "traditional_warnings": "..." }
     /// </summary>
-    public async Task ProcessTraditionalUsesImportAsync(string filePath, Guid userId)
+    public async Task ProcessTraditionalUsesImportAsync(string filePath, Guid userId, bool deleteSourceFile = true)
     {
         _logger.LogInformation(
             "Starting Traditional Uses bulk import from {FilePath} by User {UserId}", filePath, userId);
@@ -436,7 +438,7 @@ public class SpeciesImportJob : ISpeciesBulkImportJob
         }
         finally
         {
-            if (File.Exists(filePath))
+            if (deleteSourceFile && File.Exists(filePath))
                 File.Delete(filePath);
         }
     }
