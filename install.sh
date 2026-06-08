@@ -30,7 +30,6 @@ COMPOSE="docker compose -f docker-compose.yml -f docker-compose.prod.yml"
 SDK_IMAGE="mcr.microsoft.com/dotnet/sdk:8.0"
 BACKEND_DIR="src/Bio.Backend.Core"
 AI_DIR="src/Bio.Backend.AI"
-API_PROJECT="Bio.API/Bio.API.csproj"
 SECTIONS=(env infra migrate weights apps verify)
 
 log()  { echo -e "\n\033[1;36m[install]\033[0m $*"; }
@@ -98,40 +97,49 @@ docker_network() {
   docker network ls --filter name=bioplatform-network --format '{{.Name}}' | head -n1
 }
 
+# Docker-friendly absolute path of the current dir.
+# Git Bash: cygpath -m → "E:/Projects/..." (Docker Desktop mounts this reliably).
+# Linux/macOS: plain $PWD.
+host_pwd() {
+  if command -v cygpath >/dev/null 2>&1; then cygpath -m "$PWD"; else printf '%s' "$PWD"; fi
+}
+
 section_migrate() {
   log "Section: migrate (EF Core)"
   local net; net=$(docker_network)
   [[ -n "$net" ]] || die "bioplatform network not found — run 'infra' first."
 
-  # Load .env so we can remap DB_CONNECTION_STRING_* → the ConnectionStrings__*
-  # keys that Program.cs / dotnet ef actually read.
-  set -a; source .env; set +a
-
-  # Runs inside an SDK container ON the compose network so it can resolve the
-  # 'sqlserver' / 'postgres' service hostnames used in the connection strings.
-  docker run --rm --network "$net" \
+  # docker --env-file parses .env LITERALLY (no shell eval), so connection strings
+  # with spaces/';' are safe. We remap DB_CONNECTION_STRING_* → the ConnectionStrings__*
+  # keys (that Program.cs / dotnet ef read) INSIDE the container.
+  # MSYS_NO_PATHCONV=1 stops Git Bash from mangling the container-side '/src' path.
+  MSYS_NO_PATHCONV=1 docker run --rm --network "$net" \
     --env-file .env \
-    -e "ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING_SQL}" \
-    -e "ConnectionStrings__ScientificConnection=${DB_CONNECTION_STRING_PG}" \
-    -e "ConnectionStrings__RedisConnection=${REDIS_CONNECTION_STRING}" \
-    -e "ASPNETCORE_ENVIRONMENT=Production" \
-    -v "$(pwd)/$BACKEND_DIR:/src" -w /src \
+    -e ASPNETCORE_ENVIRONMENT=Production \
+    -v "$(host_pwd)/$BACKEND_DIR:/src" -w /src \
     "$SDK_IMAGE" bash -lc '
       set -e
       export PATH="$PATH:/root/.dotnet/tools"
+      export ConnectionStrings__DefaultConnection="$DB_CONNECTION_STRING_SQL"
+      export ConnectionStrings__ScientificConnection="$DB_CONNECTION_STRING_PG"
+      export ConnectionStrings__RedisConnection="$REDIS_CONNECTION_STRING"
       dotnet tool install --global dotnet-ef >/dev/null 2>&1 || dotnet tool update --global dotnet-ef >/dev/null 2>&1 || true
-      dotnet restore '"$API_PROJECT"'
-      add_if_missing() {
-        local ctx="$1" out="$2"
-        if [ ! -d "$out" ] || [ -z "$(ls -A "$out" 2>/dev/null | grep -v Snapshot || true)" ]; then
-          echo "[migrate] no migrations for $ctx — creating InitialCreate";
-          dotnet ef migrations add InitialCreate --context "$ctx" --project '"$API_PROJECT"' -o "$out";
+      dotnet restore Bio.API/Bio.API.csproj
+      # DbContexts live in Bio.Infrastructure (= migrations assembly); Bio.API is the startup
+      # project (same invocation as migrate.sh). Authoritatively check whether a context already
+      # has migrations via "migrations list --no-connect" (reads the assembly, no DB needed) so we
+      # never re-create one — distinct names also avoid a class clash in the shared folder.
+      ensure_ctx() {
+        ctx="$1"; name="$2"
+        if ! dotnet ef migrations list --context "$ctx" -p Bio.Infrastructure -s Bio.API --no-connect 2>/dev/null | grep -qE "[0-9]{14}_"; then
+          echo "[migrate] no migrations for $ctx — creating $name";
+          dotnet ef migrations add "$name" --context "$ctx" -p Bio.Infrastructure -s Bio.API;
         fi
+        echo "[migrate] applying $ctx ...";
+        dotnet ef database update --context "$ctx" -p Bio.Infrastructure -s Bio.API;
       }
-      add_if_missing BioDbContext        Migrations/Bio
-      add_if_missing ScientificDbContext Migrations/Scientific
-      echo "[migrate] applying BioDbContext ...";        dotnet ef database update --context BioDbContext        --project '"$API_PROJECT"';
-      echo "[migrate] applying ScientificDbContext ..."; dotnet ef database update --context ScientificDbContext --project '"$API_PROJECT"';
+      ensure_ctx BioDbContext        InitialCreate
+      ensure_ctx ScientificDbContext InitialCreateScientific
     '
   log "Migrations applied."
 }
@@ -144,11 +152,15 @@ section_weights() {
     return 0
   fi
   command -v dvc >/dev/null 2>&1 || die "dvc not installed. Run: pip install 'dvc[s3]'  (needed to fetch model weights from S3)."
-  set -a; source .env; set +a
+  # Read only the AWS keys we need, WITHOUT sourcing (.env values may contain ';'/spaces).
+  local ak sk rg
+  ak="$(grep -E '^AWS_ACCESS_KEY_ID=' .env | head -n1 | cut -d= -f2-)"
+  sk="$(grep -E '^AWS_SECRET_ACCESS_KEY=' .env | head -n1 | cut -d= -f2-)"
+  rg="$(grep -E '^AWS_REGION=' .env | head -n1 | cut -d= -f2-)"
   ( cd "$AI_DIR" \
-      && AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-}" \
-         AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-}" \
-         AWS_DEFAULT_REGION="${AWS_REGION:-us-east-1}" \
+      && AWS_ACCESS_KEY_ID="$ak" \
+         AWS_SECRET_ACCESS_KEY="$sk" \
+         AWS_DEFAULT_REGION="${rg:-us-east-1}" \
          dvc pull ) \
     || die "dvc pull failed — check AWS credentials and access to the DVC S3 remote."
   log "Model weights pulled."

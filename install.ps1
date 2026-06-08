@@ -89,23 +89,26 @@ function Section-migrate {
     $net = Get-DockerNetwork
     if (-not $net) { Die "bioplatform network not found - run 'infra' first." }
 
+    # DbContexts live in Bio.Infrastructure (= migrations assembly); Bio.API is the startup
+    # project. Same invocation as migrate.sh (-p / -s). Detect existing migrations per context
+    # via its snapshot file; distinct names avoid a class clash in the shared Migrations folder.
     $inner = @'
 set -e
 export PATH="$PATH:/root/.dotnet/tools"
 dotnet tool install --global dotnet-ef >/dev/null 2>&1 || dotnet tool update --global dotnet-ef >/dev/null 2>&1 || true
-dotnet restore __API__
-add_if_missing() {
-  ctx="$1"; out="$2"
-  if [ ! -d "$out" ] || [ -z "$(ls -A "$out" 2>/dev/null | grep -v Snapshot || true)" ]; then
-    echo "[migrate] no migrations for $ctx - creating InitialCreate"
-    dotnet ef migrations add InitialCreate --context "$ctx" --project __API__ -o "$out"
+dotnet restore Bio.API/Bio.API.csproj
+ensure_ctx() {
+  ctx="$1"; name="$2"
+  if ! dotnet ef migrations list --context "$ctx" -p Bio.Infrastructure -s Bio.API --no-connect 2>/dev/null | grep -qE "[0-9]{14}_"; then
+    echo "[migrate] no migrations for $ctx - creating $name"
+    dotnet ef migrations add "$name" --context "$ctx" -p Bio.Infrastructure -s Bio.API
   fi
+  echo "[migrate] applying $ctx ..."
+  dotnet ef database update --context "$ctx" -p Bio.Infrastructure -s Bio.API
 }
-add_if_missing BioDbContext        Migrations/Bio
-add_if_missing ScientificDbContext Migrations/Scientific
-echo "[migrate] applying BioDbContext ...";        dotnet ef database update --context BioDbContext        --project __API__
-echo "[migrate] applying ScientificDbContext ..."; dotnet ef database update --context ScientificDbContext --project __API__
-'@ -replace '__API__', $ApiProject
+ensure_ctx BioDbContext        InitialCreate
+ensure_ctx ScientificDbContext InitialCreateScientific
+'@
 
     # Read .env so we can remap DB_CONNECTION_STRING_* → ConnectionStrings__* keys.
     $envMap = @{}

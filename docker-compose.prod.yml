@@ -118,8 +118,11 @@ services:
       - SeedSettings__SeedScientificOnStartup=${SEED_SCIENTIFIC_ON_STARTUP:-true}
       - SeedSettings__ScientificDataPath=/seed/species_catalog
     volumes:
-      # Seed data files (species CSV/JSON + image gallery SQL) for the startup seeder.
+      # Seed data files for the startup seeder.
+      # species_catalog: species CSV/JSON + image gallery SQL.
+      # weights: holds seed_ai_metadata.sql (ai_model_versions). Resolved as ../weights from the path below.
       - ./src/Bio.Backend.AI/data/species_catalog:/seed/species_catalog:ro
+      - ./src/Bio.Backend.AI/data/weights:/seed/weights:ro
     ports:
       - "5000:5000"
     depends_on:
