@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Constants;
 using Bio.Domain.Entities;
 using Bio.Domain.Exceptions;
 using Bio.Domain.Interfaces;
@@ -60,6 +61,41 @@ public class UpdateProductReviewCommandHandler : IRequestHandler<UpdateProductRe
         review.Update(request.Dto.Rating, request.Dto.Title, request.Dto.Comment);
         await _uow.SaveChangesAsync(ct);
         return new ProductReviewResponseDTO(review.Id, review.UserId, review.Rating, review.Title, review.Comment, review.CreatedAt);
+    }
+}
+
+public record ToggleReviewReportCommand(Guid ReviewId, string? Reason, Guid ActorId, string ActorRole) : IRequest<ReviewManagedListItemDTO>;
+
+public class ToggleReviewReportCommandHandler : IRequestHandler<ToggleReviewReportCommand, ReviewManagedListItemDTO>
+{
+    private readonly IProductReviewRepository _repo;
+    private readonly IProductRepository _productRepo;
+    private readonly IUnitOfWork _uow;
+
+    public ToggleReviewReportCommandHandler(IProductReviewRepository repo, IProductRepository productRepo, IUnitOfWork uow)
+    { _repo = repo; _productRepo = productRepo; _uow = uow; }
+
+    public async Task<ReviewManagedListItemDTO> Handle(ToggleReviewReportCommand request, CancellationToken ct)
+    {
+        var review = await _repo.GetByIdAsync(request.ReviewId, ct)
+            ?? throw new NotFoundException(nameof(ProductReview), request.ReviewId);
+
+        if (request.ActorRole != RoleNames.Admin)
+        {
+            var product = await _productRepo.GetByIdAsync(review.ProductId, ct)
+                ?? throw new NotFoundException(nameof(Product), review.ProductId);
+            if (product.EntrepreneurId != request.ActorId)
+                throw new ForbiddenException("You can only report reviews on your own products.");
+        }
+
+        review.ToggleReport(request.ActorId, request.Reason);
+        await _uow.SaveChangesAsync(ct);
+
+        return new ReviewManagedListItemDTO(
+            review.Id, review.ProductId, review.Product?.Name ?? "", review.Product?.Slug ?? "",
+            review.UserId, review.User?.FullName, review.Rating, review.Title, review.Comment,
+            review.IsReported, review.ReportReason, review.ReportedById, review.ReportedBy?.FullName, review.ReportedAt,
+            review.CreatedAt);
     }
 }
 

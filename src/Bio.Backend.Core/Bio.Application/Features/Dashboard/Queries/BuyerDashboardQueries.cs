@@ -29,17 +29,10 @@ public class GetBuyerDashboardQueryHandler : IRequestHandler<GetBuyerDashboardQu
         var now = DateTime.UtcNow;
         var monthStart = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        var ordersTask = _orderRepo.GetByBuyerIdAsync(request.BuyerId, 1, 10000, ct);
-        var favProductsTask = _favoriteRepo.GetByUserIdAsync(request.BuyerId, "Product", 1, 10000, ct);
-        var favSpeciesTask = _favoriteRepo.GetByUserIdAsync(request.BuyerId, "Species", 1, 10000, ct);
-        var reviewsTask = _reviewRepo.GetByUserIdAsync(request.BuyerId, 1, 10000, ct);
-
-        await Task.WhenAll(ordersTask, favProductsTask, favSpeciesTask, reviewsTask);
-
-        var (orders, _) = await ordersTask;
-        var (favProducts, favProductCount) = await favProductsTask;
-        var (_, favSpeciesCount) = await favSpeciesTask;
-        var (_, reviewCount) = await reviewsTask;
+        var (orders, _) = await _orderRepo.GetByBuyerIdAsync(request.BuyerId, 1, 10000, ct);
+        var (favProducts, favProductCount) = await _favoriteRepo.GetByUserIdAsync(request.BuyerId, "Product", 1, 10000, ct);
+        var (_, favSpeciesCount) = await _favoriteRepo.GetByUserIdAsync(request.BuyerId, "Species", 1, 10000, ct);
+        var (_, reviewCount) = await _reviewRepo.GetByUserIdAsync(request.BuyerId, 1, 10000, ct);
 
         var orderList = orders.ToList();
         var validOrders = orderList.Where(o => o.Status is not ("Cancelled" or "Refunded")).ToList();

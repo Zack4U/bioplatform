@@ -36,4 +36,7 @@ public interface ISpeciesImageRepository
     Task<(int ImageCount, int SpeciesCount)> CountNewObservationsSinceAsync(
         DateTime? since,
         CancellationToken cancellationToken = default);
+
+    /// <summary>Gets a single species image by its ID. Returns null if not found.</summary>
+    Task<SpeciesImage?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default);
 }

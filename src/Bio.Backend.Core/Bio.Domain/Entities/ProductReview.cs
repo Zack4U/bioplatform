@@ -14,9 +14,15 @@ public class ProductReview
     public string? Comment { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
+    public bool IsReported { get; private set; }
+    public string? ReportReason { get; private set; }
+    public Guid? ReportedById { get; private set; }
+    public DateTime? ReportedAt { get; private set; }
+
     // Navigation properties
     public Product Product { get; private set; } = null!;
     public User User { get; private set; } = null!;
+    public User? ReportedBy { get; private set; }
 
     private ProductReview() { }
 
@@ -45,5 +51,27 @@ public class ProductReview
         }
         if (title != null) Title = title;
         if (comment != null) Comment = comment;
+    }
+
+    /// <summary>
+    /// Toggles the report flag on this review. Used by entrepreneurs to flag reviews
+    /// on their products for admin moderation.
+    /// </summary>
+    public void ToggleReport(Guid reportedById, string? reason)
+    {
+        if (IsReported)
+        {
+            IsReported = false;
+            ReportReason = null;
+            ReportedById = null;
+            ReportedAt = null;
+        }
+        else
+        {
+            IsReported = true;
+            ReportReason = reason;
+            ReportedById = reportedById;
+            ReportedAt = DateTime.UtcNow;
+        }
     }
 }

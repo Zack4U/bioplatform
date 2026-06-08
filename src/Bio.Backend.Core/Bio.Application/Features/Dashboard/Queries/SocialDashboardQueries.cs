@@ -29,19 +29,11 @@ public class GetSocialDashboardQueryHandler : IRequestHandler<GetSocialDashboard
 
     public async Task<SocialDashboardDTO> Handle(GetSocialDashboardQuery request, CancellationToken ct)
     {
-        var postsTask = _postRepo.GetByAuthorIdPagedAsync(request.UserId, 1, 1000, ct);
-        var connectionsTask = _connRepo.GetByUserIdAsync(request.UserId, ct);
-        var favProductsTask = _favoriteRepo.GetByUserIdAsync(request.UserId, "Product", 1, 10000, ct);
-        var favSpeciesTask = _favoriteRepo.GetByUserIdAsync(request.UserId, "Species", 1, 10000, ct);
-        var unreadMsgTask = _threadRepo.GetUnreadMessageCountAsync(request.UserId, ct);
-
-        await Task.WhenAll(postsTask, connectionsTask, favProductsTask, favSpeciesTask, unreadMsgTask);
-
-        var (myPosts, _) = await postsTask;
-        var connections = (await connectionsTask).ToList();
-        var (_, favProductCount) = await favProductsTask;
-        var (_, favSpeciesCount) = await favSpeciesTask;
-        var unreadMessages = await unreadMsgTask;
+        var (myPosts, _) = await _postRepo.GetByAuthorIdPagedAsync(request.UserId, 1, 1000, ct);
+        var connections = (await _connRepo.GetByUserIdAsync(request.UserId, ct)).ToList();
+        var (_, favProductCount) = await _favoriteRepo.GetByUserIdAsync(request.UserId, "Product", 1, 10000, ct);
+        var (_, favSpeciesCount) = await _favoriteRepo.GetByUserIdAsync(request.UserId, "Species", 1, 10000, ct);
+        var unreadMessages = await _threadRepo.GetUnreadMessageCountAsync(request.UserId, ct);
 
         var myPostList = myPosts.ToList();
 

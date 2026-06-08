@@ -44,25 +44,16 @@ public class GetSellerDashboardEnhancedQueryHandler
         var lastMonthStart = monthStart.AddMonths(-1);
         var day90 = now.AddDays(90);
 
-        var productsTask = _productRepo.GetManagedFilteredAsync(
+        var (products, _) = await _productRepo.GetManagedFilteredAsync(
             request.EntrepreneurId, null, null, null, "name", "asc", 1, 1000, ct);
-        var allOrdersTask = _orderRepo.GetByEntrepreneurIdAsync(
+        var (allOrders, _) = await _orderRepo.GetByEntrepreneurIdAsync(
             request.EntrepreneurId, null, 1, 10000, ct);
-        var monthOrdersTask = _orderRepo.GetByEntrepreneurIdAsync(
+        var (monthOrders, _) = await _orderRepo.GetByEntrepreneurIdAsync(
             request.EntrepreneurId, null, 1, 10000, ct, monthStart);
-        var lastMonthOrdersTask = _orderRepo.GetByEntrepreneurIdAsync(
+        var (lastMonthOrders, _) = await _orderRepo.GetByEntrepreneurIdAsync(
             request.EntrepreneurId, null, 1, 10000, ct, lastMonthStart);
-        var reviewsTask = _reviewRepo.GetAggregateByEntrepreneurIdAsync(request.EntrepreneurId, ct);
-        var absTask = _absRepo.GetByEntrepreneurIdAsync(request.EntrepreneurId, ct);
-
-        await Task.WhenAll(productsTask, allOrdersTask, monthOrdersTask, lastMonthOrdersTask, reviewsTask, absTask);
-
-        var (products, _) = await productsTask;
-        var (allOrders, _) = await allOrdersTask;
-        var (monthOrders, _) = await monthOrdersTask;
-        var (lastMonthOrders, _) = await lastMonthOrdersTask;
-        var (avgRating, reviewCount) = await reviewsTask;
-        var permits = await absTask;
+        var (avgRating, reviewCount) = await _reviewRepo.GetAggregateByEntrepreneurIdAsync(request.EntrepreneurId, ct);
+        var permits = await _absRepo.GetByEntrepreneurIdAsync(request.EntrepreneurId, ct);
 
         var productsList = products.ToList();
         var allOrdersList = allOrders.ToList();

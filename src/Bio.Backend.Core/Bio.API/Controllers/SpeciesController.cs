@@ -17,6 +17,7 @@ using Bio.Domain.Constants;
 using MediatR;
 using System.Security.Claims;
 
+
 namespace Bio.API.Controllers;
 
 /// <summary>
@@ -322,6 +323,39 @@ public class SpeciesController : ControllerBase
             message = "Traditional uses import job enqueued successfully.",
             hint = "Se actualizarán los registros de species_traditional_uses para cada especie encontrada."
         });
+    }
+
+    // ── IMAGE VALIDATION ──────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Validates a species image as an expert — marks IsValidatedByExpert = true.
+    /// Restricted to Admin and Researcher roles.
+    /// </summary>
+    [HttpPost("{speciesId:guid}/images/{imageId:guid}/validate")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ValidateImage(
+        Guid speciesId, Guid imageId, CancellationToken ct = default)
+    {
+        var validatorId = GetActorId();
+        var result = await _mediator.Send(new ValidateSpeciesImageCommand(imageId, validatorId), ct);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Rejects (unvalidates) a species image — sets IsValidatedByExpert = false.
+    /// Restricted to Admin and Researcher roles.
+    /// </summary>
+    [HttpPost("{speciesId:guid}/images/{imageId:guid}/reject")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RejectImage(
+        Guid speciesId, Guid imageId, CancellationToken ct = default)
+    {
+        var result = await _mediator.Send(new RejectSpeciesImageCommand(imageId), ct);
+        return Ok(result);
     }
 
     // ── GEOGRAPHIC DISTRIBUTIONS ──────────────────────────────────────────────

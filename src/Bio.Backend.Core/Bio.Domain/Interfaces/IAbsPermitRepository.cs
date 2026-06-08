@@ -10,4 +10,5 @@ public interface IAbsPermitRepository
     Task<(IReadOnlyList<AbsPermit> Items, int TotalCount)> GetAllPagedAsync(
         Guid? entrepreneurId, string? status, int page, int pageSize, CancellationToken ct = default);
     Task AddAsync(AbsPermit permit, CancellationToken ct = default);
+    Task DeleteAsync(AbsPermit permit, CancellationToken ct = default);
 }
