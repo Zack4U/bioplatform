@@ -125,10 +125,10 @@ export function mockProducts(): ProductAdminItem[] {
 
 export function mockPermits(): PermitAdminItem[] {
     return [
-        { id: "pm1", resolutionNumber: "Res-1348-2024", entrepreneurId: "u3", entrepreneurName: "Carlos Mejia", speciesId: "s1", speciesName: "Cattleya trianae", grantingAuthority: "Corpocaldas", status: "Active", emissionDate: "2024-01-15T00:00:00Z", expirationDate: "2029-01-15T00:00:00Z", legalFramework: "Decreto 3016, Decision 391" },
-        { id: "pm2", resolutionNumber: "Res-2201-2024", entrepreneurId: "u3", entrepreneurName: "Carlos Mejia", speciesId: "s4", speciesName: "Ceroxylon quindiuense", grantingAuthority: "ANLA", status: "Active", emissionDate: "2024-06-01T00:00:00Z", expirationDate: "2029-06-01T00:00:00Z", legalFramework: "Protocolo de Nagoya" },
-        { id: "pm3", resolutionNumber: "Res-0892-2023", entrepreneurId: "u6", entrepreneurName: "Ana Torres", speciesId: "s2", speciesName: "Quercus humboldtii", grantingAuthority: "Corpocaldas", status: "Expired", emissionDate: "2023-03-01T00:00:00Z", expirationDate: "2025-03-01T00:00:00Z", legalFramework: "Decision 391" },
-        { id: "pm4", resolutionNumber: "Res-1567-2025", entrepreneurId: "u6", entrepreneurName: "Ana Torres", speciesId: "s6", speciesName: "Vanilla planifolia", grantingAuthority: "MinAmbiente", status: "Active", emissionDate: "2025-09-01T00:00:00Z", expirationDate: "2030-09-01T00:00:00Z", legalFramework: "Decreto 3016" },
+        { id: "pm1", resolutionNumber: "Res-1348-2024", entrepreneurId: "u3", entrepreneurName: "Carlos Mejia", speciesId: "s1", speciesName: "Cattleya trianae", grantingAuthority: "Corpocaldas", status: "Active", emissionDate: "2024-01-15T00:00:00Z", expirationDate: "2029-01-15T00:00:00Z", legalFramework: "Decreto 3016, Decision 391", requestedAt: "2024-01-05T00:00:00Z" },
+        { id: "pm2", resolutionNumber: "Res-2201-2024", entrepreneurId: "u3", entrepreneurName: "Carlos Mejia", speciesId: "s4", speciesName: "Ceroxylon quindiuense", grantingAuthority: "ANLA", status: "Active", emissionDate: "2024-06-01T00:00:00Z", expirationDate: "2029-06-01T00:00:00Z", legalFramework: "Protocolo de Nagoya", requestedAt: "2024-05-20T00:00:00Z" },
+        { id: "pm3", resolutionNumber: "Res-0892-2023", entrepreneurId: "u6", entrepreneurName: "Ana Torres", speciesId: "s2", speciesName: "Quercus humboldtii", grantingAuthority: "Corpocaldas", status: "Expired", emissionDate: "2023-03-01T00:00:00Z", expirationDate: "2025-03-01T00:00:00Z", legalFramework: "Decision 391", requestedAt: "2023-02-15T00:00:00Z" },
+        { id: "pm4", resolutionNumber: "Res-1567-2025", entrepreneurId: "u6", entrepreneurName: "Ana Torres", speciesId: "s6", speciesName: "Vanilla planifolia", grantingAuthority: "MinAmbiente", status: "Active", emissionDate: "2025-09-01T00:00:00Z", expirationDate: "2030-09-01T00:00:00Z", legalFramework: "Decreto 3016", requestedAt: "2025-08-20T00:00:00Z" },
     ];
 }
 

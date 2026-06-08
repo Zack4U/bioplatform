@@ -3,6 +3,7 @@
  */
 
 export { AuthGuard } from "./AuthGuard";
+export { PageRoleGuard } from "./PageRoleGuard";
 export { ConfirmDialog } from "./ConfirmDialog";
 export { DataCard } from "./DataCard";
 export { EmptyState } from "./EmptyState";

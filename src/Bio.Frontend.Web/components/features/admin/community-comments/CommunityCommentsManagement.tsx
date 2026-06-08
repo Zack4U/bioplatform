@@ -16,14 +16,15 @@ import { deleteComment } from "@/services/community-service";
 import { notificationService } from "@/lib/notifications";
 import { useAdminPosts } from "@/hooks/features/admin/useAdminCommunity";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+    Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+    Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,
+} from "@/components/ui/command";
+import { Button } from "@/components/ui/button";
+import { Check, ChevronsUpDown, MessageCircle, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { CommunityCommentResponse, PaginatedResponse } from "@/types";
-import { MessageCircle, Trash2 } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getComments } from "@/services/community-service";
 import { ADMIN_PAGE_SIZE } from "@/lib/constants";
@@ -82,15 +83,21 @@ export function CommunityCommentsManagement() {
     const queryClient = useQueryClient();
     const [search, setSearch] = useState("");
     const [selectedPostId, setSelectedPostId] = useState("");
+    const [postSearch, setPostSearch] = useState("");
+    const [postComboOpen, setPostComboOpen] = useState(false);
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState("createdAt");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-    // Get post list for filter dropdown
+    // Get post list for filter combobox (search all statuses)
     const { posts: postOptions } = useAdminPosts({
-        status: "Published",
-        pageSize: 50,
+        pageSize: 100,
     });
+
+    const filteredPostOptions = postOptions.filter((p) =>
+        !postSearch || p.title.toLowerCase().includes(postSearch.toLowerCase())
+    );
+    const selectedPost = postOptions.find((p) => p.id === selectedPostId);
 
     // Get comments for selected post
     const { data: commentsData, isLoading: loadingComments } = useQuery<
@@ -168,24 +175,54 @@ export function CommunityCommentsManagement() {
                 }
                 emptyIcon={<MessageCircle className="h-6 w-6" />}
                 toolbar={
-                    <Select
-                        value={selectedPostId}
-                        onValueChange={(v) => {
-                            setSelectedPostId(v);
-                            setPage(1);
-                        }}
-                    >
-                        <SelectTrigger className="w-[250px]">
-                            <SelectValue placeholder="Selecciona un post..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {postOptions.map((p) => (
-                                <SelectItem key={p.id} value={p.id}>
-                                    <span className="line-clamp-1">{p.title}</span>
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <Popover open={postComboOpen} onOpenChange={setPostComboOpen}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={postComboOpen}
+                                className="w-[280px] justify-between font-normal"
+                            >
+                                <span className="truncate">
+                                    {selectedPost ? selectedPost.title : "Selecciona un post..."}
+                                </span>
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[350px] p-0" align="start">
+                            <Command shouldFilter={false}>
+                                <CommandInput
+                                    placeholder="Buscar por título..."
+                                    value={postSearch}
+                                    onValueChange={setPostSearch}
+                                />
+                                <CommandList>
+                                    {filteredPostOptions.length === 0 && (
+                                        <CommandEmpty>
+                                            <MessageCircle className="h-4 w-4 mx-auto mb-1 opacity-50" />
+                                            No se encontraron posts
+                                        </CommandEmpty>
+                                    )}
+                                    <CommandGroup>
+                                        {filteredPostOptions.map((p) => (
+                                            <CommandItem
+                                                key={p.id}
+                                                value={p.id}
+                                                onSelect={() => {
+                                                    setSelectedPostId(p.id === selectedPostId ? "" : p.id);
+                                                    setPage(1);
+                                                    setPostComboOpen(false);
+                                                }}
+                                            >
+                                                <Check className={cn("mr-2 h-4 w-4", p.id === selectedPostId ? "opacity-100" : "opacity-0")} />
+                                                <span className="line-clamp-1 text-sm">{p.title}</span>
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
                 }
             />
         </div>

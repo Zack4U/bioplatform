@@ -200,13 +200,12 @@ export async function uploadProductImage(
   onProgress?: (percent: number) => void,
 ): Promise<ProductImage> {
   const formData = new FormData();
-  formData.append("productId", productId);
   formData.append("file", file);
   formData.append("isPrimary", String(isPrimary));
   if (altText) formData.append("altText", altText);
 
   return apiUpload<ProductImage>(
-    CORE_ROUTES.MANAGE_PRODUCTS.UPLOAD_IMAGE,
+    CORE_ROUTES.MANAGE_PRODUCTS.UPLOAD_IMAGE(productId),
     formData,
     onProgress,
   );
@@ -225,8 +224,7 @@ export async function deleteProductImage(imageId: string): Promise<void> {
  * PATCH /manage/products/images/:imageId/primary
  */
 export async function setProductImagePrimary(imageId: string): Promise<void> {
-  // The backend expects a PATCH with an empty body to flip the primary flag.
-  await apiPut<Record<string, never>, void>(
+  await apiPost<Record<string, never>, void>(
     CORE_ROUTES.MANAGE_PRODUCTS.SET_IMAGE_PRIMARY(imageId),
     {},
   );
@@ -395,11 +393,11 @@ export async function getFavorites(): Promise<
 // ─── ABS Permits ──────────────────────────────────────────────────────────────
 
 /**
- * Get all ABS permits belonging to the authenticated entrepreneur.
- * GET /api/abspermits
+ * Get ABS permits belonging to a specific entrepreneur.
+ * GET /api/v1/abs-permits/entrepreneur/:userId
  */
-export async function getMyAbsPermits(): Promise<AbsPermit[]> {
-  return apiGet<AbsPermit[]>(CORE_ROUTES.ABS_PERMITS.BASE);
+export async function getMyAbsPermits(userId: string): Promise<AbsPermit[]> {
+  return apiGet<AbsPermit[]>(CORE_ROUTES.ABS_PERMITS.BY_ENTREPRENEUR(userId));
 }
 
 /**
@@ -419,9 +417,9 @@ export async function createAbsPermit(data: FormData): Promise<AbsPermit> {
 export async function getProductCertifications(
   productId: string,
 ): Promise<CertificationResponseDTO[]> {
-  return apiGet<CertificationResponseDTO[]>(CORE_ROUTES.CERTIFICATIONS.BASE, {
-    productId,
-  });
+  return apiGet<CertificationResponseDTO[]>(
+    CORE_ROUTES.CERTIFICATIONS.BY_PRODUCT(productId),
+  );
 }
 
 // ─── Cart Sync & Price Validation ─────────────────────────────────────────────

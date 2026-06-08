@@ -26,6 +26,7 @@ import {
   updateProduct,
   uploadProductImage,
 } from "@/services/marketplace-service";
+import { activateProduct, deactivateProduct } from "@/services/admin-service";
 import type {
   CreateProductRequest,
   ManageProductListItem,
@@ -246,6 +247,38 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
     }
   }, [productToDelete, deleteProductAction]);
 
+  // ── Activate / Deactivate (admin only) ────────────────────────────────
+
+  const { mutate: activateProductAction, isPending: isActivating } = useMutation<
+    void,
+    Error,
+    string
+  >({
+    mutationFn: (id) => activateProduct(id),
+    onSuccess: () => {
+      invalidateAll();
+      toast.success("Producto activado exitosamente.");
+    },
+    onError: () => {
+      toast.error("No se pudo activar el producto. Intenta de nuevo.");
+    },
+  });
+
+  const { mutate: deactivateProductAction, isPending: isDeactivating } = useMutation<
+    void,
+    Error,
+    string
+  >({
+    mutationFn: (id) => deactivateProduct(id),
+    onSuccess: () => {
+      invalidateAll();
+      toast.success("Producto desactivado exitosamente.");
+    },
+    onError: () => {
+      toast.error("No se pudo desactivar el producto. Intenta de nuevo.");
+    },
+  });
+
   // ── Image upload ───────────────────────────────────────────────────────
 
   const uploadImage = useCallback(
@@ -397,5 +430,11 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
     // Image deletion
     deleteImage,
     isDeletingImage,
+
+    // Activate / Deactivate
+    activateProduct: activateProductAction,
+    isActivating,
+    deactivateProduct: deactivateProductAction,
+    isDeactivating,
   };
 }

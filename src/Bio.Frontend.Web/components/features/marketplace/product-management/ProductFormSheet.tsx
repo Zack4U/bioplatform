@@ -20,6 +20,7 @@
  */
 
 import { RichTextEditor } from "@/components/common";
+import { SpeciesSearchCombobox } from "@/components/features/admin/shared/SpeciesSearchCombobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,9 +50,10 @@ import type {
 } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, Loader2, ShieldCheck } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import type { SpeciesAdminItem } from "@/types/admin";
 
 
 const productSchema = z.object({
@@ -75,7 +77,7 @@ const productSchema = z.object({
     .max(50, "El SKU no puede superar los 50 caracteres"),
   categoryId: z.number().nullable().optional(),
   baseSpeciesId: z.string().optional().or(z.literal("")),
-  absPermitId: z.string().min(1, "Selecciona un Permiso ABS activo"),
+  absPermitId: z.string().optional().or(z.literal("")),
   isActive: z.boolean(),
 });
 
@@ -108,16 +110,11 @@ export function ProductFormSheet({
 }: ProductFormSheetProps) {
   const isEditing = Boolean(editingProduct);
   const activePermits = absPermits.filter((p) => p.status === "Active");
+  const [selectedSpecies, setSelectedSpecies] = useState<SpeciesAdminItem | null>(null);
 
   // ── Form ───────────────────────────────────────────────────────────────
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm<ProductFormValues>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       name: "",
@@ -128,9 +125,11 @@ export function ProductFormSheet({
       categoryId: null,
       baseSpeciesId: "",
       absPermitId: "",
-      isActive: true,
+      isActive: false,
     },
   });
+
+  const { register, handleSubmit, control, reset, formState: { errors } } = form;
 
   // ── Pre-fill when editing ──────────────────────────────────────────────
 
@@ -157,14 +156,19 @@ export function ProductFormSheet({
         categoryId: null,
         baseSpeciesId: "",
         absPermitId: "",
-        isActive: true,
+        isActive: false,
       });
+      setSelectedSpecies(null);
     }
   }, [isOpen, editingProduct, reset]);
 
   // ── Submit handler ─────────────────────────────────────────────────────
 
   function handleFormSubmit(values: ProductFormValues) {
+    if (selectedSpecies?.legalStatus && !values.absPermitId) {
+      form.setError("absPermitId", { message: "Permiso ABS requerido para especie con estado legal" });
+      return;
+    }
     const payload: CreateProductRequest | UpdateProductRequest = {
       name: values.name,
       description: values.description,
@@ -174,8 +178,8 @@ export function ProductFormSheet({
       sku: values.sku,
       categoryId: values.categoryId ?? null,
       baseSpeciesId: values.baseSpeciesId || "",
-      absPermitId: values.absPermitId,
-      isActive: values.isActive ?? true,
+      absPermitId: values.absPermitId || "",
+      isActive: values.isActive ?? false,
     };
     onSubmit(payload);
   }
@@ -400,21 +404,24 @@ export function ProductFormSheet({
             />
           </div>
 
-          {/* ── Base Species ID ─────────────────────────────────────── */}
+          {/* ── Base Species (combobox search) ─────────────────────── */}
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="product-species">
-              ID de especie base (opcional)
-            </Label>
-            <Input
-              id="product-species"
-              placeholder="UUID de la especie en el catalogo biologico"
-              className="font-mono text-sm"
-              aria-describedby="species-hint"
-              {...register("baseSpeciesId")}
+            <Label>Especie base <span className="text-muted-foreground font-normal">(opcional)</span></Label>
+            <Controller
+              name="baseSpeciesId"
+              control={control}
+              render={({ field }) => (
+                <SpeciesSearchCombobox
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onSpeciesSelect={setSelectedSpecies}
+                  placeholder="Buscar especie del catálogo..."
+                  clearable
+                />
+              )}
             />
-            <p id="species-hint" className="text-xs text-muted-foreground">
-              Enlaza este producto con un registro cientifico en el catalogo de
-              especies de Caldas.
+            <p className="text-xs text-muted-foreground">
+              Enlaza este producto con un registro científico en el catálogo de especies de Caldas.
             </p>
           </div>
 
@@ -422,9 +429,11 @@ export function ProductFormSheet({
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="product-abs-permit">
               Permiso ABS{" "}
-              <span aria-hidden="true" className="text-destructive">
-                *
-              </span>
+              {selectedSpecies?.legalStatus ? (
+                <span aria-hidden="true" className="text-destructive">*</span>
+              ) : (
+                <span className="text-muted-foreground font-normal">(opcional)</span>
+              )}
             </Label>
             <Controller
               name="absPermitId"
@@ -446,16 +455,19 @@ export function ProductFormSheet({
                     <SelectValue placeholder="Selecciona un permiso activo" />
                   </SelectTrigger>
                   <SelectContent>
-                    {activePermits.length === 0 ? (
-                      <SelectItem value="__none__" disabled>
-                        No tienes permisos ABS activos
-                      </SelectItem>
-                    ) : (
+                    {/* "No requiere" option — products not using genetic resources */}
+                    <SelectItem value="no_abs">Sin permiso ABS — No requiere</SelectItem>
+                    {activePermits.length > 0 && (
                       activePermits.map((permit) => (
                         <SelectItem key={permit.id} value={permit.id}>
                           {permit.resolutionNumber} — {permit.grantingAuthority}
                         </SelectItem>
                       ))
+                    )}
+                    {activePermits.length === 0 && (
+                      <SelectItem value="__none__" disabled>
+                        No tienes permisos ABS activos
+                      </SelectItem>
                     )}
                   </SelectContent>
                 </Select>
@@ -491,10 +503,12 @@ export function ProductFormSheet({
           <div className="flex items-center justify-between rounded-md border p-3">
             <div className="space-y-0.5">
               <Label htmlFor="product-active" className="cursor-pointer">
-                Publicar producto
+                {isEditing ? "Producto activo" : "Activar inmediatamente"}
               </Label>
               <p className="text-xs text-muted-foreground">
-                Los productos inactivos no son visibles en el marketplace.
+                {isEditing
+                  ? "Los productos inactivos no son visibles en el marketplace."
+                  : "Por defecto queda inactivo pendiente de aprobación por un administrador."}
               </p>
             </div>
             <Controller

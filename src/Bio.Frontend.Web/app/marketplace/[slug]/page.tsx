@@ -58,6 +58,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
   const {
     product,
+    baseSpecies,
     isLoading,
     isError,
     error,
@@ -116,6 +117,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       {/* 1. Hero — with favorite toggle */}
       <ProductDetailHero
         product={product}
+        baseSpecies={baseSpecies}
         isFavorite={isFavorite}
         onToggleFavorite={toggleFavorite}
       />
