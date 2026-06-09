@@ -9,8 +9,12 @@
  * @module hooks/useContributeObservation
  */
 
+import { enqueueObservation } from "@/lib/db/observation-queue";
 import { uploadSpeciesObservation } from "@/services/species-service";
+import { useOfflineStore } from "@/store/offline-store";
 import { useMutation } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
+import NetInfo from "@react-native-community/netinfo";
 import * as Device from "expo-device";
 import * as Location from "expo-location";
 import { useCallback, useState } from "react";
@@ -103,57 +107,89 @@ export function useContributeObservation() {
 
     // ── Upload Mutation ───────────────────────────────────────────────────────
 
-    const mutation = useMutation<unknown, Error, MobileUploadObservationParams>(
-        {
-            mutationFn: async (params) => {
-                const formData = new FormData();
+    const mutation = useMutation<
+        { queued: boolean },
+        Error,
+        MobileUploadObservationParams
+    >({
+        mutationFn: async (params) => {
+            // Persist to the offline upload queue (flushed on reconnect).
+            const enqueue = async () => {
+                await enqueueObservation({
+                    speciesId: params.speciesId,
+                    imageUri: params.imageUri,
+                    mimeType: params.mimeType,
+                    licenseType: params.licenseType,
+                    latitude: params.coords?.latitude ?? null,
+                    longitude: params.coords?.longitude ?? null,
+                    speciesPredicted: params.speciesPredicted ?? null,
+                    confidenceScore: params.confidenceScore ?? null,
+                    modelVersion: params.modelVersion ?? null,
+                });
+                void useOfflineStore.getState().refreshCounts();
+            };
 
-                // Image file — React Native FormData accepts uri/name/type objects
-                formData.append("file", {
-                    uri: params.imageUri,
-                    name: `mobile_${Date.now()}.jpg`,
-                    type: params.mimeType,
-                } as unknown as Blob);
+            // Queue immediately when offline.
+            const net = await NetInfo.fetch();
+            const online = Boolean(
+                net.isConnected && net.isInternetReachable !== false,
+            );
+            if (!online) {
+                await enqueue();
+                return { queued: true };
+            }
 
-                // License and source
-                formData.append("licenseType", params.licenseType);
-                formData.append("sourceType", "Mobile");
+            const formData = new FormData();
 
-                // Geolocation (only if granted)
-                if (params.coords) {
-                    formData.append("latitude", String(params.coords.latitude));
-                    formData.append(
-                        "longitude",
-                        String(params.coords.longitude),
-                    );
-                }
+            // Image file — React Native FormData accepts uri/name/type objects
+            formData.append("file", {
+                uri: params.imageUri,
+                name: `mobile_${Date.now()}.jpg`,
+                type: params.mimeType,
+            } as unknown as Blob);
 
-                // Device metadata from expo-device
-                formData.append("device", Device.deviceName ?? "Unknown");
-                formData.append("deviceType", getDeviceTypeName());
+            // License and source
+            formData.append("licenseType", params.licenseType);
+            formData.append("sourceType", "Mobile");
+
+            // Geolocation (only if granted)
+            if (params.coords) {
+                formData.append("latitude", String(params.coords.latitude));
+                formData.append("longitude", String(params.coords.longitude));
+            }
+
+            // Device metadata from expo-device
+            formData.append("device", Device.deviceName ?? "Unknown");
+            formData.append("deviceType", getDeviceTypeName());
+            formData.append(
+                "operatingSystem",
+                `${Device.osName ?? "Unknown"} ${Device.osVersion ?? ""}`.trim(),
+            );
+
+            // CNN context
+            if (params.speciesPredicted)
+                formData.append("speciesPredicted", params.speciesPredicted);
+            if (params.confidenceScore !== undefined)
                 formData.append(
-                    "operatingSystem",
-                    `${Device.osName ?? "Unknown"} ${Device.osVersion ?? ""}`.trim(),
+                    "confidenceScore",
+                    String(params.confidenceScore),
                 );
+            if (params.modelVersion)
+                formData.append("modelVersion", params.modelVersion);
 
-                // CNN context
-                if (params.speciesPredicted)
-                    formData.append(
-                        "speciesPredicted",
-                        params.speciesPredicted,
-                    );
-                if (params.confidenceScore !== undefined)
-                    formData.append(
-                        "confidenceScore",
-                        String(params.confidenceScore),
-                    );
-                if (params.modelVersion)
-                    formData.append("modelVersion", params.modelVersion);
-
-                return uploadSpeciesObservation(params.speciesId, formData);
-            },
+            try {
+                await uploadSpeciesObservation(params.speciesId, formData);
+                return { queued: false };
+            } catch (error) {
+                // Lost connectivity mid-request → fall back to the queue.
+                if (isAxiosError(error) && !error.response) {
+                    await enqueue();
+                    return { queued: true };
+                }
+                throw error;
+            }
         },
-    );
+    });
 
     return {
         locationStatus,

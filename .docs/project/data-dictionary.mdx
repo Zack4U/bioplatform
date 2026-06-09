@@ -21,6 +21,20 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 
 **Nota de Arquitectura:** La comunicacion entre dominios de SQL Server y PostgreSQL se realiza a traves de **UUIDs** (Logical Foreign Keys). No existe integridad referencial fisica entre motores; la integridad se garantiza en la Capa de Aplicacion (Use Cases).
 
+## 1.1. Diagramas
+
+<Frame caption="Diagrama Entidad-Relacion completo (SQL Server + PostgreSQL)">
+  <img src="/Diagrams/ER_Diagram_V2.png" alt="Diagrama Entidad-Relacion de BioCommerce" />
+</Frame>
+
+<Frame caption="Distribucion de tablas por motor de base de datos">
+  <img src="/Diagrams/DB_Diagram_V2.png" alt="Distribucion de bases de datos de BioCommerce" />
+</Frame>
+
+<Note>
+  Fuente editable de los diagramas (Mermaid): `Diagrams/ER_Diagram.mmd` y `Diagrams/DB_Diagram.mmd`.
+</Note>
+
 ---
 
 # 2. Base de Datos: BioCommerce_Transactional (SQL Server)
@@ -474,8 +488,6 @@ _Entidad central del catalogo de biodiversidad._
 | description         | TEXT         | Nullable                      | Descripcion morfologica.                                   | Epifita con pseudobulbos...                      |
 | ecological_info     | TEXT         | Nullable                      | Datos de habitat y ecologia.                               | Bosque de niebla entre 1800-2500m...             |
 | altitude_range      | VARCHAR(100) | Nullable                      | Rango altitudinal tipico en msnm.                          | 1500-2800 msnm                                   |
-| traditional_uses    | JSONB        | Nullable                      | Usos etnobotanicos y conocimiento ancestral.               | `[{"part":"Hojas","uses":["Medicina"],...}]`     |
-| economic_potential  | JSONB        | Nullable                      | Potencial de aprovechamiento economico sostenible.         | `[{"sector":"Ecoturismo","products":[...],...}]` |
 | conservation_status | VARCHAR(100) | Nullable                      | Estado de conservacion (IUCN / Libros Rojos de Colombia).  | VU                                               |
 | legal_status        | BOOLEAN      | Default False                 | Indica si la especie requiere permisos legales especiales. | true                                             |
 | is_sensitive        | BOOLEAN      | Default False                 | Si es True, se enmascara la ubicacion exacta.              | true                                             |
@@ -516,6 +528,41 @@ _Dataset de imagenes para entrenamiento, validacion y galeria del catalogo._
 | license_type           | VARCHAR(50)  | Default 'CC-BY'               | Licencia de uso de la imagen.                                 | CC-BY-NC                         |
 | created_at             | TIMESTAMPTZ  | Default NOW()                 | Fecha de carga.                                               | 2025-01-16 10:00:00+00           |
 
+### Tabla: species_economic_potentials
+
+_Potencial economico por sector de una especie (normalizado, 1:N con species). Reemplaza el antiguo campo JSONB economic_potential._
+
+| Campo                | Tipo de Dato | Restricciones                          | Descripcion                                          | Ejemplo                          |
+| :------------------- | :----------- | :------------------------------------- | :--------------------------------------------------- | :------------------------------- |
+| id                   | UUID         | PK, Default gen_random_uuid()          | ID del registro.                                     | eco1...                          |
+| species_id           | UUID         | FK (species), Not Null, On Delete Cascade | Especie asociada.                                 | c456...                          |
+| sector               | VARCHAR(150) | Not Null                               | Sector de mercado.                                   | Cosmeceutica                     |
+| products             | TEXT[]       | Not Null                               | Productos derivados de la especie.                   | &#123;Aceite esencial, Extracto&#125;      |
+| active_properties    | TEXT[]       | Nullable                               | Propiedades activas / compuestos bioactivos.         | &#123;Antioxidante, Antiinflamatorio&#125; |
+| description          | TEXT         | Nullable                               | Descripcion del potencial economico.                 | Alta demanda en cosmetica natural |
+| market_value         | VARCHAR(50)  | Not Null                               | Valor de mercado estimado (Bajo/Medio/Alto/Desconocido). | Alto                         |
+| sustainability_level | VARCHAR(50)  | Not Null                               | Nivel de sostenibilidad (Bajo/Medio/Alto).           | Medio                            |
+| confidence           | VARCHAR(20)  | Not Null                               | Confianza del dato generado (low/medium/high).       | high                             |
+| created_at           | TIMESTAMPTZ  | Default NOW()                          | Fecha de creacion.                                   | 2025-02-25 10:00:00+00           |
+
+### Tabla: species_traditional_uses
+
+_Usos tradicionales documentados de una especie (normalizado, 1:N con species). Reemplaza el antiguo campo JSONB traditional_uses._
+
+| Campo                | Tipo de Dato | Restricciones                          | Descripcion                                       | Ejemplo                    |
+| :------------------- | :----------- | :------------------------------------- | :------------------------------------------------ | :------------------------- |
+| id                   | UUID         | PK, Default gen_random_uuid()          | ID del registro.                                  | trad1...                   |
+| species_id           | UUID         | FK (species), Not Null, On Delete Cascade | Especie asociada.                              | c456...                    |
+| part                 | VARCHAR(100) | Not Null                               | Parte de la especie utilizada.                    | Hojas                      |
+| category             | TEXT[]       | Not Null                               | Categorias de uso.                                | &#123;Medicinal, Alimentario&#125;   |
+| specific_purpose     | TEXT         | Nullable                               | Proposito especifico del uso.                     | Cicatrizacion de heridas   |
+| preparation_method   | TEXT         | Nullable                               | Metodo de preparacion o uso.                      | Infusion                   |
+| description          | TEXT         | Nullable                               | Descripcion detallada del uso tradicional.        | Uso ancestral en la region |
+| community            | VARCHAR(200) | Nullable                               | Comunidad o region de uso.                        | Uso generalizado regional  |
+| traditional_warnings | TEXT         | Nullable                               | Advertencias (toxicidad, contraindicaciones).     | Evitar en embarazo         |
+| confidence           | VARCHAR(20)  | Not Null                               | Confianza del dato generado (low/medium/high).    | medium                     |
+| created_at           | TIMESTAMPTZ  | Default NOW()                          | Fecha de creacion.                                | 2025-02-25 10:00:00+00     |
+
 ---
 
 ## Contexto: Computer Vision & AI (MLOps)
@@ -544,14 +591,32 @@ _Versionado de modelos de IA desplegados. Soporte para MLOps y rollback._
 
 | Campo           | Tipo de Dato | Restricciones | Descripcion                                            | Ejemplo                |
 | :-------------- | :----------- | :------------ | :----------------------------------------------------- | :--------------------- |
-| id              | SERIAL       | PK            | ID numerico del modelo.                                | 1                      |
-| model_name      | VARCHAR(100) | Not Null      | Arquitectura del modelo.                               | ResNet50               |
-| version         | VARCHAR(20)  | UK, Not Null  | Version semantica del modelo.                          | v1.0.0                 |
-| accuracy_metric | NUMERIC(5,4) | Not Null      | Metrica de accuracy en el dataset de validacion.       | 0.8750                 |
-| deployed_at     | TIMESTAMPTZ  | Not Null      | Fecha de despliegue en produccion.                     | 2025-03-01 00:00:00+00 |
-| is_active       | BOOLEAN      | Default False | Indica si es la version activa sirviendo predicciones. | true                   |
-| notes           | TEXT         | Nullable      | Notas sobre la version.                                | Initial release        |
-| created_at      | TIMESTAMPTZ  | Default NOW() | Fecha de registro.                                     | 2025-03-01 00:00:00+00 |
+| id                  | SERIAL       | PK            | ID numerico del modelo.                                  | 1                       |
+| model_name          | VARCHAR(100) | Not Null      | Arquitectura del modelo.                                 | efficientnet_b2         |
+| version             | VARCHAR(50)  | UK, Not Null  | Version del modelo (timestamped).                        | v1.0.20260518021229     |
+| accuracy_metric     | NUMERIC(5,4) | Not Null      | Metrica de accuracy en el dataset de validacion.         | 0.8700                  |
+| deployed_at         | TIMESTAMPTZ  | Not Null      | Fecha de despliegue en produccion.                       | 2025-03-01 00:00:00+00  |
+| is_active           | BOOLEAN      | Default False | Indica si es la version activa sirviendo predicciones.   | true                    |
+| notes               | TEXT         | Nullable      | Notas sobre la version.                                  | Initial release         |
+| created_at          | TIMESTAMPTZ  | Default NOW() | Fecha de registro.                                       | 2025-03-01 00:00:00+00  |
+| is_deleted          | BOOLEAN      | Default False | Soft-delete de la version.                               | false                   |
+| config_json         | JSONB        | Nullable      | Configuracion / hiperparametros del entrenamiento.       | &#123;"epochs": 30, "lr": 0.001&#125; |
+| metrics_json        | JSONB        | Nullable      | Metricas completas de evaluacion (por clase, matriz...). | &#123;"f1": 0.86, "precision": 0.88&#125; |
+| validation_accuracy | NUMERIC(5,4) | Nullable      | Accuracy en el set de validacion.                        | 0.8650                  |
+
+### Tabla: ai_training_jobs
+
+_Seguimiento de trabajos de entrenamiento / fine-tuning asincronos. Flujo de estado: Pending -> Running -> Completed | Failed | Interrupted._
+
+| Campo                      | Tipo de Dato | Restricciones                       | Descripcion                                                    | Ejemplo                |
+| :------------------------- | :----------- | :---------------------------------- | :------------------------------------------------------------- | :--------------------- |
+| id                         | UUID         | PK                                  | ID del trabajo de entrenamiento.                               | job1...                |
+| started_at                 | TIMESTAMPTZ  | Not Null                            | Inicio del trabajo.                                            | 2025-03-01 00:00:00+00 |
+| completed_at               | TIMESTAMPTZ  | Nullable                            | Fin del trabajo (si termino).                                  | 2025-03-01 02:30:00+00 |
+| status                     | VARCHAR(20)  | Not Null                            | Estado: Pending, Running, Completed, Failed, Interrupted.      | Completed              |
+| status_message             | TEXT         | Nullable                            | Mensaje de progreso o de error.                                | Epoch 30/30 - acc 0.87 |
+| triggered_by_user_id       | UUID         | Not Null                            | **Logical FK** a SQL Server (Users). Quien disparo el job.     | a0ee...                |
+| resulting_model_version_id | INT          | FK (ai_model_versions), Nullable    | Version de modelo generada al completar.                       | 2                      |
 
 ---
 

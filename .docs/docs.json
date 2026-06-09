@@ -49,6 +49,7 @@
       {
         "group": "Proyecto",
         "pages": [
+          "project/vision",
           "project/requirements",
           "project/requirements-checklist",
           "project/architecture",

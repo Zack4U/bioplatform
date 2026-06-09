@@ -8,6 +8,11 @@
  */
 
 import apiClient from "@/lib/axios-client";
+import {
+    upsertSpeciesDetail,
+    upsertSpeciesImages,
+    upsertSpeciesListItems,
+} from "@/lib/db/species-cache";
 import { CORE_ROUTES } from "@/services/routes";
 import type {
     GeographicDistribution,
@@ -19,6 +24,13 @@ import type {
     SpeciesResponse,
     SpeciesSearchParams,
 } from "@/types";
+
+/** Fire-and-forget cache write — never let a cache failure break a request. */
+function cache(write: Promise<unknown>): void {
+    void write.catch(() => {
+        // Offline cache is best-effort.
+    });
+}
 
 /** Normalize any backend PaginatedResult<T> (camelCase or PascalCase) into PaginatedResponse<T>. */
 function toPaginated<T>(payload: unknown): PaginatedResponse<T> {
@@ -64,7 +76,9 @@ export async function getList(
         params,
     });
 
-    return toPaginated<SpeciesListItem>(data);
+    const result = toPaginated<SpeciesListItem>(data);
+    cache(upsertSpeciesListItems(result.items));
+    return result;
 }
 
 /** Backward-compatible helper to fetch a full list for simple consumers. */
@@ -88,6 +102,7 @@ export async function getById(id: string): Promise<SpeciesResponse> {
     const { data } = await apiClient.get<SpeciesResponse>(
         CORE_ROUTES.SPECIES.BY_ID(id),
     );
+    cache(upsertSpeciesDetail(data));
     return data;
 }
 
@@ -126,7 +141,12 @@ export async function getSpeciesImages(
     const { data } = await apiClient.get<unknown>(CORE_ROUTES.SPECIES.IMAGES(id), {
         params,
     });
-    return toPaginated<SpeciesImage>(data);
+    const result = toPaginated<SpeciesImage>(data);
+    // Cache the first page only (replace semantics) for offline gallery preview.
+    if ((params.page ?? 1) === 1) {
+        cache(upsertSpeciesImages(id, result.items));
+    }
+    return result;
 }
 
 // ─── Contribute Observation ───────────────────────────────────────────────────
