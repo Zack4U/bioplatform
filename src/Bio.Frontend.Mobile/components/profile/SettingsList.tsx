@@ -5,6 +5,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import {
     Select,
     SelectContent,
@@ -18,6 +19,7 @@ import { Switch } from "@/components/ui/switch";
 import { Text } from "@/components/ui/text";
 import { useModelInfo, useModelMetrics } from "@/hooks/useClassification";
 import { useThemeMode, type ThemeMode } from "@/hooks/useThemeMode";
+import { estimateImagesSizeBytes, formatBytes } from "@/lib/offline-files";
 import { THEME } from "@/lib/theme";
 import { useOfflineStore } from "@/store/offline-store";
 import {
@@ -25,10 +27,12 @@ import {
     ChevronRight,
     CloudOff,
     HardDrive,
+    Images,
     Info,
     RefreshCw,
     Sparkles,
     Sun,
+    WifiOff,
 } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useEffect, useMemo, useState } from "react";
@@ -137,6 +141,28 @@ function ThemeSelect() {
     );
 }
 
+// ─── SyncProgressBar ───────────────────────────────────────────────────────────
+
+interface SyncProgressBarProps {
+    progress: { done: number; total: number; label: string } | null;
+    labels: string[];
+}
+
+/** Inline progress bar shown under a setting row during a matching download phase. */
+function SyncProgressBar({ progress, labels }: SyncProgressBarProps) {
+    if (!progress || !labels.includes(progress.label)) return null;
+    const pct = progress.total > 0 ? (progress.done / progress.total) * 100 : 0;
+    return (
+        <View className="px-1 pb-3">
+            <Progress value={pct} className="h-1.5 mb-1" />
+            <Text className="text-[10px] text-muted-foreground">
+                {progress.label}: {progress.done}/{progress.total} (
+                {Math.round(pct)}%)
+            </Text>
+        </View>
+    );
+}
+
 // ─── SettingsList ────────────────────────────────────────────────────────────
 
 export function SettingsList() {
@@ -147,12 +173,20 @@ export function SettingsList() {
     // Offline-first state
     const {
         enabled: offlineEnabled,
+        imagesEnabled,
         status: syncStatus,
+        progress,
         lastSyncAt,
         speciesCount,
+        detailCount,
         pendingCount,
+        imageCount,
+        manualOffline,
         enableOffline,
         disableOffline,
+        enableImages,
+        disableImages,
+        setManualOffline,
         syncNow,
         refreshCounts,
     } = useOfflineStore();
@@ -162,6 +196,21 @@ export function SettingsList() {
     }, [refreshCounts]);
 
     const isSyncing = syncStatus === "syncing";
+
+    // Progress label shown while a download is in flight.
+    const progressLabel = useMemo(() => {
+        if (!progress) return null;
+        const pct =
+            progress.total > 0
+                ? Math.round((progress.done / progress.total) * 100)
+                : 0;
+        return `${progress.label} ${pct}%`;
+    }, [progress]);
+
+    const estimatedImagesSize = useMemo(
+        () => formatBytes(estimateImagesSizeBytes(speciesCount)),
+        [speciesCount],
+    );
 
     // Live model info — replaces the previously hardcoded model/accuracy string.
     const { data: modelInfo } = useModelInfo();
@@ -219,6 +268,30 @@ export function SettingsList() {
 
                     <Separator />
 
+                    {/* Manual offline mode — force local data even with network. */}
+                    <SettingRow
+                        icon={
+                            <WifiOff
+                                size={18}
+                                color={theme.foreground}
+                                strokeWidth={1.5}
+                            />
+                        }
+                        label="Modo Offline"
+                        subtitle="Forzar uso de datos locales"
+                        right={
+                            <Switch
+                                checked={manualOffline}
+                                onCheckedChange={(value) => {
+                                    void setManualOffline(value);
+                                }}
+                            />
+                        }
+                    />
+
+                    <Separator />
+
+                    {/* Catalog + thumbnails download (authorization). */}
                     <SettingRow
                         icon={
                             <HardDrive
@@ -229,9 +302,11 @@ export function SettingsList() {
                         }
                         label="Datos Offline"
                         subtitle={
-                            offlineEnabled
-                                ? `${speciesCount} especies en caché`
-                                : "Activa para descargar el catálogo"
+                            isSyncing && progressLabel
+                                ? `Descargando · ${progressLabel}`
+                                : offlineEnabled
+                                  ? `${detailCount}/${speciesCount} especies con detalle`
+                                  : "Descargar catálogo completo y miniaturas"
                         }
                         right={
                             <Switch
@@ -248,6 +323,52 @@ export function SettingsList() {
                         }
                     />
 
+                    <SyncProgressBar
+                        progress={progress}
+                        labels={["Catálogo", "Miniaturas"]}
+                    />
+
+                    {offlineEnabled && (
+                        <>
+                            <Separator />
+
+                            {/* Optional full image gallery download. */}
+                            <SettingRow
+                                icon={
+                                    <Images
+                                        size={18}
+                                        color={theme.foreground}
+                                        strokeWidth={1.5}
+                                    />
+                                }
+                                label="Imágenes Offline"
+                                subtitle={
+                                    imagesEnabled
+                                        ? `${imageCount} imágenes descargadas`
+                                        : `Catálogo completo · ~${estimatedImagesSize} aprox.`
+                                }
+                                right={
+                                    <Switch
+                                        checked={imagesEnabled}
+                                        onCheckedChange={(value) => {
+                                            if (value) {
+                                                void enableImages();
+                                            } else {
+                                                void disableImages();
+                                            }
+                                        }}
+                                        disabled={isSyncing}
+                                    />
+                                }
+                            />
+
+                            <SyncProgressBar
+                                progress={progress}
+                                labels={["Imágenes"]}
+                            />
+                        </>
+                    )}
+
                     <Separator />
 
                     <SettingRow
@@ -261,7 +382,9 @@ export function SettingsList() {
                         label="Sincronización"
                         subtitle={
                             isSyncing
-                                ? "Sincronizando..."
+                                ? progressLabel
+                                    ? `Sincronizando · ${progressLabel}`
+                                    : "Sincronizando..."
                                 : `Última: ${formatLastSync(lastSyncAt)}`
                         }
                         onPress={isSyncing ? undefined : () => void syncNow()}

@@ -13,6 +13,7 @@ import {
 } from "@/lib/db/species-cache";
 import { handleApiError } from "@/lib/error-handler";
 import * as speciesService from "@/services/species-service";
+import { useOfflineStore } from "@/store/offline-store";
 import type {
     PaginatedResponse,
     SpeciesFilterMeta,
@@ -21,6 +22,12 @@ import type {
     SpeciesSearchParams,
 } from "@/types";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+
+/** True when reads should go straight to the local cache (forced or no network). */
+function isOfflineActive(): boolean {
+    const { manualOffline, isOnline } = useOfflineStore.getState();
+    return manualOffline || !isOnline;
+}
 
 const SPECIES_KEYS = {
     all: ["species"] as const,
@@ -44,10 +51,14 @@ export function useSpeciesList(params: SpeciesSearchParams = {}) {
     return useQuery({
         queryKey: SPECIES_KEYS.list(params),
         queryFn: async (): Promise<PaginatedResponse<SpeciesListItem>> => {
+            // Offline mode (manual or no network): read the local cache directly.
+            if (isOfflineActive()) {
+                return getCachedList(params);
+            }
             try {
                 return await speciesService.getList(params);
             } catch (error) {
-                // Offline fallback: serve from the local cache if populated.
+                // Network failed unexpectedly: serve cache if populated.
                 const cached = await getCachedList(params);
                 if (cached.items.length > 0) {
                     return cached;
@@ -97,6 +108,11 @@ export function useSpeciesDetail(id: string) {
     return useQuery({
         queryKey: SPECIES_KEYS.detail(id),
         queryFn: async () => {
+            if (isOfflineActive()) {
+                const cached = await getCachedSpecies(id);
+                if (cached) return cached;
+                throw new Error("Especie no disponible sin conexión.");
+            }
             try {
                 return await speciesService.getById(id);
             } catch (error) {
@@ -139,6 +155,39 @@ export function useSpeciesGallery(id: string, onlyValidated = true) {
             { onlyValidated },
         ] as const,
         queryFn: async ({ pageParam }) => {
+            const cachedPage = async (): Promise<
+                PaginatedResponse<SpeciesImage>
+            > => {
+                const cachedItems = await getCachedImages(id);
+                const filtered = onlyValidated
+                    ? cachedItems.filter((i) => i.isValidatedByExpert)
+                    : cachedItems;
+                return {
+                    items: filtered,
+                    totalCount: filtered.length,
+                    page: 1,
+                    pageSize: filtered.length,
+                    totalPages: 1,
+                    hasNextPage: false,
+                    hasPreviousPage: false,
+                };
+            };
+
+            // Offline: cached images live on a single page.
+            if (isOfflineActive()) {
+                return pageParam === 1
+                    ? cachedPage()
+                    : ({
+                          items: [],
+                          totalCount: 0,
+                          page: pageParam,
+                          pageSize: 0,
+                          totalPages: 1,
+                          hasNextPage: false,
+                          hasPreviousPage: true,
+                      } satisfies PaginatedResponse<SpeciesImage>);
+            }
+
             try {
                 return await speciesService.getSpeciesImages(id, {
                     onlyValidatedByExpert: onlyValidated,
@@ -148,21 +197,8 @@ export function useSpeciesGallery(id: string, onlyValidated = true) {
             } catch (error) {
                 // Offline fallback: serve cached first page (single batch).
                 if (pageParam === 1) {
-                    const cachedItems = await getCachedImages(id);
-                    const filtered = onlyValidated
-                        ? cachedItems.filter((i) => i.isValidatedByExpert)
-                        : cachedItems;
-                    if (filtered.length > 0) {
-                        return {
-                            items: filtered,
-                            totalCount: filtered.length,
-                            page: 1,
-                            pageSize: filtered.length,
-                            totalPages: 1,
-                            hasNextPage: false,
-                            hasPreviousPage: false,
-                        } satisfies PaginatedResponse<SpeciesImage>;
-                    }
+                    const page = await cachedPage();
+                    if (page.items.length > 0) return page;
                 }
                 throw error;
             }

@@ -131,6 +131,38 @@ export async function getSpeciesDistributions(
 }
 
 /**
+ * GET /api/species/export — full-detail catalog page for offline sync.
+ * Returns complete SpeciesResponse objects (description, ecology, economic
+ * potential, traditional uses, taxonomy) in batches. No write-through here;
+ * the offline sync service persists results explicitly.
+ */
+export async function getSpeciesExport(
+    page: number,
+    pageSize: number,
+): Promise<PaginatedResponse<SpeciesResponse>> {
+    const { data } = await apiClient.get<unknown>(CORE_ROUTES.SPECIES.EXPORT, {
+        params: { page, pageSize },
+    });
+    return toPaginated<SpeciesResponse>(data);
+}
+
+/**
+ * GET /api/species/images/export — all gallery images across species, paginated.
+ * Used to enumerate image URLs for batched offline binary download.
+ */
+export async function getSpeciesImagesExport(
+    page: number,
+    pageSize: number,
+    onlyValidatedByExpert = false,
+): Promise<PaginatedResponse<SpeciesImage>> {
+    const { data } = await apiClient.get<unknown>(
+        CORE_ROUTES.SPECIES.IMAGES_EXPORT,
+        { params: { page, pageSize, onlyValidatedByExpert } },
+    );
+    return toPaginated<SpeciesImage>(data);
+}
+
+/**
  * GET /api/species/{id}/images — paginated species image gallery.
  * Defaults to expert-validated images only.
  */

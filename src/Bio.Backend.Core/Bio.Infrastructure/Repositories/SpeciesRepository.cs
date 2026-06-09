@@ -63,6 +63,31 @@ public class SpeciesRepository : ISpeciesRepository
             .FirstOrDefaultAsync(s => s.Slug == slug, cancellationToken);
     }
 
+    public async Task<(IReadOnlyList<Species> Items, int TotalCount)> GetPagedWithDetailsAsync(
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default)
+    {
+        var baseQuery = _context.Species.AsNoTracking();
+
+        var totalCount = await baseQuery.CountAsync(cancellationToken);
+
+        var safePage = Math.Max(1, page);
+        var safePageSize = Math.Clamp(pageSize, 1, 100);
+
+        var items = await baseQuery
+            .Include(s => s.Taxonomy)
+            .Include(s => s.GeographicDistributions)
+            .Include(s => s.EconomicPotentials)
+            .Include(s => s.TraditionalUses)
+            .OrderBy(s => s.ScientificName)
+            .Skip((safePage - 1) * safePageSize)
+            .Take(safePageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
     public async Task<(IReadOnlyList<Species> Items, int TotalCount)> GetFilteredAsync(
         string? query = null,
         string? kingdom = null,

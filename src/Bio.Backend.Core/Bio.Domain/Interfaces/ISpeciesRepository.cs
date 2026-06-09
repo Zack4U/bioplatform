@@ -23,6 +23,16 @@ public interface ISpeciesRepository
     Task<Species?> GetBySlugWithDistributionsAsync(string slug, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Página de especies con TODOS sus detalles (taxonomía, distribuciones,
+    /// potenciales económicos y usos tradicionales) para exportación / sincronización offline.
+    /// Retorna (items, totalCount) ordenados por scientific_name.
+    /// </summary>
+    Task<(IReadOnlyList<Species> Items, int TotalCount)> GetPagedWithDetailsAsync(
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Consulta paginada con filtros, búsqueda y ordenamiento.
     /// Retorna (items, totalCount) para que la capa de aplicación construya PaginatedResult.
     /// </summary>

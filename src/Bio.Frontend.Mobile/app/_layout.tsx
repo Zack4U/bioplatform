@@ -11,7 +11,8 @@
  * - test: component sandbox (dev only)
  */
 
-import { useReconnectSync } from "@/hooks/useReconnectSync";
+import { NetworkStatus } from "@/components/common/NetworkStatus";
+import { useOfflineConnectivity } from "@/hooks/useOfflineConnectivity";
 import { SPECIES_FILTER_META_QUERY_KEY } from "@/hooks/useSpecies";
 import { NAV_THEME } from "@/lib/theme";
 import * as speciesService from "@/services/species-service";
@@ -54,8 +55,8 @@ export default function RootLayout() {
     const { colorScheme } = useColorScheme();
     const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
-    // Flush the offline upload queue automatically when connectivity returns.
-    useReconnectSync();
+    // Track connectivity → drives auto offline mode + flush on reconnect.
+    useOfflineConnectivity();
 
     useEffect(() => {
         setIsColorSchemeLoaded(true);
@@ -146,6 +147,7 @@ export default function RootLayout() {
                             }}
                         />
                     </Stack>
+                    <NetworkStatus />
                     <PortalHost />
                     <Toaster />
                 </ThemeProvider>

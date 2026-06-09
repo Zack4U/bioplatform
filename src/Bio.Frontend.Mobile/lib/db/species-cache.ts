@@ -23,6 +23,7 @@ interface SpeciesRow {
     scientific_name: string | null;
     common_name: string | null;
     thumbnail_url: string | null;
+    thumb_local_uri: string | null;
     conservation_status: string | null;
     is_sensitive: number;
     kingdom: string | null;
@@ -37,7 +38,8 @@ function rowToListItem(row: SpeciesRow): SpeciesListItem {
         slug: row.slug ?? "",
         scientificName: row.scientific_name ?? "",
         commonName: row.common_name,
-        thumbnailUrl: row.thumbnail_url,
+        // Prefer the locally downloaded thumbnail so it renders offline.
+        thumbnailUrl: row.thumb_local_uri ?? row.thumbnail_url,
         conservationStatus: row.conservation_status,
         isSensitive: row.is_sensitive === 1,
         kingdom: row.kingdom,
@@ -204,6 +206,48 @@ export async function countSpecies(): Promise<number> {
     return row?.count ?? 0;
 }
 
+/** Count species that have full detail (detail_json) cached. */
+export async function countSpeciesWithDetail(): Promise<number> {
+    const db = await getDb();
+    const row = await db.getFirstAsync<{ count: number }>(
+        "SELECT COUNT(*) AS count FROM species_cache WHERE detail_json IS NOT NULL",
+    );
+    return row?.count ?? 0;
+}
+
+/** Bulk-upsert image rows (from the export endpoint), preserving any local_uri. */
+export async function upsertImageRows(images: SpeciesImage[]): Promise<void> {
+    if (images.length === 0) return;
+    const db = await getDb();
+
+    await db.withTransactionAsync(async () => {
+        for (const img of images) {
+            await db.runAsync(
+                `INSERT INTO species_image_cache
+                 (id, species_id, image_url, thumbnail_url, is_primary,
+                  is_validated, license_type, created_at)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                 ON CONFLICT(id) DO UPDATE SET
+                   species_id = excluded.species_id,
+                   image_url = excluded.image_url,
+                   thumbnail_url = excluded.thumbnail_url,
+                   is_primary = excluded.is_primary,
+                   is_validated = excluded.is_validated,
+                   license_type = excluded.license_type,
+                   created_at = excluded.created_at`,
+                img.id,
+                img.speciesId,
+                img.imageUrl,
+                img.thumbnailUrl ?? null,
+                img.isPrimary ? 1 : 0,
+                img.isValidatedByExpert ? 1 : 0,
+                img.licenseType ?? null,
+                img.createdAt ?? null,
+            );
+        }
+    });
+}
+
 /** Replace the cached image set for a species. */
 export async function upsertSpeciesImages(
     speciesId: string,
@@ -239,6 +283,7 @@ interface ImageRow {
     species_id: string;
     image_url: string;
     thumbnail_url: string | null;
+    local_uri: string | null;
     is_primary: number;
     is_validated: number;
     license_type: string | null;
@@ -256,11 +301,87 @@ export async function getCachedImages(
     return rows.map((row) => ({
         id: row.id,
         speciesId: row.species_id,
-        imageUrl: row.image_url,
-        thumbnailUrl: row.thumbnail_url,
+        // Prefer locally downloaded binary for offline viewing.
+        imageUrl: row.local_uri ?? row.image_url,
+        thumbnailUrl: row.local_uri ?? row.thumbnail_url,
         isPrimary: row.is_primary === 1,
         isValidatedByExpert: row.is_validated === 1,
         licenseType: row.license_type ?? "",
         createdAt: row.created_at ?? "",
     }));
+}
+
+// ─── Offline binary bookkeeping ────────────────────────────────────────────────
+
+export interface ThumbnailTarget {
+    id: string;
+    thumbnailUrl: string;
+}
+
+/** Species that have a remote thumbnail but no downloaded local copy yet. */
+export async function getThumbnailTargets(): Promise<ThumbnailTarget[]> {
+    const db = await getDb();
+    const rows = await db.getAllAsync<{ id: string; thumbnail_url: string }>(
+        `SELECT id, thumbnail_url FROM species_cache
+         WHERE thumbnail_url IS NOT NULL AND thumbnail_url <> ''
+           AND thumb_local_uri IS NULL`,
+    );
+    return rows.map((r) => ({ id: r.id, thumbnailUrl: r.thumbnail_url }));
+}
+
+export async function setThumbLocalUri(
+    id: string,
+    localUri: string,
+): Promise<void> {
+    const db = await getDb();
+    await db.runAsync(
+        "UPDATE species_cache SET thumb_local_uri = ? WHERE id = ?",
+        localUri,
+        id,
+    );
+}
+
+export async function getAllSpeciesIds(): Promise<string[]> {
+    const db = await getDb();
+    const rows = await db.getAllAsync<{ id: string }>(
+        "SELECT id FROM species_cache",
+    );
+    return rows.map((r) => r.id);
+}
+
+export async function setImageLocalUri(
+    imageId: string,
+    localUri: string,
+): Promise<void> {
+    const db = await getDb();
+    await db.runAsync(
+        "UPDATE species_image_cache SET local_uri = ? WHERE id = ?",
+        localUri,
+        imageId,
+    );
+}
+
+/** Count downloaded image binaries (local_uri set). */
+export async function countDownloadedImages(): Promise<number> {
+    const db = await getDb();
+    const row = await db.getFirstAsync<{ count: number }>(
+        "SELECT COUNT(*) AS count FROM species_image_cache WHERE local_uri IS NOT NULL",
+    );
+    return row?.count ?? 0;
+}
+
+/** Clear downloaded gallery image references (keeps thumbnails). */
+export async function clearImageLocalUris(): Promise<void> {
+    const db = await getDb();
+    await db.runAsync(
+        "UPDATE species_image_cache SET local_uri = NULL WHERE local_uri IS NOT NULL",
+    );
+}
+
+/** Clear downloaded thumbnail references. */
+export async function clearThumbLocalUris(): Promise<void> {
+    const db = await getDb();
+    await db.runAsync(
+        "UPDATE species_cache SET thumb_local_uri = NULL WHERE thumb_local_uri IS NOT NULL",
+    );
 }

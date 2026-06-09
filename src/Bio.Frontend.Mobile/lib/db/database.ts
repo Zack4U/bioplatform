@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS species_cache (
   scientific_name TEXT,
   common_name TEXT,
   thumbnail_url TEXT,
+  thumb_local_uri TEXT,
   conservation_status TEXT,
   is_sensitive INTEGER DEFAULT 0,
   kingdom TEXT,
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS species_image_cache (
   species_id TEXT NOT NULL,
   image_url TEXT,
   thumbnail_url TEXT,
+  local_uri TEXT,
   is_primary INTEGER DEFAULT 0,
   is_validated INTEGER DEFAULT 0,
   license_type TEXT,
@@ -66,11 +68,27 @@ CREATE TABLE IF NOT EXISTS sync_meta (
 );
 `;
 
+/** Idempotent column additions for databases created before a column existed. */
+async function runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
+    const alters = [
+        "ALTER TABLE species_cache ADD COLUMN thumb_local_uri TEXT",
+        "ALTER TABLE species_image_cache ADD COLUMN local_uri TEXT",
+    ];
+    for (const sql of alters) {
+        try {
+            await db.execAsync(sql);
+        } catch {
+            // Column already exists — ignore.
+        }
+    }
+}
+
 /** Get (and lazily open + migrate) the shared SQLite connection. */
 export function getDb(): Promise<SQLite.SQLiteDatabase> {
     if (!dbPromise) {
         dbPromise = SQLite.openDatabaseAsync(DB_NAME).then(async (db) => {
             await db.execAsync(SCHEMA);
+            await runMigrations(db);
             return db;
         });
     }

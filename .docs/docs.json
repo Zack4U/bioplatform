@@ -51,7 +51,6 @@
         "pages": [
           "project/vision",
           "project/requirements",
-          "project/requirements-checklist",
           "project/architecture",
           "project/data-dictionary",
           "project/guidelines",
