@@ -26,6 +26,13 @@ export interface RegisterRequest {
     password: string;
 }
 
+/** Maps to UserUpdateDTO — all fields required by the backend */
+export interface UpdateProfileRequest {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+}
+
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
 /** Maps to LoginRequestDTO */

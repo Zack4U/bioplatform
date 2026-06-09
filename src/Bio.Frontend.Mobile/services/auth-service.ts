@@ -18,6 +18,7 @@ import type {
     TwoFactorLoginRequest,
     TwoFactorSetupResponse,
     TwoFactorVerifyRequest,
+    UpdateProfileRequest,
     UserResponse,
 } from "@/types";
 
@@ -115,6 +116,21 @@ export async function register(
 export async function getCurrentUser(userId: string): Promise<UserResponse> {
     const { data } = await apiClient.get<UserResponse>(
         CORE_ROUTES.USERS.BY_ID(userId),
+    );
+    return data;
+}
+
+/**
+ * PUT /api/users/{id} — update the authenticated user's own profile.
+ * Backend enforces that the id matches the caller's token.
+ */
+export async function updateUser(
+    userId: string,
+    request: UpdateProfileRequest,
+): Promise<UserResponse> {
+    const { data } = await apiClient.put<UserResponse>(
+        CORE_ROUTES.USERS.BY_ID(userId),
+        request,
     );
     return data;
 }
