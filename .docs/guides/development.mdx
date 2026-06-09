@@ -41,8 +41,11 @@ bash run.sh docker        # Solo Docker (infraestructura)
 bash run.sh core          # Solo Backend .NET
 bash run.sh ai            # Solo AI Service
 bash run.sh web           # Solo Frontend Web
+bash run.sh mobile        # Solo Frontend Mobile (Expo)
+bash run.sh docs          # Solo documentacion (Mintlify)
 bash run.sh core ai web   # Backend + AI + Frontend Web
-bash run.sh all           # TODO
+bash run.sh web docs      # Frontend Web + Documentacion
+bash run.sh all           # Docker + core + ai + web
 ```
 
 **Resultado esperado:**
@@ -52,6 +55,7 @@ bash run.sh all           # TODO
 - ✅ AI Service en `http://localhost:8000` (con Docs)
 - ✅ Frontend Web en `http://localhost:3000`
 - ✅ pgAdmin en `http://localhost:5050` (BD UI)
+- ✅ Documentacion en `http://localhost:3333` (si se lanzo `docs`)
 
 > ⚠️ **IMPORTANTE:** El script **SOLO levanta servios**, no configura nada.
 >
@@ -316,7 +320,7 @@ Los endpoints de **Species** y **Taxonomy** están disponibles sin autenticació
 ## 4. Workflow de Desarrollo Típico
 
 ```bash
-# 1. Abre 5 Terminales (o 4 si no usas mobile)
+# 1. Abre las terminales necesarias (o usa run.sh para automatizar)
 
 # Terminal 1: Infraestructura
 $ docker-compose up -d
@@ -337,10 +341,15 @@ $ npm run dev
 $ cd src/Bio.Frontend.Mobile
 $ npx expo start
 
+# Terminal 6: Documentacion (OPCIONAL)
+$ cd .docs
+$ npm run docs
+
 # 2. Accede a:
-# - Frontend Web: http://localhost:3000
-# - Backend API: http://localhost:5070
-# - AI Service: http://localhost:8000
+# - Frontend Web:          http://localhost:3000
+# - Backend API (Swagger): http://localhost:5070
+# - AI Service (Docs):     http://localhost:8000
+# - Documentacion:         http://localhost:3333
 # - Mobile App: Abre iOS/Android emulator o escanea QR en tu teléfono
 # - Base de Datos: pgAdmin http://localhost:5050
 ```

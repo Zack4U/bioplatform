@@ -315,6 +315,17 @@ cd .docs
 npm run docs          # equivale a: mint dev --port 3333
 ```
 
+O desde la raiz del proyecto con el orquestador:
+
+```bash
+bash run.sh docs      # Git Bash / Linux / macOS
+.\run.ps1 docs        # Windows (PowerShell)
+
+# Combinado con otros servicios:
+bash run.sh web docs
+.\run.ps1 web docs
+```
+
 Abrir luego: **http://localhost:3333**
 
 Scripts disponibles (`.docs/package.json`):

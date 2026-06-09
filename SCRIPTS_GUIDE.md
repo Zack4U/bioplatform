@@ -84,7 +84,7 @@ bash migrate.sh
 ## 3. run — Orquestador de desarrollo
 
 Abre **una ventana por servicio**. Servicios: `docker` (alias `infra`), `core`,
-`ai`, `web`, `mobile`, `all`.
+`ai`, `web`, `mobile`, `docs`, `all`.
 
 | Servicio | Comando que corre | Puerto |
 |---|---|---|
@@ -93,6 +93,9 @@ Abre **una ventana por servicio**. Servicios: `docker` (alias `infra`), `core`,
 | `ai` | activa `.venv` + `uvicorn app.main:app --reload` | 8000 |
 | `web` | `npm run dev` | 3000 |
 | `mobile` | `npx expo start` | 19000 |
+| `docs` | `npm run docs` (Mintlify dev server) | 3333 |
+
+> `all` incluye: `docker`, `core`, `ai`, `web`. `docs` y `mobile` son opt-in.
 
 ### Windows (PowerShell)
 
@@ -101,6 +104,8 @@ Abre **una ventana por servicio**. Servicios: `docker` (alias `infra`), `core`,
 .\run.ps1 all
 .\run.ps1 core ai          # solo los listados
 .\run.ps1 docker core web
+.\run.ps1 docs             # solo documentacion Mintlify
+.\run.ps1 web docs         # web + documentacion
 ```
 
 Cada servicio abre una ventana PowerShell independiente. `Ctrl+C` (o cerrar la
@@ -115,9 +120,11 @@ ventana) detiene ese servicio.
 ### Linux / macOS / Git Bash
 
 ```bash
-bash run.sh                # todos
+bash run.sh                # todos (docker, core, ai, web)
 bash run.sh core ai        # solo los listados
 bash run.sh docker core web
+bash run.sh docs           # solo documentacion Mintlify
+bash run.sh web docs       # web + documentacion
 ```
 
 - **Linux con tmux**: cada servicio corre en una ventana de la sesion `bioplatform`.
@@ -147,6 +154,7 @@ dotnet test src/Bio.Backend.Core/Bio.UnitTests/Bio.UnitTests.csproj
 | Frontend Web | http://localhost:3000 |
 | Backend API (Swagger) | http://localhost:5070 |
 | AI Service (Docs) | http://localhost:8000 |
+| Documentacion (Mintlify) | http://localhost:3333 |
 | pgAdmin | http://localhost:5050 |
 | Adminer | http://localhost:8090 |
 | Seq (logs) | http://localhost:5341 |
