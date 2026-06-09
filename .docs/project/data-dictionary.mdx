@@ -1,4 +1,8 @@
-# Diccionario de Datos y Arquitectura de Persistencia
+---
+title: "Diccionario de Datos"
+description: "Estructura fisica de datos y arquitectura de persistencia."
+icon: "database"
+---
 
 ## Proyecto: Plataforma de Biodiversidad y Biocomercio (Caldas)
 
@@ -6,7 +10,7 @@ Este documento detalla la estructura fisica de datos, tipos, restricciones y la 
 
 ---
 
-# **1. Estrategia de Distribucion de Bases de Datos**
+# 1. Estrategia de Distribucion de Bases de Datos
 
 Siguiendo los requerimientos del proyecto, se separa la persistencia en dos contextos principales para optimizar el rendimiento y la integridad:
 
@@ -19,11 +23,11 @@ Siguiendo los requerimientos del proyecto, se separa la persistencia en dos cont
 
 ---
 
-# **2. Base de Datos: BioCommerce_Transactional (SQL Server)**
+# 2. Base de Datos: BioCommerce_Transactional (SQL Server)
 
-## **Contexto: Identity & Access Management (IAM)**
+## Contexto: Identity & Access Management (IAM)
 
-### **Tabla: Users**
+### Tabla: Users
 
 _Gestion de usuarios y credenciales. Soporte para 2FA (TOTP)._
 
@@ -43,7 +47,7 @@ _Gestion de usuarios y credenciales. Soporte para 2FA (TOTP)._
 | TwoFactorEnabled | BIT                | Default 0               | Indica si 2FA esta activo.                      | 1                        |
 | TwoFactorSecret  | NVARCHAR(100)      | Nullable                | Semilla secreta para TOTP (Google Auth).        | JBSWY3DPEHPK3...         |
 
-### **Tabla: Roles**
+### Tabla: Roles
 
 _Roles del sistema. Soporta RBAC con 6 roles base._
 
@@ -55,7 +59,7 @@ _Roles del sistema. Soporta RBAC con 6 roles base._
 | CreatedAt   | DATETIME2        | Default       | Fecha de creacion.                                                                     | 2025-01-01 00:00:00                    |
 | UpdatedAt   | DATETIME2        | Nullable      | Ultima actualizacion.                                                                  | 2025-02-20 14:30:00                    |
 
-### **Tabla: UserRoles**
+### Tabla: UserRoles
 
 _Tabla de union muchos-a-muchos entre Users y Roles. Un usuario puede tener multiples roles._
 
@@ -65,7 +69,7 @@ _Tabla de union muchos-a-muchos entre Users y Roles. Un usuario puede tener mult
 | RoleId     | UNIQUEIDENTIFIER | PK (compuesta), FK (Roles) | ID del rol asignado. | 11111111-1111... |
 | AssignedAt | DATETIME2        | Default                    | Fecha de asignacion. | 2025-01-15       |
 
-### **Tabla: RefreshTokens**
+### Tabla: RefreshTokens
 
 _Tokens de refresco para renovar JWTs sin re-autenticacion._
 
@@ -81,9 +85,9 @@ _Tokens de refresco para renovar JWTs sin re-autenticacion._
 
 ---
 
-## **Contexto: Marketplace**
+## Contexto: Marketplace
 
-### **Tabla: ProductCategories**
+### Tabla: ProductCategories
 
 _Categorias de productos del marketplace._
 
@@ -92,7 +96,7 @@ _Categorias de productos del marketplace._
 | Id    | INT           | PK, Identity  | ID numerico de la categoria.                                            | 1                   |
 | Name  | NVARCHAR(450) | UK, Not Null  | Nombre de la categoria. Ej: Artesania, Ingrediente Natural, Ecoturismo. | Ingrediente Natural |
 
-### **Tabla: Products**
+### Tabla: Products
 
 _Productos derivados de la biodiversidad, listados en el marketplace._
 
@@ -104,10 +108,10 @@ _Productos derivados de la biodiversidad, listados en el marketplace._
 | BaseSpeciesId  | UNIQUEIDENTIFIER | Index, Not Null                  | **Logical FK** a PostgreSQL (Species). Especie base del producto. Critico para trazabilidad ABS. | c456...                                          |
 | CategoryId     | INT              | FK (ProductCategories), Nullable | Categoria del producto.                                                                          | 1                                                |
 | Name           | NVARCHAR(MAX)    | Not Null                         | Nombre comercial.                                                                                | Crema de Orquidea                                |
-| Description    | NVARCHAR(MAX)    | Not Null                         | HTML sanitizado para marketing y ficha (imagenes como <img src="aws_url">).                      | <strong>Producto</strong> ...                    |
+| Description    | NVARCHAR(MAX)    | Not Null                         | HTML sanitizado para marketing y ficha (imagenes como &lt;img src="aws_url">).                      | &lt;strong>Producto&lt;/strong> ...                    |
 | BasePrice      | DECIMAL(18,2)    | Not Null                         | Precio base en COP antes de ajustes comerciales.                                                 | 40000.00                                         |
 | SellPrice      | DECIMAL(18,2)    | Not Null                         | Precio de venta final en COP.                                                                    | 45000.00                                         |
-| Composition    | NVARCHAR(MAX)    | Nullable                         | JSON de composicion (ingredientes, porcentajes, origen); null si no aplica.                      | {"ingredients":[{"name":"Aloe","pct":30}]}       |
+| Composition    | NVARCHAR(MAX)    | Nullable                         | JSON de composicion (ingredientes, porcentajes, origen); null si no aplica.                      | &#123;"ingredients":[&#123;"name":"Aloe","pct":30&#125;]&#125;       |
 | StockQuantity  | INT              | Not Null                         | Inventario disponible.                                                                           | 50                                               |
 | Sku            | NVARCHAR(MAX)    | Nullable                         | Codigo de referencia unico (SKU).                                                                | CRE-ORQ-001                                      |
 | IsActive       | BIT              | Default 1                        | Indica si el producto esta visible en el marketplace.                                            | 1                                                |
@@ -115,7 +119,7 @@ _Productos derivados de la biodiversidad, listados en el marketplace._
 | CreatedAt      | DATETIME2        | Default GETUTCDATE()             | Fecha de creacion.                                                                               | 2025-01-20 08:00:00                              |
 | UpdatedAt      | DATETIME2        | Nullable                         | Ultima actualizacion.                                                                            | 2025-02-20 14:30:00                              |
 
-### **Tabla: ProductImages**
+### Tabla: ProductImages
 
 _Galeria de imagenes para productos del marketplace._
 
@@ -129,7 +133,7 @@ _Galeria de imagenes para productos del marketplace._
 | IsPrimary    | BIT              | Default 0               | Indica si es la imagen principal.     | 1                                 |
 | CreatedAt    | DATETIME2        | Default GETUTCDATE()    | Fecha de carga.                       | 2025-01-20 08:00:00               |
 
-### **Tabla: ProductReviews**
+### Tabla: ProductReviews
 
 _Calificaciones y resenas de productos por compradores._
 
@@ -166,7 +170,7 @@ _Certificaciones unificadas para productos. Cubre certificaciones de sostenibili
 
 ---
 
-## **Contexto: Legal & Compliance**
+## Contexto: Legal & Compliance
 
 ### **Tabla: AbsPermits** _(Critical Compliance)_
 
@@ -184,7 +188,7 @@ _Permisos de Acceso a Recursos Geneticos. Cumplimiento Decision 391 / Protocolo 
 | Status            | NVARCHAR(MAX)    | Not Null             | Estado legal: 'Active', 'Expired', 'Suspended'.            | Active                     |
 | LegalFramework    | NVARCHAR(MAX)    | Nullable             | Marco normativo aplicable.                                 | Decreto 3016, Decision 391 |
 
-### **Tabla: TraceabilityBatches**
+### Tabla: TraceabilityBatches
 
 _Lotes de trazabilidad de origen para productos. Cumple requisito de trazabilidad desde origen._
 
@@ -200,9 +204,9 @@ _Lotes de trazabilidad de origen para productos. Cumple requisito de trazabilida
 
 ---
 
-## **Contexto: Orders & Transactions**
+## Contexto: Orders & Transactions
 
-### **Tabla: Orders**
+### Tabla: Orders
 
 _Cabecera de transacciones de compra._
 
@@ -224,7 +228,7 @@ _Cabecera de transacciones de compra._
 | CreatedAt         | DATETIME2        | Default GETUTCDATE()     | Fecha de creacion de la orden.                                | 2025-02-20 14:00:00 |
 | UpdatedAt         | DATETIME2        | Nullable                 | Ultima actualizacion.                                         | 2025-02-20 14:30:00 |
 
-### **Tabla: OrderItems**
+### Tabla: OrderItems
 
 _Lineas de detalle de cada orden. Una orden contiene uno o mas items._
 
@@ -239,9 +243,9 @@ _Lineas de detalle de cada orden. Una orden contiene uno o mas items._
 
 ---
 
-## **Contexto: User Features**
+## Contexto: User Features
 
-### **Tabla: Addresses**
+### Tabla: Addresses
 
 _Direcciones fisicas de usuarios para envio y facturacion._
 
@@ -262,7 +266,7 @@ _Direcciones fisicas de usuarios para envio y facturacion._
 | CreatedAt     | DATETIME2        | Default GETUTCDATE()   | Fecha de creacion.                     | 2025-01-15 10:00:00 |
 | UpdatedAt     | DATETIME2        | Nullable               | Ultima actualizacion.                  | 2025-02-20 14:30:00 |
 
-### **Tabla: Favorites**
+### Tabla: Favorites
 
 _Favoritos/wishlist de usuarios. Soporta como objetivo Productos y Especies._
 
@@ -276,7 +280,7 @@ _Favoritos/wishlist de usuarios. Soporta como objetivo Productos y Especies._
 
 **Unique Index:** `(UserId, TargetType, TargetId)` — un usuario no puede duplicar un favorito.
 
-### **Tabla: Notifications**
+### Tabla: Notifications
 
 _Notificaciones in-app para actualizaciones de ordenes, resenas, permisos y alertas del sistema._
 
@@ -293,7 +297,7 @@ _Notificaciones in-app para actualizaciones de ordenes, resenas, permisos y aler
 | CreatedAt        | DATETIME2        | Default GETUTCDATE() | Fecha de creacion.                                    | 2025-02-20 14:00:00      |
 | ReadAt           | DATETIME2        | Nullable             | Fecha de lectura.                                     | 2025-02-20 14:05:00      |
 
-### **Tabla: ActivityLogs**
+### Tabla: ActivityLogs
 
 _Registro centralizado de auditoria de actividad en la plataforma._
 
@@ -307,17 +311,17 @@ _Registro centralizado de auditoria de actividad en la plataforma._
 | TargetType  | NVARCHAR(50)     | Not Null, Index             | Entidad afectada: Product, Order, Species, AbsPermit, etc.                 | Product                  |
 | TargetId    | UNIQUEIDENTIFIER | Nullable, Index             | ID de la entidad afectada (Logical FK si aplica).                          | b123...                  |
 | Summary     | NVARCHAR(500)    | Not Null                    | Resumen humano de la accion.                                               | Producto actualizado     |
-| ChangeSet   | NVARCHAR(MAX)    | Nullable                    | JSON con diff de campos antes/despues.                                     | {"price":{"from":...}}   |
-| Metadata    | NVARCHAR(MAX)    | Nullable                    | JSON con contexto extra (modulo, requestId, etc.).                         | {"module":"Marketplace"} |
+| ChangeSet   | NVARCHAR(MAX)    | Nullable                    | JSON con diff de campos antes/despues.                                     | &#123;"price":&#123;"from":...&#125;&#125;   |
+| Metadata    | NVARCHAR(MAX)    | Nullable                    | JSON con contexto extra (modulo, requestId, etc.).                         | &#123;"module":"Marketplace"&#125; |
 | IpAddress   | NVARCHAR(45)     | Nullable                    | IP del actor (IPv4/IPv6).                                                  | 190.24.1.10              |
 | UserAgent   | NVARCHAR(400)    | Nullable                    | User-Agent del cliente (si aplica).                                        | Mozilla/5.0 ...          |
 | CreatedAt   | DATETIME2        | Default GETUTCDATE()        | Fecha y hora del evento.                                                   | 2025-02-20 14:30:00      |
 
 ---
 
-## **Contexto: Community & Networking**
+## Contexto: Community & Networking
 
-### **Tabla: CommunityPosts**
+### Tabla: CommunityPosts
 
 _Publicaciones del foro comunitario y networking._
 
@@ -326,7 +330,7 @@ _Publicaciones del foro comunitario y networking._
 | Id            | UNIQUEIDENTIFIER | PK                          | ID de la publicacion.                                | post1...                           |
 | AuthorUserId  | UNIQUEIDENTIFIER | FK (Users), Not Null, Index | Autor de la publicacion.                             | a0ee...                            |
 | Title         | NVARCHAR(200)    | Not Null                    | Titulo de la publicacion.                            | Intercambio de semillas            |
-| Content       | NVARCHAR(MAX)    | Not Null                    | HTML sanitizado (imagenes como <img src="aws_url">). | <strong>Busco</strong> alianzas... |
+| Content       | NVARCHAR(MAX)    | Not Null                    | HTML sanitizado (imagenes como &lt;img src="aws_url">). | &lt;strong>Busco&lt;/strong> alianzas... |
 | Category      | NVARCHAR(50)     | Nullable, Index             | Categoria libre o predefinida.                       | Networking                         |
 | Status        | NVARCHAR(20)     | Default 'Published'         | Estado: Draft, Published, Archived, Hidden.          | Published                          |
 | IsPinned      | BIT              | Default 0                   | Si la publicacion esta fijada.                       | 0                                  |
@@ -335,7 +339,7 @@ _Publicaciones del foro comunitario y networking._
 | CreatedAt     | DATETIME2        | Default GETUTCDATE()        | Fecha de creacion.                                   | 2025-03-05 08:00:00                |
 | UpdatedAt     | DATETIME2        | Nullable                    | Ultima actualizacion.                                | 2025-03-05 10:00:00                |
 
-### **Tabla: CommunityPostComments**
+### Tabla: CommunityPostComments
 
 _Comentarios asociados a publicaciones del foro._
 
@@ -351,7 +355,7 @@ _Comentarios asociados a publicaciones del foro._
 | CreatedAt     | DATETIME2        | Default GETUTCDATE()          | Fecha de creacion.                                   | 2025-03-05 10:15:00 |
 | UpdatedAt     | DATETIME2        | Nullable                      | Ultima actualizacion.                                | 2025-03-05 10:20:00 |
 
-### **Tabla: CommunityReactions**
+### Tabla: CommunityReactions
 
 _Reacciones individuales para evitar votos duplicados (like/dislike) en publicaciones o comentarios._
 
@@ -366,7 +370,7 @@ _Reacciones individuales para evitar votos duplicados (like/dislike) en publicac
 
 **Unique Index:** `(UserId, TargetType, TargetId)` — un usuario solo puede reaccionar una vez por entidad.
 
-### **Tabla: UserConnections**
+### Tabla: UserConnections
 
 _Solicitudes y conexiones de networking entre usuarios._
 
@@ -380,7 +384,7 @@ _Solicitudes y conexiones de networking entre usuarios._
 | CreatedAt   | DATETIME2        | Default GETUTCDATE()        | Fecha de creacion.                    | 2025-03-05 09:00:00      |
 | RespondedAt | DATETIME2        | Nullable                    | Fecha de respuesta.                   | 2025-03-05 12:00:00      |
 
-### **Tabla: DirectThreads**
+### Tabla: DirectThreads
 
 _Conversaciones directas entre usuarios (1:1 o grupos de networking)._
 
@@ -392,7 +396,7 @@ _Conversaciones directas entre usuarios (1:1 o grupos de networking)._
 | CreatedAt  | DATETIME2        | Default GETUTCDATE() | Fecha de creacion.         | 2025-03-05 09:10:00 |
 | UpdatedAt  | DATETIME2        | Nullable             | Ultima actividad del hilo. | 2025-03-05 09:30:00 |
 
-### **Tabla: DirectThreadParticipants**
+### Tabla: DirectThreadParticipants
 
 _Participantes de cada hilo de mensajes._
 
@@ -406,7 +410,7 @@ _Participantes de cada hilo de mensajes._
 
 **Unique Index:** `(ThreadId, UserId)` — un usuario aparece una sola vez por hilo.
 
-### **Tabla: DirectMessages**
+### Tabla: DirectMessages
 
 _Mensajes individuales dentro de un hilo._
 
@@ -420,7 +424,7 @@ _Mensajes individuales dentro de un hilo._
 | IsDeleted | BIT              | Default 0                    | Soft delete. Se muestra como [Mensaje eliminado]. | 0                       |
 | SentAt    | DATETIME2        | Default GETUTCDATE()         | Timestamp de envio del mensaje.                   | 2025-03-05 09:20:00     |
 
-### **Tabla: DirectMessageReads**
+### Tabla: DirectMessageReads
 
 _Registro de lectura por usuario para mensajes directos._
 
@@ -435,13 +439,13 @@ _Registro de lectura por usuario para mensajes directos._
 
 ---
 
-# **3. Base de Datos: BioCommerce_Scientific (PostgreSQL)**
+# 3. Base de Datos: BioCommerce_Scientific (PostgreSQL)
 
 > **Convencion de nombres:** Todas las tablas y columnas en PostgreSQL usan **snake_case**.
 
-## **Contexto: Biodiversity Catalog (Core Cientifico)**
+## Contexto: Biodiversity Catalog (Core Cientifico)
 
-### **Tabla: taxonomy**
+### Tabla: taxonomy
 
 _Clasificacion biologica jerarquica completa (hasta Genero)._
 
@@ -455,7 +459,7 @@ _Clasificacion biologica jerarquica completa (hasta Genero)._
 | family     | VARCHAR(50)             | Index, Nullable | Familia (clave para busquedas). | Orchidaceae   |
 | genus      | VARCHAR(50)             | Nullable        | Genero.                         | Cattleya      |
 
-### **Tabla: species**
+### Tabla: species
 
 _Entidad central del catalogo de biodiversidad._
 
@@ -478,7 +482,7 @@ _Entidad central del catalogo de biodiversidad._
 | created_at          | TIMESTAMPTZ  | Default NOW()                 | Fecha de creacion del registro.                            | 2025-01-10 08:00:00+00                           |
 | updated_at          | TIMESTAMPTZ  | Nullable                      | Ultima actualizacion del registro.                         | 2025-02-15 12:00:00+00                           |
 
-### **Tabla: geographic_distribution**
+### Tabla: geographic_distribution
 
 _Distribucion geografica de especies con soporte PostGIS._
 
@@ -493,7 +497,7 @@ _Distribucion geografica de especies con soporte PostGIS._
 | ecosystem_type | VARCHAR(100)          | Nullable                      | Tipo de ecosistema.                 | Bosque de Niebla                 |
 | location_point | GEOMETRY(Point, 4326) | Nullable                      | Punto PostGIS para geolocalizacion. | SRID=4326;POINT(-75.5174 5.0689) |
 
-### **Tabla: species_images**
+### Tabla: species_images
 
 _Dataset de imagenes para entrenamiento, validacion y galeria del catalogo._
 
@@ -504,7 +508,7 @@ _Dataset de imagenes para entrenamiento, validacion y galeria del catalogo._
 | uploader_user_id       | UUID         | Nullable                      | **Logical FK** a SQL Server (Users). Quien subio la foto.     | a0ee...                          |
 | image_url              | VARCHAR(500) | Not Null                      | URL en Object Storage.                                        | https://bucket.../img.jpg        |
 | thumbnail_url          | VARCHAR(500) | Nullable                      | URL de miniatura.                                             | https://bucket.../thumb.jpg      |
-| metadata               | JSONB        | Nullable                      | Metadatos EXIF.                                               | {"iso": 100, "model": "Pixel 7"} |
+| metadata               | JSONB        | Nullable                      | Metadatos EXIF.                                               | &#123;"iso": 100, "model": "Pixel 7"&#125; |
 | is_primary             | BOOLEAN      | Default False                 | Si es la imagen principal de la especie.                      | false                            |
 | is_validated_by_expert | BOOLEAN      | Default False, Index          | Indica si un investigador valido la etiqueta.                 | false                            |
 | validated_by_user_id   | UUID         | Nullable                      | **Logical FK** a SQL Server (Users). Investigador que valido. | b0ee...                          |
@@ -514,9 +518,9 @@ _Dataset de imagenes para entrenamiento, validacion y galeria del catalogo._
 
 ---
 
-## **Contexto: Computer Vision & AI (MLOps)**
+## Contexto: Computer Vision & AI (MLOps)
 
-### **Tabla: prediction_logs**
+### Tabla: prediction_logs
 
 _Registro de inferencias del modelo CNN para monitoreo y feedback loop._
 
@@ -525,7 +529,7 @@ _Registro de inferencias del modelo CNN para monitoreo y feedback loop._
 | id                         | UUID         | PK, Default gen_random_uuid() | ID del log de prediccion.                                          | log1...                                       |
 | user_id                    | UUID         | Index, Nullable               | **Logical FK** a SQL Server (Users). Quien solicito la prediccion. | a0ee...                                       |
 | image_input_url            | VARCHAR(500) | Not Null                      | URL de la imagen analizada.                                        | https://.../temp.jpg                          |
-| raw_prediction_result      | JSONB        | Not Null                      | Salida cruda del modelo (Top-K probabilidades).                    | [{"class": "Cattleya trianae", "prob": 0.92}] |
+| raw_prediction_result      | JSONB        | Not Null                      | Salida cruda del modelo (Top-K probabilidades).                    | [&#123;"class": "Cattleya trianae", "prob": 0.92&#125;] |
 | top_prediction_species_id  | UUID         | Nullable                      | Especie predicha con mayor confianza.                              | c456...                                       |
 | confidence_score           | NUMERIC(5,4) | Not Null                      | Confianza de la prediccion principal (0.0000 a 1.0000).            | 0.9250                                        |
 | feedback_correct           | BOOLEAN      | Nullable                      | Feedback del usuario/experto: Acerto el modelo?                    | true                                          |
@@ -534,7 +538,7 @@ _Registro de inferencias del modelo CNN para monitoreo y feedback loop._
 | model_version              | VARCHAR(50)  | Nullable                      | Version del modelo usada.                                          | v1.0.0                                        |
 | created_at                 | TIMESTAMPTZ  | Default NOW()                 | Momento de la inferencia.                                          | 2025-02-20 14:35:00+00                        |
 
-### **Tabla: ai_model_versions**
+### Tabla: ai_model_versions
 
 _Versionado de modelos de IA desplegados. Soporte para MLOps y rollback._
 
@@ -551,9 +555,9 @@ _Versionado de modelos de IA desplegados. Soporte para MLOps y rollback._
 
 ---
 
-## **Contexto: GenAI & Business Assistant (PostgreSQL)**
+## Contexto: GenAI & Business Assistant (PostgreSQL)
 
-### **Tabla: business_plans**
+### Tabla: business_plans
 
 _Planes de negocio generados por el asistente de IA (GPT-4)._
 
@@ -562,17 +566,17 @@ _Planes de negocio generados por el asistente de IA (GPT-4)._
 | id                    | UUID         | PK, Default gen_random_uuid() | ID del plan.                                                  | plan1...                             |
 | entrepreneur_id       | UUID         | Index, Not Null               | **Logical FK** a SQL Server (Users). Emprendedor solicitante. | a0ee...                              |
 | project_title         | VARCHAR(200) | Not Null                      | Titulo del proyecto de biocomercio.                           | Exportacion de Vainilla Organica     |
-| species_ids           | UUID[]       | Nullable                      | Arreglo de IDs de especies involucradas.                      | {c456..., d789...}                   |
+| species_ids           | UUID[]       | Nullable                      | Arreglo de IDs de especies involucradas.                      | &#123;c456..., d789...&#125;                   |
 | generated_content     | TEXT         | Not Null                      | Contenido completo en Markdown generado por IA.               | # Plan de Negocio...                 |
-| market_analysis_data  | JSONB        | Nullable                      | Datos estructurados para graficos del Dashboard.              | {"cagr": "5%", "competitors": [...]} |
-| financial_projections | JSONB        | Nullable                      | Proyecciones financieras.                                     | {"roi": "15%", "payback": "2 years"} |
+| market_analysis_data  | JSONB        | Nullable                      | Datos estructurados para graficos del Dashboard.              | &#123;"cagr": "5%", "competitors": [...]&#125; |
+| financial_projections | JSONB        | Nullable                      | Proyecciones financieras.                                     | &#123;"roi": "15%", "payback": "2 years"&#125; |
 | generation_prompt     | TEXT         | Nullable                      | Prompt utilizado para la generacion.                          | Genera un plan para...               |
 | model_used            | VARCHAR(50)  | Nullable                      | Modelo de IA utilizado.                                       | gpt-4-turbo                          |
 | status                | VARCHAR(20)  | Default 'draft'               | Estado del plan.                                              | draft                                |
 | created_at            | TIMESTAMPTZ  | Default NOW()                 | Fecha de generacion del plan.                                 | 2025-02-25 10:00:00+00               |
 | updated_at            | TIMESTAMPTZ  | Default NOW()                 | Fecha de ultima actualizacion.                                | 2025-02-25 10:00:00+00               |
 
-### **Tabla: rag_documents**
+### Tabla: rag_documents
 
 _Documentos indexados para RAG (Retrieval-Augmented Generation). Cada chunk tiene un embedding en ChromaDB._
 
@@ -586,10 +590,10 @@ _Documentos indexados para RAG (Retrieval-Augmented Generation). Cada chunk tien
 | species_id   | UUID         | FK (species), Nullable        | Especie relacionada (si aplica).        | c456...                   |
 | embedding_id | VARCHAR(100) | Nullable                      | ID del embedding en ChromaDB.           | chroma-abc123             |
 | chunk_index  | INT          | Default 0                     | Indice del chunk dentro del documento.  | 0                         |
-| metadata     | JSONB        | Nullable                      | Metadatos adicionales del chunk.        | {"tokens": 512}           |
+| metadata     | JSONB        | Nullable                      | Metadatos adicionales del chunk.        | &#123;"tokens": 512&#125;           |
 | created_at   | TIMESTAMPTZ  | Default NOW()                 | Fecha de indexacion.                    | 2025-02-25 10:00:00+00    |
 
-### **Tabla: chat_sessions**
+### Tabla: chat_sessions
 
 _Sesiones de conversacion con el chatbot RAG de asesoria en biocomercio._
 
@@ -600,7 +604,7 @@ _Sesiones de conversacion con el chatbot RAG de asesoria en biocomercio._
 | context_topic | VARCHAR(100) | Nullable                      | Tema de contexto para el RAG.                                    | Biocommerce, Taxonomy, Conservation |
 | started_at    | TIMESTAMPTZ  | Default NOW()                 | Inicio de la sesion.                                             | 2025-02-20 09:00:00+00              |
 
-### **Tabla: chat_messages**
+### Tabla: chat_messages
 
 _Mensajes individuales dentro de una sesion de chat. Historial del chatbot._
 
@@ -614,7 +618,7 @@ _Mensajes individuales dentro de una sesion de chat. Historial del chatbot._
 
 ---
 
-# **4. Notas de Implementacion**
+# 4. Notas de Implementacion
 
 1. **Manejo de Fechas:** Todas las fechas (`created_at`, `updated_at`, `timestamp`) deben guardarse en **UTC**. La conversion a hora local (Colombia GMT-5) se realiza exclusivamente en el Frontend.
 2. **Imagenes:** Las bases de datos **NO** almacenan archivos binarios (BLOBs). Solo se almacenan **URLs** apuntando a un servicio de almacenamiento externo (Azure Blob Storage o AWS S3).
@@ -634,9 +638,9 @@ _Mensajes individuales dentro de una sesion de chat. Historial del chatbot._
 
 ---
 
-## **Contexto: Shopping Cart (SQL Server)**
+## Contexto: Shopping Cart (SQL Server)
 
-### **Tabla: Carts**
+### Tabla: Carts
 
 _Carrito de compras persistente por usuario. Un usuario tiene maximo un carrito activo. Los precios NO se almacenan aqui para garantizar que siempre reflejen el precio actual del producto._
 
@@ -657,7 +661,7 @@ _Carrito de compras persistente por usuario. Un usuario tiene maximo un carrito 
 
 ---
 
-### **Tabla: CartItems**
+### Tabla: CartItems
 
 _Lineas del carrito. Cada item puede estar activo (seleccionado para checkout) o inactivo (guardado para despues), sin necesidad de eliminarlo._
 

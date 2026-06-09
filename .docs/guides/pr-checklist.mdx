@@ -1,8 +1,8 @@
 ---
-description: Guía global de validación pre-PR para todos los proyectos del monorepo BioCommerce Caldas
+title: "Checklist Pre-PR"
+description: "Validaciones de build, lint y tests antes de abrir un Pull Request."
+icon: "list-check"
 ---
-
-# ✅ Guía de Validación Pre-PR — BioCommerce Caldas
 
 > Ejecuta los checks correspondientes al proyecto que modificaste **antes** de crear tu Pull Request.
 > El CI de GitHub Actions ejecuta exactamente estas mismas validaciones.
@@ -70,8 +70,6 @@ dotnet format Bio.Backend.Core.sln --verify-no-changes --verbosity diagnostic
 # 3. Build en Release con warnings como errores
 // turbo
 dotnet build Bio.Backend.Core.sln --no-restore -c Release -warnaserror
-
-
 
 # 4. Tests con cobertura (mínimo 70%, solo Domain y Application)
 dotnet test Bio.Backend.Core.sln --no-build -c Release --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[Bio.Infrastructure*]*,[Bio.API*]*"
