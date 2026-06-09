@@ -29,6 +29,7 @@ import type {
     ModelMetricsResponse,
 } from "@/types";
 import axios, {
+    create,
     type AxiosError,
     type AxiosResponse,
     type InternalAxiosRequestConfig,
@@ -63,7 +64,7 @@ function snakeToCamelDeep(value: any): any {
 }
 
 // ── AI-specific Axios client ─────────────────────────────────────────────────
-const aiClient = axios.create({
+const aiClient = create({
     baseURL: AI_API_BASE_URL,
     timeout: 60_000, // CNN inference can be slow on CPU
     headers: { Accept: "application/json" },

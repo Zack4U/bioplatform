@@ -16,6 +16,7 @@ import { notificationService } from "@/lib/notifications";
 import { secureStorage } from "@/lib/secure-storage";
 import { CORE_ROUTES } from "@/services/routes";
 import axios, {
+    create,
     type AxiosError,
     type AxiosInstance,
     type AxiosResponse,
@@ -27,7 +28,7 @@ interface RetryableConfig extends InternalAxiosRequestConfig {
     _retry?: boolean;
 }
 
-const apiClient: AxiosInstance = axios.create({
+const apiClient: AxiosInstance = create({
     baseURL: API_BASE_URL,
     timeout: 30000,
     headers: {
