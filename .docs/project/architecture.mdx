@@ -34,7 +34,7 @@ El backend principal sigue estrictamente Clean Architecture para garantizar la i
 
 ## 3.2. Layered Architecture (Servicio IA)
 
-El microservicio de Python utiliza una arquitectura en capas simplificada (Router -\> Service -\> Data), priorizando la eficiencia en el manejo de tensores y llamadas a APIs de LLM.
+El microservicio de Python utiliza una arquitectura en capas simplificada (Router -> Service -> Data), priorizando la eficiencia en el manejo de tensores y llamadas a APIs de LLM.
 
 # 4. Stack Tecnológico (Versiones)
 
@@ -63,7 +63,7 @@ El microservicio de Python utiliza una arquitectura en capas simplificada (Route
 2. API Layer: ProductsController recibe el request.  
 3. Application Layer:  
    * Se crea un CreateProductCommand.  
-   * Validation Pipeline: FluentValidation verifica reglas (precio \> 0, campos requeridos).  
+   * Validation Pipeline: FluentValidation verifica reglas (precio > 0, campos requeridos).  
    * Handler: CreateProductCommandHandler procesa la lógica.  
    * Integrity Check: Verifica vía UUID si la especie base existe (aunque esté en Postgres).  
    * Compliance Check: Verifica en tabla AbsPermits si el usuario tiene permiso para esa especie.  
@@ -110,7 +110,7 @@ Para consultas de alto rendimiento (e.g., Catálogo), se utiliza una proyección
 
 * Librería: Serilog.  
 * Destino: Los logs se escriben en MongoDB para permitir consultas complejas sin afectar el rendimiento transaccional.  
-* Trazabilidad: Se incluye un CorrelationId en todas las peticiones que viajan entre microservicios (del Gateway -\> .NET -\> Python) para rastrear transacciones distribuidas.
+* Trazabilidad: Se incluye un CorrelationId en todas las peticiones que viajan entre microservicios (del Gateway -> .NET -> Python) para rastrear transacciones distribuidas.
 
 ## 8.3. Estrategia de Escalabilidad
 

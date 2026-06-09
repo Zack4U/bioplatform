@@ -16,18 +16,18 @@ Utilizaremos una variación de **GitFlow** simplificada para soportar entregas p
 
 * **main**: Código de producción estable. Solo acepta Merges desde develop (Release) o hotfix.  
 * **develop**: Rama principal de integración. Contiene el código probado del Sprint actual.  
-* **feature/\&lt;ticket-id\>-\&lt;short-description\>**: Ramas de desarrollo para nuevas funcionalidades.  
+* **feature/&lt;ticket-id>-&lt;short-description>**: Ramas de desarrollo para nuevas funcionalidades.  
   * *Ejemplo:* feature/BIO-101-auth-login  
-* **bugfix/\&lt;ticket-id\>-\&lt;short-description\>**: Correcciones de errores no críticos durante el sprint.  
+* **bugfix/&lt;ticket-id>-&lt;short-description>**: Correcciones de errores no críticos durante el sprint.  
   * *Ejemplo:* bugfix/BIO-202-fix-image-upload  
-* **hotfix/\&lt;short-description\>**: Parches urgentes para producción.  
+* **hotfix/&lt;short-description>**: Parches urgentes para producción.  
   * *Ejemplo:* hotfix/security-patch-jwt
 
 ## 1.2. Convención de Commits (Conventional Commits)
 
 Todos los mensajes de commit deben seguir el estándar [Conventional Commits](https://www.conventionalcommits.org/) y ser escritos en **Inglés**.
 
-**Formato:** \&lt;type\>(\&lt;scope\>): \&lt;description\>
+**Formato:** &lt;type>(&lt;scope>): &lt;description>
 
 * **feat**: Nueva funcionalidad.  
 * **fix**: Corrección de errores.  
@@ -215,7 +215,7 @@ ai-service/
 
 * Seguir **PEP 8**.  
 * Uso obligatorio de **Type Hints** en todas las funciones.  
-  def classify_image(image_bytes: bytes) -\> ClassificationResult:  
+  def classify_image(image_bytes: bytes) -> ClassificationResult:  
 * Manejo de errores con excepciones custom HTTP de FastAPI.
 
 # 6. Frontend: Next.js 14 (TypeScript)
@@ -268,32 +268,36 @@ src/
 
 **Archivo: hooks/features/useSpeciesForm.ts**
 
-// Lógica de negocio, estados y validación  
-export const useSpeciesForm \= () \=\> &#123;  
-  const [isLoading, setIsLoading] \= useState(false);  
-  const &#123; data: taxonomy &#125; \= useQuery(['taxonomy'], getTaxonomy);
+```tsx
+// Logica de negocio, estados y validacion
+export const useSpeciesForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: taxonomy } = useQuery(['taxonomy'], getTaxonomy);
 
-  const handleSubmit \= async (data: SpeciesDTO) \=\> &#123;  
-     // Logic to call API  
-  &#125;;
+  const handleSubmit = async (data: SpeciesDTO) => {
+    // Logic to call API
+  };
 
-  return &#123; isLoading, taxonomy, handleSubmit &#125;;  
-&#125;;
+  return { isLoading, taxonomy, handleSubmit };
+};
+```
 
 **Archivo: components/features/species/SpeciesForm.tsx**
 
-// Solo UI  
-import &#123; useSpeciesForm &#125; from '@/hooks/features/useSpeciesForm';
+```tsx
+// Solo UI
+import { useSpeciesForm } from '@/hooks/features/useSpeciesForm';
 
-export const SpeciesForm \= () \=\> &#123;  
-  const &#123; isLoading, handleSubmit &#125; \= useSpeciesForm(); // Inyección de lógica
+export const SpeciesForm = () => {
+  const { isLoading, handleSubmit } = useSpeciesForm(); // Inyeccion de logica
 
-  return (  
-    \&lt;form onSubmit=&#123;handleSubmit&#125;\>  
-       \&lt;Button loading=&#123;isLoading&#125;\>Save Species\&lt;/Button\>  
-    \&lt;/form\>  
-  );  
-&#125;;
+  return (
+    <form onSubmit={handleSubmit}>
+       <Button loading={isLoading}>Save Species</Button>
+    </form>
+  );
+};
+```
 
 # 7. Base de Datos y Migraciones
 
@@ -341,7 +345,7 @@ STRIPE_PUBLIC_KEY=pk_test...
 
 Para que un PR sea aceptado, debe cumplir:
 
-1. **Backend:** Coverage \> 70%. Pruebas unitarias para *Domain* y *Application*. Pruebas de integración para *Infrastructure*.  
+1. **Backend:** Coverage > 70%. Pruebas unitarias para *Domain* y *Application*. Pruebas de integración para *Infrastructure*.  
 2. **Frontend:** Pruebas de componentes críticos y flujos principales (E2E con Cypress/Playwright).  
 3. **Linting:** Cero warnings en eslint y compilación limpia.
 
