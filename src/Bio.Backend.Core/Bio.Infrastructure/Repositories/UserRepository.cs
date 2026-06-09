@@ -130,4 +130,13 @@ public class UserRepository : IUserRepository
             .ToListAsync(ct);
         return result.Select(x => (x.RoleName, x.Count)).ToList();
     }
+
+    /// <summary>Batch-fetches full names keyed by user ID for DTO enrichment.</summary>
+    public async Task<IReadOnlyDictionary<Guid, string>> GetFullNamesByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct)
+    {
+        var idList = ids.Distinct().ToList();
+        return await _context.Users
+            .Where(u => idList.Contains(u.Id))
+            .ToDictionaryAsync(u => u.Id, u => u.FullName, ct);
+    }
 }

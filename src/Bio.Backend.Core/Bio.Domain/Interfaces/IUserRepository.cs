@@ -82,4 +82,7 @@ public interface IUserRepository
 
     /// <summary>Gets total count of users grouped by role name (for Admin dashboard).</summary>
     Task<IReadOnlyList<(string RoleName, int Count)>> GetCountByRoleAsync(CancellationToken ct = default);
+
+    /// <summary>Batch-fetches users by a set of IDs (for enriching DTOs with user names).</summary>
+    Task<IReadOnlyDictionary<Guid, string>> GetFullNamesByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
 }

@@ -23,6 +23,31 @@ public class GetProductReviewsQueryHandler : IRequestHandler<GetProductReviewsQu
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// GET MANAGED REVIEWS (Admin — all; Entrepreneur — scoped to own products)
+// ═══════════════════════════════════════════════════════════════════════════════
+public record GetManagedReviewsQuery(Guid? EntrepreneurId = null, bool? IsReported = null, int Page = 1, int PageSize = 10)
+    : IRequest<PaginatedResult<ReviewManagedListItemDTO>>;
+
+public class GetManagedReviewsQueryHandler : IRequestHandler<GetManagedReviewsQuery, PaginatedResult<ReviewManagedListItemDTO>>
+{
+    private readonly IProductReviewRepository _repo;
+    public GetManagedReviewsQueryHandler(IProductReviewRepository repo) => _repo = repo;
+
+    public async Task<PaginatedResult<ReviewManagedListItemDTO>> Handle(GetManagedReviewsQuery request, CancellationToken ct)
+    {
+        var (items, total) = await _repo.GetManagedAsync(request.EntrepreneurId, request.IsReported, request.Page, request.PageSize, ct);
+
+        var dtos = items.Select(r => new ReviewManagedListItemDTO(
+            r.Id, r.ProductId, r.Product?.Name ?? "", r.Product?.Slug ?? "",
+            r.UserId, r.User?.FullName, r.Rating, r.Title, r.Comment,
+            r.IsReported, r.ReportReason, r.ReportedById, r.ReportedBy?.FullName, r.ReportedAt,
+            r.CreatedAt)).ToList();
+
+        return PaginatedResult<ReviewManagedListItemDTO>.Create(dtos, total, request.Page, request.PageSize);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // GET MY REVIEWS (authenticated user — for profile "Mis Reseñas" tab)
 // ═══════════════════════════════════════════════════════════════════════════════
 public record GetMyReviewsQuery(Guid UserId, int Page = 1, int PageSize = 10) : IRequest<PaginatedResult<MyReviewResponseDTO>>;

@@ -167,3 +167,70 @@ public class PinCommunityPostCommandHandler
         return CommunityPostMapper.ToDetail(post, post.Comments.Count(c => !c.IsDeleted));
     }
 }
+
+// =============================================================================
+// ARCHIVE / UNARCHIVE POST (author self-service, or Admin/Community moderator)
+// =============================================================================
+
+public record ArchiveCommunityPostCommand(
+    Guid PostId, bool Archive, Guid ActorId, string ActorRole) : IRequest<CommunityPostDetailDTO>;
+
+public class ArchiveCommunityPostCommandHandler
+    : IRequestHandler<ArchiveCommunityPostCommand, CommunityPostDetailDTO>
+{
+    private readonly ICommunityPostRepository _repo;
+    private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
+
+    public ArchiveCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
+
+    public async Task<CommunityPostDetailDTO> Handle(
+        ArchiveCommunityPostCommand request, CancellationToken ct)
+    {
+        var post = await _repo.GetByIdWithCommentsAsync(request.PostId, ct)
+            ?? throw new NotFoundException(nameof(CommunityPost), request.PostId);
+
+        var isModerator = request.ActorRole == RoleNames.Admin || request.ActorRole == RoleNames.Community;
+        if (post.AuthorUserId != request.ActorId && !isModerator)
+            throw new ForbiddenException("You can only archive your own posts.");
+
+        if (request.Archive) post.Archive(); else post.Unarchive();
+        await _uow.SaveChangesAsync(ct);
+        await _cache.RemoveByPrefixAsync("community:posts", ct);
+        return CommunityPostMapper.ToDetail(post, post.Comments.Count(c => !c.IsDeleted));
+    }
+}
+
+// =============================================================================
+// HIDE / UNHIDE POST (Admin/Community moderator only — content moderation)
+// =============================================================================
+
+public record HideCommunityPostCommand(
+    Guid PostId, bool Hide, Guid ActorId, string ActorRole) : IRequest<CommunityPostDetailDTO>;
+
+public class HideCommunityPostCommandHandler
+    : IRequestHandler<HideCommunityPostCommand, CommunityPostDetailDTO>
+{
+    private readonly ICommunityPostRepository _repo;
+    private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
+
+    public HideCommunityPostCommandHandler(ICommunityPostRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
+
+    public async Task<CommunityPostDetailDTO> Handle(
+        HideCommunityPostCommand request, CancellationToken ct)
+    {
+        if (request.ActorRole != RoleNames.Admin && request.ActorRole != RoleNames.Community)
+            throw new ForbiddenException("Only administrators and community moderators can hide posts.");
+
+        var post = await _repo.GetByIdWithCommentsAsync(request.PostId, ct)
+            ?? throw new NotFoundException(nameof(CommunityPost), request.PostId);
+
+        if (request.Hide) post.Hide(); else post.Unhide();
+        await _uow.SaveChangesAsync(ct);
+        await _cache.RemoveByPrefixAsync("community:posts", ct);
+        return CommunityPostMapper.ToDetail(post, post.Comments.Count(c => !c.IsDeleted));
+    }
+}

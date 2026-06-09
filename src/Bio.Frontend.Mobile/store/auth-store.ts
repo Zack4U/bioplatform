@@ -1,15 +1,14 @@
 /**
  * Auth Zustand store — manages client-side auth state (React Native).
  *
- * Tokens stored in AsyncStorage; user data in memory.
- * For production, consider migrating tokens to expo-secure-store.
+ * Tokens stored in the device keystore/keychain via secureStorage; user data in memory.
  */
 
 import type { UserResponse } from "@/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { secureStorage } from "@/lib/secure-storage";
 import { create } from "zustand";
 
-/** AsyncStorage key constants */
+/** Secure storage key constants */
 export const STORAGE_KEYS = {
     ACCESS_TOKEN: "accessToken",
     REFRESH_TOKEN: "refreshToken",
@@ -35,7 +34,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     setLoading: (isLoading) => set({ isLoading }),
 
     logout: async () => {
-        await AsyncStorage.multiRemove([
+        await secureStorage.multiRemove([
             STORAGE_KEYS.ACCESS_TOKEN,
             STORAGE_KEYS.REFRESH_TOKEN,
         ]);

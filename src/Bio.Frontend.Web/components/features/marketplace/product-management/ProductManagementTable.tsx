@@ -1,22 +1,5 @@
 "use client";
 
-/**
- * ProductManagementTable — entrepreneur's product dashboard table.
- *
- * Renders the paginated list of the authenticated entrepreneur's products.
- * Columns: Thumbnail, Name + SKU, Category, Price, Stock, Status, Rating, Actions.
- *
- * UI ONLY — no logic. All data and callbacks come from the parent page
- * which wires them from useProductManagement.
- *
- * WCAG 2.1 AA:
- *  - Table with proper <caption>, <th scope>, aria-labels on icon buttons.
- *  - Skeleton rows announce "Cargando productos" via aria-busy on the table.
- *  - Status badge: color + text label (never color alone).
- *
- * @module components/features/marketplace/product-management/ProductManagementTable
- */
-
 import { EmptyState, StatusBadge } from "@/components/common";
 import { SmartImage } from "@/components/common/SmartImage";
 import { Button } from "@/components/ui/button";
@@ -32,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import type { ManageProductListItem } from "@/types";
 import { cn } from "@/lib/utils";
-import { ImageIcon, Package, Pencil, Star, Trash2 } from "lucide-react";
+import { ExternalLink, ImageIcon, Package, Pencil, Power, PowerOff, Star, Trash2 } from "lucide-react";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -40,60 +23,15 @@ export interface ProductManagementTableProps {
   products: ManageProductListItem[];
   isLoading: boolean;
   isFetching: boolean;
+  isAdmin?: boolean;
   onEdit: (product: ManageProductListItem) => void;
   onDelete: (productId: string) => void;
   onManageImages: (product: ManageProductListItem) => void;
+  onActivate?: (productId: string) => void;
+  onDeactivate?: (productId: string) => void;
 }
 
-// ─── Skeleton row ─────────────────────────────────────────────────────────────
-
-function SkeletonRow() {
-  return (
-    <TableRow>
-      {/* Thumbnail */}
-      <TableCell>
-        <Skeleton className="h-12 w-12 rounded-md" />
-      </TableCell>
-      {/* Name + SKU */}
-      <TableCell>
-        <div className="flex flex-col gap-1.5">
-          <Skeleton className="h-4 w-36" />
-          <Skeleton className="h-3 w-20" />
-        </div>
-      </TableCell>
-      {/* Category */}
-      <TableCell>
-        <Skeleton className="h-4 w-24" />
-      </TableCell>
-      {/* Price */}
-      <TableCell>
-        <Skeleton className="h-4 w-16" />
-      </TableCell>
-      {/* Stock */}
-      <TableCell>
-        <Skeleton className="h-4 w-10" />
-      </TableCell>
-      {/* Status */}
-      <TableCell>
-        <Skeleton className="h-5 w-16 rounded-full" />
-      </TableCell>
-      {/* Rating */}
-      <TableCell>
-        <Skeleton className="h-4 w-12" />
-      </TableCell>
-      {/* Actions */}
-      <TableCell>
-        <div className="flex items-center gap-1">
-          <Skeleton className="h-8 w-8 rounded-md" />
-          <Skeleton className="h-8 w-8 rounded-md" />
-          <Skeleton className="h-8 w-8 rounded-md" />
-        </div>
-      </TableCell>
-    </TableRow>
-  );
-}
-
-// ─── Price formatter ──────────────────────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function formatCOP(value: number): string {
   return new Intl.NumberFormat("es-CO", {
@@ -103,15 +41,65 @@ function formatCOP(value: number): string {
   }).format(value);
 }
 
+function shortId(id: string): string {
+  return id.replace(/-/g, "").slice(0, 8).toUpperCase();
+}
+
+// ─── Skeleton rows ────────────────────────────────────────────────────────────
+
+function EntrepreneurSkeletonRow() {
+  return (
+    <TableRow>
+      <TableCell><Skeleton className="h-12 w-12 rounded-md" /></TableCell>
+      <TableCell>
+        <div className="flex flex-col gap-1.5">
+          <Skeleton className="h-4 w-36" />
+          <Skeleton className="h-3 w-20" />
+        </div>
+      </TableCell>
+      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+      <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+      <TableCell><Skeleton className="h-4 w-10" /></TableCell>
+      <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
+      <TableCell><Skeleton className="h-4 w-12" /></TableCell>
+      <TableCell>
+        <div className="flex items-center gap-1">
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <Skeleton className="h-8 w-8 rounded-md" />
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+}
+
+function AdminSkeletonRow() {
+  return (
+    <TableRow>
+      <TableCell><Skeleton className="h-4 w-36" /></TableCell>
+      <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+      <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+      <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+      <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
+      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+      <TableCell><Skeleton className="h-8 w-8 rounded-md" /></TableCell>
+    </TableRow>
+  );
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function ProductManagementTable({
   products,
   isLoading,
   isFetching,
+  isAdmin = false,
   onEdit,
   onDelete,
   onManageImages,
+  onActivate,
+  onDeactivate,
 }: ProductManagementTableProps) {
   const showSkeleton = isLoading;
   const showEmpty = !isLoading && products.length === 0;
@@ -120,8 +108,8 @@ export function ProductManagementTable({
     return (
       <EmptyState
         icon={<Package className="h-8 w-8" aria-hidden="true" />}
-        title="No tienes productos publicados"
-        description="Crea tu primer producto haciendo clic en el boton 'Nuevo Producto'."
+        title={isAdmin ? "No hay productos en la plataforma" : "No tienes productos publicados"}
+        description={isAdmin ? "No se encontraron productos con los filtros actuales." : "Crea tu primer producto haciendo clic en el boton 'Nuevo Producto'."}
       />
     );
   }
@@ -136,68 +124,175 @@ export function ProductManagementTable({
     >
       <Table aria-label="Tabla de productos">
         <TableCaption className="sr-only">
-          Lista de productos del emprendedor
+          {isAdmin ? "Lista global de productos" : "Lista de productos del emprendedor"}
         </TableCaption>
 
         <TableHeader>
-          <TableRow>
-            <TableHead scope="col" className="w-[64px]">
-              Imagen
-            </TableHead>
-            <TableHead scope="col">Producto</TableHead>
-            <TableHead scope="col" className="hidden md:table-cell">
-              Categoria
-            </TableHead>
-            <TableHead scope="col">Precio</TableHead>
-            <TableHead scope="col" className="hidden sm:table-cell">
-              Stock
-            </TableHead>
-            <TableHead scope="col">Estado</TableHead>
-            <TableHead scope="col" className="hidden lg:table-cell">
-              Calificacion
-            </TableHead>
-            <TableHead scope="col" className="text-right">
-              Acciones
-            </TableHead>
-          </TableRow>
+          {isAdmin ? (
+            <TableRow>
+              <TableHead scope="col">Producto</TableHead>
+              <TableHead scope="col" className="hidden md:table-cell">Emprendedor</TableHead>
+              <TableHead scope="col" className="hidden md:table-cell">Especie</TableHead>
+              <TableHead scope="col" className="hidden lg:table-cell">Categoria</TableHead>
+              <TableHead scope="col">Estado</TableHead>
+              <TableHead scope="col" className="hidden lg:table-cell">Creado</TableHead>
+              <TableHead scope="col" className="text-right">Acciones</TableHead>
+            </TableRow>
+          ) : (
+            <TableRow>
+              <TableHead scope="col" className="w-[64px]">Imagen</TableHead>
+              <TableHead scope="col">Producto</TableHead>
+              <TableHead scope="col" className="hidden md:table-cell">Categoria</TableHead>
+              <TableHead scope="col">Precio</TableHead>
+              <TableHead scope="col" className="hidden sm:table-cell">Stock</TableHead>
+              <TableHead scope="col">Estado</TableHead>
+              <TableHead scope="col" className="hidden lg:table-cell">Calificacion</TableHead>
+              <TableHead scope="col" className="text-right">Acciones</TableHead>
+            </TableRow>
+          )}
         </TableHeader>
 
         <TableBody aria-busy={showSkeleton}>
           {showSkeleton
-            ? Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
-            : products.map((product) => (
-                <ProductRow
-                  key={product.id}
-                  product={product}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  onManageImages={onManageImages}
-                />
-              ))}
+            ? Array.from({ length: 5 }).map((_, i) =>
+                isAdmin ? <AdminSkeletonRow key={i} /> : <EntrepreneurSkeletonRow key={i} />
+              )
+            : products.map((product) =>
+                isAdmin ? (
+                  <AdminProductRow
+                    key={product.id}
+                    product={product}
+                    onActivate={onActivate}
+                    onDeactivate={onDeactivate}
+                  />
+                ) : (
+                  <EntrepreneurProductRow
+                    key={product.id}
+                    product={product}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    onManageImages={onManageImages}
+                  />
+                )
+              )}
         </TableBody>
       </Table>
     </div>
   );
 }
 
-// ─── Product row ──────────────────────────────────────────────────────────────
+// ─── Admin product row ────────────────────────────────────────────────────────
 
-interface ProductRowProps {
+interface AdminProductRowProps {
+  product: ManageProductListItem;
+  onActivate?: (productId: string) => void;
+  onDeactivate?: (productId: string) => void;
+}
+
+function AdminProductRow({ product, onActivate, onDeactivate }: AdminProductRowProps) {
+  return (
+    <TableRow>
+      <TableCell>
+        <div className="flex flex-col gap-0.5">
+          <span className="max-w-[220px] truncate font-medium leading-snug text-sm">
+            {product.name}
+          </span>
+          <span className="text-xs text-muted-foreground font-mono">{product.slug}</span>
+        </div>
+      </TableCell>
+
+      <TableCell className="hidden md:table-cell">
+        <span className="text-sm">
+          {product.entrepreneurName ?? (
+            <span className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded text-muted-foreground">
+              {shortId(product.entrepreneurId)}
+            </span>
+          )}
+        </span>
+      </TableCell>
+
+      <TableCell className="hidden md:table-cell">
+        <span className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded text-muted-foreground">
+          {shortId(product.baseSpeciesId)}
+        </span>
+      </TableCell>
+
+      <TableCell className="hidden lg:table-cell">
+        <span className="text-sm text-muted-foreground">
+          {product.categoryName ?? "-"}
+        </span>
+      </TableCell>
+
+      <TableCell>
+        <StatusBadge
+          label={product.isActive ? "Activo" : "Inactivo"}
+          variant={product.isActive ? "success" : "default"}
+        />
+      </TableCell>
+
+      <TableCell className="hidden lg:table-cell">
+        <span className="text-xs text-muted-foreground">
+          {new Date(product.createdAt).toLocaleDateString("es-CO")}
+        </span>
+      </TableCell>
+
+      <TableCell className="text-right">
+        <div className="flex items-center justify-end gap-1">
+          {product.isActive ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={`Desactivar ${product.name}`}
+              title="Desactivar"
+              onClick={() => onDeactivate?.(product.id)}
+            >
+              <PowerOff className="h-4 w-4 text-destructive" aria-hidden="true" />
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={`Activar ${product.name}`}
+              title="Activar"
+              onClick={() => onActivate?.(product.id)}
+            >
+              <Power className="h-4 w-4 text-green-600" aria-hidden="true" />
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            asChild
+            aria-label={`Ver ${product.name} en tienda`}
+            title="Ver en tienda"
+          >
+            <a href={`/marketplace/${product.slug}`} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </Button>
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+}
+
+// ─── Entrepreneur product row ─────────────────────────────────────────────────
+
+interface EntrepreneurProductRowProps {
   product: ManageProductListItem;
   onEdit: (product: ManageProductListItem) => void;
   onDelete: (productId: string) => void;
   onManageImages: (product: ManageProductListItem) => void;
 }
 
-function ProductRow({
+function EntrepreneurProductRow({
   product,
   onEdit,
   onDelete,
   onManageImages,
-}: ProductRowProps) {
+}: EntrepreneurProductRowProps) {
   return (
     <TableRow>
-      {/* ── Thumbnail ──────────────────────────────────────────────────── */}
       <TableCell>
         <div className="relative h-12 w-12 overflow-hidden rounded-md border bg-muted">
           {product.thumbnailUrl ? (
@@ -210,24 +305,22 @@ function ProductRow({
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center">
-              <Package
-                className="h-5 w-5 text-muted-foreground"
-                aria-hidden="true"
-              />
+              <Package className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
             </div>
           )}
         </div>
       </TableCell>
 
-      {/* ── Name + SKU ─────────────────────────────────────────────────── */}
       <TableCell>
         <div className="flex flex-col gap-0.5">
           <span className="max-w-[200px] truncate font-medium leading-snug">
             {product.name}
           </span>
-          <span className="font-mono text-xs text-muted-foreground">
-            SKU: {product.sku}
-          </span>
+          {product.sku ? (
+            <span className="font-mono text-xs text-muted-foreground">
+              SKU: {product.sku}
+            </span>
+          ) : null}
           {product.baseSpeciesName && (
             <span className="hidden text-xs text-muted-foreground xl:block">
               {product.baseSpeciesName}
@@ -236,14 +329,12 @@ function ProductRow({
         </div>
       </TableCell>
 
-      {/* ── Category ───────────────────────────────────────────────────── */}
       <TableCell className="hidden md:table-cell">
         <span className="text-sm text-muted-foreground">
           {product.categoryName ?? "-"}
         </span>
       </TableCell>
 
-      {/* ── Price ──────────────────────────────────────────────────────── */}
       <TableCell>
         <div className="flex flex-col gap-0.5">
           <span className="font-semibold tabular-nums">
@@ -257,7 +348,6 @@ function ProductRow({
         </div>
       </TableCell>
 
-      {/* ── Stock ──────────────────────────────────────────────────────── */}
       <TableCell className="hidden sm:table-cell">
         <span
           className={cn(
@@ -272,7 +362,6 @@ function ProductRow({
         </span>
       </TableCell>
 
-      {/* ── Status badge ───────────────────────────────────────────────── */}
       <TableCell>
         <StatusBadge
           label={product.isActive ? "Activo" : "Inactivo"}
@@ -280,27 +369,32 @@ function ProductRow({
         />
       </TableCell>
 
-      {/* ── Rating ─────────────────────────────────────────────────────── */}
       <TableCell className="hidden lg:table-cell">
-        {product.averageRating !== null ? (
+        {product.averageRating != null ? (
           <div className="flex items-center gap-1 text-sm tabular-nums">
-            <Star
-              className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
-              aria-hidden="true"
-            />
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" aria-hidden="true" />
             <span>{product.averageRating.toFixed(1)}</span>
-            <span className="text-muted-foreground">
-              ({product.reviewCount})
-            </span>
+            <span className="text-muted-foreground">({product.reviewCount ?? 0})</span>
           </div>
         ) : (
           <span className="text-sm text-muted-foreground">Sin resenas</span>
         )}
       </TableCell>
 
-      {/* ── Actions ────────────────────────────────────────────────────── */}
       <TableCell className="text-right">
         <div className="flex items-center justify-end gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            asChild
+            aria-label={`Ver ${product.name} en tienda`}
+            title="Ver en tienda"
+          >
+            <a href={`/marketplace/${product.slug}`} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </Button>
+
           <Button
             variant="ghost"
             size="icon"

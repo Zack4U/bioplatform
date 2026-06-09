@@ -1,113 +1,124 @@
 "use client";
 
 /**
- * useAdminDashboard — provides role-specific dashboard metrics.
- * TODO: Replace mock data with API calls via React Query.
+ * useAdminDashboard — role-specific dashboard metrics via React Query.
+ * Connects to the real backend dashboard endpoints.
  *
  * @module hooks/features/admin/useAdminDashboard
  */
 
-import {
-    mockAdminMetrics, mockAuthorityMetrics, mockEntrepreneurMetrics,
-    mockRecentActivity, mockResearcherMetrics, mockRevenueChart,
-} from "@/lib/admin-mock";
+import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth-store";
+import {
+    getAdminDashboard,
+    getResearcherDashboard,
+    getSellerDashboard,
+    getAuthorityDashboard,
+} from "@/services/admin-service";
 import type {
-    AdminPlatformMetrics, AuthorityMetrics, EntrepreneurMetrics,
-    RecentActivityItem, ResearcherMetrics, RevenueChartPoint,
-} from "@/types";
-import { useEffect, useState } from "react";
+    AdminDashboardDTO,
+    AuthorityDashboardDTO,
+    ResearcherDashboardDTO,
+    SellerDashboardEnhancedDTO,
+} from "@/types/admin";
 
-type DashboardRole = "ADMIN" | "RESEARCHER" | "ENTREPRENEUR" | "AUTHORITY";
+type DashboardRole = "ADMIN" | "RESEARCHER" | "ENTREPRENEUR" | "AUTHORITY" | "BUYER";
 
-interface AdminDashboardState {
-    role: DashboardRole;
-    isLoading: boolean;
-    adminMetrics: AdminPlatformMetrics | null;
-    researcherMetrics: ResearcherMetrics | null;
-    entrepreneurMetrics: EntrepreneurMetrics | null;
-    authorityMetrics: AuthorityMetrics | null;
-    revenueChart: RevenueChartPoint[];
-    recentActivity: RecentActivityItem[];
+function resolveRole(roles: string[]): DashboardRole {
+    if (roles.includes("ADMIN"))         return "ADMIN";
+    if (roles.includes("RESEARCHER"))    return "RESEARCHER";
+    if (roles.includes("ENTREPRENEUR"))  return "ENTREPRENEUR";
+    if (roles.includes("AUTHORITY") || roles.includes("ENVIRONMENTAL_AUTHORITY")) return "AUTHORITY";
+    return "BUYER";
 }
 
-export function useAdminDashboard(): AdminDashboardState {
-    const { user } = useAuthStore();
-    const [isLoading, setIsLoading] = useState(true);
-    const [state, setState] = useState<Omit<AdminDashboardState, "isLoading" | "role">>({
-        adminMetrics: null,
-        researcherMetrics: null,
-        entrepreneurMetrics: null,
-        authorityMetrics: null,
-        revenueChart: [],
-        recentActivity: [],
+// ── ADMIN ────────────────────────────────────────────────────────────────────
+
+export function useAdminDashboardMetrics(enabled = true) {
+    return useQuery<AdminDashboardDTO>({
+        queryKey: ["dashboard", "admin"],
+        queryFn: getAdminDashboard,
+        staleTime: 1000 * 60 * 5,
+        enabled,
     });
+}
 
+// ── RESEARCHER ───────────────────────────────────────────────────────────────
+
+export function useResearcherDashboard(enabled = true) {
+    return useQuery<ResearcherDashboardDTO>({
+        queryKey: ["dashboard", "researcher"],
+        queryFn: getResearcherDashboard,
+        staleTime: 1000 * 60 * 5,
+        enabled,
+    });
+}
+
+// ── ENTREPRENEUR / SELLER ────────────────────────────────────────────────────
+
+export function useSellerDashboard(entrepreneurId?: string, enabled = true) {
+    return useQuery<SellerDashboardEnhancedDTO>({
+        queryKey: ["dashboard", "seller", entrepreneurId],
+        queryFn: () => getSellerDashboard(entrepreneurId),
+        staleTime: 1000 * 60 * 5,
+        enabled,
+    });
+}
+
+// ── AUTHORITY ────────────────────────────────────────────────────────────────
+
+export function useAuthorityDashboard(expiryAlertDays = 90, enabled = true) {
+    return useQuery<AuthorityDashboardDTO>({
+        queryKey: ["dashboard", "authority", expiryAlertDays],
+        queryFn: () => getAuthorityDashboard(expiryAlertDays),
+        staleTime: 1000 * 60 * 5,
+        enabled,
+    });
+}
+
+// ── Composite hook — resolves role and fetches correct dashboard ──────────────
+
+export function useAdminDashboard() {
+    const { user } = useAuthStore();
     const roles = user?.roles ?? [];
-    const role: DashboardRole = roles.includes("ADMIN")
-        ? "ADMIN"
-        : roles.includes("RESEARCHER")
-            ? "RESEARCHER"
-            : roles.includes("ENTREPRENEUR")
-                ? "ENTREPRENEUR"
-                : "AUTHORITY";
+    const role = resolveRole(roles);
 
-    useEffect(() => {
-        // TODO: Replace with React Query API call
-        const timer = setTimeout(() => {
-            switch (role) {
-                case "ADMIN":
-                    setState({
-                        adminMetrics: mockAdminMetrics(),
-                        researcherMetrics: null,
-                        entrepreneurMetrics: null,
-                        authorityMetrics: null,
-                        revenueChart: mockRevenueChart(),
-                        recentActivity: mockRecentActivity(),
-                    });
-                    break;
-                case "RESEARCHER":
-                    setState({
-                        adminMetrics: null,
-                        researcherMetrics: mockResearcherMetrics(),
-                        entrepreneurMetrics: null,
-                        authorityMetrics: null,
-                        revenueChart: [],
-                        recentActivity: mockRecentActivity().filter(
-                            (a) => a.type === "species_added" || a.type === "image_validated",
-                        ),
-                    });
-                    break;
-                case "ENTREPRENEUR":
-                    setState({
-                        adminMetrics: null,
-                        researcherMetrics: null,
-                        entrepreneurMetrics: mockEntrepreneurMetrics(),
-                        authorityMetrics: null,
-                        revenueChart: mockRevenueChart(),
-                        recentActivity: mockRecentActivity().filter(
-                            (a) => a.type === "order_placed" || a.type === "review_posted",
-                        ),
-                    });
-                    break;
-                case "AUTHORITY":
-                    setState({
-                        adminMetrics: null,
-                        researcherMetrics: null,
-                        entrepreneurMetrics: null,
-                        authorityMetrics: mockAuthorityMetrics(),
-                        revenueChart: [],
-                        recentActivity: mockRecentActivity().filter(
-                            (a) => a.type === "permit_requested",
-                        ),
-                    });
-                    break;
-            }
-            setIsLoading(false);
-        }, 500);
+    const isAdmin        = role === "ADMIN";
+    const isResearcher   = role === "RESEARCHER";
+    const isEntrepreneur = role === "ENTREPRENEUR";
+    const isAuthority    = role === "AUTHORITY";
 
-        return () => clearTimeout(timer);
-    }, [role]);
+    const adminQuery      = useAdminDashboardMetrics(isAdmin);
+    const researcherQuery = useResearcherDashboard(isResearcher);
+    const sellerQuery     = useSellerDashboard(user?.id, isEntrepreneur);
+    const authorityQuery  = useAuthorityDashboard(90, isAuthority);
 
-    return { role, isLoading, ...state };
+    const isLoading =
+        (isAdmin        && adminQuery.isLoading)      ||
+        (isResearcher   && researcherQuery.isLoading) ||
+        (isEntrepreneur && sellerQuery.isLoading)     ||
+        (isAuthority    && authorityQuery.isLoading);
+
+    const error =
+        (isAdmin        && adminQuery.error)      ||
+        (isResearcher   && researcherQuery.error) ||
+        (isEntrepreneur && sellerQuery.error)     ||
+        (isAuthority    && authorityQuery.error)  ||
+        null;
+
+    return {
+        role,
+        isLoading,
+        error,
+        adminMetrics:      isAdmin        ? adminQuery.data      : null,
+        researcherMetrics: isResearcher   ? researcherQuery.data : null,
+        sellerMetrics:     isEntrepreneur ? sellerQuery.data     : null,
+        authorityMetrics:  isAuthority    ? authorityQuery.data  : null,
+        refetch: () => {
+            if (isAdmin)        adminQuery.refetch();
+            if (isResearcher)   researcherQuery.refetch();
+            if (isEntrepreneur) sellerQuery.refetch();
+            if (isAuthority)    authorityQuery.refetch();
+        },
+    };
 }

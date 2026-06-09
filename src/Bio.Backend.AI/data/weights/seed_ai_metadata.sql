@@ -18,13 +18,45 @@ INSERT INTO ai_model_versions (
     'efficientnet_b2',
     'v1.0.20260518021229',
     0.8835,
-    '2026-05-18 02:12:29-05',
+    -- deployed_at = NOW() so the "new observations" counter (which counts images
+    -- with created_at > deployed_at) does not treat the seeded gallery as new.
+    -- The image gallery is seeded BEFORE this script, so NOW() here is always later.
+    NOW(),
     TRUE,
     'Modelo clasificador inicial basado en EfficientNet-B2. Entrenado en 100 épocas sobre 719 especies biológicas de Caldas utilizando Transfer Learning y regularización con Label Smoothing.',
     '{"model_name": "efficientnet_b2", "num_classes": 719, "batch_size": 64, "initial_lr": 0.001, "freeze_epochs": 7, "total_epochs_trained": 100, "best_val_accuracy": 0.8835, "weight_decay": 0.0001, "device": "cuda", "pytorch_version": "2.10.0+cu130"}',
     '{"accuracy": 0.8739, "top_5_accuracy": 0.9514, "eval_loss": 0.4125, "total_images_evaluated": 3595}',
     0.8739,
-    '2026-05-18 02:10:00-05',
+    NOW(),
+    FALSE
+);
+
+-- 1b. Insert a second (inactive) model version. Weights live on disk under
+-- data/weights/v1.0.20260521031631 but were never registered. It stays inactive;
+-- v1.0.20260518021229 remains the active model.
+INSERT INTO ai_model_versions (
+    model_name,
+    version,
+    accuracy_metric,
+    deployed_at,
+    is_active,
+    notes,
+    config_json,
+    metrics_json,
+    validation_accuracy,
+    created_at,
+    is_deleted
+) VALUES (
+    'efficientnet_b2',
+    'v1.0.20260521031631',
+    0.8677,
+    '2026-05-21 03:16:31-05',
+    FALSE,
+    'Re-entrenamiento (fine-tuning) de EfficientNet-B2 sobre 719 especies durante 11 épocas con Label Smoothing y MixUp/CutMix. Precisión ligeramente inferior al modelo activo; registrado para trazabilidad MLOps.',
+    '{"model_name": "efficientnet_b2", "num_classes": 719, "image_size": 260, "batch_size": 64, "initial_lr": 0.001, "freeze_epochs": 0, "total_epochs_trained": 11, "best_val_accuracy": 0.8677, "label_smoothing": 0.1, "weight_decay": 0.0001, "device": "cuda", "pytorch_version": "2.10.0+cu130"}',
+    '{"accuracy": 0.8554, "top_5_accuracy": 0.9487, "macro_avg": {"precision": 0.8726, "recall": 0.8482, "f1_score": 0.8461}, "weighted_avg": {"precision": 0.8777, "recall": 0.8554, "f1_score": 0.8538}}',
+    0.8554,
+    '2026-05-21 03:14:00-05',
     FALSE
 );
 

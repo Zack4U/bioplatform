@@ -8,11 +8,13 @@
  * - Taxonomy hierarchy card
  * - Info sections: description, ecology, traditional uses, economic potential
  * - Conservation status, altitude, legal/sensitive badges
- * - Image gallery placeholder (no images endpoint yet)
- * - Distribution map placeholder (no distributions endpoint yet)
+ * - Image gallery with zoom/pan lightbox (GET /species/{id}/images)
+ * - Distribution map (GET /species/{id}/distributions)
  */
 
 import { SmartImage } from "@/components/common/SmartImage";
+import { SpeciesDistributionMap } from "@/components/species/SpeciesDistributionMap";
+import { SpeciesImageGallery } from "@/components/species/SpeciesImageGallery";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
@@ -28,14 +30,11 @@ import { router, useLocalSearchParams } from "expo-router";
 import {
     AlertTriangle,
     ArrowLeft,
-    Camera,
     ChevronRight,
     Globe,
     Leaf,
-    MapPin,
     Mountain,
     Scale,
-    Shield,
     Sparkles,
     TreePine,
 } from "lucide-react-native";
@@ -437,60 +436,11 @@ export default function SpeciesDetailScreen() {
                 />
             </View>
 
-            {/* ─── Image Gallery Placeholder ──────────────────── */}
-            <View className="px-5 mt-3">
-                <Text className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                    Galeria de Imagenes
-                </Text>
-                <Card className="border-0 shadow-sm">
-                    <CardContent className="items-center justify-center py-10">
-                        <Camera
-                            size={32}
-                            color={theme.mutedForeground}
-                            strokeWidth={1.2}
-                        />
-                        <Text className="text-sm text-muted-foreground mt-3 text-center">
-                            Sin imagenes disponibles
-                        </Text>
-                        <Text className="text-xs text-muted-foreground/60 mt-1 text-center">
-                            Las imagenes se mostraran cuando esten disponibles
-                            en el sistema.
-                        </Text>
-                    </CardContent>
-                </Card>
-            </View>
+            {/* ─── Image Gallery ──────────────────────────────── */}
+            <SpeciesImageGallery speciesId={species.id} />
 
-            {/* ─── Distribution Map Placeholder ──────────────── */}
-            <View className="px-5 mt-3">
-                <Text className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                    Mapa de Distribucion
-                </Text>
-                <Card className="border-0 shadow-sm">
-                    <CardContent className="items-center justify-center py-10">
-                        <View className="w-16 h-16 rounded-2xl bg-muted items-center justify-center mb-3">
-                            <MapPin
-                                size={28}
-                                color={theme.mutedForeground}
-                                strokeWidth={1.2}
-                            />
-                        </View>
-                        <View className="flex-row items-center gap-2 mb-2">
-                            <Shield
-                                size={14}
-                                color={theme.warning}
-                                strokeWidth={1.5}
-                            />
-                            <Text className="text-sm font-semibold text-foreground">
-                                Sin Datos
-                            </Text>
-                        </View>
-                        <Text className="text-xs text-muted-foreground text-center px-4">
-                            No hay datos de distribucion geografica disponibles
-                            para esta especie en este momento.
-                        </Text>
-                    </CardContent>
-                </Card>
-            </View>
+            {/* ─── Distribution Map ──────────────────────────── */}
+            <SpeciesDistributionMap speciesId={species.id} />
         </ScrollView>
     );
 }

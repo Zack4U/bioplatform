@@ -32,18 +32,10 @@ public class GetResearcherDashboardQueryHandler : IRequestHandler<GetResearcherD
         var now = DateTime.UtcNow;
         var monthStart = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        // Parallel: species metadata
-        var speciesTask = _speciesRepo.GetAllAsync(null, null, ct);
-        var imagesTask = _imageRepo.GetAllAsync(ct);
-        var geoTask = _geoRepo.GetAllAsync(ct);
-        var absTask = _absRepo.GetAllPagedAsync(null, "Active", 1, 10000, ct);
-
-        await Task.WhenAll(speciesTask, imagesTask, geoTask, absTask);
-
-        var species = (await speciesTask).ToList();
-        var images = (await imagesTask).ToList();
-        var geo = (await geoTask).ToList();
-        var (permits, _) = await absTask;
+        var species = (await _speciesRepo.GetAllAsync(null, null, ct)).ToList();
+        var images = (await _imageRepo.GetAllAsync(ct)).ToList();
+        var geo = (await _geoRepo.GetAllAsync(ct)).ToList();
+        var (permits, _) = await _absRepo.GetAllPagedAsync(null, "Active", 1, 10000, ct);
 
         // --- Species metrics ---
         var byConservation = species

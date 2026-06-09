@@ -87,7 +87,7 @@ export const ADMIN_SIDEBAR_SECTIONS: AdminNavSection[] = [
                 labelKey: "Solicitudes",
                 href: "/admin/requests",
                 iconName: "FileText",
-                roles: ["ADMIN", "AUTHORITY"],
+                roles: ["ADMIN", "AUTHORITY", "RESEARCHER", "ENTREPRENEUR"],
             },
         ],
     },
@@ -137,14 +137,14 @@ export const ADMIN_SIDEBAR_SECTIONS: AdminNavSection[] = [
                 labelKey: "Posts",
                 href: "/admin/community-posts",
                 iconName: "MessageSquare",
-                roles: ["ADMIN"],
+                roles: ["ADMIN", "COMMUNITY", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "BUYER"],
             },
             {
                 key: "community-comments",
                 labelKey: "Comentarios",
                 href: "/admin/community-comments",
                 iconName: "MessageCircle",
-                roles: ["ADMIN"],
+                roles: ["ADMIN", "COMMUNITY", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "BUYER"],
             },
         ],
     },
@@ -176,3 +176,26 @@ export function getFilteredSidebarSections(
         ),
     })).filter((section) => section.items.length > 0);
 }
+
+/**
+ * Map of route href → allowed roles.
+ * Used by PageRoleGuard to enforce per-page role checks.
+ * Single source of truth — matches ADMIN_SIDEBAR_SECTIONS roles.
+ */
+export const ROUTE_REQUIRED_ROLES: Record<string, import("@/types").UserRoleName[]> = {
+    "/admin": ["ADMIN", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "COMMUNITY"],
+    "/admin/species": ["ADMIN", "RESEARCHER"],
+    "/admin/images": ["ADMIN", "RESEARCHER"],
+    "/admin/products": ["ADMIN", "ENTREPRENEUR"],
+    "/admin/orders": ["ADMIN", "ENTREPRENEUR"],
+    "/admin/reviews": ["ADMIN", "ENTREPRENEUR"],
+    "/admin/permits": ["ADMIN", "AUTHORITY", "ENTREPRENEUR"],
+    "/admin/requests": ["ADMIN", "AUTHORITY", "RESEARCHER", "ENTREPRENEUR"],
+    "/admin/ai-model": ["ADMIN", "RESEARCHER"],
+    "/admin/chatbot": ["ADMIN", "RESEARCHER"],
+    "/admin/users": ["ADMIN"],
+    "/admin/audit-log": ["ADMIN"],
+    "/admin/community-posts": ["ADMIN", "COMMUNITY", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "BUYER"],
+    "/admin/community-comments": ["ADMIN", "COMMUNITY", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "BUYER"],
+    "/admin/connections": ["ADMIN"],
+};

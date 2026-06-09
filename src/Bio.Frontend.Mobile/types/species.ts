@@ -86,27 +86,38 @@ export interface SpeciesFilterMeta {
 
 // ─── Geographic Distribution ─────────────────────────────────────────────────
 
-/** Maps to GeographicDistribution entity (no DTO yet — future endpoint) */
+/** Maps to GeographicDistributionDTO — GET /api/species/{id}/distributions */
 export interface GeographicDistribution {
     id: string;
     speciesId: string;
-    latitude: number;
-    longitude: number;
+    /** Latitude — null if species.isSensitive and user lacks privileged role */
+    latitude: number | null;
+    /** Longitude — null if species.isSensitive and user lacks privileged role */
+    longitude: number | null;
     altitude: number | null;
     municipality: string | null;
     ecosystemType: string | null;
+    /** True if coordinates were masked for bio-safety protection */
+    isMasked: boolean;
 }
 
 // ─── Species Images ──────────────────────────────────────────────────────────
 
-/** Maps to SpeciesImage entity (no DTO yet — future endpoint) */
+/** Maps to SpeciesImageDTO — GET /api/species/{id}/images */
 export interface SpeciesImage {
     id: string;
     speciesId: string;
-    uploaderUserId: string;
     imageUrl: string;
-    metadata: Record<string, unknown> | null;
+    thumbnailUrl: string | null;
+    isPrimary: boolean;
     isValidatedByExpert: boolean;
-    usedForTraining: boolean;
     licenseType: string;
+    createdAt: string;
+}
+
+/** Query params for the species images endpoint */
+export interface SpeciesImageSearchParams {
+    onlyValidatedByExpert?: boolean;
+    page?: number;
+    pageSize?: number;
 }

@@ -46,23 +46,12 @@ public class GetAdminDashboardQueryHandler : IRequestHandler<GetAdminDashboardQu
         var day30 = now.AddDays(30);
         var day90 = now.AddDays(90);
 
-        // Parallel data fetching
-        var usersTask = _userRepo.GetAllAsync();
-        var usersByRoleTask = _userRepo.GetCountByRoleAsync(ct);
-        var productsTask = _productRepo.GetManagedFilteredAsync(null, null, null, null, "createdAt", "desc", 1, 10000, ct);
-        var allOrdersTask = _orderRepo.GetManagedAsync(null, 1, 10000, ct);
-        var monthOrdersTask = _orderRepo.GetManagedAsync(null, 1, 10000, ct);
-        var absPermitsTask = _absRepo.GetAllPagedAsync(null, null, 1, 10000, ct);
-        var postsTask = _postRepo.GetPagedAsync(null, null, 1, 10000, ct);
-
-        await Task.WhenAll(usersTask, usersByRoleTask, productsTask, allOrdersTask, monthOrdersTask, absPermitsTask, postsTask);
-
-        var allUsers = (await usersTask).ToList();
-        var roleGroups = (await usersByRoleTask).ToList();
-        var (products, _) = await productsTask;
-        var (allOrders, _) = await allOrdersTask;
-        var (posts, _) = await postsTask;
-        var (permits, _) = await absPermitsTask;
+        var allUsers = (await _userRepo.GetAllAsync()).ToList();
+        var roleGroups = (await _userRepo.GetCountByRoleAsync(ct)).ToList();
+        var (products, _) = await _productRepo.GetManagedFilteredAsync(null, null, null, null, "createdAt", "desc", 1, 10000, ct);
+        var (allOrders, _) = await _orderRepo.GetManagedAsync(null, 1, 10000, ct);
+        var (permits, _) = await _absRepo.GetAllPagedAsync(null, null, 1, 10000, ct);
+        var (posts, _) = await _postRepo.GetPagedAsync(null, null, 1, 10000, ct);
 
         var productsList = products.ToList();
         var ordersList = allOrders.ToList();

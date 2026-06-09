@@ -11,6 +11,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
+import { SecuritySection } from "@/components/profile/SecuritySection";
 import { SettingsList } from "@/components/profile/SettingsList";
 import { UserCard } from "@/components/profile/UserCard";
 import { useAuth } from "@/hooks/useAuth";
@@ -33,6 +34,9 @@ export default function ProfileScreen() {
         >
             {/* User Card — shows guest state if not authenticated */}
             <UserCard user={user ?? null} isAuthenticated={isAuthenticated} />
+
+            {/* Account & Security — authenticated only */}
+            {isAuthenticated && user && <SecuritySection user={user} />}
 
             {/* Settings — always visible */}
             <SettingsList />

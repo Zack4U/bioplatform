@@ -30,15 +30,9 @@ public class GetAuthorityDashboardQueryHandler : IRequestHandler<GetAuthorityDas
         var day30 = now.AddDays(30);
         var dayAlert = now.AddDays(request.ExpiryAlertDays);
 
-        var absTask = _absRepo.GetAllPagedAsync(null, null, 1, 10000, ct);
-        var productsTask = _productRepo.GetManagedFilteredAsync(null, true, null, null, "createdAt", "desc", 1, 10000, ct);
-        var speciesTask = _speciesRepo.GetAllAsync(null, null, ct);
-
-        await Task.WhenAll(absTask, productsTask, speciesTask);
-
-        var (permits, _) = await absTask;
-        var (products, _) = await productsTask;
-        var speciesList = (await speciesTask).ToList();
+        var (permits, _) = await _absRepo.GetAllPagedAsync(null, null, 1, 10000, ct);
+        var (products, _) = await _productRepo.GetManagedFilteredAsync(null, true, null, null, "createdAt", "desc", 1, 10000, ct);
+        var speciesList = (await _speciesRepo.GetAllAsync(null, null, ct)).ToList();
 
         var permitList = permits.ToList();
         var productList = products.ToList();

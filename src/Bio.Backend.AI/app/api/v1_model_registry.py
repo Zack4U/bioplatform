@@ -208,12 +208,18 @@ async def reload_model(
 
     classifier = get_classifier()
 
-    # Determine version path
-    if request.version:
-        version_path = _WEIGHTS_DIR / request.version
-    else:
-        # Find any versioned directory or fall back to flat
-        version_path = _WEIGHTS_DIR
+    # Null/empty version == suspend: an admin deactivated or deleted the
+    # active model and none is active. Unload so inference pauses cleanly
+    # instead of silently loading some other weights from disk.
+    if not request.version:
+        classifier.suspend()
+        return ModelReloadResponse(
+            status="suspended",
+            version=None,
+            message="No active model. Classification suspended until a version is activated.",
+        )
+
+    version_path = _WEIGHTS_DIR / request.version
 
     if not version_path.exists():
         raise HTTPException(

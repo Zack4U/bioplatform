@@ -42,7 +42,27 @@ public class ReceiveTrainingWebhookCommandHandler
         ReceiveTrainingWebhookCommand request,
         CancellationToken cancellationToken)
     {
-        // Idempotency guard: find the training job
+        // Manual upload flow: the /model/upload endpoint notifies with an EMPTY
+        // jobId because there is no training job to update — just register the
+        // uploaded version so it appears in the registry (admin can then activate it).
+        if (string.IsNullOrEmpty(request.JobId))
+        {
+            if (request.Status != "Completed" || string.IsNullOrEmpty(request.Version))
+                return new ReceiveTrainingWebhookResult(false, "Manual upload requires a completed status and a version.");
+
+            var existing = await _repo.GetVersionByTagAsync(request.Version, cancellationToken);
+            if (existing is not null)
+                return new ReceiveTrainingWebhookResult(true, $"Version '{request.Version}' already registered.");
+
+            var manualVersion = BuildModelVersion(request);
+            await _repo.AddVersionAsync(manualVersion, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return new ReceiveTrainingWebhookResult(
+                true, $"Manual model version '{request.Version}' registered (inactive).");
+        }
+
+        // Idempotency guard: find the training job (non-empty jobId must be a valid GUID).
         if (!Guid.TryParse(request.JobId, out var jobId))
             return new ReceiveTrainingWebhookResult(false, "Invalid job ID format.");
 
@@ -64,29 +84,7 @@ public class ReceiveTrainingWebhookCommandHandler
 
                     if (!string.IsNullOrEmpty(request.Version))
                     {
-                        // Extract model name from config JSON
-                        var modelName = "efficientnet_b0"; // default
-                        if (!string.IsNullOrEmpty(request.ConfigJson))
-                        {
-                            try
-                            {
-                                var configDoc = System.Text.Json.JsonDocument.Parse(request.ConfigJson);
-                                if (configDoc.RootElement.TryGetProperty("model_name", out var mnProp))
-                                    modelName = mnProp.GetString() ?? modelName;
-                            }
-                            catch { /* ignore parse errors */ }
-                        }
-
-                        var modelVersion = new AiModelVersion(
-                            modelName: modelName,
-                            version: request.Version,
-                            accuracyMetric: request.Accuracy ?? 0m,
-                            deployedAt: DateTime.UtcNow,
-                            isActive: false,
-                            notes: request.StatusMessage,
-                            configJson: request.ConfigJson,
-                            metricsJson: request.MetricsJson);
-
+                        var modelVersion = BuildModelVersion(request);
                         await _repo.AddVersionAsync(modelVersion, cancellationToken);
                         await _unitOfWork.SaveChangesAsync(cancellationToken);
                         modelVersionId = modelVersion.Id;
@@ -113,5 +111,32 @@ public class ReceiveTrainingWebhookCommandHandler
         return new ReceiveTrainingWebhookResult(
             true,
             $"Webhook processed: job='{request.JobId}', status='{request.Status}'.");
+    }
+
+    /// <summary>Build an inactive AiModelVersion from a completed webhook payload.</summary>
+    private static AiModelVersion BuildModelVersion(ReceiveTrainingWebhookCommand request)
+    {
+        // Extract model name from config JSON (default to efficientnet_b0).
+        var modelName = "efficientnet_b0";
+        if (!string.IsNullOrEmpty(request.ConfigJson))
+        {
+            try
+            {
+                var configDoc = System.Text.Json.JsonDocument.Parse(request.ConfigJson);
+                if (configDoc.RootElement.TryGetProperty("model_name", out var mnProp))
+                    modelName = mnProp.GetString() ?? modelName;
+            }
+            catch { /* ignore parse errors */ }
+        }
+
+        return new AiModelVersion(
+            modelName: modelName,
+            version: request.Version!,
+            accuracyMetric: request.Accuracy ?? 0m,
+            deployedAt: DateTime.UtcNow,
+            isActive: false,
+            notes: request.StatusMessage,
+            configJson: request.ConfigJson,
+            metricsJson: request.MetricsJson);
     }
 }

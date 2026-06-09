@@ -72,8 +72,8 @@ export function useAdminTogglePin() {
     return useMutation<CommunityPostDetail, Error, { id: string; isPinned: boolean }>({
         mutationFn: ({ id, isPinned }) => (isPinned ? unpinPost(id) : pinPost(id)),
         onSuccess: (post) => {
-            queryClient.invalidateQueries({ queryKey: ["admin", "community", "posts"] });
-            queryClient.invalidateQueries({ queryKey: ["community", "posts"] });
+            queryClient.refetchQueries({ queryKey: ["admin", "community", "posts"] });
+            queryClient.refetchQueries({ queryKey: ["community", "posts"] });
             notificationService.success(
                 post.isPinned ? "Post destacado." : "Post sin destacar.",
             );
@@ -91,8 +91,8 @@ export function useAdminChangePostStatus() {
     >({
         mutationFn: ({ id, status }) => updatePost(id, { status }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["admin", "community", "posts"] });
-            queryClient.invalidateQueries({ queryKey: ["community", "posts"] });
+            queryClient.refetchQueries({ queryKey: ["admin", "community", "posts"] });
+            queryClient.refetchQueries({ queryKey: ["community", "posts"] });
             notificationService.success("Estado del post actualizado.");
         },
         onError: () => notificationService.error("No se pudo cambiar el estado."),

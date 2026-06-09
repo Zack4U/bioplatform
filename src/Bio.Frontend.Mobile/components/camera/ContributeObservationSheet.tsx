@@ -152,7 +152,7 @@ export function ContributeObservationSheet({
         }
 
         try {
-            await uploadObservation({
+            const result = await uploadObservation({
                 speciesId,
                 imageUri,
                 mimeType: imageMimeType,
@@ -163,7 +163,11 @@ export function ContributeObservationSheet({
                 modelVersion,
             });
 
-            notificationService.success("Observación enviada con éxito.");
+            notificationService.success(
+                result.queued
+                    ? "Guardada sin conexión. Se enviará al reconectar."
+                    : "Observación enviada con éxito.",
+            );
             handleClose();
         } catch {
             notificationService.error(

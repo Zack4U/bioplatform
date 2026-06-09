@@ -11,6 +11,7 @@
  * - test: component sandbox (dev only)
  */
 
+import { useReconnectSync } from "@/hooks/useReconnectSync";
 import { SPECIES_FILTER_META_QUERY_KEY } from "@/hooks/useSpecies";
 import { NAV_THEME } from "@/lib/theme";
 import * as speciesService from "@/services/species-service";
@@ -52,6 +53,9 @@ const queryClient = new QueryClient({
 export default function RootLayout() {
     const { colorScheme } = useColorScheme();
     const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
+
+    // Flush the offline upload queue automatically when connectivity returns.
+    useReconnectSync();
 
     useEffect(() => {
         setIsColorSchemeLoaded(true);

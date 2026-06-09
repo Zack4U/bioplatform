@@ -55,7 +55,7 @@ public class ProductRepository : IProductRepository
         Guid? entrepreneurId, bool? isActive, string? query, int? categoryId,
         string sortBy, string sortOrder, int page, int pageSize, CancellationToken ct)
     {
-        var q = _ctx.Products.Include(p => p.Category).AsQueryable();
+        var q = _ctx.Products.Include(p => p.Category).Include(p => p.Entrepreneur).AsQueryable();
 
         if (entrepreneurId.HasValue) q = q.Where(p => p.EntrepreneurId == entrepreneurId);
         if (isActive.HasValue) q = q.Where(p => p.IsActive == isActive);

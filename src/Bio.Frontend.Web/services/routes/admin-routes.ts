@@ -1,102 +1,110 @@
 /**
  * Centralized API route constants for the Administration Panel.
  *
- * All admin-related route strings in one place — eliminates magic strings.
- * Base path: /api (prepended by Axios baseURL from constants.ts)
+ * Updated to match real backend endpoints (Bio.Backend.Core).
+ * All paths are relative to the Axios baseURL.
  *
  * @module services/routes/admin-routes
  */
 
 export const ADMIN_ROUTES = {
-    /** Admin Dashboard metrics */
+    // ─── Dashboard (per-role) ───────────────────────────────────────────────
     DASHBOARD: {
-        METRICS: "/admin/dashboard/metrics",
-        REVENUE_CHART: "/admin/dashboard/revenue-chart",
-        RECENT_ACTIVITY: "/admin/dashboard/recent-activity",
+        ADMIN:        "/v1/dashboard/admin",
+        RESEARCHER:   "/v1/dashboard/researcher",
+        SELLER:       "/v1/dashboard/seller/enhanced",
+        AUTHORITY:    "/v1/dashboard/authority",
+        BUYER:        "/v1/dashboard/buyer",
+        SOCIAL:       "/v1/dashboard/social",
     },
 
-    /** Admin Users management — extends CORE_ROUTES.USERS */
+    // ─── Users ─────────────────────────────────────────────────────────────
     USERS: {
-        BASE: "/admin/users",
-        BY_ID: (id: string) => `/admin/users/${id}` as const,
-        TOGGLE_ACTIVE: (id: string) =>
-            `/admin/users/${id}/toggle-active` as const,
-        ASSIGN_ROLES: (id: string) =>
-            `/admin/users/${id}/assign-roles` as const,
+        FILTERED:     "/users/filtered",
+        BY_ID:        (id: string) => `/users/${id}` as const,
+        ACTIVATE:     (id: string) => `/users/${id}/activate` as const,
+        DEACTIVATE:   (id: string) => `/users/${id}/deactivate` as const,
     },
 
-    /** Admin Species management */
+    // ─── Roles ─────────────────────────────────────────────────────────────
+    ROLES: {
+        BASE:         "/roles",
+        BY_ID:        (id: string) => `/roles/${id}` as const,
+    },
+
+    // ─── User-Roles ────────────────────────────────────────────────────────
+    USER_ROLES: {
+        BASE:         "/user-roles",
+        BY_USER:      (userId: string) => `/user-roles/user/${userId}` as const,
+        ASSIGN:       "/user-roles",
+        REMOVE:       (userId: string, roleId: string) =>
+                          `/user-roles/user/${userId}/role/${roleId}` as const,
+    },
+
+    // ─── Species ────────────────────────────────────────────────────────────
     SPECIES: {
-        BASE: "/admin/species",
-        BY_ID: (id: string) => `/admin/species/${id}` as const,
-        TOGGLE_SENSITIVE: (id: string) =>
-            `/admin/species/${id}/toggle-sensitive` as const,
+        BASE:         "/species",
+        BY_ID:        (id: string) => `/species/${id}` as const,
+        IMAGES:       (id: string) => `/species/${id}/images` as const,
+        VALIDATE_IMG: (speciesId: string, imageId: string) =>
+                          `/species/${speciesId}/images/${imageId}/validate` as const,
+        REJECT_IMG:   (speciesId: string, imageId: string) =>
+                          `/species/${speciesId}/images/${imageId}/reject` as const,
     },
 
-    /** Admin Images management */
-    IMAGES: {
-        BASE: "/admin/images",
-        BY_ID: (id: string) => `/admin/images/${id}` as const,
-        VALIDATE: (id: string) => `/admin/images/${id}/validate` as const,
-        REJECT: (id: string) => `/admin/images/${id}/reject` as const,
-    },
-
-    /** Admin Products management */
+    // ─── Products (admin/manage) ────────────────────────────────────────────
     PRODUCTS: {
-        BASE: "/admin/products",
-        BY_ID: (id: string) => `/admin/products/${id}` as const,
-        TOGGLE_ACTIVE: (id: string) =>
-            `/admin/products/${id}/toggle-active` as const,
+        MANAGED:      "/manage/products",
+        BY_ID:        (id: string) => `/manage/products/${id}` as const,
+        ACTIVATE:     (id: string) => `/manage/products/${id}/activate` as const,
+        DEACTIVATE:   (id: string) => `/manage/products/${id}/deactivate` as const,
     },
 
-    /** ABS Permits management */
-    PERMITS: {
-        BASE: "/admin/permits",
-        BY_ID: (id: string) => `/admin/permits/${id}` as const,
-        CHANGE_STATUS: (id: string) =>
-            `/admin/permits/${id}/status` as const,
-    },
-
-    /** Requests / Solicitudes management */
-    REQUESTS: {
-        BASE: "/admin/requests",
-        BY_ID: (id: string) => `/admin/requests/${id}` as const,
-        APPROVE: (id: string) => `/admin/requests/${id}/approve` as const,
-        REJECT: (id: string) => `/admin/requests/${id}/reject` as const,
-    },
-
-    /** CNN Model versions management */
-    AI_MODELS: {
-        BASE: "/admin/ai-models",
-        BY_ID: (id: number) => `/admin/ai-models/${id}` as const,
-        ACTIVATE: (id: number) => `/admin/ai-models/${id}/activate` as const,
-        METRICS: (id: number) => `/admin/ai-models/${id}/metrics` as const,
-    },
-
-    /** Chatbot / RAG management */
-    CHATBOT: {
-        SESSIONS: "/admin/chatbot/sessions",
-        SESSION_BY_ID: (id: string) =>
-            `/admin/chatbot/sessions/${id}` as const,
-        SESSION_MESSAGES: (id: string) =>
-            `/admin/chatbot/sessions/${id}/messages` as const,
-        RAG_DOCUMENTS: "/admin/chatbot/rag-documents",
-        RAG_DOCUMENT_BY_ID: (id: string) =>
-            `/admin/chatbot/rag-documents/${id}` as const,
-    },
-
-    /** Orders management */
+    // ─── Orders ─────────────────────────────────────────────────────────────
     ORDERS: {
-        BASE: "/admin/orders",
-        BY_ID: (id: string) => `/admin/orders/${id}` as const,
-        UPDATE_STATUS: (id: string) =>
-            `/admin/orders/${id}/status` as const,
+        MANAGED:      "/orders/manage",
+        BY_ID:        (id: string) => `/orders/${id}` as const,
+        UPDATE_STATUS: (id: string) => `/orders/${id}/status` as const,
     },
 
-    /** Reviews management */
+    // ─── Reviews ────────────────────────────────────────────────────────────
     REVIEWS: {
-        BASE: "/admin/reviews",
-        BY_ID: (id: string) => `/admin/reviews/${id}` as const,
-        FLAG: (id: string) => `/admin/reviews/${id}/flag` as const,
+        BY_PRODUCT:   (productId: string) => `/products/${productId}/reviews` as const,
+        DELETE:       (productId: string, reviewId: string) =>
+                          `/products/${productId}/reviews/${reviewId}` as const,
+        MANAGE:        "/reviews/manage",
+        TOGGLE_REPORT: (reviewId: string) => `/reviews/${reviewId}/toggle-report` as const,
+        DELETE_MANAGED: (reviewId: string) => `/reviews/${reviewId}` as const,
+    },
+
+    // ─── ABS Permits ────────────────────────────────────────────────────────
+    PERMITS: {
+        BASE:         "/v1/abs-permits",
+        BY_ID:        (id: string) => `/v1/abs-permits/${id}` as const,
+        BY_ENTREPRENEUR: (id: string) => `/v1/abs-permits/entrepreneur/${id}` as const,
+        UPLOAD_DOC:   "/v1/abs-permits/documents/upload",
+        REQUEST:        "/v1/abs-permits/request",
+        CANCEL_REQUEST: (id: string) => `/v1/abs-permits/${id}/request` as const,
+        APPROVE:        (id: string) => `/v1/abs-permits/${id}/approve` as const,
+        REJECT:         (id: string) => `/v1/abs-permits/${id}/reject` as const,
+    },
+
+    // ─── Platform Requests (aggregated solicitudes) ─────────────────────────
+    REQUESTS: {
+        BASE:         "/v1/requests",
+    },
+
+    // ─── Activity Logs (Audit) ───────────────────────────────────────────────
+    AUDIT: {
+        BASE:         "/v1/activity-logs",
+        BY_ID:        (id: string) => `/v1/activity-logs/${id}` as const,
+    },
+
+    // ─── AI Models (kept for compatibility with useAiModelManagement) ────────
+    AI_MODELS: {
+        BASE:         "/v1/ai/models",
+        BY_ID:        (id: number) => `/v1/ai/models/${id}` as const,
+        ACTIVATE:     (id: number) => `/v1/ai/models/${id}/activate` as const,
+        METRICS:      "/v1/ai/models/active",
     },
 } as const;

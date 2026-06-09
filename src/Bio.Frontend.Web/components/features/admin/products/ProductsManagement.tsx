@@ -20,11 +20,15 @@ import type {
     ProductDetailDTO,
     UpdateProductRequest,
 } from "@/types";
+import { useAuthStore } from "@/store/auth-store";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
 export function ProductsManagement() {
+    const { user } = useAuthStore();
+    const isAdmin = user?.roles?.includes("ADMIN") ?? false;
+
     // Queries for select options
     const { data: categories = [] } = useQuery<ProductCategory[]>({
         queryKey: ["categories"],
@@ -33,8 +37,9 @@ export function ProductsManagement() {
     });
 
     const { data: absPermits = [] } = useQuery<AbsPermit[]>({
-        queryKey: ["abs-permits", "mine"],
-        queryFn: getMyAbsPermits,
+        queryKey: ["abs-permits", "mine", user?.id],
+        queryFn: () => getMyAbsPermits(user!.id),
+        enabled: !!user?.id,
         staleTime: 5 * 60 * 1000,
     });
 
@@ -56,6 +61,8 @@ export function ProductsManagement() {
         isUploadingImage,
         deleteImage,
         isDeletingImage,
+        activateProduct,
+        deactivateProduct,
     } = useProductManagement();
 
     // Local state for modals/sheets
@@ -108,36 +115,45 @@ export function ProductsManagement() {
             <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-                        Gestion de Productos
+                        {isAdmin ? "Todos los Productos" : "Gestion de Productos"}
                     </h1>
                     <p className="text-muted-foreground">
-                        Administra tus productos, precios e inventario
+                        {isAdmin
+                            ? "Vista global de productos en la plataforma"
+                            : "Administra tus productos, precios e inventario"}
                     </p>
                 </div>
-                <Button onClick={handleOpenCreate} className="w-full md:w-auto">
-                    <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Nuevo Producto
-                </Button>
+                {!isAdmin && (
+                    <Button onClick={handleOpenCreate} className="w-full md:w-auto">
+                        <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+                        Nuevo Producto
+                    </Button>
+                )}
             </div>
 
             <ProductManagementTable
                 products={products}
                 isLoading={isLoading}
                 isFetching={isFetching}
+                isAdmin={isAdmin}
                 onEdit={handleOpenEdit}
                 onDelete={setProductToDelete}
                 onManageImages={handleOpenImages}
+                onActivate={isAdmin ? (id) => activateProduct(id) : undefined}
+                onDeactivate={isAdmin ? (id) => deactivateProduct(id) : undefined}
             />
 
-            <ProductFormSheet
-                isOpen={isFormOpen}
-                onClose={() => setIsFormOpen(false)}
-                onSubmit={handleFormSubmit}
-                isSubmitting={isCreating || isUpdating}
-                editingProduct={editingProduct}
-                categories={categories}
-                absPermits={absPermits}
-            />
+            {!isAdmin && (
+                <ProductFormSheet
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    onSubmit={handleFormSubmit}
+                    isSubmitting={isCreating || isUpdating}
+                    editingProduct={editingProduct}
+                    categories={categories}
+                    absPermits={absPermits}
+                />
+            )}
 
             {managingImagesProduct && (
                 <ProductImageManager
@@ -162,16 +178,18 @@ export function ProductsManagement() {
                 />
             )}
 
-            <DeleteProductDialog
-                isOpen={!!productToDelete}
-                onClose={() => setProductToDelete(null)}
-                onConfirm={confirmDelete}
-                isDeleting={isDeleting}
-                productId={productToDelete ?? ""}
-                productName={
-                    products.find((p) => p.id === productToDelete)?.name ?? ""
-                }
-            />
+            {!isAdmin && (
+                <DeleteProductDialog
+                    isOpen={!!productToDelete}
+                    onClose={() => setProductToDelete(null)}
+                    onConfirm={confirmDelete}
+                    isDeleting={isDeleting}
+                    productId={productToDelete ?? ""}
+                    productName={
+                        products.find((p) => p.id === productToDelete)?.name ?? ""
+                    }
+                />
+            )}
         </div>
     );
 }

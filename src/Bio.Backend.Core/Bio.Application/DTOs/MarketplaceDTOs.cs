@@ -49,7 +49,8 @@ public record ProductDetailDTO(
 public record ProductManagedListItemDTO(
     Guid Id, string Slug, string Name, string? ThumbnailUrl,
     decimal BasePrice, decimal SellPrice, int StockQuantity, bool IsActive,
-    string? CategoryName, Guid EntrepreneurId,
+    string? Sku, string Description, Guid BaseSpeciesId, int? CategoryId,
+    string? CategoryName, Guid EntrepreneurId, string? EntrepreneurName,
     DateTime CreatedAt, DateTime? UpdatedAt);
 
 public record ProductFilterParams
@@ -80,6 +81,15 @@ public record ProductReviewCreateDTO(int Rating, string? Title, string? Comment)
 public record ProductReviewUpdateDTO(int? Rating, string? Title, string? Comment);
 public record ProductReviewResponseDTO(Guid Id, Guid UserId, int Rating, string? Title, string? Comment, DateTime CreatedAt);
 
+/// <summary>Review item for moderation views (Admin / Entrepreneur "manage reviews" panel).</summary>
+public record ReviewManagedListItemDTO(
+    Guid Id, Guid ProductId, string ProductName, string ProductSlug,
+    Guid UserId, string? UserName, int Rating, string? Title, string? Comment,
+    bool IsReported, string? ReportReason, Guid? ReportedById, string? ReportedByName, DateTime? ReportedAt,
+    DateTime CreatedAt);
+
+public record ToggleReviewReportDTO(string? Reason);
+
 // === Orders ===
 
 public record OrderItemCreateDTO(Guid ProductId, int Quantity);
@@ -92,7 +102,7 @@ public record OrderCreateDTO
 }
 public record OrderItemResponseDTO(Guid Id, Guid ProductId, string ProductName, int Quantity, decimal UnitPrice, decimal TotalPrice);
 public record OrderResponseDTO(
-    Guid Id, string OrderNumber, Guid BuyerId, string Status,
+    Guid Id, string OrderNumber, Guid BuyerId, string? BuyerName, string Status,
     decimal SubtotalAmount, decimal TaxAmount, decimal ShippingAmount, decimal DiscountAmount, decimal TotalAmount,
     string PaymentMethod, string? TransactionRef,
     IReadOnlyList<OrderItemResponseDTO> Items,
@@ -192,7 +202,10 @@ public record AbsPermitCreateDTO
     public DateTime ExpirationDate { get; init; }
     public string GrantingAuthority { get; init; } = string.Empty;
     public string? LegalFramework { get; init; }
+    /// <summary>S3 URL of the official permit PDF document. Set after uploading the file separately.</summary>
+    public string? DocumentUrl { get; init; }
 }
+
 
 public record AbsPermitUpdateDTO
 {
@@ -200,12 +213,43 @@ public record AbsPermitUpdateDTO
     public string? GrantingAuthority { get; init; }
     public string? LegalFramework { get; init; }
     public string? Status { get; init; }
+    /// <summary>Updated S3 URL of the permit PDF document.</summary>
+    public string? DocumentUrl { get; init; }
 }
 
+
 public record AbsPermitResponseDTO(
-    Guid Id, Guid EntrepreneurId, Guid SpeciesId,
+    Guid Id, Guid EntrepreneurId, string EntrepreneurName, Guid SpeciesId,
     string ResolutionNumber, DateTime EmissionDate, DateTime ExpirationDate,
-    string GrantingAuthority, string Status, string? LegalFramework);
+    string GrantingAuthority, string Status, string? LegalFramework,
+    string? DocumentUrl, DateTime RequestedAt, string? Justification,
+    Guid? ApprovedById, string? ApprovedByName, DateTime? ApprovedAt, string? RejectionReason);
+
+
+// === ABS Permit Request Workflow ===
+
+public record AbsPermitRequestDTO
+{
+    public Guid SpeciesId { get; init; }
+    /// <summary>Entrepreneur's justification for requesting access to this species' genetic resources.</summary>
+    public string? Justification { get; init; }
+}
+
+public record ApproveAbsPermitDTO
+{
+    public string ResolutionNumber { get; init; } = string.Empty;
+    public DateTime EmissionDate { get; init; }
+    public DateTime ExpirationDate { get; init; }
+    public string GrantingAuthority { get; init; } = string.Empty;
+    public string? LegalFramework { get; init; }
+    public string? DocumentUrl { get; init; }
+}
+
+public record RejectAbsPermitDTO
+{
+    public string Reason { get; init; } = string.Empty;
+}
+
 
 // === Product Categories ===
 

@@ -84,4 +84,26 @@ public class SpeciesImage
             CreatedAt = DateTime.UtcNow,
         };
     }
+
+    // ── Domain Actions ────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Marks the image as validated by an expert researcher or administrator.
+    /// </summary>
+    public void Validate(Guid validatorUserId)
+    {
+        IsValidatedByExpert = true;
+        ValidatedByUserId = validatorUserId;
+        ValidationDate = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Reverts expert validation (reject), marking the image as not validated.
+    /// </summary>
+    public void Reject()
+    {
+        IsValidatedByExpert = false;
+        ValidatedByUserId = null;
+        ValidationDate = null;
+    }
 }

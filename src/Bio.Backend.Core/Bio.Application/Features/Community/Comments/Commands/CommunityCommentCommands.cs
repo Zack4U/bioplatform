@@ -122,7 +122,8 @@ public class DeleteCommunityCommentCommandHandler
         var comment = await _repo.GetByIdAsync(request.CommentId, ct)
             ?? throw new NotFoundException(nameof(CommunityPostComment), request.CommentId);
 
-        if (comment.AuthorUserId != request.ActorId && request.ActorRole != RoleNames.Admin)
+        var isModerator = request.ActorRole == RoleNames.Admin || request.ActorRole == RoleNames.Community;
+        if (comment.AuthorUserId != request.ActorId && !isModerator)
             throw new ForbiddenException("You can only delete your own comments.");
 
         comment.SoftDelete();

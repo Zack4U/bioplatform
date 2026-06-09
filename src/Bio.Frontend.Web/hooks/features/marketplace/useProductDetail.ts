@@ -24,6 +24,7 @@ import {
   getProductReviews,
   toggleFavorite,
 } from "@/services/marketplace-service";
+import { getSpeciesById } from "@/services/species-service";
 import { useAuthStore } from "@/store/auth-store";
 import type {
   CreateReviewRequest,
@@ -61,6 +62,25 @@ export function useProductDetail(slug: string) {
     staleTime: 10 * 60 * 1000,
     gcTime: 15 * 60 * 1000,
     retry: 2,
+  });
+
+  // ── Base species (cross-DB: product lives in SQL Server, species in Postgres) ─
+  // Backend only sends baseSpeciesId, so resolve name + slug client-side.
+
+  const { data: baseSpecies } = useQuery({
+    queryKey: ["species", "summary", product?.baseSpeciesId],
+    queryFn: async () => {
+      const sp = await getSpeciesById(product!.baseSpeciesId);
+      return {
+        id: sp.id,
+        name: sp.commonName ?? sp.scientificName,
+        scientificName: sp.scientificName,
+        slug: sp.slug,
+      };
+    },
+    enabled: !!product?.baseSpeciesId,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 
   // ── Reviews ────────────────────────────────────────────────────────────
@@ -178,6 +198,9 @@ export function useProductDetail(slug: string) {
     isError,
     error,
     refetch,
+
+    // Base species (resolved cross-DB)
+    baseSpecies: baseSpecies ?? null,
 
     // Reviews
     reviews,

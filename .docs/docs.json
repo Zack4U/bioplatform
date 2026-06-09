@@ -14,10 +14,49 @@
   "navigation": {
     "groups": [
       {
-        "group": "Manuales Principales",
+        "group": "Inicio",
         "pages": [
-          "manuals/Manual_de_Usuario",
-          "manuals/Manual_Tecnico"
+          "index"
+        ]
+      },
+      {
+        "group": "Guias",
+        "pages": [
+          "guides/quickstart",
+          "guides/development",
+          "guides/scripts",
+          "guides/background-jobs",
+          "guides/pr-checklist"
+        ]
+      },
+      {
+        "group": "Manuales",
+        "pages": [
+          "manuals/usuario",
+          "manuals/tecnico",
+          "manuals/instalacion",
+          "manuals/mantenimiento"
+        ]
+      },
+      {
+        "group": "Inteligencia Artificial",
+        "pages": [
+          "ai/cnn-training",
+          "ai/fine-tuning",
+          "ai/model-versioning"
+        ]
+      },
+      {
+        "group": "Proyecto",
+        "pages": [
+          "project/vision",
+          "project/requirements",
+          "project/requirements-checklist",
+          "project/architecture",
+          "project/data-dictionary",
+          "project/guidelines",
+          "project/dev-guidelines",
+          "project/todo-checklist"
         ]
       }
     ]
@@ -26,13 +65,13 @@
     "links": [
       {
         "label": "Plataforma Web",
-        "href": "http://localhost:3001"
+        "href": "http://localhost:3000"
       }
     ]
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/tu-organizacion/bioplatform"
+      "github": "https://github.com/Zack4U/bioplatform"
     }
   }
 }

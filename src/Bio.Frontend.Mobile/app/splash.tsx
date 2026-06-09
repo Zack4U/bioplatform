@@ -1,37 +1,41 @@
 /**
  * Splash / Loading Screen — BioCommerce Caldas Mobile
  *
- * Displayed on app startup. Handles:
- * - Brand identity presentation with animated elements
- * - Auth session hydration
- * - Future: offline data sync, model warmup, etc.
+ * Displayed on app startup. Runs the real startup orchestration:
+ * - Auth session hydration (silent refresh + profile)
+ * - Offline-mode hydration
+ * - When online: flush the offline upload queue and (if offline mode is on)
+ *   refresh the cached catalog
+ * - AI model health warmup
  *
- * After initialization, redirects to (tabs) or login based on auth state.
+ * Progress reflects the actual step in flight. After init, redirects to (tabs).
  */
 
-import { useAuth } from "@/hooks/useAuth";
-import type { RelativePathString } from "expo-router";
-import { Text } from "@/components/ui/text";
 import { Progress } from "@/components/ui/progress";
+import { Text } from "@/components/ui/text";
+import { useAuth } from "@/hooks/useAuth";
+import { checkHealth } from "@/services/classification-service";
+import { syncAll } from "@/services/offline-sync";
+import { useOfflineStore } from "@/store/offline-store";
+import NetInfo from "@react-native-community/netinfo";
+import { router, type RelativePathString } from "expo-router";
 import { Leaf, Sparkles } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, View } from "react-native";
-import { router } from "expo-router";
 
-/** Simulated init stages (will connect to real services later) */
-const INIT_STAGES = [
-    { label: "Inicializando...", progress: 15 },
-    { label: "Verificando sesión...", progress: 40 },
-    { label: "Preparando catálogo...", progress: 65 },
-    { label: "Cargando modelo IA...", progress: 85 },
-    { label: "¡Listo!", progress: 100 },
-];
+interface InitStage {
+    label: string;
+    progress: number;
+}
 
 export default function SplashScreen() {
     const { colorScheme } = useColorScheme();
     const { hydrate } = useAuth();
-    const [stageIndex, setStageIndex] = useState(0);
+    const [stage, setStage] = useState<InitStage>({
+        label: "Inicializando...",
+        progress: 10,
+    });
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const scaleAnim = useRef(new Animated.Value(0.8)).current;
     const leafRotate = useRef(new Animated.Value(0)).current;
@@ -81,44 +85,76 @@ export default function SplashScreen() {
     useEffect(() => {
         let isMounted = true;
 
+        const wait = (ms: number) =>
+            new Promise((resolve) => setTimeout(resolve, ms));
+
         const runInit = async () => {
-            try {
-                // Stage progression with delays
-                for (let i = 0; i < INIT_STAGES.length; i++) {
-                    if (!isMounted) return;
-                    setStageIndex(i);
+            // Each step runs real work; failures are non-fatal so the app still boots.
+            const steps: { stage: InitStage; run: () => Promise<void> }[] = [
+                {
+                    stage: { label: "Inicializando...", progress: 10 },
+                    run: async () => {},
+                },
+                {
+                    stage: { label: "Verificando sesión...", progress: 30 },
+                    run: async () => {
+                        await hydrateRef.current();
+                    },
+                },
+                {
+                    stage: { label: "Cargando preferencias...", progress: 45 },
+                    run: async () => {
+                        await useOfflineStore.getState().hydrate();
+                    },
+                },
+                {
+                    stage: { label: "Sincronizando datos...", progress: 75 },
+                    run: async () => {
+                        const net = await NetInfo.fetch();
+                        const online = Boolean(
+                            net.isConnected &&
+                                net.isInternetReachable !== false,
+                        );
+                        if (!online) return;
+                        const offline = useOfflineStore.getState();
+                        await syncAll({ refreshCatalog: offline.enabled });
+                        await offline.refreshCounts();
+                    },
+                },
+                {
+                    stage: { label: "Verificando modelo IA...", progress: 92 },
+                    run: async () => {
+                        await checkHealth();
+                    },
+                },
+                {
+                    stage: { label: "¡Listo!", progress: 100 },
+                    run: async () => {},
+                },
+            ];
 
-                    if (i === 1) {
-                        // Actually hydrate the auth on stage 2
-                        try {
-                            await hydrateRef.current();
-                        } catch {
-                            // Hydration failed — continue anyway
-                        }
-                    }
-
-                    // Simulate stage duration
-                    await new Promise((r) => setTimeout(r, 600));
+            for (const step of steps) {
+                if (!isMounted) return;
+                setStage(step.stage);
+                try {
+                    await step.run();
+                } catch {
+                    // Non-fatal — continue startup.
                 }
+                await wait(200);
+            }
 
-                // Small delay to show "¡Listo!" before navigating
-                await new Promise((r) => setTimeout(r, 400));
-            } catch {
-                // Safety: if anything throws, still navigate
-            } finally {
-                if (isMounted) {
-                    router.replace("/(tabs)" as RelativePathString);
-                }
+            await wait(300);
+            if (isMounted) {
+                router.replace("/(tabs)" as RelativePathString);
             }
         };
 
-        runInit();
+        void runInit();
         return () => {
             isMounted = false;
         };
     }, []);
-
-    const stage = INIT_STAGES[stageIndex];
 
     const leafSpin = leafRotate.interpolate({
         inputRange: [0, 1],

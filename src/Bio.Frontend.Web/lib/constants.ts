@@ -37,7 +37,9 @@ export const USER_ROLES = {
 
 /** ABS Permit statuses */
 export const ABS_PERMIT_STATUS = {
+    PENDING: "Pending",
     ACTIVE: "Active",
+    REJECTED: "Rejected",
     SUSPENDED: "Suspended",
     EXPIRED: "Expired",
     REVOKED: "Revoked",
@@ -252,7 +254,9 @@ export const ORDER_STATUS_LABELS: Record<string, string> = {
 
 /** ABS Permit status → Spanish label */
 export const ABS_PERMIT_STATUS_LABELS: Record<string, string> = {
+    Pending: "Pendiente",
     Active: "Activo",
+    Rejected: "Rechazada",
     Suspended: "Suspendido",
     Expired: "Expirado",
     Revoked: "Revocado",
@@ -281,3 +285,57 @@ export function translateLabel(
 ): string {
     return map[key] ?? key;
 }
+
+/** User role name → Spanish label */
+export const USER_ROLE_LABELS: Record<string, string> = {
+    Admin: "Administrador",
+    Researcher: "Investigador",
+    Entrepreneur: "Emprendedor",
+    Community: "Comunidad",
+    Buyer: "Comprador",
+    EnvironmentalAuthority: "Autoridad Ambiental",
+};
+
+/** Audit actionType → Spanish label */
+export const AUDIT_ACTION_LABELS: Record<string, string> = {
+    Login: "Inicio de sesión",
+    Logout: "Cierre de sesión",
+    Create: "Crear",
+    Update: "Actualizar",
+    Delete: "Eliminar",
+    Activate: "Activar",
+    Deactivate: "Desactivar",
+    Validate: "Validar",
+    Reject: "Rechazar",
+    Upload: "Subir archivo",
+};
+
+/** Audit targetType → Spanish label */
+export const AUDIT_TARGET_LABELS: Record<string, string> = {
+    User: "Usuario",
+    Species: "Especie",
+    SpeciesImage: "Imagen de especie",
+    Product: "Producto",
+    Order: "Orden",
+    AbsPermit: "Permiso ABS",
+    Review: "Reseña",
+    CnnModel: "Modelo CNN",
+    Post: "Publicación",
+};
+
+/** Audit impactLevel → Spanish label */
+export const AUDIT_IMPACT_LABELS: Record<string, string> = {
+    Critical: "Crítico",
+    High: "Alto",
+    Medium: "Medio",
+    Low: "Bajo",
+    Info: "Informativo",
+};
+
+/** Audit actorType → Spanish label */
+export const AUDIT_ACTOR_LABELS: Record<string, string> = {
+    User: "Usuario",
+    System: "Sistema",
+    Admin: "Administrador",
+    Anonymous: "Anónimo",
+};

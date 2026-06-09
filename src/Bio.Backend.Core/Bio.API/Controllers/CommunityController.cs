@@ -16,7 +16,8 @@ namespace Bio.API.Controllers;
 /// <summary>
 /// Community forum: posts, comments, and reactions.
 /// Public read access. Write access requires authentication.
-/// Pin/Unpin and status changes restricted to ADMIN.
+/// Pin/Unpin restricted to ADMIN. Archive is author or ADMIN/COMMUNITY moderator self-service;
+/// Hide (content moderation) restricted to ADMIN/COMMUNITY moderators.
 /// </summary>
 [ApiController]
 [Route("api/v1/community")]
@@ -111,6 +112,58 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> UnpinPost(Guid postId, CancellationToken ct = default)
     {
         var result = await _mediator.Send(new PinCommunityPostCommand(postId, false), ct);
+        await _cache.RemoveByPrefixAsync("community:posts:", ct);
+        return Ok(result);
+    }
+
+    /// <summary>Archives a community post (no longer shown in active feeds). Author or Admin/Community moderator.</summary>
+    [HttpPost("posts/{postId:guid}/archive")]
+    [Authorize]
+    [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ArchivePost(Guid postId, CancellationToken ct = default)
+    {
+        var result = await _mediator.Send(new ArchiveCommunityPostCommand(postId, true, ActorId, ActorRole), ct);
+        await _cache.RemoveByPrefixAsync("community:posts:", ct);
+        return Ok(result);
+    }
+
+    /// <summary>Restores an archived post to Published. Author or Admin/Community moderator.</summary>
+    [HttpDelete("posts/{postId:guid}/archive")]
+    [Authorize]
+    [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UnarchivePost(Guid postId, CancellationToken ct = default)
+    {
+        var result = await _mediator.Send(new ArchiveCommunityPostCommand(postId, false, ActorId, ActorRole), ct);
+        await _cache.RemoveByPrefixAsync("community:posts:", ct);
+        return Ok(result);
+    }
+
+    /// <summary>Hides a post for violating community guidelines. Admin/Community moderator only.</summary>
+    [HttpPost("posts/{postId:guid}/hide")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Community}")]
+    [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> HidePost(Guid postId, CancellationToken ct = default)
+    {
+        var result = await _mediator.Send(new HideCommunityPostCommand(postId, true, ActorId, ActorRole), ct);
+        await _cache.RemoveByPrefixAsync("community:posts:", ct);
+        return Ok(result);
+    }
+
+    /// <summary>Unhides a post, restoring it to Published. Admin/Community moderator only.</summary>
+    [HttpDelete("posts/{postId:guid}/hide")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Community}")]
+    [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UnhidePost(Guid postId, CancellationToken ct = default)
+    {
+        var result = await _mediator.Send(new HideCommunityPostCommand(postId, false, ActorId, ActorRole), ct);
         await _cache.RemoveByPrefixAsync("community:posts:", ct);
         return Ok(result);
     }

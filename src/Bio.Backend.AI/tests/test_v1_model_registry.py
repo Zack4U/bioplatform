@@ -165,6 +165,15 @@ class TestModelRegistryEndpoints:
             assert "reload failed" in resp.json()["message"].lower()
 
     @pytest.mark.asyncio
+    async def test_reload_null_version_suspends(self, app_client, mock_classifier):
+        # Null version == suspend: model unloaded, classification paused.
+        resp = await app_client.post("/api/v1/model/reload", json={"version": None})
+        assert resp.status_code == 200
+        assert resp.json()["status"] == "suspended"
+        assert resp.json()["version"] is None
+        mock_classifier.suspend.assert_called_once()
+
+    @pytest.mark.asyncio
     async def test_validate_version_not_found(self, app_client):
         with patch.object(Path, "exists", return_value=False):
             resp = await app_client.post("/api/v1/model/validate?version=v1.0.0")

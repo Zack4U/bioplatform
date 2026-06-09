@@ -149,6 +149,14 @@ export function CommunityPostsManagement() {
     const togglePin = useAdminTogglePin();
     const changeStatus = useAdminChangePostStatus();
 
+    const handleChangeStatus = (id: string, status: "Draft" | "Published" | "Archived" | "Hidden") => {
+        changeStatus.mutate({ id, status }, {
+            onSuccess: () => {
+                setSelected((prev) => prev?.id === id ? { ...prev, status } : prev);
+            },
+        });
+    };
+
     const handleSort = (key: string) => {
         setSortBy((p) => {
             if (p === key) {
@@ -172,17 +180,19 @@ export function CommunityPostsManagement() {
         {
             label: "Destacar / Quitar",
             icon: <Pin className="h-4 w-4" />,
-            onClick: (p) => togglePin.mutate({ id: p.id, isPinned: p.isPinned }),
+            onClick: (p) => togglePin.mutate({ id: p.id, isPinned: p.isPinned }, {
+                onSuccess: (post) => setSelected((prev) => prev?.id === p.id ? { ...prev, isPinned: post.isPinned } : prev),
+            }),
         },
         {
             label: "Archivar",
             icon: <Archive className="h-4 w-4" />,
-            onClick: (p) => changeStatus.mutate({ id: p.id, status: "Archived" }),
+            onClick: (p) => handleChangeStatus(p.id, "Archived"),
         },
         {
             label: "Ocultar",
             icon: <EyeOff className="h-4 w-4" />,
-            onClick: (p) => changeStatus.mutate({ id: p.id, status: "Hidden" }),
+            onClick: (p) => handleChangeStatus(p.id, "Hidden"),
         },
         {
             label: "Eliminar",
@@ -298,7 +308,7 @@ export function CommunityPostsManagement() {
                             <div>
                                 <h3 className="font-bold text-base mb-2">{selected.title}</h3>
                             </div>
-                            <div className="flex justify-end gap-2">
+                            <div className="flex flex-wrap justify-end gap-2">
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -313,6 +323,36 @@ export function CommunityPostsManagement() {
                                         <><Pin className="h-3.5 w-3.5 mr-1" />Destacar</>
                                     )}
                                 </Button>
+                                {selected.status !== "Published" && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleChangeStatus(selected.id, "Published")}
+                                        disabled={changeStatus.isPending}
+                                    >
+                                        <Eye className="h-3.5 w-3.5 mr-1" />Publicar
+                                    </Button>
+                                )}
+                                {selected.status !== "Archived" && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleChangeStatus(selected.id, "Archived")}
+                                        disabled={changeStatus.isPending}
+                                    >
+                                        <Archive className="h-3.5 w-3.5 mr-1" />Archivar
+                                    </Button>
+                                )}
+                                {selected.status !== "Hidden" && (
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleChangeStatus(selected.id, "Hidden")}
+                                        disabled={changeStatus.isPending}
+                                    >
+                                        <EyeOff className="h-3.5 w-3.5 mr-1" />Ocultar
+                                    </Button>
+                                )}
                                 <Button
                                     variant="destructive"
                                     size="sm"

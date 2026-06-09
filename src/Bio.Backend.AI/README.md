@@ -237,4 +237,4 @@ If the database is unavailable, the service still works in **degraded mode** —
 
 - **[CNN_GUIDE.md](CNN_GUIDE.md)** — Full pipeline: dataset preparation → training → evaluation
 - **[SCRIPTS_GUIDE.md](../../SCRIPTS_GUIDE.md)** — All available scripts
-- **[Data Dictionary](../../.docs/Bioplatform/03-Data_Dictionary.md)** — Database schema reference
+- **[Data Dictionary](../../.docs/project/data-dictionary.mdx)** — Database schema reference

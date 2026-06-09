@@ -109,19 +109,32 @@ print(f"Device: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else
 
 ## 3. Estructura del Pipeline
 
+> **IMPORTANTE — los scripts viven en subcarpetas.** Los ejemplos de las secciones
+> siguientes a veces usan rutas cortas (`scripts/04_train_cnn.py`) por legibilidad,
+> pero la ruta real lleva el subdirectorio: `scripts/cnn/04_train_cnn.py`. Mapa:
+> `scripts/dataset/` (01, 02, 02b–02e, 03), `scripts/cnn/` (04, 05, 05b, 06, 07),
+> `scripts/tools/` (model_auditor, download_model), `scripts/species/` (07–12).
+
 ```
 Bio.Backend.AI/
 ├── scripts/                          # Pipeline de entrenamiento
-│   ├── 01_analyze_dataset.py         # Analizar GBIF data
-│   ├── 02_download_images.py         # Descargar imágenes
-│   ├── 02b_supplement_images.py      # Descargar de iNaturalist API
-│   ├── 02c_raw_images_summary.py     # Reporte de raw_images descargadas
-│   ├── 02d_offline_augment.py        # Augmentation offline masiva
-│   ├── 02e_clean_augmented.py        # Eliminar imágenes augmentadas
-│   ├── 03_organize_dataset.py        # Split train/val/test
-│   ├── 04_train_cnn.py              # Entrenar modelo
-│   ├── 05_evaluate_model.py         # Evaluar métricas
-│   └── 06_export_onnx.py           # Exportar a ONNX (opcional)
+│   ├── dataset/
+│   │   ├── 01_analyze_dataset.py     # Analizar GBIF data
+│   │   ├── 02_download_images.py     # Descargar imágenes
+│   │   ├── 02b_supplement_images.py  # Descargar de iNaturalist API
+│   │   ├── 02c_raw_images_summary.py # Reporte de raw_images descargadas
+│   │   ├── 02d_offline_augment.py    # Augmentation offline masiva
+│   │   ├── 02e_clean_augmented.py    # Eliminar imágenes augmentadas
+│   │   └── 03_organize_dataset.py    # Split train/val/test
+│   ├── cnn/
+│   │   ├── 04_train_cnn.py           # Entrenar modelo
+│   │   ├── 05_evaluate_model.py      # Evaluar métricas
+│   │   ├── 05b_compare_models.py     # Comparar versiones
+│   │   ├── 06_export_onnx.py         # Exportar a ONNX (opcional)
+│   │   └── 07_local_finetune.py      # Fine-tuning local
+│   └── tools/
+│       ├── model_auditor.py          # Auditoría visual interactiva
+│       └── download_model.py         # Descarga de pesos (DVC/URL)
 │
 ├── app/                              # FastAPI Service
 │   ├── main.py                       # Entry point
@@ -1057,7 +1070,11 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
-Al iniciar, el modelo se carga automáticamente en el evento `lifespan`.
+Al iniciar, el servicio consulta la tabla `ai_model_versions` (PostgreSQL) en el evento
+`lifespan` y carga **solo** la versión marcada como activa (`is_active = true`), desde
+`data/weights/<version>/best_model.pth`. Si no hay ninguna activa, el clasificador queda
+**suspendido** y `/api/v1/classify` devuelve 503 hasta que un admin active una versión
+(panel admin → hot-reload, o reinicio del servicio tras sembrar el registro).
 
 ### Endpoints Disponibles
 
@@ -1240,7 +1257,7 @@ Ver sección **9.9 Receta Avanzada** arriba. Resumen rápido:
 Causas probables:
 1. **Label smoothing muy alto**: Reducir `--label-smoothing 0.05` (default 0.1)
 2. **Pocas épocas**: Dejar que entrene completo con `--epochs 50 --patience 15`
-3. **Imágenes contaminadas**: Ejecutar `python scripts/filter_bad_images.py --mode report` para detectar waveforms/espectrogramas en el dataset
+3. **Imágenes contaminadas**: Revisar manualmente el dataset por imágenes no-fotográficas (waveforms/espectrogramas) y eliminarlas antes de re-organizar
 4. **Especies visualmente similares**: Normal si hay muchas del mismo género
 
 ### Modelo no carga en FastAPI
@@ -1271,7 +1288,6 @@ Los siguientes archivos se generan automáticamente para documentación:
 | Historial de entrenamiento | `training_history.json` | `data/weights/<version>/` *(o `data/weights/` en legacy)* |
 | Distribución del dataset | `dataset_stats.json` | `data/processed/` |
 | Análisis taxonómico | `species_summary.csv` | `data/dataset_analysis/` |
-| Reporte filtrado imágenes | `non_photo_suspects.json` | `data/dataset_analysis/` |
 | Reporte raw_images | `raw_images_summary.json/.txt` | `data/dataset_analysis/` |
 | Reporte augmentation | `augmentation_report.json` | `data/dataset_analysis/` |
 | Reporte suplementación | `supplement_report.json` | `data/dataset_analysis/` |
@@ -1304,10 +1320,6 @@ python scripts/dataset/01_analyze_dataset.py
 
 # 2. Descargar imágenes (esto toma horas)
 python scripts/dataset/02_download_images.py --min-images 10 --max-per-species 150 --workers 6
-
-# 2.5 Filtrar imágenes no-fotográficas (waveforms, espectrogramas)
-python scripts/dataset/filter_bad_images.py --mode report
-python scripts/dataset/filter_bad_images.py --mode quarantine --target both
 
 # 2.6 (Opcional) Suplementar especies con pocas imágenes
 python scripts/dataset/02b_supplement_images.py --dry-run               # ver preview

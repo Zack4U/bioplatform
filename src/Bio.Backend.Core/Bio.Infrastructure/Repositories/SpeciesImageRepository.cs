@@ -85,4 +85,8 @@ public class SpeciesImageRepository : ISpeciesImageRepository
             ? (0, 0)
             : (result.ImageCount, result.SpeciesCount);
     }
+
+    /// <inheritdoc />
+    public async Task<SpeciesImage?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default)
+        => await _context.SpeciesImages.FirstOrDefaultAsync(img => img.Id == imageId, cancellationToken);
 }

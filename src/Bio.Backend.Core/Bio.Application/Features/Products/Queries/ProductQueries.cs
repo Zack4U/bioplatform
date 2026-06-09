@@ -100,7 +100,8 @@ public class GetManagedProductsQueryHandler : IRequestHandler<GetManagedProducts
         var dtos = items.Select(p => new ProductManagedListItemDTO(
             p.Id, p.Slug, p.Name, p.ThumbnailUrl,
             p.BasePrice, p.SellPrice, p.StockQuantity, p.IsActive,
-            p.Category?.Name, p.EntrepreneurId,
+            p.Sku, p.Description, p.BaseSpeciesId, p.CategoryId,
+            p.Category?.Name, p.EntrepreneurId, p.Entrepreneur?.FullName,
             p.CreatedAt, p.UpdatedAt)).ToList();
 
         return PaginatedResult<ProductManagedListItemDTO>.Create(dtos, total, q.Page, q.PageSize);

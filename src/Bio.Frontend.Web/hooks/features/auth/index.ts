@@ -16,3 +16,5 @@ export {
     useUpdateProfile,
     useVerifyTwoFactor,
 } from "./useAuth";
+
+export { useHasRole, useHasAnyRole, useUserRoles } from "./useRoles";

@@ -479,7 +479,8 @@ pip install -r requirements.txt
 
 ## 8. Documentación Adicional
 
-- [Clean Architecture Backend](./.github/ARCHITECTURE.md)
+- [Arquitectura del Proyecto](./.docs/project/architecture.mdx)
+- [Copilot / Convenciones de código](./.github/copilot-instructions.md)
 - [AI Service Setup](./src/Bio.Backend.AI/README.md)
 - [Frontend Development](./src/Bio.Frontend.Web/README.md)
 - [Mobile App](./src/Bio.Frontend.Mobile/README.md)
