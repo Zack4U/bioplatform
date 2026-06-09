@@ -7,6 +7,8 @@ using Bio.Application.Features.Species.Commands.CreateSpecies;
 using Bio.Application.Features.Species.Commands.DeleteSpecies;
 using Bio.Application.Features.Species.Commands.UpdateSpecies;
 using Bio.Application.Features.Species.Commands.UploadSpeciesObservation;
+using Bio.Application.Features.Species.Queries.ExportSpecies;
+using Bio.Application.Features.Species.Queries.ExportSpeciesImages;
 using Bio.Application.Features.Species.Queries.GetAllSpecies;
 using Bio.Application.Features.Species.Queries.GetSpeciesById;
 using Bio.Application.Features.Species.Queries.GetSpeciesBySlug;
@@ -112,6 +114,36 @@ public class SpeciesController : ControllerBase
         [FromQuery] int pageSize = 20)
     {
         var result = await _mediator.Send(new GetSpeciesImagesQuery(id, onlyValidatedByExpert, page, pageSize));
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Exporta el catálogo COMPLETO de especies con detalle total, paginado por lotes,
+    /// para sincronización offline. Coordenadas protegidas según rol.
+    /// </summary>
+    [HttpGet("export")]
+    [ProducesResponseType(typeof(PaginatedResult<SpeciesDetailDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Export(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 50)
+    {
+        var userRole = GetUserRole();
+        var result = await _mediator.Send(new ExportSpeciesQuery(page, pageSize, userRole));
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Exporta TODAS las imágenes del catálogo paginadas por lotes, para descarga offline.
+    /// </summary>
+    [HttpGet("images/export")]
+    [ProducesResponseType(typeof(PaginatedResult<SpeciesImageDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportImages(
+        [FromQuery] bool onlyValidatedByExpert = false,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 50)
+    {
+        var result = await _mediator.Send(
+            new ExportSpeciesImagesQuery(onlyValidatedByExpert, page, pageSize));
         return Ok(result);
     }
 

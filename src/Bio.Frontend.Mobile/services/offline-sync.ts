@@ -11,18 +11,29 @@
  * @module services/offline-sync
  */
 
-import { upsertSpeciesListItems } from "@/lib/db/species-cache";
+import {
+    getThumbnailTargets,
+    setImageLocalUri,
+    setThumbLocalUri,
+    upsertImageRows,
+    upsertSpeciesDetail,
+} from "@/lib/db/species-cache";
+import type { SpeciesImage } from "@/types";
 import {
     getPendingObservations,
     removeObservation,
     type PendingObservation,
 } from "@/lib/db/observation-queue";
+import { downloadGalleryImage, downloadThumbnail } from "@/lib/offline-files";
 import * as speciesService from "@/services/species-service";
 import { isAxiosError } from "axios";
 import * as Device from "expo-device";
 
-const CATALOG_PAGE_SIZE = 100;
-const MAX_CATALOG_PAGES = 100; // hard safety cap (10k species)
+export type ProgressCallback = (done: number, total: number) => void;
+
+const EXPORT_PAGE_SIZE = 50; // full-detail pages are heavier
+const IMAGE_EXPORT_PAGE_SIZE = 100;
+const MAX_PAGES = 500; // hard safety cap
 
 export interface FlushResult {
     sent: number;
@@ -80,31 +91,93 @@ function buildObservationFormData(obs: PendingObservation): FormData {
 }
 
 /**
- * Download the full species catalog into the local cache.
+ * Download the FULL catalog (complete detail per species) into the local cache,
+ * batched via the export endpoint. Stores description, ecology, economic
+ * potential, traditional uses and taxonomy — true offline, no per-species visit.
  * Returns the number of species stored.
  */
 export async function downloadCatalog(
-    onProgress?: (stored: number, total: number) => void,
+    onProgress?: ProgressCallback,
 ): Promise<number> {
     let page = 1;
     let stored = 0;
     let total = 0;
 
-    while (page <= MAX_CATALOG_PAGES) {
-        const result = await speciesService.getList({
+    while (page <= MAX_PAGES) {
+        const result = await speciesService.getSpeciesExport(
             page,
-            pageSize: CATALOG_PAGE_SIZE,
-            sortBy: "scientificName",
-            sortOrder: "asc",
-        });
+            EXPORT_PAGE_SIZE,
+        );
 
         total = result.totalCount || total;
-        await upsertSpeciesListItems(result.items);
+        for (const species of result.items) {
+            await upsertSpeciesDetail(species);
+        }
         stored += result.items.length;
         onProgress?.(stored, total);
 
         if (!result.hasNextPage || result.items.length === 0) break;
         page += 1;
+    }
+
+    return stored;
+}
+
+/**
+ * Download the primary thumbnail of every cached species for offline display.
+ * Skips species whose thumbnail is already downloaded. Returns count stored.
+ */
+export async function downloadThumbnails(
+    onProgress?: ProgressCallback,
+): Promise<number> {
+    const targets = await getThumbnailTargets();
+    let done = 0;
+
+    for (const target of targets) {
+        const localUri = await downloadThumbnail(target.id, target.thumbnailUrl);
+        if (localUri) await setThumbLocalUri(target.id, localUri);
+        done += 1;
+        onProgress?.(done, targets.length);
+    }
+
+    return done;
+}
+
+/**
+ * Download the full image gallery (binaries) for the whole catalog.
+ * Enumerates every image via the export endpoint (batched), stores the rows,
+ * then downloads each binary to disk with progress. Optional / heavy.
+ * Returns the number of image binaries stored.
+ */
+export async function downloadGalleryImages(
+    onProgress?: ProgressCallback,
+): Promise<number> {
+    // Pass 1: enumerate + persist all image rows (batched).
+    const allImages: SpeciesImage[] = [];
+    let page = 1;
+    while (page <= MAX_PAGES) {
+        const result = await speciesService.getSpeciesImagesExport(
+            page,
+            IMAGE_EXPORT_PAGE_SIZE,
+            false,
+        );
+        await upsertImageRows(result.items);
+        allImages.push(...result.items);
+        if (!result.hasNextPage || result.items.length === 0) break;
+        page += 1;
+    }
+
+    // Pass 2: download each binary to disk.
+    let done = 0;
+    let stored = 0;
+    for (const img of allImages) {
+        const localUri = await downloadGalleryImage(img.id, img.imageUrl);
+        if (localUri) {
+            await setImageLocalUri(img.id, localUri);
+            stored += 1;
+        }
+        done += 1;
+        onProgress?.(done, allImages.length);
     }
 
     return stored;

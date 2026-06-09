@@ -25,7 +25,11 @@ import {
 } from "@/lib/formatters";
 import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
-import type { SpeciesSearchParams } from "@/types";
+import type {
+    SpeciesEconomicPotential,
+    SpeciesSearchParams,
+    SpeciesTraditionalUse,
+} from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
 import {
     AlertTriangle,
@@ -64,6 +68,130 @@ function InfoSection({ icon, title, content }: InfoSectionProps) {
                 <Text className="text-sm text-muted-foreground leading-6">
                     {content}
                 </Text>
+            </CardContent>
+        </Card>
+    );
+}
+
+// ─── TraditionalUsesSection ────────────────────────────────────────────────────
+
+function TraditionalUsesSection({
+    uses,
+    color,
+}: {
+    uses: SpeciesTraditionalUse[];
+    color: string;
+}) {
+    if (!uses?.length) return null;
+    return (
+        <Card className="border-0 shadow-sm mb-3">
+            <CardContent className="p-4">
+                <View className="flex-row items-center gap-2 mb-3">
+                    <Sparkles size={16} color={color} strokeWidth={1.5} />
+                    <Text className="text-sm font-bold text-foreground">
+                        Usos Tradicionales
+                    </Text>
+                </View>
+                {uses.map((use, index) => (
+                    <View
+                        key={use.id}
+                        className={
+                            index < uses.length - 1
+                                ? "mb-3 pb-3 border-b border-border"
+                                : ""
+                        }
+                    >
+                        <Text className="text-sm font-semibold text-foreground">
+                            {use.part}
+                            {use.category?.length
+                                ? ` · ${use.category.join(", ")}`
+                                : ""}
+                        </Text>
+                        {use.description && (
+                            <Text className="text-sm text-muted-foreground leading-6 mt-1">
+                                {use.description}
+                            </Text>
+                        )}
+                        {use.specificPurpose && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Propósito: {use.specificPurpose}
+                            </Text>
+                        )}
+                        {use.preparationMethod && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Preparación: {use.preparationMethod}
+                            </Text>
+                        )}
+                        {use.community && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Comunidad: {use.community}
+                            </Text>
+                        )}
+                        {use.traditionalWarnings && (
+                            <Text className="text-xs text-destructive mt-1">
+                                Advertencia: {use.traditionalWarnings}
+                            </Text>
+                        )}
+                    </View>
+                ))}
+            </CardContent>
+        </Card>
+    );
+}
+
+// ─── EconomicPotentialSection ──────────────────────────────────────────────────
+
+function EconomicPotentialSection({
+    potentials,
+    color,
+}: {
+    potentials: SpeciesEconomicPotential[];
+    color: string;
+}) {
+    if (!potentials?.length) return null;
+    return (
+        <Card className="border-0 shadow-sm mb-3">
+            <CardContent className="p-4">
+                <View className="flex-row items-center gap-2 mb-3">
+                    <Globe size={16} color={color} strokeWidth={1.5} />
+                    <Text className="text-sm font-bold text-foreground">
+                        Potencial Economico
+                    </Text>
+                </View>
+                {potentials.map((ep, index) => (
+                    <View
+                        key={ep.id}
+                        className={
+                            index < potentials.length - 1
+                                ? "mb-3 pb-3 border-b border-border"
+                                : ""
+                        }
+                    >
+                        <Text className="text-sm font-semibold text-foreground">
+                            {ep.sector}
+                        </Text>
+                        {ep.description && (
+                            <Text className="text-sm text-muted-foreground leading-6 mt-1">
+                                {ep.description}
+                            </Text>
+                        )}
+                        {ep.products?.length > 0 && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Productos: {ep.products.join(", ")}
+                            </Text>
+                        )}
+                        {ep.marketValue && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Valor de mercado: {ep.marketValue}
+                            </Text>
+                        )}
+                        {ep.sustainabilityLevel && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Sostenibilidad: {ep.sustainabilityLevel}
+                            </Text>
+                        )}
+                    </View>
+                ))}
             </CardContent>
         </Card>
     );
@@ -411,28 +539,14 @@ export default function SpeciesDetailScreen() {
                     content={species.ecologicalInfo}
                 />
 
-                <InfoSection
-                    icon={
-                        <Sparkles
-                            size={16}
-                            color={theme.warning}
-                            strokeWidth={1.5}
-                        />
-                    }
-                    title="Usos Tradicionales"
-                    content={species.traditionalUses}
+                <TraditionalUsesSection
+                    uses={species.traditionalUses}
+                    color={theme.warning}
                 />
 
-                <InfoSection
-                    icon={
-                        <Globe
-                            size={16}
-                            color={theme.accent}
-                            strokeWidth={1.5}
-                        />
-                    }
-                    title="Potencial Economico"
-                    content={species.economicPotential}
+                <EconomicPotentialSection
+                    potentials={species.economicPotentials}
+                    color={theme.accent}
                 />
             </View>
 

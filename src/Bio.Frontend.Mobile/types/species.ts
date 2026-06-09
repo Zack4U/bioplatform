@@ -20,7 +20,39 @@ export interface TaxonomyResponse {
 
 // ─── Species ─────────────────────────────────────────────────────────────────
 
-/** Maps to SpeciesResponseDTO */
+/** Maps to SpeciesEconomicPotentialDTO */
+export interface SpeciesEconomicPotential {
+    id: string;
+    speciesId: string;
+    sector: string;
+    products: string[];
+    activeProperties: string[] | null;
+    description: string | null;
+    marketValue: string | null;
+    sustainabilityLevel: string | null;
+    confidence: string | null;
+    createdAt: string;
+}
+
+/** Maps to SpeciesTraditionalUseDTO */
+export interface SpeciesTraditionalUse {
+    id: string;
+    speciesId: string;
+    part: string;
+    category: string[];
+    specificPurpose: string | null;
+    preparationMethod: string | null;
+    description: string | null;
+    community: string | null;
+    traditionalWarnings: string | null;
+    confidence: string | null;
+    createdAt: string;
+}
+
+/**
+ * Maps to SpeciesDetailDTO — the actual payload of GET /api/species/{id}
+ * and /export. economicPotentials and traditionalUses are ARRAYS (not strings).
+ */
 export interface SpeciesResponse {
     id: string;
     taxonomyId: number | null;
@@ -31,14 +63,15 @@ export interface SpeciesResponse {
     commonName: string | null;
     description: string | null;
     ecologicalInfo: string | null;
-    traditionalUses: string | null;
-    economicPotential: string | null;
+    economicPotentials: SpeciesEconomicPotential[];
+    traditionalUses: SpeciesTraditionalUse[];
     conservationStatus: string | null;
     altitudeRange: string | null;
     legalStatus: boolean;
     isSensitive: boolean;
     createdAt: string;
-    updatedAt: string;
+    updatedAt: string | null;
+    distributions?: GeographicDistribution[];
 }
 
 /** Maps to SpeciesListItemDTO (paginated catalog list) */

@@ -29,6 +29,16 @@ public interface ISpeciesImageRepository
     Task<IReadOnlyList<SpeciesImage>> GetAllAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Página de imágenes de TODAS las especies (export / sincronización offline).
+    /// Filtro opcional de validación por experto. Retorna (items, totalCount).
+    /// </summary>
+    Task<(IReadOnlyList<SpeciesImage> Items, int TotalCount)> GetAllPagedAsync(
+        bool onlyValidatedByExpert = false,
+        int page = 1,
+        int pageSize = 50,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Returns the count of images uploaded after <paramref name="since"/> and the number
     /// of distinct species those images belong to.
     /// When <paramref name="since"/> is null, counts all images in the system.

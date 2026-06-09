@@ -15,7 +15,6 @@ import { Progress } from "@/components/ui/progress";
 import { Text } from "@/components/ui/text";
 import { useAuth } from "@/hooks/useAuth";
 import { checkHealth } from "@/services/classification-service";
-import { syncAll } from "@/services/offline-sync";
 import { useOfflineStore } from "@/store/offline-store";
 import NetInfo from "@react-native-community/netinfo";
 import { router, type RelativePathString } from "expo-router";
@@ -116,9 +115,9 @@ export default function SplashScreen() {
                                 net.isInternetReachable !== false,
                         );
                         if (!online) return;
-                        const offline = useOfflineStore.getState();
-                        await syncAll({ refreshCatalog: offline.enabled });
-                        await offline.refreshCounts();
+                        // Flush queued uploads only — full catalog download is
+                        // user-initiated from settings, not on every startup.
+                        await useOfflineStore.getState().flushPending();
                     },
                 },
                 {
