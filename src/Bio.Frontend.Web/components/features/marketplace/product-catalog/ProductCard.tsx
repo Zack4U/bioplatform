@@ -368,7 +368,7 @@ export function ProductCard({
                         </div>
 
                         {/* Certifications */}
-                        {product.certifications.length > 0 && !isListView && (
+                        {(product.certifications?.length ?? 0) > 0 && !isListView && (
                             <div className="flex flex-wrap items-center gap-1">
                                 {product.certifications
                                     .slice(0, 2)

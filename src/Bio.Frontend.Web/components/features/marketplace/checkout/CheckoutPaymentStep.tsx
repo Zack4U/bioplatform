@@ -4,11 +4,7 @@
  * Shows order summary items, selected shipping address, order notes input,
  * and a "Proceder al pago seguro" button that triggers the real checkout session.
  *
- * Integrates with the payment gateway via the `onSubmitOrder` callback from
- * useCheckout, which calls createOrder + createCheckoutSession and redirects
- * to the hosted payment page (Stripe / PSE).
- *
- * UI ONLY — all logic lives in useCheckout.
+ * Integrates with Stripe Embedded Checkout.
  *
  * Architecture: Hook Pattern (copilot-instructions.md §2.2)
  */
@@ -42,7 +38,7 @@ interface CheckoutPaymentStepProps {
   orderNotes: string;
   onOrderNotesChange: (notes: string) => void;
   onBack: () => void;
-  /** Triggers createOrder + createCheckoutSession → redirects to gateway */
+  /** Triggers createOrder + createCheckoutSession → redirects to Stripe */
   onSubmitOrder: () => void;
   /** True while the order and checkout session requests are in-flight */
   isSubmittingOrder: boolean;
@@ -63,6 +59,7 @@ export function CheckoutPaymentStep({
   isSubmittingOrder,
   submitOrderError,
 }: CheckoutPaymentStepProps) {
+
   return (
     <div className="space-y-6">
       {/* ── API error banner ────────────────────────────────────── */}
@@ -192,12 +189,11 @@ export function CheckoutPaymentStep({
               </div>
             </div>
             <p className="text-sm font-medium">
-              Pago seguro vía pasarela externa
+              Pago seguro vía Stripe
             </p>
             <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-              Al confirmar tu pedido serás redirigido a la página de pago seguro
-              para completar la transacción con tarjeta de crédito, débito o
-              PSE.
+              Al confirmar tu pedido podrás ingresar los datos de tu tarjeta
+              de forma segura para completar la transacción.
             </p>
             <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
               <Lock className="h-3 w-3" aria-hidden="true" />
@@ -220,7 +216,7 @@ export function CheckoutPaymentStep({
         </Button>
         <Button
           onClick={onSubmitOrder}
-          disabled={isSubmittingOrder}
+          disabled={isSubmittingOrder || selectedItems.length === 0}
           size="lg"
           className="gap-2"
         >

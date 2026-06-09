@@ -63,7 +63,13 @@ public class GetPublicProductsQueryHandler : IRequestHandler<GetPublicProductsQu
             p.BasePrice, p.SellPrice, p.StockQuantity, p.IsActive,
             p.Category?.Name,
             p.Reviews.Count > 0 ? p.Reviews.Average(r => r.Rating) : 0,
-            p.Reviews.Count)).ToList();
+            p.Reviews.Count,
+            EntrepreneurName: p.Entrepreneur != null
+                ? p.Entrepreneur.FullName
+                : null,
+            BaseSpeciesName: null,
+            Sku: p.Sku,
+            Certifications: p.Certifications.Select(c => c.Name).ToList())).ToList();
 
         var result = PaginatedResult<ProductListItemDTO>.Create(dtos, total, q.Page, q.PageSize);
         await _cache.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5), ct);
@@ -222,7 +228,13 @@ public class GetRelatedProductsQueryHandler : IRequestHandler<GetRelatedProducts
             p.BasePrice, p.SellPrice, p.StockQuantity, p.IsActive,
             p.Category?.Name,
             p.Reviews.Count > 0 ? p.Reviews.Average(r => r.Rating) : 0,
-            p.Reviews.Count)).ToList();
+            p.Reviews.Count,
+            EntrepreneurName: p.Entrepreneur != null
+                ? p.Entrepreneur.FullName
+                : null,
+            BaseSpeciesName: null,
+            Sku: p.Sku,
+            Certifications: p.Certifications.Select(c => c.Name).ToList())).ToList();
 
         await _cache.SetAsync(cacheKey, (IReadOnlyList<ProductListItemDTO>)dtos, TimeSpan.FromMinutes(10), ct);
         return dtos;

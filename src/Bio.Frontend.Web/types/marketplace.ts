@@ -364,24 +364,20 @@ export type UpdateAddressRequest = CreateAddressRequest;
 
 /** Payload for creating an order from the checkout flow */
 export interface CreateOrderRequest {
-  cartItems: Array<{
+  items: Array<{
     productId: string;
     quantity: number;
   }>;
+  paymentMethod: string;
   shippingAddressId: string;
   billingAddressId?: string;
-  /** When true the billing address is the same as the shipping address */
-  useSameAddress: boolean;
+  useSameAddress?: boolean;
   orderNotes?: string;
   couponCode?: string;
 }
 
 /** Response from the payment gateway when initiating a checkout session */
 export interface CheckoutSessionResponse {
-  /** External URL to redirect the user to (Stripe / PSE hosted page) */
+  /** The hosted Stripe Checkout URL to redirect the user to */
   checkoutUrl: string;
-  /** Gateway-generated session identifier */
-  sessionId: string;
-  /** Internal order ID that the session is tied to */
-  orderId: string;
 }

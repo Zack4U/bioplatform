@@ -103,6 +103,8 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IAbsPermitRepository, Bio.Backe
 builder.Services.AddScoped<Bio.Domain.Interfaces.ICartRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CartRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ITraceabilityBatchRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.TraceabilityBatchRepository>();
 
+builder.Services.AddScoped<Bio.Application.Interfaces.IPaymentService, Bio.Infrastructure.Services.StripePaymentService>();
+
 // AWS S3 — Species observation image uploads
 builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
 builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));
