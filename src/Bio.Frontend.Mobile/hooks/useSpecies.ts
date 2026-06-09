@@ -11,10 +11,11 @@ import * as speciesService from "@/services/species-service";
 import type {
     PaginatedResponse,
     SpeciesFilterMeta,
+    SpeciesImage,
     SpeciesListItem,
     SpeciesSearchParams,
 } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 const SPECIES_KEYS = {
     all: ["species"] as const,
@@ -87,5 +88,47 @@ export function useSpeciesDetail(id: string) {
         queryKey: SPECIES_KEYS.detail(id),
         queryFn: () => speciesService.getById(id),
         enabled: !!id,
+    });
+}
+
+const GALLERY_PAGE_SIZE = 20;
+
+/**
+ * Fetch a species' geographic distribution points.
+ * Coordinates may be masked server-side for sensitive species.
+ */
+export function useSpeciesDistributions(id: string) {
+    return useQuery({
+        queryKey: [...SPECIES_KEYS.detail(id), "distributions"] as const,
+        queryFn: () => speciesService.getSpeciesDistributions(id),
+        enabled: !!id,
+        staleTime: 10 * 60 * 1000,
+    });
+}
+
+/**
+ * Infinite-scroll species image gallery.
+ *
+ * @param id            Species id.
+ * @param onlyValidated When true (default), only expert-validated images load.
+ */
+export function useSpeciesGallery(id: string, onlyValidated = true) {
+    return useInfiniteQuery({
+        queryKey: [
+            ...SPECIES_KEYS.detail(id),
+            "images",
+            { onlyValidated },
+        ] as const,
+        queryFn: ({ pageParam }) =>
+            speciesService.getSpeciesImages(id, {
+                onlyValidatedByExpert: onlyValidated,
+                page: pageParam,
+                pageSize: GALLERY_PAGE_SIZE,
+            }),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage: PaginatedResponse<SpeciesImage>) =>
+            lastPage.hasNextPage ? lastPage.page + 1 : undefined,
+        enabled: !!id,
+        staleTime: 30 * 60 * 1000,
     });
 }

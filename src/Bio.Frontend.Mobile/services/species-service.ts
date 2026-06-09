@@ -10,17 +10,19 @@
 import apiClient from "@/lib/axios-client";
 import { CORE_ROUTES } from "@/services/routes";
 import type {
+    GeographicDistribution,
     PaginatedResponse,
     SpeciesFilterMeta,
+    SpeciesImage,
+    SpeciesImageSearchParams,
     SpeciesListItem,
     SpeciesResponse,
     SpeciesSearchParams,
 } from "@/types";
 
-function toPaginatedSpecies(
-    payload: unknown,
-): PaginatedResponse<SpeciesListItem> {
-    const empty: PaginatedResponse<SpeciesListItem> = {
+/** Normalize any backend PaginatedResult<T> (camelCase or PascalCase) into PaginatedResponse<T>. */
+function toPaginated<T>(payload: unknown): PaginatedResponse<T> {
+    const empty: PaginatedResponse<T> = {
         items: [],
         totalCount: 0,
         page: 1,
@@ -42,7 +44,7 @@ function toPaginatedSpecies(
     }
 
     return {
-        items: rawItems as SpeciesListItem[],
+        items: rawItems as T[],
         totalCount: Number(obj.totalCount ?? obj.TotalCount ?? rawItems.length),
         page: Number(obj.page ?? obj.Page ?? 1),
         pageSize: Number(obj.pageSize ?? obj.PageSize ?? rawItems.length),
@@ -62,7 +64,7 @@ export async function getList(
         params,
     });
 
-    return toPaginatedSpecies(data);
+    return toPaginated<SpeciesListItem>(data);
 }
 
 /** Backward-compatible helper to fetch a full list for simple consumers. */
@@ -95,6 +97,36 @@ export async function getBySlug(slug: string): Promise<SpeciesResponse> {
         CORE_ROUTES.SPECIES.BY_SLUG(slug),
     );
     return data;
+}
+
+// ─── Detail sub-resources ─────────────────────────────────────────────────────
+
+/**
+ * GET /api/species/{id}/distributions — geographic distribution points.
+ * Coordinates are masked server-side for sensitive species when the caller
+ * lacks a privileged role (latitude/longitude null + isMasked=true).
+ */
+export async function getSpeciesDistributions(
+    id: string,
+): Promise<GeographicDistribution[]> {
+    const { data } = await apiClient.get<GeographicDistribution[]>(
+        CORE_ROUTES.SPECIES.DISTRIBUTIONS(id),
+    );
+    return Array.isArray(data) ? data : [];
+}
+
+/**
+ * GET /api/species/{id}/images — paginated species image gallery.
+ * Defaults to expert-validated images only.
+ */
+export async function getSpeciesImages(
+    id: string,
+    params: SpeciesImageSearchParams = {},
+): Promise<PaginatedResponse<SpeciesImage>> {
+    const { data } = await apiClient.get<unknown>(CORE_ROUTES.SPECIES.IMAGES(id), {
+        params,
+    });
+    return toPaginated<SpeciesImage>(data);
 }
 
 // ─── Contribute Observation ───────────────────────────────────────────────────
