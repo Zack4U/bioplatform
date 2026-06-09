@@ -112,6 +112,16 @@ export function ProductFormSheet({
   const activePermits = absPermits.filter((p) => p.status === "Active");
   const [selectedSpecies, setSelectedSpecies] = useState<SpeciesAdminItem | null>(null);
 
+  // Reset the picked species when the sheet opens for a new product.
+  // Done during render (not in an effect) to avoid cascading re-renders.
+  const [prevOpen, setPrevOpen] = useState(isOpen);
+  if (isOpen !== prevOpen) {
+    setPrevOpen(isOpen);
+    if (isOpen && !editingProduct) {
+      setSelectedSpecies(null);
+    }
+  }
+
   // ── Form ───────────────────────────────────────────────────────────────
 
   const form = useForm<ProductFormValues>({
@@ -158,7 +168,6 @@ export function ProductFormSheet({
         absPermitId: "",
         isActive: false,
       });
-      setSelectedSpecies(null);
     }
   }, [isOpen, editingProduct, reset]);
 

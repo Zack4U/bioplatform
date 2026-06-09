@@ -3,7 +3,7 @@
  * SpeciesFormDialog — create or edit a species.
  */
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -100,12 +100,12 @@ export function SpeciesFormDialog({ open, onOpenChange, species }: Props) {
     };
 
     // Auto-generate slug from scientific name
-    const watchScientificName = form.watch("scientificName");
+    const watchScientificName = useWatch({ control: form.control, name: "scientificName" });
     useEffect(() => {
         if (!isEdit) {
             form.setValue(
                 "slug",
-                watchScientificName.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
+                (watchScientificName ?? "").toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
             );
         }
     }, [watchScientificName, isEdit, form]);

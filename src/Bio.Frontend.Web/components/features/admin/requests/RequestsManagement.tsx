@@ -6,6 +6,7 @@
 import { useState, useCallback } from "react";
 import { useAuthStore } from "@/store/auth-store";
 import { StatusBadge } from "@/components/common";
+import { SmartImage } from "@/components/common/SmartImage";
 import { AdminDataTable, type ColumnDef, type RowAction } from "@/components/features/admin/shared/AdminDataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -193,10 +194,10 @@ export function RequestsManagement() {
                                     <Separator />
                                     <div>
                                         <p className="text-muted-foreground mb-2">Referencia</p>
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         {selected.referenceType === "SpeciesImage" && (
-                                            <img src={selected.referenceUrl} alt="Imagen referenciada"
-                                                className="rounded-lg max-h-48 object-contain border" />
+                                            <SmartImage src={selected.referenceUrl} alt="Imagen referenciada"
+                                                width={400} height={192}
+                                                className="rounded-lg max-h-48 w-auto object-contain border" />
                                         )}
                                     </div>
                                 </>

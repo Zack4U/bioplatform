@@ -20,7 +20,6 @@ import type {
     SpeciesAdminItem,
     SpeciesCreatePayload,
     SpeciesUpdatePayload,
-    ImageAdminItem,
     OrderAdminItem,
     OrderAdminDetail,
     OrderAdminFilters,
@@ -34,12 +33,10 @@ import type {
     RejectAbsPermitPayload,
     PlatformRequestItem,
     PlatformRequestFilters,
-    AuditLogEntry,
     AuditLogFilters,
     ActivityLogResponseDTO,
 } from "@/types/admin";
 import type { SpeciesImage } from "@/types/species";
-import type { PaginatedResponse } from "@/types";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // DASHBOARD

@@ -3,8 +3,8 @@
  * ApprovePermitDialog — Admin/Authority approves a Pending ABS permit request,
  * filling in the official resolution data that activates the permit.
  */
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -39,7 +39,6 @@ interface Props {
 export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
     const approve = useApproveAbsPermit();
     const { mutateAsync: uploadDoc, uploadProgress, isPending: isUploading } = useUploadPermitDocument();
-    const [documentUrl, setDocumentUrl] = useState<string | undefined>();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(schema),
@@ -53,6 +52,9 @@ export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
         },
     });
 
+    // Derived from the form field — no separate state to sync.
+    const documentUrl = useWatch({ control: form.control, name: "documentUrl" });
+
     useEffect(() => {
         if (permit) {
             form.reset({
@@ -63,7 +65,6 @@ export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
                 legalFramework: "Decreto 1375 de 2013",
                 documentUrl: "",
             });
-            setDocumentUrl(undefined);
         }
     }, [permit, form]);
 
@@ -71,7 +72,6 @@ export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
         const file = e.target.files?.[0];
         if (!file) return;
         const result = await uploadDoc(file);
-        setDocumentUrl(result.documentUrl);
         form.setValue("documentUrl", result.documentUrl);
     };
 
@@ -85,7 +85,7 @@ export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
                 emissionDate: values.emissionDate,
                 expirationDate: values.expirationDate,
                 legalFramework: values.legalFramework || undefined,
-                documentUrl: documentUrl ?? values.documentUrl ?? undefined,
+                documentUrl: values.documentUrl || undefined,
             },
         });
         onOpenChange(false);
