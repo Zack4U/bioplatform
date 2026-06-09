@@ -39,20 +39,20 @@ icon: "list-check"
 
 ## Catálogo Científico y APIs Base
 
-* **[ ] CRUD de Especies y Taxonomía (API):**  
+* **[X] CRUD de Especies y Taxonomía (API):**  
   * **Descripción:** Endpoints REST genéricos para catalogación. Incluye validación del flag is_sensitive en el GetSpeciesQuery para enmascarar coordenadas en el DTO de respuesta si aplica.  
   * **Tecnologías obligatorias:** MediatR, Dapper (lecturas rápidas), EF Core (escrituras).  
-* **[ ] Job de Carga Masiva CSV:**  
+* **[X] Job de Carga Masiva CSV:**  
   * **Descripción:** Creación de un proceso en segundo plano que reciba un archivo CSV con metadatos biológicos, lo parsee y lo inserte por lotes (Bulk Insert) en PostgreSQL.  
   * **Tecnologías obligatorias:** Hangfire, Redis, CsvHelper.  
   * **Dependencias:** CRUD de Especies.
 
 ## IA (Computer Vision - CNN) - Entrenamiento
 
-* **[ ] Recolección y Limpieza de Dataset (Flora/Fauna):**  
+* **[X] Recolección y Limpieza de Dataset (Flora/Fauna):**  
   * **Descripción:** Scripting para consumir la API de iNaturalist o Kaggle, descargando 10,000+ imágenes de 300 especies de Caldas. Limpieza de imágenes corruptas y redimensionamiento masivo a 224x224 píxeles.  
   * **Tecnologías obligatorias:** Python 3.11, OpenCV, Pandas.  
-* **[ ] Fine-Tuning de CNN (ResNet50):**  
+* **[X] Fine-Tuning de CNN (ResNet50):**  
   * **Descripción:** Congelación de capas base de ResNet50 y entrenamiento de las últimas capas densas con nuestro dataset local. Guardado de los pesos finales en formato .h5 o .pt. Generación de matriz de confusión.  
   * **Tecnologías obligatorias:** TensorFlow / PyTorch.  
   * **Herramientas sugeridas:** Google Colab Pro / AWS GPU.  
@@ -60,19 +60,19 @@ icon: "list-check"
 
 ## IA (Computer Vision - CNN) - Despliegue
 
-* **[ ] Microservicio FastAPI de Inferencia:**  
+* **[X] Microservicio FastAPI de Inferencia:**  
   * **Descripción:** Creación del endpoint POST /api/ai/classify. Debe recibir una imagen en multipart/form-data, pre-procesarla, ejecutar el modelo y devolver el Top-3 de predicciones con el class_id y % confidence.  
   * **Tecnologías obligatorias:** Python 3.11, FastAPI, Uvicorn, Pydantic.  
-* **[ ] Integración Gateway e IAC:**  
+* **[X] Integración Gateway e IAC:**  
   * **Descripción:** Adición del microservicio de Python al docker-compose.yml. Configuración de reglas en Nginx para enrutar llamadas y configuración del Backend Core para registrar la "Auditoría de Inferencia" en MongoDB.  
   * **Dependencias:** Microservicio FastAPI de Inferencia.
 
 ## Marketplace Core y Normativa ABS
 
-* **[ ] CRUD de Permisos ABS (Decisión 391):**  
+* **[X] CRUD de Permisos ABS (Decisión 391):**  
   * **Descripción:** Endpoints para que los Emprendedores suban resoluciones (almacenando URL en BD) y la Autoridad Ambiental las valide y cambie su status a "Active".  
   * **Tecnologías obligatorias:** .NET 8, CQRS.  
-* **[ ] CRUD de Productos de Biocomercio:**  
+* **[X] CRUD de Productos de Biocomercio:**  
   * **Descripción:** Endpoints para gestión de productos. **Regla estricta:** El CreateProductCommandHandler debe consultar en base de datos si el usuario tiene un Permiso ABS activo para la base_species_id; si no, retorna error 403 Forbidden.  
   * **Dependencias:** CRUD de Permisos ABS, API de Especies.
 
@@ -104,17 +104,17 @@ icon: "list-check"
 
 ## Analíticas y Trazabilidad
 
-* **[ ] Consultas de Trazabilidad y Dashboard:**  
+* **[X] Consultas de Trazabilidad y Dashboard:**  
   * **Descripción:** Creación de Dapper Queries ultrarrápidas para agregar datos de ventas por vendedor, stock actual y métricas de especies más consultadas. Endpoint que devuelve un árbol cronológico de un lote de producto.  
   * **Tecnologías obligatorias:** .NET 8, Dapper.  
   * **Dependencias:** Transacciones (Semana 8).
 
 ## Estabilización Backend y Testing
 
-* **[ ] Pruebas Unitarias y Mocking (>70%):**  
+* **[X] Pruebas Unitarias y Mocking (>70%):**  
   * **Descripción:** Desarrollo de tests unitarios enfocados en la capa Application. Simulación de llamadas a DB (Mock&lt;IRepository>) y APIs de terceros (Mock&lt;IPaymentGateway>) para validar flujos de éxito y excepciones de dominio.  
   * **Tecnologías obligatorias:** xUnit, Moq, FluentAssertions.  
-* **[ ] Ajustes Finales y Documentación Swagger:**  
+* **[X] Ajustes Finales y Documentación Swagger:**  
   * **Descripción:** Revisión de vulnerabilidades (SQLi, Auth), decoración de todos los endpoints con XML Comments y validación de generación de OpenAPI JSON.
 
 # SECCIÓN 2: FRONTEND WEB Y MÓVIL
@@ -133,16 +133,16 @@ icon: "list-check"
 
 ## Arquitectura de Estado y Diseño Layout
 
-* **[ ] Layouts y Navegación Web:**  
+* **[X] Layouts y Navegación Web:**  
   * **Descripción:** Desarrollo de la Navbar responsiva (Desktop/Mobile menu), Sidebar para el Dashboard y Footer estático. Implementación de protección de rutas a nivel de middleware en Next.js.  
   * **Tecnologías obligatorias:** Next.js Middleware, Lucide React (iconos).  
-* **[ ] Capa de Servicios API Web/Móvil:**  
+* **[X] Capa de Servicios API Web/Móvil:**  
   * **Descripción:** Creación de interceptores de Axios centralizados para inyectar automáticamente el header Authorization: Bearer &#123;token&#125; en todas las peticiones y manejar renovaciones de token (401 Retry).  
   * **Tecnologías obligatorias:** Axios.
 
 ## Pantallas de Autenticación
 
-* **[ ] Pantallas Login/Registro Web:**  
+* **[X] Pantallas Login/Registro Web:**  
   * **Descripción:** Desarrollo de formularios con doble pestaña para inicio de sesión y registro. Integración de validación de campos en cliente (ej. email válido, contraseña fuerte).  
   * **Tecnologías obligatorias:** React Hook Form, Zod.  
   * **Dependencias:** Capa de Servicios (Semana 2).  
@@ -152,50 +152,50 @@ icon: "list-check"
 
 ## Catálogo y Biodiversidad Base
 
-* **[ ] Vista de Catálogo (Web/Móvil):**  
+* **[X] Vista de Catálogo (Web/Móvil):**  
   * **Descripción:** Diseño de la grilla de especies (Grid o FlatList). Implementación del paginado infinito (Infinite Scrolling) conectándose a las queries construidas por el backend.  
   * **Tecnologías obligatorias:** Next.js (Web), React Native FlatList (Móvil).  
-* **[ ] Filtros Avanzados (Web):**  
+* **[X] Filtros Avanzados (Web):**  
   * **Descripción:** Sidebar interactivo para filtrar la búsqueda de especies por Familia, Hábitat o estado de sensibilidad, actualizando la grilla en tiempo real sin recargar página.
 
 ## Detalles Botánicos y Mapas
 
-* **[ ] Ficha Técnica de Especie (Web/Móvil):**  
+* **[X] Ficha Técnica de Especie (Web/Móvil):**  
   * **Descripción:** Pantalla de detalle mostrando taxonomía, galería de fotos con zoom (React Image Gallery) y acordeones para descripción y ecología.  
   * **Tecnologías obligatorias:** Shadcn Accordion, Tabs.  
-* **[ ] Integración de Mapas GIS (Web):**  
+* **[X] Integración de Mapas GIS (Web):**  
   * **Descripción:** Incrustación de visor cartográfico en el detalle de especie que lee GeoJSON desde la API para pintar marcadores o áreas de distribución (respetando los ocultamientos por sensibilidad).  
   * **Tecnologías obligatorias:** React-Leaflet, Leaflet.
 
 ## Visión por Computadora (Mobile Native)
 
-* **[ ] Interfaz de Cámara Inteligente (Móvil):**  
+* **[X] Interfaz de Cámara Inteligente (Móvil):**  
   * **Descripción:** Pantalla *fullscreen* accediendo a la cámara nativa del teléfono. Diseño de un overlay tipo "scanner" para guiar al usuario en el encuadre de la hoja/animal.  
   * **Tecnologías obligatorias:** React Native Vision Camera.  
-* **[ ] Captura y Manejo de Imagen (Móvil):**  
+* **[X] Captura y Manejo de Imagen (Móvil):**  
   * **Descripción:** Lógica nativa para tomar la fotografía, comprimirla, pasarla a Base64/Multipart y mostrar interfaz de carga "Analizando..." bloqueando la UI.  
   * **Dependencias:** Interfaz de Cámara Inteligente.
 
 ## Integración de IA Visual
 
-* **[ ] Conexión Móvil con CNN (Móvil):**  
+* **[X] Conexión Móvil con CNN (Móvil):**  
   * **Descripción:** Envío de la imagen capturada al microservicio Python (/api/ai/classify).  
   * **Dependencias:** Espera la API Python (Back W6).  
-* **[ ] Visualizador de Resultados (Móvil):**  
+* **[X] Visualizador de Resultados (Móvil):**  
   * **Descripción:** Un *Bottom Sheet* que sube tras recibir respuesta de la CNN, mostrando un gráfico de medidor circular con la confianza de la predicción y el nombre de la especie hallada, con un botón hacia la Ficha Técnica.  
   * **Tecnologías obligatorias:** React Native Reanimated (animaciones).
 
 ## Marketplace - Tienda
 
-* **[ ] UI Marketplace y Tarjetas de Producto (Web):**  
+* **[X] UI Marketplace y Tarjetas de Producto (Web):**  
   * **Descripción:** Grilla principal de e-commerce listando los productos biológicos creados por los emprendedores. Incluye "Badges" visuales para certificaciones de sostenibilidad.  
   * **Tecnologías obligatorias:** Tailwind CSS.  
-* **[ ] Formulario de Permisos ABS (Web):**  
+* **[X] Formulario de Permisos ABS (Web):**  
   * **Descripción:** Pantalla (solo rol Emprendedor) con formulario complejo para registrar datos del permiso, asociar la especie, y carga de archivos (PDF).
 
 ## Checkout y Carrito de Compras
 
-* **[ ] Persistencia de Carrito (Web):**  
+* **[X] Persistencia de Carrito (Web):**  
   * **Descripción:** Desarrollo del panel lateral deslizable (Sheet) para gestionar el carrito. El estado debe sobrevivir recargas (persistido en localStorage vía Zustand).  
   * **Tecnologías obligatorias:** Zustand Persist Middleware.  
 * **[ ] UI Stripe Checkout (Web):**  
@@ -213,19 +213,19 @@ icon: "list-check"
 
 ## Dashboards e Informes
 
-* **[ ] Dashboard de Emprendedor (Web):**  
+* **[X] Dashboard de Emprendedor (Web):**  
   * **Descripción:** Panel de control privado. Integración de librerías de gráficos para mostrar métricas como "Ventas del último mes" y "Productos más vistos".  
   * **Tecnologías obligatorias:** Recharts.  
-* **[ ] Gestión de Inventario (Web):**  
+* **[X] Gestión de Inventario (Web):**  
   * **Descripción:** Tabla interactiva (DataTable) con paginación, filtros y sorting para que el emprendedor edite precios, stock o de de baja productos.  
   * **Tecnologías obligatorias:** TanStack Table v8.
 
 ## Móvil Offline y Sincronización
 
-* **[ ] Configuración Base de Datos Local (Móvil):**  
+* **[X] Configuración Base de Datos Local (Móvil):**  
   * **Descripción:** Implementación de persistencia física en el dispositivo móvil para descargar un diccionario taxonómico básico que pueda usarse sin internet.  
   * **Tecnologías obligatorias:** WatermelonDB o Expo SQLite.  
-* **[ ] Lógica Offline-First (Móvil):**  
+* **[X] Lógica Offline-First (Móvil):**  
   * **Descripción:** Hook que escucha cambios de red (NetInfo). Si el usuario toma una foto y guarda un registro "En el Campo" sin señal, se guarda en SQLite. Al detectar red de nuevo, se dispara la subida silenciosa a la API.  
   * **Tecnologías obligatorias:** React Native NetInfo.
 
@@ -242,5 +242,5 @@ icon: "list-check"
 * **[ ] Auditoría de Accesibilidad (WCAG 2.1 AA):**  
   * **Descripción:** Revisión del contraste de colores, navegación por tabulador, *focus rings* en todos los inputs, y soporte completo de *Aria-Labels* en íconos e imágenes biológicas.  
   * **Herramientas sugeridas:** Lighthouse, aXe.  
-* **[ ] Compilación para Producción:**  
+* **[X] Compilación para Producción:**  
   * **Descripción:** Optimización y minificación final. Generación del build estático/SSR para Next.js (npm run build). Generación de APK/AAB para Android y preparación de binarios de Expo para la app móvil.
