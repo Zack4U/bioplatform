@@ -39,6 +39,13 @@ class Settings(BaseSettings):
     pg_password: str = "DevPassword123!"
     pg_database: str = "BioCommerce_Scientific"
 
+    # ── SQL Server (BioCommerce_Transactional) ──────────────────
+    mssql_host: str = "localhost"
+    mssql_port: int = 1433
+    mssql_user: str = "sa"
+    mssql_password: str = "DevPassword123!"
+    mssql_database: str = "BioCommerce_Transactional"
+
     # ── CNN Model ──────────────────────────────────────────────
     model_weights_path: str = "data/weights/best_model.pth"
     bio_min_f1_threshold: float = 0.65

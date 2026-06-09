@@ -104,6 +104,55 @@ def list_database_tables() -> str:
     except Exception as e:
         return f"Error listando tablas: {str(e)}"
 
+def execute_transactional_sql_query(query: str) -> str:
+    """
+    Ejecuta una consulta SQL en la base de datos TRANSACCIONAL (SQL Server).
+    Usa esta herramienta para consultar productos, permisos ABS, usuarios y pedidos.
+    """
+    try:
+        import pymssql
+        from app.core.config import get_settings
+        settings = get_settings()
+        
+        conn = pymssql.connect(
+            server=settings.mssql_host,
+            port=str(settings.mssql_port),
+            user=settings.mssql_user,
+            password=settings.mssql_password,
+            database=settings.mssql_database
+        )
+        cursor = conn.cursor(as_dict=True)
+        
+        if not query.strip().lower().startswith("select"):
+            return "Error: Solo se permiten consultas de lectura (SELECT)."
+            
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        conn.close()
+        
+        if not rows:
+            return "No se encontraron resultados en la base de datos transaccional."
+            
+        return str(rows)
+    except Exception as e:
+        return f"Error en SQL Transaccional: {str(e)}"
+
+def list_transactional_tables() -> str:
+    """
+    Devuelve las tablas de la base de datos TRANSACCIONAL (Productos, Permisos, etc).
+    """
+    return execute_transactional_sql_query("SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'")
+
+def get_transactional_table_schema(table_name: str) -> str:
+    """
+    Devuelve las columnas y tipos de datos de una tabla en la base de datos TRANSACCIONAL (SQL Server).
+    Usa esta herramienta ANTES de consultar AbsPermits, Products, Orders, Certifications, etc.
+    """
+    return execute_transactional_sql_query(
+        f"SELECT column_name, data_type FROM information_schema.columns "
+        f"WHERE table_name = '{table_name}' ORDER BY ordinal_position"
+    )
+
 @router.post("/ask", response_model=AskResponse)
 async def ask_assistant(request: AskRequest):
     if not request.question:
@@ -140,18 +189,30 @@ async def ask_assistant(request: AskRequest):
 
         # 2. Configuración del Agente Autónomo
         system_prompt = (
-            "Eres el Asesor Experto de BioPlatform, una IA avanzada para la gestión de biodiversidad en Caldas.\n\n"
-            "REGLA DE ORO: Para preguntas cuantitativas (cuántos, totales, promedios, listados de más de 5 especies), DEBES usar SQL.\n"
-            "El contexto de VECTORES es útil para descripciones y detalles, pero SQL es la fuente de verdad para estadísticas.\n\n"
-            "TUS HERRAMIENTAS:\n"
-            "1. `list_database_tables`: Úsala primero si no conoces las tablas.\n"
-            "2. `get_table_schema`: Úsala para conocer las columnas de una tabla (ej. 'species').\n"
-            "3. `execute_sql_query`: Úsala para obtener datos reales. SIEMPRE verifica el esquema antes.\n\n"
-            "INSTRUCCIONES DE RESPUESTA:\n"
-            "- Si el usuario pregunta '¿cuántas especies hay?', NO uses el contexto de vectores; consulta la tabla `species` con SQL.\n"
-            "- Si el usuario pregunta por 'plantas' o 'animales', busca la columna de 'kingdom' o similar en la tabla `species`.\n"
-            "- Combina la precisión de SQL con la riqueza descriptiva de los VECTORES.\n"
-            "- Si no encuentras una tabla, lístalas todas.\n\n"
+            "Eres el Asesor Experto de BioPlatform, una IA avanzada que conecta la ciencia con el biocomercio en Caldas.\n\n"
+            "REGLAS DE ORO:\n"
+            "1. Para datos CIENTÍFICOS (especies, taxonomía, usos tradicionales): Usa SQL en la base de datos científica (Postgres).\n"
+            "2. Para datos COMERCIALES/LEGALES (productos, permisos ABS, certificaciones): Usa `execute_transactional_sql_query` (SQL Server).\n"
+            "3. Para descripciones ricas y contexto: Usa el contexto de VECTORES.\n\n"
+            "ESTRUCTURA DE DATOS:\n"
+            "- Base Científica (Postgres): Tablas como `species`, `taxonomy`, `species_economic_potentials`, `species_traditional_uses`.\n"
+            "- Base Transaccional (SQL Server): Tablas como `Products`, `AbsPermits`, `Certifications`, `Orders`.\n\n"
+            "INSTRUCCIONES:\n"
+            "- NUNCA adivines nombres de columnas. Si no estás seguro de los campos, usa `get_table_schema`.\n"
+            "- Para tablas de SQL Server (AbsPermits, Products, Orders, Certifications), usa `get_transactional_table_schema` para ver sus columnas ANTES de consultar.\n"
+            "- Para tablas de Postgres (species, taxonomy), usa `get_table_schema`.\n"
+            "- **RAZONAMIENTO HÍBRIDO**: Las preguntas no siempre son literales. Si el usuario pregunta por 'hábitat', 'clima' o 'colores' (datos que no suelen estar en tablas SQL), usa el contexto de VECTORES y tu propia inteligencia para clasificar las especies encontradas en SQL.\n"
+            "- **FLUJO RECOMENDADO**: 1. Obtén una lista general de especies con SQL. 2. Contrasta esa lista con el contexto de VECTORES y tu conocimiento para filtrar las que cumplen con el hábitat o característica solicitada.\n"
+            "- Si el usuario pregunta por 'permisos ABS', busca en `AbsPermits`.\n"
+            "- Si pregunta por 'productos', busca en `Products`.\n"
+            "- Siempre conecta la información: ej. qué productos se derivan de una especie científica.\n\n"
+            "**PAGINACIÓN INTELIGENTE (OBLIGATORIA)**:\n"
+            "- Cuando el usuario pida 'lista' o 'listado' de cualquier entidad, NUNCA traigas todos los registros de golpe.\n"
+            "- Flujo obligatorio para listados:\n"
+            "  1. Primero haz un SELECT COUNT(*) para saber el total.\n"
+            "  2. Luego haz SELECT TOP 10 (SQL Server) o SELECT ... LIMIT 10 (Postgres) para los primeros registros.\n"
+            "  3. En tu respuesta, muestra los 10 resultados Y menciona: 'Mostrando 10 de X registros. Puedes pedirme más o filtrar por criterio específico.'\n"
+            "- Esto aplica para AbsPermits, Products, species, orders, etc.\n\n"
             f"CONTEXTO INICIAL DE VECTORES (limitado a top-k):\n{context_text}"
         )
 
@@ -169,25 +230,73 @@ async def ask_assistant(request: AskRequest):
             history=genai_history,
             config=types.GenerateContentConfig(
                 system_instruction=system_prompt,
-                tools=[execute_sql_query, get_table_schema, list_database_tables],
+                tools=[
+                    execute_sql_query, 
+                    get_table_schema, 
+                    list_database_tables,
+                    execute_transactional_sql_query,
+                    list_transactional_tables,
+                    get_transactional_table_schema
+                ],
                 temperature=0.2
             )
         )
 
-        response = chat.send_message(request.question)
+        # Enviar mensaje con reintentos automáticos para errores transitorios (503, 429)
+        import time as _time
+        response = None
+        last_error = None
+        for attempt in range(3):
+            try:
+                response = chat.send_message(request.question)
+                break  # Éxito, salir del loop
+            except Exception as e:
+                last_error = e
+                err_str = str(e)
+                if "503" in err_str or "429" in err_str or "UNAVAILABLE" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                    wait_secs = (attempt + 1) * 10  # 10s, 20s, 30s
+                    logger.warning(f"Error transitorio en intento {attempt + 1}: {e}. Reintentando en {wait_secs}s...")
+                    _time.sleep(wait_secs)
+                else:
+                    raise  # Error no transitorio, relanzar inmediatamente
         
-        # Extraer texto de la respuesta final
-        answer_text = response.text
+        if response is None:
+            raise last_error
+        
+        # Extraer texto de la respuesta final con manejo robusto de NoneType
+        answer_text = None
+        try:
+            answer_text = response.text
+        except Exception:
+            pass
         
         if not answer_text:
-            logger.warning("La IA devolvió una respuesta de texto vacía. Revisando partes...")
-            # Intentar reconstruir si hay partes de texto
+            logger.warning("La IA devolvió una respuesta de texto vacía. Intentando recuperar partes...")
             parts = []
-            for candidate in response.candidates:
-                for part in candidate.content.parts:
-                    if part.text:
-                        parts.append(part.text)
-            answer_text = "\n".join(parts) if parts else "La IA procesó la información pero no generó un resumen textual. Por favor, intenta reformular la pregunta."
+            candidates = getattr(response, "candidates", None)
+            if candidates:
+                for candidate in candidates:
+                    content = getattr(candidate, "content", None)
+                    if content:
+                        for part in (getattr(content, "parts", None) or []):
+                            text = getattr(part, "text", None)
+                            if text:
+                                parts.append(text)
+            
+            if parts:
+                answer_text = "\n".join(parts)
+            else:
+                # Segundo intento: forzar resumen
+                logger.warning("No se encontraron partes. Forzando resumen a la IA...")
+                followup = chat.send_message(
+                    "Ya tienes la información necesaria de las herramientas. "
+                    "Por favor, escribe ahora un resumen claro y completo en español para el usuario."
+                )
+                try:
+                    answer_text = followup.text
+                except Exception:
+                    pass
+                answer_text = answer_text or "La consulta fue procesada pero no pudo generarse una respuesta de texto. Por favor, intenta reformular la pregunta."
 
         return AskResponse(answer=answer_text)
 

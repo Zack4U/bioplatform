@@ -109,7 +109,10 @@ builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSect
 builder.Services.AddScoped<IS3StorageService, S3StorageService>();
 
 // AI Assistant Bot (RAG with Gemini)
-builder.Services.AddHttpClient<IAiAssistantService, AiAssistantService>();
+builder.Services.AddHttpClient<IAiAssistantService, AiAssistantService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(120); // AI queries with multiple SQL calls can take up to 60s
+});
 
 // Configure multipart form-data size limit to allow observation image uploads
 builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
