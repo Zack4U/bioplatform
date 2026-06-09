@@ -16,6 +16,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Text } from "@/components/ui/text";
+import { useModelInfo, useModelMetrics } from "@/hooks/useClassification";
 import { useThemeMode, type ThemeMode } from "@/hooks/useThemeMode";
 import { THEME } from "@/lib/theme";
 import {
@@ -125,6 +126,19 @@ export function SettingsList() {
     const { colorScheme } = useColorScheme();
     const theme = colorScheme === "dark" ? THEME.dark : THEME.light;
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+    // Live model info — replaces the previously hardcoded model/accuracy string.
+    const { data: modelInfo } = useModelInfo();
+    const { data: modelMetrics } = useModelMetrics();
+
+    const modelSubtitle = useMemo(() => {
+        if (!modelInfo) return "Consultando servicio de IA…";
+        const accuracy =
+            modelMetrics?.accuracy != null
+                ? ` — Precisión ${(modelMetrics.accuracy * 100).toFixed(1)}%`
+                : "";
+        return `${modelInfo.modelName} · ${modelInfo.numClasses} clases${accuracy}`;
+    }, [modelInfo, modelMetrics]);
 
     return (
         <View className="px-5">
@@ -240,7 +254,7 @@ export function SettingsList() {
                             />
                         }
                         label="Modelo IA"
-                        subtitle="CNN ResNet50 — Accuracy 87.3%"
+                        subtitle={modelSubtitle}
                     />
                 </CardContent>
             </Card>

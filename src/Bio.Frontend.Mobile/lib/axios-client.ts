@@ -13,8 +13,8 @@
 
 import { API_BASE_URL } from "@/lib/constants";
 import { notificationService } from "@/lib/notifications";
+import { secureStorage } from "@/lib/secure-storage";
 import { CORE_ROUTES } from "@/services/routes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, {
     type AxiosError,
     type AxiosInstance,
@@ -39,8 +39,8 @@ const apiClient: AxiosInstance = axios.create({
 // ─── Request Interceptor ──────────────────────────────────────────────
 apiClient.interceptors.request.use(
     async (config: InternalAxiosRequestConfig) => {
-        // Attach JWT if available (AsyncStorage)
-        const token = await AsyncStorage.getItem("accessToken");
+        // Attach JWT if available (secure keystore)
+        const token = await secureStorage.getItem("accessToken");
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -69,9 +69,9 @@ apiClient.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const refreshToken =
-                    await AsyncStorage.getItem("refreshToken");
+                    await secureStorage.getItem("refreshToken");
                 const accessToken =
-                    await AsyncStorage.getItem("accessToken");
+                    await secureStorage.getItem("accessToken");
                 if (refreshToken && accessToken) {
                     // Matches RefreshRequestDTO { AccessToken, RefreshToken }
                     const { data } = await axios.post<{
@@ -81,11 +81,11 @@ apiClient.interceptors.response.use(
                         accessToken,
                         refreshToken,
                     });
-                    await AsyncStorage.setItem(
+                    await secureStorage.setItem(
                         "accessToken",
                         data.accessToken,
                     );
-                    await AsyncStorage.setItem(
+                    await secureStorage.setItem(
                         "refreshToken",
                         data.refreshToken,
                     );
@@ -96,8 +96,8 @@ apiClient.interceptors.response.use(
                 }
             } catch {
                 // Refresh failed — clear tokens and redirect to login
-                await AsyncStorage.removeItem("accessToken");
-                await AsyncStorage.removeItem("refreshToken");
+                await secureStorage.removeItem("accessToken");
+                await secureStorage.removeItem("refreshToken");
                 notificationService.warning(
                     "Sesion expirada. Por favor, inicia sesion de nuevo.",
                 );

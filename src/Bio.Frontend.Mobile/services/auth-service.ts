@@ -107,6 +107,18 @@ export async function register(
     return data;
 }
 
+/**
+ * GET /api/users/{id} — fetch a user's full profile.
+ * Non-admin callers may only read their own profile (enforced by the backend),
+ * so pass the id decoded from the current access token.
+ */
+export async function getCurrentUser(userId: string): Promise<UserResponse> {
+    const { data } = await apiClient.get<UserResponse>(
+        CORE_ROUTES.USERS.BY_ID(userId),
+    );
+    return data;
+}
+
 // ─── Token Utilities ─────────────────────────────────────────────────────────
 
 /**

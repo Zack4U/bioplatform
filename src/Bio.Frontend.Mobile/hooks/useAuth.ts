@@ -8,6 +8,7 @@
  */
 
 import { handleApiError } from "@/lib/error-handler";
+import { secureStorage } from "@/lib/secure-storage";
 import * as authService from "@/services/auth-service";
 import { useAuthStore, STORAGE_KEYS } from "@/store/auth-store";
 import type {
@@ -16,31 +17,42 @@ import type {
     TwoFactorLoginRequest,
     UserResponse,
 } from "@/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation } from "@tanstack/react-query";
 import type { RelativePathString } from "expo-router";
 import { router } from "expo-router";
 import { useState } from "react";
 
 /**
- * Persist tokens and extract user info from the JWT.
- * The JWT contains: sub (id), email, name (fullName), role.
+ * Persist tokens and resolve the current user.
+ *
+ * The JWT (sub/email/name/role) gives an immediate user for the UI; we then
+ * enrich it with the full profile from the backend (twoFactorEnabled, phone,
+ * createdAt) so flags like the 2FA badge are accurate. The enrichment is
+ * non-fatal — a failed/offline fetch keeps the token-derived user.
  */
 async function persistSessionAndSetUser(
     accessToken: string,
     refreshToken: string,
     setUser: (user: UserResponse) => void,
 ): Promise<UserResponse> {
-    await AsyncStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-    await AsyncStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
+    await secureStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+    await secureStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
 
-    const user = authService.decodeUserFromToken(accessToken);
-    if (!user) {
+    const tokenUser = authService.decodeUserFromToken(accessToken);
+    if (!tokenUser) {
         throw new Error("No se pudo decodificar el usuario del token.");
     }
 
-    setUser(user);
-    return user;
+    setUser(tokenUser);
+
+    // Enrich with the real profile (non-fatal — token is attached by interceptor).
+    try {
+        const profile = await authService.getCurrentUser(tokenUser.id);
+        setUser(profile);
+        return profile;
+    } catch {
+        return tokenUser;
+    }
 }
 
 /**
@@ -165,7 +177,7 @@ export function useAuth() {
 
     const handleLogout = async () => {
         try {
-            const refreshToken = await AsyncStorage.getItem(
+            const refreshToken = await secureStorage.getItem(
                 STORAGE_KEYS.REFRESH_TOKEN,
             );
             if (refreshToken) {
@@ -189,10 +201,10 @@ export function useAuth() {
     const hydrate = async (): Promise<boolean> => {
         setLoading(true);
         try {
-            const accessToken = await AsyncStorage.getItem(
+            const accessToken = await secureStorage.getItem(
                 STORAGE_KEYS.ACCESS_TOKEN,
             );
-            const refreshToken = await AsyncStorage.getItem(
+            const refreshToken = await secureStorage.getItem(
                 STORAGE_KEYS.REFRESH_TOKEN,
             );
 
@@ -226,7 +238,7 @@ export function useAuth() {
             return true;
         } catch {
             // Token invalid, backend down, or timeout — continue as guest
-            await AsyncStorage.multiRemove([
+            await secureStorage.multiRemove([
                 STORAGE_KEYS.ACCESS_TOKEN,
                 STORAGE_KEYS.REFRESH_TOKEN,
             ]);

@@ -20,6 +20,7 @@
 
 import { AI_API_BASE_URL } from "@/lib/constants";
 import { notificationService } from "@/lib/notifications";
+import { secureStorage } from "@/lib/secure-storage";
 import { AI_ROUTES } from "@/services/routes";
 import type {
     ClassificationResponse,
@@ -27,7 +28,6 @@ import type {
     ModelInfoResponse,
     ModelMetricsResponse,
 } from "@/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios, {
     type AxiosError,
     type AxiosResponse,
@@ -72,8 +72,8 @@ const aiClient = axios.create({
 // ─── Request Interceptor ──────────────────────────────────────────────
 aiClient.interceptors.request.use(
     async (config: InternalAxiosRequestConfig) => {
-        // Attach JWT if available (AsyncStorage)
-        const token = await AsyncStorage.getItem("accessToken");
+        // Attach JWT if available (secure keystore)
+        const token = await secureStorage.getItem("accessToken");
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
         }
