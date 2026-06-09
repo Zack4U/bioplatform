@@ -300,6 +300,35 @@ eas submit --platform android --latest
 
 ## Documentación y Guías
 
+### Documentación Interactiva (Mintlify)
+
+Las guías y manuales se publican como un sitio navegable con **Mintlify**. La configuración vive en [`.docs/docs.json`](.docs/docs.json).
+
+> **Puerto:** la documentación corre en el puerto **3333** para no colisionar con el Frontend Web (Next.js usa `3000`) ni con el resto del stack.
+
+```bash
+# 1. Instalar la CLI de Mintlify (una sola vez, global)
+npm install -g mint
+
+# 2. Levantar el sitio de documentación en local
+cd .docs
+npm run docs          # equivale a: mint dev --port 3333
+```
+
+Abrir luego: **http://localhost:3333**
+
+Scripts disponibles (`.docs/package.json`):
+
+| Comando            | Acción                                              |
+| ------------------ | --------------------------------------------------- |
+| `npm run docs`     | Levanta el sitio en `http://localhost:3333`         |
+| `npm run docs:check` | Verifica enlaces rotos (`mint broken-links`)      |
+| `npm run docs:update` | Actualiza la CLI de Mintlify a la última versión |
+
+> **Producción:** Mintlify despliega vía su GitHub App (conectar el repo en `dashboard.mintlify.com`); el sitio se reconstruye automáticamente en cada `push`. No requiere build manual.
+
+### Índice de Documentos
+
 | Documento                                                  | Descripción                                    |
 | ---------------------------------------------------------- | ---------------------------------------------- |
 | [DEVELOPMENT.md](./DEVELOPMENT.md)                         | Guía completa para desarrollo local            |
