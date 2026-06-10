@@ -1,0 +1,5435 @@
+{
+  "Plantae": {
+    "Tracheophyta": {
+      "Magnoliopsida": {
+        "Asterales": {
+          "Asteraceae": {
+            "Senecio": [
+              "Senecio niveoaureus",
+              "Senecio formosus",
+              "Senecio isabelis",
+              "Senecio latiflorus",
+              "Senecio rhizocephalus",
+              "Senecio sarracenicus"
+            ],
+            "Espeletia": [
+              "Espeletia hartwegiana",
+              "Espeletia grandiflora"
+            ],
+            "Baccharis": [
+              "Baccharis latifolia",
+              "Baccharis tricuneata",
+              "Baccharis genistelloides",
+              "Baccharis alpina",
+              "Baccharis prunifolia",
+              "Baccharis pedunculata",
+              "Baccharis nitida",
+              "Baccharis revoluta",
+              "Baccharis caldasiana",
+              "Baccharis caespitosa"
+            ],
+            "Linochilus": [
+              "Linochilus rupestris",
+              "Linochilus schultzii",
+              "Linochilus eriophorus",
+              "Linochilus rosmarinifolius",
+              "Linochilus violaceus",
+              "Linochilus revolutus",
+              "Linochilus pittieri",
+              "Linochilus bicolor",
+              "Linochilus alveolatus"
+            ],
+            "Erigeron": [
+              "Erigeron chionophilus"
+            ],
+            "Crassocephalum": [
+              "Crassocephalum crepidioides"
+            ],
+            "Erato": [
+              "Erato vulcanica"
+            ],
+            "Culcitium": [
+              "Culcitium canescens"
+            ],
+            "Rockhausenia": [
+              "Rockhausenia pumila",
+              "Rockhausenia pygmaea"
+            ],
+            "Mutisia": [
+              "Mutisia clematis",
+              "Mutisia grandiflora"
+            ],
+            "Taraxacum": [
+              "Taraxacum officinale",
+              "Taraxacum campylodes"
+            ],
+            "Ageratum": [
+              "Ageratum conyzoides"
+            ],
+            "Hypochaeris": [
+              "Hypochaeris sessiliflora",
+              "Hypochaeris radicata"
+            ],
+            "Austroeupatorium": [
+              "Austroeupatorium inulifolium"
+            ],
+            "Oritrophium": [
+              "Oritrophium peruvianum"
+            ],
+            "Tridax": [
+              "Tridax procumbens"
+            ],
+            "Munnozia": [
+              "Munnozia senecionidis",
+              "Munnozia jussieui"
+            ],
+            "Youngia": [
+              "Youngia japonica"
+            ],
+            "Cosmos": [
+              "Cosmos sulphureus",
+              "Cosmos caudatus",
+              "Cosmos bipinnatus"
+            ],
+            "Schistocarpha": [
+              "Schistocarpha eupatorioides"
+            ],
+            "Ageratina": [
+              "Ageratina tinifolia",
+              "Ageratina pichinchensis",
+              "Ageratina popayanensis",
+              "Ageratina glyptophlebia"
+            ],
+            "Calendula": [
+              "Calendula officinalis"
+            ],
+            "Tithonia": [
+              "Tithonia diversifolia",
+              "Tithonia rotundifolia"
+            ],
+            "Hieracium": [
+              "Hieracium avilae"
+            ],
+            "Gynoxys": [
+              "Gynoxys laurata",
+              "Gynoxys lehmannii"
+            ],
+            "Monticalia": [
+              "Monticalia gelida",
+              "Monticalia vaccinioides",
+              "Monticalia vernicosa",
+              "Monticalia andicola"
+            ],
+            "Erechtites": [
+              "Erechtites valerianifolius",
+              "Erechtites albiflorus"
+            ],
+            "Zinnia": [
+              "Zinnia elegans",
+              "Zinnia peruviana"
+            ],
+            "Montanoa": [
+              "Montanoa quadrangularis"
+            ],
+            "Bidens": [
+              "Bidens andicola",
+              "Bidens alba",
+              "Bidens pilosa",
+              "Bidens triplinervia"
+            ],
+            "Mniodes": [
+              "Mniodes longifolia"
+            ],
+            "Melampodium": [
+              "Melampodium divaricatum"
+            ],
+            "Emilia": [
+              "Emilia praetermissa",
+              "Emilia fosbergii",
+              "Emilia sonchifolia",
+              "Emilia coccinea"
+            ],
+            "Chaptalia": [
+              "Chaptalia nutans"
+            ],
+            "Praxelis": [
+              "Praxelis clematidea"
+            ],
+            "Tessaria": [
+              "Tessaria integrifolia"
+            ],
+            "Werneria": [
+              "Werneria humilis",
+              "Werneria crassa"
+            ],
+            "Tagetes": [
+              "Tagetes erecta",
+              "Tagetes tenuifolia",
+              "Tagetes minuta"
+            ],
+            "Dahlia": [
+              "Dahlia pinnata"
+            ],
+            "Galinsoga": [
+              "Galinsoga quadriradiata"
+            ],
+            "Vernonanthura": [
+              "Vernonanthura patens"
+            ],
+            "Bellis": [
+              "Bellis perennis"
+            ],
+            "Sonchus": [
+              "Sonchus oleraceus"
+            ],
+            "Noticastrum": [
+              "Noticastrum marginatum"
+            ],
+            "Andicolea": [
+              "Andicolea colombiana"
+            ],
+            "Sigesbeckia": [
+              "Sigesbeckia jorullensis"
+            ],
+            "Clibadium": [
+              "Clibadium surinamense",
+              "Clibadium trianae",
+              "Clibadium grandifolium"
+            ],
+            "Gamochaeta": [
+              "Gamochaeta americana"
+            ],
+            "Acmella": [
+              "Acmella repens"
+            ],
+            "Sphagneticola": [
+              "Sphagneticola trilobata"
+            ],
+            "Achillea": [
+              "Achillea millefolium"
+            ],
+            "Argyranthemum": [
+              "Argyranthemum frutescens"
+            ],
+            "Leucanthemum": [
+              "Leucanthemum vulgare"
+            ],
+            "Elaphandra": [
+              "Elaphandra quinquenervis"
+            ],
+            "Jaegeria": [
+              "Jaegeria hirta"
+            ],
+            "Mikania": [
+              "Mikania micrantha",
+              "Mikania sylvatica"
+            ],
+            "Pentacalia": [
+              "Pentacalia sylvicola"
+            ],
+            "Aequatorium": [
+              "Aequatorium verrucosum",
+              "Aequatorium polygonoides",
+              "Aequatorium jamesonii",
+              "Aequatorium tatamanum"
+            ],
+            "Jungia": [
+              "Jungia ferruginea"
+            ],
+            "Achyrocline": [
+              "Achyrocline satureioides"
+            ],
+            "Aetheolaena": [
+              "Aetheolaena otophora"
+            ],
+            "Lepidaploa": [
+              "Lepidaploa canescens"
+            ],
+            "Oligactis": [
+              "Oligactis volubilis"
+            ],
+            "Barnadesia": [
+              "Barnadesia parviflora",
+              "Barnadesia spinosa"
+            ],
+            "Piptocoma": [
+              "Piptocoma discolor"
+            ],
+            "Smallanthus": [
+              "Smallanthus riparius",
+              "Smallanthus sonchifolius"
+            ],
+            "Calea": [
+              "Calea prunifolia"
+            ],
+            "Pseudogynoxys": [
+              "Pseudogynoxys chenopodioides"
+            ],
+            "Verbesina": [
+              "Verbesina arborea",
+              "Verbesina aligera",
+              "Verbesina nudipes"
+            ],
+            "Joseanthus": [
+              "Joseanthus trichotomus"
+            ],
+            "Chromolaena": [
+              "Chromolaena odorata"
+            ],
+            "Synedrella": [
+              "Synedrella nodiflora"
+            ],
+            "Tanacetum": [
+              "Tanacetum parthenium"
+            ],
+            "Acanthospermum": [
+              "Acanthospermum hispidum"
+            ],
+            "Parthenium": [
+              "Parthenium hysterophorus"
+            ],
+            "Centratherum": [
+              "Centratherum punctatum"
+            ],
+            "Helianthus": [
+              "Helianthus annuus"
+            ],
+            "Melanthera": [
+              "Melanthera nivea"
+            ],
+            "Eleutheranthera": [
+              "Eleutheranthera tenella"
+            ],
+            "Nemosenecio": [
+              "Nemosenecio formosanus"
+            ],
+            "Critoniopsis": [
+              "Critoniopsis bogotana",
+              "Critoniopsis ursicola"
+            ],
+            "Aphanactis": [
+              "Aphanactis jamesoniana"
+            ],
+            "Elephantopus": [
+              "Elephantopus mollis"
+            ],
+            "Fleischmannia": [
+              "Fleischmannia microstemon"
+            ],
+            "Chryselium": [
+              "Chryselium gnaphalioides"
+            ],
+            "Hebeclinium": [
+              "Hebeclinium phoenicticum"
+            ],
+            "Lycoseris": [
+              "Lycoseris mexicana"
+            ],
+            "Diplostephium": [
+              "Diplostephium tolimense"
+            ]
+          },
+          "Campanulaceae": {
+            "Centropogon": [
+              "Centropogon leucophyllus",
+              "Centropogon ferrugineus",
+              "Centropogon foetidus",
+              "Centropogon grandis",
+              "Centropogon latisepalus",
+              "Centropogon hirsutus",
+              "Centropogon ayavacensis",
+              "Centropogon granulosus",
+              "Centropogon cornutus"
+            ],
+            "Hippobroma": [
+              "Hippobroma longiflora"
+            ],
+            "Burmeistera": [
+              "Burmeistera rivina",
+              "Burmeistera serraniaguae",
+              "Burmeistera succulenta",
+              "Burmeistera fuscoapicata"
+            ],
+            "Siphocampylus": [
+              "Siphocampylus tolimanus"
+            ]
+          }
+        },
+        "Cucurbitales": {
+          "Begoniaceae": {
+            "Begonia": [
+              "Begonia urticae",
+              "Begonia umbellata",
+              "Begonia maurandiae",
+              "Begonia lehmannii",
+              "Begonia kalbreyeri",
+              "Begonia cucullata",
+              "Begonia foliosa",
+              "Begonia hirtella",
+              "Begonia guaduensis",
+              "Begonia ferruginea"
+            ]
+          },
+          "Cucurbitaceae": {
+            "Momordica": [
+              "Momordica charantia"
+            ],
+            "Sechium": [
+              "Sechium edule"
+            ],
+            "Gurania": [
+              "Gurania bignoniacea"
+            ],
+            "Melothria": [
+              "Melothria pendula"
+            ],
+            "Cyclanthera": [
+              "Cyclanthera pedata"
+            ]
+          },
+          "Coriariaceae": {
+            "Coriaria": [
+              "Coriaria ruscifolia"
+            ]
+          }
+        },
+        "Lamiales": {
+          "Acanthaceae": {
+            "Thunbergia": [
+              "Thunbergia alata",
+              "Thunbergia mysorensis",
+              "Thunbergia erecta",
+              "Thunbergia grandiflora"
+            ],
+            "Megaskepasma": [
+              "Megaskepasma erythrochlamys"
+            ],
+            "Pachystachys": [
+              "Pachystachys lutea"
+            ],
+            "Aphelandra": [
+              "Aphelandra runcinata"
+            ],
+            "Acanthus": [
+              "Acanthus mollis"
+            ],
+            "Asystasia": [
+              "Asystasia intrusa"
+            ],
+            "Trichanthera": [
+              "Trichanthera gigantea"
+            ],
+            "Justicia": [
+              "Justicia carnea",
+              "Justicia scheidweileri",
+              "Justicia brandegeeana",
+              "Justicia betonica",
+              "Justicia filibracteolata"
+            ],
+            "Hypoestes": [
+              "Hypoestes phyllostachya"
+            ],
+            "Ruellia": [
+              "Ruellia simplex",
+              "Ruellia blechum"
+            ],
+            "Sanchezia": [
+              "Sanchezia oblonga"
+            ],
+            "Dianthera": [
+              "Dianthera candelariae"
+            ],
+            "Mendoncia": [
+              "Mendoncia lindavii"
+            ],
+            "Odontonema": [
+              "Odontonema sessile"
+            ],
+            "Fittonia": [
+              "Fittonia albivenis"
+            ]
+          },
+          "Orobanchaceae": {
+            "Castilleja": [
+              "Castilleja fissifolia",
+              "Castilleja arvensis",
+              "Castilleja paramensis"
+            ],
+            "Neobartsia": [
+              "Neobartsia laniflora",
+              "Neobartsia santolinifolia"
+            ],
+            "Pedicularis": [
+              "Pedicularis incurva"
+            ]
+          },
+          "Gesneriaceae": {
+            "Kohleria": [
+              "Kohleria affinis",
+              "Kohleria spicata",
+              "Kohleria warszewiczii",
+              "Kohleria inaequalis",
+              "Kohleria tigridia",
+              "Kohleria trianae",
+              "Kohleria amabilis"
+            ],
+            "Columnea": [
+              "Columnea strigosa",
+              "Columnea ceticeps",
+              "Columnea dimidiata",
+              "Columnea anisophylla",
+              "Columnea fuscihirta"
+            ],
+            "Besleria": [
+              "Besleria cinnabarina",
+              "Besleria amabilis",
+              "Besleria riparia",
+              "Besleria solanoides",
+              "Besleria fecunda"
+            ],
+            "Drymonia": [
+              "Drymonia lanceolata",
+              "Drymonia serrulata",
+              "Drymonia variegata",
+              "Drymonia teuscheri"
+            ],
+            "Chrysothemis": [
+              "Chrysothemis pulchella"
+            ],
+            "Glossoloma": [
+              "Glossoloma schultzei",
+              "Glossoloma velutinum",
+              "Glossoloma baguense",
+              "Glossoloma ichthyoderma"
+            ],
+            "Cremospermopsis": [
+              "Cremospermopsis parviflora",
+              "Cremospermopsis cestroides"
+            ],
+            "Heppiella": [
+              "Heppiella ulmifolia"
+            ],
+            "Reldia": [
+              "Reldia grandiflora",
+              "Reldia minutiflora"
+            ],
+            "Gloxinia": [
+              "Gloxinia perennis"
+            ],
+            "Seemannia": [
+              "Seemannia sylvatica"
+            ],
+            "Nautilocalyx": [
+              "Nautilocalyx bicolor"
+            ],
+            "Episcia": [
+              "Episcia cupreata"
+            ],
+            "Alloplectus": [
+              "Alloplectus weirii"
+            ]
+          },
+          "Plantaginaceae": {
+            "Plantago": [
+              "Plantago rigida",
+              "Plantago lanceolata",
+              "Plantago australis",
+              "Plantago major",
+              "Plantago linearis"
+            ],
+            "Veronica": [
+              "Veronica serpyllifolia",
+              "Veronica persica"
+            ],
+            "Ourisia": [
+              "Ourisia muscosa"
+            ],
+            "Digitalis": [
+              "Digitalis purpurea"
+            ],
+            "Scoparia": [
+              "Scoparia dulcis"
+            ]
+          },
+          "Lamiaceae": {
+            "Salvia": [
+              "Salvia scutellarioides",
+              "Salvia palifolia",
+              "Salvia tortuosa",
+              "Salvia leucantha"
+            ],
+            "Clinopodium": [
+              "Clinopodium nubigenum",
+              "Clinopodium brownei"
+            ],
+            "Leonotis": [
+              "Leonotis nepetifolia"
+            ],
+            "Cantinoa": [
+              "Cantinoa mutabilis"
+            ],
+            "Clerodendrum": [
+              "Clerodendrum paniculatum",
+              "Clerodendrum thomsoniae"
+            ],
+            "Coleus": [
+              "Coleus scutellarioides"
+            ],
+            "Prunella": [
+              "Prunella vulgaris"
+            ],
+            "Hyptis": [
+              "Hyptis lantanifolia",
+              "Hyptis capitata",
+              "Hyptis personata"
+            ],
+            "Lamium": [
+              "Lamium purpureum"
+            ],
+            "Ajuga": [
+              "Ajuga reptans"
+            ],
+            "Aegiphila": [
+              "Aegiphila alba",
+              "Aegiphila grandis",
+              "Aegiphila integrifolia",
+              "Aegiphila truncata",
+              "Aegiphila panamensis",
+              "Aegiphila elata",
+              "Aegiphila odontophylla"
+            ],
+            "Callicarpa": [
+              "Callicarpa acuminata"
+            ],
+            "Hyptidendron": [
+              "Hyptidendron arboreum"
+            ],
+            "Vitex": [
+              "Vitex cymosa"
+            ],
+            "Gmelina": [
+              "Gmelina arborea"
+            ],
+            "Cornutia": [
+              "Cornutia odorata"
+            ],
+            "Tectona": [
+              "Tectona grandis"
+            ],
+            "Mentha": [
+              "Mentha suaveolens"
+            ],
+            "Condea": [
+              "Condea verticillata"
+            ],
+            "Ocimum": [
+              "Ocimum campechianum"
+            ]
+          },
+          "Calceolariaceae": {
+            "Calceolaria": [
+              "Calceolaria microbefaria",
+              "Calceolaria tripartita",
+              "Calceolaria perfoliata",
+              "Calceolaria mexicana"
+            ]
+          },
+          "Bignoniaceae": {
+            "Spathodea": [
+              "Spathodea campanulata"
+            ],
+            "Tecoma": [
+              "Tecoma stans"
+            ],
+            "Tabebuia": [
+              "Tabebuia rosea"
+            ],
+            "Delostoma": [
+              "Delostoma integrifolium"
+            ],
+            "Crescentia": [
+              "Crescentia cujete"
+            ],
+            "Eccremocarpus": [
+              "Eccremocarpus viridis"
+            ],
+            "Tourrettia": [
+              "Tourrettia lappacea"
+            ],
+            "Jacaranda": [
+              "Jacaranda mimosifolia",
+              "Jacaranda caucana",
+              "Jacaranda copaia",
+              "Jacaranda hesperia"
+            ],
+            "Handroanthus": [
+              "Handroanthus chrysanthus",
+              "Handroanthus guayacan",
+              "Handroanthus ochraceus",
+              "Handroanthus serratifolius"
+            ],
+            "Amphilophium": [
+              "Amphilophium crucigerum"
+            ],
+            "Stizophyllum": [
+              "Stizophyllum riparium"
+            ],
+            "Roseodendron": [
+              "Roseodendron chryseum"
+            ],
+            "Pyrostegia": [
+              "Pyrostegia venusta"
+            ],
+            "Fridericia": [
+              "Fridericia florida"
+            ],
+            "Tanaecium": [
+              "Tanaecium exitiosum"
+            ]
+          },
+          "Scrophulariaceae": {
+            "Verbascum": [
+              "Verbascum virgatum"
+            ],
+            "Buddleja": [
+              "Buddleja davidii",
+              "Buddleja bullata",
+              "Buddleja incana"
+            ]
+          },
+          "Verbenaceae": {
+            "Lantana": [
+              "Lantana horrida",
+              "Lantana trifolia",
+              "Lantana lopez-palacii"
+            ],
+            "Petrea": [
+              "Petrea rugosa"
+            ],
+            "Duranta": [
+              "Duranta erecta",
+              "Duranta mutisii"
+            ],
+            "Lippia": [
+              "Lippia alba",
+              "Lippia hirsuta",
+              "Lippia schlimii"
+            ],
+            "Stachytarpheta": [
+              "Stachytarpheta cayennensis"
+            ]
+          },
+          "Lentibulariaceae": {
+            "Utricularia": [
+              "Utricularia gibba"
+            ]
+          },
+          "Phrymaceae": {
+            "Leucocarpus": [
+              "Leucocarpus perfoliatus"
+            ]
+          },
+          "Oleaceae": {
+            "Fraxinus": [
+              "Fraxinus uhdei"
+            ]
+          }
+        },
+        "Ericales": {
+          "Ericaceae": {
+            "Gaultheria": [
+              "Gaultheria myrsinoides",
+              "Gaultheria mucronata",
+              "Gaultheria erecta",
+              "Gaultheria bracteata",
+              "Gaultheria foliolosa"
+            ],
+            "Cavendishia": [
+              "Cavendishia adenophora",
+              "Cavendishia nitida",
+              "Cavendishia bracteata",
+              "Cavendishia pubescens",
+              "Cavendishia angustifolia"
+            ],
+            "Disterigma": [
+              "Disterigma empetrifolium",
+              "Disterigma acuminatum",
+              "Disterigma codonanthum"
+            ],
+            "Vaccinium": [
+              "Vaccinium floribundum"
+            ],
+            "Sphyrospermum": [
+              "Sphyrospermum dissimile"
+            ],
+            "Monotropa": [
+              "Monotropa coccinea"
+            ],
+            "Orthaea": [
+              "Orthaea secundiflora"
+            ],
+            "Psammisia": [
+              "Psammisia macrophylla",
+              "Psammisia montana"
+            ],
+            "Macleania": [
+              "Macleania rupestris"
+            ],
+            "Plutarchia": [
+              "Plutarchia pubiflora",
+              "Plutarchia monantha"
+            ],
+            "Thibaudia": [
+              "Thibaudia floribunda"
+            ],
+            "Themistoclesia": [
+              "Themistoclesia mucronata"
+            ]
+          },
+          "Balsaminaceae": {
+            "Impatiens": [
+              "Impatiens walleriana",
+              "Impatiens hawkeri",
+              "Impatiens sodenii"
+            ]
+          },
+          "Polemoniaceae": {
+            "Cobaea": [
+              "Cobaea scandens"
+            ]
+          },
+          "Lecythidaceae": {
+            "Cariniana": [
+              "Cariniana pyriformis"
+            ],
+            "Eschweilera": [
+              "Eschweilera antioquensis",
+              "Eschweilera coriacea"
+            ],
+            "Gustavia": [
+              "Gustavia speciosa",
+              "Gustavia romeroi",
+              "Gustavia verticillata",
+              "Gustavia superba",
+              "Gustavia nana",
+              "Gustavia gracillima"
+            ],
+            "Grias": [
+              "Grias haughtii"
+            ],
+            "Couratari": [
+              "Couratari guianensis"
+            ],
+            "Lecythis": [
+              "Lecythis ampla",
+              "Lecythis mesophylla"
+            ],
+            "Couroupita": [
+              "Couroupita guianensis"
+            ]
+          },
+          "Primulaceae": {
+            "Myrsine": [
+              "Myrsine pellucidopunctata",
+              "Myrsine coriacea",
+              "Myrsine dependens"
+            ],
+            "Geissanthus": [
+              "Geissanthus occidentalis",
+              "Geissanthus quindiensis",
+              "Geissanthus serrulatus"
+            ],
+            "Cybianthus": [
+              "Cybianthus humilis"
+            ]
+          },
+          "Sapotaceae": {
+            "Pouteria": [
+              "Pouteria baehniana",
+              "Pouteria multiflora",
+              "Pouteria torta",
+              "Pouteria sapota",
+              "Pouteria glomerata"
+            ],
+            "Chrysophyllum": [
+              "Chrysophyllum argenteum",
+              "Chrysophyllum colombianum"
+            ],
+            "Sarcaulus": [
+              "Sarcaulus brasiliensis"
+            ],
+            "Manilkara": [
+              "Manilkara zapota"
+            ]
+          },
+          "Actinidiaceae": {
+            "Saurauia": [
+              "Saurauia brachybotrys",
+              "Saurauia strigillosa",
+              "Saurauia bullosa",
+              "Saurauia yasicae",
+              "Saurauia tomentosa",
+              "Saurauia chiliantha",
+              "Saurauia ursina",
+              "Saurauia omichlophila",
+              "Saurauia scabra"
+            ]
+          },
+          "Styracaceae": {
+            "Styrax": [
+              "Styrax pavonii"
+            ]
+          },
+          "Pentaphylacaceae": {
+            "Ternstroemia": [
+              "Ternstroemia macrocarpa",
+              "Ternstroemia meridionalis"
+            ],
+            "Freziera": [
+              "Freziera canescens",
+              "Freziera verrucosa"
+            ]
+          },
+          "Clethraceae": {
+            "Clethra": [
+              "Clethra fagifolia",
+              "Clethra fimbriata",
+              "Clethra rugosa",
+              "Clethra revoluta",
+              "Clethra ovalifolia"
+            ]
+          },
+          "Marcgraviaceae": {
+            "Marcgravia": [
+              "Marcgravia brownei"
+            ]
+          },
+          "Symplocaceae": {
+            "Symplocos": [
+              "Symplocos serrulata",
+              "Symplocos quitensis",
+              "Symplocos flos-fragrans"
+            ]
+          },
+          "Ebenaceae": {
+            "Diospyros": [
+              "Diospyros matheriana",
+              "Diospyros artanthifolia"
+            ]
+          }
+        },
+        "Myrtales": {
+          "Melastomataceae": {
+            "Chaetogastra": [
+              "Chaetogastra grossa",
+              "Chaetogastra mollis",
+              "Chaetogastra gracilis",
+              "Chaetogastra longifolia",
+              "Chaetogastra ciliaris",
+              "Chaetogastra kingii"
+            ],
+            "Andesanthus": [
+              "Andesanthus lepidotus",
+              "Andesanthus paleaceus"
+            ],
+            "Miconia": [
+              "Miconia trichocalyx",
+              "Miconia salicifolia",
+              "Miconia asperrima",
+              "Miconia aeruginosa",
+              "Miconia subseriata",
+              "Miconia domociliata",
+              "Miconia rubra",
+              "Miconia caudata",
+              "Miconia spicellata",
+              "Miconia platyphylla",
+              "Miconia theizans",
+              "Miconia nervosissima",
+              "Miconia rubescens",
+              "Miconia codonostigma",
+              "Miconia xalapensis",
+              "Miconia sericea",
+              "Miconia crenata",
+              "Miconia dentata",
+              "Miconia majalis",
+              "Miconia psychrophila",
+              "Miconia asclepiadea",
+              "Miconia barbinervis",
+              "Miconia quinquenervia",
+              "Miconia dolichopoda",
+              "Miconia ibaguensis",
+              "Miconia minutiflora",
+              "Miconia tococa",
+              "Miconia ciliata",
+              "Miconia dolichorrhyncha",
+              "Miconia affinis",
+              "Miconia grandiflora",
+              "Miconia lonchophylla",
+              "Miconia latifolia",
+              "Miconia smaragdina",
+              "Miconia plethorica",
+              "Miconia chlorocarpa",
+              "Miconia biappendiculata",
+              "Miconia theazans",
+              "Miconia crinita",
+              "Miconia caesia",
+              "Miconia bracteolata",
+              "Miconia puracensis",
+              "Miconia lacera",
+              "Miconia octona",
+              "Miconia elata",
+              "Miconia pterocaulon",
+              "Miconia prasina",
+              "Miconia centronioides",
+              "Miconia subsessilifolia",
+              "Miconia trinervia",
+              "Miconia ostrina",
+              "Miconia aurea",
+              "Miconia dodecandra",
+              "Miconia megalantha",
+              "Miconia sulcicaulis",
+              "Miconia notabilis",
+              "Miconia impetiolaris",
+              "Miconia laetivirens",
+              "Miconia wurdackii",
+              "Miconia stipularis",
+              "Miconia antioquiensis",
+              "Miconia lehmannii",
+              "Miconia tinifolia",
+              "Miconia pedicellata",
+              "Miconia jahnii",
+              "Miconia ferruginea",
+              "Miconia orcheotoma",
+              "Miconia chionophila",
+              "Miconia mirabilis"
+            ],
+            "Bellucia": [
+              "Bellucia pentamera"
+            ],
+            "Pleroma": [
+              "Pleroma urvilleanum",
+              "Pleroma heteromallum",
+              "Pleroma paleaceum"
+            ],
+            "Monochaetum": [
+              "Monochaetum multiflorum",
+              "Monochaetum lineatum",
+              "Monochaetum lindeneanum"
+            ],
+            "Meriania": [
+              "Meriania tomentosa",
+              "Meriania selvaflorensis",
+              "Meriania heptamera",
+              "Meriania nobilis",
+              "Meriania speciosa",
+              "Meriania macrophylla",
+              "Meriania hoyosii",
+              "Meriania quintuplinervis"
+            ],
+            "Blakea": [
+              "Blakea quadrangularis",
+              "Blakea pyxidanthus",
+              "Blakea parasitica"
+            ],
+            "Arthrostemma": [
+              "Arthrostemma ciliatum"
+            ],
+            "Brachyotum": [
+              "Brachyotum strigosum",
+              "Brachyotum lindenii"
+            ],
+            "Graffenrieda": [
+              "Graffenrieda galeottii",
+              "Graffenrieda emarginata"
+            ],
+            "Aciotis": [
+              "Aciotis rubricaulis",
+              "Aciotis indecora",
+              "Aciotis purpurascens"
+            ],
+            "Axinaea": [
+              "Axinaea scutigera",
+              "Axinaea macrophylla",
+              "Axinaea colombiana",
+              "Axinaea fallax",
+              "Axinaea merianiae",
+              "Axinaea pennellii"
+            ],
+            "Pterogastra": [
+              "Pterogastra divaricata"
+            ],
+            "Henriettea": [
+              "Henriettea fissanthera",
+              "Henriettea goudotiana"
+            ]
+          },
+          "Onagraceae": {
+            "Fuchsia": [
+              "Fuchsia petiolaris",
+              "Fuchsia boliviana",
+              "Fuchsia nigricans",
+              "Fuchsia hartwegii",
+              "Fuchsia hybrida",
+              "Fuchsia hirtella",
+              "Fuchsia triphylla",
+              "Fuchsia sessilifolia",
+              "Fuchsia magellanica",
+              "Fuchsia crassistipula"
+            ],
+            "Ludwigia": [
+              "Ludwigia peruviana",
+              "Ludwigia helminthorrhiza",
+              "Ludwigia leptocarpa",
+              "Ludwigia decurrens"
+            ]
+          },
+          "Lythraceae": {
+            "Cuphea": [
+              "Cuphea racemosa",
+              "Cuphea ignea",
+              "Cuphea hyssopifolia",
+              "Cuphea carthagenensis"
+            ],
+            "Adenaria": [
+              "Adenaria floribunda"
+            ]
+          },
+          "Myrtaceae": {
+            "Eugenia": [
+              "Eugenia uniflora",
+              "Eugenia stipitata",
+              "Eugenia florida",
+              "Eugenia egensis",
+              "Eugenia biflora",
+              "Eugenia victoriana",
+              "Eugenia lambertiana"
+            ],
+            "Psidium": [
+              "Psidium guajava",
+              "Psidium cattleianum",
+              "Psidium guineense",
+              "Psidium guyanense"
+            ],
+            "Eucalyptus": [
+              "Eucalyptus deglupta",
+              "Eucalyptus cinerea"
+            ],
+            "Syzygium": [
+              "Syzygium jambos"
+            ],
+            "Myrcia": [
+              "Myrcia splendens",
+              "Myrcia paivae",
+              "Myrcia popayanensis"
+            ],
+            "Callistemon": [
+              "Callistemon viminalis",
+              "Callistemon speciosus"
+            ],
+            "Feijoa": [
+              "Feijoa sellowiana"
+            ],
+            "Myrciaria": [
+              "Myrciaria floribunda"
+            ],
+            "Myrcianthes": [
+              "Myrcianthes rhopaloides"
+            ]
+          },
+          "Combretaceae": {
+            "Terminalia": [
+              "Terminalia amazonica",
+              "Terminalia catappa"
+            ],
+            "Combretum": [
+              "Combretum laxum"
+            ]
+          },
+          "Vochysiaceae": {
+            "Vochysia": [
+              "Vochysia ferruginea"
+            ]
+          }
+        },
+        "Caryophyllales": {
+          "Phytolaccaceae": {
+            "Phytolacca": [
+              "Phytolacca bogotensis",
+              "Phytolacca rugosa",
+              "Phytolacca rivinoides",
+              "Phytolacca icosandra"
+            ],
+            "Rivina": [
+              "Rivina humilis"
+            ]
+          },
+          "Polygonaceae": {
+            "Persicaria": [
+              "Persicaria capitata",
+              "Persicaria nepalensis",
+              "Persicaria maculosa",
+              "Persicaria punctata"
+            ],
+            "Antigonon": [
+              "Antigonon leptopus"
+            ],
+            "Rumex": [
+              "Rumex tolimensis",
+              "Rumex acetosella",
+              "Rumex obtusifolius"
+            ],
+            "Coccoloba": [
+              "Coccoloba acuminata",
+              "Coccoloba mollis",
+              "Coccoloba obovata",
+              "Coccoloba latifolia",
+              "Coccoloba padiformis"
+            ],
+            "Muehlenbeckia": [
+              "Muehlenbeckia tamnifolia"
+            ],
+            "Triplaris": [
+              "Triplaris dugandii",
+              "Triplaris americana"
+            ]
+          },
+          "Cactaceae": {
+            "Rhipsalis": [
+              "Rhipsalis baccifera",
+              "Rhipsalis micrantha"
+            ],
+            "Leuenbergeria": [
+              "Leuenbergeria bleo"
+            ],
+            "Selenicereus": [
+              "Selenicereus monacanthus",
+              "Selenicereus megalanthus"
+            ],
+            "Pereskia": [
+              "Pereskia aculeata"
+            ],
+            "Epiphyllum": [
+              "Epiphyllum phyllanthus"
+            ],
+            "Echinocereus": [
+              "Echinocereus chisoensis"
+            ]
+          },
+          "Caryophyllaceae": {
+            "Cerastium": [
+              "Cerastium kunthii",
+              "Cerastium floccosum",
+              "Cerastium mollissimum"
+            ],
+            "Colobanthus": [
+              "Colobanthus quitensis"
+            ],
+            "Arenaria": [
+              "Arenaria lanuginosa"
+            ],
+            "Drymaria": [
+              "Drymaria cordata",
+              "Drymaria villosa"
+            ],
+            "Stellaria": [
+              "Stellaria media"
+            ]
+          },
+          "Portulacaceae": {
+            "Portulaca": [
+              "Portulaca pilosa",
+              "Portulaca oleracea"
+            ]
+          },
+          "Basellaceae": {
+            "Basella": [
+              "Basella alba"
+            ]
+          },
+          "Montiaceae": {
+            "Calandrinia": [
+              "Calandrinia acaulis"
+            ]
+          },
+          "Nyctaginaceae": {
+            "Mirabilis": [
+              "Mirabilis jalapa"
+            ],
+            "Neea": [
+              "Neea divaricata",
+              "Neea amplifolia"
+            ],
+            "Colignonia": [
+              "Colignonia ovalifolia"
+            ]
+          },
+          "Plumbaginaceae": {
+            "Plumbago": [
+              "Plumbago auriculata"
+            ]
+          },
+          "Amaranthaceae": {
+            "Iresine": [
+              "Iresine diffusa"
+            ],
+            "Celosia": [
+              "Celosia argentea"
+            ],
+            "Achyranthes": [
+              "Achyranthes aspera"
+            ],
+            "Gomphrena": [
+              "Gomphrena globosa"
+            ]
+          },
+          "Talinaceae": {
+            "Talinum": [
+              "Talinum paniculatum"
+            ]
+          }
+        },
+        "Malpighiales": {
+          "Passifloraceae": {
+            "Passiflora": [
+              "Passiflora quimbayensis",
+              "Passiflora apoda",
+              "Passiflora antioquiensis",
+              "Passiflora vitifolia",
+              "Passiflora alnifolia",
+              "Passiflora cuspidifolia",
+              "Passiflora tribolophylla",
+              "Passiflora suberosa",
+              "Passiflora linearistipula",
+              "Passiflora maliformis",
+              "Passiflora cisnana",
+              "Passiflora cumbalensis",
+              "Passiflora adenopoda",
+              "Passiflora alata",
+              "Passiflora mixta",
+              "Passiflora capsularis",
+              "Passiflora tarminiana",
+              "Passiflora trisulca",
+              "Passiflora jardinensis",
+              "Passiflora edulis",
+              "Passiflora coriacea",
+              "Passiflora gracillima",
+              "Passiflora manicata",
+              "Passiflora flexipes",
+              "Passiflora auriculata",
+              "Passiflora arbelaezii",
+              "Passiflora quadrangularis",
+              "Passiflora nebulosae",
+              "Passiflora magnoliifolia",
+              "Passiflora kumandayi"
+            ]
+          },
+          "Euphorbiaceae": {
+            "Ricinus": [
+              "Ricinus communis"
+            ],
+            "Euphorbia": [
+              "Euphorbia hirta",
+              "Euphorbia heterophylla",
+              "Euphorbia cotinifolia",
+              "Euphorbia laurifolia",
+              "Euphorbia milii",
+              "Euphorbia pulcherrima",
+              "Euphorbia tirucalli"
+            ],
+            "Acalypha": [
+              "Acalypha herzogiana",
+              "Acalypha macrostachya",
+              "Acalypha diversifolia",
+              "Acalypha platyphylla",
+              "Acalypha alopecuroidea",
+              "Acalypha arvensis"
+            ],
+            "Dalechampia": [
+              "Dalechampia dioscoreifolia"
+            ],
+            "Caperonia": [
+              "Caperonia palustris"
+            ],
+            "Croton": [
+              "Croton mutisianus",
+              "Croton schiedeanus",
+              "Croton fragrans",
+              "Croton ater",
+              "Croton hibiscifolius",
+              "Croton leptostachyus",
+              "Croton trinitatis",
+              "Croton hirtus"
+            ],
+            "Hura": [
+              "Hura crepitans"
+            ],
+            "Jatropha": [
+              "Jatropha integerrima",
+              "Jatropha multifida",
+              "Jatropha curcas"
+            ],
+            "Alchornea": [
+              "Alchornea glandulosa",
+              "Alchornea verticillata",
+              "Alchornea grandiflora",
+              "Alchornea latifolia",
+              "Alchornea costaricensis"
+            ],
+            "Sapium": [
+              "Sapium stylare",
+              "Sapium glandulosum"
+            ],
+            "Alchorneopsis": [
+              "Alchorneopsis floribunda"
+            ],
+            "Caryodendron": [
+              "Caryodendron orinocense"
+            ],
+            "Maprounea": [
+              "Maprounea guianensis"
+            ],
+            "Tetrorchidium": [
+              "Tetrorchidium rubrivenium"
+            ],
+            "Omphalea": [
+              "Omphalea diandra"
+            ],
+            "Manihot": [
+              "Manihot esculenta"
+            ],
+            "Mabea": [
+              "Mabea occidentalis"
+            ]
+          },
+          "Turneraceae": {
+            "Turnera": [
+              "Turnera subulata",
+              "Turnera ulmifolia"
+            ]
+          },
+          "Hypericaceae": {
+            "Hypericum": [
+              "Hypericum lancioides",
+              "Hypericum juniperinum",
+              "Hypericum laricifolium",
+              "Hypericum silenoides",
+              "Hypericum lancifolium"
+            ],
+            "Vismia": [
+              "Vismia baccifera",
+              "Vismia macrophylla"
+            ]
+          },
+          "Ochnaceae": {
+            "Cespedesia": [
+              "Cespedesia spathulata"
+            ],
+            "Sauvagesia": [
+              "Sauvagesia erecta"
+            ]
+          },
+          "Violaceae": {
+            "Viola": [
+              "Viola stipularis",
+              "Viola williamsii"
+            ],
+            "Gloeospermum": [
+              "Gloeospermum sphaerocarpum"
+            ],
+            "Leonia": [
+              "Leonia triandra",
+              "Leonia glycycarpa"
+            ],
+            "Rinorea": [
+              "Rinorea ulmifolia"
+            ]
+          },
+          "Clusiaceae": {
+            "Clusia": [
+              "Clusia orthoneura",
+              "Clusia multiflora",
+              "Clusia rosea",
+              "Clusia colombiana",
+              "Clusia chusqueae",
+              "Clusia alata",
+              "Clusia haughtii",
+              "Clusia palmicida",
+              "Clusia cylindrica",
+              "Clusia pallida",
+              "Clusia ellipticifolia"
+            ],
+            "Garcinia": [
+              "Garcinia madruno"
+            ],
+            "Chrysochlamys": [
+              "Chrysochlamys myrcioides",
+              "Chrysochlamys dependens",
+              "Chrysochlamys colombiana",
+              "Chrysochlamys eclipes"
+            ],
+            "Symphonia": [
+              "Symphonia globulifera"
+            ],
+            "Arawakia": [
+              "Arawakia weddelliana"
+            ],
+            "Tovomita": [
+              "Tovomita choisyana"
+            ]
+          },
+          "Malpighiaceae": {
+            "Stigmaphyllon": [
+              "Stigmaphyllon echitoides"
+            ],
+            "Pterandra": [
+              "Pterandra colombiana"
+            ],
+            "Byrsonima": [
+              "Byrsonima spicata",
+              "Byrsonima crassifolia"
+            ],
+            "Hiraea": [
+              "Hiraea ternifolia"
+            ],
+            "Bunchosia": [
+              "Bunchosia pseudonitida",
+              "Bunchosia armeniaca",
+              "Bunchosia hartwegiana"
+            ]
+          },
+          "Calophyllaceae": {
+            "Calophyllum": [
+              "Calophyllum brasiliense"
+            ],
+            "Marila": [
+              "Marila podantha",
+              "Marila macrophylla"
+            ],
+            "Mammea": [
+              "Mammea americana"
+            ]
+          },
+          "Phyllanthaceae": {
+            "Phyllanthus": [
+              "Phyllanthus niruri",
+              "Phyllanthus attenuatus",
+              "Phyllanthus urinaria"
+            ],
+            "Hieronyma": [
+              "Hieronyma oblonga",
+              "Hieronyma antioquensis",
+              "Hieronyma alchorneoides",
+              "Hieronyma macrocarpa"
+            ],
+            "Margaritaria": [
+              "Margaritaria nobilis"
+            ]
+          },
+          "Salicaceae": {
+            "Casearia": [
+              "Casearia sylvestris",
+              "Casearia zahlbruckneri",
+              "Casearia mariquitensis",
+              "Casearia arborea",
+              "Casearia corymbosa",
+              "Casearia coronata",
+              "Casearia bicolor",
+              "Casearia aculeata",
+              "Casearia obovalis",
+              "Casearia americana",
+              "Casearia arguta"
+            ],
+            "Abatia": [
+              "Abatia parviflora"
+            ],
+            "Piparea": [
+              "Piparea multiflora",
+              "Piparea dentata"
+            ],
+            "Hasseltia": [
+              "Hasseltia floribunda"
+            ],
+            "Tetrathylacium": [
+              "Tetrathylacium macrophyllum"
+            ],
+            "Xylosma": [
+              "Xylosma oligandra"
+            ],
+            "Banara": [
+              "Banara ibaguensis"
+            ]
+          },
+          "Erythroxylaceae": {
+            "Erythroxylum": [
+              "Erythroxylum havanense",
+              "Erythroxylum macrophyllum",
+              "Erythroxylum citrifolium",
+              "Erythroxylum plowmanianum",
+              "Erythroxylum gracilipes",
+              "Erythroxylum coca",
+              "Erythroxylum ulei"
+            ]
+          },
+          "Peraceae": {
+            "Pera": [
+              "Pera colombiana",
+              "Pera arborea"
+            ]
+          },
+          "Achariaceae": {
+            "Lindackeria": [
+              "Lindackeria laurina"
+            ]
+          },
+          "Caryocaraceae": {
+            "Caryocar": [
+              "Caryocar glabrum",
+              "Caryocar amygdaliferum"
+            ]
+          },
+          "Quiinaceae": {
+            "Lacunaria": [
+              "Lacunaria jenmanii"
+            ]
+          },
+          "Chrysobalanaceae": {
+            "Hirtella": [
+              "Hirtella americana"
+            ],
+            "Microdesmia": [
+              "Microdesmia arborea"
+            ]
+          },
+          "Lacistemataceae": {
+            "Lozania": [
+              "Lozania mutisiana"
+            ],
+            "Lacistema": [
+              "Lacistema aggregatum"
+            ]
+          }
+        },
+        "Malvales": {
+          "Malvaceae": {
+            "Callianthe": [
+              "Callianthe megapotamica",
+              "Callianthe picta"
+            ],
+            "Theobroma": [
+              "Theobroma cacao",
+              "Theobroma bicolor"
+            ],
+            "Malvaviscus": [
+              "Malvaviscus penduliflorus",
+              "Malvaviscus arboreus"
+            ],
+            "Urena": [
+              "Urena lobata"
+            ],
+            "Spirotheca": [
+              "Spirotheca rosea"
+            ],
+            "Ceiba": [
+              "Ceiba pentandra"
+            ],
+            "Ochroma": [
+              "Ochroma pyramidale"
+            ],
+            "Pavonia": [
+              "Pavonia fruticosa",
+              "Pavonia pseudotyphalaea",
+              "Pavonia mutisii"
+            ],
+            "Heliocarpus": [
+              "Heliocarpus americanus"
+            ],
+            "Matisia": [
+              "Matisia cordata",
+              "Matisia obliquifolia"
+            ],
+            "Wercklea": [
+              "Wercklea ferox"
+            ],
+            "Hibiscus": [
+              "Hibiscus archeri",
+              "Hibiscus verbasciformis"
+            ],
+            "Abelmoschus": [
+              "Abelmoschus esculentus"
+            ],
+            "Talipariti": [
+              "Talipariti tiliaceum"
+            ],
+            "Guazuma": [
+              "Guazuma ulmifolia"
+            ],
+            "Apeiba": [
+              "Apeiba glabra",
+              "Apeiba tibourbou"
+            ],
+            "Pseudobombax": [
+              "Pseudobombax septenatum"
+            ],
+            "Luehea": [
+              "Luehea seemannii"
+            ],
+            "Herrania": [
+              "Herrania purpurea",
+              "Herrania laciniifolia"
+            ],
+            "Trichospermum": [
+              "Trichospermum galeottii"
+            ],
+            "Sida": [
+              "Sida rhombifolia",
+              "Sida acuta"
+            ],
+            "Cavanillesia": [
+              "Cavanillesia platanifolia"
+            ],
+            "Malvastrum": [
+              "Malvastrum americanum"
+            ],
+            "Pachira": [
+              "Pachira speciosa",
+              "Pachira aquatica"
+            ],
+            "Malachra": [
+              "Malachra alceifolia"
+            ],
+            "Melochia": [
+              "Melochia parvifolia"
+            ],
+            "Quararibea": [
+              "Quararibea asterolepis"
+            ],
+            "Anoda": [
+              "Anoda cristata"
+            ]
+          },
+          "Muntingiaceae": {
+            "Muntingia": [
+              "Muntingia calabura"
+            ]
+          },
+          "Bixaceae": {
+            "Bixa": [
+              "Bixa orellana"
+            ]
+          },
+          "Thymelaeaceae": {
+            "Daphnopsis": [
+              "Daphnopsis caracasana"
+            ]
+          },
+          "Cochlospermaceae": {
+            "Cochlospermum": [
+              "Cochlospermum orinocense"
+            ]
+          }
+        },
+        "Piperales": {
+          "Piperaceae": {
+            "Piper": [
+              "Piper peltatum",
+              "Piper lanceifolium",
+              "Piper calceolarium",
+              "Piper umbellatum",
+              "Piper sphaeroides",
+              "Piper aduncum",
+              "Piper fresnoense",
+              "Piper auritum",
+              "Piper crassinervium",
+              "Piper archeri",
+              "Piper pendentispicum",
+              "Piper grande",
+              "Piper multiforme",
+              "Piper boquianum",
+              "Piper asperiusculum",
+              "Piper munchanum",
+              "Piper hispidum",
+              "Piper viscaianum",
+              "Piper pulchrum",
+              "Piper salgaranum",
+              "Piper holtii",
+              "Piper arboreum",
+              "Piper falcifolium",
+              "Piper robleanum",
+              "Piper obliquum",
+              "Piper aequale",
+              "Piper gorgonillense",
+              "Piper laevigatum",
+              "Piper trigonum",
+              "Piper reticulatum",
+              "Piper seducentifolium",
+              "Piper terrabanum",
+              "Piper subpedale",
+              "Piper holtonii",
+              "Piper cornifolium",
+              "Piper tuberculatum"
+            ],
+            "Peperomia": [
+              "Peperomia rotundifolia",
+              "Peperomia tetraphylla",
+              "Peperomia leucostachya",
+              "Peperomia acuminata",
+              "Peperomia adscendens",
+              "Peperomia sympodialis",
+              "Peperomia peltoidea",
+              "Peperomia porriginifera",
+              "Peperomia trianae",
+              "Peperomia san-joseana",
+              "Peperomia rotundata",
+              "Peperomia hartwegiana",
+              "Peperomia mollis",
+              "Peperomia verticillata"
+            ]
+          },
+          "Aristolochiaceae": {
+            "Aristolochia": [
+              "Aristolochia cordiflora",
+              "Aristolochia grandiflora"
+            ]
+          }
+        },
+        "Fagales": {
+          "Juglandaceae": {
+            "Juglans": [
+              "Juglans neotropica"
+            ]
+          },
+          "Fagaceae": {
+            "Quercus": [
+              "Quercus humboldtii"
+            ]
+          },
+          "Myricaceae": {
+            "Morella": [
+              "Morella pubescens"
+            ]
+          },
+          "Betulaceae": {
+            "Alnus": [
+              "Alnus acuminata"
+            ]
+          }
+        },
+        "Gentianales": {
+          "Rubiaceae": {
+            "Palicourea": [
+              "Palicourea colorata",
+              "Palicourea angustifolia",
+              "Palicourea guianensis",
+              "Palicourea axillaris",
+              "Palicourea tomentosa",
+              "Palicourea thyrsiflora",
+              "Palicourea andina",
+              "Palicourea calophlebia",
+              "Palicourea cogolloi",
+              "Palicourea allenii",
+              "Palicourea acetosoides",
+              "Palicourea ovalis",
+              "Palicourea quadrilateralis",
+              "Palicourea deflexa",
+              "Palicourea gracilenta",
+              "Palicourea perquadrangularis",
+              "Palicourea brachiata",
+              "Palicourea winkleri",
+              "Palicourea stenostachya",
+              "Palicourea purpurea",
+              "Palicourea demissa",
+              "Palicourea weberbaueri",
+              "Palicourea lasiorrhachis",
+              "Palicourea crocea"
+            ],
+            "Nertera": [
+              "Nertera granadensis"
+            ],
+            "Galium": [
+              "Galium hypocarpium"
+            ],
+            "Hamelia": [
+              "Hamelia patens"
+            ],
+            "Condaminea": [
+              "Condaminea corymbosa"
+            ],
+            "Isertia": [
+              "Isertia haenkeana",
+              "Isertia laevis"
+            ],
+            "Coffea": [
+              "Coffea arabica"
+            ],
+            "Pentas": [
+              "Pentas lanceolata"
+            ],
+            "Coccocypselum": [
+              "Coccocypselum hirsutum"
+            ],
+            "Wittmackanthus": [
+              "Wittmackanthus stanleyanus"
+            ],
+            "Warszewiczia": [
+              "Warszewiczia coccinea",
+              "Warszewiczia uxpanapensis"
+            ],
+            "Morinda": [
+              "Morinda citrifolia"
+            ],
+            "Gonzalagunia": [
+              "Gonzalagunia ovatifolia",
+              "Gonzalagunia cornifolia",
+              "Gonzalagunia dependens"
+            ],
+            "Ixora": [
+              "Ixora coccinea"
+            ],
+            "Genipa": [
+              "Genipa americana"
+            ],
+            "Hillia": [
+              "Hillia parasitica"
+            ],
+            "Cinchona": [
+              "Cinchona antioquiae",
+              "Cinchona pubescens"
+            ],
+            "Psychotria": [
+              "Psychotria micrantha",
+              "Psychotria rufiramea",
+              "Psychotria brachiata",
+              "Psychotria capitata",
+              "Psychotria monsalveae",
+              "Psychotria marginata",
+              "Psychotria carthagenensis"
+            ],
+            "Faramea": [
+              "Faramea oblongifolia",
+              "Faramea multiflora",
+              "Faramea grayumiana"
+            ],
+            "Elaeagia": [
+              "Elaeagia karstenii",
+              "Elaeagia utilis"
+            ],
+            "Ladenbergia": [
+              "Ladenbergia macrocarpa",
+              "Ladenbergia oblongifolia",
+              "Ladenbergia magdalenae"
+            ],
+            "Hoffmannia": [
+              "Hoffmannia asperula",
+              "Hoffmannia longipetiolata",
+              "Hoffmannia sprucei"
+            ],
+            "Tournefortiopsis": [
+              "Tournefortiopsis crispiflora"
+            ],
+            "Spermacoce": [
+              "Spermacoce remota",
+              "Spermacoce capitata"
+            ],
+            "Notopleura": [
+              "Notopleura macrophylla",
+              "Notopleura capacifolia",
+              "Notopleura montana"
+            ],
+            "Arcytophyllum": [
+              "Arcytophyllum nitidum"
+            ],
+            "Amphidasya": [
+              "Amphidasya colombiana"
+            ],
+            "Coussarea": [
+              "Coussarea garciae",
+              "Coussarea grandifolia",
+              "Coussarea paniculata"
+            ],
+            "Sabicea": [
+              "Sabicea panamensis"
+            ],
+            "Mitracarpus": [
+              "Mitracarpus hirtus"
+            ],
+            "Hippotis": [
+              "Hippotis mollis"
+            ],
+            "Bertiera": [
+              "Bertiera guianensis"
+            ],
+            "Schizocalyx": [
+              "Schizocalyx bracteosa"
+            ],
+            "Stenostomum": [
+              "Stenostomum acreanum"
+            ],
+            "Alseis": [
+              "Alseis blackiana"
+            ],
+            "Simira": [
+              "Simira cordifolia"
+            ],
+            "Rudgea": [
+              "Rudgea colombiana"
+            ],
+            "Randia": [
+              "Randia hondensis"
+            ],
+            "Amaioua": [
+              "Amaioua glomerulata"
+            ],
+            "Raritebe": [
+              "Raritebe palicoureoides"
+            ],
+            "Chimarrhis": [
+              "Chimarrhis hookeri"
+            ],
+            "Posoqueria": [
+              "Posoqueria latifolia",
+              "Posoqueria coriacea"
+            ],
+            "Pittoniotis": [
+              "Pittoniotis trichantha"
+            ],
+            "Chomelia": [
+              "Chomelia spinosa",
+              "Chomelia microloba"
+            ],
+            "Rosenbergiodendron": [
+              "Rosenbergiodendron longiflorum"
+            ],
+            "Geophila": [
+              "Geophila repens"
+            ],
+            "Guettarda": [
+              "Guettarda sanblasensis"
+            ],
+            "Macrocnemum": [
+              "Macrocnemum roseum"
+            ],
+            "Rustia": [
+              "Rustia occidentalis"
+            ],
+            "Arachnothryx": [
+              "Arachnothryx euryphylla"
+            ],
+            "Mussaenda": [
+              "Mussaenda erythrophylla"
+            ],
+            "Chiococca": [
+              "Chiococca alba"
+            ]
+          },
+          "Gentianaceae": {
+            "Gentiana": [
+              "Gentiana sedifolia"
+            ],
+            "Voyria": [
+              "Voyria tenella",
+              "Voyria pittieri"
+            ],
+            "Gentianella": [
+              "Gentianella selaginifolia",
+              "Gentianella corymbosa",
+              "Gentianella dacrydioides"
+            ],
+            "Halenia": [
+              "Halenia elata"
+            ],
+            "Macrocarpaea": [
+              "Macrocarpaea macrophylla"
+            ],
+            "Chelonanthus": [
+              "Chelonanthus alatus"
+            ],
+            "Centaurium": [
+              "Centaurium erythraea"
+            ]
+          },
+          "Apocynaceae": {
+            "Asclepias": [
+              "Asclepias curassavica"
+            ],
+            "Vinca": [
+              "Vinca major"
+            ],
+            "Catharanthus": [
+              "Catharanthus roseus"
+            ],
+            "Thevetia": [
+              "Thevetia ahouai"
+            ],
+            "Gomphocarpus": [
+              "Gomphocarpus physocarpus"
+            ],
+            "Mandevilla": [
+              "Mandevilla mollissima",
+              "Mandevilla veraguasensis",
+              "Mandevilla speciosa"
+            ],
+            "Oxypetalum": [
+              "Oxypetalum cordifolium"
+            ],
+            "Plumeria": [
+              "Plumeria rubra",
+              "Plumeria pudica",
+              "Plumeria alba"
+            ],
+            "Allamanda": [
+              "Allamanda cathartica"
+            ],
+            "Couma": [
+              "Couma macrocarpa"
+            ],
+            "Himatanthus": [
+              "Himatanthus articulatus"
+            ],
+            "Tabernaemontana": [
+              "Tabernaemontana sananho",
+              "Tabernaemontana heterophylla",
+              "Tabernaemontana longipes",
+              "Tabernaemontana grandiflora",
+              "Tabernaemontana markgrafiana"
+            ],
+            "Rauvolfia": [
+              "Rauvolfia leptophylla"
+            ],
+            "Aspidosperma": [
+              "Aspidosperma desmanthum"
+            ],
+            "Cascabela": [
+              "Cascabela thevetia"
+            ],
+            "Cryptostegia": [
+              "Cryptostegia grandiflora"
+            ]
+          },
+          "Loganiaceae": {
+            "Spigelia": [
+              "Spigelia hamellioides"
+            ]
+          }
+        },
+        "Santalales": {
+          "Loranthaceae": {
+            "Gaiadendron": [
+              "Gaiadendron punctatum"
+            ],
+            "Tristerix": [
+              "Tristerix longibracteatus",
+              "Tristerix longebracteatus",
+              "Tristerix secundus"
+            ],
+            "Oryctanthus": [
+              "Oryctanthus florulentus",
+              "Oryctanthus callicarpus",
+              "Oryctanthus alveolatus"
+            ],
+            "Passovia": [
+              "Passovia pyrifolia"
+            ],
+            "Peristethium": [
+              "Peristethium leptostachyum"
+            ],
+            "Tripodanthus": [
+              "Tripodanthus belmirensis"
+            ],
+            "Aetanthus": [
+              "Aetanthus nodosus"
+            ]
+          },
+          "Balanophoraceae": {
+            "Ombrophytum": [
+              "Ombrophytum villamariensis"
+            ],
+            "Corynaea": [
+              "Corynaea crassa"
+            ],
+            "Helosis": [
+              "Helosis cayennensis"
+            ],
+            "Langsdorffia": [
+              "Langsdorffia hypogaea"
+            ]
+          },
+          "Viscaceae": {
+            "Dendrophthora": [
+              "Dendrophthora clavata"
+            ],
+            "Phoradendron": [
+              "Phoradendron mucronatum",
+              "Phoradendron quadrangulare"
+            ]
+          },
+          "Erythropalaceae": {
+            "Heisteria": [
+              "Heisteria acuminata",
+              "Heisteria nitida"
+            ]
+          }
+        },
+        "Fabales": {
+          "Fabaceae": {
+            "Trifolium": [
+              "Trifolium repens",
+              "Trifolium pratense"
+            ],
+            "Lupinus": [
+              "Lupinus alopecuroides",
+              "Lupinus pubescens",
+              "Lupinus colombiensis"
+            ],
+            "Strongylodon": [
+              "Strongylodon macrobotrys"
+            ],
+            "Phaseolus": [
+              "Phaseolus coccineus",
+              "Phaseolus dumosus"
+            ],
+            "Samanea": [
+              "Samanea saman"
+            ],
+            "Erythrina": [
+              "Erythrina poeppigiana",
+              "Erythrina edulis",
+              "Erythrina fusca",
+              "Erythrina berteroana",
+              "Erythrina variegata"
+            ],
+            "Calliandra": [
+              "Calliandra haematocephala",
+              "Calliandra tergemina"
+            ],
+            "Mimosa": [
+              "Mimosa albida",
+              "Mimosa pudica",
+              "Mimosa pigra"
+            ],
+            "Caesalpinia": [
+              "Caesalpinia pulcherrima"
+            ],
+            "Chamaecrista": [
+              "Chamaecrista nictitans"
+            ],
+            "Bauhinia": [
+              "Bauhinia variegata",
+              "Bauhinia picta"
+            ],
+            "Schizolobium": [
+              "Schizolobium parahyba"
+            ],
+            "Leucaena": [
+              "Leucaena leucocephala"
+            ],
+            "Lotus": [
+              "Lotus pedunculatus"
+            ],
+            "Tephrosia": [
+              "Tephrosia vogelii"
+            ],
+            "Pseudosamanea": [
+              "Pseudosamanea guachapele"
+            ],
+            "Hymenaea": [
+              "Hymenaea courbaril"
+            ],
+            "Acrocarpus": [
+              "Acrocarpus fraxinifolius"
+            ],
+            "Sesbania": [
+              "Sesbania grandiflora",
+              "Sesbania exasperata"
+            ],
+            "Brownea": [
+              "Brownea grandiceps",
+              "Brownea ariza"
+            ],
+            "Senna": [
+              "Senna hayesiana",
+              "Senna spectabilis",
+              "Senna macrophylla",
+              "Senna reticulata",
+              "Senna bacillaris",
+              "Senna dariensis",
+              "Senna obtusifolia",
+              "Senna siamea",
+              "Senna alata"
+            ],
+            "Libidibia": [
+              "Libidibia punctata"
+            ],
+            "Ormosia": [
+              "Ormosia colombiana",
+              "Ormosia macrocalyx"
+            ],
+            "Pithecellobium": [
+              "Pithecellobium dulce"
+            ],
+            "Enterolobium": [
+              "Enterolobium cyclocarpum",
+              "Enterolobium schomburgkii"
+            ],
+            "Dialium": [
+              "Dialium guianense"
+            ],
+            "Dussia": [
+              "Dussia lehmannii"
+            ],
+            "Inga": [
+              "Inga goldmanii",
+              "Inga gracilior",
+              "Inga vera",
+              "Inga samanensis",
+              "Inga edulis",
+              "Inga umbellifera",
+              "Inga spectabilis",
+              "Inga thibaudiana",
+              "Inga marginata",
+              "Inga pezizifera",
+              "Inga acuminata",
+              "Inga mucuna",
+              "Inga oerstediana",
+              "Inga alba",
+              "Inga punctata",
+              "Inga sapindoides",
+              "Inga nobilis",
+              "Inga macrophylla",
+              "Inga densiflora"
+            ],
+            "Desmodium": [
+              "Desmodium incanum",
+              "Desmodium campyloclados",
+              "Desmodium axillare",
+              "Desmodium orbiculare",
+              "Desmodium intortum"
+            ],
+            "Mucuna": [
+              "Mucuna killipiana"
+            ],
+            "Zygia": [
+              "Zygia longifolia",
+              "Zygia latifolia"
+            ],
+            "Albizia": [
+              "Albizia carbonaria",
+              "Albizia niopoides",
+              "Albizia inundata"
+            ],
+            "Jupunba": [
+              "Jupunba trapezifolia"
+            ],
+            "Swartzia": [
+              "Swartzia macrophylla",
+              "Swartzia simplex",
+              "Swartzia robiniifolia",
+              "Swartzia oraria",
+              "Swartzia santanderensis",
+              "Swartzia trianae",
+              "Swartzia magdalenae"
+            ],
+            "Poeppigia": [
+              "Poeppigia procera"
+            ],
+            "Senegalia": [
+              "Senegalia polyphylla"
+            ],
+            "Pterocarpus": [
+              "Pterocarpus rohrii"
+            ],
+            "Machaerium": [
+              "Machaerium isadelphum",
+              "Machaerium kegelii",
+              "Machaerium capote",
+              "Machaerium biovulatum",
+              "Machaerium hirtum",
+              "Machaerium mutisii"
+            ],
+            "Parkia": [
+              "Parkia pendula"
+            ],
+            "Entada": [
+              "Entada rheedei"
+            ],
+            "Vachellia": [
+              "Vachellia farnesiana"
+            ],
+            "Gliricidia": [
+              "Gliricidia sepium"
+            ],
+            "Andira": [
+              "Andira chigorodensis",
+              "Andira inermis"
+            ],
+            "Leptolobium": [
+              "Leptolobium panamense"
+            ],
+            "Ctenodon": [
+              "Ctenodon brasilianus"
+            ],
+            "Centrolobium": [
+              "Centrolobium yavizanum"
+            ],
+            "Tamarindus": [
+              "Tamarindus indica"
+            ],
+            "Stylosanthes": [
+              "Stylosanthes guianensis"
+            ],
+            "Platymiscium": [
+              "Platymiscium hebestachyum",
+              "Platymiscium pinnatum"
+            ],
+            "Acacia": [
+              "Acacia mangium",
+              "Acacia baileyana"
+            ],
+            "Delonix": [
+              "Delonix regia"
+            ],
+            "Cajanus": [
+              "Cajanus cajan"
+            ],
+            "Macroptilium": [
+              "Macroptilium lathyroides"
+            ],
+            "Arachis": [
+              "Arachis hypogaea"
+            ],
+            "Teramnus": [
+              "Teramnus volubilis"
+            ],
+            "Alysicarpus": [
+              "Alysicarpus vaginalis"
+            ],
+            "Calopogonium": [
+              "Calopogonium mucunoides"
+            ],
+            "Indigofera": [
+              "Indigofera hirsuta"
+            ],
+            "Cassia": [
+              "Cassia fistula"
+            ],
+            "Aeschynomene": [
+              "Aeschynomene americana"
+            ],
+            "Dalbergia": [
+              "Dalbergia frutescens"
+            ],
+            "Styphnolobium": [
+              "Styphnolobium sporadicum"
+            ],
+            "Acaciella": [
+              "Acaciella angustissima"
+            ],
+            "Cenostigma": [
+              "Cenostigma pluviosum"
+            ],
+            "Geoffroea": [
+              "Geoffroea decorticans"
+            ],
+            "Parkinsonia": [
+              "Parkinsonia praecox"
+            ],
+            "Canavalia": [
+              "Canavalia ensiformis"
+            ],
+            "Clitoria": [
+              "Clitoria ternatea"
+            ],
+            "Crotalaria": [
+              "Crotalaria spectabilis",
+              "Crotalaria nitens",
+              "Crotalaria incana",
+              "Crotalaria juncea",
+              "Crotalaria micans"
+            ],
+            "Grona": [
+              "Grona adscendens"
+            ],
+            "Pachyrhizus": [
+              "Pachyrhizus tuberosus"
+            ]
+          },
+          "Polygalaceae": {
+            "Monnina": [
+              "Monnina padifolia",
+              "Monnina parviflora",
+              "Monnina fastigiata",
+              "Monnina polystachya",
+              "Monnina lehmanniana",
+              "Monnina aestuans"
+            ],
+            "Polygala": [
+              "Polygala paniculata"
+            ]
+          }
+        },
+        "Solanales": {
+          "Solanaceae": {
+            "Solanum": [
+              "Solanum quitoense",
+              "Solanum vestissimum",
+              "Solanum pseudocapsicum",
+              "Solanum macrotonum",
+              "Solanum juglandifolium",
+              "Solanum tuberosum",
+              "Solanum viarum",
+              "Solanum mammosum",
+              "Solanum interandinum",
+              "Solanum betaceum",
+              "Solanum acerifolium",
+              "Solanum lycopersicum",
+              "Solanum oblongifolium",
+              "Solanum caripense",
+              "Solanum sisymbriifolium",
+              "Solanum nigrescens",
+              "Solanum wendlandii",
+              "Solanum asperolanatum",
+              "Solanum aphyodendron",
+              "Solanum ovalifolium",
+              "Solanum venosum",
+              "Solanum colombianum",
+              "Solanum sycophanta",
+              "Solanum cordovense",
+              "Solanum lepidotum",
+              "Solanum deflexiflorum",
+              "Solanum aturense",
+              "Solanum americanum",
+              "Solanum torvum",
+              "Solanum jamaicense",
+              "Solanum hazenii"
+            ],
+            "Streptosolen": [
+              "Streptosolen jamesonii"
+            ],
+            "Browallia": [
+              "Browallia americana",
+              "Browallia speciosa"
+            ],
+            "Capsicum": [
+              "Capsicum dimorphum",
+              "Capsicum lycianthoides",
+              "Capsicum geminifolium",
+              "Capsicum annuum"
+            ],
+            "Physalis": [
+              "Physalis peruviana"
+            ],
+            "Lycianthes": [
+              "Lycianthes acutifolia",
+              "Lycianthes radiata"
+            ],
+            "Markea": [
+              "Markea hunzikeri",
+              "Markea sturmii"
+            ],
+            "Jaltomata": [
+              "Jaltomata viridiflora"
+            ],
+            "Brunfelsia": [
+              "Brunfelsia pauciflora"
+            ],
+            "Datura": [
+              "Datura metel"
+            ],
+            "Schultesianthus": [
+              "Schultesianthus coriaceus"
+            ],
+            "Brugmansia": [
+              "Brugmansia candida",
+              "Brugmansia aurea",
+              "Brugmansia arborea"
+            ],
+            "Nicandra": [
+              "Nicandra physalodes"
+            ],
+            "Cestrum": [
+              "Cestrum microcalyx",
+              "Cestrum schlechtendalii",
+              "Cestrum peruvianum",
+              "Cestrum ochraceum",
+              "Cestrum racemosum",
+              "Cestrum humboldtii",
+              "Cestrum pennellii",
+              "Cestrum nocturnum"
+            ],
+            "Saracha": [
+              "Saracha quitensis",
+              "Saracha nigribaccata"
+            ],
+            "Iochroma": [
+              "Iochroma gesnerioides"
+            ],
+            "Sessea": [
+              "Sessea crassivenosa",
+              "Sessea corymbiflora"
+            ],
+            "Cuatresia": [
+              "Cuatresia riparia"
+            ],
+            "Solandra": [
+              "Solandra maxima"
+            ],
+            "Nicotiana": [
+              "Nicotiana tabacum"
+            ],
+            "Salpichroa": [
+              "Salpichroa tristis"
+            ]
+          },
+          "Convolvulaceae": {
+            "Ipomoea": [
+              "Ipomoea purpurea",
+              "Ipomoea indica",
+              "Ipomoea batatas",
+              "Ipomoea quamoclit",
+              "Ipomoea hederifolia",
+              "Ipomoea alba"
+            ],
+            "Distimake": [
+              "Distimake tuberosus",
+              "Distimake macrocalyx"
+            ],
+            "Jacquemontia": [
+              "Jacquemontia tamnifolia",
+              "Jacquemontia sphaerostigma"
+            ],
+            "Camonea": [
+              "Camonea umbellata"
+            ]
+          }
+        },
+        "Ranunculales": {
+          "Papaveraceae": {
+            "Bocconia": [
+              "Bocconia frutescens"
+            ]
+          },
+          "Ranunculaceae": {
+            "Ranunculus": [
+              "Ranunculus praemorsus",
+              "Ranunculus geranioides",
+              "Ranunculus peruvianus"
+            ],
+            "Clematis": [
+              "Clematis guadeloupae"
+            ]
+          },
+          "Berberidaceae": {
+            "Berberis": [
+              "Berberis verticillata",
+              "Berberis goudotii",
+              "Berberis quindiuensis",
+              "Berberis stuebelii"
+            ]
+          },
+          "Menispermaceae": {
+            "Anomospermum": [
+              "Anomospermum reticulatum"
+            ]
+          }
+        },
+        "Oxalidales": {
+          "Elaeocarpaceae": {
+            "Vallea": [
+              "Vallea stipularis"
+            ],
+            "Sloanea": [
+              "Sloanea rufa",
+              "Sloanea guianensis"
+            ]
+          },
+          "Cunoniaceae": {
+            "Weinmannia": [
+              "Weinmannia pubescens",
+              "Weinmannia sorbifolia",
+              "Weinmannia balbisana",
+              "Weinmannia tolimensis",
+              "Weinmannia mariquitae",
+              "Weinmannia rollottii",
+              "Weinmannia multijuga"
+            ]
+          },
+          "Oxalidaceae": {
+            "Oxalis": [
+              "Oxalis spiralis",
+              "Oxalis integra",
+              "Oxalis hedysaroides",
+              "Oxalis latifolia",
+              "Oxalis medicaginea"
+            ]
+          },
+          "Brunelliaceae": {
+            "Brunellia": [
+              "Brunellia sibundoya",
+              "Brunellia acutangula",
+              "Brunellia boqueronensis",
+              "Brunellia subsessilis",
+              "Brunellia goudotii",
+              "Brunellia comocladifolia"
+            ]
+          },
+          "Connaraceae": {
+            "Connarus": [
+              "Connarus silvanensis"
+            ],
+            "Rourea": [
+              "Rourea cuspidata"
+            ]
+          }
+        },
+        "Rosales": {
+          "Rosaceae": {
+            "Rubus": [
+              "Rubus nubigenus",
+              "Rubus rosifolius",
+              "Rubus urticifolius",
+              "Rubus guyanensis",
+              "Rubus coriaceus",
+              "Rubus bogotensis",
+              "Rubus floribundus",
+              "Rubus compactus"
+            ],
+            "Potentilla": [
+              "Potentilla indica"
+            ],
+            "Acaena": [
+              "Acaena elongata",
+              "Acaena ovalifolia"
+            ],
+            "Hesperomeles": [
+              "Hesperomeles obtusifolia",
+              "Hesperomeles ferruginea",
+              "Hesperomeles goudotiana"
+            ],
+            "Polylepis": [
+              "Polylepis sericea"
+            ],
+            "Fragaria": [
+              "Fragaria vesca"
+            ],
+            "Lachemilla": [
+              "Lachemilla holosericea",
+              "Lachemilla hispidula",
+              "Lachemilla nivalis",
+              "Lachemilla orbiculata",
+              "Lachemilla aphanoides"
+            ],
+            "Prunus": [
+              "Prunus subcorymbosa",
+              "Prunus guanaiensis",
+              "Prunus falcata"
+            ]
+          },
+          "Urticaceae": {
+            "Cecropia": [
+              "Cecropia peltata",
+              "Cecropia telealba",
+              "Cecropia angustifolia",
+              "Cecropia mutisiana",
+              "Cecropia hispidissima",
+              "Cecropia insignis",
+              "Cecropia multisecta",
+              "Cecropia telenitida",
+              "Cecropia obtusifolia",
+              "Cecropia engleriana"
+            ],
+            "Urera": [
+              "Urera caracasana",
+              "Urera baccifera"
+            ],
+            "Pilea": [
+              "Pilea microphylla",
+              "Pilea imparifolia"
+            ],
+            "Phenax": [
+              "Phenax uliginosus"
+            ],
+            "Pourouma": [
+              "Pourouma bicolor"
+            ],
+            "Boehmeria": [
+              "Boehmeria cylindrica",
+              "Boehmeria caudata"
+            ],
+            "Urtica": [
+              "Urtica dioica"
+            ],
+            "Laportea": [
+              "Laportea aestuans"
+            ],
+            "Myriocarpa": [
+              "Myriocarpa longipes",
+              "Myriocarpa stipitata"
+            ],
+            "Hemistylus": [
+              "Hemistylus boehmerioides"
+            ]
+          },
+          "Moraceae": {
+            "Ficus": [
+              "Ficus gigantosyce",
+              "Ficus carica",
+              "Ficus nymphaeifolia",
+              "Ficus insipida",
+              "Ficus dulciaria",
+              "Ficus hartwegii",
+              "Ficus tonduzii",
+              "Ficus americana",
+              "Ficus maxima",
+              "Ficus apollinaris",
+              "Ficus citrifolia",
+              "Ficus schippii",
+              "Ficus pallida",
+              "Ficus dendrocida",
+              "Ficus albert-smithii",
+              "Ficus mutisii",
+              "Ficus benjamina",
+              "Ficus cuatrecasana",
+              "Ficus obtusifolia",
+              "Ficus caldasiana",
+              "Ficus matiziana"
+            ],
+            "Artocarpus": [
+              "Artocarpus altilis"
+            ],
+            "Paratrophis": [
+              "Paratrophis insignis"
+            ],
+            "Olmedia": [
+              "Olmedia aspera"
+            ],
+            "Maclura": [
+              "Maclura tinctoria"
+            ],
+            "Pseudolmedia": [
+              "Pseudolmedia rigida",
+              "Pseudolmedia laevigata"
+            ],
+            "Brosimum": [
+              "Brosimum guianense",
+              "Brosimum alicastrum",
+              "Brosimum sprucei"
+            ],
+            "Sorocea": [
+              "Sorocea pubivena",
+              "Sorocea trophoides"
+            ],
+            "Helicostylis": [
+              "Helicostylis tomentosa"
+            ],
+            "Perebea": [
+              "Perebea xanthochyma"
+            ],
+            "Maquira": [
+              "Maquira guianensis"
+            ],
+            "Trophis": [
+              "Trophis racemosa"
+            ],
+            "Clarisia": [
+              "Clarisia racemosa",
+              "Clarisia biflora"
+            ],
+            "Batocarpus": [
+              "Batocarpus costaricensis"
+            ]
+          },
+          "Cannabaceae": {
+            "Trema": [
+              "Trema micranthum"
+            ],
+            "Lozanella": [
+              "Lozanella enantiophylla"
+            ],
+            "Celtis": [
+              "Celtis schippii",
+              "Celtis iguanaea"
+            ],
+            "Ampelocera": [
+              "Ampelocera macrocarpa"
+            ]
+          }
+        },
+        "Apiales": {
+          "Apiaceae": {
+            "Azorella": [
+              "Azorella multifida",
+              "Azorella crenata",
+              "Azorella aretioides"
+            ],
+            "Eryngium": [
+              "Eryngium humile",
+              "Eryngium foetidum"
+            ],
+            "Chaerophyllum": [
+              "Chaerophyllum andicola"
+            ],
+            "Sanicula": [
+              "Sanicula liberta"
+            ],
+            "Spananthe": [
+              "Spananthe paniculata"
+            ],
+            "Foeniculum": [
+              "Foeniculum vulgare"
+            ],
+            "Niphogeton": [
+              "Niphogeton dissecta",
+              "Niphogeton glaucescens"
+            ],
+            "Lilaeopsis": [
+              "Lilaeopsis schaffneriana"
+            ],
+            "Myrrhidendron": [
+              "Myrrhidendron glaucescens",
+              "Myrrhidendron pennellii"
+            ]
+          },
+          "Araliaceae": {
+            "Oreopanax": [
+              "Oreopanax incisus",
+              "Oreopanax pallidus",
+              "Oreopanax obtusilobus",
+              "Oreopanax trianae",
+              "Oreopanax bogotensis",
+              "Oreopanax tolimanus",
+              "Oreopanax discolor"
+            ],
+            "Hydrocotyle": [
+              "Hydrocotyle bonplandii",
+              "Hydrocotyle humboldtii"
+            ],
+            "Sciodaphyllum": [
+              "Sciodaphyllum trianae",
+              "Sciodaphyllum quinduense"
+            ],
+            "Dendropanax": [
+              "Dendropanax arboreus",
+              "Dendropanax macrophyllus",
+              "Dendropanax caucanus"
+            ],
+            "Didymopanax": [
+              "Didymopanax morototoni"
+            ]
+          }
+        },
+        "Gunnerales": {
+          "Gunneraceae": {
+            "Gunnera": [
+              "Gunnera magnifica",
+              "Gunnera magellanica",
+              "Gunnera insignis",
+              "Gunnera manicata",
+              "Gunnera brephogea"
+            ]
+          }
+        },
+        "Laurales": {
+          "Lauraceae": {
+            "Aiouea": [
+              "Aiouea montana",
+              "Aiouea dubia"
+            ],
+            "Persea": [
+              "Persea americana",
+              "Persea caerulea",
+              "Persea areolatocostae",
+              "Persea mutisii",
+              "Persea chrysophylla"
+            ],
+            "Nectandra": [
+              "Nectandra membranacea",
+              "Nectandra villosa",
+              "Nectandra obtusata",
+              "Nectandra discolor",
+              "Nectandra cuspidata",
+              "Nectandra acutifolia",
+              "Nectandra longifolia"
+            ],
+            "Ocotea": [
+              "Ocotea macrophylla",
+              "Ocotea guianensis",
+              "Ocotea benthamiana",
+              "Ocotea valerioana",
+              "Ocotea tessmannii",
+              "Ocotea puberula",
+              "Ocotea floribunda",
+              "Ocotea oblonga",
+              "Ocotea whitei",
+              "Ocotea leptobotra"
+            ],
+            "Mespilodaphne": [
+              "Mespilodaphne veraguensis",
+              "Mespilodaphne aurantiodora"
+            ],
+            "Rhodostemonodaphne": [
+              "Rhodostemonodaphne kunthiana"
+            ],
+            "Andea": [
+              "Andea micans"
+            ],
+            "Beilschmiedia": [
+              "Beilschmiedia tovarensis",
+              "Beilschmiedia costaricensis"
+            ],
+            "Aniba": [
+              "Aniba perutilis",
+              "Aniba puchury-minor"
+            ],
+            "Endlicheria": [
+              "Endlicheria metallica"
+            ],
+            "Damburneya": [
+              "Damburneya umbrosa",
+              "Damburneya purpurea"
+            ]
+          },
+          "Siparunaceae": {
+            "Siparuna": [
+              "Siparuna aspera",
+              "Siparuna thecaphora",
+              "Siparuna gesnerioides",
+              "Siparuna decipiens",
+              "Siparuna lepidota",
+              "Siparuna tomentosa",
+              "Siparuna laurifolia",
+              "Siparuna guianensis",
+              "Siparuna sessiliflora"
+            ]
+          },
+          "Monimiaceae": {
+            "Mollinedia": [
+              "Mollinedia tomentosa",
+              "Mollinedia ovata"
+            ]
+          }
+        },
+        "Escalloniales": {
+          "Escalloniaceae": {
+            "Escallonia": [
+              "Escallonia myrtilloides",
+              "Escallonia paniculata"
+            ]
+          }
+        },
+        "Magnoliales": {
+          "Annonaceae": {
+            "Annona": [
+              "Annona cherimolioides",
+              "Annona muricata",
+              "Annona mucosa",
+              "Annona hayesii",
+              "Annona amazonica",
+              "Annona rensoniana",
+              "Annona tenuiflora",
+              "Annona papilionella",
+              "Annona edulis",
+              "Annona reticulata"
+            ],
+            "Pseudomalmea": [
+              "Pseudomalmea boyacana"
+            ],
+            "Guatteria": [
+              "Guatteria goudotiana",
+              "Guatteria punctata",
+              "Guatteria recurvisepala",
+              "Guatteria novogranatensis",
+              "Guatteria amplifolia",
+              "Guatteria blepharophylla",
+              "Guatteria scytophylla"
+            ],
+            "Xylopia": [
+              "Xylopia aromatica",
+              "Xylopia sericea",
+              "Xylopia frutescens"
+            ],
+            "Unonopsis": [
+              "Unonopsis aviceps"
+            ],
+            "Oxandra": [
+              "Oxandra panamensis",
+              "Oxandra venezuelana"
+            ],
+            "Cananga": [
+              "Cananga odorata"
+            ],
+            "Ephedranthus": [
+              "Ephedranthus columbianus"
+            ]
+          },
+          "Magnoliaceae": {
+            "Magnolia": [
+              "Magnolia hernandezii",
+              "Magnolia jardinensis",
+              "Magnolia yarumalensis"
+            ]
+          },
+          "Myristicaceae": {
+            "Virola": [
+              "Virola sebifera",
+              "Virola flexuosa"
+            ],
+            "Compsoneura": [
+              "Compsoneura mutisii"
+            ]
+          }
+        },
+        "Cornales": {
+          "Loasaceae": {
+            "Mentzelia": [
+              "Mentzelia aspera"
+            ],
+            "Nasa": [
+              "Nasa triphylla",
+              "Nasa lehmanniana"
+            ]
+          },
+          "Hydrangeaceae": {
+            "Hydrangea": [
+              "Hydrangea macrophylla",
+              "Hydrangea peruviana"
+            ]
+          }
+        },
+        "Brassicales": {
+          "Brassicaceae": {
+            "Draba": [
+              "Draba hallii",
+              "Draba pennell-hazenii"
+            ],
+            "Raphanus": [
+              "Raphanus raphanistrum"
+            ],
+            "Lobularia": [
+              "Lobularia maritima"
+            ]
+          },
+          "Cleomaceae": {
+            "Arivela": [
+              "Arivela viscosa"
+            ],
+            "Podandrogyne": [
+              "Podandrogyne hispidula"
+            ]
+          },
+          "Tropaeolaceae": {
+            "Tropaeolum": [
+              "Tropaeolum majus",
+              "Tropaeolum adpressum",
+              "Tropaeolum hirtifolium",
+              "Tropaeolum tuberosum"
+            ]
+          },
+          "Caricaceae": {
+            "Vasconcellea": [
+              "Vasconcellea goudotiana",
+              "Vasconcellea pubescens",
+              "Vasconcellea microcarpa"
+            ],
+            "Carica": [
+              "Carica papaya"
+            ]
+          },
+          "Capparaceae": {
+            "Steriphoma": [
+              "Steriphoma paradoxum"
+            ],
+            "Cynophalla": [
+              "Cynophalla sessilis"
+            ]
+          },
+          "Tovariaceae": {
+            "Tovaria": [
+              "Tovaria pendula"
+            ]
+          }
+        },
+        "Sapindales": {
+          "Sapindaceae": {
+            "Billia": [
+              "Billia rosea"
+            ],
+            "Melicoccus": [
+              "Melicoccus bijugatus"
+            ],
+            "Cupania": [
+              "Cupania rufescens",
+              "Cupania latifolia",
+              "Cupania cinerea",
+              "Cupania americana"
+            ],
+            "Dodonaea": [
+              "Dodonaea viscosa"
+            ],
+            "Matayba": [
+              "Matayba elegans",
+              "Matayba guianensis"
+            ],
+            "Allophylus": [
+              "Allophylus goudotii",
+              "Allophylus excelsus",
+              "Allophylus psilospermus",
+              "Allophylus racemosus"
+            ],
+            "Dilodendron": [
+              "Dilodendron costaricense"
+            ],
+            "Serjania": [
+              "Serjania clematidea"
+            ],
+            "Paullinia": [
+              "Paullinia cururu",
+              "Paullinia densiflora"
+            ],
+            "Sapindus": [
+              "Sapindus saponaria"
+            ]
+          },
+          "Meliaceae": {
+            "Trichilia": [
+              "Trichilia pallida",
+              "Trichilia martiana"
+            ],
+            "Cedrela": [
+              "Cedrela odorata",
+              "Cedrela montana"
+            ],
+            "Swietenia": [
+              "Swietenia macrophylla"
+            ],
+            "Guarea": [
+              "Guarea guidonia",
+              "Guarea kunthiana",
+              "Guarea cartaguenya",
+              "Guarea purusana",
+              "Guarea glabra"
+            ],
+            "Azadirachta": [
+              "Azadirachta indica"
+            ],
+            "Ruagea": [
+              "Ruagea hirsuta"
+            ]
+          },
+          "Burseraceae": {
+            "Bursera": [
+              "Bursera simaruba"
+            ],
+            "Crepidospermum": [
+              "Crepidospermum rhoifolium"
+            ],
+            "Protium": [
+              "Protium apiculatum",
+              "Protium macrophyllum",
+              "Protium sagotianum",
+              "Protium altsonii",
+              "Protium leptostachyum",
+              "Protium aracouchini"
+            ],
+            "Trattinnickia": [
+              "Trattinnickia aspera",
+              "Trattinnickia lawrancei"
+            ],
+            "Tetragastris": [
+              "Tetragastris panamensis"
+            ]
+          },
+          "Rutaceae": {
+            "Zanthoxylum": [
+              "Zanthoxylum martinicense",
+              "Zanthoxylum campicola",
+              "Zanthoxylum lenticulare",
+              "Zanthoxylum rhoifolium",
+              "Zanthoxylum caribaeum",
+              "Zanthoxylum rigidum",
+              "Zanthoxylum riedelianum",
+              "Zanthoxylum schreberi",
+              "Zanthoxylum quinduense"
+            ],
+            "Citrus": [
+              "Citrus aurantium",
+              "Citrus limon",
+              "Citrus medica",
+              "Citrus aurantiifolia"
+            ],
+            "Swinglea": [
+              "Swinglea glutinosa"
+            ]
+          },
+          "Anacardiaceae": {
+            "Anacardium": [
+              "Anacardium excelsum",
+              "Anacardium occidentale"
+            ],
+            "Astronium": [
+              "Astronium graveolens",
+              "Astronium lecointei"
+            ],
+            "Mauria": [
+              "Mauria ferruginea",
+              "Mauria heterophylla"
+            ],
+            "Toxicodendron": [
+              "Toxicodendron striatum"
+            ],
+            "Ochoterenaea": [
+              "Ochoterenaea colombiana"
+            ],
+            "Tapirira": [
+              "Tapirira guianensis"
+            ],
+            "Spondias": [
+              "Spondias mombin",
+              "Spondias purpurea",
+              "Spondias radlkoferi"
+            ],
+            "Schinus": [
+              "Schinus terebinthifolia"
+            ],
+            "Mangifera": [
+              "Mangifera indica"
+            ]
+          },
+          "Simaroubaceae": {
+            "Simarouba": [
+              "Simarouba amara"
+            ]
+          }
+        },
+        "Canellales": {
+          "Winteraceae": {
+            "Drimys": [
+              "Drimys granadensis"
+            ]
+          }
+        },
+        "Dipsacales": {
+          "Caprifoliaceae": {
+            "Valeriana": [
+              "Valeriana chaerophylloides",
+              "Valeriana pilosa"
+            ]
+          },
+          "Viburnaceae": {
+            "Sambucus": [
+              "Sambucus nigra"
+            ],
+            "Viburnum": [
+              "Viburnum toronis",
+              "Viburnum pichinchense",
+              "Viburnum anabaptista",
+              "Viburnum undulatum"
+            ]
+          }
+        },
+        "Metteniusales": {
+          "Metteniusaceae": {
+            "Calatola": [
+              "Calatola costaricensis"
+            ],
+            "Dendrobangia": [
+              "Dendrobangia boliviana"
+            ]
+          }
+        },
+        "Nymphaeales": {
+          "Nymphaeaceae": {
+            "Nymphaea": [
+              "Nymphaea rubra",
+              "Nymphaea lotus"
+            ]
+          }
+        },
+        "Geraniales": {
+          "Geraniaceae": {
+            "Geranium": [
+              "Geranium sibbaldioides",
+              "Geranium stramineum",
+              "Geranium diffusum"
+            ]
+          }
+        },
+        "Boraginales": {
+          "Boraginaceae": {
+            "Cynoglossum": [
+              "Cynoglossum amabile"
+            ],
+            "Borago": [
+              "Borago officinalis"
+            ]
+          },
+          "Cordiaceae": {
+            "Cordia": [
+              "Cordia alliodora",
+              "Cordia bogotensis",
+              "Cordia protracta",
+              "Cordia nodosa",
+              "Cordia bicolor",
+              "Cordia panamensis",
+              "Cordia tetrandra"
+            ],
+            "Varronia": [
+              "Varronia acuta",
+              "Varronia spinescens",
+              "Varronia curassavica",
+              "Varronia dichotoma"
+            ]
+          },
+          "Heliotropiaceae": {
+            "Heliotropium": [
+              "Heliotropium scabridum",
+              "Heliotropium fuliginosum",
+              "Heliotropium arborescens",
+              "Heliotropium indicum"
+            ]
+          }
+        },
+        "Saxifragales": {
+          "Crassulaceae": {
+            "Sedum": [
+              "Sedum rubrotinctum",
+              "Sedum praealtum"
+            ],
+            "Kalanchoe": [
+              "Kalanchoe laetivirens",
+              "Kalanchoe delagoensis"
+            ]
+          },
+          "Grossulariaceae": {
+            "Ribes": [
+              "Ribes andicola",
+              "Ribes leptostachyum"
+            ]
+          }
+        },
+        "Dilleniales": {
+          "Dilleniaceae": {
+            "Davilla": [
+              "Davilla nitida",
+              "Davilla kunthii"
+            ],
+            "Doliocarpus": [
+              "Doliocarpus multiflorus"
+            ]
+          }
+        },
+        "Zygophyllales": {
+          "Zygophyllaceae": {
+            "Gonopterodendron": [
+              "Gonopterodendron arboreum"
+            ]
+          }
+        },
+        "Huerteales": {
+          "Dipentodontaceae": {
+            "Perrottetia": [
+              "Perrottetia maxima"
+            ]
+          }
+        },
+        "Picramniales": {
+          "Picramniaceae": {
+            "Picramnia": [
+              "Picramnia gracilis",
+              "Picramnia antidesma",
+              "Picramnia latifolia",
+              "Picramnia sphaerocarpa"
+            ]
+          }
+        },
+        "Aquifoliales": {
+          "Aquifoliaceae": {
+            "Ilex": [
+              "Ilex laurina",
+              "Ilex nervosa",
+              "Ilex myricoides"
+            ]
+          }
+        },
+        "Chloranthales": {
+          "Chloranthaceae": {
+            "Hedyosmum": [
+              "Hedyosmum racemosum",
+              "Hedyosmum goudotianum",
+              "Hedyosmum bonplandianum",
+              "Hedyosmum cumbalense"
+            ]
+          }
+        },
+        "Proteales": {
+          "Sabiaceae": {
+            "Meliosma": [
+              "Meliosma occidentalis",
+              "Meliosma glossophylla",
+              "Meliosma violacea"
+            ]
+          },
+          "Proteaceae": {
+            "Panopsis": [
+              "Panopsis metcalfii",
+              "Panopsis yolombo"
+            ],
+            "Roupala": [
+              "Roupala montana",
+              "Roupala monosperma"
+            ],
+            "Macadamia": [
+              "Macadamia integrifolia"
+            ]
+          }
+        },
+        "Crossosomatales": {
+          "Staphyleaceae": {
+            "Turpinia": [
+              "Turpinia occidentalis"
+            ]
+          }
+        },
+        "Celastrales": {
+          "Celastraceae": {
+            "Celastrus": [
+              "Celastrus grenadensis"
+            ]
+          }
+        }
+      },
+      "Liliopsida": {
+        "Asparagales": {
+          "Orchidaceae": {
+            "Epidendrum": [
+              "Epidendrum fimbriatum",
+              "Epidendrum erosum",
+              "Epidendrum posadarum",
+              "Epidendrum cylindrostachys",
+              "Epidendrum melinanthum",
+              "Epidendrum sodiroi",
+              "Epidendrum bogotense",
+              "Epidendrum porphyreum",
+              "Epidendrum cernuum",
+              "Epidendrum cottoniiflorum",
+              "Epidendrum blepharistes",
+              "Epidendrum arachnoglossum",
+              "Epidendrum scytocladium",
+              "Epidendrum parviflorum",
+              "Epidendrum cleistocoleum",
+              "Epidendrum stanhopeanum",
+              "Epidendrum lopezii",
+              "Epidendrum porquerense",
+              "Epidendrum psilosepalum",
+              "Epidendrum radicans",
+              "Epidendrum brevicernuum",
+              "Epidendrum leucochilum",
+              "Epidendrum schistochilum",
+              "Epidendrum laeve",
+              "Epidendrum hartmanii",
+              "Epidendrum brachypodum",
+              "Epidendrum calothyrsus",
+              "Epidendrum bispathulatum",
+              "Epidendrum cylindraceum",
+              "Epidendrum microtum",
+              "Epidendrum megalospathum",
+              "Epidendrum frutex"
+            ],
+            "Oncidium": [
+              "Oncidium ornithorhynchum",
+              "Oncidium luteopurpureum",
+              "Oncidium lehmannii",
+              "Oncidium cultratum",
+              "Oncidium mirandum",
+              "Oncidium adelaidae",
+              "Oncidium panchrysum",
+              "Oncidium alexandrae"
+            ],
+            "Masdevallia": [
+              "Masdevallia hortensis",
+              "Masdevallia picturata",
+              "Masdevallia amanda",
+              "Masdevallia heteroptera",
+              "Masdevallia molossus",
+              "Masdevallia macrura",
+              "Masdevallia parvula",
+              "Masdevallia caudivolvula",
+              "Masdevallia cucullata",
+              "Masdevallia nidifica",
+              "Masdevallia ignea",
+              "Masdevallia peristeria",
+              "Masdevallia herradurae",
+              "Masdevallia bicolor",
+              "Masdevallia mutica",
+              "Masdevallia platyglossa",
+              "Masdevallia coccinea"
+            ],
+            "Lepanthes": [
+              "Lepanthes dunstervilleorum",
+              "Lepanthes mucronata",
+              "Lepanthes tachirensis",
+              "Lepanthes pachoi",
+              "Lepanthes jardinensis",
+              "Lepanthes gargantua",
+              "Lepanthes silverstonei",
+              "Lepanthes volvox",
+              "Lepanthes rhombipetala",
+              "Lepanthes guttula-sanguinis",
+              "Lepanthes acarina",
+              "Lepanthes licrophora",
+              "Lepanthes carunculigera",
+              "Lepanthes acutissima",
+              "Lepanthes dodsonii",
+              "Lepanthes muscula",
+              "Lepanthes saccata",
+              "Lepanthes nicolasii",
+              "Lepanthes ferax",
+              "Lepanthes elata",
+              "Lepanthes manabina",
+              "Lepanthes cuatrecasasii",
+              "Lepanthes tibouchinicola",
+              "Lepanthes habenifera",
+              "Lepanthes troxis",
+              "Lepanthes cyrtostele",
+              "Lepanthes venusta",
+              "Lepanthes corkyae",
+              "Lepanthes auriculata",
+              "Lepanthes discolor",
+              "Lepanthes cornualis"
+            ],
+            "Elleanthus": [
+              "Elleanthus aurantiacus",
+              "Elleanthus maculatus",
+              "Elleanthus robustus",
+              "Elleanthus kermesinus",
+              "Elleanthus graminifolius"
+            ],
+            "Pleurothallis": [
+              "Pleurothallis matudana",
+              "Pleurothallis tetragona",
+              "Pleurothallis pulvinaris",
+              "Pleurothallis phalangifera",
+              "Pleurothallis cordata",
+              "Pleurothallis gracilicolumna",
+              "Pleurothallis canaligera",
+              "Pleurothallis siphoglossa",
+              "Pleurothallis bicornis",
+              "Pleurothallis adonis",
+              "Pleurothallis gomezii",
+              "Pleurothallis penduliflora",
+              "Pleurothallis neorinkei",
+              "Pleurothallis coriacardia",
+              "Pleurothallis dibolia",
+              "Pleurothallis giraldoi"
+            ],
+            "Cyrtochilum": [
+              "Cyrtochilum halteratum",
+              "Cyrtochilum scabiosum",
+              "Cyrtochilum annulare",
+              "Cyrtochilum murinum",
+              "Cyrtochilum divaricatum",
+              "Cyrtochilum diceratum",
+              "Cyrtochilum tricostatum",
+              "Cyrtochilum funis",
+              "Cyrtochilum serratum",
+              "Cyrtochilum undulatum",
+              "Cyrtochilum sodiroi",
+              "Cyrtochilum porrigens",
+              "Cyrtochilum trifurcatum",
+              "Cyrtochilum cimiciferum",
+              "Cyrtochilum flexuosum",
+              "Cyrtochilum meirax",
+              "Cyrtochilum mendax",
+              "Cyrtochilum auropurpureum",
+              "Cyrtochilum pardinum",
+              "Cyrtochilum umbonatum",
+              "Cyrtochilum ventilabrum"
+            ],
+            "Comparettia": [
+              "Comparettia falcata",
+              "Comparettia macroplectron",
+              "Comparettia ottonis"
+            ],
+            "Kefersteinia": [
+              "Kefersteinia tolimensis",
+              "Kefersteinia laminata",
+              "Kefersteinia graminea"
+            ],
+            "Maxillaria": [
+              "Maxillaria rhomboglossa",
+              "Maxillaria embreei",
+              "Maxillaria aggregata",
+              "Maxillaria lepidota",
+              "Maxillaria acuminata",
+              "Maxillaria fractiflexa",
+              "Maxillaria aurea",
+              "Maxillaria brevifolia",
+              "Maxillaria aequiloba",
+              "Maxillaria longissima",
+              "Maxillaria amplifoliata",
+              "Maxillaria lawrenceana",
+              "Maxillaria eburnea",
+              "Maxillaria speciosa"
+            ],
+            "Rodriguezia": [
+              "Rodriguezia lanceolata",
+              "Rodriguezia granadensis"
+            ],
+            "Fernandezia": [
+              "Fernandezia crystallina",
+              "Fernandezia myrtillus"
+            ],
+            "Andinia": [
+              "Andinia pilosella",
+              "Andinia hippocrepica",
+              "Andinia nummularia"
+            ],
+            "Dichaea": [
+              "Dichaea andina",
+              "Dichaea camaridioides",
+              "Dichaea morrisii"
+            ],
+            "Acineta": [
+              "Acineta sulcata",
+              "Acineta antioquiae",
+              "Acineta cryptodonta"
+            ],
+            "Arundina": [
+              "Arundina graminifolia"
+            ],
+            "Ponthieva": [
+              "Ponthieva fertilis",
+              "Ponthieva diptera",
+              "Ponthieva pseudoracemosa"
+            ],
+            "Pterostemma": [
+              "Pterostemma antioquiense",
+              "Pterostemma escobarii"
+            ],
+            "Catasetum": [
+              "Catasetum tabulare"
+            ],
+            "Acianthera": [
+              "Acianthera polystachya",
+              "Acianthera sicaria"
+            ],
+            "Galeandra": [
+              "Galeandra beyrichii"
+            ],
+            "Dracula": [
+              "Dracula iricolor",
+              "Dracula gorgona",
+              "Dracula houtteana",
+              "Dracula chimaera",
+              "Dracula chestertonii"
+            ],
+            "Trizeuxis": [
+              "Trizeuxis falcata"
+            ],
+            "Peristeria": [
+              "Peristeria elata"
+            ],
+            "Diodonopsis": [
+              "Diodonopsis anachaeta"
+            ],
+            "Scaphyglottis": [
+              "Scaphyglottis aurea",
+              "Scaphyglottis prolifera"
+            ],
+            "Anathallis": [
+              "Anathallis cuspidata"
+            ],
+            "Telipogon": [
+              "Telipogon wallisii",
+              "Telipogon pulcher",
+              "Telipogon berthae",
+              "Telipogon williamsii",
+              "Telipogon andicola",
+              "Telipogon gracilis"
+            ],
+            "Stelis": [
+              "Stelis sclerophylla",
+              "Stelis galeata",
+              "Stelis superbiens",
+              "Stelis congesta",
+              "Stelis angustifolia",
+              "Stelis hylophila",
+              "Stelis aviceps",
+              "Stelis jurisdixii",
+              "Stelis catenata",
+              "Stelis aurea"
+            ],
+            "Platystele": [
+              "Platystele consobrina",
+              "Platystele orectoglossa"
+            ],
+            "Otoglossum": [
+              "Otoglossum candelabrum"
+            ],
+            "Prosthechea": [
+              "Prosthechea hartwegii",
+              "Prosthechea grammatoglossa",
+              "Prosthechea sima",
+              "Prosthechea radiata"
+            ],
+            "Schlimia": [
+              "Schlimia jasminodora",
+              "Schlimia alpina"
+            ],
+            "Ornithocephalus": [
+              "Ornithocephalus escobarianus"
+            ],
+            "Stellamaris": [
+              "Stellamaris pergrata"
+            ],
+            "Prescottia": [
+              "Prescottia stachyodes"
+            ],
+            "Porroglossum": [
+              "Porroglossum mordax"
+            ],
+            "Sobralia": [
+              "Sobralia powellii"
+            ],
+            "Gravendeelia": [
+              "Gravendeelia chamaelepanthes"
+            ],
+            "Frondaria": [
+              "Frondaria caulescens"
+            ],
+            "Warczewiczella": [
+              "Warczewiczella lipscombiae"
+            ],
+            "Anguloa": [
+              "Anguloa clowesii"
+            ],
+            "Oliveriana": [
+              "Oliveriana uribe-velezii"
+            ],
+            "Miltoniopsis": [
+              "Miltoniopsis vexillaria"
+            ],
+            "Scaphosepalum": [
+              "Scaphosepalum swertiifolium",
+              "Scaphosepalum odontochilum",
+              "Scaphosepalum lima"
+            ],
+            "Vanilla": [
+              "Vanilla pompona"
+            ],
+            "Xylobium": [
+              "Xylobium leontoglossum"
+            ],
+            "Pleurothallopsis": [
+              "Pleurothallopsis microptera"
+            ],
+            "Aa": [
+              "Aa colombiana"
+            ],
+            "Cranichis": [
+              "Cranichis antioquiensis",
+              "Cranichis diphylla",
+              "Cranichis wageneri"
+            ],
+            "Cattleya": [
+              "Cattleya trianae",
+              "Cattleya warscewiczii",
+              "Cattleya quadricolor",
+              "Cattleya mendelii"
+            ],
+            "Gongora": [
+              "Gongora gratulabunda"
+            ],
+            "Teagueia": [
+              "Teagueia phasmida"
+            ],
+            "Brassia": [
+              "Brassia euodes",
+              "Brassia aurantiaca"
+            ],
+            "Muscarella": [
+              "Muscarella zephyrina",
+              "Muscarella furcatipetala",
+              "Muscarella cestrochila"
+            ],
+            "Eulophia": [
+              "Eulophia maculata"
+            ],
+            "Habenaria": [
+              "Habenaria monorrhiza"
+            ],
+            "Phragmipedium": [
+              "Phragmipedium schlimii"
+            ],
+            "Ida": [
+              "Ida heynderycxii"
+            ],
+            "Cyrtochiloides": [
+              "Cyrtochiloides ochmatochila"
+            ],
+            "Caucaea": [
+              "Caucaea radiata",
+              "Caucaea sanguinolenta"
+            ],
+            "Stanhopea": [
+              "Stanhopea wardii"
+            ],
+            "Dimerandra": [
+              "Dimerandra emarginata"
+            ],
+            "Dryadella": [
+              "Dryadella simula"
+            ],
+            "Brassavola": [
+              "Brassavola nodosa"
+            ],
+            "Encyclia": [
+              "Encyclia ceratistes"
+            ]
+          },
+          "Iridaceae": {
+            "Crocosmia": [
+              "Crocosmia crocosmiiflora"
+            ],
+            "Orthrosanthus": [
+              "Orthrosanthus chimboracensis"
+            ],
+            "Trimezia": [
+              "Trimezia candida"
+            ],
+            "Tigridia": [
+              "Tigridia pavonia"
+            ],
+            "Dietes": [
+              "Dietes grandiflora"
+            ],
+            "Sisyrinchium": [
+              "Sisyrinchium micranthum",
+              "Sisyrinchium convolutum",
+              "Sisyrinchium jamesonii"
+            ],
+            "Libertia": [
+              "Libertia colombiana"
+            ],
+            "Cipura": [
+              "Cipura paludosa"
+            ]
+          },
+          "Amaryllidaceae": {
+            "Zephyranthes": [
+              "Zephyranthes carinata"
+            ],
+            "Urceolina": [
+              "Urceolina subedentata",
+              "Urceolina caucana"
+            ],
+            "Scadoxus": [
+              "Scadoxus multiflorus"
+            ],
+            "Plagiolirion": [
+              "Plagiolirion horsmannii"
+            ]
+          },
+          "Asphodelaceae": {
+            "Hemerocallis": [
+              "Hemerocallis fulva"
+            ],
+            "Kniphofia": [
+              "Kniphofia uvaria"
+            ],
+            "Aloe": [
+              "Aloe vera"
+            ]
+          },
+          "Hypoxidaceae": {
+            "Hypoxis": [
+              "Hypoxis decumbens"
+            ],
+            "Curculigo": [
+              "Curculigo capitulata"
+            ]
+          },
+          "Asparagaceae": {
+            "Dracaena": [
+              "Dracaena fragrans"
+            ],
+            "Agave": [
+              "Agave americana"
+            ]
+          }
+        },
+        "Zingiberales": {
+          "Zingiberaceae": {
+            "Zingiber": [
+              "Zingiber spectabile"
+            ],
+            "Renealmia": [
+              "Renealmia cernua",
+              "Renealmia thyrsoidea",
+              "Renealmia alpinia",
+              "Renealmia ligulata"
+            ],
+            "Hedychium": [
+              "Hedychium coronarium"
+            ],
+            "Alpinia": [
+              "Alpinia purpurata"
+            ],
+            "Curcuma": [
+              "Curcuma zedoaria"
+            ]
+          },
+          "Heliconiaceae": {
+            "Heliconia": [
+              "Heliconia bihai",
+              "Heliconia latispatha",
+              "Heliconia griggsiana",
+              "Heliconia burleana",
+              "Heliconia rostrata",
+              "Heliconia wagneriana",
+              "Heliconia hirsuta",
+              "Heliconia venusta",
+              "Heliconia montana",
+              "Heliconia vellerigera",
+              "Heliconia mutisiana",
+              "Heliconia psittacorum",
+              "Heliconia platystachys",
+              "Heliconia rigida"
+            ]
+          },
+          "Musaceae": {
+            "Musa": [
+              "Musa velutina",
+              "Musa acuminata",
+              "Musa coccinea",
+              "Musa paradisiaca"
+            ]
+          },
+          "Marantaceae": {
+            "Calathea": [
+              "Calathea crotalifera",
+              "Calathea lutea"
+            ],
+            "Goeppertia": [
+              "Goeppertia sanderiana"
+            ],
+            "Stromanthe": [
+              "Stromanthe jacquinii"
+            ],
+            "Maranta": [
+              "Maranta leuconeura"
+            ]
+          },
+          "Cannaceae": {
+            "Canna": [
+              "Canna indica"
+            ]
+          },
+          "Costaceae": {
+            "Costus": [
+              "Costus comosus",
+              "Costus villosissimus",
+              "Costus scaber",
+              "Costus laevis"
+            ]
+          }
+        },
+        "Alismatales": {
+          "Araceae": {
+            "Anthurium": [
+              "Anthurium caramantae",
+              "Anthurium crystallinum",
+              "Anthurium andraeanum",
+              "Anthurium stipitatum",
+              "Anthurium scandens",
+              "Anthurium magnificum",
+              "Anthurium caucavallense",
+              "Anthurium alatum",
+              "Anthurium sanjorgense",
+              "Anthurium bogotense",
+              "Anthurium martae",
+              "Anthurium callejasii",
+              "Anthurium warocqueanum",
+              "Anthurium recavum",
+              "Anthurium zuluagae",
+              "Anthurium kunthii",
+              "Anthurium formosum",
+              "Anthurium microspadix",
+              "Anthurium versicolor",
+              "Anthurium myosuroides",
+              "Anthurium oxybelium"
+            ],
+            "Caladium": [
+              "Caladium lindenii",
+              "Caladium bicolor"
+            ],
+            "Zantedeschia": [
+              "Zantedeschia aethiopica"
+            ],
+            "Monstera": [
+              "Monstera pinnatipartita",
+              "Monstera deliciosa",
+              "Monstera adansonii",
+              "Monstera obliqua",
+              "Monstera xanthospatha",
+              "Monstera lechleriana"
+            ],
+            "Adelonema": [
+              "Adelonema peltatum"
+            ],
+            "Xanthosoma": [
+              "Xanthosoma mexicanum",
+              "Xanthosoma sagittifolium",
+              "Xanthosoma grayumii"
+            ],
+            "Philodendron": [
+              "Philodendron hederaceum",
+              "Philodendron subhastatum",
+              "Philodendron grandipes",
+              "Philodendron erubescens"
+            ],
+            "Rhodospatha": [
+              "Rhodospatha moritziana"
+            ],
+            "Colocasia": [
+              "Colocasia esculenta"
+            ],
+            "Thaumatophyllum": [
+              "Thaumatophyllum bipinnatifidum"
+            ],
+            "Dieffenbachia": [
+              "Dieffenbachia seguine"
+            ],
+            "Pistia": [
+              "Pistia stratiotes"
+            ],
+            "Chlorospatha": [
+              "Chlorospatha luteynii"
+            ],
+            "Lemna": [
+              "Lemna minor"
+            ],
+            "Spathiphyllum": [
+              "Spathiphyllum floribundum"
+            ],
+            "Dracontium": [
+              "Dracontium spruceanum"
+            ]
+          },
+          "Hydrocharitaceae": {
+            "Elodea": [
+              "Elodea densa"
+            ]
+          },
+          "Alismataceae": {
+            "Aquarius": [
+              "Aquarius grisebachii"
+            ]
+          }
+        },
+        "Arecales": {
+          "Arecaceae": {
+            "Ceroxylon": [
+              "Ceroxylon quindiuense",
+              "Ceroxylon vogelianum",
+              "Ceroxylon alpinum"
+            ],
+            "Chamaedorea": [
+              "Chamaedorea pinnatifrons",
+              "Chamaedorea linearis",
+              "Chamaedorea seifrizii",
+              "Chamaedorea ricardoi"
+            ],
+            "Geonoma": [
+              "Geonoma undata",
+              "Geonoma interrupta"
+            ],
+            "Aiphanes": [
+              "Aiphanes horrida",
+              "Aiphanes lindeniana"
+            ],
+            "Wettinia": [
+              "Wettinia kalbreyeri"
+            ],
+            "Cocos": [
+              "Cocos nucifera"
+            ],
+            "Syagrus": [
+              "Syagrus sancona"
+            ],
+            "Attalea": [
+              "Attalea butyracea",
+              "Attalea cohune"
+            ],
+            "Sabal": [
+              "Sabal mauritiiformis"
+            ],
+            "Welfia": [
+              "Welfia regia"
+            ],
+            "Bactris": [
+              "Bactris pilosa",
+              "Bactris gasipaes",
+              "Bactris maraja",
+              "Bactris barronis",
+              "Bactris setulosa"
+            ],
+            "Oenocarpus": [
+              "Oenocarpus mapora",
+              "Oenocarpus minor"
+            ],
+            "Asterogyne": [
+              "Asterogyne martiana"
+            ],
+            "Euterpe": [
+              "Euterpe precatoria"
+            ],
+            "Elaeis": [
+              "Elaeis oleifera",
+              "Elaeis guineensis"
+            ],
+            "Astrocaryum": [
+              "Astrocaryum malybo"
+            ],
+            "Dypsis": [
+              "Dypsis lutescens"
+            ],
+            "Roystonea": [
+              "Roystonea oleracea"
+            ],
+            "Phoenix": [
+              "Phoenix roebelenii"
+            ],
+            "Wodyetia": [
+              "Wodyetia bifurcata"
+            ],
+            "Bismarckia": [
+              "Bismarckia nobilis"
+            ],
+            "Archontophoenix": [
+              "Archontophoenix alexandrae"
+            ],
+            "Pritchardia": [
+              "Pritchardia pacifica"
+            ],
+            "Caryota": [
+              "Caryota mitis"
+            ]
+          }
+        },
+        "Poales": {
+          "Bromeliaceae": {
+            "Guzmania": [
+              "Guzmania multiflora",
+              "Guzmania triangularis",
+              "Guzmania coriostachya",
+              "Guzmania diffusa",
+              "Guzmania gloriosa",
+              "Guzmania squarrosa"
+            ],
+            "Racinaea": [
+              "Racinaea tetrantha",
+              "Racinaea michelii",
+              "Racinaea ropalocarpa"
+            ],
+            "Tillandsia": [
+              "Tillandsia biflora",
+              "Tillandsia fendleri",
+              "Tillandsia complanata",
+              "Tillandsia usneoides",
+              "Tillandsia flexuosa",
+              "Tillandsia schimperiana",
+              "Tillandsia francisci",
+              "Tillandsia elongata",
+              "Tillandsia tovarensis",
+              "Tillandsia recurvata",
+              "Tillandsia compacta",
+              "Tillandsia clavigera",
+              "Tillandsia juncea"
+            ],
+            "Aechmea": [
+              "Aechmea angustifolia",
+              "Aechmea gamosepala",
+              "Aechmea distichantha"
+            ],
+            "Ronnbergia": [
+              "Ronnbergia veitchii"
+            ],
+            "Vriesea": [
+              "Vriesea tequendamae",
+              "Vriesea pereziana"
+            ],
+            "Bromelia": [
+              "Bromelia karatas"
+            ],
+            "Pitcairnia": [
+              "Pitcairnia maidifolia",
+              "Pitcairnia trianae"
+            ],
+            "Werauhia": [
+              "Werauhia sanguinolenta"
+            ],
+            "Ananas": [
+              "Ananas comosus"
+            ],
+            "Cipuropsis": [
+              "Cipuropsis capituligera"
+            ],
+            "Puya": [
+              "Puya ochroleuca",
+              "Puya trianae"
+            ],
+            "Catopsis": [
+              "Catopsis nutans"
+            ],
+            "Greigia": [
+              "Greigia vulcanica",
+              "Greigia columbiana"
+            ]
+          },
+          "Poaceae": {
+            "Poa": [
+              "Poa annua",
+              "Poa pauciflora"
+            ],
+            "Agrostis": [
+              "Agrostis foliata",
+              "Agrostis perennans",
+              "Agrostis breviculmis"
+            ],
+            "Holcus": [
+              "Holcus lanatus"
+            ],
+            "Oplismenus": [
+              "Oplismenus undulatifolius"
+            ],
+            "Festuca": [
+              "Festuca asplundii"
+            ],
+            "Miscanthus": [
+              "Miscanthus sinensis"
+            ],
+            "Coix": [
+              "Coix lacryma-jobi"
+            ],
+            "Cortaderia": [
+              "Cortaderia selloana",
+              "Cortaderia nitida"
+            ],
+            "Chusquea": [
+              "Chusquea scandens",
+              "Chusquea latifolia",
+              "Chusquea londoniae"
+            ],
+            "Lasiacis": [
+              "Lasiacis nigra"
+            ],
+            "Guadua": [
+              "Guadua angustifolia"
+            ],
+            "Megathyrsus": [
+              "Megathyrsus maximus"
+            ],
+            "Cenchrus": [
+              "Cenchrus ciliaris"
+            ],
+            "Paspalum": [
+              "Paspalum plenum",
+              "Paspalum paniculatum"
+            ],
+            "Andropogon": [
+              "Andropogon bicornis"
+            ],
+            "Steinchisma": [
+              "Steinchisma laxum"
+            ],
+            "Axonopus": [
+              "Axonopus compressus"
+            ],
+            "Sorghum": [
+              "Sorghum halepense"
+            ],
+            "Zea": [
+              "Zea mays"
+            ],
+            "Homolepis": [
+              "Homolepis aturensis"
+            ],
+            "Rugoloa": [
+              "Rugoloa pilosa"
+            ],
+            "Bothriochloa": [
+              "Bothriochloa pertusa"
+            ],
+            "Hymenachne": [
+              "Hymenachne amplexicaulis"
+            ],
+            "Eleusine": [
+              "Eleusine indica"
+            ],
+            "Sporobolus": [
+              "Sporobolus pyramidalis"
+            ],
+            "Digitaria": [
+              "Digitaria eriantha"
+            ],
+            "Echinochloa": [
+              "Echinochloa polystachya"
+            ],
+            "Luziola": [
+              "Luziola subintegra"
+            ],
+            "Cynodon": [
+              "Cynodon dactylon"
+            ],
+            "Urochloa": [
+              "Urochloa eminii"
+            ],
+            "Anthoxanthum": [
+              "Anthoxanthum odoratum"
+            ],
+            "Paramochloa": [
+              "Paramochloa effusa"
+            ],
+            "Bromus": [
+              "Bromus lanatus"
+            ],
+            "Cinnagrostis": [
+              "Cinnagrostis macrophylla"
+            ],
+            "Dactylis": [
+              "Dactylis glomerata"
+            ],
+            "Cymbopogon": [
+              "Cymbopogon citratus",
+              "Cymbopogon nardus"
+            ],
+            "Ichnanthus": [
+              "Ichnanthus pallens"
+            ],
+            "Peyritschia": [
+              "Peyritschia deyeuxioides"
+            ],
+            "Setaria": [
+              "Setaria parviflora"
+            ],
+            "Trisetum": [
+              "Trisetum"
+            ]
+          },
+          "Cyperaceae": {
+            "Eleocharis": [
+              "Eleocharis elegans",
+              "Eleocharis acutangula",
+              "Eleocharis filiculmis"
+            ],
+            "Carex": [
+              "Carex jamesonii",
+              "Carex chordalis",
+              "Carex pichinchensis",
+              "Carex subsacculata",
+              "Carex purdiei",
+              "Carex bonplandii"
+            ],
+            "Schoenus": [
+              "Schoenus nigricans"
+            ],
+            "Rhynchospora": [
+              "Rhynchospora aristata",
+              "Rhynchospora nervosa",
+              "Rhynchospora ruiziana",
+              "Rhynchospora schiedeana"
+            ],
+            "Scleria": [
+              "Scleria melaleuca",
+              "Scleria gaertneri"
+            ],
+            "Cyperus": [
+              "Cyperus luzulae",
+              "Cyperus esculentus",
+              "Cyperus laxus",
+              "Cyperus rotundus",
+              "Cyperus surinamensis",
+              "Cyperus blepharoleptos"
+            ],
+            "Fimbristylis": [
+              "Fimbristylis dichotoma",
+              "Fimbristylis littoralis"
+            ]
+          },
+          "Juncaceae": {
+            "Distichia": [
+              "Distichia muscoides"
+            ],
+            "Juncus": [
+              "Juncus effusus",
+              "Juncus echinocephalus"
+            ],
+            "Luzula": [
+              "Luzula racemosa",
+              "Luzula vulcanica"
+            ]
+          },
+          "Eriocaulaceae": {
+            "Paepalanthus": [
+              "Paepalanthus fluviatilis"
+            ]
+          },
+          "Xyridaceae": {
+            "Xyris": [
+              "Xyris subulata"
+            ]
+          }
+        },
+        "Commelinales": {
+          "Commelinaceae": {
+            "Tinantia": [
+              "Tinantia erecta"
+            ],
+            "Callisia": [
+              "Callisia serrulata",
+              "Callisia gracilis"
+            ],
+            "Commelina": [
+              "Commelina erecta",
+              "Commelina diffusa"
+            ],
+            "Tradescantia": [
+              "Tradescantia zanonia",
+              "Tradescantia zebrina"
+            ]
+          },
+          "Pontederiaceae": {
+            "Pontederia": [
+              "Pontederia cordata",
+              "Pontederia crassipes",
+              "Pontederia azurea"
+            ],
+            "Heteranthera": [
+              "Heteranthera reniformis"
+            ]
+          },
+          "Haemodoraceae": {
+            "Xiphidium": [
+              "Xiphidium caeruleum"
+            ]
+          }
+        },
+        "Liliales": {
+          "Alstroemeriaceae": {
+            "Bomarea": [
+              "Bomarea multiflora",
+              "Bomarea patinii",
+              "Bomarea setacea",
+              "Bomarea edulis",
+              "Bomarea bredemeyeriana",
+              "Bomarea pauciflora",
+              "Bomarea puracensis",
+              "Bomarea linifolia",
+              "Bomarea diffracta",
+              "Bomarea andreana",
+              "Bomarea carderi",
+              "Bomarea hirsuta"
+            ]
+          },
+          "Smilacaceae": {
+            "Smilax": [
+              "Smilax spinosa"
+            ]
+          }
+        },
+        "Pandanales": {
+          "Pandanaceae": {
+            "Pandanus": [
+              "Pandanus utilis"
+            ]
+          },
+          "Cyclanthaceae": {
+            "Carludovica": [
+              "Carludovica palmata"
+            ],
+            "Cyclanthus": [
+              "Cyclanthus bipartitus"
+            ],
+            "Asplundia": [
+              "Asplundia longitepala",
+              "Asplundia moritziana"
+            ]
+          }
+        },
+        "Dioscoreales": {
+          "Dioscoreaceae": {
+            "Dioscorea": [
+              "Dioscorea polygonoides",
+              "Dioscorea meridensis",
+              "Dioscorea coriacea"
+            ]
+          }
+        }
+      },
+      "Cycadopsida": {
+        "Cycadales": {
+          "Zamiaceae": {
+            "Zamia": [
+              "Zamia imbricata"
+            ]
+          },
+          "Cycadaceae": {
+            "Cycas": [
+              "Cycas revoluta"
+            ]
+          }
+        }
+      },
+      "Polypodiopsida": {
+        "Polypodiales": {
+          "Dryopteridaceae": {
+            "Polystichum": [
+              "Polystichum orbiculatum",
+              "Polystichum platyphyllum",
+              "Polystichum polyphyllum",
+              "Polystichum nudicaule",
+              "Polystichum lehmannii"
+            ],
+            "Elaphoglossum": [
+              "Elaphoglossum mathewsii",
+              "Elaphoglossum engelii",
+              "Elaphoglossum muscosum",
+              "Elaphoglossum",
+              "Elaphoglossum lindenii",
+              "Elaphoglossum gayanum",
+              "Elaphoglossum yatesii",
+              "Elaphoglossum squamipes",
+              "Elaphoglossum tectum",
+              "Elaphoglossum lindigii"
+            ],
+            "Dryopteris": [
+              "Dryopteris wallichiana"
+            ],
+            "Megalastrum": [
+              "Megalastrum vastum",
+              "Megalastrum subincisum"
+            ],
+            "Ctenitis": [
+              "Ctenitis submarginalis"
+            ]
+          },
+          "Polypodiaceae": {
+            "Serpocaulon": [
+              "Serpocaulon levigatum",
+              "Serpocaulon adnatum",
+              "Serpocaulon laevigatum",
+              "Serpocaulon funckii",
+              "Serpocaulon dasypleuron",
+              "Serpocaulon eleutherophlebium"
+            ],
+            "Pleopeltis": [
+              "Pleopeltis bombycina",
+              "Pleopeltis monosora",
+              "Pleopeltis macrocarpa",
+              "Pleopeltis remota",
+              "Pleopeltis polypodioides"
+            ],
+            "Melpomene": [
+              "Melpomene moniliformis",
+              "Melpomene peruviana"
+            ],
+            "Platycerium": [
+              "Platycerium bifurcatum"
+            ],
+            "Campyloneurum": [
+              "Campyloneurum amphostenon",
+              "Campyloneurum repens",
+              "Campyloneurum chlorolepis",
+              "Campyloneurum angustifolium",
+              "Campyloneurum angustipaleatum"
+            ],
+            "Alansmia": [
+              "Alansmia stella",
+              "Alansmia variabilis",
+              "Alansmia lanigera",
+              "Alansmia cultrata"
+            ],
+            "Pecluma": [
+              "Pecluma divaricata"
+            ],
+            "Mycopteris": [
+              "Mycopteris semihirsuta",
+              "Mycopteris leucosticta"
+            ],
+            "Polypodium": [
+              "Polypodium"
+            ]
+          },
+          "Thelypteridaceae": {
+            "Macrothelypteris": [
+              "Macrothelypteris torresiana"
+            ],
+            "Christella": [
+              "Christella dentata"
+            ],
+            "Amauropelta": [
+              "Amauropelta rudis",
+              "Amauropelta funckii"
+            ],
+            "Goniopteris": [
+              "Goniopteris eggersii",
+              "Goniopteris tristis"
+            ],
+            "Thelypteris": [
+              "Thelypteris"
+            ],
+            "Pelazoneuron": [
+              "Pelazoneuron patens"
+            ]
+          },
+          "Pteridaceae": {
+            "Pteris": [
+              "Pteris podophylla",
+              "Pteris muricatopedata",
+              "Pteris longipetiolulata",
+              "Pteris quadriaurita",
+              "Pteris haenkeana",
+              "Pteris grandifolia"
+            ],
+            "Pityrogramma": [
+              "Pityrogramma calomelanos",
+              "Pityrogramma trifoliata",
+              "Pityrogramma ebenea"
+            ],
+            "Jamesonia": [
+              "Jamesonia goudotii",
+              "Jamesonia imbricata",
+              "Jamesonia flexuosa",
+              "Jamesonia hirsutula",
+              "Jamesonia scammanae",
+              "Jamesonia pulchra"
+            ],
+            "Adiantum": [
+              "Adiantum raddianum",
+              "Adiantum macrophyllum",
+              "Adiantum"
+            ],
+            "Hemionitis": [
+              "Hemionitis rufa"
+            ],
+            "Polytaenium": [
+              "Polytaenium lineatum"
+            ],
+            "Myriopteris": [
+              "Myriopteris moritziana"
+            ],
+            "Doryopteris": [
+              "Doryopteris pedata"
+            ]
+          },
+          "Cystopteridaceae": {
+            "Cystopteris": [
+              "Cystopteris fragilis"
+            ]
+          },
+          "Dennstaedtiaceae": {
+            "Histiopteris": [
+              "Histiopteris incisa"
+            ],
+            "Mucura": [
+              "Mucura globulifera"
+            ],
+            "Dennstaedtia": [
+              "Dennstaedtia dissecta",
+              "Dennstaedtia cicutaria"
+            ],
+            "Pteridium": [
+              "Pteridium esculentum"
+            ],
+            "Hypolepis": [
+              "Hypolepis bogotensis",
+              "Hypolepis rugosula"
+            ]
+          },
+          "Aspleniaceae": {
+            "Asplenium": [
+              "Asplenium harpeodes",
+              "Asplenium theciferum",
+              "Asplenium hastatum",
+              "Asplenium auritum",
+              "Asplenium cuspidatum",
+              "Asplenium auriculatum",
+              "Asplenium",
+              "Asplenium sessilifolium",
+              "Asplenium rutaceum",
+              "Asplenium radicans",
+              "Asplenium myriophyllum",
+              "Asplenium praemorsum",
+              "Asplenium monanthes",
+              "Asplenium fragrans",
+              "Asplenium cristatum",
+              "Asplenium castaneum",
+              "Asplenium triphyllum"
+            ]
+          },
+          "Didymochlaenaceae": {
+            "Didymochlaena": [
+              "Didymochlaena alpina"
+            ]
+          },
+          "Blechnaceae": {
+            "Blechnum": [
+              "Blechnum appendiculatum",
+              "Blechnum polypodioides",
+              "Blechnum occidentale"
+            ],
+            "Parablechnum": [
+              "Parablechnum schiedeanum",
+              "Parablechnum cordatum",
+              "Parablechnum loxense"
+            ],
+            "Austroblechnum": [
+              "Austroblechnum organense",
+              "Austroblechnum divergens"
+            ],
+            "Lomariocycas": [
+              "Lomariocycas aurata"
+            ],
+            "Lomaridium": [
+              "Lomaridium fragile"
+            ]
+          },
+          "Athyriaceae": {
+            "Diplazium": [
+              "Diplazium lindbergii",
+              "Diplazium"
+            ]
+          },
+          "Nephrolepidaceae": {
+            "Nephrolepis": [
+              "Nephrolepis pendula",
+              "Nephrolepis biserrata",
+              "Nephrolepis pectinata",
+              "Nephrolepis occidentalis"
+            ]
+          },
+          "Tectariaceae": {
+            "Tectaria": [
+              "Tectaria incisa",
+              "Tectaria"
+            ]
+          }
+        },
+        "Equisetales": {
+          "Equisetaceae": {
+            "Equisetum": [
+              "Equisetum bogotense",
+              "Equisetum giganteum"
+            ]
+          }
+        },
+        "Cyatheales": {
+          "Cyatheaceae": {
+            "Cyathea": [
+              "Cyathea vilhelmii",
+              "Cyathea conjugata",
+              "Cyathea horrida",
+              "Cyathea meridensis",
+              "Cyathea pauciflora",
+              "Cyathea lindeniana",
+              "Cyathea andina",
+              "Cyathea fulva",
+              "Cyathea poeppigii",
+              "Cyathea frondosa",
+              "Cyathea caracasana"
+            ],
+            "Alsophila": [
+              "Alsophila erinacea",
+              "Alsophila cuspidata"
+            ],
+            "Sphaeropteris": [
+              "Sphaeropteris quindiuensis"
+            ]
+          },
+          "Dicksoniaceae": {
+            "Dicksonia": [
+              "Dicksonia sellowiana"
+            ],
+            "Lophosoria": [
+              "Lophosoria quadripinnata"
+            ]
+          }
+        },
+        "Schizaeales": {
+          "Anemiaceae": {
+            "Anemia": [
+              "Anemia phyllitidis",
+              "Anemia hirsuta"
+            ]
+          },
+          "Lygodiaceae": {
+            "Lygodium": [
+              "Lygodium venustum"
+            ]
+          }
+        },
+        "Hymenophyllales": {
+          "Hymenophyllaceae": {
+            "Hymenophyllum": [
+              "Hymenophyllum tomentosum",
+              "Hymenophyllum"
+            ]
+          }
+        },
+        "Gleicheniales": {
+          "Gleicheniaceae": {
+            "Gleichenella": [
+              "Gleichenella pectinata"
+            ],
+            "Sticherus": [
+              "Sticherus bifidus"
+            ]
+          }
+        },
+        "Marattiales": {
+          "Marattiaceae": {
+            "Eupodium": [
+              "Eupodium pittieri"
+            ],
+            "Danaea": [
+              "Danaea nodosa"
+            ]
+          }
+        },
+        "Salviniales": {
+          "Salviniaceae": {
+            "Azolla": [
+              "Azolla filiculoides"
+            ],
+            "Salvinia": [
+              "Salvinia sprucei"
+            ]
+          },
+          "Marsileaceae": {
+            "Marsilea": [
+              "Marsilea polycarpa"
+            ]
+          }
+        }
+      },
+      "Pinopsida": {
+        "Pinales": {
+          "Podocarpaceae": {
+            "Retrophyllum": [
+              "Retrophyllum rospigliosii"
+            ],
+            "Podocarpus": [
+              "Podocarpus oleifolius"
+            ]
+          },
+          "Araucariaceae": {
+            "Araucaria": [
+              "Araucaria columnaris",
+              "Araucaria heterophylla"
+            ]
+          },
+          "Pinaceae": {
+            "Pinus": [
+              "Pinus patula"
+            ]
+          },
+          "Cupressaceae": {
+            "Platycladus": [
+              "Platycladus orientalis"
+            ]
+          }
+        }
+      },
+      "Lycopodiopsida": {
+        "Lycopodiales": {
+          "Lycopodiaceae": {
+            "Phlegmariurus": [
+              "Phlegmariurus crassus",
+              "Phlegmariurus linifolius",
+              "Phlegmariurus firmus",
+              "Phlegmariurus capellae",
+              "Phlegmariurus reflexus",
+              "Phlegmariurus hohenackeri",
+              "Phlegmariurus tetragonus",
+              "Phlegmariurus eversus",
+              "Phlegmariurus cruentus",
+              "Phlegmariurus lindenii",
+              "Phlegmariurus saururus"
+            ],
+            "Lycopodium": [
+              "Lycopodium clavatum"
+            ],
+            "Palhinhaea": [
+              "Palhinhaea cernua"
+            ],
+            "Lycopodiella": [
+              "Lycopodiella alopecuroides"
+            ],
+            "Austrolycopodium": [
+              "Austrolycopodium magellanicum"
+            ],
+            "Diphasium": [
+              "Diphasium jussiaei"
+            ]
+          }
+        },
+        "Selaginellales": {
+          "Selaginellaceae": {
+            "Selaginella": [
+              "Selaginella geniculata",
+              "Selaginella flabellata",
+              "Selaginella diffusa",
+              "Selaginella applanata",
+              "Selaginella silvestris",
+              "Selaginella haenkeana",
+              "Selaginella erythropus"
+            ]
+          }
+        },
+        "Isoetales": {
+          "Isoetaceae": {
+            "Isoetes": [
+              "Isoetes karstenii"
+            ]
+          }
+        }
+      }
+    },
+    "Marchantiophyta": {
+      "Marchantiopsida": {
+        "Marchantiales": {
+          "Monocleaceae": {
+            "Monoclea": [
+              "Monoclea gottschei"
+            ]
+          },
+          "Marchantiaceae": {
+            "Marchantia": [
+              "Marchantia berteroana",
+              "Marchantia breviloba",
+              "Marchantia paleacea"
+            ]
+          }
+        }
+      },
+      "Jungermanniopsida": {
+        "Porellales": {
+          "Lejeuneaceae": {
+            "Lejeunea": [
+              "Lejeunea flava",
+              "Lejeunea trinitensis",
+              "Lejeunea pterigonia"
+            ]
+          },
+          "Frullaniaceae": {
+            "Frullania": [
+              "Frullania ericoides",
+              "Frullania riojaneirensis",
+              "Frullania brasiliensis"
+            ]
+          },
+          "Radulaceae": {
+            "Radula": [
+              "Radula nudicaulis"
+            ]
+          }
+        },
+        "Jungermanniales": {
+          "Anastrophyllaceae": {
+            "Sphenolobus": [
+              "Sphenolobus minutus"
+            ],
+            "Anastrophyllum": [
+              "Anastrophyllum nigrescens",
+              "Anastrophyllum auritum"
+            ]
+          },
+          "Adelanthaceae": {
+            "Syzygiella": [
+              "Syzygiella sonderi"
+            ]
+          },
+          "Solenostomataceae": {
+            "Solenostoma": [
+              "Solenostoma callithrix",
+              "Solenostoma amplexifolium"
+            ]
+          },
+          "Lepidoziaceae": {
+            "Lepidozia": [
+              "Lepidozia macrocolea"
+            ]
+          },
+          "Lophocoleaceae": {
+            "Leptoscyphus": [
+              "Leptoscyphus porphyrius",
+              "Leptoscyphus cuneifolius"
+            ]
+          },
+          "Scapaniaceae": {
+            "Schistochilopsis": [
+              "Schistochilopsis incisa"
+            ]
+          },
+          "Balantiopsidaceae": {
+            "Isotachis": [
+              "Isotachis lopezii"
+            ]
+          },
+          "Herbertaceae": {
+            "Triandrophyllum": [
+              "Triandrophyllum subtrifidum"
+            ]
+          }
+        },
+        "Metzgeriales": {
+          "Metzgeriaceae": {
+            "Metzgeria": [
+              "Metzgeria claviflora",
+              "Metzgeria fruticola",
+              "Metzgeria inflata",
+              "Metzgeria leptoneura"
+            ]
+          },
+          "Aneuraceae": {
+            "Riccardia": [
+              "Riccardia leptophylla"
+            ]
+          }
+        },
+        "Pallaviciniales": {
+          "Pallaviciniaceae": {
+            "Symphyogyna": [
+              "Symphyogyna podophylla",
+              "Symphyogyna brasiliensis",
+              "Symphyogyna sinuata",
+              "Symphyogyna brongniartii"
+            ]
+          }
+        }
+      }
+    },
+    "Bryophyta": {
+      "Bryopsida": {
+        "Dicranales": {
+          "Octoblepharaceae": {
+            "Octoblepharum": [
+              "Octoblepharum albidum"
+            ]
+          },
+          "Calymperaceae": {
+            "Calymperes": [
+              "Calymperes palisotii"
+            ]
+          },
+          "Fissidentaceae": {
+            "Fissidens": [
+              "Fissidens crispus",
+              "Fissidens asplenioides"
+            ]
+          },
+          "Erpodiaceae": {
+            "Venturiella": [
+              "Venturiella coronata"
+            ]
+          },
+          "Aongstroemiaceae": {
+            "Aongstroemia": [
+              "Aongstroemia julacea"
+            ]
+          },
+          "Leucobryaceae": {
+            "Pilopogon": [
+              "Pilopogon peruvianus"
+            ],
+            "Campylopus": [
+              "Campylopus pilifer",
+              "Campylopus argyrocaulon",
+              "Campylopus fragilis",
+              "Campylopus areodictyon",
+              "Campylopus trichophylloides",
+              "Campylopus pittieri"
+            ]
+          },
+          "Dicranaceae": {
+            "Chorisodontium": [
+              "Chorisodontium speciosum"
+            ],
+            "Dicranum": [
+              "Dicranum frigidum"
+            ]
+          },
+          "Ditrichaceae": {
+            "Ditrichum": [
+              "Ditrichum francii"
+            ],
+            "Tristichium": [
+              "Tristichium mirabile"
+            ]
+          },
+          "Rhabdoweisiaceae": {
+            "Cynodontium": [
+              "Cynodontium erosum"
+            ]
+          }
+        },
+        "Hypnales": {
+          "Stereophyllaceae": {
+            "Entodontopsis": [
+              "Entodontopsis leucostega"
+            ]
+          },
+          "Brachytheciaceae": {
+            "Meteoridium": [
+              "Meteoridium remotifolium"
+            ],
+            "Brachythecium": [
+              "Brachythecium rutabulum"
+            ],
+            "Kindbergia": [
+              "Kindbergia praelonga"
+            ],
+            "Rhynchostegium": [
+              "Rhynchostegium scariosum"
+            ]
+          },
+          "Hypnaceae": {
+            "Chryso-hypnum": [
+              "Chryso-hypnum diminutivum"
+            ],
+            "Mittenothamnium": [
+              "Mittenothamnium reptans"
+            ]
+          },
+          "Fabroniaceae": {
+            "Fabronia": [
+              "Fabronia ciliaris"
+            ]
+          },
+          "Myuriaceae": {
+            "Ctenidium": [
+              "Ctenidium malacodes"
+            ]
+          },
+          "Amblystegiaceae": {
+            "Drepanocladus": [
+              "Drepanocladus sordidus"
+            ]
+          },
+          "Entodontaceae": {
+            "Entodon": [
+              "Entodon jamesonii"
+            ]
+          },
+          "Lepyrodontaceae": {
+            "Lepyrodon": [
+              "Lepyrodon tomentosus"
+            ]
+          },
+          "Neckeraceae": {
+            "Neckeropsis": [
+              "Neckeropsis undulata"
+            ],
+            "Neckera": [
+              "Neckera chilensis"
+            ],
+            "Porotrichum": [
+              "Porotrichum superbum"
+            ],
+            "Thamnobryum": [
+              "Thamnobryum fasciculatum"
+            ]
+          },
+          "Phyllogoniaceae": {
+            "Phyllogonium": [
+              "Phyllogonium fulgens"
+            ]
+          },
+          "Plagiotheciaceae": {
+            "Plagiothecium": [
+              "Plagiothecium lucidum",
+              "Plagiothecium novogranatense"
+            ]
+          },
+          "Prionodontaceae": {
+            "Prionodon": [
+              "Prionodon fuscolutescens"
+            ]
+          },
+          "Sematophyllaceae": {
+            "Jirivanaea": [
+              "Jirivanaea cuspidifera"
+            ]
+          },
+          "Thuidiaceae": {
+            "Thuidium": [
+              "Thuidium peruvianum"
+            ]
+          }
+        },
+        "Helicophyllales": {
+          "Helicophyllaceae": {
+            "Helicophyllum": [
+              "Helicophyllum torquatum"
+            ]
+          }
+        },
+        "Bryales": {
+          "Bryaceae": {
+            "Acidodontium": [
+              "Acidodontium seminerve",
+              "Acidodontium megalocarpum"
+            ],
+            "Bryum": [
+              "Bryum argenteum"
+            ]
+          },
+          "Mniaceae": {
+            "Schizymenium": [
+              "Schizymenium clavellatum"
+            ],
+            "Plagiomnium": [
+              "Plagiomnium rhynchophorum"
+            ]
+          }
+        },
+        "Pottiales": {
+          "Pottiaceae": {
+            "Barbula": [
+              "Barbula francii"
+            ],
+            "Leptodontium": [
+              "Leptodontium wallisii",
+              "Leptodontium flexifolium"
+            ],
+            "Streptopogon": [
+              "Streptopogon erythrodontus"
+            ],
+            "Syntrichia": [
+              "Syntrichia andicola"
+            ]
+          }
+        },
+        "Bartramiales": {
+          "Bartramiaceae": {
+            "Bartramia": [
+              "Bartramia brevifolia",
+              "Bartramia angustifolia",
+              "Bartramia potosica"
+            ],
+            "Breutelia": [
+              "Breutelia integrifolia",
+              "Breutelia aciphylla",
+              "Breutelia trianae",
+              "Breutelia tomentosa",
+              "Breutelia subarcuata"
+            ],
+            "Philonotis": [
+              "Philonotis uncinata",
+              "Philonotis hastata"
+            ]
+          }
+        },
+        "Grimmiales": {
+          "Seligeriaceae": {
+            "Blindia": [
+              "Blindia acuta"
+            ]
+          },
+          "Grimmiaceae": {
+            "Grimmia": [
+              "Grimmia elongata",
+              "Grimmia trichophylla"
+            ],
+            "Bucklandiella": [
+              "Bucklandiella dichelymoides",
+              "Bucklandiella crispula"
+            ]
+          }
+        },
+        "Hookeriales": {
+          "Pilotrichaceae": {
+            "Cyclodictyon": [
+              "Cyclodictyon rubrisetum"
+            ],
+            "Stenodictyon": [
+              "Stenodictyon wrightii"
+            ]
+          }
+        },
+        "Scouleriales": {
+          "Flexitrichaceae": {
+            "Flexitrichum": [
+              "Flexitrichum gracile"
+            ]
+          }
+        },
+        "Hedwigiales": {
+          "Hedwigiaceae": {
+            "Hedwigia": [
+              "Hedwigia ciliata"
+            ],
+            "Rhacocarpus": [
+              "Rhacocarpus purpurascens"
+            ]
+          }
+        },
+        "Hypopterygiales": {
+          "Hypopterygiaceae": {
+            "Canalohypopterygium": [
+              "Canalohypopterygium tamariscinum"
+            ]
+          }
+        },
+        "Hypnodendrales": {
+          "Racopilaceae": {
+            "Racopilum": [
+              "Racopilum tomentosum"
+            ]
+          }
+        },
+        "Splachnales": {
+          "Splachnaceae": {
+            "Tayloria": [
+              "Tayloria scabriseta"
+            ]
+          }
+        }
+      },
+      "Andreaeopsida": {
+        "Andreaeales": {
+          "Andreaeaceae": {
+            "Andreaea": [
+              "Andreaea rupestris",
+              "Andreaea nitida"
+            ]
+          }
+        }
+      },
+      "Polytrichopsida": {
+        "Polytrichales": {
+          "Polytrichaceae": {
+            "Pogonatum": [
+              "Pogonatum jamesonii"
+            ],
+            "Polytrichum": [
+              "Polytrichum juniperinum"
+            ],
+            "Polytrichadelphus": [
+              "Polytrichadelphus giganteus",
+              "Polytrichadelphus ciliatus"
+            ]
+          }
+        }
+      },
+      "Sphagnopsida": {
+        "Sphagnales": {
+          "Sphagnaceae": {
+            "Sphagnum": [
+              "Sphagnum magellanicum"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

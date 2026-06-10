@@ -1,0 +1,139 @@
+---
+title: "BioCommerce Caldas"
+description: "Plataforma de biodiversidad y biocomercio con IA generativa para Caldas, Colombia."
+icon: "house"
+---
+
+## Plataforma de Biodiversidad y Biocomercio con IA Generativa
+
+[![Status](https://img.shields.io/badge/Status-Development-yellow.svg)]()
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)]()
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)]()
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB)]()
+
+Plataforma digital integral para la identificación, catalogación y aprovechamiento sostenible de la biodiversidad del departamento de Caldas, Colombia.
+
+---
+
+## Características Principales
+
+| Módulo                        | Descripción                                                          |
+| ----------------------------- | -------------------------------------------------------------------- |
+| **Catálogo de Biodiversidad** | Flora, fauna y hongos con información taxonómica y ecológica         |
+| **Identificación con IA**     | CNN (EfficientNet-B2) con ~87% de precisión para 719 especies        |
+| **Marketplace**               | Conexión productores-compradores con trazabilidad y pagos integrados |
+| **RAG & Chatbot**             | Consultas especializadas y generación de planes de negocio           |
+| **Compliance**                | Gestión de permisos ABS según normativa colombiana                   |
+| **App Móvil**                 | Identificación en campo con soporte offline                          |
+
+---
+
+## Stack Tecnológico
+
+```
+Backend:    .NET 8 (Clean Architecture) + FastAPI (Python)
+Frontend:   Next.js 14 + React Native (Expo)
+Databases:  PostgreSQL (PostGIS) | SQL Server | Redis | ChromaDB (vector)
+AI/ML:      PyTorch (CNN) | LangChain | ChromaDB | OpenAI
+DevOps:     Docker | GitHub Actions | Nginx
+```
+
+---
+
+> Detalle completo de patrón arquitectónico, stack con versiones, flujo de datos, seguridad y observabilidad en **[Arquitectura de Software](/project/architecture)**. Los requisitos técnicos por área y su estado se rastrean en **[Lineamientos](/project/guidelines)**.
+
+---
+
+## Inicio Rápido
+
+**Requisitos:** Docker Desktop 4.x+, .NET 8 SDK, Node.js 18+, Python 3.11+.
+
+<CardGroup cols={2}>
+  <Card title="Desarrollo local" icon="laptop-code" href="/guides/quickstart">
+    Clonar, configurar `.env` y levantar el stack en modo desarrollo.
+  </Card>
+  <Card title="Despliegue en producción" icon="server" href="/manuals/instalacion">
+    Instalación completa con Docker, script `install.sh`, SSL y app móvil (EAS).
+  </Card>
+</CardGroup>
+
+El despliegue de producción (script idempotente `install.sh`, pesos DVC, PyTorch CPU/GPU,
+poblado del catálogo, HTTPS y compilación móvil con EAS) está documentado de forma única en el
+**[Manual de Instalación y Configuración](/manuals/instalacion)**. Para correr cada servicio en
+local, ver la **[Guía de Desarrollo](/guides/development)** y los **[Scripts](/guides/scripts)**.
+
+---
+
+## Documentación
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/guides/quickstart">
+    Clona el repositorio y levanta el stack en desarrollo.
+  </Card>
+  <Card title="Manual de Usuario" icon="user" href="/manuals/usuario">
+    Guía completa para navegar y usar la plataforma.
+  </Card>
+  <Card title="Manual Técnico" icon="code" href="/manuals/tecnico">
+    Arquitectura, instalación y estándares de desarrollo.
+  </Card>
+  <Card title="Entrenamiento CNN" icon="brain" href="/ai/cnn-training">
+    Pipeline de entrenamiento del clasificador de especies.
+  </Card>
+  <Card title="Arquitectura" icon="sitemap" href="/project/architecture">
+    Visión arquitectónica general del sistema.
+  </Card>
+  <Card title="Checklist Pre-PR" icon="list-check" href="/guides/pr-checklist">
+    Validaciones de build, lint y tests antes de un Pull Request.
+  </Card>
+</CardGroup>
+
+<Note>
+  El sitio de documentación corre en local con `npm run docs` en la carpeta `.docs`
+  (puerto **3333**, no colisiona con el Frontend Web en `:3000`).
+  Atajo: `bash run.sh docs` (Git Bash / Linux / macOS) o `.\run.ps1 docs` (PowerShell).
+  Ver [Scripts](/guides/scripts) y [Guía de Desarrollo](/guides/development).
+</Note>
+
+## Estructura del Proyecto
+
+```
+bioplatform/
+├── .docs/                       # Documentación
+├── .github/workflows/           # CI/CD
+├── docker/
+│   └── nginx/                   # Reverse proxy (nginx.conf + ssl/)
+├── src/
+│   ├── Bio.Backend.Core/        # API .NET 8 (Clean Architecture) + Dockerfile
+│   ├── Bio.Backend.AI/          # Microservicio Python (FastAPI) + Dockerfile
+│   │   └── data/species_catalog/# Datos de poblado (CSV/JSON/SQL de especies)
+│   ├── Bio.Frontend.Web/        # Next.js 14 + Dockerfile
+│   └── Bio.Frontend.Mobile/     # React Native (Expo) — APK vía EAS
+├── .env.example                 # Plantilla dev
+├── .env.prod.example            # Plantilla producción
+├── install.sh / install.ps1     # Instalador de producción (reanudable)
+├── docker-compose.yml           # Infraestructura (dev)
+├── docker-compose.override.yml  # Herramientas UI (dev)
+└── docker-compose.prod.yml      # Stack completo (producción)
+```
+
+---
+
+## Normativa Legal
+
+Este proyecto cumple con:
+
+- **Decreto 3016 de 2013** - Reglamentación de recursos genéticos
+- **Decisión 391 de 1996** - Régimen Común sobre Acceso a Recursos Genéticos
+- **Protocolo de Nagoya** - Acceso y participación en beneficios (ABS)
+
+---
+
+## Equipo
+
+Universidad de Caldas - Proyecto Integrador 2025-2026
+
+---
+
+## Licencia
+
+Este proyecto es de uso académico.

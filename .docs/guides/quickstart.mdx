@@ -1,0 +1,113 @@
+---
+title: "Quick Start"
+description: "Clona el repositorio y levanta el stack en desarrollo en pocos minutos."
+icon: "rocket"
+---
+
+Guía mínima para clonar el proyecto y tenerlo corriendo en **modo desarrollo**.
+Para el detalle de cada servicio ver la [Guía de Desarrollo](/guides/development);
+para producción ver el [Manual de Instalación](/manuals/instalacion).
+
+## 1. Requisitos previos
+
+| Herramienta | Versión | Uso |
+| ----------- | ------- | --- |
+| Docker Desktop | 4.x+ | Bases de datos e infraestructura |
+| .NET SDK | 8.0 | Backend Core |
+| Node.js | 18+ | Frontend Web / Mobile |
+| Python | 3.11 | Servicio de IA |
+| Git | — | Control de versiones |
+
+<Note>
+  No necesitas crear ningún proyecto: el repositorio ya contiene los 4 servicios
+  (`Bio.Backend.Core`, `Bio.Backend.AI`, `Bio.Frontend.Web`, `Bio.Frontend.Mobile`).
+</Note>
+
+## 2. Clonar y configurar
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/Zack4U/bioplatform.git
+cd bioplatform
+
+# Crear el archivo de entorno de desarrollo
+cp .env.example .env
+# Edita .env con tus valores (especialmente las API keys)
+```
+
+## 3. Levantar la infraestructura (bases de datos)
+
+```bash
+# SQL Server, PostgreSQL (PostGIS), Redis, ChromaDB
+docker compose up -d
+
+# Verificar que todo está healthy
+docker compose ps
+```
+
+## 4. Ejecutar los servicios
+
+La forma recomendada es el orquestador de desarrollo (ver [Scripts](/guides/scripts)):
+
+```bash
+# Levanta backend, IA y web a la vez
+./run.sh        # Linux / macOS / Git Bash
+.\run.ps1       # Windows (PowerShell)
+```
+
+¿Prefieres correr cada servicio por separado (una terminal por servicio,
+hot-reload, migraciones)? El procedimiento detallado está en la
+[Guía de Desarrollo](/guides/development).
+
+## 5. Verificar
+
+| Servicio | URL |
+| -------- | --- |
+| Frontend Web | http://localhost:3000 |
+| Backend API (Swagger) | http://localhost:5070/swagger |
+| Servicio IA (FastAPI Docs) | http://localhost:8000/docs |
+| Documentacion (Mintlify) | http://localhost:3333 |
+| pgAdmin | http://localhost:5050 |
+
+```bash
+# Salud del backend y del servicio de IA
+curl http://localhost:5070/health
+curl http://localhost:8000/health
+```
+
+## 6. Migraciones de base de datos
+
+El esquema se crea con migraciones EF Core. Usa el script de migraciones:
+
+```bash
+./migrate.sh        # Linux / macOS / Git Bash
+.\migrate.ps1       # Windows (PowerShell)
+```
+
+Detalle de contextos (`BioDbContext`, `ScientificDbContext`) y creación de
+nuevas migraciones en la [Guía de Desarrollo](/guides/development#5-base-de-datos).
+
+## 7. App móvil (opcional)
+
+```bash
+cd src/Bio.Frontend.Mobile
+npm install
+npx expo start    # pulsa 'a' (Android), 'i' (iOS) o escanea el QR con Expo Go
+```
+
+## Próximos pasos
+
+<CardGroup cols={2}>
+  <Card title="Guía de Desarrollo" icon="laptop-code" href="/guides/development">
+    Flujo completo: servicios individuales, migraciones y troubleshooting.
+  </Card>
+  <Card title="Scripts" icon="terminal" href="/guides/scripts">
+    `install`, `migrate` y `run` explicados.
+  </Card>
+  <Card title="Lineamientos de Desarrollo" icon="code" href="/project/dev-guidelines">
+    Estándares de código, Git, PR y testing.
+  </Card>
+  <Card title="Checklist Pre-PR" icon="list-check" href="/guides/pr-checklist">
+    Validaciones antes de abrir un Pull Request.
+  </Card>
+</CardGroup>

@@ -1,0 +1,326 @@
+╔══════════════════════════════════════════════════════════╗
+║         BIOPLATFORM CALDAS — SPECIES DATA ANALYSIS       ║
+║          Potencial Económico & Usos Tradicionales        ║
+╚══════════════════════════════════════════════════════════╝
+
+  Total species in master list:         1,259
+  With economic potential:               836 (66.4%)
+  With traditional uses:                 201 (16.0%)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  POTENCIAL ECONÓMICO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Total entries:                       836
+  Multi-sector species:                0
+
+  ── Por Sector ────────────────────────────────────────
+    Ecoturismo             ██████████████░░░░░░░░░░░  491 ( 58.7%)
+    Agricultura            ██░░░░░░░░░░░░░░░░░░░░░░░   81 (  9.7%)
+    Alimentos              ██░░░░░░░░░░░░░░░░░░░░░░░   75 (  9.0%)
+    Ornamental             ██░░░░░░░░░░░░░░░░░░░░░░░   68 (  8.1%)
+    Cosmética              █░░░░░░░░░░░░░░░░░░░░░░░░   44 (  5.3%)
+    Medicina               ░░░░░░░░░░░░░░░░░░░░░░░░░   24 (  2.9%)
+    Artesanías             ░░░░░░░░░░░░░░░░░░░░░░░░░   23 (  2.8%)
+    Jardinería             ░░░░░░░░░░░░░░░░░░░░░░░░░    5 (  0.6%)
+    Biotecnología          ░░░░░░░░░░░░░░░░░░░░░░░░░    4 (  0.5%)
+    Restauración ecológica ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  0.4%)
+    Investigación          ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  0.4%)
+    Acuariofilia           ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  0.2%)
+    Restauración           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Servicios              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Servicios ecosistémicos ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Mascotas               ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Servicios ambientales  ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Investigación científica ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Ciencia                ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Construcción           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Biocombustibles        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Conservación           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Control biológico      ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Educación              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+    Industria              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.1%)
+
+  ── Valor de Mercado (Market Value) ───────────────────
+    Medio                  ████████████░░░░░░░░░░░░░  417 ( 49.9%)
+    Bajo                   ██████░░░░░░░░░░░░░░░░░░░  229 ( 27.4%)
+    Alto                   █████░░░░░░░░░░░░░░░░░░░░  186 ( 22.2%)
+    Desconocido            ░░░░░░░░░░░░░░░░░░░░░░░░░    4 (  0.5%)
+
+  ── Nivel de Sostenibilidad ───────────────────────────
+    Alto                   ████████████████████░░░░░  678 ( 81.1%)
+    Medio                  ███░░░░░░░░░░░░░░░░░░░░░░  132 ( 15.8%)
+    Bajo                   ░░░░░░░░░░░░░░░░░░░░░░░░░   26 (  3.1%)
+
+  ── Top 20 Productos/Servicios ────────────────────────
+     1. Avistamiento de aves                     →  233 especies
+     2. Fotografía de naturaleza                 →   46 especies
+     3. Mariposarios                             →   27 especies
+     4. Avistamiento de fauna                    →   26 especies
+     5. Plantas ornamentales                     →   24 especies
+     6. Aviturismo                               →   22 especies
+     7. Extractos botánicos                      →   19 especies
+     8. Control biológico                        →   16 especies
+     9. Plantas de interior                      →   13 especies
+    10. Plantas de jardín                        →   11 especies
+    11. Observación de fauna                     →   11 especies
+    12. Mermeladas                               →   11 especies
+    13. Plantas de colección                     →   10 especies
+    14. Turismo científico                       →   10 especies
+    15. Avistamiento de flora                    →   10 especies
+    16. Turismo botánico                         →   10 especies
+    17. Turismo de naturaleza                    →    8 especies
+    18. Control biológico de plagas              →    7 especies
+    19. Educación ambiental                      →    7 especies
+    20. Avistamiento especializado               →    6 especies
+
+  ── Sectores por Reino (Kingdom) ──────────────────────
+    Agricultura            → Plantae: 44, Animalia: 35, Fungi: 2
+    Ecoturismo             → Animalia: 426, Plantae: 64, Fungi: 1
+    Alimentos              → Plantae: 44, Animalia: 23, Fungi: 8
+    Ornamental             → Plantae: 68
+    Medicina               → Plantae: 18, Fungi: 3, Animalia: 3
+    Artesanías             → Plantae: 20, Animalia: 3
+    Cosmética              → Plantae: 41, Fungi: 2, Animalia: 1
+    Acuariofilia           → Animalia: 2
+    Restauración           → Plantae: 1
+    Servicios              → Animalia: 1
+    Servicios ecosistémicos → Animalia: 1
+    Mascotas               → Animalia: 1
+    Servicios ambientales  → Animalia: 1
+    Restauración ecológica → Plantae: 3
+    Investigación científica → Animalia: 1
+    Ciencia                → Animalia: 1
+    Construcción           → Plantae: 1
+    Investigación          → Animalia: 2, Fungi: 1
+    Biocombustibles        → Fungi: 1
+    Biotecnología          → Fungi: 4
+    Conservación           → Plantae: 1
+    Control biológico      → Animalia: 1
+    Jardinería             → Plantae: 5
+    Educación              → Animalia: 1
+    Industria              → Plantae: 1
+
+  ── Valor de Mercado por Sector ───────────────────────
+    Agricultura            → Bajo: 36, Alto: 24, Medio: 19, Desconocido: 2
+    Ecoturismo             → Medio: 258, Bajo: 119, Alto: 113, Desconocido: 1
+    Alimentos              → Medio: 29, Alto: 24, Bajo: 22
+    Ornamental             → Medio: 44, Bajo: 13, Alto: 11
+    Medicina               → Medio: 14, Bajo: 7, Alto: 3
+    Artesanías             → Medio: 11, Bajo: 7, Alto: 5
+    Cosmética              → Medio: 30, Bajo: 13, Alto: 1
+    Acuariofilia           → Bajo: 1, Medio: 1
+    Restauración           → Bajo: 1
+    Servicios              → Alto: 1
+    Servicios ecosistémicos → Desconocido: 1
+    Mascotas               → Alto: 1
+    Servicios ambientales  → Bajo: 1
+    Restauración ecológica → Bajo: 2, Medio: 1
+    Investigación científica → Bajo: 1
+    Ciencia                → Bajo: 1
+    Construcción           → Alto: 1
+    Investigación          → Bajo: 2, Medio: 1
+    Biocombustibles        → Medio: 1
+    Biotecnología          → Medio: 4
+    Conservación           → Alto: 1
+    Control biológico      → Bajo: 1
+    Jardinería             → Medio: 4, Bajo: 1
+    Educación              → Bajo: 1
+    Industria              → Alto: 1
+
+  ── Confianza de los Datos ────────────────────────────
+    high                   ███████████████████░░░░░░  661 ( 79.1%)
+    medium                 ████░░░░░░░░░░░░░░░░░░░░░  166 ( 19.9%)
+    low                    ░░░░░░░░░░░░░░░░░░░░░░░░░    9 (  1.1%)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  USOS TRADICIONALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Total entries:                       201
+  Multi-use species:                   0
+
+  ── Por Parte Utilizada ───────────────────────────────
+    Hojas                  ███████░░░░░░░░░░░░░░░░░░   57 ( 28.4%)
+    Fruto                  ████░░░░░░░░░░░░░░░░░░░░░   40 ( 19.9%)
+    Cuerpo entero          ███░░░░░░░░░░░░░░░░░░░░░░   30 ( 14.9%)
+    Madera                 █░░░░░░░░░░░░░░░░░░░░░░░░   13 (  6.5%)
+    Flores                 █░░░░░░░░░░░░░░░░░░░░░░░░    9 (  4.5%)
+    Corteza                ░░░░░░░░░░░░░░░░░░░░░░░░░    7 (  3.5%)
+    Tallo                  ░░░░░░░░░░░░░░░░░░░░░░░░░    6 (  3.0%)
+    Semillas               ░░░░░░░░░░░░░░░░░░░░░░░░░    5 (  2.5%)
+    Látex                  ░░░░░░░░░░░░░░░░░░░░░░░░░    5 (  2.5%)
+    Miel                   ░░░░░░░░░░░░░░░░░░░░░░░░░    4 (  2.0%)
+    Raíz                   ░░░░░░░░░░░░░░░░░░░░░░░░░    4 (  2.0%)
+    Carne                  ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  1.5%)
+    Planta entera          ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  1.5%)
+    Tallos                 ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Piel                   ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Grasa                  ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Nido                   ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Rizoma                 ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Inflorescencia         ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Tronco                 ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Cuerpo fructífero      ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Hojas y fruto          ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Huevos                 ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Raíces                 ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Tubérculo              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Hojas y raíz           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+
+  ── Por Tipo de Uso ───────────────────────────────────
+    Alimentación                   ████████░░░░░░░░░░░░░░░░░   65 ( 32.3%)
+    Medicina tradicional           ████░░░░░░░░░░░░░░░░░░░░░   39 ( 19.4%)
+    Artesanías                     █░░░░░░░░░░░░░░░░░░░░░░░░   16 (  8.0%)
+    Construcción                   █░░░░░░░░░░░░░░░░░░░░░░░░   13 (  6.5%)
+    Medicina                       █░░░░░░░░░░░░░░░░░░░░░░░░   11 (  5.5%)
+    Infusiones                     █░░░░░░░░░░░░░░░░░░░░░░░░    9 (  4.5%)
+    Ornamental                     █░░░░░░░░░░░░░░░░░░░░░░░░    9 (  4.5%)
+    Medicinal                      ░░░░░░░░░░░░░░░░░░░░░░░░░    8 (  4.0%)
+    Gastronomía                    ░░░░░░░░░░░░░░░░░░░░░░░░░    4 (  2.0%)
+    Cercas vivas                   ░░░░░░░░░░░░░░░░░░░░░░░░░    4 (  2.0%)
+    Bebidas                        ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  1.5%)
+    Leña                           ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  1.5%)
+    Ebanistería                    ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  1.5%)
+    Decoración                     ░░░░░░░░░░░░░░░░░░░░░░░░░    3 (  1.5%)
+    Condimento                     ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Limpieza                       ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Envoltura de alimentos         ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Construcción rústica           ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Carpintería                    ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Antiinflamatorio               ░░░░░░░░░░░░░░░░░░░░░░░░░    2 (  1.0%)
+    Curtido de pieles              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Extracción de aceite           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Aceite comestible              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Combustible                    ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Baños                          ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Colorante                      ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Tracción                       ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Consumo de miel                ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Cría doméstica                 ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Envolver alimentos             ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Compañía                       ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Pastoreo                       ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Caza                           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Sombreros                      ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Ornamentación                  ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Celebraciones religiosas       ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Pesca                          ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Sustrato                       ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Consumo directo                ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Transporte de carga            ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Labores agrícolas              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Transporte                     ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Equitación                     ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Tratamiento de afecciones respiratorias ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Problemas digestivos           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Cicatrizante                   ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Tratamiento de verrugas        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Muebles                        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Aromaterapia                   ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Control biológico              ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Lavados                        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Infusión medicinal             ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Alimento                       ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Cosmética                      ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Velas                          ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Iluminación                    ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Rituales de iniciación         ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Alimenticio                    ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Tintura                        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Aromatizante                   ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Fitorremediación               ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Rituales ancestrales           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Analgésico                     ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Pesca artesanal                ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Mascota                        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Depurativo                     ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Refrescante                    ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Antiséptico                    ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Diurético                      ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Endulzante                     ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Bebida ritual                  ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Cercas                         ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Forraje                        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Medicina veterinaria           ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Sedante                        ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Relajante                      ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+    Símbolo cultural               ░░░░░░░░░░░░░░░░░░░░░░░░░    1 (  0.5%)
+
+  ── Top 15 Comunidades ────────────────────────────────
+    Comunidades campesinas de Caldas              →  93
+    Comunidades rurales de Caldas                 →  36
+    Comunidades rurales andinas                   →   7
+    Comunidades rurales de los Andes              →   4
+    Comunidades rurales de Colombia               →   4
+    Comunidades rurales                           →   3
+    Comunidades campesinas de los Andes colombianos →   3
+    Comunidades campesinas de alta montaña        →   3
+    Comunidades rurales de la zona andina         →   2
+    Comunidades campesinas de los Andes           →   2
+    Comunidades rurales del Magdalena Medio       →   2
+    Comunidades rurales de zonas tropicales       →   2
+    Comunidades ribereñas del Magdalena           →   2
+    Comunidades ribereñas de Caldas               →   2
+    General en Colombia                           →   2
+
+  ── Partes por Reino (Kingdom) ────────────────────────
+    Corteza                → Plantae: 7
+    Fruto                  → Plantae: 40
+    Hojas                  → Plantae: 57
+    Madera                 → Plantae: 13
+    Cuerpo entero          → Animalia: 25, Fungi: 5
+    Miel                   → Animalia: 4
+    Tallos                 → Plantae: 2
+    Semillas               → Plantae: 5
+    Grasa                  → Animalia: 1
+    Látex                  → Plantae: 5
+    Nido                   → Animalia: 1
+    Carne                  → Animalia: 3
+    Rizoma                 → Plantae: 1
+    Flores                 → Plantae: 9
+    Inflorescencia         → Plantae: 1
+    Tallo                  → Plantae: 6
+    Planta entera          → Plantae: 3
+    Raíz                   → Plantae: 4
+    Tronco                 → Plantae: 1
+    Cuerpo fructífero      → Fungi: 1
+    Piel                   → Animalia: 2
+    Hojas y fruto          → Plantae: 1
+    Huevos                 → Animalia: 1
+    Raíces                 → Plantae: 1
+    Tubérculo              → Plantae: 1
+    Hojas y raíz           → Plantae: 1
+
+  ── Confianza de los Datos ────────────────────────────
+    high                   █████████████████████░░░░  169 ( 84.1%)
+    medium                 ███░░░░░░░░░░░░░░░░░░░░░░   32 ( 15.9%)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ANÁLISIS CRUZADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  With both uses + potential:           178
+  Only traditional uses:                23
+  Only economic potential:               657
+  Neither:                              401
+
+  ── Especies con Usos + Potencial (primeras 20) ───────
+    • Acacia decurrens
+    • Acrocomia aculeata
+    • Adiantum macrophyllum
+    • Adiantum raddianum
+    • Ageratina pichinchensis
+    • Alnus acuminata
+    • Anas platyrhynchos
+    • Aniba perutilis
+    • Annona cherimola
+    • Annona rensoniana
+    • Apeiba membranacea
+    • Apis mellifera
+    • Aristolochia cordiflora
+    • Asclepias curassavica
+    • Asplundia moritziana
+    • Astrocaryum malybo
+    • Astyanax caucanus
+    • Atta cephalotes
+    • Attalea amygdalina
+    • Attalea butyracea
+    ... y 158 más

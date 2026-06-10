@@ -1,0 +1,5035 @@
+{
+  "Abracris flavolineata": {
+    "class_idx": 0,
+    "folder_name": "Abracris_flavolineata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Achlyodes pallida": {
+    "class_idx": 1,
+    "folder_name": "Achlyodes_pallida",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Acropternis orthonyx": {
+    "class_idx": 2,
+    "folder_name": "Acropternis_orthonyx",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Actinote neleus": {
+    "class_idx": 3,
+    "folder_name": "Actinote_neleus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Actinote stratonice": {
+    "class_idx": 4,
+    "folder_name": "Actinote_stratonice",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Adelomyia melanogenys": {
+    "class_idx": 5,
+    "folder_name": "Adelomyia_melanogenys",
+    "train_count": 92,
+    "val_count": 11,
+    "test_count": 12
+  },
+  "Adhemarius sexoculata": {
+    "class_idx": 6,
+    "folder_name": "Adhemarius_sexoculata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aechmea angustifolia": {
+    "class_idx": 7,
+    "folder_name": "Aechmea_angustifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aglaeactis cupripennis": {
+    "class_idx": 8,
+    "folder_name": "Aglaeactis_cupripennis",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Aglaiocercus coelestis": {
+    "class_idx": 9,
+    "folder_name": "Aglaiocercus_coelestis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aglaiocercus kingii": {
+    "class_idx": 10,
+    "folder_name": "Aglaiocercus_kingii",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Aiouea montana": {
+    "class_idx": 11,
+    "folder_name": "Aiouea_montana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Alouatta seniculus": {
+    "class_idx": 12,
+    "folder_name": "Alouatta_seniculus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Altinote ozomene": {
+    "class_idx": 13,
+    "folder_name": "Altinote_ozomene",
+    "train_count": 45,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Amanita muscaria": {
+    "class_idx": 14,
+    "folder_name": "Amanita_muscaria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Amastus aconia": {
+    "class_idx": 15,
+    "folder_name": "Amastus_aconia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Amastus coccinator": {
+    "class_idx": 16,
+    "folder_name": "Amastus_coccinator",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Amastus episcotosia": {
+    "class_idx": 17,
+    "folder_name": "Amastus_episcotosia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Amastus thalassina": {
+    "class_idx": 18,
+    "folder_name": "Amastus_thalassina",
+    "train_count": 58,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Amazilia tzacatl": {
+    "class_idx": 19,
+    "folder_name": "Amazilia_tzacatl",
+    "train_count": 67,
+    "val_count": 8,
+    "test_count": 9
+  },
+  "Amazona mercenaria": {
+    "class_idx": 20,
+    "folder_name": "Amazona_mercenaria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ampelioides tschudii": {
+    "class_idx": 21,
+    "folder_name": "Ampelioides_tschudii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ampelion rubrocristatus": {
+    "class_idx": 22,
+    "folder_name": "Ampelion_rubrocristatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ampelion rufaxilla": {
+    "class_idx": 23,
+    "folder_name": "Ampelion_rufaxilla",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anartia amathea": {
+    "class_idx": 24,
+    "folder_name": "Anartia_amathea",
+    "train_count": 92,
+    "val_count": 11,
+    "test_count": 13
+  },
+  "Anartia jatrophae": {
+    "class_idx": 25,
+    "folder_name": "Anartia_jatrophae",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ancognatha scarabaeoides": {
+    "class_idx": 26,
+    "folder_name": "Ancognatha_scarabaeoides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ancognatha vulgaris": {
+    "class_idx": 27,
+    "folder_name": "Ancognatha_vulgaris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Andesanthus lepidotus": {
+    "class_idx": 28,
+    "folder_name": "Andesanthus_lepidotus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Andigena hypoglauca": {
+    "class_idx": 29,
+    "folder_name": "Andigena_hypoglauca",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Andigena nigrirostris": {
+    "class_idx": 30,
+    "folder_name": "Andigena_nigrirostris",
+    "train_count": 105,
+    "val_count": 13,
+    "test_count": 14
+  },
+  "Andinia pilosella": {
+    "class_idx": 31,
+    "folder_name": "Andinia_pilosella",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Andinobates daleswansoni": {
+    "class_idx": 32,
+    "folder_name": "Andinobates_daleswansoni",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anisognathus igniventris": {
+    "class_idx": 33,
+    "folder_name": "Anisognathus_igniventris",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Anisognathus lacrymosus": {
+    "class_idx": 34,
+    "folder_name": "Anisognathus_lacrymosus",
+    "train_count": 115,
+    "val_count": 14,
+    "test_count": 15
+  },
+  "Anisognathus somptuosus": {
+    "class_idx": 35,
+    "folder_name": "Anisognathus_somptuosus",
+    "train_count": 109,
+    "val_count": 13,
+    "test_count": 15
+  },
+  "Anolis antonii": {
+    "class_idx": 36,
+    "folder_name": "Anolis_antonii",
+    "train_count": 60,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Anolis quimbaya": {
+    "class_idx": 37,
+    "folder_name": "Anolis_quimbaya",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anolis ventrimaculatus": {
+    "class_idx": 38,
+    "folder_name": "Anolis_ventrimaculatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anteos clorinde": {
+    "class_idx": 39,
+    "folder_name": "Anteos_clorinde",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anthanassa drusilla": {
+    "class_idx": 40,
+    "folder_name": "Anthanassa_drusilla",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anthoptus epictetus": {
+    "class_idx": 41,
+    "folder_name": "Anthoptus_epictetus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anthracothorax nigricollis": {
+    "class_idx": 42,
+    "folder_name": "Anthracothorax_nigricollis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Anthurium caramantae": {
+    "class_idx": 43,
+    "folder_name": "Anthurium_caramantae",
+    "train_count": 44,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Anthurium crystallinum": {
+    "class_idx": 44,
+    "folder_name": "Anthurium_crystallinum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aotus griseimembra": {
+    "class_idx": 45,
+    "folder_name": "Aotus_griseimembra",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aotus lemurinus": {
+    "class_idx": 46,
+    "folder_name": "Aotus_lemurinus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aphelandra runcinata": {
+    "class_idx": 47,
+    "folder_name": "Aphelandra_runcinata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Apis mellifera": {
+    "class_idx": 48,
+    "folder_name": "Apis_mellifera",
+    "train_count": 91,
+    "val_count": 11,
+    "test_count": 12
+  },
+  "Ara severus": {
+    "class_idx": 49,
+    "folder_name": "Ara_severus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Araneus granadensis": {
+    "class_idx": 50,
+    "folder_name": "Araneus_granadensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aratinga pertinax": {
+    "class_idx": 51,
+    "folder_name": "Aratinga_pertinax",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aratinga wagleri": {
+    "class_idx": 52,
+    "folder_name": "Aratinga_wagleri",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Araucaria columnaris": {
+    "class_idx": 53,
+    "folder_name": "Araucaria_columnaris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Archonias flisa": {
+    "class_idx": 54,
+    "folder_name": "Archonias_flisa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ardea alba": {
+    "class_idx": 55,
+    "folder_name": "Ardea_alba",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ardea cocoi": {
+    "class_idx": 56,
+    "folder_name": "Ardea_cocoi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Argiope argentata": {
+    "class_idx": 57,
+    "folder_name": "Argiope_argentata",
+    "train_count": 47,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Aristolochia cordiflora": {
+    "class_idx": 58,
+    "folder_name": "Aristolochia_cordiflora",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Arremon assimilis": {
+    "class_idx": 59,
+    "folder_name": "Arremon_assimilis",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Arremon brunneinucha": {
+    "class_idx": 60,
+    "folder_name": "Arremon_brunneinucha",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Arundina graminifolia": {
+    "class_idx": 61,
+    "folder_name": "Arundina_graminifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ascalapha odorata": {
+    "class_idx": 62,
+    "folder_name": "Ascalapha_odorata",
+    "train_count": 59,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Asclepias curassavica": {
+    "class_idx": 63,
+    "folder_name": "Asclepias_curassavica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Asio stygius": {
+    "class_idx": 64,
+    "folder_name": "Asio_stygius",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Atlapetes albinucha": {
+    "class_idx": 65,
+    "folder_name": "Atlapetes_albinucha",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Atlapetes flaviceps": {
+    "class_idx": 66,
+    "folder_name": "Atlapetes_flaviceps",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Atlapetes pallidinucha": {
+    "class_idx": 67,
+    "folder_name": "Atlapetes_pallidinucha",
+    "train_count": 55,
+    "val_count": 6,
+    "test_count": 8
+  },
+  "Atlapetes schistaceus": {
+    "class_idx": 68,
+    "folder_name": "Atlapetes_schistaceus",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Atractus lehmanni": {
+    "class_idx": 69,
+    "folder_name": "Atractus_lehmanni",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Atractus obesus": {
+    "class_idx": 70,
+    "folder_name": "Atractus_obesus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Atta cephalotes": {
+    "class_idx": 71,
+    "folder_name": "Atta_cephalotes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Aulacorhynchus albivitta": {
+    "class_idx": 72,
+    "folder_name": "Aulacorhynchus_albivitta",
+    "train_count": 81,
+    "val_count": 10,
+    "test_count": 11
+  },
+  "Aulacorhynchus haematopygus": {
+    "class_idx": 73,
+    "folder_name": "Aulacorhynchus_haematopygus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Baccharis latifolia": {
+    "class_idx": 74,
+    "folder_name": "Baccharis_latifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bangsia melanochlamys": {
+    "class_idx": 75,
+    "folder_name": "Bangsia_melanochlamys",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Basileuterus culicivorus": {
+    "class_idx": 76,
+    "folder_name": "Basileuterus_culicivorus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Basiliscus galeritus": {
+    "class_idx": 77,
+    "folder_name": "Basiliscus_galeritus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Begonia lehmannii": {
+    "class_idx": 78,
+    "folder_name": "Begonia_lehmannii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Begonia maurandiae": {
+    "class_idx": 79,
+    "folder_name": "Begonia_maurandiae",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Begonia umbellata": {
+    "class_idx": 80,
+    "folder_name": "Begonia_umbellata",
+    "train_count": 48,
+    "val_count": 6,
+    "test_count": 6
+  },
+  "Begonia urticae": {
+    "class_idx": 81,
+    "folder_name": "Begonia_urticae",
+    "train_count": 92,
+    "val_count": 11,
+    "test_count": 12
+  },
+  "Bellucia pentamera": {
+    "class_idx": 82,
+    "folder_name": "Bellucia_pentamera",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Besleria cinnabarina": {
+    "class_idx": 83,
+    "folder_name": "Besleria_cinnabarina",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Boana platanera": {
+    "class_idx": 84,
+    "folder_name": "Boana_platanera",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Boana pugnax": {
+    "class_idx": 85,
+    "folder_name": "Boana_pugnax",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bocconia frutescens": {
+    "class_idx": 86,
+    "folder_name": "Bocconia_frutescens",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Boissonneaua flavescens": {
+    "class_idx": 87,
+    "folder_name": "Boissonneaua_flavescens",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Boissonneaua jardini": {
+    "class_idx": 88,
+    "folder_name": "Boissonneaua_jardini",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bolborhynchus ferrugineifrons": {
+    "class_idx": 89,
+    "folder_name": "Bolborhynchus_ferrugineifrons",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bolitoglossa lozanoi": {
+    "class_idx": 90,
+    "folder_name": "Bolitoglossa_lozanoi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bombus funebris": {
+    "class_idx": 91,
+    "folder_name": "Bombus_funebris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bombus hortulanus": {
+    "class_idx": 92,
+    "folder_name": "Bombus_hortulanus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bombus pauloensis": {
+    "class_idx": 93,
+    "folder_name": "Bombus_pauloensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bombus rubicundus": {
+    "class_idx": 94,
+    "folder_name": "Bombus_rubicundus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bothriechis schlegelii": {
+    "class_idx": 95,
+    "folder_name": "Bothriechis_schlegelii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Bubulcus ibis": {
+    "class_idx": 96,
+    "folder_name": "Bubulcus_ibis",
+    "train_count": 41,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Burmeistera bullatifolia": {
+    "class_idx": 97,
+    "folder_name": "Burmeistera_bullatifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Busarellus nigricollis": {
+    "class_idx": 98,
+    "folder_name": "Busarellus_nigricollis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Buteo albicaudatus": {
+    "class_idx": 99,
+    "folder_name": "Buteo_albicaudatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Buteo brachyurus": {
+    "class_idx": 100,
+    "folder_name": "Buteo_brachyurus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Buteo platypterus": {
+    "class_idx": 101,
+    "folder_name": "Buteo_platypterus",
+    "train_count": 68,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Buthraupis montana": {
+    "class_idx": 102,
+    "folder_name": "Buthraupis_montana",
+    "train_count": 72,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Butorides striata": {
+    "class_idx": 103,
+    "folder_name": "Butorides_striata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cacicus chrysonotus": {
+    "class_idx": 104,
+    "folder_name": "Cacicus_chrysonotus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Caiman crocodilus": {
+    "class_idx": 105,
+    "folder_name": "Caiman_crocodilus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Caligo atreus": {
+    "class_idx": 106,
+    "folder_name": "Caligo_atreus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Caligo oileus": {
+    "class_idx": 107,
+    "folder_name": "Caligo_oileus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Callianthe megapotamica": {
+    "class_idx": 108,
+    "folder_name": "Callianthe_megapotamica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Callianthe picta": {
+    "class_idx": 109,
+    "folder_name": "Callianthe_picta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Calliphlox mitchellii": {
+    "class_idx": 110,
+    "folder_name": "Calliphlox_mitchellii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Campephilus pollens": {
+    "class_idx": 111,
+    "folder_name": "Campephilus_pollens",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Capito hypoleucus": {
+    "class_idx": 112,
+    "folder_name": "Capito_hypoleucus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Capsicum dimorphum": {
+    "class_idx": 113,
+    "folder_name": "Capsicum_dimorphum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Caracara plancus": {
+    "class_idx": 114,
+    "folder_name": "Caracara_plancus",
+    "train_count": 53,
+    "val_count": 6,
+    "test_count": 8
+  },
+  "Cardellina canadensis": {
+    "class_idx": 115,
+    "folder_name": "Cardellina_canadensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Castilia eranites": {
+    "class_idx": 116,
+    "folder_name": "Castilia_eranites",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Castilleja arvensis": {
+    "class_idx": 117,
+    "folder_name": "Castilleja_arvensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Castilleja fissifolia": {
+    "class_idx": 118,
+    "folder_name": "Castilleja_fissifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Catamblyrhynchus diadema": {
+    "class_idx": 119,
+    "folder_name": "Catamblyrhynchus_diadema",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Catamenia homochroa": {
+    "class_idx": 120,
+    "folder_name": "Catamenia_homochroa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Catamenia inornata": {
+    "class_idx": 121,
+    "folder_name": "Catamenia_inornata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Catasetum tabulare": {
+    "class_idx": 122,
+    "folder_name": "Catasetum_tabulare",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Catasticta prioneris": {
+    "class_idx": 123,
+    "folder_name": "Catasticta_prioneris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cathartes aura": {
+    "class_idx": 124,
+    "folder_name": "Cathartes_aura",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Catharus fuscater": {
+    "class_idx": 125,
+    "folder_name": "Catharus_fuscater",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Catharus ustulatus": {
+    "class_idx": 126,
+    "folder_name": "Catharus_ustulatus",
+    "train_count": 44,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Cecropia angustifolia": {
+    "class_idx": 127,
+    "folder_name": "Cecropia_angustifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cecropia telealba": {
+    "class_idx": 128,
+    "folder_name": "Cecropia_telealba",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Centropogon ferrugineus": {
+    "class_idx": 129,
+    "folder_name": "Centropogon_ferrugineus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Centropogon foetidus": {
+    "class_idx": 130,
+    "folder_name": "Centropogon_foetidus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Centropogon leucophyllus": {
+    "class_idx": 131,
+    "folder_name": "Centropogon_leucophyllus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cerdocyon thous": {
+    "class_idx": 132,
+    "folder_name": "Cerdocyon_thous",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ceroxylon quindiuense": {
+    "class_idx": 133,
+    "folder_name": "Ceroxylon_quindiuense",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Certhiaxis cinnamomeus": {
+    "class_idx": 134,
+    "folder_name": "Certhiaxis_cinnamomeus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chaetocercus mulsant": {
+    "class_idx": 135,
+    "folder_name": "Chaetocercus_mulsant",
+    "train_count": 96,
+    "val_count": 12,
+    "test_count": 12
+  },
+  "Chaetogastra gracilis": {
+    "class_idx": 136,
+    "folder_name": "Chaetogastra_gracilis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chaetogastra grossa": {
+    "class_idx": 137,
+    "folder_name": "Chaetogastra_grossa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chaetogastra mollis": {
+    "class_idx": 138,
+    "folder_name": "Chaetogastra_mollis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chalcostigma herrani": {
+    "class_idx": 139,
+    "folder_name": "Chalcostigma_herrani",
+    "train_count": 90,
+    "val_count": 11,
+    "test_count": 12
+  },
+  "Chalybura buffonii": {
+    "class_idx": 140,
+    "folder_name": "Chalybura_buffonii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chamaedorea linearis": {
+    "class_idx": 141,
+    "folder_name": "Chamaedorea_linearis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chamaedorea pinnatifrons": {
+    "class_idx": 142,
+    "folder_name": "Chamaedorea_pinnatifrons",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chamaepetes goudotii": {
+    "class_idx": 143,
+    "folder_name": "Chamaepetes_goudotii",
+    "train_count": 105,
+    "val_count": 13,
+    "test_count": 14
+  },
+  "Chauna chavaria": {
+    "class_idx": 144,
+    "folder_name": "Chauna_chavaria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chironius monticola": {
+    "class_idx": 145,
+    "folder_name": "Chironius_monticola",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chloroceryle americana": {
+    "class_idx": 146,
+    "folder_name": "Chloroceryle_americana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chlorophanes spiza": {
+    "class_idx": 147,
+    "folder_name": "Chlorophanes_spiza",
+    "train_count": 71,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Chlorornis riefferii": {
+    "class_idx": 148,
+    "folder_name": "Chlorornis_riefferii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chlorospingus flavopectus": {
+    "class_idx": 149,
+    "folder_name": "Chlorospingus_flavopectus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chlorostilbon melanorhynchus": {
+    "class_idx": 150,
+    "folder_name": "Chlorostilbon_melanorhynchus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chlosyne lacinia": {
+    "class_idx": 151,
+    "folder_name": "Chlosyne_lacinia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Choeradodis rhombicollis": {
+    "class_idx": 152,
+    "folder_name": "Choeradodis_rhombicollis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chrysomus icterocephalus": {
+    "class_idx": 153,
+    "folder_name": "Chrysomus_icterocephalus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Chrysso nigriceps": {
+    "class_idx": 154,
+    "folder_name": "Chrysso_nigriceps",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cinclodes excelsior": {
+    "class_idx": 155,
+    "folder_name": "Cinclodes_excelsior",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cinclus leucocephalus": {
+    "class_idx": 156,
+    "folder_name": "Cinclus_leucocephalus",
+    "train_count": 72,
+    "val_count": 9,
+    "test_count": 9
+  },
+  "Cinnycerthia olivascens": {
+    "class_idx": 157,
+    "folder_name": "Cinnycerthia_olivascens",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cistothorus platensis": {
+    "class_idx": 158,
+    "folder_name": "Cistothorus_platensis",
+    "train_count": 41,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Clathrus archeri": {
+    "class_idx": 159,
+    "folder_name": "Clathrus_archeri",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Clelia equatoriana": {
+    "class_idx": 160,
+    "folder_name": "Clelia_equatoriana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cnemathraupis eximia": {
+    "class_idx": 161,
+    "folder_name": "Cnemathraupis_eximia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cnemoscopus rubrirostris": {
+    "class_idx": 162,
+    "folder_name": "Cnemoscopus_rubrirostris",
+    "train_count": 41,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Coeligena coeligena": {
+    "class_idx": 163,
+    "folder_name": "Coeligena_coeligena",
+    "train_count": 70,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Coeligena lutetiae": {
+    "class_idx": 164,
+    "folder_name": "Coeligena_lutetiae",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Coeligena torquata": {
+    "class_idx": 165,
+    "folder_name": "Coeligena_torquata",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Coeligena wilsoni": {
+    "class_idx": 166,
+    "folder_name": "Coeligena_wilsoni",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Coereba flaveola": {
+    "class_idx": 167,
+    "folder_name": "Coereba_flaveola",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Colaptes punctigula": {
+    "class_idx": 168,
+    "folder_name": "Colaptes_punctigula",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Colaptes rivolii": {
+    "class_idx": 169,
+    "folder_name": "Colaptes_rivolii",
+    "train_count": 81,
+    "val_count": 10,
+    "test_count": 11
+  },
+  "Colaptes rubiginosus": {
+    "class_idx": 170,
+    "folder_name": "Colaptes_rubiginosus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Colibri coruscans": {
+    "class_idx": 171,
+    "folder_name": "Colibri_coruscans",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Colibri cyanotus": {
+    "class_idx": 172,
+    "folder_name": "Colibri_cyanotus",
+    "train_count": 83,
+    "val_count": 10,
+    "test_count": 11
+  },
+  "Colobura dirce": {
+    "class_idx": 173,
+    "folder_name": "Colobura_dirce",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Colonia colonus": {
+    "class_idx": 174,
+    "folder_name": "Colonia_colonus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Columbina talpacoti": {
+    "class_idx": 175,
+    "folder_name": "Columbina_talpacoti",
+    "train_count": 68,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Columnea ceticeps": {
+    "class_idx": 176,
+    "folder_name": "Columnea_ceticeps",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Columnea fuscihirta": {
+    "class_idx": 177,
+    "folder_name": "Columnea_fuscihirta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Columnea strigosa": {
+    "class_idx": 178,
+    "folder_name": "Columnea_strigosa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Comparettia falcata": {
+    "class_idx": 179,
+    "folder_name": "Comparettia_falcata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Conchylodes bryophilalis": {
+    "class_idx": 180,
+    "folder_name": "Conchylodes_bryophilalis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Conirostrum albifrons": {
+    "class_idx": 181,
+    "folder_name": "Conirostrum_albifrons",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Conirostrum sitticolor": {
+    "class_idx": 182,
+    "folder_name": "Conirostrum_sitticolor",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Consul panariste": {
+    "class_idx": 183,
+    "folder_name": "Consul_panariste",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Coprinellus disseminatus": {
+    "class_idx": 184,
+    "folder_name": "Coprinellus_disseminatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Corades chelonis": {
+    "class_idx": 185,
+    "folder_name": "Corades_chelonis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Coragyps atratus": {
+    "class_idx": 186,
+    "folder_name": "Coragyps_atratus",
+    "train_count": 84,
+    "val_count": 10,
+    "test_count": 12
+  },
+  "Cornu aspersum": {
+    "class_idx": 187,
+    "folder_name": "Cornu_aspersum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Crassocephalum crepidioides": {
+    "class_idx": 188,
+    "folder_name": "Crassocephalum_crepidioides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Crocosmia crocosmiiflora": {
+    "class_idx": 189,
+    "folder_name": "Crocosmia_crocosmiiflora",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Crotophaga ani": {
+    "class_idx": 190,
+    "folder_name": "Crotophaga_ani",
+    "train_count": 54,
+    "val_count": 6,
+    "test_count": 8
+  },
+  "Crypturellus soui": {
+    "class_idx": 191,
+    "folder_name": "Crypturellus_soui",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cupiennius coccineus": {
+    "class_idx": 192,
+    "folder_name": "Cupiennius_coccineus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyanocorax affinis": {
+    "class_idx": 193,
+    "folder_name": "Cyanocorax_affinis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyanocorax yncas": {
+    "class_idx": 194,
+    "folder_name": "Cyanocorax_yncas",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyanolyca armillata": {
+    "class_idx": 195,
+    "folder_name": "Cyanolyca_armillata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyanopepla micans": {
+    "class_idx": 196,
+    "folder_name": "Cyanopepla_micans",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cybdelis mnasylus": {
+    "class_idx": 197,
+    "folder_name": "Cybdelis_mnasylus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyclarhis nigrirostris": {
+    "class_idx": 198,
+    "folder_name": "Cyclarhis_nigrirostris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyclocephala lunulata": {
+    "class_idx": 199,
+    "folder_name": "Cyclocephala_lunulata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyrtochilum annulare": {
+    "class_idx": 200,
+    "folder_name": "Cyrtochilum_annulare",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyrtochilum diceratum": {
+    "class_idx": 201,
+    "folder_name": "Cyrtochilum_diceratum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyrtochilum divaricatum": {
+    "class_idx": 202,
+    "folder_name": "Cyrtochilum_divaricatum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyrtochilum halteratum": {
+    "class_idx": 203,
+    "folder_name": "Cyrtochilum_halteratum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyrtochilum murinum": {
+    "class_idx": 204,
+    "folder_name": "Cyrtochilum_murinum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyrtochilum scabiosum": {
+    "class_idx": 205,
+    "folder_name": "Cyrtochilum_scabiosum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Cyrtochilum tricostatum": {
+    "class_idx": 206,
+    "folder_name": "Cyrtochilum_tricostatum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Danaus plexippus": {
+    "class_idx": 207,
+    "folder_name": "Danaus_plexippus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dasyprocta punctata": {
+    "class_idx": 208,
+    "folder_name": "Dasyprocta_punctata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dendrobates truncatus": {
+    "class_idx": 209,
+    "folder_name": "Dendrobates_truncatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dendrocincla fuliginosa": {
+    "class_idx": 210,
+    "folder_name": "Dendrocincla_fuliginosa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dendropsophus columbianus": {
+    "class_idx": 211,
+    "folder_name": "Dendropsophus_columbianus",
+    "train_count": 72,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Diabrotica decempunctata": {
+    "class_idx": 212,
+    "folder_name": "Diabrotica_decempunctata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Diaethria clymena": {
+    "class_idx": 213,
+    "folder_name": "Diaethria_clymena",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Didelphis marsupialis": {
+    "class_idx": 214,
+    "folder_name": "Didelphis_marsupialis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Diglossa albilatera": {
+    "class_idx": 215,
+    "folder_name": "Diglossa_albilatera",
+    "train_count": 68,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Diglossa cyanea": {
+    "class_idx": 216,
+    "folder_name": "Diglossa_cyanea",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Diglossa humeralis": {
+    "class_idx": 217,
+    "folder_name": "Diglossa_humeralis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Diglossa lafresnayii": {
+    "class_idx": 218,
+    "folder_name": "Diglossa_lafresnayii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dione glycera": {
+    "class_idx": 219,
+    "folder_name": "Dione_glycera",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dipsas sanctijoannis": {
+    "class_idx": 220,
+    "folder_name": "Dipsas_sanctijoannis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Donacobius atricapilla": {
+    "class_idx": 221,
+    "folder_name": "Donacobius_atricapilla",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Doxocopa cyane": {
+    "class_idx": 222,
+    "folder_name": "Doxocopa_cyane",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dracula iricolor": {
+    "class_idx": 223,
+    "folder_name": "Dracula_iricolor",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dryas iulia": {
+    "class_idx": 224,
+    "folder_name": "Dryas_iulia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Drymonia lanceolata": {
+    "class_idx": 225,
+    "folder_name": "Drymonia_lanceolata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dryocopus lineatus": {
+    "class_idx": 226,
+    "folder_name": "Dryocopus_lineatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Dubusia taeniata": {
+    "class_idx": 227,
+    "folder_name": "Dubusia_taeniata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Egretta thula": {
+    "class_idx": 228,
+    "folder_name": "Egretta_thula",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eira barbara": {
+    "class_idx": 229,
+    "folder_name": "Eira_barbara",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Elaenia flavogaster": {
+    "class_idx": 230,
+    "folder_name": "Elaenia_flavogaster",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Elaenia frantzii": {
+    "class_idx": 231,
+    "folder_name": "Elaenia_frantzii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Elanoides forficatus": {
+    "class_idx": 232,
+    "folder_name": "Elanoides_forficatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Elleanthus aurantiacus": {
+    "class_idx": 233,
+    "folder_name": "Elleanthus_aurantiacus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Elysius atrata": {
+    "class_idx": 234,
+    "folder_name": "Elysius_atrata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Endrosis sarcitrella": {
+    "class_idx": 235,
+    "folder_name": "Endrosis_sarcitrella",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ensifera ensifera": {
+    "class_idx": 236,
+    "folder_name": "Ensifera_ensifera",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Epidendrum cleistocoleum": {
+    "class_idx": 237,
+    "folder_name": "Epidendrum_cleistocoleum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Epidendrum cottoniiflorum": {
+    "class_idx": 238,
+    "folder_name": "Epidendrum_cottoniiflorum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Epidendrum cylindrostachys": {
+    "class_idx": 239,
+    "folder_name": "Epidendrum_cylindrostachys",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Epidendrum fimbriatum": {
+    "class_idx": 240,
+    "folder_name": "Epidendrum_fimbriatum",
+    "train_count": 75,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Epidendrum melinanthum": {
+    "class_idx": 241,
+    "folder_name": "Epidendrum_melinanthum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Epidendrum porphyreum": {
+    "class_idx": 242,
+    "folder_name": "Epidendrum_porphyreum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Epidendrum posadarum": {
+    "class_idx": 243,
+    "folder_name": "Epidendrum_posadarum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Epiphile chrysites": {
+    "class_idx": 244,
+    "folder_name": "Epiphile_chrysites",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Epiphile epimenes": {
+    "class_idx": 245,
+    "folder_name": "Epiphile_epimenes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Equisetum bogotense": {
+    "class_idx": 246,
+    "folder_name": "Equisetum_bogotense",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Erato vulcanica": {
+    "class_idx": 247,
+    "folder_name": "Erato_vulcanica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eresia clio": {
+    "class_idx": 248,
+    "folder_name": "Eresia_clio",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Erinnyis ello": {
+    "class_idx": 249,
+    "folder_name": "Erinnyis_ello",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eriocnemis derbyi": {
+    "class_idx": 250,
+    "folder_name": "Eriocnemis_derbyi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eriocnemis mosquera": {
+    "class_idx": 251,
+    "folder_name": "Eriocnemis_mosquera",
+    "train_count": 56,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Eriophora edax": {
+    "class_idx": 252,
+    "folder_name": "Eriophora_edax",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eryphanis lycomedon": {
+    "class_idx": 253,
+    "folder_name": "Eryphanis_lycomedon",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Erythrolamprus bizona": {
+    "class_idx": 254,
+    "folder_name": "Erythrolamprus_bizona",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Erythrolamprus epinephalus": {
+    "class_idx": 255,
+    "folder_name": "Erythrolamprus_epinephalus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Erythrolamprus epinephelus": {
+    "class_idx": 256,
+    "folder_name": "Erythrolamprus_epinephelus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Espadarana prosoblepon": {
+    "class_idx": 257,
+    "folder_name": "Espadarana_prosoblepon",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Espeletia hartwegiana": {
+    "class_idx": 258,
+    "folder_name": "Espeletia_hartwegiana",
+    "train_count": 41,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eubucco bourcierii": {
+    "class_idx": 259,
+    "folder_name": "Eubucco_bourcierii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eudocima procus": {
+    "class_idx": 260,
+    "folder_name": "Eudocima_procus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eueides procula": {
+    "class_idx": 261,
+    "folder_name": "Eueides_procula",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eulaema cingulata": {
+    "class_idx": 262,
+    "folder_name": "Eulaema_cingulata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eulaema meriana": {
+    "class_idx": 263,
+    "folder_name": "Eulaema_meriana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Eulaema polychroma": {
+    "class_idx": 264,
+    "folder_name": "Eulaema_polychroma",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Euphonia cyanocephala": {
+    "class_idx": 265,
+    "folder_name": "Euphonia_cyanocephala",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Euphonia laniirostris": {
+    "class_idx": 266,
+    "folder_name": "Euphonia_laniirostris",
+    "train_count": 83,
+    "val_count": 10,
+    "test_count": 11
+  },
+  "Euphonia xanthogaster": {
+    "class_idx": 267,
+    "folder_name": "Euphonia_xanthogaster",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Euphorbia hirta": {
+    "class_idx": 268,
+    "folder_name": "Euphorbia_hirta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Euptychoides saturnus": {
+    "class_idx": 269,
+    "folder_name": "Euptychoides_saturnus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Euryglottis aper": {
+    "class_idx": 270,
+    "folder_name": "Euryglottis_aper",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Falco sparverius": {
+    "class_idx": 271,
+    "folder_name": "Falco_sparverius",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Florisuga mellivora": {
+    "class_idx": 272,
+    "folder_name": "Florisuga_mellivora",
+    "train_count": 51,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Fluvicola pica": {
+    "class_idx": 273,
+    "folder_name": "Fluvicola_pica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Forpus conspicillatus": {
+    "class_idx": 274,
+    "folder_name": "Forpus_conspicillatus",
+    "train_count": 66,
+    "val_count": 8,
+    "test_count": 9
+  },
+  "Fuchsia boliviana": {
+    "class_idx": 275,
+    "folder_name": "Fuchsia_boliviana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Fuchsia nigricans": {
+    "class_idx": 276,
+    "folder_name": "Fuchsia_nigricans",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Fuchsia petiolaris": {
+    "class_idx": 277,
+    "folder_name": "Fuchsia_petiolaris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Gaiadendron punctatum": {
+    "class_idx": 278,
+    "folder_name": "Gaiadendron_punctatum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Galium hypocarpium": {
+    "class_idx": 279,
+    "folder_name": "Galium_hypocarpium",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Gallinula chloropus": {
+    "class_idx": 280,
+    "folder_name": "Gallinula_chloropus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Gasteracantha cancriformis": {
+    "class_idx": 281,
+    "folder_name": "Gasteracantha_cancriformis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Gaultheria myrsinoides": {
+    "class_idx": 282,
+    "folder_name": "Gaultheria_myrsinoides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Gentiana sedifolia": {
+    "class_idx": 283,
+    "folder_name": "Gentiana_sedifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Geonoma undata": {
+    "class_idx": 284,
+    "folder_name": "Geonoma_undata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Geospizopsis unicolor": {
+    "class_idx": 285,
+    "folder_name": "Geospizopsis_unicolor",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Geranoaetus melanoleucus": {
+    "class_idx": 286,
+    "folder_name": "Geranoaetus_melanoleucus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Glossoloma schultzei": {
+    "class_idx": 287,
+    "folder_name": "Glossoloma_schultzei",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Golofa eacus": {
+    "class_idx": 288,
+    "folder_name": "Golofa_eacus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Golofa porteri": {
+    "class_idx": 289,
+    "folder_name": "Golofa_porteri",
+    "train_count": 60,
+    "val_count": 7,
+    "test_count": 9
+  },
+  "Gonatodes albogularis": {
+    "class_idx": 290,
+    "folder_name": "Gonatodes_albogularis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Gonora hyelosioides": {
+    "class_idx": 291,
+    "folder_name": "Gonora_hyelosioides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Grallaria alvarezi": {
+    "class_idx": 292,
+    "folder_name": "Grallaria_alvarezi",
+    "train_count": 42,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Grallaria milleri": {
+    "class_idx": 293,
+    "folder_name": "Grallaria_milleri",
+    "train_count": 118,
+    "val_count": 14,
+    "test_count": 16
+  },
+  "Grallaria nuchalis": {
+    "class_idx": 294,
+    "folder_name": "Grallaria_nuchalis",
+    "train_count": 57,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Grallaria quitensis": {
+    "class_idx": 295,
+    "folder_name": "Grallaria_quitensis",
+    "train_count": 48,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Grallaria ruficapilla": {
+    "class_idx": 296,
+    "folder_name": "Grallaria_ruficapilla",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Grallaria rufocinerea": {
+    "class_idx": 297,
+    "folder_name": "Grallaria_rufocinerea",
+    "train_count": 106,
+    "val_count": 13,
+    "test_count": 14
+  },
+  "Grallaria saturata": {
+    "class_idx": 298,
+    "folder_name": "Grallaria_saturata",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Grallaricula lineifrons": {
+    "class_idx": 299,
+    "folder_name": "Grallaricula_lineifrons",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Grallaricula nana": {
+    "class_idx": 300,
+    "folder_name": "Grallaricula_nana",
+    "train_count": 87,
+    "val_count": 10,
+    "test_count": 12
+  },
+  "Graphita griphe": {
+    "class_idx": 301,
+    "folder_name": "Graphita_griphe",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Guzmania multiflora": {
+    "class_idx": 302,
+    "folder_name": "Guzmania_multiflora",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Guzmania triangularis": {
+    "class_idx": 303,
+    "folder_name": "Guzmania_triangularis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Gymnetis pantherina": {
+    "class_idx": 304,
+    "folder_name": "Gymnetis_pantherina",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hafferia immaculata": {
+    "class_idx": 305,
+    "folder_name": "Hafferia_immaculata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Halictus ligatus": {
+    "class_idx": 306,
+    "folder_name": "Halictus_ligatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hapalopsittaca amazonina": {
+    "class_idx": 307,
+    "folder_name": "Hapalopsittaca_amazonina",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Harmonia axyridis": {
+    "class_idx": 308,
+    "folder_name": "Harmonia_axyridis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hedychium coronarium": {
+    "class_idx": 309,
+    "folder_name": "Hedychium_coronarium",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliangelus exortis": {
+    "class_idx": 310,
+    "folder_name": "Heliangelus_exortis",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Heliconia bihai": {
+    "class_idx": 311,
+    "folder_name": "Heliconia_bihai",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconia burleana": {
+    "class_idx": 312,
+    "folder_name": "Heliconia_burleana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconia griggsiana": {
+    "class_idx": 313,
+    "folder_name": "Heliconia_griggsiana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconia latispatha": {
+    "class_idx": 314,
+    "folder_name": "Heliconia_latispatha",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconius charithonia": {
+    "class_idx": 315,
+    "folder_name": "Heliconius_charithonia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconius clysonymus": {
+    "class_idx": 316,
+    "folder_name": "Heliconius_clysonymus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconius cydno": {
+    "class_idx": 317,
+    "folder_name": "Heliconius_cydno",
+    "train_count": 41,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Heliconius doris": {
+    "class_idx": 318,
+    "folder_name": "Heliconius_doris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconius eleuchia": {
+    "class_idx": 319,
+    "folder_name": "Heliconius_eleuchia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliconius erato": {
+    "class_idx": 320,
+    "folder_name": "Heliconius_erato",
+    "train_count": 44,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Heliodoxa imperatrix": {
+    "class_idx": 321,
+    "folder_name": "Heliodoxa_imperatrix",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heliodoxa rubinoides": {
+    "class_idx": 322,
+    "folder_name": "Heliodoxa_rubinoides",
+    "train_count": 85,
+    "val_count": 10,
+    "test_count": 12
+  },
+  "Heliomaster longirostris": {
+    "class_idx": 323,
+    "folder_name": "Heliomaster_longirostris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hellmayrea gularis": {
+    "class_idx": 324,
+    "folder_name": "Hellmayrea_gularis",
+    "train_count": 45,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Hemidactylus frenatus": {
+    "class_idx": 325,
+    "folder_name": "Hemidactylus_frenatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hemithraupis guira": {
+    "class_idx": 326,
+    "folder_name": "Hemithraupis_guira",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hermeuptychia harmonia": {
+    "class_idx": 327,
+    "folder_name": "Hermeuptychia_harmonia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Herpetotheres cachinnans": {
+    "class_idx": 328,
+    "folder_name": "Herpetotheres_cachinnans",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Herpothallon rubrocinctum": {
+    "class_idx": 329,
+    "folder_name": "Herpothallon_rubrocinctum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heterogomphus mniszechi": {
+    "class_idx": 330,
+    "folder_name": "Heterogomphus_mniszechi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Heterogomphus schoenherri": {
+    "class_idx": 331,
+    "folder_name": "Heterogomphus_schoenherri",
+    "train_count": 46,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Hylophilus semibrunneus": {
+    "class_idx": 332,
+    "folder_name": "Hylophilus_semibrunneus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hypanartia kefersteini": {
+    "class_idx": 333,
+    "folder_name": "Hypanartia_kefersteini",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hypanartia lethe": {
+    "class_idx": 334,
+    "folder_name": "Hypanartia_lethe",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Hypopyrrhus pyrohypogaster": {
+    "class_idx": 335,
+    "folder_name": "Hypopyrrhus_pyrohypogaster",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Icterus chrysater": {
+    "class_idx": 336,
+    "folder_name": "Icterus_chrysater",
+    "train_count": 56,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Icterus nigrogularis": {
+    "class_idx": 337,
+    "folder_name": "Icterus_nigrogularis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Iguana iguana": {
+    "class_idx": 338,
+    "folder_name": "Iguana_iguana",
+    "train_count": 55,
+    "val_count": 6,
+    "test_count": 8
+  },
+  "Imantodes cenchoa": {
+    "class_idx": 339,
+    "folder_name": "Imantodes_cenchoa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Impatiens walleriana": {
+    "class_idx": 340,
+    "folder_name": "Impatiens_walleriana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ipomoea batatas": {
+    "class_idx": 341,
+    "folder_name": "Ipomoea_batatas",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ipomoea indica": {
+    "class_idx": 342,
+    "folder_name": "Ipomoea_indica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ipomoea purpurea": {
+    "class_idx": 343,
+    "folder_name": "Ipomoea_purpurea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Iridosornis porphyrocephalus": {
+    "class_idx": 344,
+    "folder_name": "Iridosornis_porphyrocephalus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Iridosornis rufivertex": {
+    "class_idx": 345,
+    "folder_name": "Iridosornis_rufivertex",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ithomia iphianassa": {
+    "class_idx": 346,
+    "folder_name": "Ithomia_iphianassa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Jacana jacana": {
+    "class_idx": 347,
+    "folder_name": "Jacana_jacana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Janatella fellula": {
+    "class_idx": 348,
+    "folder_name": "Janatella_fellula",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Juglans neotropica": {
+    "class_idx": 349,
+    "folder_name": "Juglans_neotropica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Junonia evarete": {
+    "class_idx": 350,
+    "folder_name": "Junonia_evarete",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Kinosternon leucostomum": {
+    "class_idx": 351,
+    "folder_name": "Kinosternon_leucostomum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Kleinothraupis atropileus": {
+    "class_idx": 352,
+    "folder_name": "Kleinothraupis_atropileus",
+    "train_count": 43,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Kohleria affinis": {
+    "class_idx": 353,
+    "folder_name": "Kohleria_affinis",
+    "train_count": 55,
+    "val_count": 6,
+    "test_count": 8
+  },
+  "Kohleria inaequalis": {
+    "class_idx": 354,
+    "folder_name": "Kohleria_inaequalis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Kohleria spicata": {
+    "class_idx": 355,
+    "folder_name": "Kohleria_spicata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Kohleria warszewiczii": {
+    "class_idx": 356,
+    "folder_name": "Kohleria_warszewiczii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Kukulcania hibernalis": {
+    "class_idx": 357,
+    "folder_name": "Kukulcania_hibernalis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lafresnaya lafresnayi": {
+    "class_idx": 358,
+    "folder_name": "Lafresnaya_lafresnayi",
+    "train_count": 71,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Langucys nigropuncta": {
+    "class_idx": 359,
+    "folder_name": "Langucys_nigropuncta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lasiophila prosymna": {
+    "class_idx": 360,
+    "folder_name": "Lasiophila_prosymna",
+    "train_count": 51,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Lentinus flexipes": {
+    "class_idx": 361,
+    "folder_name": "Lentinus_flexipes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lepanthes dunstervilleorum": {
+    "class_idx": 362,
+    "folder_name": "Lepanthes_dunstervilleorum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lepanthes gargantua": {
+    "class_idx": 363,
+    "folder_name": "Lepanthes_gargantua",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lepanthes jardinensis": {
+    "class_idx": 364,
+    "folder_name": "Lepanthes_jardinensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lepanthes mucronata": {
+    "class_idx": 365,
+    "folder_name": "Lepanthes_mucronata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lepanthes tachirensis": {
+    "class_idx": 366,
+    "folder_name": "Lepanthes_tachirensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lepidocolaptes lacrymiger": {
+    "class_idx": 367,
+    "folder_name": "Lepidocolaptes_lacrymiger",
+    "train_count": 62,
+    "val_count": 7,
+    "test_count": 9
+  },
+  "Lepidocolaptes souleyetii": {
+    "class_idx": 368,
+    "folder_name": "Lepidocolaptes_souleyetii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Leptodeira ornata": {
+    "class_idx": 369,
+    "folder_name": "Leptodeira_ornata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Leptophobia aripa": {
+    "class_idx": 370,
+    "folder_name": "Leptophobia_aripa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Leptopogon rufipectus": {
+    "class_idx": 371,
+    "folder_name": "Leptopogon_rufipectus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Leptosittaca branickii": {
+    "class_idx": 372,
+    "folder_name": "Leptosittaca_branickii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Leptotila plumbeiceps": {
+    "class_idx": 373,
+    "folder_name": "Leptotila_plumbeiceps",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Leuconotopicus fumigatus": {
+    "class_idx": 374,
+    "folder_name": "Leuconotopicus_fumigatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Leucopternis princeps": {
+    "class_idx": 375,
+    "folder_name": "Leucopternis_princeps",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Leuenbergeria bleo": {
+    "class_idx": 376,
+    "folder_name": "Leuenbergeria_bleo",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Linothele sericata": {
+    "class_idx": 377,
+    "folder_name": "Linothele_sericata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lipaugus fuscocinereus": {
+    "class_idx": 378,
+    "folder_name": "Lipaugus_fuscocinereus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lissachatina fulica": {
+    "class_idx": 379,
+    "folder_name": "Lissachatina_fulica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lycomedes hirtipes": {
+    "class_idx": 380,
+    "folder_name": "Lycomedes_hirtipes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Lycorea cleobaea": {
+    "class_idx": 381,
+    "folder_name": "Lycorea_cleobaea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Macara alydda": {
+    "class_idx": 382,
+    "folder_name": "Macara_alydda",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Machaeropterus deliciosus": {
+    "class_idx": 383,
+    "folder_name": "Machaeropterus_deliciosus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Machaeropterus striolatus": {
+    "class_idx": 384,
+    "folder_name": "Machaeropterus_striolatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Machetornis rixosa": {
+    "class_idx": 385,
+    "folder_name": "Machetornis_rixosa",
+    "train_count": 44,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Magnolia yarumalensis": {
+    "class_idx": 386,
+    "folder_name": "Magnolia_yarumalensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Malacoptila mystacalis": {
+    "class_idx": 387,
+    "folder_name": "Malacoptila_mystacalis",
+    "train_count": 61,
+    "val_count": 7,
+    "test_count": 9
+  },
+  "Malaveria rodriguezi": {
+    "class_idx": 388,
+    "folder_name": "Malaveria_rodriguezi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Manacus manacus": {
+    "class_idx": 389,
+    "folder_name": "Manacus_manacus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Manacus vitellinus": {
+    "class_idx": 390,
+    "folder_name": "Manacus_vitellinus",
+    "train_count": 56,
+    "val_count": 7,
+    "test_count": 7
+  },
+  "Manduca rustica": {
+    "class_idx": 391,
+    "folder_name": "Manduca_rustica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Margarornis squamiger": {
+    "class_idx": 392,
+    "folder_name": "Margarornis_squamiger",
+    "train_count": 59,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Markia hystrix": {
+    "class_idx": 393,
+    "folder_name": "Markia_hystrix",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Marpesia berania": {
+    "class_idx": 394,
+    "folder_name": "Marpesia_berania",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Marpesia corinna": {
+    "class_idx": 395,
+    "folder_name": "Marpesia_corinna",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Maruca vitrata": {
+    "class_idx": 396,
+    "folder_name": "Maruca_vitrata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Masdevallia amanda": {
+    "class_idx": 397,
+    "folder_name": "Masdevallia_amanda",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Masdevallia heteroptera": {
+    "class_idx": 398,
+    "folder_name": "Masdevallia_heteroptera",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Masdevallia hortensis": {
+    "class_idx": 399,
+    "folder_name": "Masdevallia_hortensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Masdevallia picturata": {
+    "class_idx": 400,
+    "folder_name": "Masdevallia_picturata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Maxillaria acuminata": {
+    "class_idx": 401,
+    "folder_name": "Maxillaria_acuminata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Maxillaria embreei": {
+    "class_idx": 402,
+    "folder_name": "Maxillaria_embreei",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Maxillaria lepidota": {
+    "class_idx": 403,
+    "folder_name": "Maxillaria_lepidota",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mechanitis polymnia": {
+    "class_idx": 404,
+    "folder_name": "Mechanitis_polymnia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mecocerculus leucophrys": {
+    "class_idx": 405,
+    "folder_name": "Mecocerculus_leucophrys",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mecocerculus stictopterus": {
+    "class_idx": 406,
+    "folder_name": "Mecocerculus_stictopterus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Megaceryle torquata": {
+    "class_idx": 407,
+    "folder_name": "Megaceryle_torquata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Megascops choliba": {
+    "class_idx": 408,
+    "folder_name": "Megascops_choliba",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Megaskepasma erythrochlamys": {
+    "class_idx": 409,
+    "folder_name": "Megaskepasma_erythrochlamys",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Melanchroia chephise": {
+    "class_idx": 410,
+    "folder_name": "Melanchroia_chephise",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Melanerpes formicivorus": {
+    "class_idx": 411,
+    "folder_name": "Melanerpes_formicivorus",
+    "train_count": 96,
+    "val_count": 12,
+    "test_count": 12
+  },
+  "Melanerpes pulcher": {
+    "class_idx": 412,
+    "folder_name": "Melanerpes_pulcher",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Melanerpes rubricapillus": {
+    "class_idx": 413,
+    "folder_name": "Melanerpes_rubricapillus",
+    "train_count": 76,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Melanis pixe": {
+    "class_idx": 414,
+    "folder_name": "Melanis_pixe",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Melipona nigrescens": {
+    "class_idx": 415,
+    "folder_name": "Melipona_nigrescens",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Memphis lyceus": {
+    "class_idx": 416,
+    "folder_name": "Memphis_lyceus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Menemerus bivittatus": {
+    "class_idx": 417,
+    "folder_name": "Menemerus_bivittatus",
+    "train_count": 48,
+    "val_count": 6,
+    "test_count": 6
+  },
+  "Merganetta armata": {
+    "class_idx": 418,
+    "folder_name": "Merganetta_armata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mesothen nomia": {
+    "class_idx": 419,
+    "folder_name": "Mesothen_nomia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Metallura tyrianthina": {
+    "class_idx": 420,
+    "folder_name": "Metallura_tyrianthina",
+    "train_count": 64,
+    "val_count": 8,
+    "test_count": 9
+  },
+  "Metallura williami": {
+    "class_idx": 421,
+    "folder_name": "Metallura_williami",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Miconia aeruginosa": {
+    "class_idx": 422,
+    "folder_name": "Miconia_aeruginosa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Miconia asperrima": {
+    "class_idx": 423,
+    "folder_name": "Miconia_asperrima",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Miconia salicifolia": {
+    "class_idx": 424,
+    "folder_name": "Miconia_salicifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Miconia trichocalyx": {
+    "class_idx": 425,
+    "folder_name": "Miconia_trichocalyx",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Micrathena lucasi": {
+    "class_idx": 426,
+    "folder_name": "Micrathena_lucasi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Micrurus mipartitus": {
+    "class_idx": 427,
+    "folder_name": "Micrurus_mipartitus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mimoniades nurscia": {
+    "class_idx": 428,
+    "folder_name": "Mimoniades_nurscia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mimus gilvus": {
+    "class_idx": 429,
+    "folder_name": "Mimus_gilvus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mionectes oleagineus": {
+    "class_idx": 430,
+    "folder_name": "Mionectes_oleagineus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mniotilta varia": {
+    "class_idx": 431,
+    "folder_name": "Mniotilta_varia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Molothrus bonariensis": {
+    "class_idx": 432,
+    "folder_name": "Molothrus_bonariensis",
+    "train_count": 69,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Momordica charantia": {
+    "class_idx": 433,
+    "folder_name": "Momordica_charantia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Momotus aequatorialis": {
+    "class_idx": 434,
+    "folder_name": "Momotus_aequatorialis",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Monochaetum multiflorum": {
+    "class_idx": 435,
+    "folder_name": "Monochaetum_multiflorum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Morella pubescens": {
+    "class_idx": 436,
+    "folder_name": "Morella_pubescens",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Morpho sulkowskyi": {
+    "class_idx": 437,
+    "folder_name": "Morpho_sulkowskyi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Muntingia calabura": {
+    "class_idx": 438,
+    "folder_name": "Muntingia_calabura",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Musa velutina": {
+    "class_idx": 439,
+    "folder_name": "Musa_velutina",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Mutisia clematis": {
+    "class_idx": 440,
+    "folder_name": "Mutisia_clematis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myadestes ralloides": {
+    "class_idx": 441,
+    "folder_name": "Myadestes_ralloides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myiarchus cephalotes": {
+    "class_idx": 442,
+    "folder_name": "Myiarchus_cephalotes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myioborus miniatus": {
+    "class_idx": 443,
+    "folder_name": "Myioborus_miniatus",
+    "train_count": 56,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Myioborus ornatus": {
+    "class_idx": 444,
+    "folder_name": "Myioborus_ornatus",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Myiodynastes hemichrysus": {
+    "class_idx": 445,
+    "folder_name": "Myiodynastes_hemichrysus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myiodynastes maculatus": {
+    "class_idx": 446,
+    "folder_name": "Myiodynastes_maculatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myiotheretes striaticollis": {
+    "class_idx": 447,
+    "folder_name": "Myiotheretes_striaticollis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myiothlypis coronata": {
+    "class_idx": 448,
+    "folder_name": "Myiothlypis_coronata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myiothlypis fulvicauda": {
+    "class_idx": 449,
+    "folder_name": "Myiothlypis_fulvicauda",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myiothlypis nigrocristata": {
+    "class_idx": 450,
+    "folder_name": "Myiothlypis_nigrocristata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Myiozetetes cayanensis": {
+    "class_idx": 451,
+    "folder_name": "Myiozetetes_cayanensis",
+    "train_count": 45,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Mythimna unipuncta": {
+    "class_idx": 452,
+    "folder_name": "Mythimna_unipuncta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Nasua olivacea": {
+    "class_idx": 453,
+    "folder_name": "Nasua_olivacea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Necyria bellona": {
+    "class_idx": 454,
+    "folder_name": "Necyria_bellona",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Nertera granadensis": {
+    "class_idx": 455,
+    "folder_name": "Nertera_granadensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Notiochelidon cyanoleuca": {
+    "class_idx": 456,
+    "folder_name": "Notiochelidon_cyanoleuca",
+    "train_count": 59,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Notiochelidon murina": {
+    "class_idx": 457,
+    "folder_name": "Notiochelidon_murina",
+    "train_count": 45,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Nyctibius griseus": {
+    "class_idx": 458,
+    "folder_name": "Nyctibius_griseus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Nycticorax nycticorax": {
+    "class_idx": 459,
+    "folder_name": "Nycticorax_nycticorax",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Nymphargus grandisonae": {
+    "class_idx": 460,
+    "folder_name": "Nymphargus_grandisonae",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ochthoeca cinnamomeiventris": {
+    "class_idx": 461,
+    "folder_name": "Ochthoeca_cinnamomeiventris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ochthoeca diadema": {
+    "class_idx": 462,
+    "folder_name": "Ochthoeca_diadema",
+    "train_count": 90,
+    "val_count": 11,
+    "test_count": 12
+  },
+  "Ochthoeca frontalis": {
+    "class_idx": 463,
+    "folder_name": "Ochthoeca_frontalis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ochthoeca fumicolor": {
+    "class_idx": 464,
+    "folder_name": "Ochthoeca_fumicolor",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ochthoeca rufipectoralis": {
+    "class_idx": 465,
+    "folder_name": "Ochthoeca_rufipectoralis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ocreatus underwoodii": {
+    "class_idx": 466,
+    "folder_name": "Ocreatus_underwoodii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Odontomachus erythrocephalus": {
+    "class_idx": 467,
+    "folder_name": "Odontomachus_erythrocephalus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ognorhynchus icterotis": {
+    "class_idx": 468,
+    "folder_name": "Ognorhynchus_icterotis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Oncidium cultratum": {
+    "class_idx": 469,
+    "folder_name": "Oncidium_cultratum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Oncidium lehmannii": {
+    "class_idx": 470,
+    "folder_name": "Oncidium_lehmannii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Oncidium luteopurpureum": {
+    "class_idx": 471,
+    "folder_name": "Oncidium_luteopurpureum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Oncidium ornithorhynchum": {
+    "class_idx": 472,
+    "folder_name": "Oncidium_ornithorhynchum",
+    "train_count": 49,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Opaon varicolor": {
+    "class_idx": 473,
+    "folder_name": "Opaon_varicolor",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Opsiphanes quiteria": {
+    "class_idx": 474,
+    "folder_name": "Opsiphanes_quiteria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Oressinoma typhla": {
+    "class_idx": 475,
+    "folder_name": "Oressinoma_typhla",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ortalis columbiana": {
+    "class_idx": 476,
+    "folder_name": "Ortalis_columbiana",
+    "train_count": 43,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Orthrosanthus chimboracensis": {
+    "class_idx": 477,
+    "folder_name": "Orthrosanthus_chimboracensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Oxypogon stuebelii": {
+    "class_idx": 478,
+    "folder_name": "Oxypogon_stuebelii",
+    "train_count": 44,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Oxyrhopus petolarius": {
+    "class_idx": 479,
+    "folder_name": "Oxyrhopus_petolarius",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Oxysternon conspicillatum": {
+    "class_idx": 480,
+    "folder_name": "Oxysternon_conspicillatum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pachyramphus polychopterus": {
+    "class_idx": 481,
+    "folder_name": "Pachyramphus_polychopterus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pachystachys lutea": {
+    "class_idx": 482,
+    "folder_name": "Pachystachys_lutea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Palicourea angustifolia": {
+    "class_idx": 483,
+    "folder_name": "Palicourea_angustifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Palicourea colorata": {
+    "class_idx": 484,
+    "folder_name": "Palicourea_colorata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pandion haliaetus": {
+    "class_idx": 485,
+    "folder_name": "Pandion_haliaetus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pantherodes pardalaria": {
+    "class_idx": 486,
+    "folder_name": "Pantherodes_pardalaria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Papilio polyxenes": {
+    "class_idx": 487,
+    "folder_name": "Papilio_polyxenes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Paramastax poecilosoma": {
+    "class_idx": 488,
+    "folder_name": "Paramastax_poecilosoma",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Paramastax rosenbergi": {
+    "class_idx": 489,
+    "folder_name": "Paramastax_rosenbergi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Parataygetis lineata": {
+    "class_idx": 490,
+    "folder_name": "Parataygetis_lineata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pareuptychia hesione": {
+    "class_idx": 491,
+    "folder_name": "Pareuptychia_hesione",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pareuptychia metaleuca": {
+    "class_idx": 492,
+    "folder_name": "Pareuptychia_metaleuca",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Parides erithalion": {
+    "class_idx": 493,
+    "folder_name": "Parides_erithalion",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora adenopoda": {
+    "class_idx": 494,
+    "folder_name": "Passiflora_adenopoda",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora alata": {
+    "class_idx": 495,
+    "folder_name": "Passiflora_alata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora alnifolia": {
+    "class_idx": 496,
+    "folder_name": "Passiflora_alnifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora antioquiensis": {
+    "class_idx": 497,
+    "folder_name": "Passiflora_antioquiensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora apoda": {
+    "class_idx": 498,
+    "folder_name": "Passiflora_apoda",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora capsularis": {
+    "class_idx": 499,
+    "folder_name": "Passiflora_capsularis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora cisnana": {
+    "class_idx": 500,
+    "folder_name": "Passiflora_cisnana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora coriacea": {
+    "class_idx": 501,
+    "folder_name": "Passiflora_coriacea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora cumbalensis": {
+    "class_idx": 502,
+    "folder_name": "Passiflora_cumbalensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora cuspidifolia": {
+    "class_idx": 503,
+    "folder_name": "Passiflora_cuspidifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora maliformis": {
+    "class_idx": 504,
+    "folder_name": "Passiflora_maliformis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora mixta": {
+    "class_idx": 505,
+    "folder_name": "Passiflora_mixta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora suberosa": {
+    "class_idx": 506,
+    "folder_name": "Passiflora_suberosa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora tribolophylla": {
+    "class_idx": 507,
+    "folder_name": "Passiflora_tribolophylla",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Passiflora vitifolia": {
+    "class_idx": 508,
+    "folder_name": "Passiflora_vitifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Patagioenas cayennensis": {
+    "class_idx": 509,
+    "folder_name": "Patagioenas_cayennensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Patagioenas fasciata": {
+    "class_idx": 510,
+    "folder_name": "Patagioenas_fasciata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pedaliodes peucestas": {
+    "class_idx": 511,
+    "folder_name": "Pedaliodes_peucestas",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pedaliodes phaedra": {
+    "class_idx": 512,
+    "folder_name": "Pedaliodes_phaedra",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pelecinus polyturator": {
+    "class_idx": 513,
+    "folder_name": "Pelecinus_polyturator",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Penelope montagnii": {
+    "class_idx": 514,
+    "folder_name": "Penelope_montagnii",
+    "train_count": 107,
+    "val_count": 13,
+    "test_count": 14
+  },
+  "Peperomia rotundifolia": {
+    "class_idx": 515,
+    "folder_name": "Peperomia_rotundifolia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Perisama bonplandii": {
+    "class_idx": 516,
+    "folder_name": "Perisama_bonplandii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Perisama humboldtii": {
+    "class_idx": 517,
+    "folder_name": "Perisama_humboldtii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Perisama lebasii": {
+    "class_idx": 518,
+    "folder_name": "Perisama_lebasii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Perisama oppelii": {
+    "class_idx": 519,
+    "folder_name": "Perisama_oppelii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Persicaria capitata": {
+    "class_idx": 520,
+    "folder_name": "Persicaria_capitata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Persicaria nepalensis": {
+    "class_idx": 521,
+    "folder_name": "Persicaria_nepalensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Phaethornis guy": {
+    "class_idx": 522,
+    "folder_name": "Phaethornis_guy",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Phalacrocorax brasilianus": {
+    "class_idx": 523,
+    "folder_name": "Phalacrocorax_brasilianus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pharomachrus auriceps": {
+    "class_idx": 524,
+    "folder_name": "Pharomachrus_auriceps",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pheucticus ludovicianus": {
+    "class_idx": 525,
+    "folder_name": "Pheucticus_ludovicianus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pheugopedius sclateri": {
+    "class_idx": 526,
+    "folder_name": "Pheugopedius_sclateri",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Phimosus infuscatus": {
+    "class_idx": 527,
+    "folder_name": "Phimosus_infuscatus",
+    "train_count": 88,
+    "val_count": 11,
+    "test_count": 11
+  },
+  "Phobetron hipparchia": {
+    "class_idx": 528,
+    "folder_name": "Phobetron_hipparchia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pholidobolus celsiae": {
+    "class_idx": 529,
+    "folder_name": "Pholidobolus_celsiae",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Phoneutria depilata": {
+    "class_idx": 530,
+    "folder_name": "Phoneutria_depilata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Phytolacca bogotensis": {
+    "class_idx": 531,
+    "folder_name": "Phytolacca_bogotensis",
+    "train_count": 41,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Phytolacca rivinoides": {
+    "class_idx": 532,
+    "folder_name": "Phytolacca_rivinoides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Phytolacca rugosa": {
+    "class_idx": 533,
+    "folder_name": "Phytolacca_rugosa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Piaya cayana": {
+    "class_idx": 534,
+    "folder_name": "Piaya_cayana",
+    "train_count": 46,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Picumnus granadensis": {
+    "class_idx": 535,
+    "folder_name": "Picumnus_granadensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pionus chalcopterus": {
+    "class_idx": 536,
+    "folder_name": "Pionus_chalcopterus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pionus menstruus": {
+    "class_idx": 537,
+    "folder_name": "Pionus_menstruus",
+    "train_count": 71,
+    "val_count": 8,
+    "test_count": 10
+  },
+  "Piper lanceifolium": {
+    "class_idx": 538,
+    "folder_name": "Piper_lanceifolium",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Piper peltatum": {
+    "class_idx": 539,
+    "folder_name": "Piper_peltatum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pipra erythrocephala": {
+    "class_idx": 540,
+    "folder_name": "Pipra_erythrocephala",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pipreola arcuata": {
+    "class_idx": 541,
+    "folder_name": "Pipreola_arcuata",
+    "train_count": 74,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Pipreola jucunda": {
+    "class_idx": 542,
+    "folder_name": "Pipreola_jucunda",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pipreola riefferii": {
+    "class_idx": 543,
+    "folder_name": "Pipreola_riefferii",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Piranga flava": {
+    "class_idx": 544,
+    "folder_name": "Piranga_flava",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Piranga rubra": {
+    "class_idx": 545,
+    "folder_name": "Piranga_rubra",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Pitangus sulphuratus": {
+    "class_idx": 546,
+    "folder_name": "Pitangus_sulphuratus",
+    "train_count": 87,
+    "val_count": 10,
+    "test_count": 12
+  },
+  "Pleroma urvilleanum": {
+    "class_idx": 547,
+    "folder_name": "Pleroma_urvilleanum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pleurothallis cordata": {
+    "class_idx": 548,
+    "folder_name": "Pleurothallis_cordata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pleurothallis matudana": {
+    "class_idx": 549,
+    "folder_name": "Pleurothallis_matudana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pleurothallis phalangifera": {
+    "class_idx": 550,
+    "folder_name": "Pleurothallis_phalangifera",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pleurothallis pulvinaris": {
+    "class_idx": 551,
+    "folder_name": "Pleurothallis_pulvinaris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pleurothallis tetragona": {
+    "class_idx": 552,
+    "folder_name": "Pleurothallis_tetragona",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Podotricha judith": {
+    "class_idx": 553,
+    "folder_name": "Podotricha_judith",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Poecilotriccus ruficeps": {
+    "class_idx": 554,
+    "folder_name": "Poecilotriccus_ruficeps",
+    "train_count": 91,
+    "val_count": 11,
+    "test_count": 12
+  },
+  "Polistes carnifex": {
+    "class_idx": 555,
+    "folder_name": "Polistes_carnifex",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Polistes erythrocephalus": {
+    "class_idx": 556,
+    "folder_name": "Polistes_erythrocephalus",
+    "train_count": 75,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Ponthieva fertilis": {
+    "class_idx": 557,
+    "folder_name": "Ponthieva_fertilis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Porphyrio martinica": {
+    "class_idx": 558,
+    "folder_name": "Porphyrio_martinica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Porphyrobaphe iris": {
+    "class_idx": 559,
+    "folder_name": "Porphyrobaphe_iris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Potentilla indica": {
+    "class_idx": 560,
+    "folder_name": "Potentilla_indica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Potos flavus": {
+    "class_idx": 561,
+    "folder_name": "Potos_flavus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pristimantis achatinus": {
+    "class_idx": 562,
+    "folder_name": "Pristimantis_achatinus",
+    "train_count": 49,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Pristimantis thectopternus": {
+    "class_idx": 563,
+    "folder_name": "Pristimantis_thectopternus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Prosthechea hartwegii": {
+    "class_idx": 564,
+    "folder_name": "Prosthechea_hartwegii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Psalidognathus modestus": {
+    "class_idx": 565,
+    "folder_name": "Psalidognathus_modestus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Psarocolius angustifrons": {
+    "class_idx": 566,
+    "folder_name": "Psarocolius_angustifrons",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pseudocolaptes boissonneautii": {
+    "class_idx": 567,
+    "folder_name": "Pseudocolaptes_boissonneautii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pseudohaetera hypaesia": {
+    "class_idx": 568,
+    "folder_name": "Pseudohaetera_hypaesia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pseudosphinx tetrio": {
+    "class_idx": 569,
+    "folder_name": "Pseudosphinx_tetrio",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pseudovates brevicornis": {
+    "class_idx": 570,
+    "folder_name": "Pseudovates_brevicornis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pteroglossus torquatus": {
+    "class_idx": 571,
+    "folder_name": "Pteroglossus_torquatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pterophanes cyanopterus": {
+    "class_idx": 572,
+    "folder_name": "Pterophanes_cyanopterus",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Pterostemma antioquiense": {
+    "class_idx": 573,
+    "folder_name": "Pterostemma_antioquiense",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pulsatrix perspicillata": {
+    "class_idx": 574,
+    "folder_name": "Pulsatrix_perspicillata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pycnopalpa bicordata": {
+    "class_idx": 575,
+    "folder_name": "Pycnopalpa_bicordata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Pyrocephalus rubinus": {
+    "class_idx": 576,
+    "folder_name": "Pyrocephalus_rubinus",
+    "train_count": 62,
+    "val_count": 7,
+    "test_count": 9
+  },
+  "Pyrrhomyias cinnamomeus": {
+    "class_idx": 577,
+    "folder_name": "Pyrrhomyias_cinnamomeus",
+    "train_count": 105,
+    "val_count": 13,
+    "test_count": 14
+  },
+  "Pythonides jovianus": {
+    "class_idx": 578,
+    "folder_name": "Pythonides_jovianus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Quercus humboldtii": {
+    "class_idx": 579,
+    "folder_name": "Quercus_humboldtii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Quiscalus lugubris": {
+    "class_idx": 580,
+    "folder_name": "Quiscalus_lugubris",
+    "train_count": 45,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Quiscalus mexicanus": {
+    "class_idx": 581,
+    "folder_name": "Quiscalus_mexicanus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Racinaea tetrantha": {
+    "class_idx": 582,
+    "folder_name": "Racinaea_tetrantha",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ramphastos citreolaemus": {
+    "class_idx": 583,
+    "folder_name": "Ramphastos_citreolaemus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ramphocelus dimidiatus": {
+    "class_idx": 584,
+    "folder_name": "Ramphocelus_dimidiatus",
+    "train_count": 57,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Ramphocelus flammigerus": {
+    "class_idx": 585,
+    "folder_name": "Ramphocelus_flammigerus",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Ramphomicron microrhynchum": {
+    "class_idx": 586,
+    "folder_name": "Ramphomicron_microrhynchum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Raphiocera ornata": {
+    "class_idx": 587,
+    "folder_name": "Raphiocera_ornata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Renealmia cernua": {
+    "class_idx": 588,
+    "folder_name": "Renealmia_cernua",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Retrophyllum rospigliosii": {
+    "class_idx": 589,
+    "folder_name": "Retrophyllum_rospigliosii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rhetus arcius": {
+    "class_idx": 590,
+    "folder_name": "Rhetus_arcius",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rhetus dysonii": {
+    "class_idx": 591,
+    "folder_name": "Rhetus_dysonii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rhinella horribilis": {
+    "class_idx": 592,
+    "folder_name": "Rhinella_horribilis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rhipsalis baccifera": {
+    "class_idx": 593,
+    "folder_name": "Rhipsalis_baccifera",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rhodobaenus augustinus": {
+    "class_idx": 594,
+    "folder_name": "Rhodobaenus_augustinus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rhytidochrota risaraldae": {
+    "class_idx": 595,
+    "folder_name": "Rhytidochrota_risaraldae",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Ricinus communis": {
+    "class_idx": 596,
+    "folder_name": "Ricinus_communis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rodriguezia lanceolata": {
+    "class_idx": 597,
+    "folder_name": "Rodriguezia_lanceolata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rubus nubigenus": {
+    "class_idx": 598,
+    "folder_name": "Rubus_nubigenus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rupicola peruvianus": {
+    "class_idx": 599,
+    "folder_name": "Rupicola_peruvianus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Rupornis magnirostris": {
+    "class_idx": 600,
+    "folder_name": "Rupornis_magnirostris",
+    "train_count": 101,
+    "val_count": 12,
+    "test_count": 14
+  },
+  "Saguinus leucopus": {
+    "class_idx": 601,
+    "folder_name": "Saguinus_leucopus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Saltator atripennis": {
+    "class_idx": 602,
+    "folder_name": "Saltator_atripennis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Saltator cinctus": {
+    "class_idx": 603,
+    "folder_name": "Saltator_cinctus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Saltator striatipectus": {
+    "class_idx": 604,
+    "folder_name": "Saltator_striatipectus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Salvia scutellarioides": {
+    "class_idx": 605,
+    "folder_name": "Salvia_scutellarioides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Saucerottia saucerottei": {
+    "class_idx": 606,
+    "folder_name": "Saucerottia_saucerottei",
+    "train_count": 75,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Sayornis nigricans": {
+    "class_idx": 607,
+    "folder_name": "Sayornis_nigricans",
+    "train_count": 62,
+    "val_count": 7,
+    "test_count": 9
+  },
+  "Scaphyglottis aurea": {
+    "class_idx": 608,
+    "folder_name": "Scaphyglottis_aurea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Schistes albogularis": {
+    "class_idx": 609,
+    "folder_name": "Schistes_albogularis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sciurus granatensis": {
+    "class_idx": 610,
+    "folder_name": "Sciurus_granatensis",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Sciurus pucheranii": {
+    "class_idx": 611,
+    "folder_name": "Sciurus_pucheranii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sechium edule": {
+    "class_idx": 612,
+    "folder_name": "Sechium_edule",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Senecio niveoaureus": {
+    "class_idx": 613,
+    "folder_name": "Senecio_niveoaureus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sericoptera mahometaria": {
+    "class_idx": 614,
+    "folder_name": "Sericoptera_mahometaria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sericossypha albocristata": {
+    "class_idx": 615,
+    "folder_name": "Sericossypha_albocristata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Serpocaulon levigatum": {
+    "class_idx": 616,
+    "folder_name": "Serpocaulon_levigatum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Serpophaga cinerea": {
+    "class_idx": 617,
+    "folder_name": "Serpophaga_cinerea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Setophaga aestiva": {
+    "class_idx": 618,
+    "folder_name": "Setophaga_aestiva",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Setophaga castanea": {
+    "class_idx": 619,
+    "folder_name": "Setophaga_castanea",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Setophaga fusca": {
+    "class_idx": 620,
+    "folder_name": "Setophaga_fusca",
+    "train_count": 118,
+    "val_count": 14,
+    "test_count": 16
+  },
+  "Setophaga pitiayumi": {
+    "class_idx": 621,
+    "folder_name": "Setophaga_pitiayumi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sibovia prodigiosa": {
+    "class_idx": 622,
+    "folder_name": "Sibovia_prodigiosa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sicalis flaveola": {
+    "class_idx": 623,
+    "folder_name": "Sicalis_flaveola",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Siproeta epaphus": {
+    "class_idx": 624,
+    "folder_name": "Siproeta_epaphus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Siproeta stelenes": {
+    "class_idx": 625,
+    "folder_name": "Siproeta_stelenes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Solanum quitoense": {
+    "class_idx": 626,
+    "folder_name": "Solanum_quitoense",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Solanum vestissimum": {
+    "class_idx": 627,
+    "folder_name": "Solanum_vestissimum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sphacelodes vulneraria": {
+    "class_idx": 628,
+    "folder_name": "Sphacelodes_vulneraria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sphenopsis frontalis": {
+    "class_idx": 629,
+    "folder_name": "Sphenopsis_frontalis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sphenopsis melanotis": {
+    "class_idx": 630,
+    "folder_name": "Sphenopsis_melanotis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Spilotes pullatus": {
+    "class_idx": 631,
+    "folder_name": "Spilotes_pullatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Spinus psaltria": {
+    "class_idx": 632,
+    "folder_name": "Spinus_psaltria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Spinus xanthogastrus": {
+    "class_idx": 633,
+    "folder_name": "Spinus_xanthogastrus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Spizaetus tyrannus": {
+    "class_idx": 634,
+    "folder_name": "Spizaetus_tyrannus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sporathraupis cyanocephala": {
+    "class_idx": 635,
+    "folder_name": "Sporathraupis_cyanocephala",
+    "train_count": 85,
+    "val_count": 10,
+    "test_count": 12
+  },
+  "Sporophila crassirostris": {
+    "class_idx": 636,
+    "folder_name": "Sporophila_crassirostris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sporophila intermedia": {
+    "class_idx": 637,
+    "folder_name": "Sporophila_intermedia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sporophila luctuosa": {
+    "class_idx": 638,
+    "folder_name": "Sporophila_luctuosa",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sporophila minuta": {
+    "class_idx": 639,
+    "folder_name": "Sporophila_minuta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sporophila nigricollis": {
+    "class_idx": 640,
+    "folder_name": "Sporophila_nigricollis",
+    "train_count": 44,
+    "val_count": 5,
+    "test_count": 6
+  },
+  "Stagmatoptera septentrionalis": {
+    "class_idx": 641,
+    "folder_name": "Stagmatoptera_septentrionalis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Stelgidopteryx ruficollis": {
+    "class_idx": 642,
+    "folder_name": "Stelgidopteryx_ruficollis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Stilpnia cyanicollis": {
+    "class_idx": 643,
+    "folder_name": "Stilpnia_cyanicollis",
+    "train_count": 60,
+    "val_count": 7,
+    "test_count": 9
+  },
+  "Stilpnia heinei": {
+    "class_idx": 644,
+    "folder_name": "Stilpnia_heinei",
+    "train_count": 63,
+    "val_count": 7,
+    "test_count": 9
+  },
+  "Stilpnia vitriolina": {
+    "class_idx": 645,
+    "folder_name": "Stilpnia_vitriolina",
+    "train_count": 117,
+    "val_count": 14,
+    "test_count": 16
+  },
+  "Streptoprocne zonaris": {
+    "class_idx": 646,
+    "folder_name": "Streptoprocne_zonaris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Streptosolen jamesonii": {
+    "class_idx": 647,
+    "folder_name": "Streptosolen_jamesonii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Sylvilagus andinus": {
+    "class_idx": 648,
+    "folder_name": "Sylvilagus_andinus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Synallaxis azarae": {
+    "class_idx": 649,
+    "folder_name": "Synallaxis_azarae",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Synoeca septentrionalis": {
+    "class_idx": 650,
+    "folder_name": "Synoeca_septentrionalis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tachyphonus rufus": {
+    "class_idx": 651,
+    "folder_name": "Tachyphonus_rufus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tangara arthus": {
+    "class_idx": 652,
+    "folder_name": "Tangara_arthus",
+    "train_count": 48,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Tangara gyrola": {
+    "class_idx": 653,
+    "folder_name": "Tangara_gyrola",
+    "train_count": 82,
+    "val_count": 10,
+    "test_count": 11
+  },
+  "Tangara icterocephala": {
+    "class_idx": 654,
+    "folder_name": "Tangara_icterocephala",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tangara labradorides": {
+    "class_idx": 655,
+    "folder_name": "Tangara_labradorides",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tangara nigroviridis": {
+    "class_idx": 656,
+    "folder_name": "Tangara_nigroviridis",
+    "train_count": 44,
+    "val_count": 5,
+    "test_count": 7
+  },
+  "Tangara vassorii": {
+    "class_idx": 657,
+    "folder_name": "Tangara_vassorii",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tangara xanthocephala": {
+    "class_idx": 658,
+    "folder_name": "Tangara_xanthocephala",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tantilla melanocephala": {
+    "class_idx": 659,
+    "folder_name": "Tantilla_melanocephala",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tegosa anieta": {
+    "class_idx": 660,
+    "folder_name": "Tegosa_anieta",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tersina viridis": {
+    "class_idx": 661,
+    "folder_name": "Tersina_viridis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tetragonisca angustula": {
+    "class_idx": 662,
+    "folder_name": "Tetragonisca_angustula",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Thalurania colombica": {
+    "class_idx": 663,
+    "folder_name": "Thalurania_colombica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Thamnophilus multistriatus": {
+    "class_idx": 664,
+    "folder_name": "Thamnophilus_multistriatus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Theobroma cacao": {
+    "class_idx": 665,
+    "folder_name": "Theobroma_cacao",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Thlypopsis superciliaris": {
+    "class_idx": 666,
+    "folder_name": "Thlypopsis_superciliaris",
+    "train_count": 48,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Thraupis episcopus": {
+    "class_idx": 667,
+    "folder_name": "Thraupis_episcopus",
+    "train_count": 103,
+    "val_count": 12,
+    "test_count": 14
+  },
+  "Thraupis palmarum": {
+    "class_idx": 668,
+    "folder_name": "Thraupis_palmarum",
+    "train_count": 77,
+    "val_count": 9,
+    "test_count": 11
+  },
+  "Thunbergia alata": {
+    "class_idx": 669,
+    "folder_name": "Thunbergia_alata",
+    "train_count": 73,
+    "val_count": 9,
+    "test_count": 10
+  },
+  "Thysania zenobia": {
+    "class_idx": 670,
+    "folder_name": "Thysania_zenobia",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tiaris olivaceus": {
+    "class_idx": 671,
+    "folder_name": "Tiaris_olivaceus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tigrisoma lineatum": {
+    "class_idx": 672,
+    "folder_name": "Tigrisoma_lineatum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tillandsia biflora": {
+    "class_idx": 673,
+    "folder_name": "Tillandsia_biflora",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tillandsia complanata": {
+    "class_idx": 674,
+    "folder_name": "Tillandsia_complanata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tillandsia fendleri": {
+    "class_idx": 675,
+    "folder_name": "Tillandsia_fendleri",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tithorea tarricina": {
+    "class_idx": 676,
+    "folder_name": "Tithorea_tarricina",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tityra semifasciata": {
+    "class_idx": 677,
+    "folder_name": "Tityra_semifasciata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tityus forcipula": {
+    "class_idx": 678,
+    "folder_name": "Tityus_forcipula",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Todirostrum cinereum": {
+    "class_idx": 679,
+    "folder_name": "Todirostrum_cinereum",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tournefortiopsis crispiflora": {
+    "class_idx": 680,
+    "folder_name": "Tournefortiopsis_crispiflora",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Trichonephila clavipes": {
+    "class_idx": 681,
+    "folder_name": "Trichonephila_clavipes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Trifolium pratense": {
+    "class_idx": 682,
+    "folder_name": "Trifolium_pratense",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Trifolium repens": {
+    "class_idx": 683,
+    "folder_name": "Trifolium_repens",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Trigona fulviventris": {
+    "class_idx": 684,
+    "folder_name": "Trigona_fulviventris",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tringa solitaria": {
+    "class_idx": 685,
+    "folder_name": "Tringa_solitaria",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Troglodytes musculus": {
+    "class_idx": 686,
+    "folder_name": "Troglodytes_musculus",
+    "train_count": 49,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Troglodytes solstitialis": {
+    "class_idx": 687,
+    "folder_name": "Troglodytes_solstitialis",
+    "train_count": 64,
+    "val_count": 8,
+    "test_count": 8
+  },
+  "Trogon personatus": {
+    "class_idx": 688,
+    "folder_name": "Trogon_personatus",
+    "train_count": 67,
+    "val_count": 8,
+    "test_count": 9
+  },
+  "Turdus fuscater": {
+    "class_idx": 689,
+    "folder_name": "Turdus_fuscater",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Turdus grayi": {
+    "class_idx": 690,
+    "folder_name": "Turdus_grayi",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Turdus ignobilis": {
+    "class_idx": 691,
+    "folder_name": "Turdus_ignobilis",
+    "train_count": 80,
+    "val_count": 10,
+    "test_count": 11
+  },
+  "Turnera subulata": {
+    "class_idx": 692,
+    "folder_name": "Turnera_subulata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Tyrannus melancholicus": {
+    "class_idx": 693,
+    "folder_name": "Tyrannus_melancholicus",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Tyrannus savana": {
+    "class_idx": 694,
+    "folder_name": "Tyrannus_savana",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Urania fulgens": {
+    "class_idx": 695,
+    "folder_name": "Urania_fulgens",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Uranomitra franciae": {
+    "class_idx": 696,
+    "folder_name": "Uranomitra_franciae",
+    "train_count": 52,
+    "val_count": 6,
+    "test_count": 7
+  },
+  "Uropsalis lyra": {
+    "class_idx": 697,
+    "folder_name": "Uropsalis_lyra",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Urosticte benjamini": {
+    "class_idx": 698,
+    "folder_name": "Urosticte_benjamini",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Vallea stipularis": {
+    "class_idx": 699,
+    "folder_name": "Vallea_stipularis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Vanellus chilensis": {
+    "class_idx": 700,
+    "folder_name": "Vanellus_chilensis",
+    "train_count": 66,
+    "val_count": 8,
+    "test_count": 9
+  },
+  "Vanessa braziliensis": {
+    "class_idx": 701,
+    "folder_name": "Vanessa_braziliensis",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Vanessa carye": {
+    "class_idx": 702,
+    "folder_name": "Vanessa_carye",
+    "train_count": 66,
+    "val_count": 8,
+    "test_count": 9
+  },
+  "Veniliornis dignus": {
+    "class_idx": 703,
+    "folder_name": "Veniliornis_dignus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Vireo leucophrys": {
+    "class_idx": 704,
+    "folder_name": "Vireo_leucophrys",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Volatinia jacarina": {
+    "class_idx": 705,
+    "folder_name": "Volatinia_jacarina",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Voyria tenella": {
+    "class_idx": 706,
+    "folder_name": "Voyria_tenella",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Vultur gryphus": {
+    "class_idx": 707,
+    "folder_name": "Vultur_gryphus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Wercklea ferox": {
+    "class_idx": 708,
+    "folder_name": "Wercklea_ferox",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Xenops rutilans": {
+    "class_idx": 709,
+    "folder_name": "Xenops_rutilans",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Xiphocolaptes promeropirhynchus": {
+    "class_idx": 710,
+    "folder_name": "Xiphocolaptes_promeropirhynchus",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Xylocopa fimbriata": {
+    "class_idx": 711,
+    "folder_name": "Xylocopa_fimbriata",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Zantedeschia aethiopica": {
+    "class_idx": 712,
+    "folder_name": "Zantedeschia_aethiopica",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Zelus longipes": {
+    "class_idx": 713,
+    "folder_name": "Zelus_longipes",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Zenaida auriculata": {
+    "class_idx": 714,
+    "folder_name": "Zenaida_auriculata",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  },
+  "Zentrygon frenata": {
+    "class_idx": 715,
+    "folder_name": "Zentrygon_frenata",
+    "train_count": 57,
+    "val_count": 7,
+    "test_count": 8
+  },
+  "Zimmerius chrysops": {
+    "class_idx": 716,
+    "folder_name": "Zimmerius_chrysops",
+    "train_count": 40,
+    "val_count": 5,
+    "test_count": 5
+  },
+  "Zingiber spectabile": {
+    "class_idx": 717,
+    "folder_name": "Zingiber_spectabile",
+    "train_count": 65,
+    "val_count": 8,
+    "test_count": 9
+  },
+  "Zonotrichia capensis": {
+    "class_idx": 718,
+    "folder_name": "Zonotrichia_capensis",
+    "train_count": 120,
+    "val_count": 15,
+    "test_count": 15
+  }
+}

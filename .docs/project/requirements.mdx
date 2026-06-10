@@ -1,0 +1,374 @@
+---
+title: "Requerimientos"
+description: "Requerimientos funcionales y tecnicos del proyecto."
+icon: "clipboard-list"
+---
+
+## 1. Objetivo General
+
+Desarrollar una plataforma digital integral que facilite la identificación, catalogación y aprovechamiento sostenible de la biodiversidad de Caldas, conectando investigadores, emprendedores, comunidades locales y entidades gubernamentales mediante un sistema de reconocimiento automático de especies con visión por computadora, RAG con base de conocimiento botánico/zoológico, y generación de oportunidades de biocomercio alineadas con el Convenio de Diversidad Biológica y la normativa colombiana (Decreto 3016 de 2013).
+
+## 2. Objetivos Específicos
+
+* Implementar un sistema de identificación automática de especies mediante visión por computadora y deep learning que permita a usuarios subir fotografías de flora y fauna de Caldas, obteniendo clasificación taxonómica, información ecológica, usos tradicionales y potencial económico, con precisión superior al 85% para 300+ especies registradas.  
+* Crear un marketplace de biocomercio que conecte productores de ingredientes naturales, artesanías y ecoturismo con compradores nacionales e internacionales, integrando trazabilidad de origen, certificaciones de sostenibilidad, y sistema de pagos, cumpliendo con protocolos de acceso a recursos genéticos (ABS).  
+* Desarrollar un asistente de IA generativa que guíe a emprendedores en la creación de planes de negocio de biocomercio, generando análisis de mercado, estrategias de comercialización, formulación de productos naturales, y propuestas de proyectos de bioprospección con base en la biodiversidad local.
+
+## 3. Alcance del Proyecto
+
+### In-Scope
+
+* [ ] Catálogo digital de biodiversidad de Caldas (flora, fauna, hongos)  
+* [ ] Sistema de identificación de especies con CNN  
+* [ ] Registro de usuarios (Investigador, Emprendedor, Comunidad, Comprador)  
+* [ ] Marketplace de productos de biocomercio  
+* [ ] Gestión de permisos de acceso a recursos genéticos  
+* [X] Trazabilidad de productos desde origen  
+* [ ] Sistema de certificaciones de sostenibilidad  
+* [ ] Pasarela de pagos integrada (PSE, tarjetas)  
+* [ ] RAG con base de conocimiento de 1000+ especies  
+* [ ] Chatbot de asesoría en biocomercio  
+* [ ] IA generativa para planes de negocio  
+* [ ] Mapas de distribución de especies  
+* [ ] Foros comunitarios y networking  
+* [X] Dashboard de analíticas para emprendedores  
+* [ ] Aplicación móvil para identificación en campo
+
+### Out-of-Scope
+
+* Gestión logística de envíos  
+* Certificaciones fitosanitarias (se registran, no se emiten)  
+* Análisis de laboratorio de muestras  
+* Gestión financiera contable completa  
+* Integración con bancos de germoplasma
+
+## 4. Actores Intervinientes
+
+* **Investigadores:** Registran especies, validan identificaciones.  
+* **Emprendedores:** Crean productos, venden en marketplace.  
+* **Comunidades locales:** Comparten conocimiento tradicional, producen.  
+* **Compradores:** Buscan productos sostenibles.  
+* **Autoridades ambientales:** Verifican permisos y sostenibilidad.  
+* **Administrador:** Gestiona usuarios, modera contenido.
+
+## 5. Entregables Completos
+
+### Fase 1: Análisis y Diseño (Semanas 1-2)
+
+* [X] Documento de Visión del ecosistema de biocomercio  
+* [X] Documento de Arquitectura con microservicios  
+* [X] Modelo ER de especies, productos, transacciones  
+* [ ] Wireframes de marketplace y app móvil  
+* [ ] Product Backlog priorizado  
+* [X] Análisis de normativa de acceso a recursos genéticos
+
+### Fase 2: Infraestructura (Semanas 3-4)
+
+* [X] Backend .NET 8: Clean Architecture  
+* [X] Base de datos PostgreSQL (especies) y SQL Server (transacciones)  
+* [X] Frontend Next.js: arquitectura de componentes  
+* [X] Configuración Docker multi-contenedor  
+* [X] Repositorio Git con CI/CD  
+* [ ] Integración con pasarela de pagos (sandbox)
+
+### Fase 3: Catálogo de Biodiversidad (Semanas 5-7)
+
+* [X] Backend: CRUD de especies con taxonomía completa  
+* [X] Frontend: catálogo con búsqueda avanzada  
+* [X] Sistema de carga masiva de especies (CSV)  
+* [X] Mapas de distribución con Leaflet  
+* [X] Galería de imágenes con zoom  
+* [X] Fichas técnicas de especies  
+* [X] Gestión de usuarios y roles
+
+### Fase 4: Visión por Computadora (Semanas 8-10)
+
+* [X] Dataset de 10,000+ imágenes de 300 especies  
+* [X] Modelo CNN (ResNet50 o EfficientNet) entrenado  
+* [X] API de clasificación con FastAPI  
+* [X] Integración en app web y móvil  
+* [X] Sistema de validación por investigadores  
+* [X] Dashboard de métricas del modelo (accuracy, confusion matrix)  
+* [X] Fine-tuning con nuevas imágenes validadas
+
+### Fase 5: Marketplace (Semanas 11-12)
+
+* [X] Backend: gestión de productos y ventas  
+* [X] Frontend: catálogo de productos con filtros  
+* [X] Carrito de compras y checkout  
+* [ ] Integración con pasarela de pagos  
+* [X] Sistema de calificaciones y reseñas  
+* [X] Dashboard de vendedores con analíticas  
+* [X] Trazabilidad de productos con blockchain (opcional)
+
+### Fase 6: IA Generativa y RAG (Semanas 13-14)
+
+* [ ] RAG con base de conocimiento de 1000+ especies  
+* [ ] Chatbot con LangChain para asesoría  
+* [ ] Generador de planes de negocio con GPT-4  
+* [ ] Análisis de mercado automático  
+* [ ] Recomendaciones de productos basadas en biodiversidad local  
+* [ ] Integración en plataforma web
+
+### Fase 7: Aplicación Móvil y Testing (Semanas 15-16)
+
+* [X] App React Native para identificación de especies  
+* [X] Funcionalidad offline con base de datos local  
+* [X] Cámara integrada para captura de imágenes  
+* [X] GPS para georreferenciación  
+* [X] Pruebas unitarias backend (>70%)  
+* [ ] Pruebas de integración  
+* [X] Manual de Usuario completo  
+* [X] Manual de Instalación y Configuración  
+* [ ] Video demostración y presentación final
+
+## 6. Plan de Ejecución (16 semanas)
+
+### Sprint 0 (Semanas 1-2): Fundamentos
+
+* [ ] Investigación de biodiversidad de Caldas  
+* [ ] Diseño de taxonomía y catálogo  
+* [ ] Arquitectura de microservicios  
+* [ ] Configuración de entorno
+
+### Sprint 1 (Semanas 3-4): Autenticación y Base
+
+* [ ] Sistema de autenticación JWT + 2FA  
+* [X] Gestión de usuarios y roles  
+* [ ] Backend: CRUD de especies  
+* [ ] Frontend: catálogo básico
+
+### Sprint 2 (Semanas 5-6): Catálogo Avanzado
+
+* [ ] Búsqueda avanzada de especies  
+* [ ] Mapas de distribución  
+* [ ] Fichas técnicas completas  
+* [ ] Carga masiva de datos
+
+### Sprint 3 (Semanas 7-8): Visión por Computadora
+
+* [ ] Recolección de dataset de imágenes  
+* [ ] Entrenamiento de modelo CNN  
+* [ ] API de clasificación  
+* [ ] Testing de precisión
+
+### Sprint 4 (Semanas 9-10): Marketplace Core
+
+* [ ] CRUD de productos  
+* [X] Carrito de compras  
+* [ ] Integración con pasarela de pagos  
+* [X] Dashboard de vendedores
+
+### Sprint 5 (Semanas 11-12): Trazabilidad y Certificaciones
+
+* [ ] Sistema de permisos de acceso a recursos  
+* [X] Trazabilidad de productos  
+* [X] Certificaciones de sostenibilidad  
+* [ ] Calificaciones y reseñas
+
+### Sprint 6 (Semanas 13-14): IA Generativa
+
+* [ ] RAG con base de conocimiento  
+* [ ] Chatbot de asesoría  
+* [ ] Generador de planes de negocio  
+* [ ] Análisis de mercado automático
+
+### Sprint 7 (Semanas 15-16): Móvil y Despliegue
+
+* [ ] Desarrollo de app React Native  
+* [ ] Identificación offline  
+* [ ] Testing completo  
+* [ ] Documentación y presentación
+
+## 7. Stack Tecnológico
+
+**Backend**
+
+* .NET 8 con Clean Architecture  
+* MediatR para CQRS  
+* Entity Framework Core  
+* FastAPI (Python) para microservicio de IA  
+* JWT + TOTP para seguridad  
+* Serilog  
+* Hangfire para jobs
+
+**Frontend Web**
+
+* Next.js 14 con TypeScript  
+* Shadcn/ui y Tailwind CSS  
+* React Query y Zustand  
+* Leaflet para mapas  
+* React Image Gallery  
+* Stripe/PSE SDK para pagos
+
+**Frontend Móvil**
+
+* React Native con TypeScript  
+* Expo  
+* React Native Vision Camera  
+* AsyncStorage para offline  
+* React Navigation
+
+**Base de Datos**
+
+* PostgreSQL para catálogo de especies  
+* SQL Server para transacciones  
+* MongoDB para logs (opcional)  
+* Redis para caché
+
+**IA y ML**
+
+* Python 3.11 con FastAPI  
+* TensorFlow/PyTorch para CNN  
+* ResNet50 o EfficientNet  
+* LangChain para RAG  
+* OpenAI API para generación de planes  
+* ChromaDB para embeddings  
+* OpenCV para procesamiento de imágenes
+
+**DevOps**
+
+* Docker y Docker Compose  
+* GitHub Actions  
+* Nginx  
+* Let's Encrypt
+
+## 8. Documentación Base
+
+**Normativas:**
+
+* Decreto 3016 de 2013 (Reglamentación Sistema General de Regalías)  
+* Decisión 391 de 1996 (Régimen Común sobre Acceso a Recursos Genéticos)  
+* Protocolo de Nagoya sobre ABS  
+* Resolución 1348 de 2014 (Permisos de recolección)
+
+**Recursos Técnicos:**
+
+* [iNaturalist Dataset](https://www.inaturalist.org/)  
+* [TensorFlow Image Classification](https://www.tensorflow.org/tutorials/images/classification)  
+* [LangChain Documentation](https://python.langchain.com/)  
+* [Stripe API Docs](https://stripe.com/docs/api)  
+* [React Native Camera](https://react-native-vision-camera.com/)
+
+**Investigación:**
+
+* "Deep Learning for Plant Species Identification" (Ecological Informatics)  
+* "Biodiversity Informatics and the Plant Conservation Baseline" (Trends in Plant Science)
+
+## 9. Productos Resultantes
+
+* [X] Plataforma Web Completa: Catálogo + Marketplace  
+* [X] Modelo de Clasificación: CNN para 300+ especies  
+* [X] App Móvil: Identificación en campo con offline  
+* [ ] Chatbot de Biocomercio: RAG con 1000+ especies  
+* [ ] Generador de Planes de Negocio: IA generativa  
+* [X] API REST: Documentada para integraciones  
+* [X] Sistema Dockerizado: Multi-contenedor  
+* [ ] 6 Manuales: Usuario, instalación, mantenimiento, API, IA, marketplace
+
+## 10. Lista de Chequeo de Entregables
+
+### Documentación
+
+* [X] Documento de Visión completo  
+* [X] Documento de Arquitectura de microservicios  
+* [X] Modelo ER completo  
+* [X] Manual de Usuario (50+ páginas)  
+* [X] Manual de Instalación y Configuración  
+* [X] Manual de Mantenimiento de modelos IA  
+* [X] Guía de API Swagger/OpenAPI
+
+### Backend
+
+* [X] Clean Architecture implementada  
+* [X] CQRS con MediatR  
+* [X] JWT + 2FA funcional  
+* [X] Gestión de roles (6+ roles)  
+* [X] CRUD de especies y productos  
+* [ ] Integración con pasarela de pagos  
+* [X] API de clasificación de especies  
+* [X] Pruebas unitarias >70%
+
+### Frontend Web
+
+* [X] Catálogo de biodiversidad con búsqueda  
+* [X] Mapas de distribución (Leaflet)  
+* [X] Marketplace con carrito y checkout  
+* [X] Dashboard de vendedores  
+* [ ] Chatbot integrado  
+* [ ] Generador de planes de negocio  
+* [X] Responsive design  
+* [ ] Pruebas E2E
+
+### Frontend Móvil
+
+* [X] App React Native funcional  
+* [X] Cámara para captura de especies  
+* [ ] Clasificación offline  
+* [X] GPS para georreferenciación  
+* [X] Sincronización con backend
+
+### Base de Datos
+
+* [X] PostgreSQL configurado (especies)  
+* [X] SQL Server configurado (transacciones)  
+* [X] Migraciones versionadas  
+* [X] Seeders con 300+ especies  
+* [X] Índices optimizados  
+* [ ] Backup automatizado
+
+### Inteligencia Artificial
+
+* [X] Dataset de 10,000+ imágenes recolectado  
+* [X] Modelo CNN entrenado (accuracy >85%)  
+* [X] FastAPI microservicio desplegado  
+* [ ] RAG con 1000+ especies funcional  
+* [ ] Chatbot con LangChain operativo  
+* [ ] Generador de planes de negocio con GPT-4  
+* [X] Métricas del modelo documentadas
+
+### Marketplace
+
+* [X] Catálogo de productos funcional  
+* [X] Carrito de compras  
+* [ ] Integración con PSE/Stripe  
+* [X] Sistema de calificaciones  
+* [X] Dashboard de analíticas  
+* [X] Trazabilidad de productos  
+* [X] Certificaciones de sostenibilidad
+
+### Seguridad
+
+* [ ] HTTPS configurado  
+* [X] JWT + refresh tokens  
+* [X] 2FA con TOTP  
+* [ ] PCI DSS compliance (pagos)  
+* [X] Protección XSS, CSRF, SQL Injection  
+* [X] Gestión segura de secretos  
+* [X] Logging de transacciones
+
+### DevOps
+
+* [X] Docker Compose multi-contenedor  
+* [X] Compatible Windows Server 2025  
+* [X] Compatible Linux  
+* [X] CI/CD con GitHub Actions  
+* [X] Nginx configurado  
+* [ ] SSL/TLS
+
+### Testing
+
+* [X] Pruebas unitarias backend (>70%)  
+* [ ] Pruebas de integración  
+* [X] Pruebas del modelo IA (validación)  
+* [ ] Pruebas de pasarela de pagos (sandbox)  
+* [ ] Pruebas E2E frontend  
+* [ ] Pruebas de usabilidad móvil
+
+### Presentación Final
+
+* [ ] Video demostración (15 minutos)  
+* [ ] Presentación PowerPoint (30 slides)  
+* [ ] Demo en vivo funcional  
+* [X] Repositorio Git completo  
+* [ ] Sistema desplegado online

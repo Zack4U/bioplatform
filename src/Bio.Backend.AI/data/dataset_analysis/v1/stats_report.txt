@@ -1,0 +1,107 @@
+======================================================================
+  ANÁLISIS DEL DATASET DE BIODIVERSIDAD DE CALDAS
+  GBIF Darwin Core Archive - iNaturalist Research-Grade
+======================================================================
+
+Total de especies únicas:          3,182
+Total de registros de ocurrencia:   21,408
+Total de imágenes disponibles:      35,893
+Promedio imágenes/especie:          11.3
+
+────────────────────────────────────────
+DISTRIBUCIÓN POR REINO:
+────────────────────────────────────────
+  Animalia             → 2133 especies,  28682 imágenes
+  Plantae              →  978 especies,   6862 imágenes
+  Fungi                →   68 especies,    342 imágenes
+  Protozoa             →    3 especies,      7 imágenes
+
+────────────────────────────────────────
+TOP 10 CLASES POR # DE ESPECIES:
+────────────────────────────────────────
+  Insecta                   → 1237 especies
+  Aves                      →  607 especies
+  Magnoliopsida             →  559 especies
+  Liliopsida                →  374 especies
+  Squamata                  →   85 especies
+  Amphibia                  →   66 especies
+  Agaricomycetes            →   52 especies
+  Arachnida                 →   46 especies
+  Mammalia                  →   42 especies
+  Polypodiopsida            →   36 especies
+
+────────────────────────────────────────
+TOP 15 FAMILIAS POR # DE ESPECIES:
+────────────────────────────────────────
+  Nymphalidae               →  267 especies
+  Orchidaceae               →  224 especies
+  Erebidae                  →  177 especies
+  Geometridae               →  106 especies
+  Thraupidae                →   89 especies
+  Hesperiidae               →   70 especies
+  Tyrannidae                →   69 especies
+  Lycaenidae                →   57 especies
+  Asteraceae                →   56 especies
+  Sphingidae                →   55 especies
+  Trochilidae               →   53 especies
+  Melastomataceae           →   48 especies
+  Crambidae                 →   45 especies
+  Colubridae                →   38 especies
+  Furnariidae               →   35 especies
+
+────────────────────────────────────────
+APTITUD PARA CNN (mín. imágenes por especie):
+────────────────────────────────────────
+  ≥10 imágenes:  756 especies (28,389 imgs)
+  ≥20 imágenes:  393 especies (23,499 imgs)
+  ≥50 imágenes:  148 especies (16,106 imgs)
+
+────────────────────────────────────────
+TOP 20 ESPECIES CON MÁS IMÁGENES:
+────────────────────────────────────────
+  Boissonneaua flavescens                       │   391 imgs │ Trochilidae          │ Animalia
+  Aglaeactis cupripennis                        │   349 imgs │ Trochilidae          │ Animalia
+  Grallaria ruficapilla                         │   283 imgs │ Grallariidae         │ Animalia
+  Zonotrichia capensis                          │   278 imgs │ Passerellidae        │ Animalia
+  Momotus aequatorialis                         │   256 imgs │ Momotidae            │ Animalia
+  Colibri coruscans                             │   250 imgs │ Trochilidae          │ Animalia
+  Andigena hypoglauca                           │   244 imgs │ Ramphastidae         │ Animalia
+  Atlapetes schistaceus                         │   232 imgs │ Passerellidae        │ Animalia
+  Heliangelus exortis                           │   229 imgs │ Trochilidae          │ Animalia
+  Aglaiocercus kingii                           │   228 imgs │ Trochilidae          │ Animalia
+  Diglossa cyanea                               │   220 imgs │ Thraupidae           │ Animalia
+  Turdus fuscater                               │   218 imgs │ Turdidae             │ Animalia
+  Arremon assimilis                             │   210 imgs │ Passerellidae        │ Animalia
+  Ramphocelus flammigerus                       │   207 imgs │ Thraupidae           │ Animalia
+  Zenaida auriculata                            │   202 imgs │ Columbidae           │ Animalia
+  Coeligena torquata                            │   195 imgs │ Trochilidae          │ Animalia
+  Sicalis flaveola                              │   190 imgs │ Thraupidae           │ Animalia
+  Grallaria saturata                            │   188 imgs │ Grallariidae         │ Animalia
+  Piranga rubra                                 │   183 imgs │ Cardinalidae         │ Animalia
+  Pipreola riefferii                            │   183 imgs │ Cotingidae           │ Animalia
+
+────────────────────────────────────────
+ESPECIES CON POCAS IMÁGENES (Top 20 con <5):
+────────────────────────────────────────
+  Hymenia perspectalis                          │  4 imgs │ Crambidae
+  Xylophanes amadis                             │  4 imgs │ Sphingidae
+  Chironius spixii                              │  4 imgs │ Colubridae
+  Heterogomphus chevrolati                      │  4 imgs │ Scarabaeidae
+  Lepanthes acutissima                          │  4 imgs │ Orchidaceae
+  Isanthrene basifera                           │  4 imgs │ Erebidae
+  Egretta caerulea                              │  4 imgs │ Ardeidae
+  Tigridia pavonia                              │  4 imgs │ Iridaceae
+  Frondaria caulescens                          │  4 imgs │ Orchidaceae
+  Voyria pittieri                               │  4 imgs │ Gentianaceae
+  Masdevallia gilbertoi                         │  4 imgs │ Orchidaceae
+  Percnohierax leucorrhous                      │  4 imgs │ Accipitridae
+  Schizophyllum commune                         │  4 imgs │ Schizophyllaceae
+  Eretris apuleja                               │  4 imgs │ Nymphalidae
+  Argyria centrifugens                          │  4 imgs │ Crambidae
+  Hemerocallis fulva                            │  4 imgs │ Asphodelaceae
+  Veronica serpyllifolia                        │  4 imgs │ Plantaginaceae
+  Pronophila unifasciata                        │  4 imgs │ Nymphalidae
+  Hypercompe ocularia                           │  4 imgs │ Erebidae
+  Heliconia wagneriana                          │  4 imgs │ Heliconiaceae
+
+  Total con <5 imágenes: 1857 especies

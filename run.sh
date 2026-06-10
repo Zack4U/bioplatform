@@ -16,9 +16,12 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Detectar sistema operativo
-if [[ "$OSTYPE" == "darwin"* ]]; then
+UNAME_S=$(uname -s 2>/dev/null || echo "unknown")
+if [[ "$OSTYPE" == "darwin"* ]] || [[ "$UNAME_S" == "Darwin"* ]]; then
     OS="macOS"
-    elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$UNAME_S" == "MINGW"* ]] || [[ "$UNAME_S" == "MSYS"* ]] || [[ "$UNAME_S" == "CYGWIN"* ]]; then
+    OS="git-bash-windows"
+elif grep -qi "microsoft" /proc/version 2>/dev/null || grep -qi "wsl" /proc/version 2>/dev/null; then
     OS="git-bash-windows"
 else
     OS="linux"
@@ -61,6 +64,9 @@ function open_terminal() {
             if command -v mintty &> /dev/null; then
                 # Si existe mintty (consola default de Git Bash), es mejor
                 mintty -t "$TITLE" -e bash "$TEMP_SCRIPT" &
+            elif command -v cmd.exe &> /dev/null; then
+                # Soporte para WSL u otros entornos en Windows
+                cmd.exe /c start bash "$TEMP_SCRIPT"
             else
                 # Fallback a start bash
                 start "" bash "$TEMP_SCRIPT"
@@ -116,10 +122,10 @@ function start_service() {
         ;;
         
         ai)
-            echo -e "${YELLOW}🐍 AI Service${NC}"
-            # Activación de Venv compatible con Git Bash
-            open_terminal "ai" "src/Bio.Backend.AI" "uvicorn app.main:app --reload --port 8000"
-            echo -e "${GREEN}✓ AI Service iniciando...${NC}"
+            echo -e "${YELLOW}🐍 AI Service (Local Conda)${NC}"
+            # Ejecución local usando el entorno Conda bio-ai
+            open_terminal "ai" "src/Bio.Backend.AI" "conda run --no-capture-output -n bio-ai uvicorn app.main:app --reload --port 8000"
+            echo -e "${GREEN}✓ AI Service iniciando localmente con Conda...${NC}"
         ;;
         
         web)
@@ -133,7 +139,13 @@ function start_service() {
             open_terminal "mobile" "src/Bio.Frontend.Mobile" "npx expo start"
             echo -e "${GREEN}✓ Frontend Mobile iniciando...${NC}"
         ;;
-        
+
+        docs)
+            echo -e "${YELLOW}📚 Documentación (Mintlify)${NC}"
+            open_terminal "docs" ".docs" "npm run docs"
+            echo -e "${GREEN}✓ Documentación iniciando...${NC}"
+        ;;
+
         *)
             echo -e "${RED}⚠️  Servicio desconocido: $SERVICE${NC}"
         ;;
@@ -155,7 +167,7 @@ if [ "$OS" == "linux" ] && [ "$USE_TMUX" = true ]; then
 fi
 
 # Loop principal
-VALID_SERVICES=("docker" "infra" "core" "ai" "web" "mobile" "all")
+VALID_SERVICES=("docker" "infra" "core" "ai" "web" "mobile" "docs" "all")
 
 for SERVICE in "${SERVICES[@]}"; do
     if [[ " ${VALID_SERVICES[@]} " =~ " ${SERVICE} " ]]; then
@@ -169,8 +181,9 @@ done
 echo ""
 echo -e "${YELLOW}📍 URLs de Acceso:${NC}"
 echo -e "   Frontend Web:   http://localhost:3000"
-echo -e "   Backend API:    http://localhost:5050"
+echo -e "   Backend API:    http://localhost:5070"
 echo -e "   AI Service:     http://localhost:8000"
+echo -e "   Documentación:  http://localhost:3333"
 echo ""
 
 if [ "$OS" == "git-bash-windows" ]; then

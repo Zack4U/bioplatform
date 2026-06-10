@@ -8,16 +8,16 @@
 ┌─────────────────────────────────────────────────────────────┐
 │ Docker (Infraestructura)                                      │
 ├─────────────────────────────────────────────────────────────┤
-│ ✅ SQL Server (1433)       ✅ PostgreSQL (5432)             │
+│ ✅ SQL Server (1433)       ✅ PostgreSQL (5433)             │
 │ ✅ Redis (6379)            ✅ ChromaDB (8001)               │
-│ ✅ MongoDB (27017)         ✅ pgAdmin (5050)                │
+│ ✅ MongoDB (27017)         ✅ pgAdmin (5050)                 │
 │ ✅ Adminer (8090)          ✅ Seq (5341)                    │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
 │ Local (Desarrollo)                                            │
 ├─────────────────────────────────────────────────────────────┤
-│ 🖥️  Backend .NET (5050)    🐍 AI Service (8000)             │
+│ 🖥️  Backend .NET (5070)    🐍 AI Service (8000)             │
 │ ⚛️  Frontend Web (3000)     📱 Frontend Mobile (Expo)        │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -42,13 +42,15 @@ bash run.sh all           # TODO
 ```
 
 **Resultado esperado:**
+
 - ✅ Docker levanta en terminal dedicada
-- ✅ Backend corre en `http://localhost:5050` (con Swagger)
+- ✅ Backend corre en `http://localhost:5070` (con Swagger)
 - ✅ AI Service en `http://localhost:8000` (con Docs)
 - ✅ Frontend Web en `http://localhost:3000`
 - ✅ pgAdmin en `http://localhost:5050` (BD UI)
 
 > ⚠️ **IMPORTANTE:** El script **SOLO levanta servios**, no configura nada.
+>
 > - Primero debes copiar `.env.example` → `.env`
 > - Luego editar `.env` con tus API keys y credenciales
 > - Ver sección "1. Configuración Inicial" más abajo
@@ -58,6 +60,8 @@ bash run.sh all           # TODO
 ---
 
 ## 1. Configuración Inicial (Detallado)
+
+> 🔐 **Nota sobre Contraseñas:** En entornos locales de desarrollo, las contraseñas base para bases de datos (SQL Server, Postgres) definidas en infraestructura suelen ser `DevPassword123!` o `postgres123`. Verifica que coincidan con tu archivo `.env` antes de correr migraciones.
 
 ### 1.1 Variables de Entorno
 
@@ -79,9 +83,16 @@ docker-compose ps
 
 # Ver logs en tiempo real
 docker-compose logs -f
+
+# Detener servicios
+docker-compose down
+
+# Detener servicios y eliminar volúmenes
+docker-compose down -v
 ```
 
 **Esperado:**
+
 ```
 STATUS              NAMES
 healthy             bioplatform-sqlserver
@@ -109,13 +120,17 @@ dotnet restore
 # Ejecuta en watch mode (recompila automáticamente)
 dotnet watch run --project Bio.API/Bio.API.csproj
 
-# Esperado: http://localhost:5050
-# Swagger: http://localhost:5050/swagger
+# Esperado: http://localhost:5070
+# Swagger: http://localhost:5070/swagger
 ```
 
 **Requisitos:**
+
 - .NET 8 SDK instalado
-- Variables de conexión a BD en appsettings
+- **Conexiones a BD:** La API lee **solo desde el archivo `.env`** en la raíz del proyecto (`E:\Proyecto Integrador\bioplatform\.env`), para no duplicar credenciales en otros archivos.
+  - **PostgreSQL (especies, taxonomía):** variables `DB_PG_HOST`, `DB_PG_PORT`, `DB_PG_DATABASE`, `DB_PG_USER`, `DB_PG_PASSWORD` (la contraseña solo va en `.env`).
+  - **SQL Server (usuarios, roles):** variable `DB_CONNECTION_STRING_SQL` o las equivalentes `DB_SQL_*`.
+  - Al arrancar, la API carga `.env` automáticamente desde la raíz del repo; debe coincidir con la misma conexión que usas en DBeaver.
 
 ---
 
@@ -145,6 +160,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 **Requisitos:**
+
 - Python 3.11+
 - Variables: `DATABASE_URL`, `OPENAI_API_KEY`, etc.
 
@@ -166,6 +182,7 @@ npm run dev
 ```
 
 **Requisitos:**
+
 - Node 20+
 - Variables: `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_AI_API_URL`
 
@@ -194,17 +211,19 @@ npx expo start
 **Conexión a Backend desde Mobile:**
 
 En `src/Bio.Frontend.Mobile/src/config/api.ts` (o similar):
+
 ```typescript
-const API_URL = __DEV__ 
-  ? 'http://YOUR_LOCAL_IP:5050/api'  // Cambia YOUR_LOCAL_IP por tu IP
-  : 'https://api.bioplatform.com/api';
+const API_URL = __DEV__
+    ? "http://YOUR_LOCAL_IP:5070/api" // Cambia YOUR_LOCAL_IP por tu IP
+    : "https://api.bioplatform.com/api";
 
 const AI_API_URL = __DEV__
-  ? 'http://YOUR_LOCAL_IP:8000/api'
-  : 'https://ai.bioplatform.com/api';
+    ? "http://YOUR_LOCAL_IP:8000/api"
+    : "https://ai.bioplatform.com/api";
 ```
 
 **Requisitos:**
+
 - Node 20+
 - Expo CLI: `npm install -g expo-cli`
 - iOS Simulator (macOS) o Android Emulator
@@ -212,13 +231,81 @@ const AI_API_URL = __DEV__
 
 ## 3. Herramientas de Gestión (Docker)
 
-| Herramienta | URL | Propósito |
-|---|---|---|
-| **pgAdmin** | http://localhost:5050 | Gestionar PostgreSQL |
+| Herramienta | URL                   | Propósito                         |
+| ----------- | --------------------- | --------------------------------- |
+| **pgAdmin** | http://localhost:5050 | Gestionar PostgreSQL              |
 | **Adminer** | http://localhost:8090 | Gestionar SQL Server + PostgreSQL |
-| **Seq** | http://localhost:5341 | Ver logs centralizados |
+| **Seq**     | http://localhost:5341 | Ver logs centralizados            |
 
 - Credenciales: En las variables de entorno (.env)
+
+### 3.1 Probar CRUD Especies y Taxonomía (Swagger / Postman)
+
+Los endpoints de **Species** y **Taxonomy** están disponibles sin autenticación para pruebas. Puedes usar Swagger o Postman.
+
+**Pasos rápidos:**
+
+1. **PostgreSQL en marcha** (Docker o tu instancia; misma conexión que en DBeaver).
+2. **Conexión en el Backend:** En el `.env` de la raíz del proyecto (`DB_PG_HOST`, `DB_PG_PORT`, `DB_PG_DATABASE`, `DB_PG_USER`, `DB_PG_PASSWORD`). La API carga ese `.env` al iniciar y no usa credenciales en `appsettings`.
+3. **Migraciones Scientific (solo si la BD no tiene ya las tablas del script):**
+   ```bash
+   cd src/Bio.Backend.Core
+   dotnet ef database update --context ScientificDbContext -p Bio.Infrastructure -s Bio.API
+   ```
+4. **Levantar la API:**
+   ```bash
+   cd src/Bio.Backend.Core
+   dotnet watch run --project Bio.API/Bio.API.csproj
+   ```
+5. **Abrir Swagger:** [http://localhost:5070/swagger](http://localhost:5070/swagger).
+
+**Orden sugerido en Swagger:**
+
+- **Taxonomy:** `POST /api/Taxonomy` (crear una taxonomía) → `GET /api/Taxonomy` (listar) → `GET /api/Taxonomy/{id}` (detalle) → `PUT` / `DELETE` si quieres.
+- **Species:** `POST /api/Species` (crear especie; opcionalmente con `taxonomyId` de la taxonomía creada) → `GET /api/Species` → `GET /api/Species/{id}` o `GET /api/Species/slug/{slug}` → `PUT` / `DELETE`.
+
+**Ejemplo body para POST /api/Taxonomy:**
+
+```json
+{
+  "kingdom": "Plantae",
+  "phylum": "Magnoliophyta",
+  "className": "Magnoliopsida",
+  "orderName": "Fagales",
+  "family": "Fagaceae",
+  "genus": "Quercus"
+}
+```
+
+**Ejemplo body para POST /api/Species:**
+
+```json
+{
+  "taxonomyId": 1,
+  "slug": "quercus-humboldtii",
+  "scientificName": "Quercus humboldtii",
+  "commonName": "Roble",
+  "description": "Árbol nativo de los Andes.",
+  "conservationStatus": "Vulnerable",
+  "isSensitive": false
+}
+```
+
+**Postman:** Misma base URL `http://localhost:5070`. Colección sugerida:
+
+| Método | Ruta | Uso |
+|--------|------|-----|
+| GET | `/api/Taxonomy` | Listar taxonomías |
+| GET | `/api/Taxonomy/{id}` | Obtener por id (entero) |
+| POST | `/api/Taxonomy` | Crear taxonomía (body JSON) |
+| PUT | `/api/Taxonomy/{id}` | Actualizar taxonomía |
+| DELETE | `/api/Taxonomy/{id}` | Eliminar taxonomía |
+| GET | `/api/Species` | Listar especies (`?skip=0&take=10` opcional) |
+| GET | `/api/Species/{id}` | Por id (GUID) |
+| GET | `/api/Species/slug/{slug}` | Por slug |
+| POST | `/api/Species` | Crear especie (body JSON) |
+| PUT | `/api/Species/{id}` | Actualizar especie |
+| DELETE | `/api/Species/{id}` | Eliminar especie |
 
 ---
 
@@ -248,14 +335,16 @@ $ npx expo start
 
 # 2. Accede a:
 # - Frontend Web: http://localhost:3000
-# - Backend API: http://localhost:5050
+# - Backend API: http://localhost:5070
 # - AI Service: http://localhost:8000
 # - Mobile App: Abre iOS/Android emulator o escanea QR en tu teléfono
 # - Base de Datos: pgAdmin http://localhost:5050
 ```
 
 ### Nota sobre Mobile Development
+
 El frontend Mobile **siempre corre localmente** (nunca en Docker) porque:
+
 - Expo requiere metro bundler activo para hot reload
 - La app conecta al backend via HTTP (no requiere Docker)
 - Los cambios se ven instantáneamente en emulador/físico
@@ -266,38 +355,65 @@ El frontend Mobile **siempre corre localmente** (nunca en Docker) porque:
 
 ### 5.1 Conexión desde Local
 
-**PostgreSQL:**
-```
+**PostgreSQL (Scientific/AI):**
+
+```text
 Host: localhost
-Port: 5432
+Port: 5433
 User: postgres
-Password: postgres123 (del .env)
-Database: bioplatform_dev
+Password: DevPassword123! (del .env)
+Database: BioCommerce_Scientific
 ```
 
-**SQL Server:**
-```
+**SQL Server (Transactional):**
+
+```text
 Server: localhost,1433
 User: sa
-Password: YourStrong@Password123 (del .env)
-Database: bioplatform
+Password: DevPassword123! (del .env)
+Database: BioCommerce_Transactional
 ```
 
 ### 5.2 Migraciones
 
 **EF Core (.NET):**
+
+Recuerda que la plataforma usa **dos contextos** separados (Clean Architecture). Debes aplicar migraciones a ambos:
+
 ```bash
 cd src/Bio.Backend.Core
 
-# Ver estado de migraciones
-dotnet ef migrations list
+# 1. Instalar la herramienta EF Core (si no la tienes):
+dotnet tool install --global dotnet-ef
 
-# Aplicar migraciones
-dotnet ef database update
+# 2. Aplicar BD Transaccional (SQL Server):
+dotnet ef database update --context BioDbContext -p Bio.Infrastructure -s Bio.API
 
-# Crear nueva migración
-dotnet ef migrations add MigrationName
+# 3. Aplicar BD Científica (PostgreSQL):
+dotnet ef database update --context ScientificDbContext -p Bio.Infrastructure -s Bio.API
+
+# Opciones de creación de migraciones:
+# dotnet ef migrations add <Name> --context BioDbContext -p Bio.Infrastructure -s Bio.API
 ```
+
+### 5.3 Credenciales por Defecto (Seed)
+
+La base de datos se inicializa automáticamente en `BioDbContextSeeder.cs` (vía *Entity Framework HasData*) con los roles clave indicados en los requerimientos, y un usuario asignado a cada rol para pruebas.
+
+Puedes utilizar estas credenciales en el entorno de desarrollo:
+
+- **Contraseña universal:** `DevPassword123!`
+
+| Rol | Email |
+|-----|-------|
+| Admin | `admin@biocommerce.com` |
+| Researcher | `researcher@biocommerce.com` |
+| Entrepreneur | `entrepreneur@biocommerce.com` |
+| Community | `community@biocommerce.com` |
+| Buyer | `buyer@biocommerce.com` |
+| Authority | `authority@biocommerce.com` |
+
+*Nota: Esta semilla se genera dinámicamente con un salt determinista para mantener las migraciones consistentes.*
 
 ### 5.3 Reset de Base de Datos
 
@@ -327,7 +443,8 @@ docker-compose down -v
 
 ## 7. Troubleshooting
 
-### "Cannot connect to localhost:5432"
+### "Cannot connect to localhost:5433"
+
 ```bash
 # Verifica que Docker está corriendo
 docker-compose ps
@@ -336,17 +453,19 @@ docker-compose ps
 docker-compose restart postgres
 ```
 
-### "Port 5050 already in use"
+### "Port 5070 already in use"
+
 ```bash
 # Busca qué está usando el puerto
-lsof -i :5050  # macOS/Linux
-netstat -ano | findstr :5000  # Windows
+lsof -i :5070  # macOS/Linux
+netstat -ano | findstr :5070  # Windows
 
 # O usa otro puerto
-dotnet watch run --project src/Bio.API/Bio.API.csproj -- --urls=http://+:5001
+dotnet watch run --project src/Bio.API/Bio.API.csproj -- --urls=http://+:5080
 ```
 
 ### "Module not found" en Python
+
 ```bash
 # Asegúrate de tener el venv activado
 source venv/bin/activate  # Linux/macOS
@@ -360,7 +479,8 @@ pip install -r requirements.txt
 
 ## 8. Documentación Adicional
 
-- [Clean Architecture Backend](./.github/ARCHITECTURE.md)
+- [Arquitectura del Proyecto](./.docs/project/architecture.mdx)
+- [Copilot / Convenciones de código](./.github/copilot-instructions.md)
 - [AI Service Setup](./src/Bio.Backend.AI/README.md)
 - [Frontend Development](./src/Bio.Frontend.Web/README.md)
 - [Mobile App](./src/Bio.Frontend.Mobile/README.md)

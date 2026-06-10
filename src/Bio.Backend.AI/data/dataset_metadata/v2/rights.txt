@@ -1,0 +1,64 @@
+Dataset: Caracterización biológica asociada a la Nueva Subestación Dorada Norte, Caldas 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Estructura Ecológica de la Subregión Norte de Caldas, Contrato para actividades científicas y tecnológicas No. 222-2018 entre Corpocaldas y WCS 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Hidrobiológicos e ictiofauna del Río Manso, 2024 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Caracterización de los grupos hidrobiológicos e ictiofauna asociados al Estudio Ambiental Marmato Profundo 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Fauna y Flora en zonas de influencia del Trasvase Manso, 2024 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: NABU|naturgucker 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Flora asociada al programa de monitoreo y restauración del 2017 en el Parque Nacional Natural Selva de Forencia 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Inventario de fauna y flora en el departamento de Caldas en el marco del proyecto Magdalena Caldense patrimonio biocultural 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Registros de la Caracterización de vegetación y flora del POMCA de la SZH Cuenca del Río Tapias y Otros Directos al Cauca 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Estudios bióticos: Plantas, anfibios, mamíferos, aves y edafofauna epígea (coleópteros y arácnidos), en el complejo de páramo Los Nevados 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Diagnóstico y Propuesta de Manejo de la Flora Arbórea y Arbustiva Urbana del Municipio de Viterbo - Caldas 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Registros biológicos de especies de plantas del Bosque Seco en Colombia presentes en el Herbario JBGP 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: ICN - Universidad Nacional de Colombia 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Inventario florístico del bosque Monteleón (Manizales, Caldas) 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Biodiversidad asociada al proyecto Parque Solar Fotovoltaico Tepuy 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Compilación de datos de campo provenientes del levantamiento del Inventario Forestal Nacional (2015-2017), datos sin validar 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Estudio de la estructura genética espacial de la palma Elaeis oleifera 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Caracterización florística y estructural de bosques altoandinos en Riosucio, Caldas 
+Rights as supplied: http://creativecommons.org/publicdomain/zero/1.0/legalcode
+Dataset: Monitoreo de Gustavia romeroi en zonas de influencia de la Central Hidroeléctrica Miel I, 2023 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Estudio de Impacto Ambiental (EIA) Para La Modificación de la Licencia Ambiental para la Construcción de la Estación de Compresión de Gas Palestina 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Pl@ntNet observations 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Recolección de frutos para evaluar su potencial de germinación en tres estados de maduración (inmaduro, intermedio y maduro) 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Observation.org, Nature data from around the World 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Estudios bióticos: Plantas, edafofauna epígea, anfibios y aves de los Complejos de Páramos de Sonsón y Urrao 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Pl@ntNet automatically identified occurrences 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Monitoreos hidrobiológicos asociados al proyecto Parque Solar Fotovoltaico Tepuy 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Flora en zonas de influencia de la Central Hidroeléctrica Miel I. 2020 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Caracterización de Magnolias del departamento de Antioquia 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Composición y estructura del bosque seco tropical en Caldas 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: Registros biológicos del Corredor de Conservación de Bosques Andinos en el departamento de Caldas 
+Rights as supplied: http://creativecommons.org/licenses/by/4.0/legalcode
+Dataset: Flora en zonas de influencia del trasvase Guarinó, 2023 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode
+Dataset: iNaturalist Research-grade Observations 
+Rights as supplied: http://creativecommons.org/licenses/by-nc/4.0/legalcode

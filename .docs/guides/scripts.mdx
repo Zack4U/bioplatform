@@ -1,0 +1,212 @@
+---
+title: "Guia de Scripts"
+description: "Uso de los scripts de ejecucion (run, install, migrate)."
+icon: "terminal"
+---
+
+Guia de los scripts de automatizacion del repo. Cada script tiene una version
+**bash** (`.sh`, para Linux / macOS / WSL / Git Bash) y su contraparte
+**PowerShell** (`.ps1`, para Windows).
+
+| Tarea | Linux / macOS / Git Bash | Windows (PowerShell) | Proposito |
+|---|---|---|---|
+| Instalacion prod | `install.sh` | `install.ps1` | Levanta todo el stack con Docker, aplica migraciones y deja que el backend siembre el catalogo. |
+| Migraciones EF | `migrate.sh` | `migrate.ps1` | Crea y aplica migraciones EF Core (interactivo) sobre los dos DbContext. |
+| Dev orchestrator | `run.sh` | `run.ps1` | Abre una ventana por servicio para desarrollo local. |
+
+> Requisito comun: **Docker Desktop / Engine con contenedores Linux**, .NET 8 SDK
+> (para `migrate`/`run core`), Node 20 (`run web`/`mobile`) y un `.env` configurado.
+
+---
+
+## 1. install — Instalacion de produccion
+
+One-shot, **idempotente y reanudable por seccion**. Secciones en orden:
+`env -> infra -> migrate -> weights -> apps -> verify`.
+
+| Seccion | Que hace |
+|---|---|
+| `env` | Crea `.env` desde `.env.prod.example` si no existe (y pide editarlo). |
+| `infra` | Levanta SQL Server, Postgres, Redis, ChromaDB y espera `healthy`. |
+| `migrate` | Aplica migraciones EF Core (BioDbContext + ScientificDbContext) dentro de un contenedor SDK. |
+| `weights` | `dvc pull` de los pesos del CNN desde S3 (omite si ya estan). Requiere `dvc[s3]` + credenciales AWS. |
+| `apps` | Build y arranque de backend-core, ai-service, frontend-web, nginx. El backend **siembra el catalogo cientifico** en el primer boot (idempotente). |
+| `verify` | Imprime estado de contenedores. |
+
+### Linux / macOS / Git Bash
+
+```bash
+./install.sh                 # corre todas las secciones desde cero
+./install.sh --from migrate  # reanuda desde una seccion
+./install.sh --only apps     # corre una sola seccion
+./install.sh --help
+```
+
+### Windows (PowerShell)
+
+```powershell
+.\install.ps1                 # corre todas las secciones desde cero
+.\install.ps1 -From migrate   # reanuda desde una seccion
+.\install.ps1 -Only apps      # corre una sola seccion
+```
+
+> En la primera corrida, la seccion `env` crea `.env` y se detiene para que lo
+> edites con secretos reales. Luego re-ejecuta con `-From infra` / `--from infra`.
+
+---
+
+## 2. migrate — Migraciones EF Core
+
+Script **interactivo**: elige el contexto y el nombre de la migracion. Ejecuta
+`dotnet ef migrations add` + `dotnet ef database update` con `-p Bio.Infrastructure -s Bio.API`.
+
+> Requiere `dotnet-ef` instalado en el host: `dotnet tool install --global dotnet-ef`.
+
+### Linux / macOS / Git Bash
+
+```bash
+bash migrate.sh
+# 1) BioDbContext  2) ScientificDbContext  3) Ambas
+# Luego ingresa el nombre (ej. InitialCreate)
+```
+
+### Windows (PowerShell)
+
+```powershell
+# Interactivo (mismo flujo que migrate.sh)
+.\migrate.ps1
+
+# No interactivo (parametros opcionales)
+.\migrate.ps1 -Context ScientificDbContext -Name AddAiModelVersion
+.\migrate.ps1 -Context Both -Name InitialCreate
+```
+
+`-Context` acepta `BioDbContext`, `ScientificDbContext` o `Both`.
+
+---
+
+## 3. run — Orquestador de desarrollo
+
+Abre **una ventana por servicio**. Servicios: `docker` (alias `infra`), `core`,
+`ai`, `web`, `mobile`, `docs`, `all`.
+
+| Servicio | Comando que corre | Puerto |
+|---|---|---|
+| `docker` / `infra` | `docker-compose up -d` (+ logs) | - |
+| `core` | `dotnet watch run --project Bio.API/Bio.API.csproj` | 5070 |
+| `ai` | activa `.venv` + `uvicorn app.main:app --reload` | 8000 |
+| `web` | `npm run dev` | 3000 |
+| `mobile` | `npx expo start` | 19000 |
+| `docs` | `npm run docs` (Mintlify dev server) | 3333 |
+
+### Windows (PowerShell)
+
+```powershell
+.\run.ps1                  # todos: docker, core, ai, web
+.\run.ps1 all
+.\run.ps1 core ai          # solo los listados
+.\run.ps1 docker core web
+.\run.ps1 docs             # solo documentacion Mintlify
+.\run.ps1 web docs         # web + documentacion
+```
+
+Cada servicio abre una ventana PowerShell independiente. `Ctrl+C` (o cerrar la
+ventana) detiene ese servicio.
+
+> Si PowerShell bloquea la ejecucion (`running scripts is disabled`), habilita
+> scripts locales para tu usuario:
+> ```powershell
+> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+> ```
+
+### Linux / macOS / Git Bash
+
+```bash
+bash run.sh                # todos
+bash run.sh core ai        # solo los listados
+bash run.sh docker core web
+bash run.sh docs           # solo documentacion Mintlify
+bash run.sh web docs       # web + documentacion
+```
+
+- **Linux con tmux**: cada servicio corre en una ventana de la sesion `bioplatform`.
+  - `tmux attach -t bioplatform` para conectar.
+  - `Ctrl+B n` / `Ctrl+B p` navegar, `Ctrl+B d` desconectar.
+- **Sin tmux**: abre terminales individuales (`gnome-terminal` / `xterm`).
+- **Git Bash (Windows)**: abre una ventana `mintty`/`bash` por servicio.
+
+---
+
+## Tests (.NET)
+
+```bash
+# Con descripcion detallada
+dotnet test --logger "console;verbosity=detailed" src/Bio.Backend.Core/Bio.UnitTests/Bio.UnitTests.csproj
+
+# Simple
+dotnet test src/Bio.Backend.Core/Bio.UnitTests/Bio.UnitTests.csproj
+```
+
+---
+
+## URLs despues de ejecutar
+
+| Servicio | URL |
+|---|---|
+| Frontend Web | http://localhost:3000 |
+| Backend API (Swagger) | http://localhost:5070 |
+| AI Service (Docs) | http://localhost:8000 |
+| Documentacion (Mintlify) | http://localhost:3333 |
+| pgAdmin | http://localhost:5050 |
+| Adminer | http://localhost:8090 |
+| Seq (logs) | http://localhost:5341 |
+
+---
+
+## Troubleshooting
+
+### `.env` requerido
+
+Los servicios necesitan `.env` configurado antes de correr.
+
+```bash
+# Desarrollo
+cp .env.example .env
+
+# Produccion (install.sh / install.ps1 lo hacen solos en la seccion 'env')
+cp .env.prod.example .env
+```
+
+Ver [Guía de Desarrollo](/guides/development) para detalle de variables.
+
+### Puerto en uso
+
+**Windows (PowerShell):**
+```powershell
+Get-NetTCPConnection -LocalPort 5070 | Select-Object OwningProcess
+Stop-Process -Id <PID>
+```
+
+**Git Bash / macOS / Linux:**
+```bash
+netstat -ano | grep :5070   # Linux / Git Bash
+lsof -i :5070               # macOS
+kill <PID>
+```
+
+### `running scripts is disabled on this system` (PowerShell)
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+### `venv not found` (servicio ai)
+
+El venv debe existir en la raiz como `.venv`. Crealo e instala dependencias:
+
+```bash
+python -m venv .venv
+# Windows:  .\.venv\Scripts\Activate.ps1
+# bash:     source .venv/Scripts/activate   (Windows)  |  source .venv/bin/activate (Linux/mac)
+pip install -r src/Bio.Backend.AI/requirements.txt
+```

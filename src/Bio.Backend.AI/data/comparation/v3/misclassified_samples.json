@@ -1,0 +1,352 @@
+[
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Fluvicola_pica\\0011_8c67f78a.jpg",
+    "true_label": "Fluvicola_pica",
+    "predicted_label": "Butorides_striata",
+    "confidence": 0.9678,
+    "true_label_prob": 0.0013
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Myiozetetes_cayanensis\\0051_2bd5159f.jpg",
+    "true_label": "Myiozetetes_cayanensis",
+    "predicted_label": "Elaenia_flavogaster",
+    "confidence": 0.9549,
+    "true_label_prob": 0.0019
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Thraupis_episcopus\\0002_f62ea51c.jpg",
+    "true_label": "Thraupis_episcopus",
+    "predicted_label": "Stilpnia_vitriolina",
+    "confidence": 0.9236,
+    "true_label_prob": 0.0345
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Coeligena_torquata\\0070_21cc4a4f.jpg",
+    "true_label": "Coeligena_torquata",
+    "predicted_label": "Boissonneaua_flavescens",
+    "confidence": 0.8816,
+    "true_label_prob": 0.0016
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Fuchsia_nigricans\\api_344401481.jpg",
+    "true_label": "Fuchsia_nigricans",
+    "predicted_label": "Persicaria_nepalensis",
+    "confidence": 0.8765,
+    "true_label_prob": 0.0004
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Notiochelidon_cyanoleuca\\0018_b7f68f60.jpg",
+    "true_label": "Notiochelidon_cyanoleuca",
+    "predicted_label": "Streptoprocne_zonaris",
+    "confidence": 0.8605,
+    "true_label_prob": 0.0761
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Catamenia_inornata\\api_156595833.jpg",
+    "true_label": "Catamenia_inornata",
+    "predicted_label": "Geospizopsis_unicolor",
+    "confidence": 0.836,
+    "true_label_prob": 0.0719
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Danaus_plexippus\\api_180124383.jpg",
+    "true_label": "Danaus_plexippus",
+    "predicted_label": "Streptoprocne_zonaris",
+    "confidence": 0.8359,
+    "true_label_prob": 0.0003
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Stilpnia_vitriolina\\0004_42c1d4ba.jpg",
+    "true_label": "Stilpnia_vitriolina",
+    "predicted_label": "Thraupis_episcopus",
+    "confidence": 0.8317,
+    "true_label_prob": 0.1118
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Aglaiocercus_kingii\\0129_a7f301a4.jpg",
+    "true_label": "Aglaiocercus_kingii",
+    "predicted_label": "Anthurium_caramantae",
+    "confidence": 0.8123,
+    "true_label_prob": 0.0127
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Hemidactylus_frenatus\\api_26479454.jpg",
+    "true_label": "Hemidactylus_frenatus",
+    "predicted_label": "Gonatodes_albogularis",
+    "confidence": 0.811,
+    "true_label_prob": 0.0219
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Tangara_xanthocephala\\0024_7103141a.jpg",
+    "true_label": "Tangara_xanthocephala",
+    "predicted_label": "Tangara_gyrola",
+    "confidence": 0.8096,
+    "true_label_prob": 0.0004
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Manacus_manacus\\api_269019603.jpg",
+    "true_label": "Manacus_manacus",
+    "predicted_label": "Manacus_vitellinus",
+    "confidence": 0.8041,
+    "true_label_prob": 0.1285
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Callianthe_picta\\api_356041094.jpg",
+    "true_label": "Callianthe_picta",
+    "predicted_label": "Colibri_cyanotus",
+    "confidence": 0.7661,
+    "true_label_prob": 0.0008
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Heliangelus_exortis\\0096_1a672ce2.jpg",
+    "true_label": "Heliangelus_exortis",
+    "predicted_label": "Coeligena_lutetiae",
+    "confidence": 0.7509,
+    "true_label_prob": 0.0105
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Myiozetetes_cayanensis\\0053_b786b1c1.jpg",
+    "true_label": "Myiozetetes_cayanensis",
+    "predicted_label": "Pitangus_sulphuratus",
+    "confidence": 0.7412,
+    "true_label_prob": 0.1511
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Volatinia_jacarina\\api_363907130.jpg",
+    "true_label": "Volatinia_jacarina",
+    "predicted_label": "Tachyphonus_rufus",
+    "confidence": 0.7326,
+    "true_label_prob": 0.0497
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Pionus_chalcopterus\\api_178559375.jpg",
+    "true_label": "Pionus_chalcopterus",
+    "predicted_label": "Icterus_chrysater",
+    "confidence": 0.7316,
+    "true_label_prob": 0.0073
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Boissonneaua_flavescens\\0089_d1c89423.jpg",
+    "true_label": "Boissonneaua_flavescens",
+    "predicted_label": "Coeligena_wilsoni",
+    "confidence": 0.7283,
+    "true_label_prob": 0.026
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Pareuptychia_hesione\\api_304822968.jpg",
+    "true_label": "Pareuptychia_hesione",
+    "predicted_label": "Pareuptychia_metaleuca",
+    "confidence": 0.7208,
+    "true_label_prob": 0.1443
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Consul_panariste\\0033_3d7f160f.jpg",
+    "true_label": "Consul_panariste",
+    "predicted_label": "Kinosternon_leucostomum",
+    "confidence": 0.7036,
+    "true_label_prob": 0.0841
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Spilotes_pullatus\\api_13839640.jpg",
+    "true_label": "Spilotes_pullatus",
+    "predicted_label": "Clelia_equatoriana",
+    "confidence": 0.6968,
+    "true_label_prob": 0.0101
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Passiflora_coriacea\\api_173797320.jpg",
+    "true_label": "Passiflora_coriacea",
+    "predicted_label": "Passiflora_suberosa",
+    "confidence": 0.693,
+    "true_label_prob": 0.1762
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Bothriechis_schlegelii\\0008_d7782555.jpg",
+    "true_label": "Bothriechis_schlegelii",
+    "predicted_label": "Columnea_fuscihirta",
+    "confidence": 0.6914,
+    "true_label_prob": 0.0004
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Ardea_alba\\api_347231060.jpg",
+    "true_label": "Ardea_alba",
+    "predicted_label": "Egretta_thula",
+    "confidence": 0.6902,
+    "true_label_prob": 0.1039
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Hemidactylus_frenatus\\0014_691846be.jpg",
+    "true_label": "Hemidactylus_frenatus",
+    "predicted_label": "Gonatodes_albogularis",
+    "confidence": 0.6892,
+    "true_label_prob": 0.1884
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Streptoprocne_zonaris\\0009_e97b6dee.jpg",
+    "true_label": "Streptoprocne_zonaris",
+    "predicted_label": "Notiochelidon_murina",
+    "confidence": 0.6834,
+    "true_label_prob": 0.2612
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Pleroma_urvilleanum\\api_601964921.jpg",
+    "true_label": "Pleroma_urvilleanum",
+    "predicted_label": "Andesanthus_lepidotus",
+    "confidence": 0.6804,
+    "true_label_prob": 0.2786
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Lepidocolaptes_lacrymiger\\0058_7ee295f4.jpg",
+    "true_label": "Lepidocolaptes_lacrymiger",
+    "predicted_label": "Xiphocolaptes_promeropirhynchus",
+    "confidence": 0.678,
+    "true_label_prob": 0.1839
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Columbina_talpacoti\\0016_b67d1ec8.jpg",
+    "true_label": "Columbina_talpacoti",
+    "predicted_label": "Zenaida_auriculata",
+    "confidence": 0.6779,
+    "true_label_prob": 0.1987
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Myiothlypis_coronata\\api_30751426.jpg",
+    "true_label": "Myiothlypis_coronata",
+    "predicted_label": "Sporathraupis_cyanocephala",
+    "confidence": 0.6712,
+    "true_label_prob": 0.0856
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Chaetocercus_mulsant\\0107_af13bb3b.jpg",
+    "true_label": "Chaetocercus_mulsant",
+    "predicted_label": "Calliphlox_mitchellii",
+    "confidence": 0.6711,
+    "true_label_prob": 0.1944
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Ipomoea_indica\\api_62633904.jpg",
+    "true_label": "Ipomoea_indica",
+    "predicted_label": "Arundina_graminifolia",
+    "confidence": 0.6701,
+    "true_label_prob": 0.0116
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Ramphocelus_flammigerus\\0139_39d54409.jpg",
+    "true_label": "Ramphocelus_flammigerus",
+    "predicted_label": "Euphonia_laniirostris",
+    "confidence": 0.6626,
+    "true_label_prob": 0.0753
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Chaetocercus_mulsant\\0021_3d97ae04.jpg",
+    "true_label": "Chaetocercus_mulsant",
+    "predicted_label": "Calliphlox_mitchellii",
+    "confidence": 0.6566,
+    "true_label_prob": 0.094
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Vultur_gryphus\\0007_6d424f10.jpg",
+    "true_label": "Vultur_gryphus",
+    "predicted_label": "Streptoprocne_zonaris",
+    "confidence": 0.6535,
+    "true_label_prob": 0.0251
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Tachyphonus_rufus\\api_113722267.jpg",
+    "true_label": "Tachyphonus_rufus",
+    "predicted_label": "Hafferia_immaculata",
+    "confidence": 0.6534,
+    "true_label_prob": 0.0109
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Colibri_cyanotus\\0079_5c05e4e0.jpg",
+    "true_label": "Colibri_cyanotus",
+    "predicted_label": "Colibri_coruscans",
+    "confidence": 0.6511,
+    "true_label_prob": 0.2969
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Aotus_lemurinus\\api_334160624.jpg",
+    "true_label": "Aotus_lemurinus",
+    "predicted_label": "Aotus_griseimembra",
+    "confidence": 0.6509,
+    "true_label_prob": 0.143
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Morella_pubescens\\api_229501196.jpg",
+    "true_label": "Morella_pubescens",
+    "predicted_label": "Baccharis_latifolia",
+    "confidence": 0.6472,
+    "true_label_prob": 0.2144
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Anthracothorax_nigricollis\\api_189897483.jpg",
+    "true_label": "Anthracothorax_nigricollis",
+    "predicted_label": "Chaetocercus_mulsant",
+    "confidence": 0.6436,
+    "true_label_prob": 0.1923
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Buteo_albicaudatus\\0020_21890605.jpg",
+    "true_label": "Buteo_albicaudatus",
+    "predicted_label": "Crotophaga_ani",
+    "confidence": 0.6416,
+    "true_label_prob": 0.0038
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Epidendrum_cottoniiflorum\\api_373623177.jpg",
+    "true_label": "Epidendrum_cottoniiflorum",
+    "predicted_label": "Epidendrum_cleistocoleum",
+    "confidence": 0.6408,
+    "true_label_prob": 0.258
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Salvia_scutellarioides\\api_62177621.jpg",
+    "true_label": "Salvia_scutellarioides",
+    "predicted_label": "Passiflora_cisnana",
+    "confidence": 0.6406,
+    "true_label_prob": 0.0052
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Gonatodes_albogularis\\api_24208375.jpg",
+    "true_label": "Gonatodes_albogularis",
+    "predicted_label": "Tetragonisca_angustula",
+    "confidence": 0.6341,
+    "true_label_prob": 0.0053
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Chamaepetes_goudotii\\0127_2186bc38.jpg",
+    "true_label": "Chamaepetes_goudotii",
+    "predicted_label": "Pionus_menstruus",
+    "confidence": 0.6309,
+    "true_label_prob": 0.0291
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Megaceryle_torquata\\0001_3b92a569.jpg",
+    "true_label": "Megaceryle_torquata",
+    "predicted_label": "Chloroceryle_americana",
+    "confidence": 0.6306,
+    "true_label_prob": 0.1175
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Adelomyia_melanogenys\\0005_1b49112e.jpg",
+    "true_label": "Adelomyia_melanogenys",
+    "predicted_label": "Guzmania_multiflora",
+    "confidence": 0.6232,
+    "true_label_prob": 0.0232
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Chaetocercus_mulsant\\0034_93d0b292.jpg",
+    "true_label": "Chaetocercus_mulsant",
+    "predicted_label": "Calliphlox_mitchellii",
+    "confidence": 0.6192,
+    "true_label_prob": 0.2428
+  },
+  {
+    "file": "E:\\Projects\\bioplatform\\src\\Bio.Backend.AI\\data\\processed\\test\\Mecocerculus_leucophrys\\api_173882983.jpg",
+    "true_label": "Mecocerculus_leucophrys",
+    "predicted_label": "Vireo_leucophrys",
+    "confidence": 0.6065,
+    "true_label_prob": 0.0083
+  }
+]

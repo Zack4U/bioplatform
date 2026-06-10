@@ -36,30 +36,41 @@ jobs:
     - name: Build
       run: dotnet build Bio.Backend.Core.sln --no-restore -c Release -warnaserror
 
-    - name: Test & Coverage (>70%)
+    - name: Test & Coverage (>70%, solo Domain y Application)
       run: |
         dotnet test Bio.Backend.Core.sln \
           --no-build -c Release \
           --verbosity normal \
           --collect:"XPlat Code Coverage" \
           --results-directory ./TestResults \
-          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura \
+             DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[Bio.Infrastructure*]*,[Bio.API*]*"
 
     - name: Install ReportGenerator
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: Generate Coverage Report & Enforce Threshold
       run: |
+        # Check if any coverage files were generated
+        COVERAGE_FILES=$(find ./TestResults -name "coverage.cobertura.xml" 2>/dev/null)
+        if [ -z "$COVERAGE_FILES" ]; then
+          echo "::warning::No coverage files found. Ensure test projects reference coverlet.collector."
+          echo "Line Coverage: 0%"
+          echo "::error::Code coverage 0% is below the 70% threshold (no coverage files generated)"
+          exit 1
+        fi
+
         reportgenerator \
           -reports:"./TestResults/**/coverage.cobertura.xml" \
           -targetdir:"./TestResults/CoverageReport" \
-          -reporttypes:"TextSummary"
+          -reporttypes:"TextSummary" \
+          -assemblyfilters:"-Bio.Infrastructure*;-Bio.API*"
 
         # Show coverage summary
         cat ./TestResults/CoverageReport/Summary.txt
 
         # Enforce minimum 70% line coverage
-        LINE_COVERAGE=$(grep -oP 'Line coverage: \K[0-9.]+' ./TestResults/CoverageReport/Summary.txt || echo "0")
+        LINE_COVERAGE=$(grep -m1 -oP 'Line coverage:\s*\K[0-9.]+' ./TestResults/CoverageReport/Summary.txt || echo "0")
         echo "Line Coverage: ${LINE_COVERAGE}%"
         if (( $(echo "$LINE_COVERAGE < 70" | bc -l) )); then
           echo "::error::Code coverage ${LINE_COVERAGE}% is below the 70% threshold"

@@ -1,365 +1,210 @@
-# 🚀 Script de Ejecución - BioCommerce Caldas
+# Scripts - BioCommerce Caldas
 
-## Overview
+Guia de los scripts de automatizacion del repo. Cada script tiene una version
+**bash** (`.sh`, para Linux / macOS / WSL / Git Bash) y su contraparte
+**PowerShell** (`.ps1`, para Windows).
 
-Usamos un único script bash (`run.sh`) para ejecutar todos los servicios de forma rápida y sencilla.
+| Tarea | Linux / macOS / Git Bash | Windows (PowerShell) | Proposito |
+|---|---|---|---|
+| Instalacion prod | `install.sh` | `install.ps1` | Levanta todo el stack con Docker, aplica migraciones y deja que el backend siembre el catalogo. |
+| Migraciones EF | `migrate.sh` | `migrate.ps1` | Crea y aplica migraciones EF Core (interactivo) sobre los dos DbContext. |
+| Dev orchestrator | `run.sh` | `run.ps1` | Abre una ventana por servicio para desarrollo local. |
 
-**Funciona en:**
-- 🐧 Linux
-- 🍎 macOS  
-- 🪟 Windows (Git Bash o WSL)
-
-**Servicios disponibles:**
-- `docker` / `infra`: Infraestructura (Docker Compose)
-- `core`: Backend .NET (port 5050)
-- `ai`: AI Service Python (port 8000)
-- `web`: Frontend Web Next.js (port 3000)
-- `mobile`: Frontend Mobile Expo (port 19000)
-- `all`: Todos los servicios
+> Requisito comun: **Docker Desktop / Engine con contenedores Linux**, .NET 8 SDK
+> (para `migrate`/`run core`), Node 20 (`run web`/`mobile`) y un `.env` configurado.
 
 ---
 
-## Comando Básico
+## 1. install — Instalacion de produccion
+
+One-shot, **idempotente y reanudable por seccion**. Secciones en orden:
+`env -> infra -> migrate -> weights -> apps -> verify`.
+
+| Seccion | Que hace |
+|---|---|
+| `env` | Crea `.env` desde `.env.prod.example` si no existe (y pide editarlo). |
+| `infra` | Levanta SQL Server, Postgres, Redis, ChromaDB y espera `healthy`. |
+| `migrate` | Aplica migraciones EF Core (BioDbContext + ScientificDbContext) dentro de un contenedor SDK. |
+| `weights` | `dvc pull` de los pesos del CNN desde S3 (omite si ya estan). Requiere `dvc[s3]` + credenciales AWS. |
+| `apps` | Build y arranque de backend-core, ai-service, frontend-web, nginx. El backend **siembra el catalogo cientifico** en el primer boot (idempotente). |
+| `verify` | Imprime estado de contenedores. |
+
+### Linux / macOS / Git Bash
 
 ```bash
-# Levanta TODO
-bash run.sh
-
-# O explícitamente
-bash run.sh all
+./install.sh                 # corre todas las secciones desde cero
+./install.sh --from migrate  # reanuda desde una seccion
+./install.sh --only apps     # corre una sola seccion
+./install.sh --help
 ```
 
-### Servicios Individuales
+### Windows (PowerShell)
 
-```bash
-# Solo infraestructura
-bash run.sh docker
-
-# Solo backend
-bash run.sh core
-
-# Solo AI
-bash run.sh ai
-
-# Solo frontend web
-bash run.sh web
-
-# Solo frontend mobile
-bash run.sh mobile
+```powershell
+.\install.ps1                 # corre todas las secciones desde cero
+.\install.ps1 -From migrate   # reanuda desde una seccion
+.\install.ps1 -Only apps      # corre una sola seccion
 ```
 
-### Múltiples Servicios
-
-```bash
-# Levanta backend y AI (sin Docker)
-bash run.sh core ai
-
-# Levanta Docker, Backend y Frontend Web
-bash run.sh docker core web
-```
-
-### Resultado
-
-Cada servicio se abre en una **nueva ventana (bash) independiente**:
-
-```
-┌─────────────────────────┐
-│ Docker Compose          │  (bash: docker-compose up -d)
-└─────────────────────────┘
-┌─────────────────────────┐
-│ Backend .NET (5050)     │  (bash: dotnet watch run)
-└─────────────────────────┘
-┌─────────────────────────┐
-│ AI Service (8000)       │  (bash: uvicorn app.main:app --reload)
-└─────────────────────────┘
-┌─────────────────────────┐
-│ Frontend Web (3000)     │  (bash: npm run dev)
-└─────────────────────────┘
-```
-
-### Tips para Git Bash
-
-**Instalar Git Bash (si no lo tienes):**
-1. Descargar desde https://git-scm.com/download/win
-2. Instalar con opciones por defecto
-3. Acceder desde: `Start > Git Bash` o Click derecho en carpeta > Git Bash Here
-
-**Ejecutar el script:**
-```bash
-# Git Bash en el directorio del proyecto
-bash run.sh all
-```
-
-**Notas:**
-- Git Bash usa la ruta `/c/Users/...` en lugar de `C:\Users\...`
-- Los comandos bash funcionan igual que en Linux/macOS
-- Puedes usar todas las herramientas de Linux (grep, sed, etc.)
+> En la primera corrida, la seccion `env` crea `.env` y se detiene para que lo
+> edites con secretos reales. Luego re-ejecuta con `-From infra` / `--from infra`.
 
 ---
 
-## macOS / Linux
+## 2. migrate — Migraciones EF Core
 
-### Requisito: tmux (opcional pero recomendado)
+Script **interactivo**: elige el contexto y el nombre de la migracion. Ejecuta
+`dotnet ef migrations add` + `dotnet ef database update` con `-p Bio.Infrastructure -s Bio.API`.
 
-**macOS (Homebrew):**
-```bash
-brew install tmux
-```
+> Requiere `dotnet-ef` instalado en el host: `dotnet tool install --global dotnet-ef`.
 
-**Linux (Debian/Ubuntu):**
-```bash
-sudo apt-get install tmux
-```
-
-Si no tienes tmux, el script abrirá terminales individuales automáticamente.
-
-### Comando Básico
+### Linux / macOS / Git Bash
 
 ```bash
-# Levanta TODO
-bash run.sh
-
-# O explícitamente
-bash run.sh all
+bash migrate.sh
+# 1) BioDbContext  2) ScientificDbContext  3) Ambas
+# Luego ingresa el nombre (ej. InitialCreate)
 ```
 
-### Servicios Individuales
+### Windows (PowerShell)
 
-```bash
-# Solo infraestructura
-bash run.sh docker
+```powershell
+# Interactivo (mismo flujo que migrate.sh)
+.\migrate.ps1
 
-# Solo backend
-bash run.sh core
-
-# Solo AI
-bash run.sh ai
-
-# Solo frontend
-bash run.sh web
-
-# Solo mobile
-bash run.sh mobile
+# No interactivo (parametros opcionales)
+.\migrate.ps1 -Context ScientificDbContext -Name AddAiModelVersion
+.\migrate.ps1 -Context Both -Name InitialCreate
 ```
 
-### Múltiples Servicios
-
-```bash
-# Levanta backend y AI
-bash run.sh core ai
-
-# Levanta todo excepto mobile
-bash run.sh docker core ai web
-```
-
-### Con tmux (Recomendado)
-
-Si tienes tmux instalado, cada servicio corre en una ventana separada dentro de la misma sesión.
-
-**Ver todas las ventanas:**
-```bash
-tmux list-windows -t bioplatform
-```
-
-**Conectar a la sesión:**
-```bash
-tmux attach -t bioplatform
-```
-
-**Navegar en tmux:**
-- `Ctrl+B + n` : siguiente ventana
-- `Ctrl+B + p` : ventana anterior
-- `Ctrl+B + w` : lista de ventanas
-- `Ctrl+B + d` : desconectar (dejar corriendo en background)
-- `Ctrl+B + x` : cerrar ventana actual
-
-**Ejemplo completo:**
-```bash
-# Terminal 1: Ejecutar todo
-bash run.sh all
-
-# Terminal 2 (en otra ventana): Conectar a tmux
-tmux attach -t bioplatform
-
-# Dentro de tmux: navegar entre ventanas
-Ctrl+B n  # ver Docker logs
-Ctrl+B n  # ver Backend
-Ctrl+B n  # ver AI
-...
-
-# Desconectar y dejar corriendo
-Ctrl+B d
-
-# Más tarde, reconectar
-tmux attach -t bioplatform
-```
+`-Context` acepta `BioDbContext`, `ScientificDbContext` o `Both`.
 
 ---
 
-## ⚡ Quick Start Completo
+## 3. run — Orquestador de desarrollo
 
-```bash
-# Terminal 1
-bash run.sh
+Abre **una ventana por servicio**. Servicios: `docker` (alias `infra`), `core`,
+`ai`, `web`, `mobile`, `docs`, `all`.
 
-# Espera a que se abran las ventanas de cada servicio
-# Accede a http://localhost:3000
-```
-
-### macOS
-```bash
-# Terminal 1
-bash run.sh
-
-# Si instalaste tmux:
-tmux attach -t bioplatform
-
-# Navega con Ctrl+B + n
-```
-
-### Linux
-```bash
-# Terminal 1
-bash run.sh
-
-# Si instalaste tmux:
-tmux attach -t bioplatform
-```
-
----
-
-## 📍 URLs Después de Ejecutar
-
-| Servicio | URL | Estado |
+| Servicio | Comando que corre | Puerto |
 |---|---|---|
-| **Frontend Web** | http://localhost:3000 | Abierto en navegador |
-| **Backend API** | http://localhost:5050 | Disponible con Swagger |
-| **AI Service** | http://localhost:8000 | Disponible con Docs |
-| **pgAdmin** | http://localhost:5050 | UI de PostgreSQL |
-| **Adminer** | http://localhost:8090 | UI de SQL Server |
-| **Seq** | http://localhost:5341 | Logs centralizados |
+| `docker` / `infra` | `docker-compose up -d` (+ logs) | - |
+| `core` | `dotnet watch run --project Bio.API/Bio.API.csproj` | 5070 |
+| `ai` | activa `.venv` + `uvicorn app.main:app --reload` | 8000 |
+| `web` | `npm run dev` | 3000 |
+| `mobile` | `npx expo start` | 19000 |
+| `docs` | `npm run docs` (Mintlify dev server) | 3333 |
+
+> `all` incluye: `docker`, `core`, `ai`, `web`. `docs` y `mobile` son opt-in.
+
+### Windows (PowerShell)
+
+```powershell
+.\run.ps1                  # todos: docker, core, ai, web
+.\run.ps1 all
+.\run.ps1 core ai          # solo los listados
+.\run.ps1 docker core web
+.\run.ps1 docs             # solo documentacion Mintlify
+.\run.ps1 web docs         # web + documentacion
+```
+
+Cada servicio abre una ventana PowerShell independiente. `Ctrl+C` (o cerrar la
+ventana) detiene ese servicio.
+
+> Si PowerShell bloquea la ejecucion (`running scripts is disabled`), habilita
+> scripts locales para tu usuario:
+> ```powershell
+> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+> ```
+
+### Linux / macOS / Git Bash
+
+```bash
+bash run.sh                # todos (docker, core, ai, web)
+bash run.sh core ai        # solo los listados
+bash run.sh docker core web
+bash run.sh docs           # solo documentacion Mintlify
+bash run.sh web docs       # web + documentacion
+```
+
+- **Linux con tmux**: cada servicio corre en una ventana de la sesion `bioplatform`.
+  - `tmux attach -t bioplatform` para conectar.
+  - `Ctrl+B n` / `Ctrl+B p` navegar, `Ctrl+B d` desconectar.
+- **Sin tmux**: abre terminales individuales (`gnome-terminal` / `xterm`).
+- **Git Bash (Windows)**: abre una ventana `mintty`/`bash` por servicio.
 
 ---
 
-## 🔍 Troubleshooting
+## Tests (.NET)
 
-### Git Bash en Windows: "bash: run.sh: command not found"
-
-Asegúrate de estar en el directorio correcto:
 ```bash
-cd /c/Users/TuUsuario/Projects/bioplatform
-bash run.sh
+# Con descripcion detallada
+dotnet test --logger "console;verbosity=detailed" src/Bio.Backend.Core/Bio.UnitTests/Bio.UnitTests.csproj
+
+# Simple
+dotnet test src/Bio.Backend.Core/Bio.UnitTests/Bio.UnitTests.csproj
 ```
 
-### "Port already in use"
+---
 
-Si un puerto está en uso:
+## URLs despues de ejecutar
+
+| Servicio | URL |
+|---|---|
+| Frontend Web | http://localhost:3000 |
+| Backend API (Swagger) | http://localhost:5070 |
+| AI Service (Docs) | http://localhost:8000 |
+| Documentacion (Mintlify) | http://localhost:3333 |
+| pgAdmin | http://localhost:5050 |
+| Adminer | http://localhost:8090 |
+| Seq (logs) | http://localhost:5341 |
+
+---
+
+## Troubleshooting
+
+### `.env` requerido
+
+Los servicios necesitan `.env` configurado antes de correr.
+
+```bash
+# Desarrollo
+cp .env.example .env
+
+# Produccion (install.sh / install.ps1 lo hacen solos en la seccion 'env')
+cp .env.prod.example .env
+```
+
+Ver [DEVELOPMENT.md](./DEVELOPMENT.md) para detalle de variables.
+
+### Puerto en uso
+
+**Windows (PowerShell):**
+```powershell
+Get-NetTCPConnection -LocalPort 5070 | Select-Object OwningProcess
+Stop-Process -Id <PID>
+```
 
 **Git Bash / macOS / Linux:**
 ```bash
-# Buscar proceso usando puerto 5050
-netstat -ano | grep :5050  # Linux/Git Bash
-lsof -i :5050             # macOS
-
-# Matar el proceso
+netstat -ano | grep :5070   # Linux / Git Bash
+lsof -i :5070               # macOS
 kill <PID>
 ```
 
-### macOS/Linux: "venv not found"
+### `running scripts is disabled on this system` (PowerShell)
 
-Asegúrate de haber ejecutado el setup:
-```bash
-bash setup.sh
-```
-
-### macOS/Linux: Terminales no se abren (sin tmux)
-
-Instala tmux:
-```bash
-brew install tmux  # macOS
-sudo apt-get install tmux  # Linux
-```
-
-Or prueba con `gnome-terminal` en Linux.
-
----
-
-## 💡 Tips y Trucos
-
-### Ver logs en tiempo real
-
-**Windows PowerShell:**
 ```powershell
-# En otra ventana PowerShell
-docker-compose logs -f
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
-**Windows Git Bash:**
-```bash
-# En otra ventana Git Bash
-docker-compose logs -f
-```
+### `venv not found` (servicio ai)
 
-### Detener un servicio específico
-
-**Windows PowerShell:**
-- Cierra la ventana del servicio (Ctrl+C o el botón X)
-
-**Windows Git Bash:**
-- Cierra la ventana bash del servicio (Ctrl+C o el botón X)
-
-**macOS/Linux con tmux:**
-```bash
-# Abre el servicio que quieres detener
-tmux select-window -t bioplatform:ai
-
-# Presiona Ctrl+C para detenerlo
-```
-
-### Recargar un servicio sin cerrar otros
-
-**Windows (PowerShell o Git Bash):**
-1. Cierra la ventana del servicio (Ctrl+C o cerrar ventana)
-2. Ejecuta de nuevo: `.\run.ps1 core` (PowerShell) o `bash run.sh core` (Git Bash)
-
-**macOS/Linux:**
-1. En tmux, ve a esa ventana
-2. Presiona Ctrl+C
-3. Ejecuta el comando nuevamente en esa ventana
-
----
-
-## 📝 Scripts Disponibles
-
-### run.ps1 (Windows PowerShell)
-- Abre una ventana PowerShell por cada servicio
-- Cada ventana es independiente
-- Ctrl+C para detener un servicio
-
-**Requisitos:**
-- PowerShell (incluído en Windows)
-- El proyecto tiene que estar en una ruta sin espacios (recomendado)
-
-### run.sh (macOS/Linux)
-- Usa tmux si está disponible (recomendado)
-- Si no tmux, abre terminales individuales
-- Mucho más flexible que Windows
-
-**Requisitos:**
-- bash (incluído en macOS/Linux)
-- tmux (opcional pero recomendado)
-- OR gnome-terminal/xterm (para Linux sin tmux)
-
----
-
-## 🚨 Importante
-
-**El script `.env` DEBE estar configurado** antes de ejecutar los servicios. Ver [DEVELOPMENT.md](./DEVELOPMENT.md) para más información.
+El venv debe existir en la raiz como `.venv`. Crealo e instala dependencias:
 
 ```bash
-# Copia el archivo de ejemplo
-cp .env.example .env
-
-# Edita con tus valores
-nano .env  # o usa tu editor favorito
+python -m venv .venv
+# Windows:  .\.venv\Scripts\Activate.ps1
+# bash:     source .venv/Scripts/activate   (Windows)  |  source .venv/bin/activate (Linux/mac)
+pip install -r src/Bio.Backend.AI/requirements.txt
 ```

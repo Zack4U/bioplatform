@@ -1,0 +1,99 @@
+---
+title: "Lineamientos Generales"
+description: "Lineamientos generales para el desarrollo del proyecto."
+icon: "book"
+---
+
+# 1. Documentación Obligatoria del Proyecto
+
+## 1.1 Documento de Visión
+
+* [X] **Resumen ejecutivo** (máx. 2 páginas)  
+* [X] **Descripción** del problema y oportunidad  
+* [X] **Stakeholders** identificados  
+* [X] **Alcance** del producto (In-scope / Out-of-scope)  
+* [X] **Características** principales del sistema  
+* [X] **Restricciones** técnicas y de negocio  
+* [X] **Supuestos** y dependencias  
+* [X] **Criterios de éxito** medibles
+
+## 1.2 Documento de Arquitectura
+
+* [X] **Diagramas:** Arquitectura general, componentes e interacciones, y despliegue (*deployment*).  
+* [X] **Patrón arquitectónico:** Definición (Clean Architecture, Hexagonal, etc.).  
+* [X] **Stack tecnológico:** Listado completo con versiones.  
+* [X] **Flujo de datos:** Detalle del movimiento entre capas.  
+* [X] **Seguridad:** Estrategia de autenticación, autorización y encriptación.  
+* [X] **Integraciones:** Servicios externos y APIs.  
+* [X] **Operatividad:** Manejo de errores, logging y estrategia de escalabilidad.
+
+## 1.3 Documento de Base de Datos
+
+* [X] **Modelado:** Diagrama ER completo y modelo relacional normalizado (mínimo 3FN).  
+* [X] **Diccionario de datos:** Tablas, campos, tipos y restricciones.  
+* [X] **Optimización:** Índices, Stored Procedures, funciones y triggers.  
+* [X] **Continuidad:** Política de respaldos, recuperación y scripts de migración versionados.  
+* [X] **Privacidad:** Estrategia de cifrado y anonimización de datos sensibles.
+
+## 1.4 Manuales de Usuario y Sistema
+
+* [X] **Manual de Usuario:** Guía de inicio, funcionalidades con capturas, FAQ y glosario.  
+* [X] **Manual de Instalación:** Requisitos, paso a paso en Windows Server 2025/Linux, Docker, SSL y Troubleshooting.  
+* [X] **Manual de Mantenimiento:** Backup/restauración, monitoreo, gestión de roles y rotación de secretos.  
+* [X] **Manual Técnico de Desarrollo:** Estándares de código, documentación de APIs (Swagger), Guía de testing y CI/CD.
+
+# 2. Requisitos Técnicos Comunes
+
+## 2.1 Backend (.NET 8+)
+
+* [X] Implementación de Clean Architecture / Hexagonal.  
+* [X] Uso de CQRS con MediatR.  
+* [X] Repository Pattern y Unit of Work.  
+* [X] Validación con FluentValidation y mapeo con AutoMapper/Mapperly.  
+* [X] Pruebas unitarias con xUnit (cobertura mín. 70%).
+
+## 2.2 Frontend Web (Next.js 14 - App Router)
+
+* [X] TypeScript obligatorio.  
+* [X] Gestión de estado (Zustand/Redux) y Server State (React Query).  
+* [X] UI con Shadcn/ui o Material-UI.  
+* [X] Formularios con React Hook Form + Zod.  
+* [ ] Accesibilidad WCAG 2.1 Nivel AA y Responsive Design.
+
+## 2.3 IA y Datos
+
+* [X] **Modelo Predictivo:** Entrenado, evaluado y con métricas documentadas.  
+* [ ] **IA Generativa:** Integración con LLMs (OpenAI, Gemini, etc.).  
+* [ ] **RAG:** Implementación con embeddings y base vectorial (ChromaDB, Pinecone).  
+* [X] **MLOps:** Pipeline de datos y versionado de modelos (MLflow/DVC).
+
+## 2.4 Seguridad y DevOps
+
+* [X] **Auth:** JWT con Refresh Tokens, RBAC y 2FA (TOTP).  
+* [X] **Protección:** Rate limiting, sanitización de inputs y protección XSS/SQLi.  
+* [X] **Docker:** Dockerfile optimizado (multi-stage) y Docker Compose.  
+* [X] **CI/CD:** Pipeline funcional en GitHub Actions o GitLab CI.
+
+# 3. Cronograma de Entregables (Metodología Scrum)
+
+*8 Sprints de 2 semanas cada uno (Total: 16 semanas).*
+
+| Fase | Hito / Entregable Principal | Estado |
+| :---- | :---- | :---- |
+| **Semana 2** | Visión, Arquitectura inicial, Modelo ER y Product Backlog. | [X] |
+| **Semana 4** | Estructura Backend, Seeders BD y Wireframes Frontend. | [X] |
+| **Semana 6** | Auth funcional, Componentes base y Dataset de IA preprocesado. | [X] |
+| **Semana 8** | CRUDs principales e Integración Backend-Frontend operativa. | [X] |
+| **Semana 10** | Lógica de negocio compleja y RAG/Chatbot funcional. | [ ] |
+| **Semana 12** | API documentada, Interfaz responsive y IA optimizada. | [X] |
+| **Semana 14** | Contenedores Docker, Testing (>60%) y Seguridad completa. | [X] |
+| **Semana 16** | Entrega final: Manuales, Video Demo y Sistema desplegado. | [ ] |
+
+# 4. Criterios de Evaluación (Rúbrica)
+
+* **Funcionalidad (25%):** Casos de uso cumplidos e integración total.  
+* **IA (20%):** Accuracy > 80% y RAG funcional.  
+* **Arquitectura (20%):** Código limpio y cobertura de pruebas.  
+* **Seguridad (15%):** 2FA, RBAC y gestión de secretos.  
+* **Despliegue (10%):** Docker y TRL 6-7.  
+* **Documentación (10%):** Manuales claros y diagramas precisos.

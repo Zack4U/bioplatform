@@ -1,0 +1,952 @@
+---
+title: "Manual de Instalacion y Configuracion"
+description: "Despliegue completo en produccion con Docker y script idempotente."
+icon: "server"
+---
+
+## 1. Introduccion
+
+Este manual cubre la instalacion, configuracion y puesta en marcha de BioPlatform Caldas en un servidor de **produccion**. Esta dirigido a administradores de sistemas y personal de DevOps.
+
+Para correr el proyecto en modo **desarrollo** (servicios locales con hot-reload) ver la [Guia de Desarrollo](/guides/development).
+
+### 1.1 Alcance
+
+Cubre la instalacion completa de:
+
+- Infraestructura de bases de datos (SQL Server, PostgreSQL/PostGIS, Redis, ChromaDB)
+- Backend .NET 8 (API principal)
+- Servicio de IA (Python/FastAPI)
+- Frontend Web (Next.js 14)
+- Reverse proxy Nginx (SSL/HTTPS)
+- App movil (React Native/Expo — compilacion con EAS)
+
+<Note>
+  El Frontend Mobile no se despliega en Docker. Se distribuye como APK/AAB
+  mediante EAS Build. Ver [seccion 13](/manuals/instalacion#13-app-movil--compilacion-eas).
+</Note>
+
+### 1.2 Topologia del Sistema
+
+```
+                    +------------------+
+                    |  Cliente         |
+                    |  Web / Mobile    |
+                    +--------+---------+
+                             |
+                    +--------v---------+
+                    |  Nginx  :80/443  |
+                    |  Reverse Proxy   |
+                    +----+------+------+
+                         |      |      \
+              +----------+   +--+--+  +--------+
+              | Backend       | AI  |  | Web    |
+              | .NET 8        | Py  |  | Next.js|
+              | :5000         |:8000|  | :3000  |
+              +----+----------+--+--+  +--------+
+                   |             |
+              +----+----+    +---+----+
+              |SQL Server|  |Postgres |
+              |Transacc. |  |Cientifico|
+              +----------+  +---------+
+              +------+  +--------+
+              |Redis |  |ChromaDB|
+              +------+  +--------+
+```
+
+---
+
+## 2. Requisitos del Sistema
+
+### 2.1 Hardware
+
+#### Minimo (Desarrollo Local)
+| Componente | Especificacion |
+|------------|----------------|
+| CPU | 4 nucleos (x86\_64 / ARM64) |
+| RAM | 8 GB |
+| Almacenamiento | 20 GB SSD |
+| Red | Conexion a internet |
+
+#### Recomendado (Produccion)
+| Componente | Especificacion |
+|------------|----------------|
+| CPU | 8 nucleos o mas |
+| RAM | 16 GB o mas |
+| Almacenamiento | 50 GB SSD |
+| Red | Banda ancha con IP publica/fija |
+
+### 2.2 Software Requerido
+
+#### Produccion (solo Docker en el host)
+| Herramienta | Version | Proposito |
+|-------------|---------|-----------|
+| Docker Engine | 24.x+ | Orquestacion de servicios |
+| Docker Compose plugin | 2.x+ | Incluido con Docker Engine |
+| Git | 2.x+ | Clonar el repositorio |
+| DVC + soporte S3 | actual | Descarga de pesos CNN (`pip install 'dvc[s3]'`) |
+
+<Note>
+  En produccion, **.NET SDK, Node.js y Python NO se necesitan en el host**: todo se
+  compila dentro de las imagenes Docker multi-stage. Solo se requieren en el host
+  para desarrollo local.
+</Note>
+
+#### Desarrollo Local (servicios fuera de Docker)
+| Herramienta | Version |
+|-------------|---------|
+| .NET SDK | 8.0.x |
+| Node.js | 18.x LTS o 20.x LTS |
+| Python | 3.11.x |
+
+### 2.3 Puertos de Red
+
+| Puerto | Servicio | Entorno |
+|--------|----------|---------|
+| 80 | Nginx (HTTP) | Produccion |
+| 443 | Nginx (HTTPS) | Produccion |
+| 1433 | SQL Server | Ambos |
+| 5433 | PostgreSQL (host → contenedor 5432) | Ambos |
+| 6379 | Redis | Ambos |
+| 8001 | ChromaDB | Ambos |
+| 3000 | Frontend Web (directo, sin Nginx) | Desarrollo |
+| 5070 | Backend API (directo, sin Nginx) | Desarrollo |
+| 5000 | Backend API (interno Docker en prod) | Produccion |
+| 8000 | AI Service (directo o interno) | Ambos |
+| 5341 | Seq (logs) | Solo desarrollo |
+| 5050 / 8090 | pgAdmin / Adminer | Solo desarrollo |
+
+<Note>
+  En produccion todos los servicios son accesibles unicamente a traves de Nginx
+  en los puertos 80/443. Los puertos de contenedores individuales son internos a
+  la red Docker.
+</Note>
+
+### 2.4 Cuentas y Servicios Externos
+
+| Servicio | Proposito | Requerido |
+|----------|-----------|:---------:|
+| AWS S3 | Almacenamiento de imagenes de especies y productos | Si |
+| OpenAI API Key | RAG / generacion de planes de negocio (ai-service) | Solo si usas RAG |
+| Cloudinary | Optimizacion de imagenes en el frontend | Si |
+| Cuenta Expo / EAS | Compilacion de la app movil | Solo si distribuyes la app |
+| Google Play Console | Publicar en Android Play Store | Solo si publicas en la tienda |
+
+---
+
+## 3. Preparacion del Entorno
+
+### 3.1 Instalar Docker
+
+#### Windows (Windows Server / Windows 11)
+
+1. Descargar Docker Desktop desde [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+2. Ejecutar el instalador y seleccionar **"Use WSL 2 instead of Hyper-V"**
+3. Habilitar integracion con WSL2:
+   ```powershell
+   wsl --install -d ubuntu
+   docker info
+   ```
+4. Settings → Resources → Advanced → minimo 4 GB RAM, 2 CPUs
+
+#### Linux (Ubuntu/Debian)
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y ca-certificates curl gnupg lsb-release
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo usermod -aG docker $USER && newgrp docker
+sudo systemctl enable docker && sudo systemctl start docker
+docker --version && docker compose version
+```
+
+### 3.2 Instalar DVC (para pesos del modelo CNN)
+
+```bash
+# Instalar DVC con soporte para S3 (necesario en el host para la seccion weights)
+pip install 'dvc[s3]'
+```
+
+### 3.3 Clonar el Repositorio
+
+```bash
+git clone https://github.com/Zack4U/bioplatform.git
+cd bioplatform
+```
+
+### 3.4 Estructura de Directorios
+
+```
+bioplatform/
+├── .docs/                        # Documentacion (Mintlify)
+├── .github/workflows/            # CI/CD GitHub Actions
+├── docker/
+│   └── nginx/
+│       ├── nginx.conf            # Configuracion del reverse proxy
+│       └── ssl/                  # Certificados SSL (fullchain.pem + privkey.pem)
+├── src/
+│   ├── Bio.Backend.Core/         # API .NET 8 + Dockerfile
+│   ├── Bio.Backend.AI/           # FastAPI Python + Dockerfile
+│   │   └── data/species_catalog/ # Archivos de poblado (CSV/JSON/SQL)
+│   ├── Bio.Frontend.Web/         # Next.js 14 + Dockerfile
+│   └── Bio.Frontend.Mobile/      # React Native Expo — APK via EAS
+├── .env.example                  # Plantilla de variables para DESARROLLO
+├── .env.prod.example             # Plantilla de variables para PRODUCCION
+├── install.sh / install.ps1      # Instalador de produccion (idempotente, reanudable)
+├── migrate.sh / migrate.ps1      # Migraciones EF Core — solo para DESARROLLO
+├── run.sh / run.ps1              # Orquestador local — solo para DESARROLLO
+├── docker-compose.yml            # Infraestructura: BD + cache (base, dev + prod)
+├── docker-compose.override.yml   # Herramientas UI dev: pgAdmin, Adminer, Seq, MongoDB
+└── docker-compose.prod.yml       # Servicios compilados: backend, AI, web, nginx (prod)
+```
+
+<Note>
+  Los archivos `run.sh`, `migrate.sh` y `docker-compose.override.yml` son
+  exclusivamente para **desarrollo local**. Para produccion usar `install.sh`/`install.ps1`.
+</Note>
+
+---
+
+## 4. Variables de Entorno
+
+### 4.1 Crear el Archivo .env
+
+Para produccion usar siempre `.env.prod.example` como plantilla:
+
+```bash
+cp .env.prod.example .env
+# Editar .env con secretos reales ANTES de correr install.sh
+chmod 600 .env   # Linux: restringir acceso
+```
+
+<Note>
+  El instalador (`install.sh` seccion `env`) copia automaticamente `.env.prod.example`
+  a `.env` si no existe y se detiene para que lo edites.
+</Note>
+
+### 4.2 Referencia Completa de Variables
+
+Todas las variables que consume `docker-compose.prod.yml`:
+
+#### SQL Server (Transaccional)
+
+```env
+# Contrasena del usuario SA (politica de complejidad de SQL Server)
+DB_SQL_PASSWORD=ChangeMeDbPass_123
+
+# Connection string para backend-core (ConnectionStrings__DefaultConnection)
+# Host = nombre del servicio Docker "sqlserver", puerto interno 1433
+DB_CONNECTION_STRING_SQL=Server=sqlserver,1433;Database=BioCommerce_Transactional;User Id=sa;Password=ChangeMeDbPass_123;TrustServerCertificate=True;Encrypt=False
+```
+
+#### PostgreSQL + PostGIS (Cientifico)
+
+```env
+DB_PG_USER=bioadmin
+DB_PG_PASSWORD=ChangeMeDbPass_123
+DB_PG_DATABASE=BioCommerce_Scientific
+
+# Connection string para backend-core (ConnectionStrings__ScientificConnection)
+# Host = "postgres", puerto interno 5432 (el host usa 5433)
+DB_CONNECTION_STRING_PG=Host=postgres;Port=5432;Database=BioCommerce_Scientific;Username=bioadmin;Password=ChangeMeDbPass_123
+# El ai-service usa DB_PG_USER/PASSWORD/DATABASE directamente (variables PG_*)
+```
+
+#### Redis (Cache + Hangfire)
+
+```env
+REDIS_PASSWORD=ChangeMeRedisPass_123
+# Host = "redis", puerto interno 6379
+REDIS_CONNECTION_STRING=redis:6379,password=ChangeMeRedisPass_123,abortConnect=false
+```
+
+#### JWT (compartido backend-core + ai-service)
+
+```bash
+# Generar secreto de 64 caracteres base64
+openssl rand -base64 64
+```
+
+```env
+JWT_SECRET=REPLACE_WITH_64_CHAR_SECRET
+JWT_ISSUER=bioplatform-api
+JWT_AUDIENCE=bioplatform-clients
+JWT_EXPIRATION_MINUTES=60
+JWT_REFRESH_EXPIRATION_DAYS=7
+```
+
+#### Poblado del catalogo cientifico
+
+```env
+# true = backend-core puebla especies/imagenes/distribuciones al arrancar (idempotente)
+SEED_SCIENTIFIC_ON_STARTUP=true
+```
+
+#### AWS S3 (subida de imagenes — backend-core)
+
+```env
+S3_BUCKET_NAME=bioplatform-public
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=REPLACE_ME
+AWS_SECRET_ACCESS_KEY=REPLACE_ME
+```
+
+<Note>
+  Las mismas credenciales AWS las usa el instalador (`install.sh` seccion `weights`)
+  para descargar los pesos del modelo CNN via DVC.
+</Note>
+
+#### IA — PyTorch device
+
+```env
+# cpu: sin GPU (default). cu121 / cu124: NVIDIA GPU (requiere nvidia-container-toolkit)
+TORCH_DEVICE=cpu
+```
+
+#### OpenAI (ai-service: RAG / planes de negocio)
+
+```env
+OPENAI_API_KEY=sk-REPLACE_ME
+```
+
+#### CORS y URLs publicas
+
+```env
+# URL publica del frontend (para CORS en backend-core)
+WEB_APP_URL=https://bioplatform.co
+
+# Origenes permitidos por ai-service (lista separada por comas)
+CORS_ORIGINS=https://bioplatform.co
+```
+
+#### Frontend — variables de build (NEXT_PUBLIC_*)
+
+Estas variables se inyectan en tiempo de compilacion de la imagen Docker del frontend. Deben estar en `.env` antes de correr la seccion `apps` del instalador.
+
+```env
+# Rutas relativas (detras de Nginx): recomendadas para produccion
+NEXT_PUBLIC_API_BASE_URL=/api
+NEXT_PUBLIC_AI_API_BASE_URL=/ai/api/v1
+
+# Cloudinary (optimizacion de imagenes)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+
+# Configuracion comercial
+NEXT_PUBLIC_TAX_RATE=0
+NEXT_PUBLIC_SHIPPING_COST_COP=15000
+NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD=150000
+```
+
+### 4.3 Verificar Variables antes de Instalar
+
+```bash
+# Detectar valores placeholder sin reemplazar
+grep -n "REPLACE_ME\|REPLACE_WITH\|your_cloud_name\|ChangeMeDbPass" .env
+# Si muestra resultados, completar esas variables antes de continuar
+```
+
+---
+
+## 5. Despliegue en Produccion con install.sh
+
+El instalador es **idempotente** y **reanudable por secciones**: `env → infra → migrate → weights → apps → verify`. Compila y levanta todo el stack dentro de imagenes Docker; **no requiere instalar .NET, Node.js ni Python en el host**.
+
+### 5.1 Requisitos del Servidor
+
+- Docker Engine 24+ con **contenedores Linux** y el plugin `docker compose`
+- Puertos `80` y `443` abiertos hacia internet (Nginx). El resto son internos.
+- DVC con soporte S3 instalado en el host (`pip install 'dvc[s3]'`)
+
+### 5.2 Paso a Paso
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/Zack4U/bioplatform.git
+cd bioplatform
+
+# 2. El instalador crea .env desde .env.prod.example en la 1a corrida y se detiene
+#    (o crealo manualmente):
+cp .env.prod.example .env
+#    EDITAR .env con secretos reales (BD, JWT, OpenAI, AWS, dominio, Cloudinary)
+
+# 3. Ejecutar el instalador completo
+#    Linux / macOS / WSL:
+bash install.sh
+#    Windows Server (PowerShell, contenedores Linux activos):
+.\install.ps1
+```
+
+Que hace cada seccion:
+
+| Seccion | Accion |
+|---------|--------|
+| `env` | Verifica que `.env` exista; lo crea desde `.env.prod.example` y se detiene si falta. |
+| `infra` | Levanta SQL Server, PostgreSQL (PostGIS), Redis y ChromaDB; espera a que esten `healthy`. |
+| `migrate` | Aplica migraciones EF Core a **BioDbContext** (SQL Server) y **ScientificDbContext** (Postgres) usando un contenedor temporal del SDK. Crea el esquema; los datos mock del marketplace vienen embebidos en la migracion de BioDb. |
+| `weights` | `dvc pull` de los pesos del modelo CNN desde S3 (`s3://bioplatform-private/dvc-storage`). Salta si los pesos ya estan presentes. Requiere `dvc[s3]` y credenciales AWS. |
+| `apps` | Compila y levanta `backend-core`, `ai-service`, `frontend-web` y `nginx`. En el primer arranque el backend **puebla automaticamente el catalogo cientifico** (especies, imagenes, distribuciones, registro del modelo de IA) — idempotente. |
+| `verify` | Muestra estado de los contenedores. |
+
+### 5.3 Reanudar desde una Seccion
+
+```bash
+bash install.sh --from migrate   # corre migrate, apps, verify
+bash install.sh --only apps      # corre solo apps
+
+# PowerShell:
+.\install.ps1 -From migrate
+.\install.ps1 -Only apps
+```
+
+### 5.4 Poblado del Catalogo Cientifico (PostgreSQL)
+
+El backend puebla automaticamente al arrancar cuando `SEED_SCIENTIFIC_ON_STARTUP=true` (valor por defecto). Es **idempotente** y usa archivos montados desde `src/Bio.Backend.AI/data/species_catalog`:
+
+1. `species_import_llm.csv` — catalogo completo (IDs deterministicos UUIDv5 derivados del nombre cientifico)
+2. `species_economic_potential.json` — potencial economico
+3. `species_traditional_uses.json` — usos tradicionales
+4. `insert_species_images.sql` — galeria de imagenes
+5. `seed_ai_metadata.sql` — registro del modelo activo en `ai_model_versions` + `ai_training_jobs`
+6. Distribuciones geograficas — 10 puntos por especie en municipios reales de Caldas
+
+Seguir el progreso:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend-core
+```
+
+### 5.5 PyTorch — CPU vs GPU
+
+El Dockerfile del servicio de IA instala PyTorch segun `TORCH_DEVICE` del `.env`:
+
+| Valor | Cuando usar |
+|-------|-------------|
+| `cpu` | Sin GPU (default). Funciona en cualquier servidor. |
+| `cu121` | NVIDIA GPU con CUDA 12.1. Requiere `nvidia-container-toolkit`. |
+| `cu124` | NVIDIA GPU con CUDA 12.4. |
+
+```bash
+# Override puntual sin tocar .env:
+docker compose -f docker-compose.yml -f docker-compose.prod.yml build \
+  --build-arg TORCH_DEVICE=cu121 ai-service
+```
+
+Para GPU, instalar `nvidia-container-toolkit` en el host y agregar `deploy.resources.reservations.devices` al servicio `ai-service` en el compose.
+
+### 5.6 Modelo de IA — Pesos DVC + Registro en BD
+
+Los pesos del clasificador CNN **no estan en git**; se versionan con DVC en S3 y se descargan en la seccion `weights`.
+
+- **Fuente de verdad = la BD.** Al arrancar, el ai-service consulta `ai_model_versions` y carga **solo** la version marcada `is_active = true`. Si ninguna esta activa, `/api/v1/classify` devuelve 503.
+- **Primer arranque:** el `ai-service` depende de Postgres pero el registro del modelo lo siembra `backend-core` en la seccion `apps`. Si el ai-service arranca antes del seed, reiniciarlo:
+  ```bash
+  docker compose -f docker-compose.yml -f docker-compose.prod.yml restart ai-service
+  ```
+
+Configurar DVC manualmente (alternativa al instalador):
+
+```bash
+pip install 'dvc[s3]'
+cd src/Bio.Backend.AI
+dvc remote modify --local s3-remote access_key_id     TU_ACCESS_KEY
+dvc remote modify --local s3-remote secret_access_key TU_SECRET_KEY
+dvc pull
+cd ../..
+```
+
+Si no tienes acceso al bucket S3, copiar manualmente `best_model.pth` en `src/Bio.Backend.AI/data/weights/<version>/` antes de la seccion `apps`.
+
+### 5.7 Verificacion Post-Despliegue
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+curl http://localhost/api/health   # API via Nginx
+```
+
+| Servicio (via Nginx en :80) | Ruta |
+|-----------------------------|------|
+| Frontend Web | `/` |
+| Backend API | `/api/` |
+| Servicio IA (FastAPI) | `/ai/` |
+| Swagger UI | `/swagger` |
+| Dashboard Hangfire | `/hangfire` |
+
+---
+
+## 6. Archivos Docker Compose
+
+### 6.1 Los Tres Archivos y sus Roles
+
+| Archivo | Que incluye | Uso |
+|---------|-------------|-----|
+| `docker-compose.yml` | SQL Server, PostgreSQL, Redis, ChromaDB | Base — dev y prod |
+| `docker-compose.override.yml` | pgAdmin, Adminer, Seq, MongoDB | Solo **desarrollo** (se carga automaticamente) |
+| `docker-compose.prod.yml` | backend-core, ai-service, frontend-web, nginx | Solo **produccion** |
+
+```bash
+# Desarrollo — levanta infraestructura + herramientas UI (override se carga solo)
+docker compose up -d
+
+# Produccion — stack completo
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+<Note>
+  `docker-compose.override.yml` se carga **automaticamente** junto a `docker-compose.yml`
+  solo cuando no se especifican `-f` explicitamente. En produccion siempre usar
+  `-f docker-compose.yml -f docker-compose.prod.yml`.
+</Note>
+
+### 6.2 Comandos de Operacion (Produccion)
+
+```bash
+# Ver estado
+docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+
+# Logs de un servicio
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend-core
+
+# Reiniciar un servicio
+docker compose -f docker-compose.yml -f docker-compose.prod.yml restart ai-service
+
+# Detener (sin borrar datos)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+
+# Detener y BORRAR datos (destruye las BD!)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down -v
+
+# Actualizar tras git pull
+git pull && bash install.sh --from migrate
+```
+
+### 6.3 Personalizar Recursos
+
+```yaml
+# En docker-compose.prod.yml — agregar limites al servicio deseado
+services:
+  sqlserver:
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+```
+
+### 6.4 Gestion de Volumenes
+
+```bash
+# Listar volumenes
+docker volume ls
+
+# Respaldar PostgreSQL
+docker run --rm \
+  -v bioplatform_postgres_data:/source \
+  -v $(pwd):/backup alpine \
+  tar czf /backup/postgres_backup.tar.gz -C /source .
+
+# Restaurar
+docker run --rm \
+  -v bioplatform_postgres_data:/destination \
+  -v $(pwd):/backup alpine \
+  tar xzf /backup/postgres_backup.tar.gz -C /destination
+```
+
+---
+
+## 7. HTTPS / SSL
+
+### 7.1 Certificados para Desarrollo (Self-Signed)
+
+```bash
+mkdir -p docker/nginx/ssl
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout docker/nginx/ssl/privkey.pem \
+  -out docker/nginx/ssl/fullchain.pem \
+  -subj "/C=CO/ST=Caldas/L=Manizales/O=BioPlatform/CN=localhost"
+```
+
+### 7.2 Certificados para Produccion (Let's Encrypt)
+
+```bash
+sudo apt install -y certbot
+sudo certbot certonly --standalone -d bioplatform.co
+
+# Copiar al directorio que monta Nginx
+sudo cp /etc/letsencrypt/live/bioplatform.co/fullchain.pem docker/nginx/ssl/
+sudo cp /etc/letsencrypt/live/bioplatform.co/privkey.pem docker/nginx/ssl/
+
+# Renovacion automatica
+sudo certbot renew --dry-run
+```
+
+### 7.3 Habilitar HTTPS en Nginx
+
+El archivo `docker/nginx/nginx.conf` ya incluye el bloque HTTPS comentado. Para activarlo:
+
+1. Coloca `fullchain.pem` y `privkey.pem` en `docker/nginx/ssl/`
+2. Descomenta el bloque `server { listen 443 ssl http2; ... }` en `docker/nginx/nginx.conf`
+3. Cambia `server_name` al dominio real (ej. `bioplatform.co`)
+4. Recarga Nginx:
+   ```bash
+   docker compose -f docker-compose.yml -f docker-compose.prod.yml restart nginx
+   ```
+
+Referencia de la configuracion actual de upstreams en `docker/nginx/nginx.conf`:
+
+| Upstream | Servicio Docker | Puerto |
+|----------|----------------|--------|
+| `backend_core` | `backend-core` | 5000 |
+| `ai_service` | `ai-service` | 8000 |
+| `frontend_web` | `frontend-web` | 3000 |
+
+Rutas configuradas:
+
+| Ruta Nginx | Upstream |
+|------------|----------|
+| `/api/` | `backend_core` |
+| `/swagger` | `backend_core` |
+| `/ai/` | `ai_service` |
+| `/api/auth/` | `backend_core` (con rate limit mas estricto) |
+| `/` | `frontend_web` |
+
+---
+
+## 8. Administracion de Bases de Datos
+
+Las migraciones EF Core se aplican via el instalador (seccion `migrate`). Los siguientes comandos son para inspeccion manual.
+
+### 8.1 SQL Server (Produccion)
+
+```bash
+# Conectar al contenedor de produccion
+docker exec -it bioplatform-sqlserver-prod /opt/mssql-tools18/bin/sqlcmd \
+  -S localhost -U sa -P "$DB_SQL_PASSWORD" -C
+
+# Verificar base de datos
+SELECT name FROM sys.databases;
+GO
+EXIT
+```
+
+### 8.2 PostgreSQL (Produccion)
+
+```bash
+# Conectar al contenedor de produccion
+# Usuario: bioadmin (definido en DB_PG_USER de .env.prod.example)
+docker exec -it bioplatform-postgres-prod psql -U bioadmin -d BioCommerce_Scientific
+
+# Verificar PostGIS
+SELECT PostGIS_Version();
+\q
+```
+
+### 8.3 Verificar Conexiones desde el Host
+
+```bash
+# SQL Server (requiere sqlcmd instalado en el host)
+sqlcmd -S localhost,1433 -U sa -P "$DB_SQL_PASSWORD" -C -Q "SELECT 1"
+
+# PostgreSQL (requiere psql instalado en el host)
+psql -h localhost -p 5433 -U bioadmin -d BioCommerce_Scientific -c "SELECT 1"
+
+# Redis
+redis-cli -h localhost -p 6379 -a "$REDIS_PASSWORD" ping
+```
+
+---
+
+## 9. Servicios Externos
+
+### 9.1 AWS S3 (Subida de Imagenes)
+
+1. Crear bucket S3 en [AWS Console](https://console.aws.amazon.com/s3): `bioplatform-public` (o el nombre que elijas)
+2. Configurar politica de acceso publico para las imagenes del catalogo (lectura publica)
+3. Crear usuario IAM con permisos `s3:PutObject`, `s3:GetObject`, `s3:DeleteObject` sobre el bucket
+4. Obtener Access Key ID y Secret Access Key del usuario IAM
+5. Configurar en `.env`:
+   ```env
+   S3_BUCKET_NAME=bioplatform-public
+   AWS_REGION=us-east-1
+   AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxx
+   AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxx
+   ```
+
+<Note>
+  Las mismas credenciales AWS se usan para `dvc pull` (descarga de pesos CNN).
+  El bucket del DVC remote es diferente (`s3://bioplatform-private/dvc-storage`);
+  asegurar que el usuario IAM tambien tenga acceso de lectura a ese bucket.
+</Note>
+
+### 9.2 OpenAI API (RAG / Planes de Negocio)
+
+El ai-service usa OpenAI para el modulo RAG (generacion de planes de negocio y consultas especializadas). Si no necesitas RAG, el resto del sistema funciona sin esta clave.
+
+1. Crear cuenta en [platform.openai.com](https://platform.openai.com)
+2. Agregar creditos (minimo $5 USD)
+3. Generar API Key en **API Keys**
+4. Configurar en `.env`:
+   ```env
+   OPENAI_API_KEY=sk-proj-xxxxxxxxxxxx
+   ```
+
+### 9.3 Cloudinary (Frontend Web — Imagenes)
+
+El frontend usa Cloudinary via el componente `SmartImage` para optimizacion de imagenes.
+
+1. Crear cuenta en [cloudinary.com](https://cloudinary.com) (plan Free disponible)
+2. Obtener el **Cloud Name** desde el dashboard
+3. Configurar en `.env`:
+   ```env
+   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=tu_cloud_name
+   ```
+
+---
+
+## 10. Nginx — Configuracion de Referencia
+
+### 10.1 Estructura de Archivos
+
+```
+docker/nginx/
+├── nginx.conf          # Configuracion unica (todo en un archivo)
+└── ssl/
+    ├── fullchain.pem   # Certificado SSL (chain completo)
+    └── privkey.pem     # Clave privada
+```
+
+<Note>
+  No existe `conf.d/`, `sites/` ni archivos de configuracion separados.
+  Toda la configuracion esta en `docker/nginx/nginx.conf`. El contenedor
+  Nginx monta este archivo directamente.
+</Note>
+
+### 10.2 Seguridad Configurada
+
+El `nginx.conf` actual incluye:
+
+- Headers de seguridad: `X-Frame-Options`, `X-Content-Type-Options`, `X-XSS-Protection`
+- Rate limiting: zona `api_limit` (10r/s), zona `auth_limit` (5r/m para `/api/auth/`)
+- Gzip habilitado para CSS, JS, JSON, SVG
+- Timeout extendido para el AI service (120s) y limite `client_max_body_size 10M` para clasificacion
+- Bloque HTTPS con TLS 1.2/1.3 (comentado, listo para descomentar)
+
+### 10.3 Definicion del Servicio en docker-compose.prod.yml
+
+```yaml
+nginx:
+  image: nginx:alpine
+  container_name: bioplatform-nginx-prod
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+  depends_on:
+    - backend-core
+    - ai-service
+    - frontend-web
+  networks:
+    - bioplatform-network
+  restart: always
+```
+
+---
+
+## 11. Verificacion Post-Instalacion
+
+### 11.1 Checklist
+
+| Componente | Verificacion | Comando / URL |
+|------------|--------------|---------------|
+| Contenedores | Todos running/healthy | `docker compose -f ... ps` |
+| Nginx | Responde en :80 | `curl http://localhost/health` → `OK` |
+| API via Nginx | Swagger accesible | http://localhost/swagger |
+| AI Service via Nginx | FastAPI docs | http://localhost/ai/docs |
+| Frontend | Pagina carga | http://localhost/ |
+| SQL Server | Conexion exitosa | `sqlcmd -S localhost,1433 -U sa -C -Q "SELECT 1"` |
+| PostgreSQL | Conexion exitosa | `psql -h localhost -p 5433 -U bioadmin -c "SELECT 1"` |
+| Variables .env | Sin placeholders | `grep "REPLACE_ME" .env` (sin resultados) |
+| Migraciones | Tablas creadas | Verificar en logs de backend-core |
+| Catalogo | Poblado completado | Logs backend-core: "Seeding completed" |
+
+### 11.2 Prueba de Humo
+
+```bash
+# 1. Estado de contenedores (produccion)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+
+# 2. Health via Nginx
+curl -s http://localhost/health
+
+# 3. API health
+curl -s http://localhost/api/health | jq .
+
+# 4. AI service health
+curl -s http://localhost/ai/health | jq .
+
+# 5. Frontend (debe devolver HTML)
+curl -s -o /dev/null -w "%{http_code}" http://localhost/
+```
+
+---
+
+## 12. Solucion de Problemas
+
+### 12.1 Docker no inicia
+
+| Sintoma | Causa | Solucion |
+|---------|-------|----------|
+| `Cannot connect to Docker daemon` | Docker no esta corriendo | `sudo systemctl start docker` o iniciar Docker Desktop |
+| `Access denied` (Linux) | Usuario no en grupo docker | `sudo usermod -aG docker $USER && newgrp docker` |
+| `WSL 2 incomplete` (Windows) | WSL2 no instalado | `wsl --install -d ubuntu` como admin |
+| Puerto en uso | Otro servicio ocupa el puerto | Cambiar puerto en compose o detener el servicio conflictivo |
+
+### 12.2 Contenedores no se inician
+
+```bash
+# Ver logs del contenedor problematico
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs sqlserver
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs postgres
+
+# Problemas comunes:
+# - sqlserver: contrasena no cumple politica de complejidad (minimo 8 chars, mayus+minm+numero+especial)
+# - postgres: puerto 5433 ocupado en el host
+# - redis: necesita REDIS_PASSWORD definido en .env
+```
+
+### 12.3 Backend no compila (en la seccion apps)
+
+```bash
+# Ver logs de build
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs backend-core
+
+# Verificar que DB_CONNECTION_STRING_SQL y DB_CONNECTION_STRING_PG esten bien formateados en .env
+# Los hostnames deben ser los nombres de servicio Docker: "sqlserver" y "postgres"
+# NO usar "localhost" en produccion
+```
+
+### 12.4 AI Service no encuentra modelo activo (503 en /classify)
+
+El ai-service devuelve 503 hasta que `ai_model_versions` tenga una fila con `is_active = true`. Esto lo siembra `backend-core` en el primer arranque.
+
+```bash
+# 1. Ver si backend-core termino el seed
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs backend-core | grep -i "seed\|model"
+
+# 2. Una vez seedado, reiniciar ai-service para que cargue el modelo
+docker compose -f docker-compose.yml -f docker-compose.prod.yml restart ai-service
+
+# Alternativa: activar la version desde el panel admin (dispara hot-reload sin reinicio)
+```
+
+### 12.5 dvc pull falla
+
+```bash
+# Verificar que dvc[s3] este instalado
+dvc version
+
+# Verificar credenciales AWS en .env
+grep "AWS_" .env
+
+# Probar con credenciales explicitas
+cd src/Bio.Backend.AI
+AWS_ACCESS_KEY_ID=xxx AWS_SECRET_ACCESS_KEY=xxx dvc pull
+```
+
+### 12.6 Frontend no conecta con el API
+
+Verificar variables `NEXT_PUBLIC_*` en `.env`. Son **build-time** para la imagen Docker:
+si las cambias debes reconstruir la imagen con `install.sh --only apps` o:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build frontend-web
+```
+
+### 12.7 Error de certificado SSL
+
+```bash
+# Verificar que existen los archivos correctos
+ls -la docker/nginx/ssl/
+# Deben existir: fullchain.pem y privkey.pem
+
+# Verificar configuracion de nginx
+docker compose -f docker-compose.yml -f docker-compose.prod.yml exec nginx nginx -t
+
+# Regenerar certificado self-signed (desarrollo)
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+  -keyout docker/nginx/ssl/privkey.pem \
+  -out docker/nginx/ssl/fullchain.pem \
+  -subj "/C=CO/ST=Caldas/L=Manizales/O=BioPlatform/CN=localhost"
+```
+
+### 12.8 Error de conexion a base de datos
+
+```bash
+# 1. Verificar que los contenedores de BD esten healthy
+docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+
+# 2. Revisar cadenas de conexion — los hostnames deben ser nombres de servicio Docker:
+#    DB_CONNECTION_STRING_SQL: Server=sqlserver,1433;...  (NO localhost)
+#    DB_CONNECTION_STRING_PG:  Host=postgres;Port=5432;... (NO localhost, NO 5433)
+
+# 3. Probar conexion directa dentro de la red Docker
+docker run --rm --network bioplatform-network \
+  mcr.microsoft.com/mssql-tools bash -c \
+  "sqlcmd -S sqlserver,1433 -U sa -P '$DB_SQL_PASSWORD' -C -Q 'SELECT 1'"
+```
+
+---
+
+## 13. App Movil — Compilacion EAS
+
+La app movil (React Native + Expo) **no se despliega en Docker**; se compila y publica con EAS Build.
+
+### 13.1 Requisitos
+
+- Node.js 18+
+- Cuenta en [expo.dev](https://expo.dev)
+- EAS CLI: `npm install -g eas-cli`
+- Para publicar en Google Play: cuenta de Google Play Console
+
+### 13.2 Configuracion
+
+```bash
+cd src/Bio.Frontend.Mobile
+npm install
+
+# Apuntar al backend de produccion
+cp .env.example .env
+# Editar .env:
+#   EXPO_PUBLIC_API_BASE_URL=https://bioplatform.co/api
+#   EXPO_PUBLIC_AI_API_BASE_URL=https://bioplatform.co/ai/api/v1
+
+eas login
+eas build:configure
+```
+
+### 13.3 Generar APK (instalacion directa / pruebas)
+
+```bash
+eas build --platform android --profile preview
+# EAS devuelve URL de descarga del .apk
+# Instalar en dispositivo (habilitar "origenes desconocidos")
+```
+
+### 13.4 Generar AAB y Subir a Google Play
+
+```bash
+eas build --platform android --profile production
+eas submit --platform android --latest
+```
+
+El perfil de build y credenciales de firma se definen en `eas.json`. Para la primera subida manual: descargar el `.aab` y subirlo desde Google Play Console → Produccion → Crear version.
+
+---
+
+*Manual de Instalacion y Configuracion — Version 2.0*
+*Actualizado: Junio 2026 — BioPlatform Caldas, Universidad de Caldas*

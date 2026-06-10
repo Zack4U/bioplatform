@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="4f6922fc-8c86-4eaa-a1fb-d38846d4eee4"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/xebcos</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=unal_interaccion_magnolias</alternateIdentifier>
+        <title>Caracterización de Magnolias del departamento de Antioquia</title>
+        <creator>
+            <individualName>
+                <givenName>Marcela</givenName>
+                <surName>Serna González</surName>
+            </individualName>
+            <organizationName>Tecnológico de Antioquia - Institución Universitaria</organizationName>
+            <positionName>Profesora</positionName>
+            <address>
+                <city>Medellin</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <postalCode>050034</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+573004848015</phone>
+            <electronicMailAddress>msernag@gmail.com</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0001-6729-403X?lang=en</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Ligia Estela</givenName>
+                <surName>Urrego</surName>
+            </individualName>
+            <organizationName>Universidad Nacional de Colombia</organizationName>
+            <positionName>Profesora</positionName>
+            <address>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>leurrego@unal.edu.co</electronicMailAddress>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Fabio Alejandro</givenName>
+                <surName>Arango</surName>
+            </individualName>
+            <organizationName>Jardín Botánico de Medellín</organizationName>
+            <positionName>Técnico de campo</positionName>
+            <address>
+                <city>Jardín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>fabioarango2017@gmail.com</electronicMailAddress>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Marcela</givenName>
+                <surName>Serna González</surName>
+            </individualName>
+            <organizationName>Tecnológico de Antioquia - Institución Universitaria</organizationName>
+            <positionName>Profesora</positionName>
+            <address>
+                <city>Medellin</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <postalCode>000000</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+573004848015</phone>
+            <electronicMailAddress>msernag@gmail.com</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0001-6729-403X?lang=en</userId>
+        </metadataProvider>
+        <pubDate>
+                2022-10-24
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>Dado el grado de amenaza de la familia Magnoliaceae en Colombia, se propuso identificar factores clave que pudieran estar relacionados con sus dificultades reproductivas y de reclutamiento de individuos juveniles. El presente conjunto de datos incluye colecciones botánicas recolectadas durante el estudio de la vulnerabilidad de Magnolias en el suroeste Antioqueño en los municipios de Jardín y Urrao desde febrero de 2015 a agosto del 2018. Se realizó la búsqueda de individuos adultos de las especies de Magnolia y se realizaron observaciones periódicas, estas colecciones actualmente reposan en el herbario JAUM.</para>
+<para>El presente conjunto de datos comprende 15 registros biológicos de la familia Magnoliaceae. El 100% se encuentra clasificado a nivel de especie.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Vulnerabilidad</keyword>
+            <keyword>Flora</keyword>
+            <keyword>Antioquia</keyword>
+            <keyword>Magnolia</keyword>
+            <keyword>Colecciones</keyword>
+            <keyword>Interacciones</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=unal_interaccion_magnolias</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El estudio se realizó en el suroeste Antioqueño en los municipios de Jardín y Urrao</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-76.084</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-75.267</eastBoundingCoordinate>
+                    <northBoundingCoordinate>6.411</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.505</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2015-02-09
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2018-08-15
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>El presente conjunto de datos comprende 15 registros biológicos de la familia Magnoliaceae. El 100% se encuentra clasificado a nivel de especie.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Species</taxonRankName>
+                    <taxonRankValue>Magnolia jardinensis</taxonRankValue>
+                    <commonName>Gallinazo blanco</commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Species</taxonRankName>
+                    <taxonRankValue>Magnolia yarumalensis</taxonRankValue>
+                    <commonName>Gallinazo morado</commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Species</taxonRankName>
+                    <taxonRankValue>Magnolia frontinoensis</taxonRankValue>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName>Species</taxonRankName>
+                    <taxonRankValue>Magnolia urraoensis</taxonRankValue>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>asNeeded</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Marcela</givenName>
+                <surName>Serna González</surName>
+            </individualName>
+            <organizationName>Tecnológico de Antioquia - Institución Universitaria</organizationName>
+            <positionName>Profesora</positionName>
+            <address>
+                <city>Medellin</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <postalCode>050034</postalCode>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>+573004848015</phone>
+            <electronicMailAddress>msernag@gmail.com</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0001-6729-403X?lang=en</userId>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Se visitaron árboles adultos previamente localizados por el Jardín Botánico de Medellín y la Corporación Autónoma Regional del Centro de Antioquia CORANTIOQUIA. Estos árboles fueron debidamente georreferenciados y visitados mensualmente para observaciones fenológicas.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Se realizaron observaciones mensuales de estructuras reproductivas: botones florales, flores, frutos verdes y frutos maduros, mediante escalado de árboles</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>Se visitaron bosques en los municipios de Urrao y Jardín.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Se realizó la búsqueda de individuos adultos de las especies de Magnolia y se realizaron observaciones periódicas de estructuras reproductivas mediante escalado de los árboles</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Verificación con varios observadores</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project >
+                <title>El papel de dos interacciones en la vulnerabilidad de Magnolias</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Marcela</givenName>
+                    <surName>Serna González</surName>
+                    </individualName>
+                    <role>PRINCIPAL_INVESTIGATOR</role>
+                </personnel>
+                <personnel>
+                    <individualName>
+                    <givenName>Ligia Estela</givenName>
+                    <surName>Urrego</surName>
+                    </individualName>
+                    <role>AUTHOR</role>
+                </personnel>
+                <abstract>
+                    <para>Dado el grado de amenaza de Magnoliaceae en Colombia, se propuso identificar factores clave que pudieran estar relacionados con sus dificultades reproductivas y de reclutamiento de individuos juveniles. El objetivo general fue identificar los posibles efectos de dos interacciones mutualistas: planta-hongo y planta-polinizador en su vulnerabilidad a la extinción.</para>
+                </abstract>
+                <funding>
+                    <para>Tecnológico de Antioquia - Institución Universitaria y Universidad Nacional de Colombia</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>El estudio se realizó en el suroeste antioqueño, municipios de Jardín y Urrao.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+                <designDescription>
+                    <description>
+                        <para>Se realizaron exploraciones de campo en búsqueda específica de individuos de Magnolia.</para>
+                    </description>
+                </designDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:25Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/xebcos">Serna González M, Urrego L E, Arango F A (2022). Caracterización de Magnolias del departamento de Antioquia. Universidad Nacional de Colombia. Occurrence dataset https://doi.org/10.15472/xebcos accessed via GBIF.org on 2026-03-09.</citation>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-unal.png</resourceLogoUrl>
+                <collection>
+                    <parentCollectionIdentifier>JAUM</parentCollectionIdentifier>
+                    <collectionIdentifier>Registro Nacional de Colecciones Biológicas: 033</collectionIdentifier>
+                    <collectionName>Jardín Botánico &quot;Joaquín Antonio Uribe&quot; Herbario</collectionName>
+                </collection>
+                <specimenPreservationMethod>DRIED_AND_PRESSED</specimenPreservationMethod>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

@@ -1,0 +1,23 @@
+Top 20 Most Confused Species Pairs:
+True Species                             Predicted As                                 Rate  Count
+──────────────────────────────────────────────────────────────────────────────────────────────
+Ardea_alba                               Egretta_thula                             60.00%      3
+Chlorostilbon_melanorhynchus             Saucerottia_saucerottei                   60.00%      3
+Phoneutria_depilata                      Cupiennius_coccineus                      60.00%      3
+Eira_barbara                             Aotus_lemurinus                           40.00%      2
+Catamenia_homochroa                      Catamenia_inornata                        40.00%      2
+Passiflora_suberosa                      Passiflora_coriacea                       40.00%      2
+Actinote_stratonice                      Altinote_ozomene                          40.00%      2
+Passiflora_coriacea                      Passiflora_suberosa                       40.00%      2
+Melanerpes_pulcher                       Veniliornis_dignus                        40.00%      2
+Boana_platanera                          Boana_pugnax                              40.00%      2
+Tyrannus_savana                          Tyrannus_melancholicus                    40.00%      2
+Gaiadendron_punctatum                    Baccharis_latifolia                       40.00%      2
+Anthracothorax_nigricollis               Chaetocercus_mulsant                      40.00%      2
+Hemidactylus_frenatus                    Gonatodes_albogularis                     40.00%      2
+Ortalis_columbiana                       Penelope_montagnii                        33.33%      2
+Bubulcus_ibis                            Egretta_thula                             33.33%      2
+Cnemoscopus_rubrirostris                 Chlorospingus_flavopectus                 33.33%      2
+Chaetocercus_mulsant                     Calliphlox_mitchellii                     25.00%      3
+Margarornis_squamiger                    Lepidocolaptes_lacrymiger                 25.00%      2
+Metallura_tyrianthina                    Heliangelus_exortis                       22.22%      2

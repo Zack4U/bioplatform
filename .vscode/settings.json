@@ -38,5 +38,8 @@
     "chromadb",
     "langchain"
   ],
-  "cSpell.language": "en,es"
+  "cSpell.language": "en,es",
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportIndexIssue": "none"
+  }
 }

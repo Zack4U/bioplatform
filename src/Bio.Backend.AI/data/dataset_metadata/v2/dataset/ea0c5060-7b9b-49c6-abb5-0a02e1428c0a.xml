@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="ea0c5060-7b9b-49c6-abb5-0a02e1428c0a"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/mv4udl</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=pomca_riotapias</alternateIdentifier>
+        <alternateIdentifier>ea0c5060-7b9b-49c6-abb5-0a02e1428c0a</alternateIdentifier>
+        <alternateIdentifier>http://ipt.biodiversidad.co/sib/resource?r=pomca_riotapias</alternateIdentifier>
+        <title>Registros de la Caracterización de vegetación y flora del POMCA de la SZH Cuenca del Río Tapias y Otros Directos al Cauca</title>
+        <creator>
+            <individualName>
+                <givenName>-CORPOCALDAS</givenName>
+                <surName>Corporación Autónoma Regional de Caldas</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Profesional especializada</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Santiago</givenName>
+                <surName>Córdoba</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Practicante</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>santiago.cordoba@udea.edu.co</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Susana</givenName>
+                <surName>Velasquez-Franco</surName>
+            </individualName>
+            <organizationName>Corpocaldas</organizationName>
+            <positionName>Profesional especilizada</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>susanavfranco@gmail.com</electronicMailAddress>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Corpocaldas</givenName>
+                <surName>Geoambiental</surName>
+            </individualName>
+            <organizationName>Corpocaldas</organizationName>
+            <positionName>Subdirección de planificación ambiental del territorio</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <givenName>Corpocaldas</givenName>
+                <surName>Geoambiental</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Subdirección de planificación ambiental del territorio</positionName>
+            <address>
+                <deliveryPoint>Call 21 # 23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+            <role>PUBLISHER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Santiago</givenName>
+                <surName>Córdoba</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Practicante</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>santiago.cordoba@udea.edu.co</electronicMailAddress>
+            <role>PROCESSOR</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <surName>LR AMBIENTAL S.A.S</surName>
+            </individualName>
+            <organizationName>LR AMBIENTAL S.A.S</organizationName>
+            <positionName>Contratista</positionName>
+            <address>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <onlineUrl>http://www.lrambiental.com/</onlineUrl>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <pubDate>
+                2021-02-23
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            Registros de ocurrencias realizados en el marco de la Caracterización de Vegetación y Flora realizado para el POMCA de la Cuenca del Río Tapias y Otros Directos al Cauca [2616].
+        </abstract>
+        <keywordSet>
+            <keyword>POMCA</keyword>
+            <keyword>Tapias</keyword>
+            <keyword>Cuenca</keyword>
+            <keywordThesaurus>NA</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>CAR</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by/4.0/legalcode"><citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-4.0.html</url>
+            <identifier>CC-BY-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=pomca_riotapias</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>La cuenca del Río Tapias y Otros Directos al Cauca [ SZH-2616] está compuesta por las cuencas de los Ríos Pozo, Maiba, Pácora, Tapias-Tareas, y la quebrada Llano Grande.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-75.69</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-75.41</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.63</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.08</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>notPlanned</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Corpocaldas</givenName>
+                <surName>Geoambiental</surName>
+            </individualName>
+            <organizationName>CORPOCALDAS</organizationName>
+            <positionName>Profesional especializada</positionName>
+            <address>
+                <deliveryPoint>Calle 21 #23-22</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(57) (6) 8841409</phone>
+            <electronicMailAddress>geoambiental@corpocaldas.gov.co</electronicMailAddress>
+            <onlineUrl>http://www.corpocaldas.gov.co/</onlineUrl>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Para la caracterización se decidió usar la metodología de Evaluación Ecológica Rápida, EER - The Nature Conservancy, TNC (2002) en todos los tipos de cobertura natural arbórea y arbustiva que conforman los bosques y arbustales de la Cuenca.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Para la determinación y ubicación de dichas coberturas se tomó por estrategia la tipificación por sectores coincidentes con los orobiomas que conforman la región según la clasificación de biomas del SIRAP del Eje Cafetero, establecida en el documento publicado por la WWF – Colombia y la WCS Colombia en 2013, donde se caracterizan las formaciones existentes, además de considerar sus distribución en las diferentes Zonas de Vida (Holdrige) y aplicando criterios de elevación, precipitación y evapotranspiración potencial.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Se establecieron en consecuencia diecisiete sectores de muestreo de formaciones boscosas y ocho sectores para caracterización de arbustales, en los que fueron seleccionados 30 puntos para el establecimiento de parcelas transitorias para la realización de inventarios cuantitativos y la Evaluacion Ecológica Rápida. Se consideró para la definición de los puntos la magnitud del área ocupada por las diferentes formaciones, buscando un equilibrio en la proporción de muestras según el área, para lograr un sondeo representativo y estadísticamente significativo.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Se diseñó un formulario de EER, en el que se enfatizó, además del registro de la composición arbórea y arbustiva, lo referente a la estructura y dinámica sucesional de los bosques, con el propósito de identificar de forma precisa el estado de madurez y conservación de los relictos boscosos analizados, sin descuidar ninguno de los puntos básicos de los formatos propuestos para este propósito.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Se delimitaron las 30 parcelas en áreas de 25 x 20 metros donde se tomaron datos de D.A.P. o diámetro a la altura del pecho, altura total y comercial de cada individuo, número de individuos coespecíficos, densidad y cobertura; con esta información se transformaron los datos a, área basal, frecuencia, y coberturas; identificando así las especies arbóreas y arbustivas en las parcelas y sus estados de sucesión.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Se realizaron colecciones botánicas para los individuos cuya identificación no pudo ser confirmada en el campo.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>La cuenca del Río Tapias y Otros Directos al Cauca, está conformada por la cuenca del Río Tapias-Tareas y las cuencas del Río Pácora, el Río Maiba, el Río Pozo y la Quebrada Llano Grande. Comprende los municipios de La Merced, Aranzazu, Filadelfia y Pácora, Neira, Aguadas, Salamina y una pequeña porción de Manizales. Tiene una extensión aproximada de 1390 km2 y va desde la parte alta de la cordillera central hasta el Río Cauca. La cuenca supera los 3000 sobre el Páramo de Sonsón y en zonas aledañas al Parque Nacional Natural los Nevados. La parte baja de la cuenca tiene una predominancia de pastos dedicados a actividades ganaderas y algunos relictos de bosque, parte del cual es Bosque Seco Tropical.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Usando la metodología de Evaluación Ecológica Rápida, EER - The Nature Conservancy, TNC (2002) en todos los tipos de cobertura natural arbórea y arbustiva que conforman los bosques y arbustales de la subzona hidrográfica de la cuenca, se realizaron inventarios cuantitativos por medio del establecimiento de 30 parcelas de 20 x 25 m. Donde no fue posible el diseño de las parcelas se realizaron transectos lineales para la identificación y tabulación de todos los árboles, arbustos y lianas leñosas con un Diámetro a la Altura del Pecho (D.A.P.) igual o superior a 5 cm. (aproximadamente a 1,3 m del suelo). Se realizaron colecciones botánicas para los individuos cuya identificación no pudo ser confirmada en el campo.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>Ajuste de vocabularios controlados en:
+Elemento de registro: documentación del elemento type de acuerdo a la naturaleza de los datos;
+Elemento geográfico: county.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+            <project >
+                <title>Caracterización de vegetación y flora, Diagnóstico del POMCA de la cuenca del Río Tapias y Otros Directos al Cauca</title>
+                <personnel>
+                    <individualName>
+                    <givenName>Susana</givenName>
+                    <surName>Velásquez</surName>
+                    </individualName>
+                    <role>PROCESSOR</role>
+                </personnel>
+                <personnel>
+                    <individualName>
+                    <givenName>Corpocaldas</givenName>
+                    <surName>Geoambiental</surName>
+                    </individualName>
+                    <role>POINT_OF_CONTACT</role>
+                </personnel>
+                <abstract>
+                    <para>Registros de ocurrencias de especies vegetales usados en la caracterización de vegetación y flora, realizados en el marco de la fase de Diagnóstico del Plan de Ordenamiento y Manejo de Cuencas Hidrográficas de la Cuenca del Río Tapias y Otros directos al Cauca [2616] en el departamento de Caldas, jurisdicción de la Corporación Autónoma Regional de Caldas - CORPOCALDAS. Los registros se tomaron usando parcelas transitorias al interior de las formaciones arbóreas y arbustivas naturales que conforman los bosques y arbustales de la subzona
+hidrográfica de la Cuenca.</para>
+                </abstract>
+                <funding>
+                    <para>Contrato No. 194-2014 suscrito entre la Corporación Autónoma Regional de Caldas - CORPOCALDAS y la empresa LR AMBIENTAL S.A.S</para>
+                </funding>
+                <studyAreaDescription>
+                    <descriptor name="generic" citableClassificationSystem="false">
+                        <descriptorValue>La cuenca del Río Tapias y Otros Directos al Cauca, está conformada por la cuenca del Río Tapias-Tareas y las cuencas del Río Pácora, el Río Maiba, el Río Pozo y la Quebrada Llano Grande. Comprende los municipios de La Merced, Aranzazu, Filadelfia y Pácora, Neira, Aguadas, Salamina y una pequeña porción de Manizales. Tiene una extensión aproximada de 1390 km2 y va desde la parte alta de la cordillera central hasta el Río Cauca. La cuenca supera los 3000 sobre el Páramo de Sonsón y en zonas aledañas al Parque Nacional Natural los Nevados. La parte baja de la cuenca tiene una predominancia de pastos dedicados a actividades ganaderas y algunos relictos de bosque, parte del cual es Bosque Seco Tropical.</descriptorValue>
+                    </descriptor>
+                </studyAreaDescription>
+            </project>
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:23Z</dateStamp>
+                <citation identifier="http://doi.org/10.15472/mv4udl">Corporación Autónoma Regional de Caldas -, Córdoba S, Velasquez-Franco S, Geoambiental C (2021). Registros de la Caracterización de vegetación y flora del POMCA de la SZH Cuenca del Río Tapias y Otros Directos al Cauca. Version 1.2. Corpocaldas - Corporación Autónoma Regional de Caldas. Occurrence dataset https://doi.org/10.15472/mv4udl accessed via GBIF.org on 2026-03-09.</citation>
+                <resourceLogoUrl>https://statics.sibcolombia.net/sib-resources/images/logos-socios/500px/corpocaldas.jpg</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

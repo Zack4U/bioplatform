@@ -1,0 +1,123 @@
+using Bio.Backend.Core.Bio.Infrastructure.Persistence;
+using Bio.Domain.Entities;
+using Bio.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace Bio.Backend.Core.Bio.Infrastructure.Repositories;
+
+public class SpeciesImageRepository : ISpeciesImageRepository
+{
+    private readonly ScientificDbContext _context;
+
+    public SpeciesImageRepository(ScientificDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<(IReadOnlyList<SpeciesImage> Items, int TotalCount)> GetBySpeciesIdAsync(
+        Guid speciesId,
+        bool? onlyValidatedByExpert = null,
+        int page = 1,
+        int pageSize = 20,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.SpeciesImages
+            .AsNoTracking()
+            .Where(img => img.SpeciesId == speciesId);
+
+        // Tri-state: null = all, true = validated only, false = pending (unvalidated) only.
+        if (onlyValidatedByExpert.HasValue)
+        {
+            query = query.Where(img => img.IsValidatedByExpert == onlyValidatedByExpert.Value);
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        // Primary images first, then by creation date descending
+        var safePage = Math.Max(1, page);
+        var safePageSize = Math.Clamp(pageSize, 1, 100);
+
+        var items = await query
+            .OrderByDescending(img => img.IsPrimary)
+            .ThenByDescending(img => img.CreatedAt)
+            .Skip((safePage - 1) * safePageSize)
+            .Take(safePageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
+    /// <inheritdoc />
+    public async Task<SpeciesImage> AddAsync(
+        SpeciesImage image,
+        CancellationToken cancellationToken = default)
+    {
+        await _context.SpeciesImages.AddAsync(image, cancellationToken);
+        return image;
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<SpeciesImage>> GetAllAsync(CancellationToken cancellationToken = default)
+        => await _context.SpeciesImages.AsNoTracking().ToListAsync(cancellationToken);
+
+    /// <inheritdoc />
+    public async Task<(IReadOnlyList<SpeciesImage> Items, int TotalCount)> GetAllPagedAsync(
+        bool onlyValidatedByExpert = false,
+        int page = 1,
+        int pageSize = 50,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.SpeciesImages.AsNoTracking().AsQueryable();
+
+        if (onlyValidatedByExpert)
+        {
+            query = query.Where(img => img.IsValidatedByExpert);
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var safePage = Math.Max(1, page);
+        var safePageSize = Math.Clamp(pageSize, 1, 100);
+
+        // Stable ordering for deterministic pagination across batches.
+        var items = await query
+            .OrderBy(img => img.SpeciesId)
+            .ThenBy(img => img.Id)
+            .Skip((safePage - 1) * safePageSize)
+            .Take(safePageSize)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
+    }
+
+    /// <inheritdoc />
+    public async Task<(int ImageCount, int SpeciesCount)> CountNewObservationsSinceAsync(
+        DateTime? since,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _context.SpeciesImages.AsNoTracking();
+
+        if (since.HasValue)
+        {
+            query = query.Where(img => img.CreatedAt > since.Value);
+        }
+
+        // Single round-trip: aggregate both totals in one query using GroupBy trick
+        var result = await query
+            .GroupBy(_ => 1)
+            .Select(g => new
+            {
+                ImageCount = g.Count(),
+                SpeciesCount = g.Select(img => img.SpeciesId).Distinct().Count(),
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return result is null
+            ? (0, 0)
+            : (result.ImageCount, result.SpeciesCount);
+    }
+
+    /// <inheritdoc />
+    public async Task<SpeciesImage?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default)
+        => await _context.SpeciesImages.FirstOrDefaultAsync(img => img.Id == imageId, cancellationToken);
+}

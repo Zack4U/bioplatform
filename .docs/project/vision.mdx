@@ -1,0 +1,147 @@
+---
+title: "Documento de Vision"
+description: "Vision del proyecto: resumen ejecutivo, problema, alcance, restricciones y criterios de exito."
+icon: "eye"
+---
+
+## 1. Resumen Ejecutivo
+
+La Plataforma de Biodiversidad y Biocomercio de Caldas es una solucion tecnologica integral disenada para cerrar la brecha entre el conocimiento cientifico, la conservacion ambiental y el desarrollo economico sostenible. Mediante el uso de IA Generativa (RAG) y Vision por Computadora (CNN), el sistema permite la identificacion automatica de especies, el asesoramiento tecnico para emprendedores y la comercializacion de productos derivados de la biodiversidad en un Marketplace regulado. El proyecto se ejecuta en 16 semanas, entregando un ecosistema digital que cumple con la normativa colombiana de acceso a recursos geneticos.
+
+La plataforma conecta investigadores, comunidades locales, emprendedores y autoridades ambientales para impulsar oportunidades de biocomercio alineadas con la normativa colombiana (Decreto 3016 de 2013, Decision 391 de 1996, Protocolo de Nagoya).
+
+El proyecto busca resolver problematicas actuales como la falta de acceso a informacion taxonomica confiable, la baja digitalizacion de especies locales, la limitada articulacion entre actores del biocomercio y la ausencia de herramientas tecnologicas que permitan identificar especies de forma automatizada y promover productos basados en biodiversidad con trazabilidad y cumplimiento normativo.
+
+La solucion combina:
+
+- **Catalogo digital de biodiversidad:** mas de 1000 especies, fichas tecnicas, mapas de distribucion y busqueda avanzada.
+- **Identificacion automatica** mediante CNN con precision superior al 85%.
+- **Marketplace de biocomercio** con trazabilidad, certificaciones, permisos ABS y pasarela de pagos.
+- **Asistente de IA generativa** para crear planes de negocio, analisis de mercado y diseno de productos basados en biodiversidad.
+- **Aplicacion movil** para identificacion en campo con soporte offline.
+
+Este ecosistema permitira mejorar la investigacion, promover la conservacion, fortalecer la economia local basada en la naturaleza y cumplir los estandares internacionales de sostenibilidad y acceso a recursos geneticos.
+
+## 2. Descripcion del Problema y Oportunidad
+
+### 2.1. Problema
+
+- **Desconexion:** falta de canales que conecten a investigadores con comunidades locales y mercados.
+- **Sub-aprovechamiento:** la biodiversidad de Caldas posee un alto potencial economico no explotado de forma sostenible.
+- **Barreras tecnicas:** dificultad para emprendedores rurales en la formulacion de planes de negocio y cumplimiento normativo (ABS / Decreto 3016).
+- **Identificacion lenta:** procesos manuales de clasificacion taxonomica que retrasan la investigacion y el registro.
+- Falta de un sistema unificado de informacion de especies.
+- Dificultad para identificar flora y fauna en campo sin expertos.
+- Baja digitalizacion de productos basados en biodiversidad y mercados limitados.
+- Falta de herramientas para estructurar emprendimientos o validar ideas de biocomercio.
+
+### 2.2. Oportunidad
+
+Utilizar tecnologias de vanguardia (.NET 8, Next.js, IA) para posicionar a Caldas como lider en biocomercio, facilitando la trazabilidad desde el origen hasta el consumidor final y garantizando el reparto justo de beneficios. Posibles resultados:
+
+- Creacion de la primera plataforma integral de biodiversidad y biocomercio del pais.
+- Uso de IA para mejorar la precision cientifica, la trazabilidad y la conservacion.
+- Expansion del biocomercio colombiano en mercados internacionales.
+- Cumplimiento normativo automatizado para aumentar la confianza del comprador.
+- Impulso a economias locales mediante digitalizacion, marketplace y analiticas.
+
+## 3. Stakeholders
+
+| Stakeholder | Rol en el Proyecto |
+| :---- | :---- |
+| **Investigadores** | Validadores de taxonomia, generadores de conocimiento cientifico y registro de especies. |
+| **Emprendedores** | Transformadores de recursos en productos y usuarios de la IA de negocios. |
+| **Comunidades Locales** | Proveedores de materia prima y guardianes del conocimiento tradicional. |
+| **Compradores** | Clientes finales (nacionales / internacionales) de productos sostenibles. Calificacion y generacion de demanda. |
+| **Autoridades Ambientales** | Entes reguladores que supervisan permisos y legalidad. |
+| **Administradores IT** | Responsables del mantenimiento de la infraestructura y modelos de IA. |
+
+## 4. Alcance del Producto
+
+### 4.1. In-Scope (Dentro del alcance)
+
+- **Identificacion:** app movil con reconocimiento de especies via CNN (300+ especies) y funcionamiento offline.
+- **Conocimiento:** sistema RAG con base de datos de 1000+ especies y chatbot de asesoria.
+- **Comercio:** Marketplace con pasarela de pagos (PSE / Stripe), carrito y gestion de vendedores.
+- **Negocios:** generador de planes de negocio automatizado con GPT-4.
+- **Legalidad:** modulo de gestion de permisos de acceso a recursos geneticos y trazabilidad.
+- Registro de usuarios y roles.
+- Sistema de certificaciones.
+- Mapas de distribucion.
+- Foros y networking.
+- Dashboard de analiticas.
+
+### 4.2. Out-of-Scope (Fuera del alcance)
+
+- Logistica fisica de transporte y entrega de mercancias.
+- Emision de certificados fitosanitarios (solo se permite su carga y registro).
+- Realizacion de pruebas de laboratorio quimico o genetico.
+- Integracion directa con sistemas de bancos de germoplasma externos.
+- Gestion financiera contable completa.
+
+## 5. Caracteristicas Principales del Sistema
+
+- **Reconocimiento automatico:** clasificacion taxonomica mediante vision por computadora con precision superior al 85%.
+- **Asistente inteligente:** chatbot basado en LangChain para consultas tecnicas y normativas.
+- **Marketplace sostenible:** plataforma de e-commerce con enfoque en bioproductos y certificaciones verdes.
+- **Georreferenciacion:** mapas de distribucion de especies integrados con Leaflet y GPS movil.
+- **Arquitectura robusta:** microservicios escalables usando Clean Architecture en .NET 8.
+- Catalogo digital de especies con fichas tecnicas, taxonomia, imagenes y mapas.
+- Identificacion automatica por IA (CNN + vision por computadora).
+- Plataforma RAG con base de conocimiento cientifica.
+- Trazabilidad por blockchain (opcional).
+- Aplicacion movil con GPS, camara, offline y clasificacion local.
+- Sistema de roles y permisos (investigador, emprendedor, comprador, etc.).
+- Dashboard de analiticas para ventas, especies y uso del sistema.
+- Pasarela de pagos (Stripe / PSE).
+- Foros comunitarios y red de colaboracion.
+
+## 6. Restricciones
+
+### 6.1. Tecnicas
+
+- **Stack:** obligatoriedad de uso de .NET 8, PostgreSQL, Next.js y React Native.
+- **Despliegue:** debe ser compatible con entornos Docker y Windows Server 2025.
+- **IA:** el microservicio de IA debe desarrollarse en Python / FastAPI.
+- Precision minima superior al 85% para el modelo CNN.
+- Arquitectura basada en microservicios.
+- Cumplimiento PCI DSS para pagos.
+- Base de datos distribuida en PostgreSQL (especies) y SQL Server (transacciones).
+- Operacion movil con soporte offline.
+- Integracion obligatoria con FastAPI para clasificacion.
+
+### 6.2. Negocio
+
+- **Tiempo:** plazo estricto de ejecucion de 16 semanas (8 Sprints).
+- **Legal:** cumplimiento con el Protocolo de Nagoya y el Decreto 3016 de 2013.
+- **Seguridad:** cumplimiento de estandares PCI DSS para el manejo de pagos.
+- Cumplimiento estricto de la Resolucion 1348 de 2014.
+- Solo se permite el registro, no la emision, de certificaciones fitosanitarias.
+- No se gestiona logistica ni transporte.
+
+## 7. Supuestos y Dependencias
+
+- **Disponibilidad de datos:** se asume el acceso a datasets de iNaturalist y bases botanicas para el entrenamiento.
+- **Conectividad:** la app movil requiere sincronizacion periodica, aunque funcione offline para captura.
+- **APIs de terceros:** dependencia de la disponibilidad de OpenAI API (GPT-4) y pasarelas de pago.
+- Los investigadores colaboraran en la validacion taxonomica.
+- Las comunidades locales desean participar en biocomercio.
+- La autoridad ambiental provee lineamientos ABS actualizados.
+- Integracion con Stripe / PSE.
+- Disponibilidad de APIs de mapas (Leaflet).
+- OpenAI API para IA generativa.
+- Infraestructura dockerizada y CI/CD funcionando.
+
+## 8. Criterios de Exito Medibles
+
+- **Precision del modelo:** lograr un Accuracy superior al 85% en la identificacion de las 300 especies principales.
+- **Rendimiento:** pruebas unitarias con cobertura superior al 70%.
+- **Catalogo:** minimo 300 especies con ficha tecnica completa y 1000 en la base RAG.
+- **Usabilidad:** aplicacion movil funcional en dispositivos Android / iOS con captura offline.
+- **Legal:** implementacion exitosa del flujo de trazabilidad y permisos ABS.
+- Marketplace activo con al menos 100 productos publicados.
+- Catalogo con 1000+ especies registradas.
+- RAG operativo con respuestas en menos de 2 segundos.
+- Usuarios activos: 500 en 6 meses.
+- Ventas en marketplace: 50 transacciones en los primeros 3 meses.
+- Disponibilidad del sistema superior al 99%.

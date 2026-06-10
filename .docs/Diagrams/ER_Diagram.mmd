@@ -1,0 +1,473 @@
+---
+title: BioCommerce ER Diagram
+---
+erDiagram
+  direction TB
+
+  %% BioCommerce_Transactional (SQL Server)
+  Users {
+    uniqueidentifier Id PK
+    nvarchar(255) Email UK
+    nvarchar(500) PasswordHash
+    nvarchar(100) Salt
+    nvarchar(150) FullName
+    nvarchar(20) PhoneNumber UK
+    bit IsVerified
+    datetime2 LastLogin
+    bit IsActive
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+    bit TwoFactorEnabled
+    nvarchar(100) TwoFactorSecret
+  }
+  Roles {
+    uniqueidentifier Id PK
+    nvarchar(100) Name UK
+    nvarchar(2000) Description
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  UserRoles {
+    uniqueidentifier UserId PK, FK
+    uniqueidentifier RoleId PK, FK
+    datetime2 AssignedAt
+  }
+  RefreshTokens {
+    uniqueidentifier Id PK
+    uniqueidentifier UserId FK
+    nvarchar(500) Token
+    datetime2 ExpiresAt
+    datetime2 CreatedAt
+    datetime2 RevokedAt
+    nvarchar(max) ReplacedByToken
+  }
+
+  ProductCategories {
+    int Id PK
+    nvarchar(450) Name UK
+  }
+  Products {
+    uniqueidentifier Id PK
+    nvarchar(450) Slug UK
+    uniqueidentifier EntrepreneurId FK
+    uniqueidentifier BaseSpeciesId "Logical FK species"
+    int CategoryId FK
+    nvarchar(max) Name
+    nvarchar(max) Description
+    decimal(18_2) BasePrice
+    decimal(18_2) SellPrice
+    nvarchar(max) Composition
+    int StockQuantity
+    nvarchar(max) Sku
+    bit IsActive
+    nvarchar(max) ThumbnailUrl
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+    timestamp RowVersion
+  }
+  ProductImages {
+    uniqueidentifier Id PK
+    uniqueidentifier ProductId FK
+    nvarchar(500) ImageUrl
+    nvarchar(200) AltText
+    int DisplayOrder
+    bit IsPrimary
+    datetime2 CreatedAt
+  }
+  ProductReviews {
+    uniqueidentifier Id PK
+    uniqueidentifier ProductId FK
+    uniqueidentifier UserId FK
+    int Rating
+    nvarchar(max) Title
+    nvarchar(max) Comment
+    datetime2 CreatedAt
+  }
+  Certifications {
+    uniqueidentifier Id PK
+    uniqueidentifier ProductId FK
+    nvarchar(150) Name
+    nvarchar(50) CertificationType
+    nvarchar(150) IssuingBody
+    nvarchar(100) CertificateNumber
+    datetime2 IssuedAt
+    datetime2 ExpiresAt
+    nvarchar(20) Status
+    nvarchar(500) DocumentUrl
+    nvarchar(500) LogoUrl
+    nvarchar(100) VerificationCode
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+
+  AbsPermits {
+    uniqueidentifier Id PK
+    uniqueidentifier EntrepreneurId FK
+    uniqueidentifier SpeciesId "Logical FK species"
+    nvarchar(450) ResolutionNumber UK
+    datetime2 EmissionDate
+    datetime2 ExpirationDate
+    nvarchar(max) GrantingAuthority
+    nvarchar(max) Status
+    nvarchar(max) LegalFramework
+  }
+  TraceabilityBatches {
+    uniqueidentifier Id PK
+    uniqueidentifier ProductId FK
+    nvarchar(450) BatchCode UK
+    datetime2 HarvestDate
+    nvarchar(max) OriginLocation
+    nvarchar(max) ProcessingDetails
+    nvarchar(max) BlockchainHash
+  }
+
+  Orders {
+    uniqueidentifier Id PK
+    nvarchar(450) OrderNumber UK
+    uniqueidentifier BuyerId FK
+    uniqueidentifier ShippingAddressId FK
+    uniqueidentifier BillingAddressId FK
+    decimal(18_2) TotalAmount
+    decimal(18_2) SubtotalAmount
+    decimal(18_2) TaxAmount
+    decimal(18_2) ShippingAmount
+    decimal(18_2) DiscountAmount
+    nvarchar(450) Status
+    nvarchar(max) PaymentMethod
+    nvarchar(max) TransactionRef
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+    timestamp RowVersion
+  }
+  OrderItems {
+    uniqueidentifier Id PK
+    uniqueidentifier OrderId FK
+    uniqueidentifier ProductId FK
+    int Quantity
+    decimal(18_2) UnitPrice
+    decimal(18_2) TotalPrice
+  }
+
+  Addresses {
+    uniqueidentifier Id PK
+    uniqueidentifier UserId FK
+    nvarchar(20) AddressType
+    nvarchar(150) RecipientName
+    nvarchar(200) StreetLine1
+    nvarchar(200) StreetLine2
+    nvarchar(100) City
+    nvarchar(100) Department
+    nvarchar(20) PostalCode
+    nvarchar(10) Country
+    nvarchar(20) PhoneNumber
+    bit IsDefault
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  Favorites {
+    uniqueidentifier Id PK
+    uniqueidentifier UserId FK
+    nvarchar(20) TargetType
+    uniqueidentifier TargetId
+    datetime2 CreatedAt
+  }
+  Carts {
+    uniqueidentifier Id PK
+    uniqueidentifier UserId UK, FK
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  CartItems {
+    uniqueidentifier Id PK
+    uniqueidentifier CartId FK
+    uniqueidentifier ProductId FK
+    int Quantity
+    bit IsActive
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  Notifications {
+    uniqueidentifier Id PK
+    uniqueidentifier UserId FK
+    nvarchar(200) Title
+    nvarchar(2000) Message
+    nvarchar(50) NotificationType
+    nvarchar(50) ReferenceType
+    uniqueidentifier ReferenceId
+    bit IsRead
+    datetime2 CreatedAt
+    datetime2 ReadAt
+  }
+  ActivityLogs {
+    uniqueidentifier Id PK
+    uniqueidentifier ActorUserId FK
+    nvarchar(50) ActorType
+    nvarchar(50) ActionType
+    nvarchar(20) ImpactLevel
+    nvarchar(50) TargetType
+    uniqueidentifier TargetId
+    nvarchar(500) Summary
+    nvarchar(max) ChangeSet
+    nvarchar(max) Metadata
+    nvarchar(45) IpAddress
+    nvarchar(400) UserAgent
+    datetime2 CreatedAt
+  }
+
+  CommunityPosts {
+    uniqueidentifier Id PK
+    uniqueidentifier AuthorUserId FK
+    nvarchar(200) Title
+    nvarchar(max) Content
+    nvarchar(50) Category
+    nvarchar(20) Status
+    bit IsPinned
+    int LikesCount
+    int DislikesCount
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  CommunityPostComments {
+    uniqueidentifier Id PK
+    uniqueidentifier PostId FK
+    uniqueidentifier AuthorUserId FK
+    nvarchar(max) Content
+    bit IsDeleted
+    int LikesCount
+    int DislikesCount
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  CommunityReactions {
+    uniqueidentifier Id PK
+    uniqueidentifier UserId FK
+    nvarchar(20) TargetType
+    uniqueidentifier TargetId
+    nvarchar(10) ReactionType
+    datetime2 CreatedAt
+  }
+
+  UserConnections {
+    uniqueidentifier Id PK
+    uniqueidentifier RequesterId FK
+    uniqueidentifier AddresseeId FK
+    nvarchar(20) Status
+    nvarchar(500) Message
+    datetime2 CreatedAt
+    datetime2 RespondedAt
+  }
+
+  DirectThreads {
+    uniqueidentifier Id PK
+    nvarchar(200) Title
+    nvarchar(20) ThreadType
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  DirectThreadParticipants {
+    uniqueidentifier Id PK
+    uniqueidentifier ThreadId FK
+    uniqueidentifier UserId FK
+    datetime2 JoinedAt
+    bit IsActive
+  }
+  DirectMessages {
+    uniqueidentifier Id PK
+    uniqueidentifier ThreadId FK
+    uniqueidentifier SenderUserId FK
+    nvarchar(max) Content
+    bit IsDeleted
+    datetime2 CreatedAt
+  }
+  DirectMessageReads {
+    uniqueidentifier Id PK
+    uniqueidentifier MessageId FK
+    uniqueidentifier UserId FK
+    datetime2 ReadAt
+  }
+
+  %% BioCommerce_Scientific (PostgreSQL)
+  taxonomy {
+    serial id PK
+    varchar(50) kingdom
+    varchar(50) phylum
+    varchar(50) class_name
+    varchar(50) order_name
+    varchar(50) family
+    varchar(50) genus
+  }
+  species {
+    uuid id PK
+    int taxonomy_id FK
+    varchar(150) slug UK
+    varchar(500) thumbnail_url
+    varchar(255) scientific_name UK
+    varchar(255) common_name
+    text description
+    text ecological_info
+    varchar(100) altitude_range
+    jsonb traditional_uses
+    jsonb economic_potential
+    varchar(100) conservation_status
+    boolean legal_status
+    boolean is_sensitive
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  geographic_distribution {
+    uuid id PK
+    uuid species_id FK
+    double_precision latitude
+    double_precision longitude
+    double_precision altitude
+    varchar(100) municipality
+    varchar(100) ecosystem_type
+    geometry_point_4326 location_point
+  }
+  species_images {
+    uuid id PK
+    uuid species_id FK
+    uuid uploader_user_id "Logical FK Users"
+    varchar(500) image_url
+    varchar(500) thumbnail_url
+    jsonb metadata
+    boolean is_primary
+    boolean is_validated_by_expert
+    uuid validated_by_user_id "Logical FK Users"
+    timestamptz validation_date
+    varchar(50) license_type
+    timestamptz created_at
+  }
+
+  prediction_logs {
+    uuid id PK
+    uuid user_id "Logical FK Users"
+    varchar(500) image_input_url
+    jsonb raw_prediction_result
+    uuid top_prediction_species_id
+    numeric(5_4) confidence_score
+    boolean feedback_correct
+    uuid feedback_actual_species_id
+    int processing_time_ms
+    varchar(50) model_version
+    timestamptz created_at
+  }
+  ai_model_versions {
+    serial id PK
+    varchar(100) model_name
+    varchar(20) version UK
+    numeric(5_4) accuracy_metric
+    timestamptz deployed_at
+    boolean is_active
+    text notes
+    timestamptz created_at
+  }
+
+  business_plans {
+    uuid id PK
+    uuid entrepreneur_id "Logical FK Users"
+    varchar(200) project_title
+    uuid[] species_ids
+    text generated_content
+    jsonb market_analysis_data
+    jsonb financial_projections
+    text generation_prompt
+    varchar(50) model_used
+    varchar(20) status
+    timestamptz created_at
+    timestamptz updated_at
+  }
+
+  rag_documents {
+    uuid id PK
+    varchar(200) title
+    text content
+    varchar(50) source_type
+    varchar(500) source_url
+    uuid species_id FK
+    varchar(100) embedding_id
+    int chunk_index
+    jsonb metadata
+    timestamptz created_at
+  }
+
+  chat_sessions {
+    uuid id PK
+    uuid user_id "Logical FK Users"
+    varchar(100) context_topic
+    timestamptz started_at
+  }
+  chat_messages {
+    uuid id PK
+    uuid session_id FK
+    varchar(20) role
+    text content
+    timestamptz created_at
+  }
+
+  %% SQL Server relationships
+  Users ||--o{ UserRoles : has
+  Roles ||--o{ UserRoles : includes
+  Users ||--o{ RefreshTokens : issues
+
+  ProductCategories ||--o{ Products : categorizes
+  Users ||--o{ Products : owns
+  Products ||--o{ ProductImages : has
+  Products ||--o{ ProductReviews : reviews
+  Users ||--o{ ProductReviews : writes
+  Products ||--o{ Certifications : certified
+  Users ||--o{ AbsPermits : holds
+  Products ||--o{ TraceabilityBatches : traces
+
+  Users ||--o{ Orders : places
+  Orders ||--|{ OrderItems : contains
+  Products ||--o{ OrderItems : line_item
+  Users ||--o{ Addresses : has
+  Addresses ||--o{ Orders : used_by
+
+  Users ||--o| Carts : owns
+  Carts ||--o{ CartItems : contains
+  Products ||--o{ CartItems : in_cart
+
+  Users ||--o{ Favorites : favorites
+  Users ||--o{ Notifications : receives
+  Users ||--o{ ActivityLogs : actioned
+
+  Users ||--o{ CommunityPosts : posts
+  CommunityPosts ||--o{ CommunityPostComments : comments
+  Users ||--o{ CommunityPostComments : comments
+  Users ||--o{ CommunityReactions : reacts
+
+  Users ||--o{ UserConnections : connects
+
+  DirectThreads ||--o{ DirectThreadParticipants : has
+  Users ||--o{ DirectThreadParticipants : participates
+  DirectThreads ||--o{ DirectMessages : contains
+  Users ||--o{ DirectMessages : sends
+  DirectMessages ||--o{ DirectMessageReads : read_by
+  Users ||--o{ DirectMessageReads : reads
+
+  %% PostgreSQL relationships
+  taxonomy ||--o{ species : classifies
+  species ||--o{ geographic_distribution : located
+  species ||--o{ species_images : images
+  species ||--o{ rag_documents : chunks
+  chat_sessions ||--o{ chat_messages : messages
+
+  %% Logical foreign keys across databases (dashed)
+  species ||..o{ Products : base_species
+  species ||..o{ AbsPermits : permitted
+  species ||..o{ Favorites : favorited
+  Users ||..o{ species_images : uploads
+  Users ||..o{ prediction_logs : requests
+  species ||..o{ prediction_logs : predicted
+  Users ||..o{ business_plans : owns
+  species ||..o{ business_plans : related
+  Users ||..o{ chat_sessions : starts
+
+  %% Visual grouping
+  classDef sql fill:#e8f2ff,stroke:#3366cc,stroke-width:1px,color:#0b1f44
+  classDef pg fill:#ecfff2,stroke:#2d8a4d,stroke-width:1px,color:#0b2a16
+
+  class Users,Roles,UserRoles,RefreshTokens,ProductCategories,Products,ProductImages,ProductReviews,Certifications,AbsPermits,TraceabilityBatches,Orders,OrderItems,Addresses,Favorites,Notifications,ActivityLogs,CommunityPosts,CommunityPostComments,CommunityReactions,UserConnections,DirectThreads,DirectThreadParticipants,DirectMessages,DirectMessageReads sql
+  class taxonomy,species,geographic_distribution,species_images,prediction_logs,ai_model_versions,business_plans,rag_documents,chat_sessions,chat_messages pg

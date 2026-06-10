@@ -1,0 +1,4332 @@
+{
+  "accuracy": 0.8739,
+  "top_5_accuracy": 0.9514,
+  "macro_avg": {
+    "precision": 0.888,
+    "recall": 0.8662,
+    "f1_score": 0.8652
+  },
+  "weighted_avg": {
+    "precision": 0.8918,
+    "recall": 0.8739,
+    "f1_score": 0.8726
+  },
+  "per_class": {
+    "Abracris_flavolineata": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Achlyodes_pallida": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Acropternis_orthonyx": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Actinote_neleus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Actinote_stratonice": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Adelomyia_melanogenys": {
+      "precision": 1.0,
+      "recall": 0.75,
+      "f1_score": 0.8571,
+      "support": 12
+    },
+    "Adhemarius_sexoculata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Aechmea_angustifolia": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Aglaeactis_cupripennis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Aglaiocercus_coelestis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Aglaiocercus_kingii": {
+      "precision": 0.8571,
+      "recall": 0.8,
+      "f1_score": 0.8276,
+      "support": 15
+    },
+    "Aiouea_montana": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Alouatta_seniculus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Altinote_ozomene": {
+      "precision": 0.75,
+      "recall": 0.8571,
+      "f1_score": 0.8,
+      "support": 7
+    },
+    "Amanita_muscaria": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Amastus_aconia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Amastus_coccinator": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Amastus_episcotosia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Amastus_thalassina": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 8
+    },
+    "Amazilia_tzacatl": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 9
+    },
+    "Amazona_mercenaria": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Ampelioides_tschudii": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Ampelion_rubrocristatus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ampelion_rufaxilla": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Anartia_amathea": {
+      "precision": 1.0,
+      "recall": 0.9231,
+      "f1_score": 0.96,
+      "support": 13
+    },
+    "Anartia_jatrophae": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Ancognatha_scarabaeoides": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Ancognatha_vulgaris": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Andesanthus_lepidotus": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Andigena_hypoglauca": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Andigena_nigrirostris": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 14
+    },
+    "Andinia_pilosella": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Andinobates_daleswansoni": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Anisognathus_igniventris": {
+      "precision": 0.9333,
+      "recall": 0.9333,
+      "f1_score": 0.9333,
+      "support": 15
+    },
+    "Anisognathus_lacrymosus": {
+      "precision": 1.0,
+      "recall": 0.9333,
+      "f1_score": 0.9655,
+      "support": 15
+    },
+    "Anisognathus_somptuosus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Anolis_antonii": {
+      "precision": 0.7778,
+      "recall": 0.875,
+      "f1_score": 0.8235,
+      "support": 8
+    },
+    "Anolis_quimbaya": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Anolis_ventrimaculatus": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Anteos_clorinde": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Anthanassa_drusilla": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Anthoptus_epictetus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Anthracothorax_nigricollis": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Anthurium_caramantae": {
+      "precision": 0.8571,
+      "recall": 1.0,
+      "f1_score": 0.9231,
+      "support": 6
+    },
+    "Anthurium_crystallinum": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Aotus_griseimembra": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Aotus_lemurinus": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Aphelandra_runcinata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Apis_mellifera": {
+      "precision": 0.9091,
+      "recall": 0.8333,
+      "f1_score": 0.8696,
+      "support": 12
+    },
+    "Ara_severus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Araneus_granadensis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Aratinga_pertinax": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Aratinga_wagleri": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Araucaria_columnaris": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Archonias_flisa": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ardea_alba": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Ardea_cocoi": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Argiope_argentata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 7
+    },
+    "Aristolochia_cordiflora": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Arremon_assimilis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Arremon_brunneinucha": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Arundina_graminifolia": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Ascalapha_odorata": {
+      "precision": 0.8889,
+      "recall": 1.0,
+      "f1_score": 0.9412,
+      "support": 8
+    },
+    "Asclepias_curassavica": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Asio_stygius": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Atlapetes_albinucha": {
+      "precision": 0.5,
+      "recall": 0.4,
+      "f1_score": 0.4444,
+      "support": 5
+    },
+    "Atlapetes_flaviceps": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Atlapetes_pallidinucha": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 8
+    },
+    "Atlapetes_schistaceus": {
+      "precision": 0.8667,
+      "recall": 0.8667,
+      "f1_score": 0.8667,
+      "support": 15
+    },
+    "Atractus_lehmanni": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Atractus_obesus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Atta_cephalotes": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Aulacorhynchus_albivitta": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 11
+    },
+    "Aulacorhynchus_haematopygus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Baccharis_latifolia": {
+      "precision": 0.5556,
+      "recall": 1.0,
+      "f1_score": 0.7143,
+      "support": 5
+    },
+    "Bangsia_melanochlamys": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Basileuterus_culicivorus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Basiliscus_galeritus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Begonia_lehmannii": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Begonia_maurandiae": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Begonia_umbellata": {
+      "precision": 0.8333,
+      "recall": 0.8333,
+      "f1_score": 0.8333,
+      "support": 6
+    },
+    "Begonia_urticae": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 12
+    },
+    "Bellucia_pentamera": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Besleria_cinnabarina": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Boana_platanera": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Boana_pugnax": {
+      "precision": 0.5,
+      "recall": 0.8,
+      "f1_score": 0.6154,
+      "support": 5
+    },
+    "Bocconia_frutescens": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Boissonneaua_flavescens": {
+      "precision": 0.875,
+      "recall": 0.9333,
+      "f1_score": 0.9032,
+      "support": 15
+    },
+    "Boissonneaua_jardini": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Bolborhynchus_ferrugineifrons": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Bolitoglossa_lozanoi": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Bombus_funebris": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Bombus_hortulanus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Bombus_pauloensis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Bombus_rubicundus": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Bothriechis_schlegelii": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Bubulcus_ibis": {
+      "precision": 1.0,
+      "recall": 0.6667,
+      "f1_score": 0.8,
+      "support": 6
+    },
+    "Burmeistera_bullatifolia": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Busarellus_nigricollis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Buteo_albicaudatus": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Buteo_brachyurus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Buteo_platypterus": {
+      "precision": 0.75,
+      "recall": 0.9,
+      "f1_score": 0.8182,
+      "support": 10
+    },
+    "Buthraupis_montana": {
+      "precision": 0.9,
+      "recall": 0.9,
+      "f1_score": 0.9,
+      "support": 10
+    },
+    "Butorides_striata": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Cacicus_chrysonotus": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Caiman_crocodilus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Caligo_atreus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Caligo_oileus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Callianthe_megapotamica": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Callianthe_picta": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Calliphlox_mitchellii": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Campephilus_pollens": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Capito_hypoleucus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Capsicum_dimorphum": {
+      "precision": 0.375,
+      "recall": 0.6,
+      "f1_score": 0.4615,
+      "support": 5
+    },
+    "Caracara_plancus": {
+      "precision": 1.0,
+      "recall": 0.875,
+      "f1_score": 0.9333,
+      "support": 8
+    },
+    "Cardellina_canadensis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Castilia_eranites": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Castilleja_arvensis": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Castilleja_fissifolia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Catamblyrhynchus_diadema": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Catamenia_homochroa": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Catamenia_inornata": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Catasetum_tabulare": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Catasticta_prioneris": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cathartes_aura": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Catharus_fuscater": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Catharus_ustulatus": {
+      "precision": 1.0,
+      "recall": 0.8333,
+      "f1_score": 0.9091,
+      "support": 6
+    },
+    "Cecropia_angustifolia": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Cecropia_telealba": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Centropogon_ferrugineus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Centropogon_foetidus": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Centropogon_leucophyllus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Cerdocyon_thous": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ceroxylon_quindiuense": {
+      "precision": 0.625,
+      "recall": 1.0,
+      "f1_score": 0.7692,
+      "support": 5
+    },
+    "Certhiaxis_cinnamomeus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Chaetocercus_mulsant": {
+      "precision": 0.8,
+      "recall": 0.6667,
+      "f1_score": 0.7273,
+      "support": 12
+    },
+    "Chaetogastra_gracilis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Chaetogastra_grossa": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Chaetogastra_mollis": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Chalcostigma_herrani": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 12
+    },
+    "Chalybura_buffonii": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Chamaedorea_linearis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Chamaedorea_pinnatifrons": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Chamaepetes_goudotii": {
+      "precision": 1.0,
+      "recall": 0.7857,
+      "f1_score": 0.88,
+      "support": 14
+    },
+    "Chauna_chavaria": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Chironius_monticola": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Chloroceryle_americana": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Chlorophanes_spiza": {
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1_score": 0.9474,
+      "support": 10
+    },
+    "Chlorornis_riefferii": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Chlorospingus_flavopectus": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Chlorostilbon_melanorhynchus": {
+      "precision": 0.5,
+      "recall": 0.2,
+      "f1_score": 0.2857,
+      "support": 5
+    },
+    "Chlosyne_lacinia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Choeradodis_rhombicollis": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Chrysomus_icterocephalus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Chrysso_nigriceps": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cinclodes_excelsior": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Cinclus_leucocephalus": {
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1_score": 0.9474,
+      "support": 9
+    },
+    "Cinnycerthia_olivascens": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Cistothorus_platensis": {
+      "precision": 0.8,
+      "recall": 0.6667,
+      "f1_score": 0.7273,
+      "support": 6
+    },
+    "Clathrus_archeri": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Clelia_equatoriana": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Cnemathraupis_eximia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cnemoscopus_rubrirostris": {
+      "precision": 0.75,
+      "recall": 0.5,
+      "f1_score": 0.6,
+      "support": 6
+    },
+    "Coeligena_coeligena": {
+      "precision": 0.9091,
+      "recall": 1.0,
+      "f1_score": 0.9524,
+      "support": 10
+    },
+    "Coeligena_lutetiae": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 15
+    },
+    "Coeligena_torquata": {
+      "precision": 0.8462,
+      "recall": 0.7333,
+      "f1_score": 0.7857,
+      "support": 15
+    },
+    "Coeligena_wilsoni": {
+      "precision": 0.625,
+      "recall": 1.0,
+      "f1_score": 0.7692,
+      "support": 5
+    },
+    "Coereba_flaveola": {
+      "precision": 1.0,
+      "recall": 0.2,
+      "f1_score": 0.3333,
+      "support": 5
+    },
+    "Colaptes_punctigula": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Colaptes_rivolii": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 11
+    },
+    "Colaptes_rubiginosus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Colibri_coruscans": {
+      "precision": 0.9375,
+      "recall": 1.0,
+      "f1_score": 0.9677,
+      "support": 15
+    },
+    "Colibri_cyanotus": {
+      "precision": 0.8333,
+      "recall": 0.9091,
+      "f1_score": 0.8696,
+      "support": 11
+    },
+    "Colobura_dirce": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Colonia_colonus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Columbina_talpacoti": {
+      "precision": 0.7,
+      "recall": 0.7,
+      "f1_score": 0.7,
+      "support": 10
+    },
+    "Columnea_ceticeps": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Columnea_fuscihirta": {
+      "precision": 0.625,
+      "recall": 1.0,
+      "f1_score": 0.7692,
+      "support": 5
+    },
+    "Columnea_strigosa": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Comparettia_falcata": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Conchylodes_bryophilalis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Conirostrum_albifrons": {
+      "precision": 0.625,
+      "recall": 1.0,
+      "f1_score": 0.7692,
+      "support": 5
+    },
+    "Conirostrum_sitticolor": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Consul_panariste": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Coprinellus_disseminatus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Corades_chelonis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Coragyps_atratus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 12
+    },
+    "Cornu_aspersum": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Crassocephalum_crepidioides": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Crocosmia_crocosmiiflora": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Crotophaga_ani": {
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1_score": 0.8889,
+      "support": 8
+    },
+    "Crypturellus_soui": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cupiennius_coccineus": {
+      "precision": 0.4,
+      "recall": 0.8,
+      "f1_score": 0.5333,
+      "support": 5
+    },
+    "Cyanocorax_affinis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Cyanocorax_yncas": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Cyanolyca_armillata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cyanopepla_micans": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cybdelis_mnasylus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cyclarhis_nigrirostris": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Cyclocephala_lunulata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Cyrtochilum_annulare": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Cyrtochilum_diceratum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cyrtochilum_divaricatum": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Cyrtochilum_halteratum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cyrtochilum_murinum": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Cyrtochilum_scabiosum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Cyrtochilum_tricostatum": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Danaus_plexippus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Dasyprocta_punctata": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Dendrobates_truncatus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Dendrocincla_fuliginosa": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Dendropsophus_columbianus": {
+      "precision": 0.75,
+      "recall": 0.9,
+      "f1_score": 0.8182,
+      "support": 10
+    },
+    "Diabrotica_decempunctata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Diaethria_clymena": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Didelphis_marsupialis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Diglossa_albilatera": {
+      "precision": 0.8889,
+      "recall": 0.8,
+      "f1_score": 0.8421,
+      "support": 10
+    },
+    "Diglossa_cyanea": {
+      "precision": 0.9375,
+      "recall": 1.0,
+      "f1_score": 0.9677,
+      "support": 15
+    },
+    "Diglossa_humeralis": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Diglossa_lafresnayii": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Dione_glycera": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Dipsas_sanctijoannis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Donacobius_atricapilla": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Doxocopa_cyane": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Dracula_iricolor": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Dryas_iulia": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Drymonia_lanceolata": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Dryocopus_lineatus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Dubusia_taeniata": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Egretta_thula": {
+      "precision": 0.4,
+      "recall": 0.8,
+      "f1_score": 0.5333,
+      "support": 5
+    },
+    "Eira_barbara": {
+      "precision": 0.6667,
+      "recall": 0.4,
+      "f1_score": 0.5,
+      "support": 5
+    },
+    "Elaenia_flavogaster": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Elaenia_frantzii": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Elanoides_forficatus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Elleanthus_aurantiacus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Elysius_atrata": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Endrosis_sarcitrella": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Ensifera_ensifera": {
+      "precision": 0.9333,
+      "recall": 0.9333,
+      "f1_score": 0.9333,
+      "support": 15
+    },
+    "Epidendrum_cleistocoleum": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Epidendrum_cottoniiflorum": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Epidendrum_cylindrostachys": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Epidendrum_fimbriatum": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 10
+    },
+    "Epidendrum_melinanthum": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Epidendrum_porphyreum": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Epidendrum_posadarum": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Epiphile_chrysites": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Epiphile_epimenes": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Equisetum_bogotense": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Erato_vulcanica": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Eresia_clio": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Erinnyis_ello": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Eriocnemis_derbyi": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Eriocnemis_mosquera": {
+      "precision": 0.8889,
+      "recall": 1.0,
+      "f1_score": 0.9412,
+      "support": 8
+    },
+    "Eriophora_edax": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Eryphanis_lycomedon": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Erythrolamprus_bizona": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Erythrolamprus_epinephalus": {
+      "precision": 0.6667,
+      "recall": 0.4,
+      "f1_score": 0.5,
+      "support": 5
+    },
+    "Erythrolamprus_epinephelus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Espadarana_prosoblepon": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Espeletia_hartwegiana": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Eubucco_bourcierii": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Eudocima_procus": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Eueides_procula": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Eulaema_cingulata": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Eulaema_meriana": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Eulaema_polychroma": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Euphonia_cyanocephala": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Euphonia_laniirostris": {
+      "precision": 0.8333,
+      "recall": 0.9091,
+      "f1_score": 0.8696,
+      "support": 11
+    },
+    "Euphonia_xanthogaster": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Euphorbia_hirta": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Euptychoides_saturnus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Euryglottis_aper": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Falco_sparverius": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Florisuga_mellivora": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 7
+    },
+    "Fluvicola_pica": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Forpus_conspicillatus": {
+      "precision": 1.0,
+      "recall": 0.8889,
+      "f1_score": 0.9412,
+      "support": 9
+    },
+    "Fuchsia_boliviana": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Fuchsia_nigricans": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Fuchsia_petiolaris": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Gaiadendron_punctatum": {
+      "precision": 1.0,
+      "recall": 0.2,
+      "f1_score": 0.3333,
+      "support": 5
+    },
+    "Galium_hypocarpium": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Gallinula_chloropus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Gasteracantha_cancriformis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Gaultheria_myrsinoides": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Gentiana_sedifolia": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Geonoma_undata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Geospizopsis_unicolor": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Geranoaetus_melanoleucus": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Glossoloma_schultzei": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Golofa_eacus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Golofa_porteri": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 9
+    },
+    "Gonatodes_albogularis": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Gonora_hyelosioides": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Grallaria_alvarezi": {
+      "precision": 1.0,
+      "recall": 0.8333,
+      "f1_score": 0.9091,
+      "support": 6
+    },
+    "Grallaria_milleri": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 16
+    },
+    "Grallaria_nuchalis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 8
+    },
+    "Grallaria_quitensis": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 7
+    },
+    "Grallaria_ruficapilla": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Grallaria_rufocinerea": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 14
+    },
+    "Grallaria_saturata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Grallaricula_lineifrons": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Grallaricula_nana": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 12
+    },
+    "Graphita_griphe": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Guzmania_multiflora": {
+      "precision": 0.5556,
+      "recall": 1.0,
+      "f1_score": 0.7143,
+      "support": 5
+    },
+    "Guzmania_triangularis": {
+      "precision": 0.5,
+      "recall": 0.2,
+      "f1_score": 0.2857,
+      "support": 5
+    },
+    "Gymnetis_pantherina": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Hafferia_immaculata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Halictus_ligatus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Hapalopsittaca_amazonina": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Harmonia_axyridis": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Hedychium_coronarium": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Heliangelus_exortis": {
+      "precision": 0.7778,
+      "recall": 0.9333,
+      "f1_score": 0.8485,
+      "support": 15
+    },
+    "Heliconia_bihai": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Heliconia_burleana": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Heliconia_griggsiana": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Heliconia_latispatha": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Heliconius_charithonia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Heliconius_clysonymus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Heliconius_cydno": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 6
+    },
+    "Heliconius_doris": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Heliconius_eleuchia": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Heliconius_erato": {
+      "precision": 1.0,
+      "recall": 0.8571,
+      "f1_score": 0.9231,
+      "support": 7
+    },
+    "Heliodoxa_imperatrix": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Heliodoxa_rubinoides": {
+      "precision": 1.0,
+      "recall": 0.9167,
+      "f1_score": 0.9565,
+      "support": 12
+    },
+    "Heliomaster_longirostris": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Hellmayrea_gularis": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 7
+    },
+    "Hemidactylus_frenatus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Hemithraupis_guira": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Hermeuptychia_harmonia": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Herpetotheres_cachinnans": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Herpothallon_rubrocinctum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Heterogomphus_mniszechi": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Heterogomphus_schoenherri": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 7
+    },
+    "Hylophilus_semibrunneus": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Hypanartia_kefersteini": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Hypanartia_lethe": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Hypopyrrhus_pyrohypogaster": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Icterus_chrysater": {
+      "precision": 0.7778,
+      "recall": 0.875,
+      "f1_score": 0.8235,
+      "support": 8
+    },
+    "Icterus_nigrogularis": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Iguana_iguana": {
+      "precision": 0.8571,
+      "recall": 0.75,
+      "f1_score": 0.8,
+      "support": 8
+    },
+    "Imantodes_cenchoa": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Impatiens_walleriana": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Ipomoea_batatas": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Ipomoea_indica": {
+      "precision": 0.4286,
+      "recall": 0.6,
+      "f1_score": 0.5,
+      "support": 5
+    },
+    "Ipomoea_purpurea": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Iridosornis_porphyrocephalus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Iridosornis_rufivertex": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ithomia_iphianassa": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Jacana_jacana": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Janatella_fellula": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Juglans_neotropica": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Junonia_evarete": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Kinosternon_leucostomum": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Kleinothraupis_atropileus": {
+      "precision": 1.0,
+      "recall": 0.8333,
+      "f1_score": 0.9091,
+      "support": 6
+    },
+    "Kohleria_affinis": {
+      "precision": 1.0,
+      "recall": 0.875,
+      "f1_score": 0.9333,
+      "support": 8
+    },
+    "Kohleria_inaequalis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Kohleria_spicata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Kohleria_warszewiczii": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Kukulcania_hibernalis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Lafresnaya_lafresnayi": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 10
+    },
+    "Langucys_nigropuncta": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Lasiophila_prosymna": {
+      "precision": 1.0,
+      "recall": 0.8571,
+      "f1_score": 0.9231,
+      "support": 7
+    },
+    "Lentinus_flexipes": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Lepanthes_dunstervilleorum": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Lepanthes_gargantua": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Lepanthes_jardinensis": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Lepanthes_mucronata": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Lepanthes_tachirensis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Lepidocolaptes_lacrymiger": {
+      "precision": 0.6364,
+      "recall": 0.7778,
+      "f1_score": 0.7,
+      "support": 9
+    },
+    "Lepidocolaptes_souleyetii": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Leptodeira_ornata": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Leptophobia_aripa": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Leptopogon_rufipectus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Leptosittaca_branickii": {
+      "precision": 0.6667,
+      "recall": 0.6667,
+      "f1_score": 0.6667,
+      "support": 6
+    },
+    "Leptotila_plumbeiceps": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Leuconotopicus_fumigatus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Leucopternis_princeps": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Leuenbergeria_bleo": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Linothele_sericata": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Lipaugus_fuscocinereus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Lissachatina_fulica": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Lycomedes_hirtipes": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Lycorea_cleobaea": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Macara_alydda": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Machaeropterus_deliciosus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Machaeropterus_striolatus": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Machetornis_rixosa": {
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1_score": 0.6667,
+      "support": 6
+    },
+    "Magnolia_yarumalensis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Malacoptila_mystacalis": {
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1_score": 0.9474,
+      "support": 9
+    },
+    "Malaveria_rodriguezi": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Manacus_manacus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Manacus_vitellinus": {
+      "precision": 0.7778,
+      "recall": 1.0,
+      "f1_score": 0.875,
+      "support": 7
+    },
+    "Manduca_rustica": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Margarornis_squamiger": {
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1_score": 0.5,
+      "support": 8
+    },
+    "Markia_hystrix": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Marpesia_berania": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Marpesia_corinna": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Maruca_vitrata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Masdevallia_amanda": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Masdevallia_heteroptera": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Masdevallia_hortensis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Masdevallia_picturata": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Maxillaria_acuminata": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Maxillaria_embreei": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Maxillaria_lepidota": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Mechanitis_polymnia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Mecocerculus_leucophrys": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Mecocerculus_stictopterus": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Megaceryle_torquata": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Megascops_choliba": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Megaskepasma_erythrochlamys": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Melanchroia_chephise": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Melanerpes_formicivorus": {
+      "precision": 0.8571,
+      "recall": 1.0,
+      "f1_score": 0.9231,
+      "support": 12
+    },
+    "Melanerpes_pulcher": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Melanerpes_rubricapillus": {
+      "precision": 0.7692,
+      "recall": 1.0,
+      "f1_score": 0.8696,
+      "support": 10
+    },
+    "Melanis_pixe": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Melipona_nigrescens": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Memphis_lyceus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Menemerus_bivittatus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 6
+    },
+    "Merganetta_armata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Mesothen_nomia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Metallura_tyrianthina": {
+      "precision": 0.7778,
+      "recall": 0.7778,
+      "f1_score": 0.7778,
+      "support": 9
+    },
+    "Metallura_williami": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Miconia_aeruginosa": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Miconia_asperrima": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Miconia_salicifolia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Miconia_trichocalyx": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Micrathena_lucasi": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Micrurus_mipartitus": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Mimoniades_nurscia": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Mimus_gilvus": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Mionectes_oleagineus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Mniotilta_varia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Molothrus_bonariensis": {
+      "precision": 0.5333,
+      "recall": 0.8,
+      "f1_score": 0.64,
+      "support": 10
+    },
+    "Momordica_charantia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Momotus_aequatorialis": {
+      "precision": 1.0,
+      "recall": 0.9333,
+      "f1_score": 0.9655,
+      "support": 15
+    },
+    "Monochaetum_multiflorum": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Morella_pubescens": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Morpho_sulkowskyi": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Muntingia_calabura": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Musa_velutina": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Mutisia_clematis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Myadestes_ralloides": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Myiarchus_cephalotes": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Myioborus_miniatus": {
+      "precision": 0.6,
+      "recall": 0.75,
+      "f1_score": 0.6667,
+      "support": 8
+    },
+    "Myioborus_ornatus": {
+      "precision": 0.8462,
+      "recall": 0.7333,
+      "f1_score": 0.7857,
+      "support": 15
+    },
+    "Myiodynastes_hemichrysus": {
+      "precision": 0.4286,
+      "recall": 0.6,
+      "f1_score": 0.5,
+      "support": 5
+    },
+    "Myiodynastes_maculatus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Myiotheretes_striaticollis": {
+      "precision": 0.625,
+      "recall": 1.0,
+      "f1_score": 0.7692,
+      "support": 5
+    },
+    "Myiothlypis_coronata": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Myiothlypis_fulvicauda": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Myiothlypis_nigrocristata": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Myiozetetes_cayanensis": {
+      "precision": 0.6667,
+      "recall": 0.5714,
+      "f1_score": 0.6154,
+      "support": 7
+    },
+    "Mythimna_unipuncta": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Nasua_olivacea": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Necyria_bellona": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Nertera_granadensis": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Notiochelidon_cyanoleuca": {
+      "precision": 0.8571,
+      "recall": 0.75,
+      "f1_score": 0.8,
+      "support": 8
+    },
+    "Notiochelidon_murina": {
+      "precision": 0.7,
+      "recall": 1.0,
+      "f1_score": 0.8235,
+      "support": 7
+    },
+    "Nyctibius_griseus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Nycticorax_nycticorax": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Nymphargus_grandisonae": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Ochthoeca_cinnamomeiventris": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ochthoeca_diadema": {
+      "precision": 1.0,
+      "recall": 0.9167,
+      "f1_score": 0.9565,
+      "support": 12
+    },
+    "Ochthoeca_frontalis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ochthoeca_fumicolor": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ochthoeca_rufipectoralis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Ocreatus_underwoodii": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Odontomachus_erythrocephalus": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Ognorhynchus_icterotis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Oncidium_cultratum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Oncidium_lehmannii": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Oncidium_luteopurpureum": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Oncidium_ornithorhynchum": {
+      "precision": 1.0,
+      "recall": 0.8571,
+      "f1_score": 0.9231,
+      "support": 7
+    },
+    "Opaon_varicolor": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Opsiphanes_quiteria": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Oressinoma_typhla": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ortalis_columbiana": {
+      "precision": 1.0,
+      "recall": 0.6667,
+      "f1_score": 0.8,
+      "support": 6
+    },
+    "Orthrosanthus_chimboracensis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Oxypogon_stuebelii": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 7
+    },
+    "Oxyrhopus_petolarius": {
+      "precision": 0.5,
+      "recall": 0.6,
+      "f1_score": 0.5455,
+      "support": 5
+    },
+    "Oxysternon_conspicillatum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pachyramphus_polychopterus": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Pachystachys_lutea": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Palicourea_angustifolia": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Palicourea_colorata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pandion_haliaetus": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Pantherodes_pardalaria": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Papilio_polyxenes": {
+      "precision": 0.6667,
+      "recall": 0.4,
+      "f1_score": 0.5,
+      "support": 5
+    },
+    "Paramastax_poecilosoma": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Paramastax_rosenbergi": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Parataygetis_lineata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pareuptychia_hesione": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Pareuptychia_metaleuca": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Parides_erithalion": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Passiflora_adenopoda": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Passiflora_alata": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Passiflora_alnifolia": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Passiflora_antioquiensis": {
+      "precision": 0.5,
+      "recall": 0.4,
+      "f1_score": 0.4444,
+      "support": 5
+    },
+    "Passiflora_apoda": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Passiflora_capsularis": {
+      "precision": 0.4,
+      "recall": 0.4,
+      "f1_score": 0.4,
+      "support": 5
+    },
+    "Passiflora_cisnana": {
+      "precision": 0.4,
+      "recall": 0.4,
+      "f1_score": 0.4,
+      "support": 5
+    },
+    "Passiflora_coriacea": {
+      "precision": 0.5,
+      "recall": 0.6,
+      "f1_score": 0.5455,
+      "support": 5
+    },
+    "Passiflora_cumbalensis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Passiflora_cuspidifolia": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Passiflora_maliformis": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Passiflora_mixta": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Passiflora_suberosa": {
+      "precision": 0.4,
+      "recall": 0.4,
+      "f1_score": 0.4,
+      "support": 5
+    },
+    "Passiflora_tribolophylla": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Passiflora_vitifolia": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Patagioenas_cayennensis": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Patagioenas_fasciata": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Pedaliodes_peucestas": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Pedaliodes_phaedra": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Pelecinus_polyturator": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Penelope_montagnii": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 14
+    },
+    "Peperomia_rotundifolia": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Perisama_bonplandii": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Perisama_humboldtii": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Perisama_lebasii": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Perisama_oppelii": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Persicaria_capitata": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Persicaria_nepalensis": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Phaethornis_guy": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Phalacrocorax_brasilianus": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Pharomachrus_auriceps": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pheucticus_ludovicianus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pheugopedius_sclateri": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Phimosus_infuscatus": {
+      "precision": 0.9,
+      "recall": 0.8182,
+      "f1_score": 0.8571,
+      "support": 11
+    },
+    "Phobetron_hipparchia": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Pholidobolus_celsiae": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Phoneutria_depilata": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Phytolacca_bogotensis": {
+      "precision": 1.0,
+      "recall": 0.6667,
+      "f1_score": 0.8,
+      "support": 6
+    },
+    "Phytolacca_rivinoides": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Phytolacca_rugosa": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Piaya_cayana": {
+      "precision": 0.8571,
+      "recall": 0.8571,
+      "f1_score": 0.8571,
+      "support": 7
+    },
+    "Picumnus_granadensis": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Pionus_chalcopterus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Pionus_menstruus": {
+      "precision": 0.7273,
+      "recall": 0.8,
+      "f1_score": 0.7619,
+      "support": 10
+    },
+    "Piper_lanceifolium": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Piper_peltatum": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Pipra_erythrocephala": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pipreola_arcuata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 10
+    },
+    "Pipreola_jucunda": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pipreola_riefferii": {
+      "precision": 1.0,
+      "recall": 0.9333,
+      "f1_score": 0.9655,
+      "support": 15
+    },
+    "Piranga_flava": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Piranga_rubra": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Pitangus_sulphuratus": {
+      "precision": 0.6,
+      "recall": 0.75,
+      "f1_score": 0.6667,
+      "support": 12
+    },
+    "Pleroma_urvilleanum": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Pleurothallis_cordata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pleurothallis_matudana": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Pleurothallis_phalangifera": {
+      "precision": 0.5,
+      "recall": 0.8,
+      "f1_score": 0.6154,
+      "support": 5
+    },
+    "Pleurothallis_pulvinaris": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pleurothallis_tetragona": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Podotricha_judith": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Poecilotriccus_ruficeps": {
+      "precision": 0.9231,
+      "recall": 1.0,
+      "f1_score": 0.96,
+      "support": 12
+    },
+    "Polistes_carnifex": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Polistes_erythrocephalus": {
+      "precision": 0.875,
+      "recall": 0.7,
+      "f1_score": 0.7778,
+      "support": 10
+    },
+    "Ponthieva_fertilis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Porphyrio_martinica": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Porphyrobaphe_iris": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Potentilla_indica": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Potos_flavus": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Pristimantis_achatinus": {
+      "precision": 0.8571,
+      "recall": 0.8571,
+      "f1_score": 0.8571,
+      "support": 7
+    },
+    "Pristimantis_thectopternus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Prosthechea_hartwegii": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Psalidognathus_modestus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Psarocolius_angustifrons": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Pseudocolaptes_boissonneautii": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Pseudohaetera_hypaesia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pseudosphinx_tetrio": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pseudovates_brevicornis": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Pteroglossus_torquatus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pterophanes_cyanopterus": {
+      "precision": 1.0,
+      "recall": 0.9333,
+      "f1_score": 0.9655,
+      "support": 15
+    },
+    "Pterostemma_antioquiense": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pulsatrix_perspicillata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Pycnopalpa_bicordata": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Pyrocephalus_rubinus": {
+      "precision": 0.8,
+      "recall": 0.8889,
+      "f1_score": 0.8421,
+      "support": 9
+    },
+    "Pyrrhomyias_cinnamomeus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 14
+    },
+    "Pythonides_jovianus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Quercus_humboldtii": {
+      "precision": 0.5,
+      "recall": 0.6,
+      "f1_score": 0.5455,
+      "support": 5
+    },
+    "Quiscalus_lugubris": {
+      "precision": 0.8333,
+      "recall": 0.7143,
+      "f1_score": 0.7692,
+      "support": 7
+    },
+    "Quiscalus_mexicanus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Racinaea_tetrantha": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Ramphastos_citreolaemus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ramphocelus_dimidiatus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 8
+    },
+    "Ramphocelus_flammigerus": {
+      "precision": 1.0,
+      "recall": 0.7333,
+      "f1_score": 0.8462,
+      "support": 15
+    },
+    "Ramphomicron_microrhynchum": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Raphiocera_ornata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Renealmia_cernua": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Retrophyllum_rospigliosii": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Rhetus_arcius": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Rhetus_dysonii": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Rhinella_horribilis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Rhipsalis_baccifera": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Rhodobaenus_augustinus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Rhytidochrota_risaraldae": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Ricinus_communis": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Rodriguezia_lanceolata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Rubus_nubigenus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Rupicola_peruvianus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Rupornis_magnirostris": {
+      "precision": 0.8462,
+      "recall": 0.7857,
+      "f1_score": 0.8148,
+      "support": 14
+    },
+    "Saguinus_leucopus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Saltator_atripennis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Saltator_cinctus": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Saltator_striatipectus": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Salvia_scutellarioides": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Saucerottia_saucerottei": {
+      "precision": 0.6667,
+      "recall": 0.6,
+      "f1_score": 0.6316,
+      "support": 10
+    },
+    "Sayornis_nigricans": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 9
+    },
+    "Scaphyglottis_aurea": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Schistes_albogularis": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Sciurus_granatensis": {
+      "precision": 0.9375,
+      "recall": 1.0,
+      "f1_score": 0.9677,
+      "support": 15
+    },
+    "Sciurus_pucheranii": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Sechium_edule": {
+      "precision": 0.5,
+      "recall": 0.6,
+      "f1_score": 0.5455,
+      "support": 5
+    },
+    "Senecio_niveoaureus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Sericoptera_mahometaria": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Sericossypha_albocristata": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Serpocaulon_levigatum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Serpophaga_cinerea": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Setophaga_aestiva": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Setophaga_castanea": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Setophaga_fusca": {
+      "precision": 0.8,
+      "recall": 0.75,
+      "f1_score": 0.7742,
+      "support": 16
+    },
+    "Setophaga_pitiayumi": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Sibovia_prodigiosa": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Sicalis_flaveola": {
+      "precision": 0.8571,
+      "recall": 0.8,
+      "f1_score": 0.8276,
+      "support": 15
+    },
+    "Siproeta_epaphus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Siproeta_stelenes": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Solanum_quitoense": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Solanum_vestissimum": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Sphacelodes_vulneraria": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Sphenopsis_frontalis": {
+      "precision": 0.5556,
+      "recall": 1.0,
+      "f1_score": 0.7143,
+      "support": 5
+    },
+    "Sphenopsis_melanotis": {
+      "precision": 0.625,
+      "recall": 1.0,
+      "f1_score": 0.7692,
+      "support": 5
+    },
+    "Spilotes_pullatus": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Spinus_psaltria": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Spinus_xanthogastrus": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Spizaetus_tyrannus": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Sporathraupis_cyanocephala": {
+      "precision": 0.8333,
+      "recall": 0.8333,
+      "f1_score": 0.8333,
+      "support": 12
+    },
+    "Sporophila_crassirostris": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Sporophila_intermedia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Sporophila_luctuosa": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Sporophila_minuta": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Sporophila_nigricollis": {
+      "precision": 0.8571,
+      "recall": 1.0,
+      "f1_score": 0.9231,
+      "support": 6
+    },
+    "Stagmatoptera_septentrionalis": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Stelgidopteryx_ruficollis": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Stilpnia_cyanicollis": {
+      "precision": 1.0,
+      "recall": 0.8889,
+      "f1_score": 0.9412,
+      "support": 9
+    },
+    "Stilpnia_heinei": {
+      "precision": 1.0,
+      "recall": 0.8889,
+      "f1_score": 0.9412,
+      "support": 9
+    },
+    "Stilpnia_vitriolina": {
+      "precision": 0.875,
+      "recall": 0.875,
+      "f1_score": 0.875,
+      "support": 16
+    },
+    "Streptoprocne_zonaris": {
+      "precision": 0.4444,
+      "recall": 0.8,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Streptosolen_jamesonii": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Sylvilagus_andinus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Synallaxis_azarae": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Synoeca_septentrionalis": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Tachyphonus_rufus": {
+      "precision": 0.5,
+      "recall": 0.8,
+      "f1_score": 0.6154,
+      "support": 5
+    },
+    "Tangara_arthus": {
+      "precision": 1.0,
+      "recall": 0.8571,
+      "f1_score": 0.9231,
+      "support": 7
+    },
+    "Tangara_gyrola": {
+      "precision": 0.7333,
+      "recall": 1.0,
+      "f1_score": 0.8462,
+      "support": 11
+    },
+    "Tangara_icterocephala": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Tangara_labradorides": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Tangara_nigroviridis": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 7
+    },
+    "Tangara_vassorii": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Tangara_xanthocephala": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Tantilla_melanocephala": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Tegosa_anieta": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Tersina_viridis": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Tetragonisca_angustula": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Thalurania_colombica": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Thamnophilus_multistriatus": {
+      "precision": 0.75,
+      "recall": 0.6,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Theobroma_cacao": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Thlypopsis_superciliaris": {
+      "precision": 1.0,
+      "recall": 0.7143,
+      "f1_score": 0.8333,
+      "support": 7
+    },
+    "Thraupis_episcopus": {
+      "precision": 0.8,
+      "recall": 0.8571,
+      "f1_score": 0.8276,
+      "support": 14
+    },
+    "Thraupis_palmarum": {
+      "precision": 1.0,
+      "recall": 0.9091,
+      "f1_score": 0.9524,
+      "support": 11
+    },
+    "Thunbergia_alata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 10
+    },
+    "Thysania_zenobia": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Tiaris_olivaceus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Tigrisoma_lineatum": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Tillandsia_biflora": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Tillandsia_complanata": {
+      "precision": 0.5,
+      "recall": 0.8,
+      "f1_score": 0.6154,
+      "support": 5
+    },
+    "Tillandsia_fendleri": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Tithorea_tarricina": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Tityra_semifasciata": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Tityus_forcipula": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Todirostrum_cinereum": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Tournefortiopsis_crispiflora": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Trichonephila_clavipes": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Trifolium_pratense": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Trifolium_repens": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Trigona_fulviventris": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Tringa_solitaria": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Troglodytes_musculus": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 7
+    },
+    "Troglodytes_solstitialis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 8
+    },
+    "Trogon_personatus": {
+      "precision": 1.0,
+      "recall": 0.8889,
+      "f1_score": 0.9412,
+      "support": 9
+    },
+    "Turdus_fuscater": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 15
+    },
+    "Turdus_grayi": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Turdus_ignobilis": {
+      "precision": 0.75,
+      "recall": 0.8182,
+      "f1_score": 0.7826,
+      "support": 11
+    },
+    "Turnera_subulata": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Tyrannus_melancholicus": {
+      "precision": 0.8824,
+      "recall": 1.0,
+      "f1_score": 0.9375,
+      "support": 15
+    },
+    "Tyrannus_savana": {
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1_score": 0.75,
+      "support": 5
+    },
+    "Urania_fulgens": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Uranomitra_franciae": {
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 7
+    },
+    "Uropsalis_lyra": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1_score": 0.8,
+      "support": 5
+    },
+    "Urosticte_benjamini": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Vallea_stipularis": {
+      "precision": 1.0,
+      "recall": 0.4,
+      "f1_score": 0.5714,
+      "support": 5
+    },
+    "Vanellus_chilensis": {
+      "precision": 0.875,
+      "recall": 0.7778,
+      "f1_score": 0.8235,
+      "support": 9
+    },
+    "Vanessa_braziliensis": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Vanessa_carye": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 9
+    },
+    "Veniliornis_dignus": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Vireo_leucophrys": {
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1_score": 0.6667,
+      "support": 5
+    },
+    "Volatinia_jacarina": {
+      "precision": 1.0,
+      "recall": 0.2,
+      "f1_score": 0.3333,
+      "support": 5
+    },
+    "Voyria_tenella": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Vultur_gryphus": {
+      "precision": 0.6,
+      "recall": 0.6,
+      "f1_score": 0.6,
+      "support": 5
+    },
+    "Wercklea_ferox": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Xenops_rutilans": {
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1_score": 0.8889,
+      "support": 5
+    },
+    "Xiphocolaptes_promeropirhynchus": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Xylocopa_fimbriata": {
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "support": 5
+    },
+    "Zantedeschia_aethiopica": {
+      "precision": 0.6667,
+      "recall": 0.8,
+      "f1_score": 0.7273,
+      "support": 5
+    },
+    "Zelus_longipes": {
+      "precision": 0.8333,
+      "recall": 1.0,
+      "f1_score": 0.9091,
+      "support": 5
+    },
+    "Zenaida_auriculata": {
+      "precision": 0.8667,
+      "recall": 0.8667,
+      "f1_score": 0.8667,
+      "support": 15
+    },
+    "Zentrygon_frenata": {
+      "precision": 0.7778,
+      "recall": 0.875,
+      "f1_score": 0.8235,
+      "support": 8
+    },
+    "Zimmerius_chrysops": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 5
+    },
+    "Zingiber_spectabile": {
+      "precision": 0.9,
+      "recall": 1.0,
+      "f1_score": 0.9474,
+      "support": 9
+    },
+    "Zonotrichia_capensis": {
+      "precision": 0.9375,
+      "recall": 1.0,
+      "f1_score": 0.9677,
+      "support": 15
+    }
+  },
+  "num_classes": 719,
+  "total_samples": 4386
+}

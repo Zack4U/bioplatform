@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0 https://rs.gbif.org/schema/eml-gbif-profile/1.3/eml.xsd"
+packageId="bcb25de5-5f4f-4cee-84fb-035bdb7dce4f"  system="http://gbif.org" scope="system"
+xml:lang="es">
+    <dataset>
+        <alternateIdentifier>10.15472/uoweqy</alternateIdentifier>
+        <alternateIdentifier>bcb25de5-5f4f-4cee-84fb-035bdb7dce4f</alternateIdentifier>
+        <alternateIdentifier>https://ipt.biodiversidad.co/sib/resource?r=isagen_gustavia_romeroi</alternateIdentifier>
+        <title>Monitoreo de Gustavia romeroi en zonas de influencia de la Central Hidroeléctrica Miel I, 2023</title>
+        <creator>
+            <individualName>
+                <givenName>Héctor Javier</givenName>
+                <surName>Sandoval Ortiz</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Profesional Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>hjsandoval@isagen.com.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0009-0009-9997-2670</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>María Camila</givenName>
+                <surName>Ángel-Vallejo</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Bióloga</positionName>
+            <address>
+                <deliveryPoint>Calle 65 #26-10</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>mariacamilaangelvallejo@gmail.com</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0002-1930-3656</userId>
+        </creator>
+        <creator>
+            <individualName>
+                <givenName>Andrés Miguel</givenName>
+                <surName>Betancourth Restrepo</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Ingeniero Agrónomo – MSc</positionName>
+            <address>
+                <deliveryPoint>Calle 65 #26-10</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>andresmiguelbr@gmail.com</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0002-5312-4723</userId>
+        </creator>
+        <metadataProvider>
+            <individualName>
+                <givenName>Héctor Javier</givenName>
+                <surName>Sandoval Ortiz</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Profesional Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>hjsandoval@isagen.com.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0009-0009-9997-2670</userId>
+        </metadataProvider>
+        <metadataProvider>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+        </metadataProvider>
+        <associatedParty>
+            <individualName>
+                <surName>Universidad de Caldas</surName>
+            </individualName>
+            <organizationName>Universidad de Caldas</organizationName>
+            <positionName>Universidad</positionName>
+            <address>
+                <deliveryPoint>Calle 65 #26-10</deliveryPoint>
+                <city>Manizales</city>
+                <administrativeArea>Caldas</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>(606) 8781500</phone>
+            <onlineUrl>https://www.ucaldas.edu.co/portal/</onlineUrl>
+            <role>CONTENT_PROVIDER</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <givenName>Samuel</givenName>
+                <surName>Carvajal-Toro</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Practicante Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <phone>6044487227 ext 6932</phone>
+            <electronicMailAddress>carvajal.samuel@uces.edu.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0000-0003-0518-1886</userId>
+            <role>PROCESSOR</role>
+        </associatedParty>
+        <pubDate>
+                2025-03-04
+        </pubDate>
+        <language>SPANISH</language>
+        <abstract>
+            <para>La base de datos incluye 902 registros de individuos de la especie Gustavia romeroi, recopilados durante los monitoreos realizados entre marzo y abril del 2023, en zonas de influencia de la Central Hidroeléctrica Miel I. Este monitoreo se enmarca en el plan de conservación de la especie Gustavia romeroi S.A. Mori &amp; García-Barr, en cumplimiento de la Resolución 02264 de 2018, emitida por la Autoridad Nacional de Licencias Ambientales (ANLA). El monitoreo fue realizado por un equipo de profesionales de la Universidad de Caldas.</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Occurrence</keyword>
+            <keywordThesaurus>GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Gustavia romeroi</keyword>
+            <keyword>ISAGEN</keyword>
+            <keyword>Central Hidroeléctrica Miel I</keyword>
+            <keywordThesaurus>n/a</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Observation</keyword>
+            <keywordThesaurus>GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml</keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>PERMISO_COLECTA</keyword>
+            <keywordThesaurus>SiB Colombia</keywordThesaurus>
+        </keywordSet>
+        <additionalInfo>
+            <para>Este conjunto de datos fue publicado con el respaldo del proyecto CESP “OpenPSD – Engage and Promote the Private Sector in Open Biodiversity Data Publication (ID CESP2019-004)”, en alianza con la Asociación Nacional de Empresarios de Colombia (ANDI) a través de su iniciativa “Biodiversidad y Desarrollo” (Datos abiertos sobre biodiversidad desde el sector empresarial). Expresamos nuestro agradecimiento por la colaboración y el incentivo brindado para la difusión de datos desde el sector empresarial.</para>
+        </additionalInfo>
+        <intellectualRights>
+            <para>This work is licensed under a <ulink url="http://creativecommons.org/licenses/by-nc/4.0/legalcode"><citetitle>Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License</citetitle></ulink>.</para>
+        </intellectualRights>
+        <licensed>
+            <licenseName>Creative Commons Attribution Non Commercial 4.0 International</licenseName>
+            <url>https://spdx.org/licenses/CC-BY-NC-4.0.html</url>
+            <identifier>CC-BY-NC-4.0</identifier>
+        </licensed>
+        <distribution scope="document">
+            <online>
+                <url function="download">https://ipt.biodiversidad.co/sib/archive.do?r=isagen_gustavia_romeroi</url>
+            </online>
+        </distribution>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>El monitoreo se realizó en los municipios de Samaná y Norcasia, ubicados en el departamento de Caldas.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-74.928</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-74.888</eastBoundingCoordinate>
+                    <northBoundingCoordinate>5.573</northBoundingCoordinate>
+                    <southBoundingCoordinate>5.497</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate>
+                        <calendarDate>                2023-03-18
+</calendarDate>
+                    </beginDate>
+                    <endDate>
+                        <calendarDate>                2023-04-09
+</calendarDate>
+                    </endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Este recurso comprende 902 registros de la especie Gustavia romeroi, perteneciente a la familia Lecythidaceae.</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>Species</taxonRankName>
+                    <taxonRankValue>Gustavia romeroi</taxonRankValue>
+                    <commonName>Chupo Rosado</commonName>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <maintenance>
+            <description>
+                <para></para>
+            </description>
+            <maintenanceUpdateFrequency>unkown</maintenanceUpdateFrequency>
+        </maintenance>
+        <contact>
+            <individualName>
+                <givenName>Héctor Javier</givenName>
+                <surName>Sandoval Ortiz</surName>
+            </individualName>
+            <organizationName>ISAGEN S.A. E.S.P.</organizationName>
+            <positionName>Profesional Ambiental Biótico</positionName>
+            <address>
+                <deliveryPoint>Carrera 30#10c-280</deliveryPoint>
+                <city>Medellín</city>
+                <administrativeArea>Antioquia</administrativeArea>
+                <country>COLOMBIA</country>
+            </address>
+            <electronicMailAddress>hjsandoval@isagen.com.co</electronicMailAddress>
+            <userId directory="http://orcid.org/">0009-0009-9997-2670</userId>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>El monitoreo realizado incluyó tanto los individuos previamente reportados en monitoreos anteriores como aquellos identificados como nuevos. Para cada individuo se registraron las variables dasométricas, incluyendo la altura total (Htotal). Adicionalmente, en el caso de los nuevos individuos, se tomaron las coordenadas del punto de muestreo y se asignó un ID correspondiente a la placa colocada en campo.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>La altura total de los individuos hace referencia a la distancia vertical, medida desde el suelo y a lo largo del fuste hasta el ápice del árbol (IDEAM, 2018), esta altura fue tomada empleando una vara métrica extensible de aluminio y flexómetro.</para>
+                </description>
+            </methodStep>
+            <methodStep>
+                <description>
+                    <para>Los nuevos individuos establecidos o árboles adultos que se encontraron dentro de las poblaciones y se incluyeron en el monitoreo fueron georreferenciados empleando un GNSS Trimble TDC150 para mayor precisión y ubicación. Las coordenadas obtenidas se procesaron con el software ArcGIS Pro V.3.1.1.</para>
+                </description>
+            </methodStep>
+            <sampling>
+                <studyExtent>
+                    <description>
+                        <para>El monitoreo se realizó en las veredas Confines, Sasaima, Ermita y Planes Mirador, ubicadas en predios de ISAGEN en los municipios de Norcasia y Samaná, departamento de Caldas. Estas áreas se encuentran a altitudes que varían entre 394 y 816 msnm, y abarcan tres tipos de coberturas definidos según la metodología CORINE Land Cover adaptada para Colombia: bosque denso, vegetación secundaria alta y vegetación secundaria baja.</para>
+                    </description>
+                </studyExtent>
+                <samplingDescription>
+                    <para>Entre el 18 de marzo y el 9 de abril de 2023 se llevó a cabo el monitoreo en campo de las poblaciones naturales de Gustavia romeroi.</para>
+                </samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description>
+                    <para>El monitoreo fue realizado por un equipo de profesionales de la Universidad de Caldas especializados en botánica. Las coordenadas fueron tomadas empleando un GNSS Trimble TDC150.
+
+La Universidad de Caldas cuenta con un permiso vigente para la recolección de especímenes de especies silvestres, otorgado por la Autoridad Nacional de Licencias Ambientales (ANLA) mediante la Resolución 1166 de 2014.</para>
+                </description>
+            </qualityControl>
+        </methods>
+
+    </dataset>
+
+    <additionalMetadata>
+        <metadata>
+            <gbif>
+                <dateStamp>2026-03-09T16:27:24Z</dateStamp>
+                <citation identifier="https://doi.org/10.15472/uoweqy">Sandoval Ortiz H J, Ángel-Vallejo M C, Betancourth Restrepo A M, Carvajal-Toro S (2025). Monitoreo de Gustavia romeroi en zonas de influencia de la Central Hidroeléctrica Miel I, 2023. Version 1.1. Isagen S.A. E.S.P.. Occurrence dataset https://doi.org/10.15472/uoweqy accessed via GBIF.org on 2026-03-09.</citation>
+                <bibliography>
+                <citation>Albesiano, S. &amp; Rangel, O. J. (2006). Estructura de la vegetación del canón del Río Chicamocha, 500-1200 m; Santander – Colombia: Una Herramienta para la conservación. Caldasia, 28(2), 307-325.</citation>
+                <citation>Galeano, G. (2001). Estructura, riqueza y composición de plantas leñosas en el golfo de Tribugá, Chocó, Colombia. Caldasia, 23(1), 213-236.</citation>
+                <citation identifier="http://documentacion.ideam.gov.co/openbiblio/bvirtual/023785/Manual.pdf">IDEAM. (2018). Manual de Campo Inventario Forestal Nacional Colombia. Bogotá, Colombia.</citation>
+                <citation>LEMA, A., (1995). Dasometría. Algunas aproximaciones a la medición forestal. Universidad Nacional de Colombia, Medellín. (478 pp).</citation>
+                <citation identifier="https://dx.doi.org/10.2305/IUCN.UK.2020-3.RLTS.T164905827A180902070.es">López-Gallego, C. &amp; Morales, M. P. (2020). Gustavia romeroi. La Lista Roja de Especies Amenazadas de la UICN 2020: e.T164905827A180902070.</citation>
+                <citation>Rangel, O. J. &amp; Velásquez, A. (1997). Métodos de estudio de la vegetación. (en) Rangel, O.J. &amp; Lowy, P.D., Aguilar, M. Colombia diversidad biotica II. Bogotá, Colombia: Instituto de Ciencias Naturales Universidad Nacional de Colombia.</citation>
+                <citation identifier="https://www.redalyc.org/articulo.oa?id=61031103">Rodríguez-Laguna, R., Valencia-Manzo, S., Meza-Rangel, J., Capó-Arteaga, M. Á., &amp; Reynoso-Pérez, A. (2008). Crecimiento y características de la copa de procedencias de Pinus gregii Engelm. En Galeana, Nuevo León. Revista  Fitotecnia Mexicana, 31(1), 19-26.</citation>
+                <citation>Rodríguez-Sosa, J. S. (2014). Morfometría de Juglans jamaicensis, y su conservación en el Parque Nacional Turquino, Granma. Avances, 16 (2), 108-115.</citation>
+                <citation identifier="http://repositorio.pedagogica.edu.co/bitstream/handle/20.500.12209/16453/El%2">Sánchez-Osína, L. (2021). El reconocimiento de la importancia ecológica de la planta Gustavia romeroi a través de la práctica de campo como estrategia pedagógica con estudiantes del grupo ecológico Eco-exploradores de la Institución Educativa Berlín Samaná. (Tesis de Pregrado). Universidad Pedagógica Nacional, Bogotá.</citation>
+                </bibliography>
+                <resourceLogoUrl>https://raw.githubusercontent.com/SIB-Colombia/logos/main/socio-SiB-isagen.png</resourceLogoUrl>
+            </gbif>
+        </metadata>
+    </additionalMetadata>
+    </eml:eml>

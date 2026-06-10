@@ -1,0 +1,336 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+                          REPORTE DE COMPARACIÓN DE MODELOS CNN  —  v1 vs v3                        
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+1. MÉTRICAS GLOBALES
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  Métrica                                     v1         v2        Delta      Mejor
+  ─────────────────────────────────── ────────── ────────── ──────────── ──────────
+  accuracy                                85.20%     87.39%      +2.19pp       v2 ✓
+  top_5_accuracy                          94.53%     95.14%      +0.61pp       v2 ✓
+  macro_avg.precision                     86.31%     88.80%      +2.49pp       v2 ✓
+  macro_avg.recall                        84.37%     86.62%      +2.25pp       v2 ✓
+  macro_avg.f1_score                      84.02%     86.52%      +2.50pp       v2 ✓
+  weighted_avg.precision                  86.86%     89.18%      +2.32pp       v2 ✓
+  weighted_avg.recall                     85.20%     87.39%      +2.19pp       v2 ✓
+  weighted_avg.f1_score                   84.88%     87.26%      +2.38pp       v2 ✓
+
+2. MUESTRAS MAL CLASIFICADAS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  Total v1: 50   |   Total v2: 50   |   Delta: 0   |   Mejor: =
+
+  Top especies con MENOS errores en v2:
+    Especie                                         Err v1   Err v2    Delta
+    Polistes_erythrocephalus                             2        0       -2
+    Boana_platanera                                      1        0       -1
+    Chlorostilbon_melanorhynchus                         1        0       -1
+    Chlosyne_lacinia                                     1        0       -1
+    Coereba_flaveola                                     1        0       -1
+    Cupiennius_coccineus                                 1        0       -1
+    Erythrolamprus_epinephelus                           1        0       -1
+    Falco_sparverius                                     1        0       -1
+    Fuchsia_petiolaris                                   1        0       -1
+    Geranoaetus_melanoleucus                             1        0       -1
+
+  Top especies con MÁS errores en v2:
+    Especie                                         Err v1   Err v2    Delta
+    Chaetocercus_mulsant                                 1        3       +2
+    Vultur_gryphus                                       0        1       +1
+    Volatinia_jacarina                                   0        1       +1
+    Tangara_xanthocephala                                0        1       +1
+    Tachyphonus_rufus                                    0        1       +1
+    Streptoprocne_zonaris                                0        1       +1
+    Spilotes_pullatus                                    0        1       +1
+    Salvia_scutellarioides                               0        1       +1
+    Ramphocelus_flammigerus                              0        1       +1
+    Pionus_chalcopterus                                  0        1       +1
+
+3. DISTRIBUCIÓN POR TIERS DE F1-SCORE
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  Tier                       v1       v2    Delta
+  ──────────────────── ──────── ──────── ────────
+  >=0.90                    288      337      +49
+  0.70-0.89                 331      300      -31
+  0.50-0.69                  85       71      -14
+  <0.50                      15       11       -4
+
+  Especies que SUBIERON de tier (139):
+    Especie                                          F1 v1    F1 v2 Tier v1      → Tier v2     
+    Aechmea_angustifolia                          0.8889   0.9091   0.70-0.89    → >=0.90      
+    Alouatta_seniculus                            0.8000   0.9091   0.70-0.89    → >=0.90      
+    Amazilia_tzacatl                              0.7059   1.0000   0.70-0.89    → >=0.90      
+    Ampelioides_tschudii                          0.8333   0.9091   0.70-0.89    → >=0.90      
+    Anisognathus_lacrymosus                       0.8966   0.9655   0.70-0.89    → >=0.90      
+    Anthurium_caramantae                          0.8571   0.9231   0.70-0.89    → >=0.90      
+    Aotus_griseimembra                            0.8333   0.9091   0.70-0.89    → >=0.90      
+    Aratinga_wagleri                              0.8333   0.9091   0.70-0.89    → >=0.90      
+    Aristolochia_cordiflora                       0.8889   1.0000   0.70-0.89    → >=0.90      
+    Atractus_lehmanni                             0.7692   0.9091   0.70-0.89    → >=0.90      
+    Baccharis_latifolia                           0.5714   0.7143   0.50-0.69    → 0.70-0.89   
+    Begonia_maurandiae                            0.8889   1.0000   0.70-0.89    → >=0.90      
+    Bellucia_pentamera                            0.5000   0.9091   0.50-0.69    → >=0.90      
+    Bombus_hortulanus                             0.8889   0.9091   0.70-0.89    → >=0.90      
+    Buthraupis_montana                            0.8571   0.9000   0.70-0.89    → >=0.90      
+    Butorides_striata                             0.6667   0.8000   0.50-0.69    → 0.70-0.89   
+    Cacicus_chrysonotus                           0.2857   0.7273   <0.50        → 0.70-0.89   
+    Caracara_plancus                              0.8750   0.9333   0.70-0.89    → >=0.90      
+    Castilleja_fissifolia                         0.8000   1.0000   0.70-0.89    → >=0.90      
+    Catamblyrhynchus_diadema                      0.8333   1.0000   0.70-0.89    → >=0.90      
+    Catamenia_homochroa                           0.6667   0.7500   0.50-0.69    → 0.70-0.89   
+    Catamenia_inornata                            0.6667   0.7273   0.50-0.69    → 0.70-0.89   
+    Catasetum_tabulare                            0.8333   1.0000   0.70-0.89    → >=0.90      
+    Catharus_ustulatus                            0.8333   0.9091   0.70-0.89    → >=0.90      
+    Cecropia_telealba                             0.6667   0.8000   0.50-0.69    → 0.70-0.89   
+    Centropogon_foetidus                          0.6667   0.8000   0.50-0.69    → 0.70-0.89   
+    Certhiaxis_cinnamomeus                        0.8889   1.0000   0.70-0.89    → >=0.90      
+    Chaetocercus_mulsant                          0.6364   0.7273   0.50-0.69    → 0.70-0.89   
+    Chamaedorea_linearis                          0.4444   0.8889   <0.50        → 0.70-0.89   
+    Chlorophanes_spiza                            0.8889   0.9474   0.70-0.89    → >=0.90      
+    Chlosyne_lacinia                              0.8000   1.0000   0.70-0.89    → >=0.90      
+    Choeradodis_rhombicollis                      0.5714   0.7273   0.50-0.69    → 0.70-0.89   
+    Cinclodes_excelsior                           0.8333   0.9091   0.70-0.89    → >=0.90      
+    Colonia_colonus                               0.8889   1.0000   0.70-0.89    → >=0.90      
+    Columnea_strigosa                             0.8333   1.0000   0.70-0.89    → >=0.90      
+    Coprinellus_disseminatus                      0.8333   0.9091   0.70-0.89    → >=0.90      
+    Cyanocorax_affinis                            0.8000   0.9091   0.70-0.89    → >=0.90      
+    Cyanolyca_armillata                           0.8000   1.0000   0.70-0.89    → >=0.90      
+    Dendrocincla_fuliginosa                       0.6667   0.9091   0.50-0.69    → >=0.90      
+    Dipsas_sanctijoannis                          0.7500   1.0000   0.70-0.89    → >=0.90      
+    Dryocopus_lineatus                            0.8000   1.0000   0.70-0.89    → >=0.90      
+    Eriocnemis_derbyi                             0.6667   0.8889   0.50-0.69    → 0.70-0.89   
+    Eriocnemis_mosquera                           0.8750   0.9412   0.70-0.89    → >=0.90      
+    Erythrolamprus_epinephalus                    0.4444   0.5000   <0.50        → 0.50-0.69   
+    Fuchsia_boliviana                             0.8333   1.0000   0.70-0.89    → >=0.90      
+    Galium_hypocarpium                            0.8000   1.0000   0.70-0.89    → >=0.90      
+    Gaultheria_myrsinoides                        0.8333   0.9091   0.70-0.89    → >=0.90      
+    Geonoma_undata                                0.8000   1.0000   0.70-0.89    → >=0.90      
+    Glossoloma_schultzei                          0.8889   1.0000   0.70-0.89    → >=0.90      
+    Golofa_eacus                                  0.7273   1.0000   0.70-0.89    → >=0.90      
+    Golofa_porteri                                0.8235   1.0000   0.70-0.89    → >=0.90      
+    Gonatodes_albogularis                         0.2500   0.6000   <0.50        → 0.50-0.69   
+    Halictus_ligatus                              0.7273   0.9091   0.70-0.89    → >=0.90      
+    Heliconia_latispatha                          0.8889   0.9091   0.70-0.89    → >=0.90      
+    Heliomaster_longirostris                      0.5714   0.7500   0.50-0.69    → 0.70-0.89   
+    Hypanartia_lethe                              0.8889   0.9091   0.70-0.89    → >=0.90      
+    Impatiens_walleriana                          0.5000   0.7500   0.50-0.69    → 0.70-0.89   
+    Kleinothraupis_atropileus                     0.6667   0.9091   0.50-0.69    → >=0.90      
+    Kohleria_affinis                              0.8571   0.9333   0.70-0.89    → >=0.90      
+    Kohleria_spicata                              0.8000   0.9091   0.70-0.89    → >=0.90      
+    Kukulcania_hibernalis                         0.8333   0.9091   0.70-0.89    → >=0.90      
+    Lasiophila_prosymna                           0.8333   0.9231   0.70-0.89    → >=0.90      
+    Lepanthes_gargantua                           0.8333   1.0000   0.70-0.89    → >=0.90      
+    Leptodeira_ornata                             0.5000   0.7273   0.50-0.69    → 0.70-0.89   
+    Leuconotopicus_fumigatus                      0.7273   0.9091   0.70-0.89    → >=0.90      
+    Lycomedes_hirtipes                            0.8889   1.0000   0.70-0.89    → >=0.90      
+    Machaeropterus_deliciosus                     0.7500   1.0000   0.70-0.89    → >=0.90      
+    Machaeropterus_striolatus                     0.6667   0.8000   0.50-0.69    → 0.70-0.89   
+    Magnolia_yarumalensis                         0.8000   0.9091   0.70-0.89    → >=0.90      
+    Maxillaria_embreei                            0.8333   0.9091   0.70-0.89    → >=0.90      
+    Mecocerculus_leucophrys                       0.4000   0.6667   <0.50        → 0.50-0.69   
+    Mecocerculus_stictopterus                     0.6667   0.7273   0.50-0.69    → 0.70-0.89   
+    Micrurus_mipartitus                           0.5714   0.8000   0.50-0.69    → 0.70-0.89   
+    Momordica_charantia                           0.8889   1.0000   0.70-0.89    → >=0.90      
+    Momotus_aequatorialis                         0.8966   0.9655   0.70-0.89    → >=0.90      
+    Monochaetum_multiflorum                       0.8889   0.9091   0.70-0.89    → >=0.90      
+    Muntingia_calabura                            0.6667   0.7273   0.50-0.69    → 0.70-0.89   
+    Myiodynastes_maculatus                        0.5714   0.7500   0.50-0.69    → 0.70-0.89   
+    Myiozetetes_cayanensis                        0.2500   0.6154   <0.50        → 0.50-0.69   
+    Notiochelidon_murina                          0.6250   0.8235   0.50-0.69    → 0.70-0.89   
+    Ognorhynchus_icterotis                        0.8333   0.9091   0.70-0.89    → >=0.90      
+    Oncidium_ornithorhynchum                      0.8000   0.9231   0.70-0.89    → >=0.90      
+    Opsiphanes_quiteria                           0.8889   1.0000   0.70-0.89    → >=0.90      
+    Orthrosanthus_chimboracensis                  0.6667   0.9091   0.50-0.69    → >=0.90      
+    Palicourea_colorata                           0.8889   1.0000   0.70-0.89    → >=0.90      
+    Papilio_polyxenes                             0.2857   0.5000   <0.50        → 0.50-0.69   
+    Paramastax_poecilosoma                        0.6667   0.8000   0.50-0.69    → 0.70-0.89   
+    Paramastax_rosenbergi                         0.7692   1.0000   0.70-0.89    → >=0.90      
+    Passiflora_mixta                              0.7273   0.9091   0.70-0.89    → >=0.90      
+    Passiflora_vitifolia                          0.6667   0.8000   0.50-0.69    → 0.70-0.89   
+    Patagioenas_fasciata                          0.2857   0.5714   <0.50        → 0.50-0.69   
+    Pedaliodes_peucestas                          0.8000   0.9091   0.70-0.89    → >=0.90      
+    Pelecinus_polyturator                         0.8000   1.0000   0.70-0.89    → >=0.90      
+    Persicaria_capitata                           0.5714   0.7500   0.50-0.69    → 0.70-0.89   
+    Phytolacca_rugosa                             0.7273   0.9091   0.70-0.89    → >=0.90      
+    Pionus_chalcopterus                           0.6667   0.7500   0.50-0.69    → 0.70-0.89   
+    Piper_peltatum                                0.8333   0.9091   0.70-0.89    → >=0.90      
+    Pipra_erythrocephala                          0.7692   1.0000   0.70-0.89    → >=0.90      
+    Pleurothallis_pulvinaris                      0.8333   1.0000   0.70-0.89    → >=0.90      
+    Ponthieva_fertilis                            0.7143   0.9091   0.70-0.89    → >=0.90      
+    Pristimantis_achatinus                        0.6667   0.8571   0.50-0.69    → 0.70-0.89   
+    Pristimantis_thectopternus                    0.5000   0.7500   0.50-0.69    → 0.70-0.89   
+    Prosthechea_hartwegii                         0.6667   0.7500   0.50-0.69    → 0.70-0.89   
+    Pseudocolaptes_boissonneautii                 0.5714   0.8889   0.50-0.69    → 0.70-0.89   
+    Rhinella_horribilis                           0.8333   1.0000   0.70-0.89    → >=0.90      
+    Rhipsalis_baccifera                           0.4000   0.7273   <0.50        → 0.70-0.89   
+    Rodriguezia_lanceolata                        0.8000   1.0000   0.70-0.89    → >=0.90      
+    Rupicola_peruvianus                           0.5714   0.8889   0.50-0.69    → 0.70-0.89   
+    Saltator_atripennis                           0.8889   1.0000   0.70-0.89    → >=0.90      
+    Salvia_scutellarioides                        0.6000   0.7273   0.50-0.69    → 0.70-0.89   
+    Setophaga_aestiva                             0.6000   0.8889   0.50-0.69    → 0.70-0.89   
+    Setophaga_castanea                            0.6667   0.8000   0.50-0.69    → 0.70-0.89   
+    Setophaga_pitiayumi                           0.7692   0.9091   0.70-0.89    → >=0.90      
+    Sphacelodes_vulneraria                        0.8333   1.0000   0.70-0.89    → >=0.90      
+    Sphenopsis_frontalis                          0.5714   0.7143   0.50-0.69    → 0.70-0.89   
+    Spilotes_pullatus                             0.5714   0.7500   0.50-0.69    → 0.70-0.89   
+    Spinus_xanthogastrus                          0.4444   0.5714   <0.50        → 0.50-0.69   
+    Sporophila_crassirostris                      0.6667   0.7273   0.50-0.69    → 0.70-0.89   
+    Sporophila_luctuosa                           0.6667   0.8889   0.50-0.69    → 0.70-0.89   
+    Sporophila_minuta                             0.6667   0.8889   0.50-0.69    → 0.70-0.89   
+    Sporophila_nigricollis                        0.8000   0.9231   0.70-0.89    → >=0.90      
+    Stilpnia_cyanicollis                          0.8889   0.9412   0.70-0.89    → >=0.90      
+    Stilpnia_heinei                               0.8889   0.9412   0.70-0.89    → >=0.90      
+    Tangara_arthus                                0.7692   0.9231   0.70-0.89    → >=0.90      
+    Tangara_nigroviridis                          0.8750   0.9333   0.70-0.89    → >=0.90      
+    Tersina_viridis                               0.5000   0.7500   0.50-0.69    → 0.70-0.89   
+    Theobroma_cacao                               0.2500   0.7500   <0.50        → 0.70-0.89   
+    Thraupis_palmarum                             0.8000   0.9524   0.70-0.89    → >=0.90      
+    Thunbergia_alata                              0.8333   0.9091   0.70-0.89    → >=0.90      
+    Thysania_zenobia                              0.5000   0.7500   0.50-0.69    → 0.70-0.89   
+    Todirostrum_cinereum                          0.7692   0.9091   0.70-0.89    → >=0.90      
+    Tournefortiopsis_crispiflora                  0.8889   1.0000   0.70-0.89    → >=0.90      
+    Trifolium_pratense                            0.8333   0.9091   0.70-0.89    → >=0.90      
+    Troglodytes_musculus                          0.8571   1.0000   0.70-0.89    → >=0.90      
+    Trogon_personatus                             0.7059   0.9412   0.70-0.89    → >=0.90      
+    Turnera_subulata                              0.8889   0.9091   0.70-0.89    → >=0.90      
+    Uranomitra_franciae                           0.8571   0.9333   0.70-0.89    → >=0.90      
+    Wercklea_ferox                                0.6000   0.8333   0.50-0.69    → 0.70-0.89   
+    Xiphocolaptes_promeropirhynchus               0.6667   0.7273   0.50-0.69    → 0.70-0.89   
+
+  Especies que BAJARON de tier (74):
+    Especie                                          F1 v1    F1 v2 Tier v1      → Tier v2     
+    Abracris_flavolineata                         0.9091   0.7273   >=0.90       → 0.70-0.89   
+    Adelomyia_melanogenys                         0.9091   0.8571   >=0.90       → 0.70-0.89   
+    Aglaiocercus_coelestis                        0.9091   0.8889   >=0.90       → 0.70-0.89   
+    Anteos_clorinde                               0.7692   0.6667   0.70-0.89    → 0.50-0.69   
+    Aotus_lemurinus                               0.7273   0.6000   0.70-0.89    → 0.50-0.69   
+    Aratinga_pertinax                             1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Ardea_alba                                    0.8889   0.5714   0.70-0.89    → 0.50-0.69   
+    Atlapetes_albinucha                           0.5000   0.4444   0.50-0.69    → <0.50       
+    Atlapetes_schistaceus                         0.9655   0.8667   >=0.90       → 0.70-0.89   
+    Boana_pugnax                                  0.7273   0.6154   0.70-0.89    → 0.50-0.69   
+    Bolborhynchus_ferrugineifrons                 1.0000   0.8333   >=0.90       → 0.70-0.89   
+    Bubulcus_ibis                                 1.0000   0.8000   >=0.90       → 0.70-0.89   
+    Calliphlox_mitchellii                         0.7692   0.6667   0.70-0.89    → 0.50-0.69   
+    Campephilus_pollens                           1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Capsicum_dimorphum                            0.6667   0.4615   0.50-0.69    → <0.50       
+    Centropogon_ferrugineus                       0.9091   0.8889   >=0.90       → 0.70-0.89   
+    Chloroceryle_americana                        0.9091   0.8333   >=0.90       → 0.70-0.89   
+    Chlorospingus_flavopectus                     0.8000   0.6667   0.70-0.89    → 0.50-0.69   
+    Chrysomus_icterocephalus                      1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Cnemoscopus_rubrirostris                      0.8000   0.6000   0.70-0.89    → 0.50-0.69   
+    Coereba_flaveola                              0.5000   0.3333   0.50-0.69    → <0.50       
+    Cupiennius_coccineus                          0.8000   0.5333   0.70-0.89    → 0.50-0.69   
+    Cyclarhis_nigrirostris                        0.7500   0.6000   0.70-0.89    → 0.50-0.69   
+    Dasyprocta_punctata                           0.9091   0.8333   >=0.90       → 0.70-0.89   
+    Egretta_thula                                 0.7273   0.5333   0.70-0.89    → 0.50-0.69   
+    Elaenia_flavogaster                           0.7273   0.6667   0.70-0.89    → 0.50-0.69   
+    Elleanthus_aurantiacus                        1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Epidendrum_cleistocoleum                      1.0000   0.8000   >=0.90       → 0.70-0.89   
+    Epidendrum_cottoniiflorum                     1.0000   0.8000   >=0.90       → 0.70-0.89   
+    Euphonia_xanthogaster                         1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Euphorbia_hirta                               0.7500   0.6667   0.70-0.89    → 0.50-0.69   
+    Guzmania_triangularis                         0.5000   0.2857   0.50-0.69    → <0.50       
+    Hermeuptychia_harmonia                        1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Ipomoea_purpurea                              0.9091   0.8889   >=0.90       → 0.70-0.89   
+    Lepanthes_jardinensis                         0.9091   0.8000   >=0.90       → 0.70-0.89   
+    Leptosittaca_branickii                        0.9091   0.6667   >=0.90       → 0.50-0.69   
+    Manacus_vitellinus                            0.9333   0.8750   >=0.90       → 0.70-0.89   
+    Manduca_rustica                               1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Margarornis_squamiger                         0.7059   0.5000   0.70-0.89    → 0.50-0.69   
+    Masdevallia_hortensis                         1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Melanerpes_rubricapillus                      0.9091   0.8696   >=0.90       → 0.70-0.89   
+    Miconia_asperrima                             0.9091   0.8333   >=0.90       → 0.70-0.89   
+    Morella_pubescens                             0.7500   0.6667   0.70-0.89    → 0.50-0.69   
+    Myioborus_miniatus                            0.7059   0.6667   0.70-0.89    → 0.50-0.69   
+    Myiodynastes_hemichrysus                      0.8000   0.5000   0.70-0.89    → 0.50-0.69   
+    Nertera_granadensis                           0.7500   0.5714   0.70-0.89    → 0.50-0.69   
+    Nymphargus_grandisonae                        1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Passiflora_alnifolia                          0.7500   0.6667   0.70-0.89    → 0.50-0.69   
+    Passiflora_antioquiensis                      0.8000   0.4444   0.70-0.89    → <0.50       
+    Passiflora_capsularis                         0.5000   0.4000   0.50-0.69    → <0.50       
+    Passiflora_cisnana                            0.5455   0.4000   0.50-0.69    → <0.50       
+    Passiflora_coriacea                           0.8000   0.5455   0.70-0.89    → 0.50-0.69   
+    Passiflora_cumbalensis                        0.9091   0.8889   >=0.90       → 0.70-0.89   
+    Pedaliodes_phaedra                            0.9091   0.8889   >=0.90       → 0.70-0.89   
+    Peperomia_rotundifolia                        0.9091   0.8333   >=0.90       → 0.70-0.89   
+    Perisama_humboldtii                           1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Perisama_oppelii                              0.9091   0.8333   >=0.90       → 0.70-0.89   
+    Phalacrocorax_brasilianus                     0.9091   0.8333   >=0.90       → 0.70-0.89   
+    Phoneutria_depilata                           0.8889   0.5714   0.70-0.89    → 0.50-0.69   
+    Phytolacca_bogotensis                         0.9091   0.8000   >=0.90       → 0.70-0.89   
+    Phytolacca_rivinoides                         0.7500   0.5714   0.70-0.89    → 0.50-0.69   
+    Pitangus_sulphuratus                          0.7143   0.6667   0.70-0.89    → 0.50-0.69   
+    Pleurothallis_phalangifera                    0.7500   0.6154   0.70-0.89    → 0.50-0.69   
+    Pseudovates_brevicornis                       0.7500   0.5714   0.70-0.89    → 0.50-0.69   
+    Quercus_humboldtii                            0.8889   0.5455   0.70-0.89    → 0.50-0.69   
+    Retrophyllum_rospigliosii                     0.9091   0.8000   >=0.90       → 0.70-0.89   
+    Sericossypha_albocristata                     1.0000   0.8333   >=0.90       → 0.70-0.89   
+    Solanum_quitoense                             0.9091   0.8333   >=0.90       → 0.70-0.89   
+    Tillandsia_complanata                         0.8333   0.6154   0.70-0.89    → 0.50-0.69   
+    Trigona_fulviventris                          1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Veniliornis_dignus                            1.0000   0.8333   >=0.90       → 0.70-0.89   
+    Vireo_leucophrys                              0.8000   0.6667   0.70-0.89    → 0.50-0.69   
+    Xenops_rutilans                               1.0000   0.8889   >=0.90       → 0.70-0.89   
+    Xylocopa_fimbriata                            1.0000   0.8333   >=0.90       → 0.70-0.89   
+
+4. RESUMEN POR ESPECIE
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  Total especies comparadas: 719
+  Mejoraron (F1 ↑):  298
+  Empeoraron (F1 ↓): 163
+  Sin cambio:        258
+
+5. TOP 20 MEJORAS EN F1-SCORE (v1 → v2)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  Especie                                          F1 v1    F1 v2        ΔF1      ΔPrec    ΔRecall
+  ───────────────────────────────────────────── ──────── ──────── ────────── ────────── ──────────
+  Theobroma_cacao                                 0.2500   0.7500    +0.5000    +0.6667    +0.4000
+  Chamaedorea_linearis                            0.4444   0.8889    +0.4445    +0.5000    +0.4000
+  Cacicus_chrysonotus                             0.2857   0.7273    +0.4416    +0.1667    +0.6000
+  Bellucia_pentamera                              0.5000   0.9091    +0.4091    +0.1666    +0.6000
+  Myiozetetes_cayanensis                          0.2500   0.6154    +0.3654    -0.3333    +0.4285
+  Gonatodes_albogularis                           0.2500   0.6000    +0.3500    +0.2667    +0.4000
+  Rhipsalis_baccifera                             0.4000   0.7273    +0.3273    +0.2667    +0.4000
+  Pseudocolaptes_boissonneautii                   0.5714   0.8889    +0.3175     0.0000    +0.4000
+  Rupicola_peruvianus                             0.5714   0.8889    +0.3175     0.0000    +0.4000
+  Amazilia_tzacatl                                0.7059   1.0000    +0.2941    +0.2500    +0.3333
+  Setophaga_aestiva                               0.6000   0.8889    +0.2889    +0.4000    +0.2000
+  Patagioenas_fasciata                            0.2857   0.5714    +0.2857    +0.5000    +0.2000
+  Golofa_eacus                                    0.7273   1.0000    +0.2727    +0.3333    +0.2000
+  Mecocerculus_leucophrys                         0.4000   0.6667    +0.2667    +0.3500    +0.2000
+  Dipsas_sanctijoannis                            0.7500   1.0000    +0.2500     0.0000    +0.4000
+  Impatiens_walleriana                            0.5000   0.7500    +0.2500    +0.3333    +0.2000
+  Machaeropterus_deliciosus                       0.7500   1.0000    +0.2500     0.0000    +0.4000
+  Pristimantis_thectopternus                      0.5000   0.7500    +0.2500    +0.3333    +0.2000
+  Tersina_viridis                                 0.5000   0.7500    +0.2500    +0.3333    +0.2000
+  Thysania_zenobia                                0.5000   0.7500    +0.2500    +0.3333    +0.2000
+
+6. TOP 20 DEGRADACIONES EN F1-SCORE (v1 → v2)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  Especie                                          F1 v1    F1 v2        ΔF1      ΔPrec    ΔRecall
+  ───────────────────────────────────────────── ──────── ──────── ────────── ────────── ──────────
+  Passiflora_antioquiensis                        0.8000   0.4444    -0.3556    -0.3000    -0.4000
+  Quercus_humboldtii                              0.8889   0.5455    -0.3434    -0.5000    -0.2000
+  Ardea_alba                                      0.8889   0.5714    -0.3175     0.0000    -0.4000
+  Phoneutria_depilata                             0.8889   0.5714    -0.3175     0.0000    -0.4000
+  Myiodynastes_hemichrysus                        0.8000   0.5000    -0.3000    -0.3714    -0.2000
+  Cupiennius_coccineus                            0.8000   0.5333    -0.2667    -0.4000     0.0000
+  Passiflora_coriacea                             0.8000   0.5455    -0.2545    -0.3000    -0.2000
+  Leptosittaca_branickii                          0.9091   0.6667    -0.2424    -0.3333    -0.1666
+  Tillandsia_complanata                           0.8333   0.6154    -0.2179    -0.2143    -0.2000
+  Guzmania_triangularis                           0.5000   0.2857    -0.2143    -0.1667    -0.2000
+  Margarornis_squamiger                           0.7059   0.5000    -0.2059    -0.1667    -0.2500
+  Capsicum_dimorphum                              0.6667   0.4615    -0.2052    -0.1964    -0.2000
+  Bubulcus_ibis                                   1.0000   0.8000    -0.2000     0.0000    -0.3333
+  Cnemoscopus_rubrirostris                        0.8000   0.6000    -0.2000    -0.2500    -0.1667
+  Epidendrum_cleistocoleum                        1.0000   0.8000    -0.2000    -0.2000    -0.2000
+  Epidendrum_cottoniiflorum                       1.0000   0.8000    -0.2000    -0.2000    -0.2000
+  Egretta_thula                                   0.7273   0.5333    -0.1940    -0.2667     0.0000
+  Abracris_flavolineata                           0.9091   0.7273    -0.1818    -0.1666    -0.2000
+  Nertera_granadensis                             0.7500   0.5714    -0.1786     0.0000    -0.2000
+  Phytolacca_rivinoides                           0.7500   0.5714    -0.1786     0.0000    -0.2000
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  VEREDICTO: v2 es mejor en 8/8 métricas globales.
+  A nivel de especie: 298 mejoraron vs 163 empeoraron → v2 gana.
+════════════════════════════════════════════════════════════════════════════════════════════════════
