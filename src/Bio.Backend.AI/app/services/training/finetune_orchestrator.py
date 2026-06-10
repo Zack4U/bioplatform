@@ -26,7 +26,6 @@ import subprocess
 import sys
 import time
 from datetime import datetime, timezone
-
 from pathlib import Path
 from typing import Any
 
@@ -62,7 +61,9 @@ def _sigterm_handler(signum: int, frame: Any) -> None:
     """Handle SIGTERM: flag shutdown so training loop can save checkpoint."""
     global _shutdown_requested
     _shutdown_requested = True
-    logger.warning("SIGTERM received. Will save emergency checkpoint after current epoch.")
+    logger.warning(
+        "SIGTERM received. Will save emergency checkpoint after current epoch."
+    )
 
 
 # -- Webhook Notification -----------------------------------------------------
@@ -88,8 +89,12 @@ async def _notify_dotnet(
         "statusMessage": message,
         "version": version,
         "accuracy": accuracy,
-        "configJson": json.dumps(config_json) if isinstance(config_json, dict) else config_json,
-        "metricsJson": json.dumps(metrics_json) if isinstance(metrics_json, dict) else metrics_json,
+        "configJson": json.dumps(config_json)
+        if isinstance(config_json, dict)
+        else config_json,
+        "metricsJson": json.dumps(metrics_json)
+        if isinstance(metrics_json, dict)
+        else metrics_json,
     }
 
     try:
@@ -99,7 +104,9 @@ async def _notify_dotnet(
             resp = await client.post(settings.dotnet_webhook_url, json=payload)
             logger.info(
                 "Webhook sent: job=%s status=%s response=%d",
-                job_id, status, resp.status_code,
+                job_id,
+                status,
+                resp.status_code,
             )
     except Exception as exc:
         logger.error("Webhook notification failed for job %s: %s", job_id, exc)
@@ -125,8 +132,12 @@ def _notify_dotnet_sync(
         "statusMessage": message,
         "version": version,
         "accuracy": accuracy,
-        "configJson": json.dumps(config_json) if isinstance(config_json, dict) else config_json,
-        "metricsJson": json.dumps(metrics_json) if isinstance(metrics_json, dict) else metrics_json,
+        "configJson": json.dumps(config_json)
+        if isinstance(config_json, dict)
+        else config_json,
+        "metricsJson": json.dumps(metrics_json)
+        if isinstance(metrics_json, dict)
+        else metrics_json,
     }
 
     try:
@@ -136,7 +147,9 @@ def _notify_dotnet_sync(
             resp = client.post(settings.dotnet_webhook_url, json=payload)
             logger.info(
                 "Webhook sent (sync): job=%s status=%s response=%d",
-                job_id, status, resp.status_code,
+                job_id,
+                status,
+                resp.status_code,
             )
     except Exception as exc:
         logger.error("Webhook notification failed for job %s: %s", job_id, exc)
@@ -193,17 +206,28 @@ def _execute_training(
     train_cmd = [
         sys.executable,
         str(_SCRIPTS_DIR / "cnn" / "04_train_cnn.py"),
-        "--model", model_name,
-        "--epochs", str(effective_epochs),
-        "--lr", str(effective_lr),
-        "--unfreeze-lr", str(effective_lr),
-        "--freeze-epochs", "0",  # Skip freeze phase for fine-tuning
-        "--image-size", str(image_size),
-        "--batch-size", str(batch_size),
-        "--label-smoothing", str(active_config.get("label_smoothing", 0.1)),
-        "--mixup-alpha", str(active_config.get("mixup_alpha", 0.2)),
-        "--cutmix-alpha", str(active_config.get("cutmix_alpha", 0.0)),
-        "--output-dir", str(output_dir),
+        "--model",
+        model_name,
+        "--epochs",
+        str(effective_epochs),
+        "--lr",
+        str(effective_lr),
+        "--unfreeze-lr",
+        str(effective_lr),
+        "--freeze-epochs",
+        "0",  # Skip freeze phase for fine-tuning
+        "--image-size",
+        str(image_size),
+        "--batch-size",
+        str(batch_size),
+        "--label-smoothing",
+        str(active_config.get("label_smoothing", 0.1)),
+        "--mixup-alpha",
+        str(active_config.get("mixup_alpha", 0.2)),
+        "--cutmix-alpha",
+        str(active_config.get("cutmix_alpha", 0.0)),
+        "--output-dir",
+        str(output_dir),
     ]
 
     if active_checkpoint:
@@ -230,7 +254,8 @@ def _execute_evaluation(output_dir: Path) -> None:
         eval_cmd = [
             sys.executable,
             str(eval_script),
-            "--weights-dir", str(output_dir),
+            "--weights-dir",
+            str(output_dir),
         ]
         eval_result = subprocess.run(
             eval_cmd,
@@ -250,7 +275,8 @@ def _execute_onnx_export(output_dir: Path) -> None:
         onnx_cmd = [
             sys.executable,
             str(onnx_script),
-            "--weights-dir", str(output_dir),
+            "--weights-dir",
+            str(output_dir),
         ]
         onnx_result = subprocess.run(
             onnx_cmd,
@@ -307,6 +333,7 @@ def run_finetune(
     """
     # Register SIGTERM handler for graceful shutdown (only if in main thread)
     import threading
+
     original_handler = None
     if threading.current_thread() is threading.main_thread():
         original_handler = signal.getsignal(signal.SIGTERM)
@@ -327,7 +354,11 @@ def run_finetune(
 
     logger.info(
         "Fine-tuning started: job=%s version=%s epochs=%d lr=%s replay=%.2f",
-        job_id, version, effective_epochs, effective_lr, effective_replay,
+        job_id,
+        version,
+        effective_epochs,
+        effective_lr,
+        effective_replay,
     )
 
     start_time = time.time()
@@ -438,8 +469,9 @@ def run_finetune(
 
         accuracy = config_json.get("best_val_accuracy") if config_json else None
         status_msg = (
-            f"Fine-tuning completed in {elapsed / 60:.1f} min. "
-            f"Accuracy: {accuracy:.4f}" if accuracy else "Fine-tuning completed."
+            f"Fine-tuning completed in {elapsed / 60:.1f} min. Accuracy: {accuracy:.4f}"
+            if accuracy
+            else "Fine-tuning completed."
         )
 
         _notify_dotnet_sync(
@@ -454,7 +486,10 @@ def run_finetune(
 
         logger.info(
             "Fine-tuning pipeline complete: job=%s version=%s accuracy=%s time=%.1fs",
-            job_id, version, accuracy, elapsed,
+            job_id,
+            version,
+            accuracy,
+            elapsed,
         )
 
     except Exception as exc:
@@ -481,7 +516,10 @@ def run_finetune(
 
     finally:
         # Restore original signal handler
-        if original_handler is not None and threading.current_thread() is threading.main_thread():
+        if (
+            original_handler is not None
+            and threading.current_thread() is threading.main_thread()
+        ):
             signal.signal(signal.SIGTERM, original_handler)
 
 
@@ -492,6 +530,7 @@ def _get_classifier_active_checkpoint() -> Path | None:
     """Query the running classifier for the active checkpoint path."""
     try:
         from app.services.vision.classifier import get_classifier
+
         classifier = get_classifier()
         if not (classifier.is_loaded and classifier.active_version):
             return None
@@ -561,6 +600,7 @@ def _load_active_config(checkpoint_path: Path | None) -> dict[str, Any]:
     # First, if the running classifier is loaded, use its configuration.
     try:
         from app.services.vision.classifier import get_classifier
+
         classifier = get_classifier()
         if classifier.is_loaded and classifier.config:
             logger.info("Loaded active training config from running classifier")
@@ -625,19 +665,26 @@ def _run_dataset_organization(
         return
 
     cmd = [
-        sys.executable, str(organize_script),
-        "--seed", str(seed),
+        sys.executable,
+        str(organize_script),
+        "--seed",
+        str(seed),
     ]
 
     # Enable Replay Buffer if manifest exists
     if manifest_path and manifest_path.exists():
-        cmd.extend([
-            "--new-images-manifest", str(manifest_path),
-            "--replay-ratio", str(replay_ratio),
-        ])
+        cmd.extend(
+            [
+                "--new-images-manifest",
+                str(manifest_path),
+                "--replay-ratio",
+                str(replay_ratio),
+            ]
+        )
         logger.info(
             "Replay Buffer enabled (incremental sync): ratio=%.2f, manifest=%s",
-            replay_ratio, manifest_path,
+            replay_ratio,
+            manifest_path,
         )
     else:
         cmd.append("--clean")

@@ -77,8 +77,9 @@ class TestLifespan:
 
     @pytest.mark.asyncio
     async def test_lifespan_startup_shutdown(self, mock_settings):
-        from unittest.mock import AsyncMock, patch, MagicMock
-        from app.main import lifespan, app
+        from unittest.mock import AsyncMock, MagicMock, patch
+
+        from app.main import app, lifespan
 
         mock_clf = MagicMock()
         mock_clf.load_model.side_effect = FileNotFoundError("no weights")

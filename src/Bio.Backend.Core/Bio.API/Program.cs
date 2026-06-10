@@ -7,6 +7,7 @@ using Bio.Application.Services;
 using Bio.Backend.Core.Bio.Infrastructure.Persistence;
 using Bio.Backend.Core.Bio.Infrastructure.Repositories;
 using Bio.Backend.Core.Bio.Infrastructure.Services;
+using Bio.Infrastructure.Services;
 using Bio.Domain.Constants;
 using Bio.Domain.Interfaces;
 using FluentValidation;
@@ -125,11 +126,18 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IDirectThreadRepository, Bio.Ba
 // User Features context (SQL Server) — Notifications, ActivityLogs
 builder.Services.AddScoped<Bio.Domain.Interfaces.INotificationRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.NotificationRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.IActivityLogRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ActivityLogRepository>();
+builder.Services.AddScoped<Bio.Application.Interfaces.IPaymentService, Bio.Infrastructure.Services.StripePaymentService>();
 
 // AWS S3 — Species observation image uploads
 builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection(AwsSettings.SectionName));
 builder.Services.Configure<IdentificationSettings>(builder.Configuration.GetSection(IdentificationSettings.SectionName));
 builder.Services.AddScoped<IS3StorageService, S3StorageService>();
+
+// AI Assistant Bot (RAG with Gemini)
+builder.Services.AddHttpClient<IAiAssistantService, AiAssistantService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(120); // AI queries with multiple SQL calls can take up to 60s
+});
 
 // Configure multipart form-data size limit to allow observation image uploads
 builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>

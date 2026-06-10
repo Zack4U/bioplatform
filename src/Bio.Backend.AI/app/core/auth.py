@@ -18,7 +18,6 @@ Usage in routers:
 """
 
 from __future__ import annotations
-from app.core.roles import UserRole
 
 import logging
 from dataclasses import dataclass
@@ -29,6 +28,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.core.config import get_settings
+from app.core.roles import UserRole
 
 logger = logging.getLogger(__name__)
 
@@ -36,15 +36,9 @@ _bearer_scheme = HTTPBearer(auto_error=True)
 
 # ── ASP.NET Core claim names ──────────────────────────────────────
 _CLAIM_SUB = "sub"
-_CLAIM_ROLE = (
-    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-)
-_CLAIM_EMAIL = (
-    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-)
-_CLAIM_NAME = (
-    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-)
+_CLAIM_ROLE = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+_CLAIM_EMAIL = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+_CLAIM_NAME = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
 
 
 @dataclass(frozen=True)

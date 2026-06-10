@@ -24,11 +24,15 @@ class TestSettings:
         assert s.openai_api_key is None
 
     def test_pg_dsn_async(self):
-        s = Settings(pg_user="u", pg_password="p", pg_host="h", pg_port=1234, pg_database="db")
+        s = Settings(
+            pg_user="u", pg_password="p", pg_host="h", pg_port=1234, pg_database="db"
+        )
         assert s.pg_dsn == "postgresql+asyncpg://u:p@h:1234/db"
 
     def test_pg_dsn_sync(self):
-        s = Settings(pg_user="u", pg_password="p", pg_host="h", pg_port=1234, pg_database="db")
+        s = Settings(
+            pg_user="u", pg_password="p", pg_host="h", pg_port=1234, pg_database="db"
+        )
         assert s.pg_dsn_sync == "postgresql://u:p@h:1234/db"
 
     def test_get_settings_returns_instance(self):

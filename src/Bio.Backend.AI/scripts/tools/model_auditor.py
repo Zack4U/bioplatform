@@ -99,7 +99,9 @@ def _load_species_f1_data(min_f1: float) -> tuple[set[str] | None, dict[str, flo
     eval_dir = _get_auditor_eval_dir(_weights_path)
     eval_path = eval_dir / "evaluation_metrics.json"
     if not eval_path.exists():
-        print(f"  [WARN] evaluation_metrics.json not found in {eval_dir}, F1 filter disabled.")
+        print(
+            f"  [WARN] evaluation_metrics.json not found in {eval_dir}, F1 filter disabled."
+        )
         return None, {}
     import json as _json
 
@@ -148,7 +150,9 @@ async def classify(file: UploadFile = File(...)):
         result = _get_classifier().classify(image_bytes, top_k=5)
         # Filter by F1 threshold
         if _allowed_species is not None:
-            result["predictions"] = [p for p in result["predictions"] if p["species"] in _allowed_species]
+            result["predictions"] = [
+                p for p in result["predictions"] if p["species"] in _allowed_species
+            ]
             # Re-rank after filtering
             for i, p in enumerate(result["predictions"], start=1):
                 p["rank"] = i
@@ -220,7 +224,10 @@ async def metrics_summary():
     eval_dir = _get_auditor_eval_dir(_weights_path)
     eval_path = eval_dir / "evaluation_metrics.json"
     if not eval_path.exists():
-        return JSONResponse(status_code=404, content={"error": f"evaluation_metrics.json not found in {eval_dir}"})
+        return JSONResponse(
+            status_code=404,
+            content={"error": f"evaluation_metrics.json not found in {eval_dir}"},
+        )
     with open(eval_path, encoding="utf-8") as f:
         metrics = _json.load(f)
 
@@ -231,7 +238,18 @@ async def metrics_summary():
     # Pre-compute F1 histogram bins
     f1_values = [m.get("f1_score", 0) for m in per_class.values()]
     bins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.01]
-    bin_labels = ["0-.1", ".1-.2", ".2-.3", ".3-.4", ".4-.5", ".5-.6", ".6-.7", ".7-.8", ".8-.9", ".9-1.0"]
+    bin_labels = [
+        "0-.1",
+        ".1-.2",
+        ".2-.3",
+        ".3-.4",
+        ".4-.5",
+        ".5-.6",
+        ".6-.7",
+        ".7-.8",
+        ".8-.9",
+        ".9-1.0",
+    ]
     histogram = [0] * len(bin_labels)
     for v in f1_values:
         for i in range(len(bins) - 1):
@@ -273,7 +291,10 @@ async def metrics_misclassified():
     eval_dir = _get_auditor_eval_dir(_weights_path)
     path = eval_dir / "misclassified_samples.json"
     if not path.exists():
-        return JSONResponse(status_code=404, content={"error": f"misclassified_samples.json not found in {eval_dir}"})
+        return JSONResponse(
+            status_code=404,
+            content={"error": f"misclassified_samples.json not found in {eval_dir}"},
+        )
     with open(path, encoding="utf-8") as f:
         samples = _json.load(f)
     return {"samples": samples, "total": len(samples)}
@@ -287,12 +308,20 @@ async def metrics_confusion():
     eval_dir = _get_auditor_eval_dir(_weights_path)
     path = eval_dir / "confusion_matrix.txt"
     if not path.exists():
-        return JSONResponse(status_code=404, content={"error": f"confusion_matrix.txt not found in {eval_dir}"})
+        return JSONResponse(
+            status_code=404,
+            content={"error": f"confusion_matrix.txt not found in {eval_dir}"},
+        )
     pairs = []
     with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            if not line or line.startswith("Top ") or line.startswith("True Species") or line.startswith("─"):
+            if (
+                not line
+                or line.startswith("Top ")
+                or line.startswith("True Species")
+                or line.startswith("─")
+            ):
                 continue
             # Parse: True_Species   Predicted_As   Rate  Count
             parts = re.split(r"\s{2,}", line)
@@ -1728,7 +1757,9 @@ def main() -> None:
     else:
         print("  Filtro:   ninguno (todas las especies habilitadas)")
 
-    print(f"  Aviso F1: especies con F1 < {_f1_warn_threshold:.2f} mostrarán advertencia")
+    print(
+        f"  Aviso F1: especies con F1 < {_f1_warn_threshold:.2f} mostrarán advertencia"
+    )
     print("            (configurable: BIO_MIN_F1_THRESHOLD en .env)")
     print("  Ctrl+C para detener\n")
 

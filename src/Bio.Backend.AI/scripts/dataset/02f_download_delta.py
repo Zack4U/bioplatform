@@ -39,7 +39,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 RAW_IMAGES_DIR = PROJECT_ROOT / "data" / "raw_images"
 ANALYSIS_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
 MANIFEST_FILE = ANALYSIS_DIR / "delta_manifest.json"
@@ -67,8 +67,11 @@ def _get_db_connection():
 
     try:
         conn = psycopg2.connect(
-            host=host, port=port, user=user,
-            password=password, dbname=database,
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            dbname=database,
         )
         return conn
     except Exception as exc:
@@ -202,7 +205,12 @@ def run_delta_download(
 
     if not db_images:
         print("[WARN] No validated images found in the database.")
-        return {"new_images": [], "existing_images": [], "failed": [], "total_downloaded": 0}
+        return {
+            "new_images": [],
+            "existing_images": [],
+            "failed": [],
+            "total_downloaded": 0,
+        }
 
     # Step 2: Scan existing local images
     print(f"\n[STEP 2/4] Scanning existing images in {RAW_IMAGES_DIR}...")
@@ -221,8 +229,12 @@ def run_delta_download(
 
         local_path = _build_local_path(
             RAW_IMAGES_DIR,
-            img["kingdom"], img["phylum"], img["class_name"],
-            img["family"], img["scientific_name"], filename,
+            img["kingdom"],
+            img["phylum"],
+            img["class_name"],
+            img["family"],
+            img["scientific_name"],
+            filename,
         )
 
         entry = {
@@ -276,12 +288,12 @@ def run_delta_download(
     with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {}
         for entry in new_images:
-            fut = executor.submit(
-                download_image, entry["url"], Path(entry["path"])
-            )
+            fut = executor.submit(download_image, entry["url"], Path(entry["path"]))
             futures[fut] = entry
 
-        for fut in tqdm(as_completed(futures), total=len(futures), desc="  Downloading"):
+        for fut in tqdm(
+            as_completed(futures), total=len(futures), desc="  Downloading"
+        ):
             entry = futures[fut]
             try:
                 ok = fut.result()
@@ -322,12 +334,15 @@ def main() -> None:
         description="Download validated species images (delta) from S3"
     )
     parser.add_argument(
-        "--workers", type=int, default=6,
-        help="Number of parallel download threads (default: 6)"
+        "--workers",
+        type=int,
+        default=6,
+        help="Number of parallel download threads (default: 6)",
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
-        help="Only calculate delta, don't download images"
+        "--dry-run",
+        action="store_true",
+        help="Only calculate delta, don't download images",
     )
     args = parser.parse_args()
 

@@ -124,7 +124,9 @@ class TraditionalUseEntry(BaseModel):
         "'Consumo directo crudo', 'Maceración en aguardiente', 'Secado al sol'). "
         "Si no se conoce, responde 'Desconocido'."
     )
-    description: str = Field(description="Descripción etnográfica concisa del uso tradicional")
+    description: str = Field(
+        description="Descripción etnográfica concisa del uso tradicional"
+    )
     community: str = Field(
         description="Comunidad indígena (ej. Emberá Chamí), afrodescendiente o campesina que lo practica. "
         "Si no hay evidencia documentada específica de la región, responde "
@@ -154,8 +156,12 @@ class EconomicPotentialEntry(BaseModel):
         "(ej: 'Taninos', 'Antioxidantes', 'Resistencia a la humedad', 'Alcaloides'). "
         "Vacío si no aplica o se desconoce.",
     )
-    description: str = Field(description="Descripción breve del potencial económico y cómo se procesa en español")
-    market_value: MarketValue = Field(description="Valor de mercado estimado: Alto, Medio, Bajo, o Desconocido")
+    description: str = Field(
+        description="Descripción breve del potencial económico y cómo se procesa en español"
+    )
+    market_value: MarketValue = Field(
+        description="Valor de mercado estimado: Alto, Medio, Bajo, o Desconocido"
+    )
     sustainability_level: SustainabilityLevel = Field(
         description="Nivel de sostenibilidad de la explotación: Alto, Medio, o Bajo"
     )
@@ -173,9 +179,15 @@ class SpeciesData(BaseModel):
     order: str = Field(description="Orden taxonómico")
     family: str = Field(description="Familia taxonómica")
     genus: str = Field(description="Género taxonómico")
-    description: str = Field(description="Descripción concisa de 2-3 oraciones en español")
-    altitude_range: str = Field(description="Rango de altitud típico en msnm (ej: '1000-2000 msnm') o 'Desconocido'")
-    conservation_status: ConservationStatus = Field(description="Estado de conservación UICN")
+    description: str = Field(
+        description="Descripción concisa de 2-3 oraciones en español"
+    )
+    altitude_range: str = Field(
+        description="Rango de altitud típico en msnm (ej: '1000-2000 msnm') o 'Desconocido'"
+    )
+    conservation_status: ConservationStatus = Field(
+        description="Estado de conservación UICN"
+    )
     legal_status: bool = Field(
         description="True si se requiere un permiso legal especial de "
         "alguna entidad gubernamental o institución para "
@@ -189,16 +201,22 @@ class SpeciesData(BaseModel):
     )
 
     traditional_uses: list[TraditionalUseEntry] = Field(
-        default_factory=list, description="Lista de usos tradicionales. Vacía si no tiene."
+        default_factory=list,
+        description="Lista de usos tradicionales. Vacía si no tiene.",
     )
     economic_potential: list[EconomicPotentialEntry] = Field(
-        default_factory=list, description="Lista de potenciales económicos. Vacía si no tiene."
+        default_factory=list,
+        description="Lista de potenciales económicos. Vacía si no tiene.",
     )
-    confidence: Confidence = Field(description="Nivel de confianza en la información generada")
+    confidence: Confidence = Field(
+        description="Nivel de confianza en la información generada"
+    )
 
 
 class SpeciesBatchResponse(BaseModel):
-    species: list[SpeciesData] = Field(description="Lista de especies con información completa")
+    species: list[SpeciesData] = Field(
+        description="Lista de especies con información completa"
+    )
 
 
 # ── LLM Prompt ─────────────────────────────────────────────────────
@@ -346,7 +364,9 @@ def call_gemini(
                 continue
 
             if len(data["species"]) != len(species_names):
-                print(f"    [WARN] Expected {len(species_names)} species, got {len(data['species'])} (attempt {attempt})")
+                print(
+                    f"    [WARN] Expected {len(species_names)} species, got {len(data['species'])} (attempt {attempt})"
+                )
                 # Accept partial results
                 if len(data["species"]) > 0:
                     return data
@@ -361,7 +381,11 @@ def call_gemini(
         except Exception as e:
             err_str = str(e)
             print(f"    [ERROR] Attempt {attempt}: {type(e).__name__}: {err_str[:300]}")
-            if "429" in err_str or "quota" in err_str.lower() or "resource" in err_str.lower():
+            if (
+                "429" in err_str
+                or "quota" in err_str.lower()
+                or "resource" in err_str.lower()
+            ):
                 wait = 10 * attempt  # 10s, 20s, 30s
                 print(f"    ⏳ Rate limited, waiting {wait}s...")
                 time.sleep(wait)
@@ -508,7 +532,11 @@ def generate_report(
     with_potential = len(potential)
     with_common = sum(1 for r in csv_rows if r.get("CommonName"))
     with_desc = sum(1 for r in csv_rows if r.get("Description"))
-    with_altitude = sum(1 for r in csv_rows if r.get("AltitudeRange") and r["AltitudeRange"] != "Desconocido")
+    with_altitude = sum(
+        1
+        for r in csv_rows
+        if r.get("AltitudeRange") and r["AltitudeRange"] != "Desconocido"
+    )
     with_legal = sum(1 for r in csv_rows if r.get("LegalStatus") == "True")
     sensitive = sum(1 for r in csv_rows if r.get("IsSensitive") == "True")
 
@@ -556,7 +584,9 @@ def generate_report(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate species data via Gemini LLM (Structured Outputs)")
+    parser = argparse.ArgumentParser(
+        description="Generate species data via Gemini LLM (Structured Outputs)"
+    )
     parser.add_argument(
         "--limit",
         type=int,
@@ -594,7 +624,9 @@ def main() -> None:
 
     if not MASTER_LIST.exists():
         print(f"[ERROR] Master list not found: {MASTER_LIST}")
-        print("  Run script 09 first: python scripts/species/09_build_master_species_list.py")
+        print(
+            "  Run script 09 first: python scripts/species/09_build_master_species_list.py"
+        )
         sys.exit(1)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -634,7 +666,9 @@ def main() -> None:
 
     # Filter out already-processed
     remaining = [n for n in species_names if n not in processed_set]
-    print(f"[INFO] Already processed: {len(processed_set)}, remaining: {len(remaining)}")
+    print(
+        f"[INFO] Already processed: {len(processed_set)}, remaining: {len(remaining)}"
+    )
 
     # ── Step 3: Initialize Gemini & Process ────────────────────────
     model_name = args.model
@@ -653,7 +687,9 @@ def main() -> None:
         batch_names = remaining[batch_start:batch_end]
         batch_num = batch_idx + 1
 
-        print(f"\n  [Batch {batch_num}/{total_batches}] Processing {len(batch_names)} species...")
+        print(
+            f"\n  [Batch {batch_num}/{total_batches}] Processing {len(batch_names)} species..."
+        )
         for name in batch_names:
             print(f"    • {name}")
 
@@ -677,7 +713,9 @@ def main() -> None:
             if name:
                 processed_set.add(name)
 
-        print(f"  ✓ Batch {batch_num}: {len(csv_rows)} species, {len(uses)} with uses, {len(potential)} with potential")
+        print(
+            f"  ✓ Batch {batch_num}: {len(csv_rows)} species, {len(uses)} with uses, {len(potential)} with potential"
+        )
 
         # Save checkpoint after each batch
         checkpoint = {

@@ -24,21 +24,43 @@ def _get_metrics_path() -> Path:
     from app.services.vision.classifier import get_classifier
 
     classifier = get_classifier()
-    if classifier.is_loaded and classifier.active_version and classifier.active_version != "legacy":
-        version_dir = Path(__file__).resolve().parent.parent.parent / "data" / "weights" / classifier.active_version
+    if (
+        classifier.is_loaded
+        and classifier.active_version
+        and classifier.active_version != "legacy"
+    ):
+        version_dir = (
+            Path(__file__).resolve().parent.parent.parent
+            / "data"
+            / "weights"
+            / classifier.active_version
+        )
         version_metrics_path = version_dir / "evaluation_metrics.json"
         if version_metrics_path.exists():
             return version_metrics_path
 
     # Fallback to the root evaluation directory
-    return Path(__file__).resolve().parent.parent.parent / "data" / "evaluation" / "evaluation_metrics.json"
+    return (
+        Path(__file__).resolve().parent.parent.parent
+        / "data"
+        / "evaluation"
+        / "evaluation_metrics.json"
+    )
 
 
 # ── Histogram constants ───────────────────────────────────────────────
 _F1_BINS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.01]
 _F1_BIN_LABELS = [
-    "0-.1", ".1-.2", ".2-.3", ".3-.4", ".4-.5",
-    ".5-.6", ".6-.7", ".7-.8", ".8-.9", ".9-1.0",
+    "0-.1",
+    ".1-.2",
+    ".2-.3",
+    ".3-.4",
+    ".4-.5",
+    ".5-.6",
+    ".6-.7",
+    ".7-.8",
+    ".8-.9",
+    ".9-1.0",
 ]
 
 

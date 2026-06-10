@@ -23,15 +23,15 @@ Salida:
 
 import argparse
 import csv
+import io
 import json
 import sys
-import io
 from pathlib import Path
 
 # Force UTF-8 encoding for standard output/error to prevent UnicodeEncodeError on Windows
-if sys.platform.startswith('win'):
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+if sys.platform.startswith("win"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 import numpy as np
 
@@ -48,7 +48,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 EVAL_DIR = PROJECT_ROOT / "data" / "evaluation"
@@ -57,7 +57,9 @@ EVAL_DIR = PROJECT_ROOT / "data" / "evaluation"
 class _DropoutLinear(nn.Linear):
     """nn.Linear with preceding dropout – subclasses Linear for type safety."""
 
-    def __init__(self, in_features: int, out_features: int, dropout: float = 0.3) -> None:
+    def __init__(
+        self, in_features: int, out_features: int, dropout: float = 0.3
+    ) -> None:
         super().__init__(in_features, out_features)
         self._drop = nn.Dropout(p=dropout)
 
@@ -65,7 +67,9 @@ class _DropoutLinear(nn.Linear):
         return super().forward(self._drop(x))
 
 
-def build_model_from_config(config: dict, weights_path: Path, device: torch.device) -> nn.Module:
+def build_model_from_config(
+    config: dict, weights_path: Path, device: torch.device
+) -> nn.Module:
     """Build model from training config (standalone, no external import)."""
     from torchvision import models
 
@@ -104,7 +108,9 @@ def build_model_from_config(config: dict, weights_path: Path, device: torch.devi
     else:
         raise ValueError(f"Unsupported model: {model_name}")
 
-    model.load_state_dict(torch.load(weights_path, map_location=device, weights_only=True))
+    model.load_state_dict(
+        torch.load(weights_path, map_location=device, weights_only=True)
+    )
     model = model.to(device)
     model.eval()
     return model
@@ -180,7 +186,11 @@ def compute_metrics(
 
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        f1 = (
+            2 * precision * recall / (precision + recall)
+            if (precision + recall) > 0
+            else 0.0
+        )
         support = int(np.sum(mask_true))
 
         per_class[name] = {
@@ -201,7 +211,9 @@ def compute_metrics(
     macro_recall = np.mean(recalls)
     macro_f1 = np.mean(f1s)
 
-    weighted_precision = sum(p * s for p, s in zip(precisions, supports)) / total_support
+    weighted_precision = (
+        sum(p * s for p, s in zip(precisions, supports)) / total_support
+    )
     weighted_recall = sum(r * s for r, s in zip(recalls, supports)) / total_support
     weighted_f1 = sum(f * s for f, s in zip(f1s, supports)) / total_support
 
@@ -231,10 +243,10 @@ def _group_species_by_f1(per_class: dict) -> list[tuple[str, list[tuple[str, dic
     Returns list of (tier_label, [(species_name, metrics), ...]) from highest to lowest tier.
     """
     tiers: dict[str, list[tuple[str, dict]]] = {
-        ">= 0.9":   [],
+        ">= 0.9": [],
         ">= 0.7 & < 0.9": [],
         ">= 0.5 & < 0.7": [],
-        "< 0.5":    [],
+        "< 0.5": [],
     }
 
     for name, m in per_class.items():
@@ -264,10 +276,14 @@ def generate_classification_report(metrics: dict) -> str:
     lines.append("  CLASSIFICATION REPORT - BioPlatform Caldas CNN")
     lines.append(f"{'=' * 80}")
     lines.append("")
-    lines.append(f"  Overall Accuracy:   {metrics['accuracy']:.4f} ({metrics['accuracy'] * 100:.1f}%)")
+    lines.append(
+        f"  Overall Accuracy:   {metrics['accuracy']:.4f} ({metrics['accuracy'] * 100:.1f}%)"
+    )
 
     top_k_key = [k for k in metrics if k.startswith("top_")][0]
-    lines.append(f"  {top_k_key.replace('_', ' ').title()}: {metrics[top_k_key]:.4f} ({metrics[top_k_key] * 100:.1f}%)")
+    lines.append(
+        f"  {top_k_key.replace('_', ' ').title()}: {metrics[top_k_key]:.4f} ({metrics[top_k_key] * 100:.1f}%)"
+    )
     lines.append(f"  Total Test Samples: {metrics['total_samples']:,}")
     lines.append(f"  Number of Classes:  {metrics['num_classes']}")
 
@@ -276,7 +292,9 @@ def generate_classification_report(metrics: dict) -> str:
 
     lines.append("")
     lines.append(f"{'─' * 80}")
-    lines.append("  F1-SCORE THRESHOLD SUMMARY  (F1 = harmonic mean of Precision & Recall)")
+    lines.append(
+        "  F1-SCORE THRESHOLD SUMMARY  (F1 = harmonic mean of Precision & Recall)"
+    )
     lines.append(f"{'─' * 80}")
     for label, species_list in grouped:
         lines.append(f"  F1 {label:<20s} = {len(species_list):>5d} species")
@@ -324,11 +342,14 @@ def plot_confusion_matrix(
     """Generate and save confusion matrix heatmap."""
     try:
         import matplotlib
+
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
         from sklearn.metrics import confusion_matrix
     except ImportError:
-        print("[WARN] matplotlib/sklearn not installed, skipping confusion matrix plot.")
+        print(
+            "[WARN] matplotlib/sklearn not installed, skipping confusion matrix plot."
+        )
         return
 
     cm = confusion_matrix(labels, predictions)
@@ -353,13 +374,17 @@ def plot_confusion_matrix(
         # Save as text
         with open(output_path.with_suffix(".txt"), "w", encoding="utf-8") as f:
             f.write("Top 20 Most Confused Species Pairs:\n")
-            f.write(f"{'True Species':<40s} {'Predicted As':<40s} {'Rate':>8s} {'Count':>6s}\n")
+            f.write(
+                f"{'True Species':<40s} {'Predicted As':<40s} {'Rate':>8s} {'Count':>6s}\n"
+            )
             f.write("─" * 94 + "\n")
             for true, pred, rate, count in sorted(pairs, key=lambda x: -x[2]):
                 f.write(f"{true:<40s} {pred:<40s} {rate:>7.2%} {count:>6d}\n")
         print(f"  → Top confused pairs saved to {output_path.with_suffix('.txt')}")
     else:
-        fig, ax = plt.subplots(figsize=(max(12, num_classes * 0.5), max(10, num_classes * 0.4)))
+        fig, ax = plt.subplots(
+            figsize=(max(12, num_classes * 0.5), max(10, num_classes * 0.4))
+        )
         im = ax.imshow(cm, interpolation="nearest", cmap="Blues")
         ax.set_title("Confusion Matrix - BioPlatform CNN")
         fig.colorbar(im, ax=ax)
@@ -396,13 +421,15 @@ def find_misclassified(
 
     for idx in sorted_indices[:max_samples]:
         filepath = dataset.samples[idx][0]
-        misclassified.append({
-            "file": filepath,
-            "true_label": class_names[labels[idx]],
-            "predicted_label": class_names[predictions[idx]],
-            "confidence": round(float(probabilities[idx][predictions[idx]]), 4),
-            "true_label_prob": round(float(probabilities[idx][labels[idx]]), 4),
-        })
+        misclassified.append(
+            {
+                "file": filepath,
+                "true_label": class_names[labels[idx]],
+                "predicted_label": class_names[predictions[idx]],
+                "confidence": round(float(probabilities[idx][predictions[idx]]), 4),
+                "true_label_prob": round(float(probabilities[idx][labels[idx]]), 4),
+            }
+        )
 
     return misclassified
 
@@ -413,7 +440,9 @@ def main() -> None:
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument(
-        "--weights-dir", type=str, default=None,
+        "--weights-dir",
+        type=str,
+        default=None,
         help="Versioned weights directory (default: data/weights/)",
     )
     args = parser.parse_args()
@@ -486,12 +515,14 @@ def main() -> None:
     imagenet_mean = config.get("imagenet_mean", [0.485, 0.456, 0.406])
     imagenet_std = config.get("imagenet_std", [0.229, 0.224, 0.225])
 
-    test_transform = transforms.Compose([
-        transforms.Resize(int(image_size * 1.14)),
-        transforms.CenterCrop(image_size),
-        transforms.ToTensor(),
-        transforms.Normalize(imagenet_mean, imagenet_std),
-    ])
+    test_transform = transforms.Compose(
+        [
+            transforms.Resize(int(image_size * 1.14)),
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(imagenet_mean, imagenet_std),
+        ]
+    )
 
     test_dataset = datasets.ImageFolder(str(test_dir), transform=test_transform)
 
@@ -512,21 +543,28 @@ def main() -> None:
             skipped_classes.add(class_name)
 
     if skipped_classes:
-        print(f"  [WARN] Skipping {len(skipped_classes)} species in test set not present in training config.")
+        print(
+            f"  [WARN] Skipping {len(skipped_classes)} species in test set not present in training config."
+        )
 
     test_dataset.samples = valid_samples
     test_dataset.targets = [t for _, t in valid_samples]
 
     test_loader = DataLoader(
-        test_dataset, batch_size=args.batch_size,
-        shuffle=False, num_workers=args.workers, pin_memory=True,
+        test_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.workers,
+        pin_memory=True,
     )
 
     print(f"  Test images: {len(test_dataset):,}")
 
     # ── Evaluate ───────────────────────────────────────────────────
     print("\n  Running evaluation...")
-    results = evaluate_model(model, test_loader, device, config["num_classes"], args.top_k)
+    results = evaluate_model(
+        model, test_loader, device, config["num_classes"], args.top_k
+    )
 
     # ── Compute metrics ────────────────────────────────────────────
     print("  Computing metrics...")
@@ -553,23 +591,32 @@ def main() -> None:
     print(f"\n  → Metrics saved to {eval_dir / 'evaluation_metrics.json'}")
 
     # Per-class CSV
-    with open(eval_dir / "per_class_metrics.csv", "w", newline="", encoding="utf-8") as f:
+    with open(
+        eval_dir / "per_class_metrics.csv", "w", newline="", encoding="utf-8"
+    ) as f:
         writer = csv.writer(f)
         writer.writerow(["species", "precision", "recall", "f1_score", "support"])
         for name, m in sorted(metrics["per_class"].items()):
-            writer.writerow([name, m["precision"], m["recall"], m["f1_score"], m["support"]])
+            writer.writerow(
+                [name, m["precision"], m["recall"], m["f1_score"], m["support"]]
+            )
     print("  → Per-class CSV saved")
 
     # Confusion matrix
     plot_confusion_matrix(
-        results["labels"], results["predictions"],
-        class_names, eval_dir / "confusion_matrix.png",
+        results["labels"],
+        results["predictions"],
+        class_names,
+        eval_dir / "confusion_matrix.png",
     )
 
     # Misclassified samples
     misclassified = find_misclassified(
-        results["labels"], results["predictions"],
-        results["probabilities"], test_dataset, class_names,
+        results["labels"],
+        results["predictions"],
+        results["probabilities"],
+        test_dataset,
+        class_names,
     )
     with open(eval_dir / "misclassified_samples.json", "w") as f:
         json.dump(misclassified, f, indent=2)
@@ -580,11 +627,13 @@ def main() -> None:
     print(f"\n{'=' * 60}")
     print("  EVALUATION COMPLETE")
     print(f"{'=' * 60}")
-    print(f"  Accuracy:    {metrics['accuracy']:.4f} ({metrics['accuracy'] * 100:.1f}%)")
+    print(
+        f"  Accuracy:    {metrics['accuracy']:.4f} ({metrics['accuracy'] * 100:.1f}%)"
+    )
     print(f"  {top_k_key}: {metrics[top_k_key]:.4f} ({metrics[top_k_key] * 100:.1f}%)")
     print(f"  Macro F1:    {metrics['macro_avg']['f1_score']:.4f}")
     print(f"  Weighted F1: {metrics['weighted_avg']['f1_score']:.4f}")
-    target = "✅ PASSED" if metrics['accuracy'] >= 0.85 else "⚠️ BELOW TARGET (85%)"
+    target = "✅ PASSED" if metrics["accuracy"] >= 0.85 else "⚠️ BELOW TARGET (85%)"
     print(f"  Target >85%: {target}")
     print(f"\n  Results in:  {eval_dir}")
 

@@ -1,10 +1,10 @@
-import os
 import argparse
+import os
 
 
 def generate_sql(base_dir, public_bucket, output_sql):
-    test_dir = os.path.join(base_dir, 'test')
-    val_dir = os.path.join(base_dir, 'val')
+    test_dir = os.path.join(base_dir, "test")
+    val_dir = os.path.join(base_dir, "val")
 
     # We will use this set to keep track of species we've already written a thumbnail for
     processed_species = set()
@@ -12,11 +12,13 @@ def generate_sql(base_dir, public_bucket, output_sql):
     # Ensure output directory exists
     os.makedirs(os.path.dirname(output_sql), exist_ok=True)
 
-    with open(output_sql, 'w', encoding='utf-8') as sql_file:
+    with open(output_sql, "w", encoding="utf-8") as sql_file:
         sql_file.write("-- =========================================================\n")
         sql_file.write("-- SQL SCRIPT PARA POBLAR GALERIA DE IMAGENES\n")
         sql_file.write("-- Ejecutar en base de datos: BioCommerce_Scientific\n")
-        sql_file.write("-- =========================================================\n\n")
+        sql_file.write(
+            "-- =========================================================\n\n"
+        )
 
         for ds_dir in [test_dir, val_dir]:
             if not os.path.exists(ds_dir):
@@ -29,11 +31,14 @@ def generate_sql(base_dir, public_bucket, output_sql):
                     continue
 
                 # Transform species_folder (e.g., Abracris_flavolineata) to scientific name
-                scientific_name = species_folder.replace('_', ' ')
+                scientific_name = species_folder.replace("_", " ")
 
                 # Iterate over image files in species directory
-                images = [f for f in os.listdir(species_path)
-                          if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
+                images = [
+                    f
+                    for f in os.listdir(species_path)
+                    if f.lower().endswith((".jpg", ".jpeg", ".png"))
+                ]
 
                 if not images:
                     continue
@@ -70,25 +75,27 @@ def generate_sql(base_dir, public_bucket, output_sql):
     print(f"Script generado con exito: {output_sql}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Directorio base de Bio.Backend.AI (dos niveles arriba de scripts/tools)
-    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
-    parser = argparse.ArgumentParser(description="Generar SQL para imagenes subidas a S3")
-    parser.add_argument(
-        '--base_dir',
-        default=os.path.join(base_path, 'data', 'processed'),
-        help='Directorio base de dataset processed'
+    parser = argparse.ArgumentParser(
+        description="Generar SQL para imagenes subidas a S3"
     )
     parser.add_argument(
-        '--bucket',
-        default='bioplatform-public',
-        help='Nombre del bucket de S3 publico'
+        "--base_dir",
+        default=os.path.join(base_path, "data", "processed"),
+        help="Directorio base de dataset processed",
     )
     parser.add_argument(
-        '--out',
-        default=os.path.join(base_path, 'data', 'species_catalog', 'insert_species_images.sql'),
-        help='Archivo SQL generado'
+        "--bucket", default="bioplatform-public", help="Nombre del bucket de S3 publico"
+    )
+    parser.add_argument(
+        "--out",
+        default=os.path.join(
+            base_path, "data", "species_catalog", "insert_species_images.sql"
+        ),
+        help="Archivo SQL generado",
     )
 
     args = parser.parse_args()

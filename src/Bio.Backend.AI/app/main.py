@@ -1,5 +1,5 @@
 import logging
-
+import os
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
@@ -10,7 +10,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 
-load_dotenv()
+# Search for .env in current, parent, or grandparent directories
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../../../.env"))
+load_dotenv()  # Also load local .env if exists
 
 logging.basicConfig(
     level=logging.INFO,
@@ -47,7 +49,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             classifier.load_model(version=active["version"])
             logger.info(
                 "CNN model loaded from registry: version=%s, %d classes",
-                active["version"], classifier.num_classes,
+                active["version"],
+                classifier.num_classes,
             )
     except FileNotFoundError as e:
         logger.warning(
@@ -62,9 +65,13 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
         db_ok = await check_db_connection()
         if db_ok:
-            logger.info(f"PostgreSQL connected: {settings.pg_host}:{settings.pg_port}/{settings.pg_database}")
+            logger.info(
+                f"PostgreSQL connected: {settings.pg_host}:{settings.pg_port}/{settings.pg_database}"
+            )
         else:
-            logger.warning("PostgreSQL unreachable. Species enrichment will be unavailable.")
+            logger.warning(
+                "PostgreSQL unreachable. Species enrichment will be unavailable."
+            )
     except Exception as e:
         logger.warning(f"PostgreSQL check skipped: {e}")
 
@@ -99,6 +106,7 @@ app.add_middleware(
 )
 
 # -- Register Routers ----------------------------------------------------------
+from app.api.v1_assistant import router as assistant_router  # noqa: E402
 from app.api.v1_classify import router as classify_router  # noqa: E402
 from app.api.v1_metrics import router as metrics_router  # noqa: E402
 from app.api.v1_model_registry import router as model_registry_router  # noqa: E402
@@ -107,9 +115,44 @@ from app.api.v1_training import router as training_router  # noqa: E402
 
 app.include_router(classify_router)
 app.include_router(metrics_router)
+app.include_router(assistant_router)
+app.include_router(model_registry_router)
 app.include_router(system_router)
 app.include_router(training_router)
-app.include_router(model_registry_router)
+
+
+@app.get("/health", tags=["Infrastructure"])
+async def health() -> dict[str, Any]:
+    """
+    Health check endpoint for Docker / load balancer probes.
+    Reports CNN model status and PostgreSQL connectivity.
+    """
+    import sqlalchemy as sa
+
+    from app.core.database import check_db_connection, get_db_session
+    from app.services.vision.classifier import get_classifier
+
+    classifier = get_classifier()
+    db_connected = await check_db_connection()
+
+    # Count species in the database (best-effort)
+    db_species_count = 0
+    if db_connected:
+        try:
+            async with get_db_session() as session:
+                result = await session.execute(sa.text("SELECT COUNT(*) FROM species"))
+                db_species_count = result.scalar() or 0
+        except Exception:
+            pass
+
+    return {
+        "status": "healthy" if classifier.is_loaded else "degraded",
+        "service": "bio-ai",
+        "model_loaded": classifier.is_loaded,
+        "num_classes": classifier.num_classes,
+        "database_connected": db_connected,
+        "db_species_count": db_species_count,
+    }
 
 
 @app.get("/", tags=["Infrastructure"])

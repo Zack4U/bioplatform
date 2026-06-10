@@ -357,31 +357,31 @@ export function ProductCard({
               )}
             </div>
 
-            {/* Certifications */}
-            {product.certifications &&
-              product.certifications.length > 0 &&
-              !isListView && (
-                <div className="flex flex-wrap items-center gap-1">
-                  {product.certifications.slice(0, 2).map((cert) => (
-                    <TooltipProvider key={cert}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Badge
-                            variant="outline"
-                            className="text-[10px] font-normal bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
-                          >
-                            {cert}
-                          </Badge>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Certificacion: {cert}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ))}
-                </div>
-              )}
-          </CardContent>
+                        {/* Certifications */}
+                        {(product.certifications?.length ?? 0) > 0 && !isListView && (
+                            <div className="flex flex-wrap items-center gap-1">
+                                {product.certifications
+                                    .slice(0, 2)
+                                    .map((cert) => (
+                                        <TooltipProvider key={cert}>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="text-[10px] font-normal bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
+                                                    >
+                                                        {cert}
+                                                    </Badge>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>Certificacion: {cert}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    ))}
+                            </div>
+                        )}
+                    </CardContent>
 
           {/* ═══════════════════════════════════════════════════
                         SECTION 3: PRICE + ACTION (always at bottom)

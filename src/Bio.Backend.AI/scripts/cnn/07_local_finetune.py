@@ -25,13 +25,12 @@ Output:
 """
 
 import argparse
+import os
 import subprocess
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-
-import os
 
 from dotenv import load_dotenv
 
@@ -91,40 +90,51 @@ def main() -> None:
         description="Local fine-tuning CLI for BioPlatform CNN"
     )
     parser.add_argument(
-        "--version", type=str, default=None,
+        "--version",
+        type=str,
+        default=None,
         help="Version prefix (default: auto-generated from timestamp)",
     )
     parser.add_argument("--epochs", type=int, default=15)
     parser.add_argument("--lr", type=float, default=1e-5)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument(
-        "--model", type=str, default=None,
+        "--model",
+        type=str,
+        default=None,
         help="Model architecture (default: use active model's architecture)",
     )
     parser.add_argument(
-        "--skip-organize", action="store_true",
+        "--skip-organize",
+        action="store_true",
         help="Skip dataset organization step",
     )
     parser.add_argument(
-        "--skip-eval", action="store_true",
+        "--skip-eval",
+        action="store_true",
         help="Skip evaluation step",
     )
     parser.add_argument(
-        "--skip-onnx", action="store_true",
+        "--skip-onnx",
+        action="store_true",
         help="Skip ONNX export step",
     )
     parser.add_argument(
-        "--no-warm-start", action="store_true",
+        "--no-warm-start",
+        action="store_true",
         help="Train from scratch (ImageNet) instead of warm-starting",
     )
     parser.add_argument(
-        "--skip-download", action="store_true",
+        "--skip-download",
+        action="store_true",
         help="Skip delta download step (use existing raw images)",
     )
     parser.add_argument(
-        "--replay-ratio", type=float, default=None,
+        "--replay-ratio",
+        type=float,
+        default=None,
         help="Fraction of old images to keep in Replay Buffer "
-             "(default: REPLAY_BUFFER_RATIO from .env, typically 0.15)",
+        "(default: REPLAY_BUFFER_RATIO from .env, typically 0.15)",
     )
     args = parser.parse_args()
 
@@ -193,6 +203,7 @@ def main() -> None:
             # Check if any new images were downloaded
             if DELTA_MANIFEST.exists():
                 import json
+
                 try:
                     with open(DELTA_MANIFEST, "r", encoding="utf-8") as f:
                         manifest_data = json.load(f)
@@ -203,10 +214,14 @@ def main() -> None:
                             "Do you want to continue training with the existing dataset? [y/N]: "
                         )
                         if ans.lower() not in ["y", "yes"]:
-                            print("\n[INFO] Aborting fine-tuning process as per user request.")
+                            print(
+                                "\n[INFO] Aborting fine-tuning process as per user request."
+                            )
                             sys.exit(0)
                 except Exception as e:
-                    print(f"[WARN] Could not read manifest to verify downloaded images: {e}")
+                    print(
+                        f"[WARN] Could not read manifest to verify downloaded images: {e}"
+                    )
         else:
             print("[WARN] Delta download script not found. Skipping.")
     else:
@@ -217,8 +232,10 @@ def main() -> None:
         organize_script = SCRIPT_DIR.parent / "dataset" / "03_organize_dataset.py"
         if organize_script.exists():
             organize_cmd = [
-                sys.executable, str(organize_script),
-                "--seed", str(seed),
+                sys.executable,
+                str(organize_script),
+                "--seed",
+                str(seed),
             ]
             # Clean only if training from scratch (no-warm-start)
             if args.no_warm_start:
@@ -226,10 +243,14 @@ def main() -> None:
 
             # Enable Replay Buffer / incremental delta organization if manifest exists
             if DELTA_MANIFEST.exists():
-                organize_cmd.extend([
-                    "--new-images-manifest", str(DELTA_MANIFEST),
-                    "--replay-ratio", str(args.replay_ratio),
-                ])
+                organize_cmd.extend(
+                    [
+                        "--new-images-manifest",
+                        str(DELTA_MANIFEST),
+                        "--replay-ratio",
+                        str(args.replay_ratio),
+                    ]
+                )
 
             ok = _run(
                 organize_cmd,
@@ -254,13 +275,20 @@ def main() -> None:
     train_cmd = [
         sys.executable,
         str(SCRIPT_DIR / "04_train_cnn.py"),
-        "--model", model_name,
-        "--epochs", str(args.epochs),
-        "--lr", str(args.lr),
-        "--unfreeze-lr", str(args.lr),
-        "--freeze-epochs", "0",
-        "--batch-size", str(args.batch_size),
-        "--output-dir", str(output_dir),
+        "--model",
+        model_name,
+        "--epochs",
+        str(args.epochs),
+        "--lr",
+        str(args.lr),
+        "--unfreeze-lr",
+        str(args.lr),
+        "--freeze-epochs",
+        "0",
+        "--batch-size",
+        str(args.batch_size),
+        "--output-dir",
+        str(output_dir),
     ]
     if checkpoint_path and not args.no_warm_start:
         train_cmd.extend(["--resume-checkpoint", str(checkpoint_path)])

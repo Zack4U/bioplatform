@@ -35,8 +35,8 @@ logger = logging.getLogger(__name__)
 
 # -- Resolve paths ------------------------------------------------------------
 SERVICE_DIR = Path(__file__).resolve().parent
-APP_DIR = SERVICE_DIR.parent.parent          # app/
-PROJECT_ROOT = APP_DIR.parent                # Bio.Backend.AI/
+APP_DIR = SERVICE_DIR.parent.parent  # app/
+PROJECT_ROOT = APP_DIR.parent  # Bio.Backend.AI/
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 
@@ -89,13 +89,17 @@ def _build_model_arch(model_name: str, num_classes: int) -> "nn.Module":
         model = models.resnet50(weights=None)
         in_features = model.fc.in_features
         model.fc = _DropoutLinear.build(
-            in_features, num_classes, dropout=0.3,
+            in_features,
+            num_classes,
+            dropout=0.3,
         )
     elif model_name == "resnet101":
         model = models.resnet101(weights=None)
         in_features = model.fc.in_features
         model.fc = _DropoutLinear.build(
-            in_features, num_classes, dropout=0.3,
+            in_features,
+            num_classes,
+            dropout=0.3,
         )
     else:
         raise ValueError(f"Unsupported model: {model_name}")
@@ -169,7 +173,9 @@ class SpeciesClassifier:
         model_name: str = config["model_name"]
         image_size: int = config.get("image_size", 224)
 
-        logger.info("Loading model: %s (%d classes) on %s", model_name, num_classes, device)
+        logger.info(
+            "Loading model: %s (%d classes) on %s", model_name, num_classes, device
+        )
 
         # Build architecture and load weights
         model = _build_model_arch(model_name, num_classes)
@@ -191,12 +197,14 @@ class SpeciesClassifier:
         imagenet_mean = config.get("imagenet_mean", [0.485, 0.456, 0.406])
         imagenet_std = config.get("imagenet_std", [0.229, 0.224, 0.225])
 
-        transform = transforms.Compose([
-            transforms.Resize(int(image_size * 1.14)),
-            transforms.CenterCrop(image_size),
-            transforms.ToTensor(),
-            transforms.Normalize(imagenet_mean, imagenet_std),
-        ])
+        transform = transforms.Compose(
+            [
+                transforms.Resize(int(image_size * 1.14)),
+                transforms.CenterCrop(image_size),
+                transforms.ToTensor(),
+                transforms.Normalize(imagenet_mean, imagenet_std),
+            ]
+        )
 
         return model, config, class_names, device, transform
 
@@ -234,7 +242,8 @@ class SpeciesClassifier:
             config_path = WEIGHTS_DIR / "training_config.json"
 
         model, config, class_names, device, transform = self._load_model_sync(
-            weights_path, config_path,
+            weights_path,
+            config_path,
         )
 
         self.model = model
@@ -250,10 +259,14 @@ class SpeciesClassifier:
                 self.class_info = json.load(f)
 
         self._loaded = True
-        self._active_version = weights_path.parent.name if weights_path.parent != WEIGHTS_DIR else "legacy"
+        self._active_version = (
+            weights_path.parent.name if weights_path.parent != WEIGHTS_DIR else "legacy"
+        )
         logger.info(
             "Model loaded successfully. %d classes, device=%s, version=%s",
-            len(class_names), device, self._active_version,
+            len(class_names),
+            device,
+            self._active_version,
         )
 
     async def reload_model(self, version_path: Path) -> None:
@@ -276,10 +289,17 @@ class SpeciesClassifier:
         loop = asyncio.get_event_loop()
 
         # Load in background thread — zero blocking of HTTP requests
-        new_model, new_config, new_class_names, new_device, new_transform = (
-            await loop.run_in_executor(
-                None, self._load_model_sync, weights_path, config_path,
-            )
+        (
+            new_model,
+            new_config,
+            new_class_names,
+            new_device,
+            new_transform,
+        ) = await loop.run_in_executor(
+            None,
+            self._load_model_sync,
+            weights_path,
+            config_path,
         )
 
         # Reload class info
@@ -306,7 +326,9 @@ class SpeciesClassifier:
 
         logger.info(
             "Hot-reload complete. Version=%s, classes=%d, device=%s",
-            self._active_version, len(new_class_names), new_device,
+            self._active_version,
+            len(new_class_names),
+            new_device,
         )
 
     def suspend(self) -> None:
@@ -335,7 +357,9 @@ class SpeciesClassifier:
         except Exception:
             pass
 
-        logger.info("Model suspended. Classification paused until a version is activated.")
+        logger.info(
+            "Model suspended. Classification paused until a version is activated."
+        )
 
     def preprocess_image(self, image_bytes: bytes) -> "torch.Tensor":
         """Convert raw image bytes to a preprocessed tensor."""
@@ -410,13 +434,17 @@ class SpeciesClassifier:
             if confidence < confidence_threshold:
                 continue
 
-            raw_name = self.class_names[idx] if idx < len(self.class_names) else f"class_{idx}"
+            raw_name = (
+                self.class_names[idx] if idx < len(self.class_names) else f"class_{idx}"
+            )
             # Display name: replace underscores with spaces
             species_name = raw_name.replace("_", " ")
 
             # Get taxonomy info - try both "Name Name" and "Name_Name" keys
             taxonomy = {}
-            info = self.class_info.get(species_name) or self.class_info.get(raw_name) or {}
+            info = (
+                self.class_info.get(species_name) or self.class_info.get(raw_name) or {}
+            )
             if info:
                 taxonomy = {
                     "scientific_name": info.get("scientific_name", ""),
@@ -429,12 +457,14 @@ class SpeciesClassifier:
                     "iucn_status": info.get("iucn_status", ""),
                 }
 
-            predictions.append({
-                "species": species_name,
-                "confidence": round(confidence, 4),
-                "rank": rank,
-                "taxonomy": taxonomy,
-            })
+            predictions.append(
+                {
+                    "species": species_name,
+                    "confidence": round(confidence, 4),
+                    "rank": rank,
+                    "taxonomy": taxonomy,
+                }
+            )
 
         return {
             "predictions": predictions,

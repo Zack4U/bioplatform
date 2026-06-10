@@ -46,7 +46,9 @@ def test_collect_test_images():
     mock_class_dir = MagicMock()
     mock_class_dir.is_dir.return_value = True
     mock_class_dir.name = "Bombus_funebris"
-    mock_class_dir.glob.side_effect = lambda pat: [Path("img1.jpg")] if "*.jpg" in pat else []
+    mock_class_dir.glob.side_effect = lambda pat: (
+        [Path("img1.jpg")] if "*.jpg" in pat else []
+    )
 
     mock_test_dir = MagicMock()
     mock_test_dir.iterdir.return_value = [mock_class_dir]
@@ -60,9 +62,11 @@ def test_evaluate_candidate():
     mock_candidate = MagicMock()
     # Correct prediction
     mock_candidate.classify.side_effect = [
-        {"predictions": [{"species": "Bombus funebris"}]},  # matches Bombus_funebris after replace
-        {"predictions": [{"species": "Wrong Species"}]},   # mismatch
-        {"predictions": []},                               # empty predictions
+        {
+            "predictions": [{"species": "Bombus funebris"}]
+        },  # matches Bombus_funebris after replace
+        {"predictions": [{"species": "Wrong Species"}]},  # mismatch
+        {"predictions": []},  # empty predictions
     ]
 
     sample = [
@@ -84,7 +88,9 @@ class TestModelRegistryEndpoints:
     async def test_upload_success(self, app_client):
         # Successful upload
         with (
-            patch("app.api.v1_model_registry._generate_version_tag", return_value="v1.0.0"),
+            patch(
+                "app.api.v1_model_registry._generate_version_tag", return_value="v1.0.0"
+            ),
             patch.object(Path, "mkdir"),
             patch.object(Path, "write_bytes"),
             patch.object(Path, "write_text"),
@@ -92,9 +98,17 @@ class TestModelRegistryEndpoints:
             resp = await app_client.post(
                 "/api/v1/model/upload",
                 files={
-                    "weights_file": ("best_model.pth", b"weights", "application/octet-stream"),
+                    "weights_file": (
+                        "best_model.pth",
+                        b"weights",
+                        "application/octet-stream",
+                    ),
                     "config_file": ("training_config.json", b"{}", "application/json"),
-                    "metrics_file": ("evaluation_metrics.json", b"{}", "application/json"),
+                    "metrics_file": (
+                        "evaluation_metrics.json",
+                        b"{}",
+                        "application/json",
+                    ),
                 },
                 data={"notes": "Test upload"},
             )
@@ -106,16 +120,26 @@ class TestModelRegistryEndpoints:
     async def test_upload_failure(self, app_client):
         # Failed upload: file writing throws exception
         with (
-            patch("app.api.v1_model_registry._generate_version_tag", return_value="v1.0.0"),
+            patch(
+                "app.api.v1_model_registry._generate_version_tag", return_value="v1.0.0"
+            ),
             patch.object(Path, "mkdir"),
             patch.object(Path, "write_bytes", side_effect=OSError("Permission denied")),
         ):
             resp = await app_client.post(
                 "/api/v1/model/upload",
                 files={
-                    "weights_file": ("best_model.pth", b"weights", "application/octet-stream"),
+                    "weights_file": (
+                        "best_model.pth",
+                        b"weights",
+                        "application/octet-stream",
+                    ),
                     "config_file": ("training_config.json", b"{}", "application/json"),
-                    "metrics_file": ("evaluation_metrics.json", b"{}", "application/json"),
+                    "metrics_file": (
+                        "evaluation_metrics.json",
+                        b"{}",
+                        "application/json",
+                    ),
                 },
             )
             assert resp.status_code == 500
@@ -125,7 +149,9 @@ class TestModelRegistryEndpoints:
     async def test_reload_not_found(self, app_client):
         with patch.object(Path, "exists", return_value=False):
             # Version path does not exist
-            resp = await app_client.post("/api/v1/model/reload", json={"version": "v1.0.0"})
+            resp = await app_client.post(
+                "/api/v1/model/reload", json={"version": "v1.0.0"}
+            )
             assert resp.status_code == 404
 
     @pytest.mark.asyncio
@@ -135,9 +161,13 @@ class TestModelRegistryEndpoints:
             return self.name != "best_model.pth"
 
         with (
-            patch.object(Path, "exists", autospec=True, side_effect=mock_exists_side_effect),
+            patch.object(
+                Path, "exists", autospec=True, side_effect=mock_exists_side_effect
+            ),
         ):
-            resp = await app_client.post("/api/v1/model/reload", json={"version": "v1.0.0"})
+            resp = await app_client.post(
+                "/api/v1/model/reload", json={"version": "v1.0.0"}
+            )
             assert resp.status_code == 404
             assert "no best_model.pth" in resp.json()["detail"].lower()
 
@@ -148,7 +178,9 @@ class TestModelRegistryEndpoints:
             patch.object(Path, "exists", return_value=True),
             patch.object(mock_classifier, "reload_model", new_callable=AsyncMock),
         ):
-            resp = await app_client.post("/api/v1/model/reload", json={"version": "v1.0.0"})
+            resp = await app_client.post(
+                "/api/v1/model/reload", json={"version": "v1.0.0"}
+            )
             assert resp.status_code == 200
             assert resp.json()["status"] == "reloaded"
 
@@ -157,9 +189,16 @@ class TestModelRegistryEndpoints:
         mock_classifier.active_version = "v1.0.0"
         with (
             patch.object(Path, "exists", return_value=True),
-            patch.object(mock_classifier, "reload_model", new_callable=AsyncMock, side_effect=RuntimeError("Reload crash")),
+            patch.object(
+                mock_classifier,
+                "reload_model",
+                new_callable=AsyncMock,
+                side_effect=RuntimeError("Reload crash"),
+            ),
         ):
-            resp = await app_client.post("/api/v1/model/reload", json={"version": "v1.0.0"})
+            resp = await app_client.post(
+                "/api/v1/model/reload", json={"version": "v1.0.0"}
+            )
             assert resp.status_code == 200
             assert resp.json()["status"] == "error"
             assert "reload failed" in resp.json()["message"].lower()
@@ -197,7 +236,10 @@ class TestModelRegistryEndpoints:
 
         with (
             patch.object(Path, "exists", autospec=True, side_effect=mock_exists),
-            patch("app.services.vision.classifier.SpeciesClassifier.load_model", side_effect=RuntimeError("PyTorch error")),
+            patch(
+                "app.services.vision.classifier.SpeciesClassifier.load_model",
+                side_effect=RuntimeError("PyTorch error"),
+            ),
         ):
             resp = await app_client.post("/api/v1/model/validate?version=v1.0.0")
             assert resp.status_code == 422
@@ -239,7 +281,9 @@ class TestModelRegistryEndpoints:
             assert "no test images found" in resp.json()["message"].lower()
 
     @pytest.mark.asyncio
-    async def test_validate_run_accuracy_drop(self, app_client, mock_classifier, mock_settings):
+    async def test_validate_run_accuracy_drop(
+        self, app_client, mock_classifier, mock_settings
+    ):
         # Validation runs, but accuracy drops under threshold
         mock_classifier.is_loaded = True
         mock_classifier.config = {"best_val_accuracy": 0.90}
@@ -248,12 +292,18 @@ class TestModelRegistryEndpoints:
         with (
             patch.object(Path, "exists", return_value=True),
             patch("app.services.vision.classifier.SpeciesClassifier.load_model"),
-            patch("app.api.v1_model_registry._collect_test_images", return_value=[(Path("img1.jpg"), "Bombus_funebris")]),
+            patch(
+                "app.api.v1_model_registry._collect_test_images",
+                return_value=[(Path("img1.jpg"), "Bombus_funebris")],
+            ),
             patch(
                 "app.api.v1_model_registry._evaluate_candidate",
                 return_value=0.80,
             ),  # accuracy = 0.80, drop = -0.10 (threshold 0.05)
-            patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier),
+            patch(
+                "app.services.vision.classifier.get_classifier",
+                return_value=mock_classifier,
+            ),
             patch("app.core.config.get_settings", return_value=mock_settings),
         ):
             resp = await app_client.post("/api/v1/model/validate?version=v1.0.0")

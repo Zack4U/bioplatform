@@ -79,7 +79,7 @@ def api_get_json(
             response = session.get(url, params=params, timeout=timeout)
         except requests.RequestException:
             # Network/transient errors: short backoff and retry.
-            time.sleep(min(2 ** attempt, 2.0))
+            time.sleep(min(2**attempt, 2.0))
             continue
 
         if response.status_code in (429, 503):
@@ -89,7 +89,7 @@ def api_get_json(
             retry_after = 0
             if isinstance(retry_after_raw, str) and retry_after_raw.isdigit():
                 retry_after = int(retry_after_raw)
-            wait_seconds = retry_after if retry_after > 0 else min(2 ** attempt, 2.0)
+            wait_seconds = retry_after if retry_after > 0 else min(2**attempt, 2.0)
             wait_seconds = min(wait_seconds, 4.0)
             time.sleep(wait_seconds)
             continue
@@ -166,7 +166,9 @@ def sql_quote(value: str) -> str:
     return "'" + value.replace("'", "''") + "'"
 
 
-async def fetch_species(limit: int | None, scientific_name: str | None) -> list[SpeciesRow]:
+async def fetch_species(
+    limit: int | None, scientific_name: str | None
+) -> list[SpeciesRow]:
     settings = get_settings()
     conn = await asyncpg.connect(dsn=settings.pg_dsn_sync)
 
@@ -237,12 +239,14 @@ def get_page_image(session: requests.Session, title: str) -> MatchResult:
     return MatchResult(None, None, "not_found")
 
 
-def search_candidate_titles(session: requests.Session, scientific_name: str) -> list[str]:
+def search_candidate_titles(
+    session: requests.Session, scientific_name: str
+) -> list[str]:
     params = {
         "action": "query",
         "format": "json",
         "list": "search",
-        "srsearch": f"\"{scientific_name}\" species",
+        "srsearch": f'"{scientific_name}" species',
         "srlimit": 5,
         "srwhat": "text",
     }
@@ -265,7 +269,7 @@ def search_candidate_titles(session: requests.Session, scientific_name: str) -> 
 def normalize_image_url(url: str) -> str:
     # Keep Wikimedia URLs in HTTPS to avoid mixed content/redirect overhead.
     if url.startswith("http://upload.wikimedia.org"):
-        return "https://" + url[len("http://"):]
+        return "https://" + url[len("http://") :]
     return url
 
 
@@ -319,7 +323,9 @@ def get_commons_file_image(session: requests.Session, file_title: str) -> MatchR
     return MatchResult(None, None, "not_found")
 
 
-def search_commons_file_titles(session: requests.Session, scientific_name: str) -> list[str]:
+def search_commons_file_titles(
+    session: requests.Session, scientific_name: str
+) -> list[str]:
     queries = [
         f'"{scientific_name}" filetype:bitmap',
         scientific_name,
@@ -355,7 +361,9 @@ def search_commons_file_titles(session: requests.Session, scientific_name: str) 
     return titles
 
 
-def search_commons_media_html(session: requests.Session, scientific_name: str) -> MatchResult:
+def search_commons_media_html(
+    session: requests.Session, scientific_name: str
+) -> MatchResult:
     params = {
         "search": scientific_name,
         "title": "Special:MediaSearch",
@@ -469,10 +477,12 @@ def build_sql(rows: list[dict[str, str]]) -> str:
             f"WHERE id = {sql_quote(row['id'])};"
         )
 
-    lines.extend([
-        "",
-        "COMMIT;",
-    ])
+    lines.extend(
+        [
+            "",
+            "COMMIT;",
+        ]
+    )
 
     return "\n".join(lines) + "\n"
 

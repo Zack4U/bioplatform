@@ -31,7 +31,7 @@ interface RetryableConfig extends InternalAxiosRequestConfig {
  */
 const apiClient: AxiosInstance = axios.create({
     baseURL: API_BASE_URL,
-    timeout: 30_000,
+    timeout: 90_000, // AI queries can take up to 60s with multiple SQL calls
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
