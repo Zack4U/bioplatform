@@ -20,8 +20,7 @@ class TestTrainingEndpoint:
             patch("torch.cuda.is_available", return_value=False),
         ):
             resp = await app_client.post(
-                "/api/v1/training/finetune",
-                json={"job_id": "job-123"}
+                "/api/v1/training/finetune", json={"job_id": "job-123"}
             )
             assert resp.status_code == 422
             assert "No CUDA GPU" in resp.json()["detail"]
@@ -35,8 +34,7 @@ class TestTrainingEndpoint:
             patch("torch.cuda.mem_get_info", return_value=(2 * 1024**3, 16 * 1024**3)),
         ):
             resp = await app_client.post(
-                "/api/v1/training/finetune",
-                json={"job_id": "job-123"}
+                "/api/v1/training/finetune", json={"job_id": "job-123"}
             )
             assert resp.status_code == 422
             assert "Insufficient VRAM" in resp.json()["detail"]
@@ -47,8 +45,7 @@ class TestTrainingEndpoint:
         # We patch sys.modules to mock ImportError when importing torch
         with patch.dict(sys.modules, {"torch": None}):
             resp = await app_client.post(
-                "/api/v1/training/finetune",
-                json={"job_id": "job-123"}
+                "/api/v1/training/finetune", json={"job_id": "job-123"}
             )
             assert resp.status_code == 422
             assert "PyTorch not installed" in resp.json()["detail"]
@@ -68,8 +65,8 @@ class TestTrainingEndpoint:
                     "job_id": "job-123",
                     "epochs": 10,
                     "learning_rate": 0.001,
-                    "replay_buffer_ratio": 0.2
-                }
+                    "replay_buffer_ratio": 0.2,
+                },
             )
             assert resp.status_code == 202
             data = resp.json()

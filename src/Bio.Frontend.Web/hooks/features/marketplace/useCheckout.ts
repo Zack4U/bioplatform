@@ -37,7 +37,7 @@ import type {
 } from "@/types/marketplace";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 
 const STEPS: CheckoutStep[] = ["resumen", "direccion", "pagar"];
 
@@ -46,6 +46,15 @@ export function useCheckout() {
   const pathname = usePathname();
   const urlSearchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+
+  /* ── Hydration guard ────────────────────────────────────────────── */
+  // Zustand `persist` reads from localStorage only on the client.
+  // We delay returning store-derived values until after mount to prevent
+  // a server/client HTML mismatch (React hydration error).
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   /* ── Current step from URL ──────────────────────────────────────── */
 
@@ -98,7 +107,6 @@ export function useCheckout() {
     orderNotes,
     setOrderNotes,
     totalItems,
-    resetCheckout,
     clearCart,
   } = useCartStore();
 
@@ -162,6 +170,18 @@ export function useCheckout() {
   /* ── Order summary computation ──────────────────────────────────── */
 
   const orderSummary: OrderSummaryData = useMemo(() => {
+    if (!hasMounted) {
+      return {
+        subtotal: 0,
+        taxAmount: 0,
+        shippingAmount: 0,
+        discountAmount: 0,
+        total: 0,
+        itemCount: 0,
+        coupon: null,
+      };
+    }
+
     const subtotal = selectedSubtotal();
     const shippingAmount =
       subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST_COP;
@@ -192,14 +212,15 @@ export function useCheckout() {
       itemCount: totalItems(),
       coupon: appliedCoupon,
     };
-  }, [selectedSubtotal, appliedCoupon, totalItems]);
+  }, [hasMounted, selectedSubtotal, appliedCoupon, totalItems]);
 
   /* ── Step validation ────────────────────────────────────────────── */
 
   const canProceedFromResumen = useMemo(() => {
+    if (!hasMounted) return false;
     const selected = selectedItems();
     return selected.length > 0;
-  }, [selectedItems]);
+  }, [hasMounted, selectedItems]);
 
   const canProceedFromDireccion = useMemo(() => {
     return !!shippingAddress;
@@ -215,9 +236,8 @@ export function useCheckout() {
   const [submitOrderError, setSubmitOrderError] = useState<string | null>(null);
 
   /**
-   * Creates an order and then opens the payment gateway checkout page.
-   * On success: clears checkout state and redirects to the payment URL.
-   * On error: surfaces a human-readable message without crashing.
+   * Creates an order and then retrieves the Stripe Embedded Checkout client secret.
+   * On success: sets clientSecret so the UI can render the payment component.
    */
   const submitOrder = useCallback(async () => {
     if (!shippingAddressId || !canSubmitOrder) return;
@@ -232,7 +252,8 @@ export function useCheckout() {
       }));
 
       const orderPayload: CreateOrderRequest = {
-        cartItems,
+        items: cartItems,
+        paymentMethod: "STRIPE",
         shippingAddressId,
         billingAddressId: useSameAddress
           ? undefined
@@ -243,14 +264,19 @@ export function useCheckout() {
       };
 
       const order = await createOrder(orderPayload);
-      const session = await createCheckoutSession(order.id);
 
-      // Clear cart and checkout state before redirecting
-      resetCheckout();
-      clearCart();
+      // Build the return URL so Stripe redirects to our success page
+      // after payment. The backend appends &payment=success&session_id=...
+      const origin = window.location.origin;
+      const returnUrl = `${origin}/cart/success?orderId=${order.id}`;
 
-      // Redirect to the PSE / Stripe hosted payment page
-      window.location.href = session.checkoutUrl;
+      const session = await createCheckoutSession(order.id, returnUrl);
+
+      // Redirect to Stripe hosted checkout page
+      if (session.checkoutUrl) {
+        clearCart();
+        window.location.href = session.checkoutUrl;
+      }
     } catch (err: unknown) {
       const message =
         (
@@ -273,7 +299,6 @@ export function useCheckout() {
     appliedCoupon,
     selectedItems,
     canSubmitOrder,
-    resetCheckout,
     clearCart,
   ]);
 
@@ -291,7 +316,7 @@ export function useCheckout() {
 
     // Cart data
     items,
-    selectedItems: selectedItems(),
+    selectedItems: hasMounted ? selectedItems() : [],
 
     // Addresses
     addresses,

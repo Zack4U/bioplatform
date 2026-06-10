@@ -63,6 +63,7 @@ IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 #  Augmentation Engine
 # ═══════════════════════════════════════════════════════════════════
 
+
 def augment_image(img: Image.Image, variant: int) -> Image.Image:
     """
     Apply a deterministic augmentation based on variant index.
@@ -82,8 +83,9 @@ def augment_image(img: Image.Image, variant: int) -> Image.Image:
     elif ops in (1, 5):
         # Rotation + contrast
         angle = random.uniform(-20, 20)
-        img = img.rotate(angle, resample=Image.Resampling.BICUBIC,
-                         expand=False, fillcolor=(0, 0, 0))
+        img = img.rotate(
+            angle, resample=Image.Resampling.BICUBIC, expand=False, fillcolor=(0, 0, 0)
+        )
         factor = random.uniform(0.7, 1.4)
         img = ImageEnhance.Contrast(img).enhance(factor)
 
@@ -118,6 +120,7 @@ def augment_image(img: Image.Image, variant: int) -> Image.Image:
 #  Scanner & Augmentor
 # ═══════════════════════════════════════════════════════════════════
 
+
 def find_all_species_dirs() -> list[dict]:
     """
     Walk raw_images/ (Kingdom/Phylum/Class/Family/Species/)
@@ -144,29 +147,35 @@ def find_all_species_dirs() -> list[dict]:
                         if not species_dir.is_dir():
                             continue
 
-                        originals = sorted([
-                            f for f in species_dir.iterdir()
-                            if f.is_file()
-                            and f.suffix.lower() in IMAGE_EXTENSIONS
-                            and "_aug_" not in f.stem
-                        ])
+                        originals = sorted(
+                            [
+                                f
+                                for f in species_dir.iterdir()
+                                if f.is_file()
+                                and f.suffix.lower() in IMAGE_EXTENSIONS
+                                and "_aug_" not in f.stem
+                            ]
+                        )
                         augmented = [
-                            f for f in species_dir.iterdir()
+                            f
+                            for f in species_dir.iterdir()
                             if f.is_file()
                             and f.suffix.lower() in IMAGE_EXTENSIONS
                             and "_aug_" in f.stem
                         ]
 
-                        entries.append({
-                            "species": species_dir.name.replace("_", " "),
-                            "kingdom": kingdom_dir.name.replace("_", " "),
-                            "family": family_dir.name.replace("_", " "),
-                            "dir": species_dir,
-                            "originals": originals,
-                            "original_count": len(originals),
-                            "augmented_count": len(augmented),
-                            "total_count": len(originals) + len(augmented),
-                        })
+                        entries.append(
+                            {
+                                "species": species_dir.name.replace("_", " "),
+                                "kingdom": kingdom_dir.name.replace("_", " "),
+                                "family": family_dir.name.replace("_", " "),
+                                "dir": species_dir,
+                                "originals": originals,
+                                "original_count": len(originals),
+                                "augmented_count": len(augmented),
+                                "total_count": len(originals) + len(augmented),
+                            }
+                        )
 
     return entries
 
@@ -232,32 +241,43 @@ def augment_species_dir(
 #  Main
 # ═══════════════════════════════════════════════════════════════════
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Offline augmentation: fill species up to a target image count"
     )
     parser.add_argument(
-        "--target", type=int, default=50,
+        "--target",
+        type=int,
+        default=50,
         help="Target total images per species (default: 50)",
     )
     parser.add_argument(
-        "--min-existing", type=int, default=3,
+        "--min-existing",
+        type=int,
+        default=3,
         help="Minimum original (non-augmented) images required (default: 3)",
     )
     parser.add_argument(
-        "--max-per-original", type=int, default=3,
+        "--max-per-original",
+        type=int,
+        default=3,
         help="Max augmented copies per original image (default: 3)",
     )
     parser.add_argument(
-        "--max-species", type=int, default=0,
+        "--max-species",
+        type=int,
+        default=0,
         help="Limit number of species to process (0 = all eligible)",
     )
     parser.add_argument(
-        "--clean", action="store_true",
+        "--clean",
+        action="store_true",
         help="Remove existing augmented images before generating new ones",
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
+        "--dry-run",
+        action="store_true",
         help="Show what would be done without creating files",
     )
     args = parser.parse_args()
@@ -290,20 +310,24 @@ def main() -> None:
         if entry["original_count"] < args.min_existing:
             continue
         # When --clean, we'll recalculate using only original count
-        effective_total = entry["original_count"] if args.clean else entry["total_count"]
+        effective_total = (
+            entry["original_count"] if args.clean else entry["total_count"]
+        )
         if effective_total >= args.target:
             continue
-        candidates.append({
-            **entry,
-            "effective_total": effective_total,
-            "needed": args.target - effective_total,
-        })
+        candidates.append(
+            {
+                **entry,
+                "effective_total": effective_total,
+                "needed": args.target - effective_total,
+            }
+        )
 
     # Sort by fewest images first (most needy get priority)
     candidates.sort(key=lambda c: c["effective_total"])
 
     if args.max_species > 0:
-        candidates = candidates[:args.max_species]
+        candidates = candidates[: args.max_species]
 
     # ── Summary before processing ─────────────────────────────────
     total_species = len(all_entries)
@@ -399,7 +423,10 @@ def main() -> None:
         # Kingdom tracking
         if kingdom not in kingdom_stats:
             kingdom_stats[kingdom] = {
-                "processed": 0, "rescued": 0, "augmented": 0, "cleaned": 0,
+                "processed": 0,
+                "rescued": 0,
+                "augmented": 0,
+                "cleaned": 0,
             }
         kingdom_stats[kingdom]["processed"] += 1
         kingdom_stats[kingdom]["augmented"] += created
@@ -407,17 +434,19 @@ def main() -> None:
         if final >= args.target:
             kingdom_stats[kingdom]["rescued"] += 1
 
-        report["results"].append({
-            "species": sp_name,
-            "kingdom": kingdom,
-            "family": cand["family"],
-            "original_count": cand["original_count"],
-            "before": current,
-            "cleaned": cleaned,
-            "augmented": created,
-            "final": final,
-            "reached_target": final >= args.target,
-        })
+        report["results"].append(
+            {
+                "species": sp_name,
+                "kingdom": kingdom,
+                "family": cand["family"],
+                "original_count": cand["original_count"],
+                "before": current,
+                "cleaned": cleaned,
+                "augmented": created,
+                "final": final,
+                "reached_target": final >= args.target,
+            }
+        )
 
     # ── Final distribution ────────────────────────────────────────
     final_dist = {"<target": 0, "target-ok": 0}
@@ -437,7 +466,9 @@ def main() -> None:
         "rescued_species": rescued,
         "not_rescued": len(candidates) - rescued,
         "total_candidates": len(candidates),
-        "rescue_rate_pct": round(rescued / len(candidates) * 100, 1) if candidates else 0,
+        "rescue_rate_pct": round(rescued / len(candidates) * 100, 1)
+        if candidates
+        else 0,
         "final_distribution": final_dist,
     }
     report["kingdom_breakdown"] = kingdom_stats
@@ -454,17 +485,25 @@ def main() -> None:
     if args.clean:
         print(f"  Previous aug cleaned:     {total_cleaned:,}")
     print(f"  Augmented images created: {total_created:,}")
-    print(f"  Species rescued (≥{args.target}):  {rescued} / {len(candidates)} ({report['summary']['rescue_rate_pct']}%)")
+    print(
+        f"  Species rescued (≥{args.target}):  {rescued} / {len(candidates)} ({report['summary']['rescue_rate_pct']}%)"
+    )
     print(f"  Not rescued:              {len(candidates) - rescued}")
     print(f"  Duration:                 {report['duration_seconds']}s")
     print("\n  Per-kingdom breakdown:")
     for k, v in sorted(kingdom_stats.items()):
-        print(f"    {k:15s} │ processed: {v['processed']:4d} │ rescued: {v['rescued']:4d} │ augmented: {v['augmented']:6d}")
+        print(
+            f"    {k:15s} │ processed: {v['processed']:4d} │ rescued: {v['rescued']:4d} │ augmented: {v['augmented']:6d}"
+        )
     print(f"\n  Report saved: {REPORT_FILE}")
     print("\n  Next steps:")
     print("  1. Verify:      python scripts/02c_raw_images_summary.py")
-    print("  2. Re-organize: python scripts/03_organize_dataset.py --min-images 10 --clean")
-    print("  3. Re-train:    python scripts/04_train_cnn.py --model efficientnet_b2 ...")
+    print(
+        "  2. Re-organize: python scripts/03_organize_dataset.py --min-images 10 --clean"
+    )
+    print(
+        "  3. Re-train:    python scripts/04_train_cnn.py --model efficientnet_b2 ..."
+    )
     print()
 
 

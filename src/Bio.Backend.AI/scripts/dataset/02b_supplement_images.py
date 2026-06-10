@@ -98,13 +98,17 @@ def count_images(directory: Path) -> int:
     """Count valid image files in a directory."""
     if not directory.exists():
         return 0
-    return sum(1 for f in directory.iterdir()
-               if f.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"})
+    return sum(
+        1
+        for f in directory.iterdir()
+        if f.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}
+    )
 
 
 # ═══════════════════════════════════════════════════════════════════
 #  iNaturalist API v1 – Photo Fetcher
 # ═══════════════════════════════════════════════════════════════════
+
 
 def fetch_inat_photos(
     taxon_name: str,
@@ -141,8 +145,10 @@ def fetch_inat_photos(
                 "Accept": "application/json",
             }
             resp = requests.get(
-                INAT_SEARCH_URL, params=params,
-                headers=headers, timeout=REQUEST_TIMEOUT,
+                INAT_SEARCH_URL,
+                params=params,
+                headers=headers,
+                timeout=REQUEST_TIMEOUT,
             )
 
             if verbose:
@@ -173,7 +179,9 @@ def fetch_inat_photos(
         results = data.get("results", [])
 
         if verbose and page == 1:
-            print(f"    [API] total_results={total_results}, page_results={len(results)}")
+            print(
+                f"    [API] total_results={total_results}, page_results={len(results)}"
+            )
 
         if not results:
             break
@@ -248,36 +256,49 @@ def download_photo(url: str, output_path: Path, image_size: int = 512) -> bool:
 #  Main Pipeline
 # ═══════════════════════════════════════════════════════════════════
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Download supplemental images from iNaturalist API"
     )
     parser.add_argument(
-        "--max-images", type=int, default=50,
+        "--max-images",
+        type=int,
+        default=50,
         help="Max total images per species (existing + downloaded) (default: 50)",
     )
     parser.add_argument(
-        "--min-existing", type=int, default=3,
+        "--min-existing",
+        type=int,
+        default=3,
         help="Minimum existing images to attempt supplementing (default: 3)",
     )
     parser.add_argument(
-        "--image-size", type=int, default=512,
+        "--image-size",
+        type=int,
+        default=512,
         help="Image size for downloaded photos (default: 512)",
     )
     parser.add_argument(
-        "--max-species", type=int, default=0,
+        "--max-species",
+        type=int,
+        default=0,
         help="Limit number of species to process (0 = all eligible)",
     )
     parser.add_argument(
-        "--workers", type=int, default=6,
+        "--workers",
+        type=int,
+        default=6,
         help="Parallel download threads (default: 6)",
     )
     parser.add_argument(
-        "--verbose", action="store_true",
+        "--verbose",
+        action="store_true",
         help="Show detailed API request/response info per species",
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
+        "--dry-run",
+        action="store_true",
         help="Show what would be done without downloading",
     )
     args = parser.parse_args()
@@ -313,24 +334,28 @@ def main() -> None:
             continue
         current = count_images(sp_dir)
         if current < args.max_images and current >= args.min_existing:
-            candidates.append({
-                "species": sp,
-                "sp_dir": sp_dir,
-                "current_count": current,
-                "needed": args.max_images - current,
-            })
+            candidates.append(
+                {
+                    "species": sp,
+                    "sp_dir": sp_dir,
+                    "current_count": current,
+                    "needed": args.max_images - current,
+                }
+            )
 
     # Sort by fewest images first (most needy species get priority)
     candidates.sort(key=lambda c: c["current_count"])
 
     if args.max_species > 0:
-        candidates = candidates[:args.max_species]
+        candidates = candidates[: args.max_species]
 
     # ── Summary ───────────────────────────────────────────────────
     print(f"[INFO] Total species in JSON:          {len(all_species)}")
     print(f"[INFO] Skipped (no raw_images dir):    {skipped_no_dir}")
     print(f"[INFO] With raw_images dir:            {len(all_species) - skipped_no_dir}")
-    print(f"[INFO] Eligible candidates (< {args.max_images} imgs, ≥ {args.min_existing} existing): {len(candidates)}")
+    print(
+        f"[INFO] Eligible candidates (< {args.max_images} imgs, ≥ {args.min_existing} existing): {len(candidates)}"
+    )
 
     if not candidates:
         print("[INFO] No species to supplement. Done.")
@@ -356,7 +381,9 @@ def main() -> None:
         print(f"\n[DRY RUN] Would process {len(candidates)} species:")
         for c in candidates[:30]:
             sp = c["species"]
-            print(f"  {sp['species']:40s} │ have: {c['current_count']:3d} │ need: {c['needed']:3d}")
+            print(
+                f"  {sp['species']:40s} │ have: {c['current_count']:3d} │ need: {c['needed']:3d}"
+            )
         if len(candidates) > 30:
             print(f"  ... and {len(candidates) - 30} more")
         return
@@ -411,15 +438,19 @@ def main() -> None:
             if args.verbose:
                 print(f"    [SKIP] No photos found for: {sp_name}")
 
-        download_plan.append({
-            "species": sp,
-            "sp_dir": sp_dir,
-            "initial": cand["current_count"],
-            "photos": photos,
-        })
+        download_plan.append(
+            {
+                "species": sp,
+                "sp_dir": sp_dir,
+                "initial": cand["current_count"],
+                "photos": photos,
+            }
+        )
         total_urls += len(photos)
 
-    print(f"[Phase 1] Done. Found {total_urls:,} photo URLs across {len(download_plan)} species.")
+    print(
+        f"[Phase 1] Done. Found {total_urls:,} photo URLs across {len(download_plan)} species."
+    )
     print(f"[Phase 1] Species with no API results: {total_no_results}")
 
     if total_urls == 0:
@@ -427,18 +458,24 @@ def main() -> None:
         # Still save report with results
         for plan in download_plan:
             sp = plan["species"]
-            report["results"].append({
-                "species": sp["species"],
-                "scientific_name": sp.get("scientific_name", sp["species"]),
-                "kingdom": sp.get("kingdom", "Unknown"),
-                "family": sp.get("family", "Unknown"),
-                "initial": plan["initial"],
-                "photos_found": 0, "downloaded": 0, "failed": 0,
-                "final": plan["initial"],
-            })
+            report["results"].append(
+                {
+                    "species": sp["species"],
+                    "scientific_name": sp.get("scientific_name", sp["species"]),
+                    "kingdom": sp.get("kingdom", "Unknown"),
+                    "family": sp.get("family", "Unknown"),
+                    "initial": plan["initial"],
+                    "photos_found": 0,
+                    "downloaded": 0,
+                    "failed": 0,
+                    "final": plan["initial"],
+                }
+            )
     else:
         # ── Phase 2: Download photos in parallel ──────────────────
-        print(f"[Phase 2] Downloading {total_urls:,} photos ({args.workers} workers)...")
+        print(
+            f"[Phase 2] Downloading {total_urls:,} photos ({args.workers} workers)..."
+        )
 
         # Build flat task list: (species_dict, sp_dir, photo, initial_count)
         tasks: list[tuple[dict, Path, dict]] = []
@@ -464,7 +501,10 @@ def main() -> None:
                 fname = f"api_{photo['photo_id']}.jpg"
                 out_path = sp_dir / fname
                 future = executor.submit(
-                    download_photo, photo["url"], out_path, args.image_size,
+                    download_photo,
+                    photo["url"],
+                    out_path,
+                    args.image_size,
                 )
                 futures[future] = sp_dict["species"]
 
@@ -490,24 +530,28 @@ def main() -> None:
 
             if kingdom not in kingdom_stats:
                 kingdom_stats[kingdom] = {
-                    "processed": 0, "downloaded": 0, "no_results": 0,
+                    "processed": 0,
+                    "downloaded": 0,
+                    "no_results": 0,
                 }
             kingdom_stats[kingdom]["processed"] += 1
             kingdom_stats[kingdom]["downloaded"] += res["downloaded"]
             if res["photos_found"] == 0:
                 kingdom_stats[kingdom]["no_results"] += 1
 
-            report["results"].append({
-                "species": sp_name,
-                "scientific_name": sp.get("scientific_name", sp_name),
-                "kingdom": kingdom,
-                "family": sp.get("family", "Unknown"),
-                "initial": res["initial"],
-                "photos_found": res["photos_found"],
-                "downloaded": res["downloaded"],
-                "failed": res["failed"],
-                "final": final_count,
-            })
+            report["results"].append(
+                {
+                    "species": sp_name,
+                    "scientific_name": sp.get("scientific_name", sp_name),
+                    "kingdom": kingdom,
+                    "family": sp.get("family", "Unknown"),
+                    "initial": res["initial"],
+                    "photos_found": res["photos_found"],
+                    "downloaded": res["downloaded"],
+                    "failed": res["failed"],
+                    "final": final_count,
+                }
+            )
 
     # ── Build final distribution ──────────────────────────────────
     final_dist = {"<20": 0, "20-29": 0, "30-49": 0, "50+": 0}
@@ -534,7 +578,9 @@ def main() -> None:
         "total_candidates": len(candidates),
         "success_rate_pct": round(
             (len(candidates) - total_no_results) / len(candidates) * 100, 1
-        ) if candidates else 0,
+        )
+        if candidates
+        else 0,
         "final_distribution": final_dist,
     }
     report["kingdom_breakdown"] = kingdom_stats
@@ -562,8 +608,12 @@ def main() -> None:
     print(f"\n  Report saved: {REPORT_FILE}")
     print("\n  Next steps:")
     print("  1. Augment offline: python scripts/02d_offline_augment.py --target 50")
-    print(f"  2. Re-organize:    python scripts/03_organize_dataset.py --min-images {args.min_existing} --clean")
-    print("  3. Re-train:       python scripts/04_train_cnn.py --model efficientnet_b2 ...")
+    print(
+        f"  2. Re-organize:    python scripts/03_organize_dataset.py --min-images {args.min_existing} --clean"
+    )
+    print(
+        "  3. Re-train:       python scripts/04_train_cnn.py --model efficientnet_b2 ..."
+    )
 
 
 if __name__ == "__main__":

@@ -30,7 +30,7 @@ from typing import Any
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 DEFAULT_V1 = PROJECT_ROOT / "data" / "comparation" / "v2"
 DEFAULT_V2 = PROJECT_ROOT / "data" / "comparation" / "v3"
 DEFAULT_OUTPUT = PROJECT_ROOT / "data" / "comparation" / "report"
@@ -94,6 +94,7 @@ def _winner_label(delta: float) -> str:
 
 # ── Core comparison logic ─────────────────────────────────────────
 
+
 def compare_global_metrics(m1: dict, m2: dict) -> dict[str, Any]:
     """Compare top-level accuracy/avg metrics."""
     results: dict[str, Any] = {}
@@ -103,7 +104,8 @@ def compare_global_metrics(m1: dict, m2: dict) -> dict[str, Any]:
         v2_val = m2.get(key, 0.0)
         delta = v2_val - v1_val
         results[key] = {
-            "v1": v1_val, "v2": v2_val,
+            "v1": v1_val,
+            "v2": v2_val,
             "delta": round(delta, 6),
             "winner": _winner_label(delta),
         }
@@ -117,7 +119,8 @@ def compare_global_metrics(m1: dict, m2: dict) -> dict[str, Any]:
             v2_val = avg2.get(metric, 0.0)
             delta = v2_val - v1_val
             sub[metric] = {
-                "v1": v1_val, "v2": v2_val,
+                "v1": v1_val,
+                "v2": v2_val,
                 "delta": round(delta, 6),
                 "winner": _winner_label(delta),
             }
@@ -190,6 +193,7 @@ def compare_misclassified(mis1: list[dict], mis2: list[dict]) -> dict[str, Any]:
 
 # ── F1 tier analysis ─────────────────────────────────────────────
 
+
 def _f1_tier(f1: float) -> str:
     if f1 >= 0.9:
         return ">=0.90"
@@ -217,17 +221,22 @@ def compute_tier_migration(per_species: list[dict]) -> dict[str, Any]:
         tiers_v2[tier2] += 1
 
         if tier1 != tier2:
-            migrations.append({
-                "species": row["species"],
-                "f1_v1": f1_v1, "f1_v2": f1_v2,
-                "tier_v1": tier1, "tier_v2": tier2,
-                "direction": "improved" if f1_v2 > f1_v1 else "degraded",
-            })
+            migrations.append(
+                {
+                    "species": row["species"],
+                    "f1_v1": f1_v1,
+                    "f1_v2": f1_v2,
+                    "tier_v1": tier1,
+                    "tier_v2": tier2,
+                    "direction": "improved" if f1_v2 > f1_v1 else "degraded",
+                }
+            )
 
     return {"tiers_v1": tiers_v1, "tiers_v2": tiers_v2, "migrations": migrations}
 
 
 # ── Report writers ────────────────────────────────────────────────
+
 
 def write_text_report(
     output_path: Path,
@@ -275,8 +284,10 @@ def write_text_report(
     delta_mc = mc["delta"]
     mc_sign = "+" if delta_mc > 0 else ""
     mc_winner = "v2 ✓" if delta_mc < 0 else ("v1 ✓" if delta_mc > 0 else "=")
-    lines.append(f"  Total v1: {mc['total_v1']}   |   Total v2: {mc['total_v2']}   |   "
-                 f"Delta: {mc_sign}{delta_mc}   |   Mejor: {mc_winner}")
+    lines.append(
+        f"  Total v1: {mc['total_v1']}   |   Total v2: {mc['total_v2']}   |   "
+        f"Delta: {mc_sign}{delta_mc}   |   Mejor: {mc_winner}"
+    )
 
     # Top species with most error change
     all_err_species = sorted(
@@ -329,7 +340,9 @@ def write_text_report(
 
         if improved_mig:
             lines.append(f"  Especies que SUBIERON de tier ({len(improved_mig)}):")
-            lines.append(f"    {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'Tier v1':<12} → {'Tier v2':<12}")
+            lines.append(
+                f"    {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'Tier v1':<12} → {'Tier v2':<12}"
+            )
             for m in sorted(improved_mig, key=lambda x: x["species"]):
                 lines.append(
                     f"    {m['species']:<45} {_fmt(m['f1_v1']):<8} {_fmt(m['f1_v2']):<8} "
@@ -339,7 +352,9 @@ def write_text_report(
 
         if degraded_mig:
             lines.append(f"  Especies que BAJARON de tier ({len(degraded_mig)}):")
-            lines.append(f"    {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'Tier v1':<12} → {'Tier v2':<12}")
+            lines.append(
+                f"    {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'Tier v1':<12} → {'Tier v2':<12}"
+            )
             for m in sorted(degraded_mig, key=lambda x: x["species"]):
                 lines.append(
                     f"    {m['species']:<45} {_fmt(m['f1_v1']):<8} {_fmt(m['f1_v2']):<8} "
@@ -370,8 +385,12 @@ def write_text_report(
     # ── 5. Top improvements and degradations ──
     lines.append("5. TOP 20 MEJORAS EN F1-SCORE (v1 → v2)")
     lines.append("─" * W)
-    top_improved = sorted(improved, key=lambda r: r["f1_score_delta"], reverse=True)[:20]
-    lines.append(f"  {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'ΔF1':>10} {'ΔPrec':>10} {'ΔRecall':>10}")
+    top_improved = sorted(improved, key=lambda r: r["f1_score_delta"], reverse=True)[
+        :20
+    ]
+    lines.append(
+        f"  {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'ΔF1':>10} {'ΔPrec':>10} {'ΔRecall':>10}"
+    )
     lines.append(f"  {'─' * 45} {'─' * 8} {'─' * 8} {'─' * 10} {'─' * 10} {'─' * 10}")
     for r in top_improved:
         lines.append(
@@ -385,7 +404,9 @@ def write_text_report(
     lines.append("6. TOP 20 DEGRADACIONES EN F1-SCORE (v1 → v2)")
     lines.append("─" * W)
     top_degraded = sorted(degraded, key=lambda r: r["f1_score_delta"])[:20]
-    lines.append(f"  {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'ΔF1':>10} {'ΔPrec':>10} {'ΔRecall':>10}")
+    lines.append(
+        f"  {'Especie':<45} {'F1 v1':>8} {'F1 v2':>8} {'ΔF1':>10} {'ΔPrec':>10} {'ΔRecall':>10}"
+    )
     lines.append(f"  {'─' * 45} {'─' * 8} {'─' * 8} {'─' * 10} {'─' * 10} {'─' * 10}")
     for r in top_degraded:
         lines.append(
@@ -430,13 +451,21 @@ def write_text_report(
         if m["winner"] == "v2 ✓"
     )
     total_metrics = 2 + sum(len(g[ak]) for ak in ("macro_avg", "weighted_avg"))
-    lines.append(f"  VEREDICTO: v2 es mejor en {v2_wins}/{total_metrics} métricas globales.")
+    lines.append(
+        f"  VEREDICTO: v2 es mejor en {v2_wins}/{total_metrics} métricas globales."
+    )
     if len(improved) > len(degraded):
-        lines.append(f"  A nivel de especie: {len(improved)} mejoraron vs {len(degraded)} empeoraron → v2 gana.")
+        lines.append(
+            f"  A nivel de especie: {len(improved)} mejoraron vs {len(degraded)} empeoraron → v2 gana."
+        )
     elif len(degraded) > len(improved):
-        lines.append(f"  A nivel de especie: {len(degraded)} empeoraron vs {len(improved)} mejoraron → v1 gana.")
+        lines.append(
+            f"  A nivel de especie: {len(degraded)} empeoraron vs {len(improved)} mejoraron → v1 gana."
+        )
     else:
-        lines.append(f"  A nivel de especie: empate ({len(improved)} mejoraron, {len(degraded)} empeoraron).")
+        lines.append(
+            f"  A nivel de especie: empate ({len(improved)} mejoraron, {len(degraded)} empeoraron)."
+        )
     lines.append(SEP)
     lines.append("")
 
@@ -448,11 +477,19 @@ def write_text_report(
 def write_per_species_csv(output_path: Path, per_species: list[dict]) -> None:
     """Write detailed per-species comparison CSV."""
     fieldnames = [
-        "species", "status",
-        "precision_v1", "precision_v2", "precision_delta",
-        "recall_v1", "recall_v2", "recall_delta",
-        "f1_score_v1", "f1_score_v2", "f1_score_delta",
-        "support_v1", "support_v2",
+        "species",
+        "status",
+        "precision_v1",
+        "precision_v2",
+        "precision_delta",
+        "recall_v1",
+        "recall_v2",
+        "recall_delta",
+        "f1_score_v1",
+        "f1_score_v2",
+        "f1_score_delta",
+        "support_v1",
+        "support_v2",
     ]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", encoding="utf-8", newline="") as f:
@@ -474,9 +511,7 @@ def write_summary_json(
     improved = [r for r in both if r["f1_score_delta"] > 0.001]
     degraded = [r for r in both if r["f1_score_delta"] < -0.001]
 
-    avg_f1_delta = (
-        sum(r["f1_score_delta"] for r in both) / len(both) if both else 0.0
-    )
+    avg_f1_delta = sum(r["f1_score_delta"] for r in both) / len(both) if both else 0.0
 
     summary = {
         "global_metrics": global_cmp,
@@ -490,8 +525,12 @@ def write_summary_json(
             "v2": tier_info["tiers_v2"],
         },
         "tier_migrations_count": {
-            "improved": len([m for m in tier_info["migrations"] if m["direction"] == "improved"]),
-            "degraded": len([m for m in tier_info["migrations"] if m["direction"] == "degraded"]),
+            "improved": len(
+                [m for m in tier_info["migrations"] if m["direction"] == "improved"]
+            ),
+            "degraded": len(
+                [m for m in tier_info["migrations"] if m["direction"] == "degraded"]
+            ),
         },
         "per_species_summary": {
             "total_compared": len(both),
@@ -500,7 +539,9 @@ def write_summary_json(
             "unchanged": len(both) - len(improved) - len(degraded),
             "avg_f1_delta": round(avg_f1_delta, 6),
             "new_in_v2": len([r for r in per_species if r["status"] == "new_in_v2"]),
-            "removed_in_v2": len([r for r in per_species if r["status"] == "removed_in_v2"]),
+            "removed_in_v2": len(
+                [r for r in per_species if r["status"] == "removed_in_v2"]
+            ),
         },
     }
 
@@ -510,6 +551,7 @@ def write_summary_json(
 
 
 # ── Main ──────────────────────────────────────────────────────────
+
 
 def validate_version_dir(path: Path, label: str) -> bool:
     """Check that required files exist in a version directory."""
@@ -527,12 +569,24 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Compara resultados de evaluación entre dos versiones del CNN."
     )
-    parser.add_argument("--v1", type=Path, default=DEFAULT_V1,
-                        help="Carpeta con evaluación del modelo v1 (anterior)")
-    parser.add_argument("--v2", type=Path, default=DEFAULT_V2,
-                        help="Carpeta con evaluación del modelo v2 (nuevo)")
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT,
-                        help="Carpeta de salida para el reporte")
+    parser.add_argument(
+        "--v1",
+        type=Path,
+        default=DEFAULT_V1,
+        help="Carpeta con evaluación del modelo v1 (anterior)",
+    )
+    parser.add_argument(
+        "--v2",
+        type=Path,
+        default=DEFAULT_V2,
+        help="Carpeta con evaluación del modelo v2 (nuevo)",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=DEFAULT_OUTPUT,
+        help="Carpeta de salida para el reporte",
+    )
     args = parser.parse_args()
 
     v1_dir: Path = args.v1.resolve()
@@ -573,11 +627,23 @@ def main() -> None:
     # Write outputs
     print("[4/5] Generando reporte de texto...")
     output_dir.mkdir(parents=True, exist_ok=True)
-    write_text_report(output_dir / "comparison_report.txt", global_cmp, per_species, misclass_cmp, tier_info)
+    write_text_report(
+        output_dir / "comparison_report.txt",
+        global_cmp,
+        per_species,
+        misclass_cmp,
+        tier_info,
+    )
     write_per_species_csv(output_dir / "comparison_per_species.csv", per_species)
 
     print("[5/5] Generando resumen JSON...")
-    write_summary_json(output_dir / "comparison_summary.json", global_cmp, per_species, misclass_cmp, tier_info)
+    write_summary_json(
+        output_dir / "comparison_summary.json",
+        global_cmp,
+        per_species,
+        misclass_cmp,
+        tier_info,
+    )
 
     # Console summary
     both = [r for r in per_species if r["status"] == "both"]
@@ -591,16 +657,24 @@ def main() -> None:
 
     for key in ("accuracy", "top_5_accuracy"):
         e = global_cmp[key]
-        print(f"  {key:<25} v1={_fmt_pct(e['v1'])}  v2={_fmt_pct(e['v2'])}  Δ={_delta_pct_str(e['delta'])}  {e['winner']}")
+        print(
+            f"  {key:<25} v1={_fmt_pct(e['v1'])}  v2={_fmt_pct(e['v2'])}  Δ={_delta_pct_str(e['delta'])}  {e['winner']}"
+        )
 
     macro_f1 = global_cmp["macro_avg"]["f1_score"]
-    print(f"  {'macro_avg.f1':<25} v1={_fmt_pct(macro_f1['v1'])}  v2={_fmt_pct(macro_f1['v2'])}  "
-          f"Δ={_delta_pct_str(macro_f1['delta'])}  {macro_f1['winner']}")
+    print(
+        f"  {'macro_avg.f1':<25} v1={_fmt_pct(macro_f1['v1'])}  v2={_fmt_pct(macro_f1['v2'])}  "
+        f"Δ={_delta_pct_str(macro_f1['delta'])}  {macro_f1['winner']}"
+    )
 
-    print(f"\n  Especies: {len(improved)} mejoraron | {len(degraded)} empeoraron | "
-          f"{len(both) - len(improved) - len(degraded)} sin cambio")
-    print(f"  Errores:  v1={misclass_cmp['total_v1']}  v2={misclass_cmp['total_v2']}  "
-          f"Δ={'+' if misclass_cmp['delta'] > 0 else ''}{misclass_cmp['delta']}")
+    print(
+        f"\n  Especies: {len(improved)} mejoraron | {len(degraded)} empeoraron | "
+        f"{len(both) - len(improved) - len(degraded)} sin cambio"
+    )
+    print(
+        f"  Errores:  v1={misclass_cmp['total_v1']}  v2={misclass_cmp['total_v2']}  "
+        f"Δ={'+' if misclass_cmp['delta'] > 0 else ''}{misclass_cmp['delta']}"
+    )
 
     # Tier summary
     for tier in (">=0.90", "0.70-0.89", "0.50-0.69", "<0.50"):

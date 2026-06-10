@@ -26,8 +26,16 @@ public class AddressesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AddressCreateDTO dto)
     {
-        var result = await _mediator.Send(new CreateAddressCommand(dto, GetUserId()));
-        return CreatedAtAction(nameof(GetMine), result);
+        try
+        {
+            var result = await _mediator.Send(new CreateAddressCommand(dto, GetUserId()));
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            System.IO.File.WriteAllText(@"c:\Users\juanp\OneDrive\Desktop\Proyecto Integrador\bioplatform\src\Bio.Backend.Core\Bio.API\error_log.txt", ex.ToString());
+            return StatusCode(500, ex.Message);
+        }
     }
 
     [HttpPut("default")]

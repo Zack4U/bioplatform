@@ -22,7 +22,7 @@ from pathlib import Path
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent                          # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent  # Bio.Backend.AI/
 DATASET_DIR = PROJECT_ROOT / "data" / "dataset_metadata"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
 
@@ -53,7 +53,9 @@ def parse_multimedia(filepath: Path) -> dict[str, list[str]]:
             if row.get("type") == "StillImage" and row.get("identifier"):
                 media_map[row["gbifID"]].append(row["identifier"])
     total_images = sum(len(v) for v in media_map.values())
-    print(f"[INFO] Parsed {total_images:,} image URLs for {len(media_map):,} occurrences.")
+    print(
+        f"[INFO] Parsed {total_images:,} image URLs for {len(media_map):,} occurrences."
+    )
     return media_map
 
 
@@ -162,7 +164,9 @@ def generate_report(species_list: list[dict]) -> str:
 
     # Especies con suficientes imágenes para CNN
     MIN_IMAGES_CNN = 50
-    species_with_enough = [sp for sp in species_list if sp["image_count"] >= MIN_IMAGES_CNN]
+    species_with_enough = [
+        sp for sp in species_list if sp["image_count"] >= MIN_IMAGES_CNN
+    ]
     species_10plus = [sp for sp in species_list if sp["image_count"] >= 10]
     species_20plus = [sp for sp in species_list if sp["image_count"] >= 20]
 
@@ -242,6 +246,7 @@ def plot_class_distribution(species_list: list[dict], output_path: Path) -> None
     """Generate a bar chart of image distribution by class (top 15)."""
     try:
         import matplotlib
+
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
     except ImportError:
@@ -260,7 +265,9 @@ def plot_class_distribution(species_list: list[dict], output_path: Path) -> None
     fig, ax = plt.subplots(figsize=(12, 6))
     bars = ax.barh(labels[::-1], values[::-1], color="#2E8B57")
     ax.set_xlabel("Número de Imágenes")
-    ax.set_title("Distribución de Imágenes por Clase Taxonómica (Top 15) - Caldas, Colombia")
+    ax.set_title(
+        "Distribución de Imágenes por Clase Taxonómica (Top 15) - Caldas, Colombia"
+    )
     ax.bar_label(bars, padding=3)
     plt.tight_layout()
     plt.savefig(output_path, dpi=150)
@@ -271,9 +278,18 @@ def plot_class_distribution(species_list: list[dict], output_path: Path) -> None
 def save_species_csv(species_list: list[dict], output_path: Path) -> None:
     """Save species summary as CSV (without image_urls for size)."""
     fieldnames = [
-        "species", "scientific_name", "kingdom", "phylum", "class",
-        "order", "family", "genus", "occurrence_count", "image_count",
-        "municipalities", "iucn_status",
+        "species",
+        "scientific_name",
+        "kingdom",
+        "phylum",
+        "class",
+        "order",
+        "family",
+        "genus",
+        "occurrence_count",
+        "image_count",
+        "municipalities",
+        "iucn_status",
     ]
     with open(output_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)

@@ -72,9 +72,7 @@ async def check_db_connection() -> bool:
     """Quick health-check: can we reach PostgreSQL?"""
     try:
         async with get_db_session() as session:
-            result = await session.execute(
-                __import__("sqlalchemy").text("SELECT 1")
-            )
+            result = await session.execute(__import__("sqlalchemy").text("SELECT 1"))
             return result.scalar() == 1
     except Exception as exc:
         logger.warning(f"Database health-check failed: {exc}")

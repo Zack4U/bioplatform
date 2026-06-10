@@ -299,9 +299,13 @@ export async function getOrderById(orderId: string): Promise<Order> {
  */
 export async function createCheckoutSession(
   orderId: string,
+  returnUrl?: string,
 ): Promise<CheckoutSessionResponse> {
+  const endpoint = returnUrl
+    ? `${CORE_ROUTES.ORDERS.CHECKOUT_SESSION(orderId)}?returnUrl=${encodeURIComponent(returnUrl)}`
+    : CORE_ROUTES.ORDERS.CHECKOUT_SESSION(orderId);
   const session = await apiPost<Record<string, never>, CheckoutSessionResponse>(
-    CORE_ROUTES.ORDERS.CHECKOUT_SESSION(orderId),
+    endpoint,
     {},
   );
   return session;

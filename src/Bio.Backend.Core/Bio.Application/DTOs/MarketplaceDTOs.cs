@@ -34,7 +34,11 @@ public record ProductUpdateDTO
 public record ProductListItemDTO(
     Guid Id, string Slug, string Name, string? ThumbnailUrl,
     decimal BasePrice, decimal SellPrice, int StockQuantity, bool IsActive,
-    string? CategoryName, double AverageRating, int ReviewCount);
+    string? CategoryName, double AverageRating, int ReviewCount,
+    string? EntrepreneurName = null,
+    string? BaseSpeciesName = null,
+    string? Sku = null,
+    IReadOnlyList<string>? Certifications = null);
 
 public record ProductDetailDTO(
     Guid Id, string Slug, string Name, string Description,
@@ -333,4 +337,8 @@ public record CartSyncRequestDTO
     public IReadOnlyList<CartSyncItemDTO> Items { get; init; }
         = Array.Empty<CartSyncItemDTO>();
 }
+
+// === Checkout Session ===
+
+public record CheckoutSessionResponseDTO(string CheckoutUrl);
 

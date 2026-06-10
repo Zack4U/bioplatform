@@ -26,8 +26,16 @@ def test_build_f1_histogram():
     }
     hist = _build_f1_histogram(per_class)
     assert hist["labels"] == [
-        "0-.1", ".1-.2", ".2-.3", ".3-.4", ".4-.5",
-        ".5-.6", ".6-.7", ".7-.8", ".8-.9", ".9-1.0",
+        "0-.1",
+        ".1-.2",
+        ".2-.3",
+        ".3-.4",
+        ".4-.5",
+        ".5-.6",
+        ".6-.7",
+        ".7-.8",
+        ".8-.9",
+        ".9-1.0",
     ]
     # Species A is in bin 0 (0 <= 0.05 < 0.1) -> index 0
     # Species B is in bin 1 (0.1 <= 0.15 < 0.2) -> index 1
@@ -47,10 +55,10 @@ def test_build_support_distribution():
     }
     dist = _build_support_distribution(per_class)
     assert dist == {
-        "≤5": 2,      # A, B
-        "6-10": 2,    # C, D
-        "11-15": 2,   # E, F
-        "16+": 1,     # G
+        "≤5": 2,  # A, B
+        "6-10": 2,  # C, D
+        "11-15": 2,  # E, F
+        "16+": 1,  # G
     }
 
 
@@ -58,14 +66,18 @@ def test_get_metrics_path_legacy_or_not_loaded(mock_classifier):
     # Case 1: classifier loaded, active version is "legacy"
     mock_classifier.is_loaded = True
     mock_classifier.active_version = "legacy"
-    with patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier):
+    with patch(
+        "app.services.vision.classifier.get_classifier", return_value=mock_classifier
+    ):
         path = _get_metrics_path()
         assert "evaluation_metrics.json" in path.name
         assert "evaluation" in path.parent.name
 
     # Case 2: classifier not loaded
     mock_classifier.is_loaded = False
-    with patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier):
+    with patch(
+        "app.services.vision.classifier.get_classifier", return_value=mock_classifier
+    ):
         path = _get_metrics_path()
         assert "evaluation" in path.parent.name
 
@@ -75,7 +87,10 @@ def test_get_metrics_path_custom_version(mock_classifier):
     mock_classifier.is_loaded = True
     mock_classifier.active_version = "v1.0.0"
     with (
-        patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier),
+        patch(
+            "app.services.vision.classifier.get_classifier",
+            return_value=mock_classifier,
+        ),
         patch.object(Path, "exists", return_value=False),
     ):
         path = _get_metrics_path()
@@ -84,7 +99,10 @@ def test_get_metrics_path_custom_version(mock_classifier):
 
     # Case 4: classifier loaded, active version is "v1.0.0", and path exists
     with (
-        patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier),
+        patch(
+            "app.services.vision.classifier.get_classifier",
+            return_value=mock_classifier,
+        ),
         patch.object(Path, "exists", return_value=True),
     ):
         path = _get_metrics_path()
@@ -123,8 +141,18 @@ class TestModelMetricsEndpoint:
             "macro_avg": {"precision": 0.85, "recall": 0.84, "f1_score": 0.84},
             "weighted_avg": {"precision": 0.89, "recall": 0.88, "f1_score": 0.88},
             "per_class": {
-                "Bombus_funebris": {"precision": 0.90, "recall": 0.92, "f1_score": 0.91, "support": 10},
-                "Cattleya_trianae": {"precision": 0.85, "recall": 0.80, "f1_score": 0.82, "support": 5},
+                "Bombus_funebris": {
+                    "precision": 0.90,
+                    "recall": 0.92,
+                    "f1_score": 0.91,
+                    "support": 10,
+                },
+                "Cattleya_trianae": {
+                    "precision": 0.85,
+                    "recall": 0.80,
+                    "f1_score": 0.82,
+                    "support": 5,
+                },
             },
         }
         mock_file = MagicMock()

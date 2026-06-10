@@ -54,6 +54,7 @@ class TestClassifyNotLoaded:
         clf = SpeciesClassifier()
         # Create a minimal valid PNG image (1x1 pixel)
         from io import BytesIO
+
         from PIL import Image as PILImage
 
         buf = BytesIO()
@@ -80,8 +81,12 @@ class TestLoadModelErrors:
             mock_torch.cuda.is_available.return_value = False
             mock_torch.device.return_value = "cpu"
 
-            with patch.dict("sys.modules", {"torch": mock_torch, "torchvision": MagicMock()}):
-                with pytest.raises(FileNotFoundError, match="Training config not found"):
+            with patch.dict(
+                "sys.modules", {"torch": mock_torch, "torchvision": MagicMock()}
+            ):
+                with pytest.raises(
+                    FileNotFoundError, match="Training config not found"
+                ):
                     clf.load_model()
 
 
@@ -110,7 +115,8 @@ class TestClassifierConstants:
     """Test module-level paths and constants."""
 
     def test_weights_dir_exists(self):
-        from app.services.vision.classifier import WEIGHTS_DIR, PROCESSED_DIR
+        from app.services.vision.classifier import PROCESSED_DIR, WEIGHTS_DIR
+
         # These are Path objects resolved from __file__
         assert WEIGHTS_DIR.name == "weights"
         assert PROCESSED_DIR.name == "processed"
@@ -119,6 +125,7 @@ class TestClassifierConstants:
         """Test _DropoutLinear factory (only if torch is available)."""
         try:
             from app.services.vision.classifier import _DropoutLinear
+
             layer = _DropoutLinear.build(128, 10, dropout=0.3)
             assert layer.in_features == 128
             assert layer.out_features == 10
@@ -129,6 +136,7 @@ class TestClassifierConstants:
         """Test error for unsupported model name."""
         try:
             from app.services.vision.classifier import _build_model_arch
+
             with pytest.raises(ValueError, match="Unsupported model"):
                 _build_model_arch("invalid_model", 10)
         except ImportError:

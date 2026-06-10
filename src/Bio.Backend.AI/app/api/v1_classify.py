@@ -15,7 +15,6 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
 
 from app.core.auth import CurrentUser, get_current_user
-
 from app.models.vision import (
     ClassificationResponse,
     GeoDistribution,
@@ -157,7 +156,9 @@ async def _enrich_from_db(species_name: str) -> SpeciesDbInfo:
 )
 async def classify_species(
     file: Annotated[UploadFile, File(description="Image file (JPEG, PNG, WebP)")],
-    top_k: Annotated[int, Query(ge=1, le=20, description="Number of top predictions")] = 5,
+    top_k: Annotated[
+        int, Query(ge=1, le=20, description="Number of top predictions")
+    ] = 5,
     confidence_threshold: Annotated[
         float, Query(ge=0.0, le=1.0, description="Minimum confidence threshold")
     ] = 0.0,
@@ -209,7 +210,8 @@ async def classify_species(
 
     # Enrich top predictions with DB data
     predictions = await _build_predictions(
-        result["predictions"], f1_threshold,
+        result["predictions"],
+        f1_threshold,
     )
 
     # Global alert if even the top-1 prediction is below threshold

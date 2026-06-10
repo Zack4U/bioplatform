@@ -39,6 +39,13 @@ class Settings(BaseSettings):
     pg_password: str = "DevPassword123!"
     pg_database: str = "BioCommerce_Scientific"
 
+    # ── SQL Server (BioCommerce_Transactional) ──────────────────
+    mssql_host: str = "localhost"
+    mssql_port: int = 1433
+    mssql_user: str = "sa"
+    mssql_password: str = "DevPassword123!"
+    mssql_database: str = "BioCommerce_Transactional"
+
     # ── CNN Model ──────────────────────────────────────────────
     model_weights_path: str = "data/weights/best_model.pth"
     bio_min_f1_threshold: float = 0.65
@@ -75,6 +82,13 @@ class Settings(BaseSettings):
     aws_access_key_id: Optional[str] = None
     aws_secret_access_key: Optional[str] = None
     aws_region: Optional[str] = None
+    google_ai_api_key: Optional[str] = None
+    google_model_name: str = "gemini-2.5-flash"
+
+    # ── ChromaDB (Vector Store) ───────────────────────────────
+    chroma_host: str = "localhost"
+    chroma_port: int = 8001
+    chroma_collection_name: str = "bioplatform_species_dev"
 
     @property
     def pg_dsn(self) -> str:

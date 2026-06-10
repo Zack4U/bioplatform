@@ -26,14 +26,16 @@ except ImportError:
     sys.exit(1)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 
 
 class _DropoutLinear(nn.Linear):
     """nn.Linear with preceding dropout – subclasses Linear for type safety."""
 
-    def __init__(self, in_features: int, out_features: int, dropout: float = 0.3) -> None:
+    def __init__(
+        self, in_features: int, out_features: int, dropout: float = 0.3
+    ) -> None:
         super().__init__(in_features, out_features)
         self._drop = nn.Dropout(p=dropout)
 
@@ -46,7 +48,9 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description="Export CNN model to ONNX format")
     parser.add_argument(
-        "--weights-dir", type=str, default=None,
+        "--weights-dir",
+        type=str,
+        default=None,
         help="Versioned weights directory (default: data/weights/)",
     )
     args = parser.parse_args()
@@ -73,13 +77,17 @@ def main() -> None:
         orig_layer = model.classifier[1]
         assert isinstance(orig_layer, nn.Linear)
         in_features: int = orig_layer.in_features
-        model.classifier = nn.Sequential(nn.Dropout(0.3), nn.Linear(in_features, num_classes))
+        model.classifier = nn.Sequential(
+            nn.Dropout(0.3), nn.Linear(in_features, num_classes)
+        )
     elif model_name == "efficientnet_b2":
         model = models.efficientnet_b2(weights=None)
         orig_layer = model.classifier[1]
         assert isinstance(orig_layer, nn.Linear)
         in_features = orig_layer.in_features
-        model.classifier = nn.Sequential(nn.Dropout(0.4), nn.Linear(in_features, num_classes))
+        model.classifier = nn.Sequential(
+            nn.Dropout(0.4), nn.Linear(in_features, num_classes)
+        )
     elif model_name == "resnet50":
         model = models.resnet50(weights=None)
         in_features = model.fc.in_features
@@ -105,7 +113,9 @@ def main() -> None:
     onnx_path = weights_dir / "model.onnx"
 
     torch.onnx.export(
-        model, (dummy_input,), str(onnx_path),
+        model,
+        (dummy_input,),
+        str(onnx_path),
         export_params=True,
         opset_version=17,
         do_constant_folding=True,

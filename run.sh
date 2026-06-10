@@ -122,10 +122,10 @@ function start_service() {
         ;;
         
         ai)
-            echo -e "${YELLOW}🐍 AI Service${NC}"
-            # Activación de Venv compatible con Git Bash
-            open_terminal "ai" "src/Bio.Backend.AI" "source ../../.venv/Scripts/activate && uvicorn app.main:app --reload --port 8000"
-            echo -e "${GREEN}✓ AI Service iniciando...${NC}"
+            echo -e "${YELLOW}🐍 AI Service (Local Conda)${NC}"
+            # Ejecución local usando el entorno Conda bio-ai
+            open_terminal "ai" "src/Bio.Backend.AI" "conda run --no-capture-output -n bio-ai uvicorn app.main:app --reload --port 8000"
+            echo -e "${GREEN}✓ AI Service iniciando localmente con Conda...${NC}"
         ;;
         
         web)

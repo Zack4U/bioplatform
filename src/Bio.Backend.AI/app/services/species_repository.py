@@ -16,7 +16,6 @@ from typing import Any, Optional
 from uuid import UUID
 
 import sqlalchemy as sa
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db_session
@@ -58,7 +57,11 @@ async def get_species_by_scientific_name(
 
     try:
         async with get_db_session() as session:
-            row = (await session.execute(query, {"name": scientific_name})).mappings().first()
+            row = (
+                (await session.execute(query, {"name": scientific_name}))
+                .mappings()
+                .first()
+            )
             if row is None:
                 return None
 

@@ -40,11 +40,14 @@ def main() -> None:
         description="Remove all offline-augmented images (_aug_) from raw_images/"
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
+        "--dry-run",
+        action="store_true",
         help="Show what would be deleted without actually deleting",
     )
     parser.add_argument(
-        "--kingdom", type=str, default="",
+        "--kingdom",
+        type=str,
+        default="",
         help="Only clean a specific kingdom (e.g., Plantae)",
     )
     args = parser.parse_args()
@@ -88,7 +91,8 @@ def main() -> None:
                             continue
 
                         sp_augs = [
-                            f for f in species_dir.iterdir()
+                            f
+                            for f in species_dir.iterdir()
                             if f.is_file()
                             and f.suffix.lower() in IMAGE_EXTENSIONS
                             and "_aug_" in f.stem
@@ -96,7 +100,9 @@ def main() -> None:
                         if sp_augs:
                             sp_name = species_dir.name.replace("_", " ")
                             species_counts[sp_name] = len(sp_augs)
-                            kingdom_counts[kingdom] = kingdom_counts.get(kingdom, 0) + len(sp_augs)
+                            kingdom_counts[kingdom] = kingdom_counts.get(
+                                kingdom, 0
+                            ) + len(sp_augs)
                             aug_files.extend(sp_augs)
 
     total = len(aug_files)
@@ -120,7 +126,9 @@ def main() -> None:
         print(f"    {sp:40s} │ {cnt:4d}")
 
     if args.dry_run:
-        print(f"\n[DRY RUN] Would delete {total:,} augmented files. No files were modified.")
+        print(
+            f"\n[DRY RUN] Would delete {total:,} augmented files. No files were modified."
+        )
         return
 
     # ── Delete ────────────────────────────────────────────────────

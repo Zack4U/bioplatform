@@ -39,26 +39,26 @@ Salida:
 """
 
 import argparse
+import io
 import json
 import os
 import random
 import shutil
 import sys
-import io
 from collections import defaultdict
 from pathlib import Path
 
 # Force UTF-8 encoding for standard output/error to prevent UnicodeEncodeError on Windows
-if sys.platform.startswith('win'):
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+if sys.platform.startswith("win"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 from PIL import Image
 from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 RAW_IMAGES_DIR = PROJECT_ROOT / "data" / "raw_images"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 ANALYSIS_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
@@ -115,7 +115,8 @@ def scan_raw_images(raw_dir: Path) -> dict[str, list[Path]]:
                             continue
                         species_name = species_dir.name  # e.g., "Bombus_funebris"
                         images = sorted(
-                            p for p in species_dir.iterdir()
+                            p
+                            for p in species_dir.iterdir()
                             if p.suffix.lower() in _IMAGE_EXTENSIONS
                         )
                         if images:
@@ -157,8 +158,9 @@ def _load_new_images_manifest(manifest_path: Path) -> set[str]:
         { "new_images": [ { "path": "/abs/path/to/img.jpg", ... }, ... ] }
     """
     if not manifest_path.exists():
-        print(f"[WARN] Manifest not found: {manifest_path}. "
-              "Treating ALL images as new.")
+        print(
+            f"[WARN] Manifest not found: {manifest_path}. Treating ALL images as new."
+        )
         return set()
 
     with open(manifest_path, "r", encoding="utf-8") as f:
@@ -201,14 +203,8 @@ def apply_replay_buffer(
     total_old_skipped = 0
 
     for species_name, images in species_images.items():
-        new_imgs = [
-            p for p in images
-            if str(p.resolve()) in new_image_paths
-        ]
-        old_imgs = [
-            p for p in images
-            if str(p.resolve()) not in new_image_paths
-        ]
+        new_imgs = [p for p in images if str(p.resolve()) in new_image_paths]
+        old_imgs = [p for p in images if str(p.resolve()) not in new_image_paths]
 
         # Sample old images
         if old_imgs and replay_ratio < 1.0:
@@ -227,8 +223,10 @@ def apply_replay_buffer(
 
     print("  → Replay Buffer applied:")
     print(f"    New images (100%):      {total_new:,}")
-    print(f"    Old images sampled:     {total_old_sampled:,} "
-          f"({replay_ratio:.0%} of {total_old_sampled + total_old_skipped:,})")
+    print(
+        f"    Old images sampled:     {total_old_sampled:,} "
+        f"({replay_ratio:.0%} of {total_old_sampled + total_old_skipped:,})"
+    )
     print(f"    Old images skipped:     {total_old_skipped:,}")
     print(f"    Total for training:     {total_new + total_old_sampled:,}")
 
@@ -245,7 +243,11 @@ def count_processed_images(processed_dir: Path) -> dict[str, int]:
         for species_dir in split_dir.iterdir():
             if not species_dir.is_dir():
                 continue
-            images = [p for p in species_dir.iterdir() if p.suffix.lower() in _IMAGE_EXTENSIONS]
+            images = [
+                p
+                for p in species_dir.iterdir()
+                if p.suffix.lower() in _IMAGE_EXTENSIONS
+            ]
             counts[species_dir.name] += len(images)
     return counts
 
@@ -272,9 +274,7 @@ def split_dataset(
         existing_cnt = existing_counts.get(species_name, 0) if existing_counts else 0
         return len(images) + existing_cnt
 
-    sorted_species = sorted(
-        species_images.items(), key=get_sort_key, reverse=True
-    )
+    sorted_species = sorted(species_images.items(), key=get_sort_key, reverse=True)
 
     train_split: dict[str, list[Path]] = {}
     val_split: dict[str, list[Path]] = {}
@@ -313,8 +313,8 @@ def split_dataset(
                 n_val = 1
 
             train_split[species_name] = shuffled[:n_train]
-            val_split[species_name] = shuffled[n_train:n_train + n_val]
-            test_split[species_name] = shuffled[n_train + n_val:]
+            val_split[species_name] = shuffled[n_train : n_train + n_val]
+            test_split[species_name] = shuffled[n_train + n_val :]
         included += 1
 
     if skipped:
@@ -371,32 +371,43 @@ def main() -> None:
         description="Organize raw images into train/val/test splits"
     )
     parser.add_argument(
-        "--min-images", type=int, default=50,
-        help="Minimum images per species to include (default: 50)"
+        "--min-images",
+        type=int,
+        default=50,
+        help="Minimum images per species to include (default: 50)",
     )
     parser.add_argument(
-        "--seed", type=int, default=_DEFAULT_SEED,
+        "--seed",
+        type=int,
+        default=_DEFAULT_SEED,
         help=f"Random seed for reproducible splits (default: {_DEFAULT_SEED}, "
-             f"from DATASET_SPLIT_SEED env var)"
+        f"from DATASET_SPLIT_SEED env var)",
     )
     parser.add_argument(
-        "--max-species", type=int, default=0,
-        help="Limit to top N species by image count (0 = all, default: 0)"
+        "--max-species",
+        type=int,
+        default=0,
+        help="Limit to top N species by image count (0 = all, default: 0)",
     )
     parser.add_argument(
-        "--clean", action="store_true",
-        help="Remove existing processed directory before organizing"
+        "--clean",
+        action="store_true",
+        help="Remove existing processed directory before organizing",
     )
     parser.add_argument(
-        "--new-images-manifest", type=str, default=None,
+        "--new-images-manifest",
+        type=str,
+        default=None,
         help="Path to delta_manifest.json from 02f_download_delta.py. "
-             "Enables Replay Buffer: 100%% new + replay-ratio%% old."
+        "Enables Replay Buffer: 100%% new + replay-ratio%% old.",
     )
     parser.add_argument(
-        "--replay-ratio", type=float, default=None,
+        "--replay-ratio",
+        type=float,
+        default=None,
         help="Fraction of old images to keep when Replay Buffer is active "
-             "(0.0-1.0). Reads REPLAY_BUFFER_RATIO from .env if not set. "
-             "Only used when --new-images-manifest is provided."
+        "(0.0-1.0). Reads REPLAY_BUFFER_RATIO from .env if not set. "
+        "Only used when --new-images-manifest is provided.",
     )
     args = parser.parse_args()
 
@@ -422,7 +433,9 @@ def main() -> None:
                 has_delta = True
 
         if not has_delta:
-            print("\n[INFO] No new delta images detected in manifest. Fine-tuning organization skipped.")
+            print(
+                "\n[INFO] No new delta images detected in manifest. Fine-tuning organization skipped."
+            )
             print("[INFO] Existing processed dataset is kept intact.")
             sys.exit(0)
 
@@ -439,7 +452,9 @@ def main() -> None:
 
     if total_images == 0:
         print("\n[ERROR] No images found in raw_images directory!")
-        print(f"  Expected structure: {RAW_IMAGES_DIR}/Kingdom/Phylum/Class/Family/Species/*.jpg")
+        print(
+            f"  Expected structure: {RAW_IMAGES_DIR}/Kingdom/Phylum/Class/Family/Species/*.jpg"
+        )
         print("  Run: python scripts/dataset/02f_download_delta.py")
         sys.exit(1)
 
@@ -452,7 +467,9 @@ def main() -> None:
     if is_fine_tuning_mode and has_delta:
         # In delta fine-tuning mode, we ONLY split and copy the delta images.
         # The existing images in PROCESSED_DIR are kept intact.
-        print(f"\n[STEP 1b] Delta mode active. Filtering to organize ONLY the {len(new_paths):,} new images.")
+        print(
+            f"\n[STEP 1b] Delta mode active. Filtering to organize ONLY the {len(new_paths):,} new images."
+        )
         species_images_delta = {}
         for species_name, images in species_images.items():
             new_imgs = [p for p in images if str(p.resolve()) in new_paths]
@@ -468,7 +485,10 @@ def main() -> None:
 
         if new_paths:
             species_images = apply_replay_buffer(
-                species_images, new_paths, args.replay_ratio, args.seed,
+                species_images,
+                new_paths,
+                args.replay_ratio,
+                args.seed,
             )
             total_images = sum(len(v) for v in species_images.values())
         else:
@@ -479,7 +499,11 @@ def main() -> None:
     if args.max_species > 0:
         print(f"  → Limiting to top {args.max_species} species (test mode)")
     train, val, test = split_dataset(
-        species_images, args.min_images, args.seed, max_species=args.max_species, existing_counts=existing_counts
+        species_images,
+        args.min_images,
+        args.seed,
+        max_species=args.max_species,
+        existing_counts=existing_counts,
     )
     num_classes = len(train)
     print(f"  → {num_classes} classes included in delta organization")
@@ -510,20 +534,34 @@ def main() -> None:
     actual_val = defaultdict(list)
     actual_test = defaultdict(list)
 
-    for split_name, split_dict in [("train", actual_train), ("val", actual_val), ("test", actual_test)]:
+    for split_name, split_dict in [
+        ("train", actual_train),
+        ("val", actual_val),
+        ("test", actual_test),
+    ]:
         split_path = PROCESSED_DIR / split_name
         if split_path.exists():
             for species_dir in split_path.iterdir():
                 if species_dir.is_dir():
                     species_name = species_dir.name
-                    files = [p for p in species_dir.iterdir() if p.suffix.lower() in _IMAGE_EXTENSIONS]
+                    files = [
+                        p
+                        for p in species_dir.iterdir()
+                        if p.suffix.lower() in _IMAGE_EXTENSIONS
+                    ]
                     if files:
                         split_dict[species_name] = files
 
     # Class names are sorted alphabetically
-    class_names = sorted(list(set(actual_train.keys()) | set(actual_val.keys()) | set(actual_test.keys())))
+    class_names = sorted(
+        list(
+            set(actual_train.keys()) | set(actual_val.keys()) | set(actual_test.keys())
+        )
+    )
     num_classes = len(class_names)
-    class_mapping = {name.replace("_", " "): idx for idx, name in enumerate(class_names)}
+    class_mapping = {
+        name.replace("_", " "): idx for idx, name in enumerate(class_names)
+    }
 
     with open(PROCESSED_DIR / "class_mapping.json", "w", encoding="utf-8") as f:
         json.dump(class_mapping, f, ensure_ascii=False, indent=2)
@@ -582,7 +620,9 @@ def main() -> None:
                 "train": len(actual_train.get(name, [])),
                 "val": len(actual_val.get(name, [])),
                 "test": len(actual_test.get(name, [])),
-                "total": len(actual_train.get(name, [])) + len(actual_val.get(name, [])) + len(actual_test.get(name, [])),
+                "total": len(actual_train.get(name, []))
+                + len(actual_val.get(name, []))
+                + len(actual_test.get(name, [])),
             }
             for name in class_names
         },

@@ -11,6 +11,7 @@ PyJWT==2.8.0
 # --- Database (PostgreSQL Async) ---
 sqlalchemy[asyncio]==2.0.27
 asyncpg==0.29.0
+psycopg2-binary==2.9.9
 
 # --- Data Science & Processing ---
 numpy==1.26.4
@@ -18,20 +19,20 @@ pandas==2.2.0
 scikit-learn==1.4.0
 opencv-python-headless==4.9.0.80 
 pillow==10.2.0
-psycopg2-binary==2.9.12
 
 # --- AI / Deep Learning (PyTorch Only) ---
 # Note: pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130
-# torch==2.2.0
-# torchvision==0.17.0
+torch==2.2.0
+torchvision==0.17.0
 
 # --- RAG & LLMs (LangChain Ecosystem) ---
 langchain==0.1.5
 langchain-community==0.0.17
 langchain-openai==0.0.5
-chromadb==0.4.22
+chromadb>=0.5.0
 openai==1.12.0
 tiktoken==0.5.2  
+google-genai>=0.5.0
 
 # --- Tools & Utilities ---
 tqdm==4.66.1 

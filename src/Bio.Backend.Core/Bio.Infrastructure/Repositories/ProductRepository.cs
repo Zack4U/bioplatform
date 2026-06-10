@@ -29,7 +29,11 @@ public class ProductRepository : IProductRepository
         decimal? minPrice, decimal? maxPrice,
         string sortBy, string sortOrder, int page, int pageSize, CancellationToken ct)
     {
-        var q = _ctx.Products.Include(p => p.Category).Include(p => p.Reviews)
+        var q = _ctx.Products
+            .Include(p => p.Category)
+            .Include(p => p.Reviews)
+            .Include(p => p.Certifications)
+            .Include(p => p.Entrepreneur)
             .Where(p => p.IsActive);
 
         if (!string.IsNullOrWhiteSpace(query))
@@ -113,6 +117,8 @@ public class ProductRepository : IProductRepository
             var byCat = await _ctx.Products
                 .Include(p => p.Category)
                 .Include(p => p.Reviews)
+                .Include(p => p.Certifications)
+                .Include(p => p.Entrepreneur)
                 .Where(p => p.IsActive && p.Id != productId && p.CategoryId == categoryId)
                 .ToListAsync(ct);
 

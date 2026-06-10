@@ -12,7 +12,6 @@ from fastapi import HTTPException
 from app.api.v1_classify import _build_predictions, _enrich_from_db, _validate_upload
 from app.models.vision import SpeciesDbInfo
 
-
 # ── _validate_upload ──────────────────────────────────────────────
 
 

@@ -44,12 +44,14 @@ try:
     import torch
     import torch.nn as nn
     import torch.optim as optim
-    from torch.optim.swa_utils import AveragedModel, SWALR, update_bn
+    from torch.optim.swa_utils import SWALR, AveragedModel, update_bn
     from torch.utils.data import DataLoader, WeightedRandomSampler
     from torchvision import datasets, models, transforms
 except ImportError:
     print("[ERROR] PyTorch not installed. Run:")
-    print("  pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121")
+    print(
+        "  pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121"
+    )
     print("  # For CPU only: pip install torch torchvision")
     sys.exit(1)
 
@@ -57,7 +59,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 
@@ -65,7 +67,9 @@ WEIGHTS_DIR = PROJECT_ROOT / "data" / "weights"
 class _DropoutLinear(nn.Linear):
     """nn.Linear with preceding dropout – subclasses Linear for type safety."""
 
-    def __init__(self, in_features: int, out_features: int, dropout: float = 0.3) -> None:
+    def __init__(
+        self, in_features: int, out_features: int, dropout: float = 0.3
+    ) -> None:
         super().__init__(in_features, out_features)
         self._drop = nn.Dropout(p=dropout)
 
@@ -74,6 +78,7 @@ class _DropoutLinear(nn.Linear):
 
 
 # ── Data Augmentation & Transforms ────────────────────────────────
+
 
 def get_transforms(image_size: int = 224) -> dict[str, transforms.Compose]:
     """
@@ -85,31 +90,36 @@ def get_transforms(image_size: int = 224) -> dict[str, transforms.Compose]:
     imagenet_mean = [0.485, 0.456, 0.406]
     imagenet_std = [0.229, 0.224, 0.225]
 
-    train_transform = transforms.Compose([
-        transforms.RandomResizedCrop(image_size, scale=(0.7, 1.0)),
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.RandomVerticalFlip(p=0.1),
-        transforms.RandomRotation(degrees=15),
-        transforms.ColorJitter(
-            brightness=0.2, contrast=0.15, saturation=0.1, hue=0.02
-        ),
-        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
-        transforms.ToTensor(),
-        transforms.Normalize(imagenet_mean, imagenet_std),
-        transforms.RandomErasing(p=0.1),
-    ])
+    train_transform = transforms.Compose(
+        [
+            transforms.RandomResizedCrop(image_size, scale=(0.7, 1.0)),
+            transforms.RandomHorizontalFlip(p=0.5),
+            transforms.RandomVerticalFlip(p=0.1),
+            transforms.RandomRotation(degrees=15),
+            transforms.ColorJitter(
+                brightness=0.2, contrast=0.15, saturation=0.1, hue=0.02
+            ),
+            transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
+            transforms.ToTensor(),
+            transforms.Normalize(imagenet_mean, imagenet_std),
+            transforms.RandomErasing(p=0.1),
+        ]
+    )
 
-    val_transform = transforms.Compose([
-        transforms.Resize(int(image_size * 1.14)),  # ~256 for 224
-        transforms.CenterCrop(image_size),
-        transforms.ToTensor(),
-        transforms.Normalize(imagenet_mean, imagenet_std),
-    ])
+    val_transform = transforms.Compose(
+        [
+            transforms.Resize(int(image_size * 1.14)),  # ~256 for 224
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize(imagenet_mean, imagenet_std),
+        ]
+    )
 
     return {"train": train_transform, "val": val_transform, "test": val_transform}
 
 
 # ── Model Builder ─────────────────────────────────────────────────
+
 
 def build_model(
     model_name: str,
@@ -158,8 +168,10 @@ def build_model(
         model.fc = _DropoutLinear(in_features, num_classes, dropout=0.3)
 
     else:
-        raise ValueError(f"Unsupported model: {model_name}. "
-                         f"Use: efficientnet_b0, efficientnet_b2, resnet50, resnet101")
+        raise ValueError(
+            f"Unsupported model: {model_name}. "
+            f"Use: efficientnet_b0, efficientnet_b2, resnet50, resnet101"
+        )
 
     return model
 
@@ -200,20 +212,25 @@ def _get_layerwise_lr_groups(
     groups = []
     for i, block in enumerate(features):
         block_lr = base_lr * (decay_factor ** (num_blocks - i))
-        groups.append({
-            "params": list(block.parameters()),
-            "lr": block_lr,
+        groups.append(
+            {
+                "params": list(block.parameters()),
+                "lr": block_lr,
+                "weight_decay": weight_decay,
+            }
+        )
+    groups.append(
+        {
+            "params": list(model.classifier.parameters()),  # type: ignore[union-attr]
+            "lr": base_lr,
             "weight_decay": weight_decay,
-        })
-    groups.append({
-        "params": list(model.classifier.parameters()),  # type: ignore[union-attr]
-        "lr": base_lr,
-        "weight_decay": weight_decay,
-    })
+        }
+    )
     return groups
 
 
 # ── Weighted Sampler for Class Imbalance ──────────────────────────
+
 
 def get_weighted_sampler(dataset: datasets.ImageFolder) -> WeightedRandomSampler:
     """Create a weighted random sampler to handle class imbalance."""
@@ -230,6 +247,7 @@ def get_weighted_sampler(dataset: datasets.ImageFolder) -> WeightedRandomSampler
 
 
 # ── Mixup Augmentation ────────────────────────────────────────────
+
 
 def mixup_data(
     x: torch.Tensor,
@@ -255,6 +273,7 @@ def mixup_data(
 
 
 # ── CutMix Augmentation ──────────────────────────────────────────
+
 
 def cutmix_data(
     x: torch.Tensor,
@@ -309,6 +328,7 @@ def mixup_criterion(
 
 # ── Training Loop ─────────────────────────────────────────────────
 
+
 def train_one_epoch(
     model: nn.Module,
     loader: DataLoader,
@@ -339,9 +359,13 @@ def train_one_epoch(
             # If both enabled, randomly choose one per batch (50/50)
             if use_cutmix and use_mixup:
                 if np.random.rand() < 0.5:
-                    mixed_inputs, y_a, y_b, lam = cutmix_data(inputs, labels, cutmix_alpha)
+                    mixed_inputs, y_a, y_b, lam = cutmix_data(
+                        inputs, labels, cutmix_alpha
+                    )
                 else:
-                    mixed_inputs, y_a, y_b, lam = mixup_data(inputs, labels, mixup_alpha)
+                    mixed_inputs, y_a, y_b, lam = mixup_data(
+                        inputs, labels, mixup_alpha
+                    )
             elif use_cutmix:
                 mixed_inputs, y_a, y_b, lam = cutmix_data(inputs, labels, cutmix_alpha)
             else:
@@ -351,8 +375,10 @@ def train_one_epoch(
             loss = mixup_criterion(criterion, outputs, y_a, y_b, lam)
             # For accuracy tracking, use original labels with lam threshold
             _, predicted = outputs.max(1)
-            correct += (lam * predicted.eq(y_a).sum().item()
-                        + (1 - lam) * predicted.eq(y_b).sum().item())
+            correct += (
+                lam * predicted.eq(y_a).sum().item()
+                + (1 - lam) * predicted.eq(y_b).sum().item()
+            )
         else:
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -366,7 +392,9 @@ def train_one_epoch(
         running_loss += loss.item() * inputs.size(0)
         total += labels.size(0)
 
-        pbar.set_postfix(loss=f"{loss.item():.4f}", acc=f"{100.0 * correct / total:.1f}%")
+        pbar.set_postfix(
+            loss=f"{loss.item():.4f}", acc=f"{100.0 * correct / total:.1f}%"
+        )
 
     avg_loss = running_loss / total
     accuracy = correct / total
@@ -434,45 +462,94 @@ def _save_checkpoint(
 
 # ── Main Training Pipeline ────────────────────────────────────────
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Train CNN for species classification (Transfer Learning)"
     )
-    parser.add_argument("--model", type=str, default="efficientnet_b0",
-                        choices=["efficientnet_b0", "efficientnet_b2", "resnet50", "resnet101"])
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="efficientnet_b0",
+        choices=["efficientnet_b0", "efficientnet_b2", "resnet50", "resnet101"],
+    )
     parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=32)
-    parser.add_argument("--lr", type=float, default=1e-3,
-                        help="Initial learning rate for classifier head")
-    parser.add_argument("--freeze-epochs", type=int, default=5,
-                        help="Epochs to train with frozen backbone")
-    parser.add_argument("--unfreeze-lr", type=float, default=1e-4,
-                        help="Learning rate after unfreezing backbone")
-    parser.add_argument("--patience", type=int, default=10,
-                        help="Early stopping patience")
+    parser.add_argument(
+        "--lr",
+        type=float,
+        default=1e-3,
+        help="Initial learning rate for classifier head",
+    )
+    parser.add_argument(
+        "--freeze-epochs",
+        type=int,
+        default=5,
+        help="Epochs to train with frozen backbone",
+    )
+    parser.add_argument(
+        "--unfreeze-lr",
+        type=float,
+        default=1e-4,
+        help="Learning rate after unfreezing backbone",
+    )
+    parser.add_argument(
+        "--patience", type=int, default=10, help="Early stopping patience"
+    )
     parser.add_argument("--image-size", type=int, default=224)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--label-smoothing", type=float, default=0.1)
-    parser.add_argument("--mixup-alpha", type=float, default=0.2,
-                        help="Mixup alpha (0 = disabled, 0.2 recommended)")
-    parser.add_argument("--cutmix-alpha", type=float, default=0.0,
-                        help="CutMix alpha (0 = disabled, 1.0 recommended for biodiversity)")
-    parser.add_argument("--warmup-epochs", type=int, default=3,
-                        help="Linear warmup epochs during fine-tuning")
-    parser.add_argument("--max-grad-norm", type=float, default=1.0,
-                        help="Max gradient norm for clipping")
-    parser.add_argument("--lr-decay-factor", type=float, default=1.0,
-                        help="Layer-wise LR decay factor (1.0 = uniform, 0.85 recommended)")
-    parser.add_argument("--swa-start", type=int, default=0,
-                        help="Epoch to start SWA (0 = disabled, e.g. 70)")
-    parser.add_argument("--swa-lr", type=float, default=1e-5,
-                        help="SWA learning rate")
-    parser.add_argument("--resume-checkpoint", type=str, default=None,
-                        help="Path to checkpoint.pth for warm-start (loads model+optimizer+scheduler)")
-    parser.add_argument("--output-dir", type=str, default=None,
-                        help="Versioned output directory (e.g. data/weights/v1.0.20260516). "
-                             "Defaults to data/weights/ for backward compat.")
+    parser.add_argument(
+        "--mixup-alpha",
+        type=float,
+        default=0.2,
+        help="Mixup alpha (0 = disabled, 0.2 recommended)",
+    )
+    parser.add_argument(
+        "--cutmix-alpha",
+        type=float,
+        default=0.0,
+        help="CutMix alpha (0 = disabled, 1.0 recommended for biodiversity)",
+    )
+    parser.add_argument(
+        "--warmup-epochs",
+        type=int,
+        default=3,
+        help="Linear warmup epochs during fine-tuning",
+    )
+    parser.add_argument(
+        "--max-grad-norm",
+        type=float,
+        default=1.0,
+        help="Max gradient norm for clipping",
+    )
+    parser.add_argument(
+        "--lr-decay-factor",
+        type=float,
+        default=1.0,
+        help="Layer-wise LR decay factor (1.0 = uniform, 0.85 recommended)",
+    )
+    parser.add_argument(
+        "--swa-start",
+        type=int,
+        default=0,
+        help="Epoch to start SWA (0 = disabled, e.g. 70)",
+    )
+    parser.add_argument("--swa-lr", type=float, default=1e-5, help="SWA learning rate")
+    parser.add_argument(
+        "--resume-checkpoint",
+        type=str,
+        default=None,
+        help="Path to checkpoint.pth for warm-start (loads model+optimizer+scheduler)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=str,
+        default=None,
+        help="Versioned output directory (e.g. data/weights/v1.0.20260516). "
+        "Defaults to data/weights/ for backward compat.",
+    )
     args = parser.parse_args()
 
     # ── Setup ──────────────────────────────────────────────────────
@@ -491,7 +568,9 @@ def main() -> None:
     print(f"  Device:     {device}")
     if device.type == "cuda":
         print(f"  GPU:        {torch.cuda.get_device_name(0)}")
-        print(f"  VRAM:       {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+        print(
+            f"  VRAM:       {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB"
+        )
     print(f"  Model:      {args.model}")
     print(f"  Image size: {args.image_size}px")
     print(f"  Batch size: {args.batch_size}")
@@ -530,7 +609,9 @@ def main() -> None:
     # ── Datasets ───────────────────────────────────────────────────
     data_transforms = get_transforms(args.image_size)
 
-    train_dataset = datasets.ImageFolder(str(train_dir), transform=data_transforms["train"])
+    train_dataset = datasets.ImageFolder(
+        str(train_dir), transform=data_transforms["train"]
+    )
     val_dataset = datasets.ImageFolder(str(val_dir), transform=data_transforms["val"])
 
     print(f"[INFO] Train images: {len(train_dataset):,}")
@@ -540,13 +621,18 @@ def main() -> None:
     sampler = get_weighted_sampler(train_dataset)
 
     train_loader = DataLoader(
-        train_dataset, batch_size=args.batch_size,
-        sampler=sampler, num_workers=args.workers,
-        pin_memory=True, drop_last=True,
+        train_dataset,
+        batch_size=args.batch_size,
+        sampler=sampler,
+        num_workers=args.workers,
+        pin_memory=True,
+        drop_last=True,
     )
     val_loader = DataLoader(
-        val_dataset, batch_size=args.batch_size,
-        shuffle=False, num_workers=args.workers,
+        val_dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.workers,
         pin_memory=True,
     )
 
@@ -567,8 +653,10 @@ def main() -> None:
         if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
             model.load_state_dict(checkpoint["model_state_dict"])
             resumed_epoch = checkpoint.get("epoch", 0)
-            print(f"[INFO] Resumed from epoch {resumed_epoch}, "
-                  f"best_val_acc={checkpoint.get('best_val_acc', 'N/A')}")
+            print(
+                f"[INFO] Resumed from epoch {resumed_epoch}, "
+                f"best_val_acc={checkpoint.get('best_val_acc', 'N/A')}"
+            )
         else:
             # Plain state_dict (legacy format)
             model.load_state_dict(checkpoint)
@@ -592,7 +680,8 @@ def main() -> None:
     freeze_backbone(model, args.model)
     optimizer = optim.AdamW(
         filter(lambda p: p.requires_grad, model.parameters()),
-        lr=args.lr, weight_decay=args.weight_decay,
+        lr=args.lr,
+        weight_decay=args.weight_decay,
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -613,7 +702,12 @@ def main() -> None:
 
     for epoch in range(1, args.freeze_epochs + 1):
         train_loss, train_acc = train_one_epoch(
-            model, train_loader, criterion, optimizer, device, epoch,
+            model,
+            train_loader,
+            criterion,
+            optimizer,
+            device,
+            epoch,
             max_grad_norm=args.max_grad_norm,
         )
         val_loss, val_acc = validate(model, val_loader, criterion, device)
@@ -628,14 +722,20 @@ def main() -> None:
         }
         history.append(epoch_data)
 
-        print(f"  Epoch {epoch:3d} │ "
-              f"Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} │ "
-              f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f}")
+        print(
+            f"  Epoch {epoch:3d} │ "
+            f"Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} │ "
+            f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f}"
+        )
 
         if val_acc > best_val_acc:
             best_val_acc = val_acc
             _save_checkpoint(
-                model, optimizer, None, epoch, best_val_acc,
+                model,
+                optimizer,
+                None,
+                epoch,
+                best_val_acc,
                 output_dir,
             )
 
@@ -650,15 +750,21 @@ def main() -> None:
     # Layer-wise LR decay: earlier layers get lower LR
     if args.lr_decay_factor < 1.0 and "efficientnet" in args.model:
         param_groups = _get_layerwise_lr_groups(
-            model, args.unfreeze_lr, args.lr_decay_factor, args.weight_decay,
+            model,
+            args.unfreeze_lr,
+            args.lr_decay_factor,
+            args.weight_decay,
         )
         optimizer = optim.AdamW(param_groups)
-        print(f"  [INFO] Layer-wise LR decay: {len(param_groups)} groups, "
-              f"decay={args.lr_decay_factor}")
+        print(
+            f"  [INFO] Layer-wise LR decay: {len(param_groups)} groups, "
+            f"decay={args.lr_decay_factor}"
+        )
     else:
         optimizer = optim.AdamW(
             model.parameters(),
-            lr=args.unfreeze_lr, weight_decay=args.weight_decay,
+            lr=args.unfreeze_lr,
+            weight_decay=args.weight_decay,
         )
 
     # SWA setup (initialized before loop, activated after swa_start)
@@ -671,10 +777,14 @@ def main() -> None:
     # Cosine Annealing LR Scheduler with Linear Warmup
     remaining_epochs = args.epochs - args.freeze_epochs
     cosine_scheduler = optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, T_max=remaining_epochs - args.warmup_epochs, eta_min=1e-6,
+        optimizer,
+        T_max=remaining_epochs - args.warmup_epochs,
+        eta_min=1e-6,
     )
     warmup_scheduler = optim.lr_scheduler.LinearLR(
-        optimizer, start_factor=0.1, total_iters=args.warmup_epochs,
+        optimizer,
+        start_factor=0.1,
+        total_iters=args.warmup_epochs,
     )
     scheduler = optim.lr_scheduler.SequentialLR(
         optimizer,
@@ -684,7 +794,12 @@ def main() -> None:
 
     for epoch in range(args.freeze_epochs + 1, args.epochs + 1):
         train_loss, train_acc = train_one_epoch(
-            model, train_loader, criterion, optimizer, device, epoch,
+            model,
+            train_loader,
+            criterion,
+            optimizer,
+            device,
+            epoch,
             mixup_alpha=args.mixup_alpha,
             cutmix_alpha=args.cutmix_alpha,
             max_grad_norm=args.max_grad_norm,
@@ -724,13 +839,20 @@ def main() -> None:
                 assert swa_model is not None
                 update_bn(train_loader, swa_model, device=device)
                 swa_val_loss, swa_val_acc = validate(
-                    swa_model, val_loader, criterion, device,
+                    swa_model,
+                    val_loader,
+                    criterion,
+                    device,
                 )
                 if swa_val_acc > best_val_acc:
                     best_val_acc = swa_val_acc
                     _save_checkpoint(
-                        swa_model.module, optimizer, scheduler,
-                        epoch, best_val_acc, output_dir,
+                        swa_model.module,
+                        optimizer,
+                        scheduler,
+                        epoch,
+                        best_val_acc,
+                        output_dir,
                     )
                     improved = f" ★ SWA BEST ({swa_val_acc:.4f})"
                 else:
@@ -740,21 +862,29 @@ def main() -> None:
                 best_val_acc = val_acc
                 patience_counter = 0
                 _save_checkpoint(
-                    model, optimizer, scheduler, epoch,
-                    best_val_acc, output_dir,
+                    model,
+                    optimizer,
+                    scheduler,
+                    epoch,
+                    best_val_acc,
+                    output_dir,
                 )
                 improved = " ★ BEST"
             else:
                 patience_counter += 1
 
-        print(f"  Epoch {epoch:3d} │ "
-              f"Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} │ "
-              f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f} │ "
-              f"LR: {current_lr:.2e}{improved}")
+        print(
+            f"  Epoch {epoch:3d} │ "
+            f"Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} │ "
+            f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f} │ "
+            f"LR: {current_lr:.2e}{improved}"
+        )
 
         # Early stopping (only active before SWA phase)
         if not in_swa_phase and patience_counter >= args.patience:
-            print(f"\n  [STOP] Early stopping at epoch {epoch} (patience={args.patience})")
+            print(
+                f"\n  [STOP] Early stopping at epoch {epoch} (patience={args.patience})"
+            )
             break
 
     # ── Finalize SWA model ──────────────────────────────────────────
@@ -763,12 +893,18 @@ def main() -> None:
         update_bn(train_loader, swa_model, device=device)
         # Evaluate SWA model
         swa_val_loss, swa_val_acc = validate(swa_model, val_loader, criterion, device)
-        print(f"  [INFO] SWA Val Accuracy: {swa_val_acc:.4f} ({swa_val_acc * 100:.1f}%)")
+        print(
+            f"  [INFO] SWA Val Accuracy: {swa_val_acc:.4f} ({swa_val_acc * 100:.1f}%)"
+        )
         if swa_val_acc > best_val_acc:
             best_val_acc = swa_val_acc
             _save_checkpoint(
-                swa_model.module, optimizer, scheduler,
-                len(history), best_val_acc, output_dir,
+                swa_model.module,
+                optimizer,
+                scheduler,
+                len(history),
+                best_val_acc,
+                output_dir,
             )
             print("  [INFO] SWA model is BETTER -> saved as best_model.pth")
         torch.save(swa_model.module.state_dict(), output_dir / "swa_model.pth")
