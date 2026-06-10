@@ -146,7 +146,11 @@ export interface SpeciesAdminItem {
     commonName: string | null;
     slug: string;
     kingdom: string | null;
+    phylum?: string | null;
+    className?: string | null;
+    orderName?: string | null;
     family: string | null;
+    genus?: string | null;
     conservationStatus: string | null;
     isSensitive: boolean;
     legalStatus: boolean;
@@ -414,6 +418,17 @@ export interface OrderAdminItem {
 }
 
 /** Full order detail with line items (from GET /orders/:id) */
+export interface OrderAddressInfo {
+    recipientName: string;
+    streetLine1: string;
+    streetLine2: string | null;
+    city: string;
+    department: string;
+    postalCode: string;
+    country: string;
+    phoneNumber: string | null;
+}
+
 export interface OrderAdminDetail extends OrderAdminItem {
     items?: {
         id: string;
@@ -421,8 +436,10 @@ export interface OrderAdminDetail extends OrderAdminItem {
         productName: string;
         quantity: number;
         unitPrice: number;
-        subtotal: number;
+        totalPrice: number;
     }[];
+    shippingAddress?: OrderAddressInfo | null;
+    billingAddress?: OrderAddressInfo | null;
     notes?: string | null;
 }
 
@@ -632,6 +649,37 @@ export interface PermitUpdatePayload {
 // --- Filters ---
 
 export interface OrderAdminFilters {
+    status?: string;
+    /** Free-text search (order number or buyer) — sent as ?q to the backend */
+    q?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+// ─── Certification Management ───────────────────────────────────────────────
+
+/** Maps to CertificationManagedListItemDTO — admin moderation row */
+export interface CertificationAdminItem {
+    id: string;
+    productId: string;
+    productName: string;
+    productSlug: string;
+    name: string;
+    certificationType: string;
+    issuingBody: string;
+    status: string;
+    issuedAt: string;
+    expiresAt: string | null;
+    entrepreneurId: string;
+    entrepreneurName: string | null;
+    approvedById: string | null;
+    approvedAt: string | null;
+    rejectionReason: string | null;
+    documentUrl: string | null;
+    createdAt: string;
+}
+
+export interface CertificationAdminFilters {
     status?: string;
     page?: number;
     pageSize?: number;
