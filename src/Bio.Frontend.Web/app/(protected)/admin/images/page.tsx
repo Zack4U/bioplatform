@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Gestion de Imagenes" };
 
 export default function ImagesPage() {
     return (
-        <PageRoleGuard requiredRoles={["ADMIN", "RESEARCHER"]}>
+        <PageRoleGuard requiredRoles={["ADMIN", "RESEARCHER", "AUTHORITY"]}>
             <ImagesManagement />
         </PageRoleGuard>
     );

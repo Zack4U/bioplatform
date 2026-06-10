@@ -24,7 +24,7 @@ import { useRequestCertification } from "@/hooks/features/admin/useCertification
 import { useUploadPermitDocument } from "@/hooks/features/admin/usePermitsManagement";
 
 const schema = z.object({
-    productId: z.string().uuid("Seleccione un producto"),
+    productId: z.string().min(1, "Seleccione un producto"),
     name: z.string().min(1, "Nombre requerido"),
     certificationType: z.enum(["Sustainability", "Organic", "Quality", "FairTrade", "ABS"], {
         message: "Seleccione un tipo de certificación",

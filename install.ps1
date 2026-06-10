@@ -148,8 +148,23 @@ function Section-weights {
 function Section-apps {
     Log 'Section: apps (backend, ai, web, nginx)'
     docker @Compose up -d --build backend-core ai-service frontend-web nginx
-    Log 'Backend is seeding the scientific catalog on first boot (idempotent).'
-    Log 'Follow progress:  docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend-core'
+    Log 'Waiting for scientific catalog seeding to complete...'
+    $seeded = $false
+    for ($i=0; $i -lt 60; $i++) {
+        $logs = (docker logs bioplatform-backend-core-prod 2>&1)
+        if ($logs -match 'Scientific seeding finished.') {
+            Log 'Scientific catalog seeding completed successfully.'
+            $seeded = $true
+            break
+        }
+        if ($logs -match 'Scientific data seeding failed during startup.') {
+            Die 'Scientific catalog seeding failed. Check logs using: docker logs bioplatform-backend-core-prod'
+        }
+        Start-Sleep -Seconds 1
+    }
+    if (-not $seeded) {
+        Log 'Warning: Seeding did not finish in 1 minutes. Proceeding anyway...'
+    }
     Log 'Restarting Backend AI service (ai-service)...'
     docker @Compose restart ai-service
 }
