@@ -16,7 +16,7 @@ public class AskAssistantQueryHandler : IRequestHandler<AskAssistantQuery, Assis
     public async Task<AssistantResponseDto> Handle(AskAssistantQuery request, CancellationToken cancellationToken)
     {
         var answer = await _aiAssistantService.AskQuestionAsync(request.Question, request.History, cancellationToken);
-        
+
         return new AssistantResponseDto
         {
             Answer = answer

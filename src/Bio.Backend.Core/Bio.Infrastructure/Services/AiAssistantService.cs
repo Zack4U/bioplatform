@@ -15,7 +15,7 @@ public class AiAssistantService : IAiAssistantService
     private readonly ILogger<AiAssistantService> _logger;
 
     public AiAssistantService(
-        HttpClient httpClient, 
+        HttpClient httpClient,
         IConfiguration configuration,
         ILogger<AiAssistantService> logger)
     {
@@ -32,14 +32,14 @@ public class AiAssistantService : IAiAssistantService
             var baseUrl = _configuration["AiServiceSettings:BaseUrl"] ?? "http://localhost:8000";
             var url = $"{baseUrl.TrimEnd('/')}/api/v1/assistant/ask";
 
-            var requestBody = new 
-            { 
+            var requestBody = new
+            {
                 question = question,
                 history = history
             };
 
             var response = await _httpClient.PostAsJsonAsync(url, requestBody, cancellationToken);
-            
+
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);
