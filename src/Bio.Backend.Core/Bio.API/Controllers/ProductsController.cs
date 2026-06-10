@@ -17,10 +17,10 @@ public class ProductsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(PaginatedResult<ProductListItemDTO>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll([FromQuery] ProductFilterParams filters)
+    public async Task<IActionResult> GetAll([FromQuery(Name = "q")] string? q, [FromQuery] ProductFilterParams filters)
         => Ok(await _mediator.Send(new GetPublicProductsQuery
         {
-            Query = filters.Query,
+            Query = q,
             CategoryId = filters.CategoryId,
             BaseSpeciesId = filters.BaseSpeciesId,
             MinPrice = filters.MinPrice,

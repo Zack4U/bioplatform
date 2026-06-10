@@ -55,7 +55,6 @@ public record ProductManagedListItemDTO(
 
 public record ProductFilterParams
 {
-    public string? Query { get; init; }
     public int? CategoryId { get; init; }
     public Guid? BaseSpeciesId { get; init; }
     public decimal? MinPrice { get; init; }

@@ -28,14 +28,14 @@ public class ManageProductsController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Entrepreneur}")]
-    public async Task<IActionResult> GetManaged([FromQuery] ProductFilterParams filters)
+    public async Task<IActionResult> GetManaged([FromQuery(Name = "q")] string? q, [FromQuery] ProductFilterParams filters)
     {
         var role = GetUserRole();
         Guid? entrepreneurId = role == RoleNames.Admin ? null : GetUserId();
         return Ok(await _mediator.Send(new GetManagedProductsQuery
         {
             EntrepreneurId = entrepreneurId,
-            Query = filters.Query,
+            Query = q,
             CategoryId = filters.CategoryId,
             SortBy = filters.SortBy,
             SortOrder = filters.SortOrder,
