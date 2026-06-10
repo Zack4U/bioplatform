@@ -53,7 +53,7 @@ export function useAdvisor() {
             };
             setMessages((prev) => [...prev, assistantMessage]);
         },
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error("Error asking assistant:", error);
             toast.error("Hubo un error al procesar tu pregunta. Por favor intenta de nuevo.");
         },
@@ -71,7 +71,7 @@ export function useAdvisor() {
 
         setMessages((prev) => [...prev, userMessage]);
         mutation.mutate(content);
-    }, [mutation, messages]);
+    }, [mutation]);
 
     const clearChat = useCallback(() => {
         setMessages([]);

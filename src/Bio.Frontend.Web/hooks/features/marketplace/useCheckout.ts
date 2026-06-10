@@ -107,7 +107,6 @@ export function useCheckout() {
     orderNotes,
     setOrderNotes,
     totalItems,
-    resetCheckout,
     clearCart,
   } = useCartStore();
 
@@ -300,6 +299,7 @@ export function useCheckout() {
     appliedCoupon,
     selectedItems,
     canSubmitOrder,
+    clearCart,
   ]);
 
   /* ── Public API ──────────────────────────────────────────────────── */
