@@ -44,13 +44,13 @@ public class AdminDashboardQueriesTests
 
         _userRepoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(users);
         _userRepoMock.Setup(r => r.GetCountByRoleAsync(default)).ReturnsAsync(roleDetailsList);
-        _productRepoMock.Setup(r => r.GetManagedFilteredAsync(null, null, null, null, "createdAt", "desc", 1, 10000, default))
+        _productRepoMock.Setup(r => r.GetManagedFilteredAsync(null, null, null, null, "createdAt", "desc", 1, 10000, default, null))
             .ReturnsAsync((products, 1));
-        _orderRepoMock.Setup(r => r.GetManagedAsync(null, 1, 10000, default))
+        _orderRepoMock.Setup(r => r.GetManagedAsync(null, 1, 10000, default, null))
             .ReturnsAsync((orders, 1));
         _absRepoMock.Setup(r => r.GetAllPagedAsync(null, null, 1, 10000, default))
             .ReturnsAsync((permits, 1));
-        _postRepoMock.Setup(r => r.GetPagedAsync(null, null, 1, 10000, default))
+        _postRepoMock.Setup(r => r.GetPagedAsync(null, null, 1, 10000, default, null))
             .ReturnsAsync((posts, 1));
 
         var handler = new GetAdminDashboardQueryHandler(

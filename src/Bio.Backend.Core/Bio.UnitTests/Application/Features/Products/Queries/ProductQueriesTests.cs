@@ -48,7 +48,7 @@ public class ProductQueriesTests
         var products = new List<Product> { CreateSampleProduct(Guid.NewGuid()) };
 
         _repoMock.Setup(r => r.GetManagedFilteredAsync(It.IsAny<Guid?>(), It.IsAny<bool?>(), It.IsAny<string>(), It.IsAny<int?>(),
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), default))
+            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), default, It.IsAny<bool?>()))
             .ReturnsAsync((products, 1));
 
         var handler = new GetManagedProductsQueryHandler(_repoMock.Object);

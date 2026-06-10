@@ -45,7 +45,7 @@ export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
                         Aprobar Permiso ABS
                     </DialogTitle>
                     <DialogDescription>
-                        Revisa los datos del permiso proporcionados por el emprendedor. Al aprobar, el permiso cambiará a estado "Activo".
+                        Revisa los datos del permiso proporcionados por el emprendedor. Al aprobar, el permiso cambiará a estado &quot;Activo&quot;.
                     </DialogDescription>
                 </DialogHeader>
 

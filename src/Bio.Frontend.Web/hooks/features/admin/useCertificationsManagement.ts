@@ -17,7 +17,7 @@ import {
 import { apiPost } from "@/services/api";
 import { CORE_ROUTES } from "@/services/routes/core-routes";
 import { ADMIN_PAGE_SIZE } from "@/lib/constants";
-import type { CertificationAdminFilters } from "@/types/admin";
+import type { CertificationAdminFilters, CertificationAdminItem, CreateCertificationRequestDTO } from "@/types/admin";
 
 export function useCertificationsList(filters: CertificationAdminFilters = {}) {
     const { data, isLoading, isError } = useQuery({
@@ -68,8 +68,8 @@ export function useRejectCertification() {
 export function useRequestCertification() {
     const qc = useQueryClient();
     return useMutation({
-        mutationFn: ({ productId, data }: { productId: string; data: any }) =>
-            apiPost<any, any>(CORE_ROUTES.CERTIFICATIONS.BY_PRODUCT(productId), data),
+        mutationFn: ({ productId, data }: { productId: string; data: CreateCertificationRequestDTO }) =>
+            apiPost<CreateCertificationRequestDTO, CertificationAdminItem>(CORE_ROUTES.CERTIFICATIONS.BY_PRODUCT(productId), data),
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: ["admin", "certifications"] });
             toast.success("Solicitud de certificación creada exitosamente.");

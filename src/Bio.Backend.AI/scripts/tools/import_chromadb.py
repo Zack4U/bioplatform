@@ -10,6 +10,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 ENV_PATH = PROJECT_ROOT / ".env"
 
+
 def main():
     if ENV_PATH.exists():
         load_dotenv(ENV_PATH)
@@ -90,6 +91,7 @@ def main():
             sys.exit(1)
 
     print("¡Importación de semilla completada con éxito!")
+
 
 if __name__ == "__main__":
     main()

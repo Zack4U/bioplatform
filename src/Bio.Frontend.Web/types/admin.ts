@@ -691,6 +691,18 @@ export interface CertificationAdminFilters {
     pageSize?: number;
 }
 
+/** Maps to CreateCertificationRequestCommand — entrepreneur certification request payload */
+export interface CreateCertificationRequestDTO {
+    name: string;
+    certificationType: string;
+    issuingBody: string;
+    certificateNumber?: string;
+    issuedAt: string;
+    expiresAt?: string;
+    verificationCode?: string;
+    documentUrl?: string;
+}
+
 export interface PlatformRequestFilters {
     type?: string;
     status?: string;

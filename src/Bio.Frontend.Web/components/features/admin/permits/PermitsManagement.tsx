@@ -3,7 +3,7 @@
  * PermitsManagement — ABS Permits admin. Connected to real API.
  * Includes create, detail view, revoke, and PDF document upload.
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/store/auth-store";
 import { StatusBadge, getPermitStatusVariant } from "@/components/common";
@@ -20,12 +20,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ABS_PERMIT_STATUS, ABS_PERMIT_STATUS_LABELS, translateLabel } from "@/lib/constants";
 import type { PermitAdminItem } from "@/types/admin";
-import { CheckCircle2, Eye, FileText, Plus, Send, Shield, XCircle, ExternalLink } from "lucide-react";
+import { CheckCircle2, Eye, FileText, Send, Shield, XCircle, ExternalLink } from "lucide-react";
 import {
     usePermitsList, useEntrepreneurPermitsList, useRevokePermit, useUploadPermitDocument,
     useCancelAbsPermitRequest, useRejectAbsPermit,
 } from "@/hooks/features/admin/usePermitsManagement";
-import { PermitFormDialog } from "./PermitFormDialog";
 import { PermitRequestDialog } from "./PermitRequestDialog";
 import { ApprovePermitDialog } from "./ApprovePermitDialog";
 
@@ -54,7 +53,6 @@ export function PermitsManagement() {
     const [page, setPage] = useState(1);
     const [selected, setSelected] = useState<PermitAdminItem | null>(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
-    const [isFormOpen, setIsFormOpen] = useState(false);
     const [isRequestOpen, setIsRequestOpen] = useState(false);
     const [revokeTarget, setRevokeTarget] = useState<PermitAdminItem | null>(null);
     const [cancelTarget, setCancelTarget] = useState<PermitAdminItem | null>(null);
@@ -79,7 +77,10 @@ export function PermitsManagement() {
     );
 
     const isLoading = isEntrepreneur ? isEntrepreneurLoading : isAdminLoading;
-    const items = isEntrepreneur ? (entrepreneurPermits ?? []) : (adminData?.items ?? []);
+    const items = useMemo(
+        () => (isEntrepreneur ? (entrepreneurPermits ?? []) : (adminData?.items ?? [])),
+        [isEntrepreneur, entrepreneurPermits, adminData]
+    );
     const totalPages = isEntrepreneur ? 1 : (adminData?.totalPages ?? 1);
 
     // Deep-link: if the URL contains ?permitId=, auto-open that permit's detail dialog.
@@ -89,6 +90,7 @@ export function PermitsManagement() {
         if (!permitId) return;
         const found = items.find((p) => p.id === permitId);
         if (found) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setSelected(found);
             setIsDetailOpen(true);
             setDeepLinked(true);

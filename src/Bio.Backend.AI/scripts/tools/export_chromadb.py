@@ -10,6 +10,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 ENV_PATH = PROJECT_ROOT / ".env"
 
+
 def main():
     if ENV_PATH.exists():
         load_dotenv(ENV_PATH)
@@ -84,6 +85,7 @@ def main():
     except Exception as e:
         print(f"[ERROR] No se pudo guardar el archivo: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
