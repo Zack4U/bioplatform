@@ -258,6 +258,12 @@ public record AbsPermitRequestDTO
     public Guid SpeciesId { get; init; }
     /// <summary>Entrepreneur's justification for requesting access to this species' genetic resources.</summary>
     public string? Justification { get; init; }
+    public string ResolutionNumber { get; init; } = string.Empty;
+    public DateTime EmissionDate { get; init; }
+    public DateTime ExpirationDate { get; init; }
+    public string GrantingAuthority { get; init; } = string.Empty;
+    public string? LegalFramework { get; init; }
+    public string? DocumentUrl { get; init; }
 }
 
 public record ApproveAbsPermitDTO

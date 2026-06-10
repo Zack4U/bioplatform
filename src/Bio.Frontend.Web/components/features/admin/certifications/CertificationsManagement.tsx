@@ -25,6 +25,7 @@ import {
 } from "@/hooks/features/admin/useCertificationsManagement";
 import type { CertificationAdminItem } from "@/types/admin";
 import { BadgeCheck, Check, Eye, FileText, X } from "lucide-react";
+import { RequestCertificationDialog } from "./RequestCertificationDialog";
 
 const CERT_STATUS_LABELS: Record<string, string> = {
     pending: "Pendiente",
@@ -62,12 +63,14 @@ const columns: ColumnDef<CertificationAdminItem>[] = [
 export function CertificationsManagement() {
     const hasRole = useAuthStore((s) => s.hasRole);
     const canModerate = hasRole("ADMIN") || hasRole("AUTHORITY");
+    const isEntrepreneur = hasRole("ENTREPRENEUR");
 
     const [statusFilter, setStatusFilter] = useState("Pending");
     const [page, setPage] = useState(1);
     const [selected, setSelected] = useState<CertificationAdminItem | null>(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
     const [rejectReason, setRejectReason] = useState("");
+    const [isRequestOpen, setIsRequestOpen] = useState(false);
 
     const { certifications, totalPages, isLoading } = useCertificationsList({
         status: statusFilter && statusFilter !== "all" ? statusFilter : undefined,
@@ -84,9 +87,16 @@ export function CertificationsManagement() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Certificaciones</h1>
-                <p className="text-muted-foreground">Solicitudes de certificación de productos — aprobación y rechazo</p>
+            <div className="flex items-start justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Certificaciones</h1>
+                    <p className="text-muted-foreground">Solicitudes de certificación de productos — aprobación y rechazo</p>
+                </div>
+                {isEntrepreneur && (
+                    <Button onClick={() => setIsRequestOpen(true)}>
+                        <BadgeCheck className="mr-2 h-4 w-4" /> Solicitar Certificación
+                    </Button>
+                )}
             </div>
 
             <AdminDataTable
@@ -186,6 +196,8 @@ export function CertificationsManagement() {
                     )}
                 </DialogContent>
             </Dialog>
+
+            <RequestCertificationDialog open={isRequestOpen} onOpenChange={setIsRequestOpen} />
         </div>
     );
 }

@@ -150,7 +150,10 @@ function Section-apps {
     docker @Compose up -d --build backend-core ai-service frontend-web nginx
     Log 'Backend is seeding the scientific catalog on first boot (idempotent).'
     Log 'Follow progress:  docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend-core'
+    Log 'Restarting Backend AI service (ai-service)...'
+    docker @Compose restart ai-service
 }
+
 
 function Section-verify {
     Log 'Section: verify'

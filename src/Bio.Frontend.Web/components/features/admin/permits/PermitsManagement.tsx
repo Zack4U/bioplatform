@@ -125,13 +125,9 @@ export function PermitsManagement() {
                     <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Permisos ABS</h1>
                     <p className="text-muted-foreground">Acceso a recursos genéticos — Protocolo de Nagoya</p>
                 </div>
-                {isEntrepreneur ? (
+                {isEntrepreneur && (
                     <Button onClick={() => setIsRequestOpen(true)}>
                         <Send className="mr-2 h-4 w-4" /> Solicitar Permiso
-                    </Button>
-                ) : (
-                    <Button onClick={() => setIsFormOpen(true)}>
-                        <Plus className="mr-2 h-4 w-4" /> Nuevo Permiso
                     </Button>
                 )}
             </div>
@@ -265,14 +261,7 @@ export function PermitsManagement() {
                 </DialogContent>
             </Dialog>
 
-            {/* Create dialog — admin/authority only */}
-            {!isEntrepreneur && (
-                <PermitFormDialog
-                    open={isFormOpen}
-                    onOpenChange={setIsFormOpen}
-                    entrepreneurId={undefined}
-                />
-            )}
+
 
             {/* Request dialog — entrepreneur only */}
             {isEntrepreneur && (

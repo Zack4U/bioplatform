@@ -364,7 +364,7 @@ public class SpeciesController : ControllerBase
     /// Restricted to Admin and Environmental Authority. Researchers have read-only AI access.
     /// </summary>
     [HttpPost("{speciesId:guid}/images/{imageId:guid}/validate")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Researcher}")]
     [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ValidateImage(
@@ -380,7 +380,7 @@ public class SpeciesController : ControllerBase
     /// Restricted to Admin and Environmental Authority. Researchers have read-only AI access.
     /// </summary>
     [HttpPost("{speciesId:guid}/images/{imageId:guid}/reject")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Researcher}")]
     [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> RejectImage(

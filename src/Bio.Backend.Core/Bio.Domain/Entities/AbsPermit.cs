@@ -62,22 +62,29 @@ public class AbsPermit
     /// Creates a Pending access request submitted by an entrepreneur.
     /// Legal permit fields (resolution, dates, authority) are filled in on approval.
     /// </summary>
-    public static AbsPermit CreateRequest(Guid entrepreneurId, Guid speciesId, string? justification)
+    public static AbsPermit CreateRequest(
+        Guid entrepreneurId,
+        Guid speciesId,
+        string? justification,
+        string resolutionNumber,
+        DateTime emissionDate,
+        DateTime expirationDate,
+        string grantingAuthority,
+        string? legalFramework,
+        string? documentUrl)
     {
-        var now = DateTime.UtcNow;
-        return new AbsPermit
-        {
-            Id = Guid.NewGuid(),
-            EntrepreneurId = entrepreneurId,
-            SpeciesId = speciesId,
-            Status = "Pending",
-            RequestedAt = now,
-            Justification = justification,
-            ResolutionNumber = string.Empty,
-            GrantingAuthority = string.Empty,
-            EmissionDate = now,
-            ExpirationDate = now,
-        };
+        var permit = new AbsPermit(
+            entrepreneurId,
+            speciesId,
+            resolutionNumber,
+            emissionDate,
+            expirationDate,
+            grantingAuthority,
+            legalFramework,
+            documentUrl);
+        permit.Status = "Pending";
+        permit.Justification = justification;
+        return permit;
     }
 
     /// <summary>

@@ -231,6 +231,12 @@ export interface PermitAdminItem {
 export interface AbsPermitRequestPayload {
     speciesId: string;
     justification?: string | null;
+    resolutionNumber: string;
+    emissionDate: string;
+    expirationDate: string;
+    grantingAuthority: string;
+    legalFramework?: string | null;
+    documentUrl?: string | null;
 }
 
 /** Payload to approve a Pending request — fills official resolution data */

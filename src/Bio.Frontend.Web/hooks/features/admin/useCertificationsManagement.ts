@@ -14,6 +14,8 @@ import {
     approveCertification,
     rejectCertification,
 } from "@/services/admin-service";
+import { apiPost } from "@/services/api";
+import { CORE_ROUTES } from "@/services/routes/core-routes";
 import { ADMIN_PAGE_SIZE } from "@/lib/constants";
 import type { CertificationAdminFilters } from "@/types/admin";
 
@@ -60,5 +62,18 @@ export function useRejectCertification() {
             toast.success("Certificación rechazada.");
         },
         onError: () => toast.error("No se pudo rechazar la certificación."),
+    });
+}
+
+export function useRequestCertification() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: ({ productId, data }: { productId: string; data: any }) =>
+            apiPost<any, any>(CORE_ROUTES.CERTIFICATIONS.BY_PRODUCT(productId), data),
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ["admin", "certifications"] });
+            toast.success("Solicitud de certificación creada exitosamente.");
+        },
+        onError: () => toast.error("Error al crear la solicitud de certificación."),
     });
 }

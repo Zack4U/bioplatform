@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Constants;
 using Bio.Domain.Interfaces;
 using MediatR;
 
@@ -10,7 +11,7 @@ namespace Bio.Application.Features.Requests.Queries;
 /// Sources: ABS permits (pending/suspended), species images (unvalidated),
 /// user accounts (unverified), product certifications (active/review).
 /// </summary>
-public record GetPlatformRequestsQuery(PlatformRequestFilterParams Filters)
+public record GetPlatformRequestsQuery(PlatformRequestFilterParams Filters, string? UserRole = null)
     : IRequest<PaginatedResult<PlatformRequestDTO>>;
 
 public class GetPlatformRequestsQueryHandler
@@ -94,11 +95,18 @@ public class GetPlatformRequestsQueryHandler
             }
         }
 
-        // ── Scope to own requests (Entrepreneur/Researcher — set server-side) ─
+        // ── Scope to own requests (Entrepreneur sees only own; Researcher sees own except they also see ALL pending image_validation) ─
         if (filters.RequesterId.HasValue)
         {
             var requesterId = filters.RequesterId.Value.ToString();
-            allRequests = allRequests.Where(r => r.RequesterId == requesterId).ToList();
+            if (request.UserRole == RoleNames.Researcher)
+            {
+                allRequests = allRequests.Where(r => r.Type == "image_validation" || r.RequesterId == requesterId).ToList();
+            }
+            else
+            {
+                allRequests = allRequests.Where(r => r.RequesterId == requesterId).ToList();
+            }
         }
 
         // ── Apply search filter ──────────────────────────────────────────────

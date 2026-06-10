@@ -171,6 +171,8 @@ section_apps() {
   $COMPOSE up -d --build backend-core ai-service frontend-web nginx
   log "Backend is seeding the scientific catalog on first boot (idempotent)."
   log "Follow progress:  $COMPOSE logs -f backend-core"
+  log "Restarting Backend AI service (ai-service)..."
+  $COMPOSE restart ai-service
 }
 
 section_verify() {

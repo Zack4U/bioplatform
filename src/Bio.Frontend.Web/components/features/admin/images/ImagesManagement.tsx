@@ -47,10 +47,11 @@ export function ImagesManagement() {
         pageSize,
     });
 
-    // Researchers have read-only access to AI sections. Only Admin / Authority moderate.
+    // Researchers, Admins, and Authorities can moderate images.
     const isAdmin = useHasRole("ADMIN");
     const isAuthority = useHasRole("AUTHORITY");
-    const canModerate = isAdmin || isAuthority;
+    const isResearcher = useHasRole("RESEARCHER");
+    const canModerate = isAdmin || isAuthority || isResearcher;
 
     const validateImage = useValidateImage(speciesId ?? "");
     const rejectImage = useRejectImage(speciesId ?? "");

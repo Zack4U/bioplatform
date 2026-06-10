@@ -110,7 +110,16 @@ public class RequestAbsPermitCommandHandler : IRequestHandler<RequestAbsPermitCo
 
     public async Task<AbsPermitResponseDTO> Handle(RequestAbsPermitCommand request, CancellationToken ct)
     {
-        var permit = AbsPermit.CreateRequest(request.EntrepreneurId, request.Dto.SpeciesId, request.Dto.Justification);
+        var permit = AbsPermit.CreateRequest(
+            request.EntrepreneurId,
+            request.Dto.SpeciesId,
+            request.Dto.Justification,
+            request.Dto.ResolutionNumber,
+            request.Dto.EmissionDate,
+            request.Dto.ExpirationDate,
+            request.Dto.GrantingAuthority,
+            request.Dto.LegalFramework,
+            request.Dto.DocumentUrl);
         await _repo.AddAsync(permit, ct);
         await _uow.SaveChangesAsync(ct);
         return CreateAbsPermitCommandHandler.MapToResponse(permit);

@@ -76,6 +76,7 @@ export function RequestsManagement() {
     const { user } = useAuthStore();
     const isReviewer = user?.roles?.some((r) => r === "ADMIN" || r === "AUTHORITY") ?? false;
     const isResearcher = user?.roles?.some((r) => r === "RESEARCHER") ?? false;
+    const isReviewerOrResearcher = isReviewer || isResearcher;
 
     const [search, setSearch] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
@@ -133,9 +134,9 @@ export function RequestsManagement() {
         <div className="space-y-6">
             <div className="flex items-start justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{isReviewer ? "Solicitudes" : "Mis Solicitudes"}</h1>
+                    <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{isReviewerOrResearcher ? "Solicitudes" : "Mis Solicitudes"}</h1>
                     <p className="text-muted-foreground">
-                        {isReviewer
+                        {isReviewerOrResearcher
                             ? "Centro de solicitudes pendientes de revisión en la plataforma"
                             : "Estado de tus solicitudes enviadas (permisos ABS, validación de imágenes, etc.)"}
                     </p>
@@ -173,7 +174,7 @@ export function RequestsManagement() {
                 onSearchChange={(v) => { setSearch(v); setPage(1); }}
                 searchPlaceholder="Buscar por solicitante o asunto..."
                 currentPage={page} totalPages={totalPages} onPageChange={setPage}
-                emptyTitle={isReviewer ? "No hay solicitudes pendientes" : "No has enviado solicitudes"} emptyIcon={<FileText className="h-6 w-6" />}
+                emptyTitle={isReviewerOrResearcher ? "No hay solicitudes pendientes" : "No has enviado solicitudes"} emptyIcon={<FileText className="h-6 w-6" />}
                 toolbar={
                     <div className="flex gap-2">
                         <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1); }}>
