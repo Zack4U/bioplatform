@@ -51,4 +51,20 @@ public class AbsPermitQueriesTests
         await FluentActions.Awaiting(() => handler.Handle(new GetAbsPermitByIdQuery(id), default))
             .Should().ThrowAsync<NotFoundException>();
     }
+
+    [Fact]
+    public async Task GetAllAbsPermits_ShouldReturnPaginatedList()
+    {
+        var permits = new List<AbsPermit> { new(Guid.NewGuid(), Guid.NewGuid(), "RES", DateTime.UtcNow, DateTime.UtcNow.AddYears(1), "Auth") };
+
+        _repoMock.Setup(r => r.GetAllPagedAsync(null, null, 1, 10, default))
+            .ReturnsAsync((permits, 1));
+
+        var handler = new GetAllAbsPermitsQueryHandler(_repoMock.Object);
+        var result = await handler.Handle(new GetAllAbsPermitsQuery(null, null, 1, 10), default);
+
+        result.Should().NotBeNull();
+        result.TotalCount.Should().Be(1);
+        result.Items.Should().HaveCount(1);
+    }
 }

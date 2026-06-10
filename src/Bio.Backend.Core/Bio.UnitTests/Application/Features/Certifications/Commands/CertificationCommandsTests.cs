@@ -100,4 +100,57 @@ public class CertificationCommandsTests
         _certRepoMock.Verify(r => r.DeleteAsync(cert, default), Times.Once);
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
     }
+
+    // ── APPROVE / REJECT ───────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task ApproveCertification_WhenFound_ShouldApprove()
+    {
+        var cert = new Certification(Guid.NewGuid(), "Orgánico", "Type", "Body", DateTime.UtcNow, null, null, null, null, null);
+        _certRepoMock.Setup(r => r.GetByIdAsync(cert.Id, default)).ReturnsAsync(cert);
+
+        var handler = new ApproveCertificationCommandHandler(_certRepoMock.Object, _uowMock.Object);
+        var result = await handler.Handle(new ApproveCertificationCommand(cert.Id, Guid.NewGuid()), default);
+
+        result.Status.Should().Be("Approved");
+        _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
+    }
+
+    [Fact]
+    public async Task ApproveCertification_WhenNotFound_ShouldThrowNotFound()
+    {
+        var certId = Guid.NewGuid();
+        _certRepoMock.Setup(r => r.GetByIdAsync(certId, default)).ReturnsAsync((Certification?)null);
+
+        var handler = new ApproveCertificationCommandHandler(_certRepoMock.Object, _uowMock.Object);
+
+        await FluentActions.Awaiting(() => handler.Handle(new ApproveCertificationCommand(certId, Guid.NewGuid()), default))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Fact]
+    public async Task RejectCertification_WhenFound_ShouldReject()
+    {
+        var cert = new Certification(Guid.NewGuid(), "Orgánico", "Type", "Body", DateTime.UtcNow, null, null, null, null, null);
+        _certRepoMock.Setup(r => r.GetByIdAsync(cert.Id, default)).ReturnsAsync(cert);
+
+        var handler = new RejectCertificationCommandHandler(_certRepoMock.Object, _uowMock.Object);
+        var result = await handler.Handle(new RejectCertificationCommand(cert.Id, Guid.NewGuid(), "Documentación inválida"), default);
+
+        result.Status.Should().Be("Rejected");
+        result.RejectionReason.Should().Be("Documentación inválida");
+        _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
+    }
+
+    [Fact]
+    public async Task RejectCertification_WhenNotFound_ShouldThrowNotFound()
+    {
+        var certId = Guid.NewGuid();
+        _certRepoMock.Setup(r => r.GetByIdAsync(certId, default)).ReturnsAsync((Certification?)null);
+
+        var handler = new RejectCertificationCommandHandler(_certRepoMock.Object, _uowMock.Object);
+
+        await FluentActions.Awaiting(() => handler.Handle(new RejectCertificationCommand(certId, Guid.NewGuid(), "x"), default))
+            .Should().ThrowAsync<NotFoundException>();
+    }
 }
