@@ -24,7 +24,8 @@
                     "guides/development",
                     "guides/scripts",
                     "guides/background-jobs",
-                    "guides/pr-checklist"
+                    "guides/pr-checklist",
+                    "guides/funcionalidades"
                 ]
             },
             {
