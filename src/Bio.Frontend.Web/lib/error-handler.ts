@@ -28,9 +28,15 @@ export function parseError(error: unknown): ParsedError {
 
         if (response?.data) {
             const apiError = response.data;
+            let detail = apiError.detail || axiosError.message;
+            if (detail.includes("No active ABS permit found for this species")) {
+                detail = "No se encontró un permiso ABS activo para esta especie. La creación o modificación del producto requiere un permiso válido bajo el Protocolo de Nagoya / Decisión 391.";
+            } else if (detail.includes("This product has not been validated yet")) {
+                detail = "Este producto aún no ha sido validado. Espera a que sea aprobado antes de activarlo.";
+            }
             return {
                 title: apiError.title || getDefaultTitle(response.status),
-                detail: apiError.detail || axiosError.message,
+                detail,
                 status: response.status,
                 fieldErrors: apiError.errors,
             };

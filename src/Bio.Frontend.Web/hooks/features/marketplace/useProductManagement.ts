@@ -54,6 +54,8 @@ const PARAM_MAP = {
   sortBy: "ordenar",
   sortOrder: "dir",
   isActive: "activo",
+  isApproved: "aprobado",
+  productId: "productId",
 } as const;
 
 function urlToManageParams(urlParams: URLSearchParams): ProductSearchParams {
@@ -90,6 +92,17 @@ function urlToManageParams(urlParams: URLSearchParams): ProductSearchParams {
   if (isActive === "true") params.isActive = true;
   if (isActive === "false") params.isActive = false;
 
+  const isApproved = urlParams.get(PARAM_MAP.isApproved);
+  if (isApproved === "true") params.isApproved = true;
+  if (isApproved === "false") params.isApproved = false;
+
+  // Requests queue redirects with filter=pending
+  const filter = urlParams.get("filter");
+  if (filter === "pending") params.isApproved = false;
+
+  const productId = urlParams.get(PARAM_MAP.productId);
+  if (productId) params.productId = productId;
+
   return params;
 }
 
@@ -105,6 +118,10 @@ function manageParamsToUrl(params: ProductSearchParams): string {
     urlParams.set(PARAM_MAP.sortOrder, params.sortOrder);
   if (params.isActive !== undefined)
     urlParams.set(PARAM_MAP.isActive, String(params.isActive));
+  if (params.isApproved !== undefined)
+    urlParams.set(PARAM_MAP.isApproved, String(params.isApproved));
+  if (params.productId)
+    urlParams.set(PARAM_MAP.productId, params.productId);
 
   const qs = urlParams.toString();
   return qs ? `?${qs}` : "";
@@ -168,12 +185,19 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
   });
 
   // Derived pagination
-  const products = data?.items ?? [];
-  const totalCount = data?.totalCount ?? 0;
+  const allProducts = data?.items ?? [];
+  const products = searchParams.productId
+    ? allProducts.filter((p) => p.id === searchParams.productId)
+    : allProducts;
+  const totalCount = searchParams.productId
+    ? products.length
+    : (data?.totalCount ?? 0);
   const currentPage = data?.page ?? 1;
-  const totalPages = data?.totalPages ?? 1;
-  const hasNextPage = data?.hasNextPage ?? false;
-  const hasPreviousPage = data?.hasPreviousPage ?? false;
+  const totalPages = searchParams.productId
+    ? 1
+    : (data?.totalPages ?? 1);
+  const hasNextPage = searchParams.productId ? false : (data?.hasNextPage ?? false);
+  const hasPreviousPage = searchParams.productId ? false : (data?.hasPreviousPage ?? false);
   const isEmpty = !isLoading && products.length === 0;
 
   // ── Invalidation helpers ───────────────────────────────────────────────

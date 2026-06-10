@@ -262,6 +262,8 @@ export interface ProductSearchParams {
   isActive?: boolean;
   /** Filter to only products that have at least one sustainability certification */
   hasCertification?: boolean;
+  isApproved?: boolean;
+  productId?: string;
 }
 
 // ── Checkout / Addresses ─────────────────────────────────────────────────────

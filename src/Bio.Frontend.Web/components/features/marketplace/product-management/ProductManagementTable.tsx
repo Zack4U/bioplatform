@@ -232,11 +232,8 @@ function AdminProductRow({ product, onActivate, onDeactivate, onApprove, onRejec
       <TableCell>
         {pending ? (
           product.rejectionReason ? (
-            <div className="flex flex-col gap-1">
+            <div title={product.rejectionReason}>
               <StatusBadge label="Rechazado" variant="destructive" />
-              <span className="text-[10px] text-destructive max-w-[120px] truncate" title={product.rejectionReason}>
-                {product.rejectionReason}
-              </span>
             </div>
           ) : (
             <StatusBadge label="Pendiente" variant="warning" />
@@ -306,11 +303,7 @@ function AdminProductRow({ product, onActivate, onDeactivate, onApprove, onRejec
                 size="icon"
                 aria-label={`Desaprobar ${product.name}`}
                 title="Desaprobar (Anular Aprobación)"
-                onClick={() => {
-                  if (window.confirm("¿Está seguro de que desea desaprobar este producto? Esto anulará la aprobación y lo desactivará.")) {
-                    onUnapprove?.(product.id);
-                  }
-                }}
+                onClick={() => onUnapprove?.(product.id)}
               >
                 <RotateCcw className="h-4 w-4 text-amber-600" aria-hidden="true" />
               </Button>
@@ -422,11 +415,8 @@ function EntrepreneurProductRow({
       <TableCell>
         {!product.isApproved ? (
           product.rejectionReason ? (
-            <div className="flex flex-col gap-1">
+            <div title={product.rejectionReason}>
               <StatusBadge label="Rechazado" variant="destructive" />
-              <span className="text-[10px] text-destructive max-w-[120px] truncate" title={product.rejectionReason}>
-                {product.rejectionReason}
-              </span>
             </div>
           ) : (
             <StatusBadge label="Pendiente" variant="warning" />

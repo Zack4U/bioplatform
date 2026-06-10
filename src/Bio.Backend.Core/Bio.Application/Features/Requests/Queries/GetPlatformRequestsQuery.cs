@@ -142,7 +142,7 @@ public class GetPlatformRequestsQueryHandler
 
             foreach (var p in products)
             {
-                var mappedStatus = "pending";
+                var mappedStatus = !string.IsNullOrEmpty(p.RejectionReason) ? "rejected" : "pending";
                 if (filters.Status != null && mappedStatus != filters.Status) continue;
 
                 allRequests.Add(new PlatformRequestDTO(
