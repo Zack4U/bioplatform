@@ -138,6 +138,10 @@ public class BioDbContext : DbContext
                   .OnDelete(DeleteBehavior.SetNull);
 
             entity.Property(e => e.RowVersion).IsRowVersion();
+            entity.Property(e => e.RejectionReason).HasMaxLength(1000);
+
+            // Soft delete: globally hide deleted products from every query.
+            entity.HasQueryFilter(e => !e.IsDeleted);
         });
 
         modelBuilder.Entity<ProductImage>(entity =>
@@ -150,6 +154,8 @@ public class BioDbContext : DbContext
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Cascade);
             entity.HasIndex(e => e.ProductId);
+            // Mirror the Product soft-delete filter so orphaned images never surface.
+            entity.HasQueryFilter(e => e.Product == null || !e.Product.IsDeleted);
         });
 
         modelBuilder.Entity<ProductReview>(entity =>
@@ -168,6 +174,8 @@ public class BioDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(e => e.ReportedById)
                   .OnDelete(DeleteBehavior.NoAction);
+            // Mirror the Product soft-delete filter.
+            entity.HasQueryFilter(e => e.Product == null || !e.Product.IsDeleted);
         });
 
         modelBuilder.Entity<Certification>(entity =>
@@ -181,12 +189,16 @@ public class BioDbContext : DbContext
             entity.Property(e => e.DocumentUrl).HasMaxLength(500);
             entity.Property(e => e.LogoUrl).HasMaxLength(500);
             entity.Property(e => e.VerificationCode).HasMaxLength(100);
+            entity.Property(e => e.RejectionReason).HasMaxLength(1000);
             entity.HasOne(e => e.Product)
                   .WithMany(p => p.Certifications)
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Cascade);
             entity.HasIndex(e => e.ProductId);
             entity.HasIndex(e => e.CertificationType);
+            entity.HasIndex(e => e.Status);
+            // Mirror the Product soft-delete filter.
+            entity.HasQueryFilter(e => e.Product == null || !e.Product.IsDeleted);
         });
 
         // =====================================================================
@@ -239,6 +251,9 @@ public class BioDbContext : DbContext
                   .WithMany(p => p.OrderItems)
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Restrict);
+            // Mirror the Product soft-delete filter so historical order items are
+            // still visible even when the product is soft-deleted.
+            entity.HasQueryFilter(e => e.Product == null || !e.Product.IsDeleted);
         });
 
         // =====================================================================
@@ -273,6 +288,8 @@ public class BioDbContext : DbContext
                   .WithMany(p => p.TraceabilityBatches)
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Cascade);
+            // Mirror the Product soft-delete filter.
+            entity.HasQueryFilter(e => e.Product == null || !e.Product.IsDeleted);
         });
 
         // =====================================================================
@@ -335,6 +352,8 @@ public class BioDbContext : DbContext
                   .HasForeignKey(e => e.ProductId)
                   .OnDelete(DeleteBehavior.Cascade);
             entity.HasIndex(e => new { e.CartId, e.ProductId }).IsUnique(); // No duplicate products per cart
+            // Mirror the Product soft-delete filter so deleted products are auto-removed from carts.
+            entity.HasQueryFilter(e => e.Product == null || !e.Product.IsDeleted);
         });
 
         modelBuilder.Entity<Notification>(entity =>

@@ -52,7 +52,14 @@ public static partial class BioDbContextMockSeeder
                 Composition = p.CompositionJson,
                 StockQuantity = p.Stock,
                 Sku = p.Sku,
-                IsActive = true, // already approved & visible in the marketplace
+                IsActive = true,       // already approved & visible in the marketplace
+                IsApproved = true,     // pre-approved seed data
+                ApprovedAt = (DateTime?)ctx.SeedDate,
+                ApprovedById = (Guid?)MockSeedContext.AuthorityId,
+                RejectionReason = (string?)null,
+                IsDeleted = false,
+                DeletedAt = (DateTime?)null,
+                UpdatedAt = (DateTime?)null,
                 ThumbnailUrl = p.Gallery[0],
                 CreatedAt = ctx.SeedDate,
             });
