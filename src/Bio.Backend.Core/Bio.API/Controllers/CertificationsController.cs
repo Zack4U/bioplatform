@@ -43,6 +43,39 @@ public class CertificationsController : ControllerBase
         => Ok(await _mediator.Send(new GetCertificationByIdQuery(certId), ct));
 
     /// <summary>
+    /// Moderation list of certifications. Admin/Authority see all; an entrepreneur sees only
+    /// certifications on their own products. Optional ?status= filter (e.g. Pending).
+    /// </summary>
+    [HttpGet("certifications/manage")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Entrepreneur}")]
+    [ProducesResponseType(typeof(PaginatedResult<CertificationManagedListItemDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetManagedCertifications(
+        [FromQuery] string? status,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 12,
+        CancellationToken ct = default)
+    {
+        Guid? entrepreneurId = (ActorRole == RoleNames.Admin || ActorRole == RoleNames.EnvironmentalAuthority)
+            ? null : ActorId;
+        return Ok(await _mediator.Send(new GetManagedCertificationsQuery(status, entrepreneurId, page, pageSize), ct));
+    }
+
+    /// <summary>Approves a pending certification request. Admin / Authority only.</summary>
+    [HttpPost("certifications/{certId:guid}/approve")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    [ProducesResponseType(typeof(CertificationResponseDTO), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ApproveCertification(Guid certId, CancellationToken ct = default)
+        => Ok(await _mediator.Send(new ApproveCertificationCommand(certId, ActorId), ct));
+
+    /// <summary>Rejects a pending certification request. Admin / Authority only.</summary>
+    [HttpPost("certifications/{certId:guid}/reject")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    [ProducesResponseType(typeof(CertificationResponseDTO), StatusCodes.Status200OK)]
+    public async Task<IActionResult> RejectCertification(
+        Guid certId, [FromBody] RejectReasonDTO dto, CancellationToken ct = default)
+        => Ok(await _mediator.Send(new RejectCertificationCommand(certId, ActorId, dto.Reason), ct));
+
+    /// <summary>
     /// Adds a certification to a product.
     /// Restricted to ENTREPRENEUR (must own the product) and ADMIN.
     /// </summary>

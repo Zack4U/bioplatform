@@ -23,6 +23,17 @@ public class Product
     public string? ThumbnailUrl { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
+    // === Approval workflow (mirrors AbsPermit) ===
+    /// <summary>True once an ADMIN/AUTHORITY has validated this product. Until then it is a pending "Solicitud".</summary>
+    public bool IsApproved { get; private set; } = false;
+    public DateTime? ApprovedAt { get; private set; }
+    public Guid? ApprovedById { get; private set; }
+    public string? RejectionReason { get; private set; }
+
+    // === Soft delete ===
+    public bool IsDeleted { get; private set; } = false;
+    public DateTime? DeletedAt { get; private set; }
+
     /// <summary>Row version token used by EF Core for optimistic concurrency — prevents stock race conditions.</summary>
     public byte[]? RowVersion { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
@@ -93,6 +104,43 @@ public class Product
         if (sku != null) Sku = sku;
         if (composition != null) Composition = composition;
         if (thumbnailUrl != null) ThumbnailUrl = thumbnailUrl;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Approves the product for sale. Sets it active so it appears in the public marketplace.
+    /// </summary>
+    public void Approve(Guid approverId)
+    {
+        IsApproved = true;
+        ApprovedById = approverId;
+        ApprovedAt = DateTime.UtcNow;
+        RejectionReason = null;
+        IsActive = true;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Rejects a pending product. Keeps it inactive and records the reason.
+    /// </summary>
+    public void Reject(Guid approverId, string reason)
+    {
+        IsApproved = false;
+        ApprovedById = approverId;
+        ApprovedAt = DateTime.UtcNow;
+        RejectionReason = reason;
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Soft-deletes the product: hidden from all listings but retained for audit/orders.
+    /// </summary>
+    public void SoftDelete()
+    {
+        IsDeleted = true;
+        DeletedAt = DateTime.UtcNow;
+        IsActive = false;
         UpdatedAt = DateTime.UtcNow;
     }
 

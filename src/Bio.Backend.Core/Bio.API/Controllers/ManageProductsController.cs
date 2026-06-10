@@ -27,14 +27,22 @@ public class ManageProductsController : ControllerBase
     private string GetUserRole() => User.FindFirst(ClaimTypes.Role)?.Value ?? User.FindFirst("role")?.Value ?? "";
 
     [HttpGet]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Entrepreneur}")]
-    public async Task<IActionResult> GetManaged([FromQuery(Name = "q")] string? q, [FromQuery] ProductFilterParams filters)
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Entrepreneur}")]
+    public async Task<IActionResult> GetManaged(
+        [FromQuery(Name = "q")] string? q,
+        [FromQuery] bool? isActive,
+        [FromQuery] bool? isApproved,
+        [FromQuery] ProductFilterParams filters)
     {
         var role = GetUserRole();
-        Guid? entrepreneurId = role == RoleNames.Admin ? null : GetUserId();
+        // Admin + Authority see every product; entrepreneurs see only their own.
+        Guid? entrepreneurId = (role == RoleNames.Admin || role == RoleNames.EnvironmentalAuthority)
+            ? null : GetUserId();
         return Ok(await _mediator.Send(new GetManagedProductsQuery
         {
             EntrepreneurId = entrepreneurId,
+            IsActive = isActive,
+            IsApproved = isApproved,
             Query = q,
             CategoryId = filters.CategoryId,
             SortBy = filters.SortBy,
@@ -65,19 +73,37 @@ public class ManageProductsController : ControllerBase
         return NoContent();
     }
 
+    // Owner entrepreneurs may toggle their own APPROVED products; Admin/Authority may toggle any.
     [HttpPost("{id:guid}/activate")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Entrepreneur}")]
     public async Task<IActionResult> Activate(Guid id)
     {
-        await _mediator.Send(new ActivateProductCommand(id));
+        await _mediator.Send(new ActivateProductCommand(id, GetUserId(), GetUserRole()));
         return NoContent();
     }
 
     [HttpPost("{id:guid}/deactivate")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Entrepreneur}")]
     public async Task<IActionResult> Deactivate(Guid id)
     {
-        await _mediator.Send(new DeactivateProductCommand(id));
+        await _mediator.Send(new DeactivateProductCommand(id, GetUserId(), GetUserRole()));
+        return NoContent();
+    }
+
+    // --- Product approval workflow (Admin / Authority only) ---
+    [HttpPost("{id:guid}/approve")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    public async Task<IActionResult> Approve(Guid id)
+    {
+        await _mediator.Send(new ApproveProductCommand(id, GetUserId()));
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}/reject")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    public async Task<IActionResult> Reject(Guid id, [FromBody] RejectReasonDTO dto)
+    {
+        await _mediator.Send(new RejectProductCommand(id, GetUserId(), dto.Reason));
         return NoContent();
     }
 

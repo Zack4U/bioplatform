@@ -16,12 +16,18 @@ public class Certification
     public string? CertificateNumber { get; private set; }
     public DateTime IssuedAt { get; private set; }
     public DateTime? ExpiresAt { get; private set; }
-    public string Status { get; private set; } = "Active";
+    /// <summary>Starts "Pending": entrepreneur requests, Admin/Authority approve.</summary>
+    public string Status { get; private set; } = "Pending";
     public string? DocumentUrl { get; private set; }
     public string? LogoUrl { get; private set; }
     public string? VerificationCode { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
+
+    // === Approval workflow (mirrors AbsPermit) ===
+    public Guid? ApprovedById { get; private set; }
+    public DateTime? ApprovedAt { get; private set; }
+    public string? RejectionReason { get; private set; }
 
     public Product Product { get; private set; } = null!;
 
@@ -72,6 +78,26 @@ public class Certification
         if (documentUrl != null) DocumentUrl = documentUrl;
         if (logoUrl != null) LogoUrl = logoUrl;
         if (verificationCode != null) VerificationCode = verificationCode;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>Approves the certification request (Admin/Authority).</summary>
+    public void Approve(Guid approverId)
+    {
+        Status = "Approved";
+        ApprovedById = approverId;
+        ApprovedAt = DateTime.UtcNow;
+        RejectionReason = null;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>Rejects the certification request (Admin/Authority).</summary>
+    public void Reject(Guid approverId, string reason)
+    {
+        Status = "Rejected";
+        ApprovedById = approverId;
+        ApprovedAt = DateTime.UtcNow;
+        RejectionReason = reason;
         UpdatedAt = DateTime.UtcNow;
     }
 }

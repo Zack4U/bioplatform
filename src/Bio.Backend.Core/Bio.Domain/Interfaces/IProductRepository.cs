@@ -28,10 +28,14 @@ public interface IProductRepository
         Guid? entrepreneurId = null, bool? isActive = null,
         string? query = null, int? categoryId = null,
         string sortBy = "createdAt", string sortOrder = "desc",
-        int page = 1, int pageSize = 12, CancellationToken ct = default);
+        int page = 1, int pageSize = 12, CancellationToken ct = default,
+        bool? isApproved = null);
 
     Task AddAsync(Product product, CancellationToken ct = default);
     Task<bool> ExistsBySlugExcludingIdAsync(string slug, Guid excludeId, CancellationToken ct = default);
+
+    /// <summary>Batch fetch products by id (with Category + Reviews) — used to enrich favourites.</summary>
+    Task<IReadOnlyList<Product>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
 
     /// <summary>Returns available filter metadata: categories, price range.</summary>
     Task<(IReadOnlyList<ProductCategory> Categories, decimal MinPrice, decimal MaxPrice, int TotalCount)> GetFilterMetaAsync(CancellationToken ct = default);

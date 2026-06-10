@@ -15,9 +15,10 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     private readonly IProductRepository _repo;
     private readonly IAbsPermitRepository _absRepo;
     private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
 
-    public CreateProductCommandHandler(IProductRepository repo, IAbsPermitRepository absRepo, IUnitOfWork uow)
-    { _repo = repo; _absRepo = absRepo; _uow = uow; }
+    public CreateProductCommandHandler(IProductRepository repo, IAbsPermitRepository absRepo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _absRepo = absRepo; _uow = uow; _cache = cache; }
 
     public async Task<ProductDetailDTO> Handle(CreateProductCommand request, CancellationToken ct)
     {
@@ -35,6 +36,11 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         await _repo.AddAsync(product, ct);
         await _uow.SaveChangesAsync(ct);
+
+        // Invalidate public list + filter-meta so admin/managed views and counts reflect the new product.
+        await Task.WhenAll(
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct),
+            _cache.RemoveAsync(CacheKeys.FilterMeta, ct));
 
         var created = await _repo.GetByIdWithDetailsAsync(product.Id, ct);
         return MapToDetail(created!);
@@ -117,20 +123,30 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
         if (request.ActorRole != "ADMIN" && product.EntrepreneurId != request.ActorId)
             throw new ForbiddenException("You can only delete your own products.");
 
-        product.Deactivate(); // Soft delete via deactivation
+        product.SoftDelete(); // Soft delete: hidden from all listings, retained for audit
         await _uow.SaveChangesAsync(ct);
 
         await Task.WhenAll(
             _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
             _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
-            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct));
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct),
+            _cache.RemoveAsync(CacheKeys.FilterMeta, ct));
 
         return Unit.Value;
     }
 }
 
+// === Helper: roles allowed to moderate any product regardless of ownership ===
+internal static class ProductRoles
+{
+    internal static bool IsModerator(string role) =>
+        role == "ADMIN" || role == "AUTHORITY";
+}
+
 // === Activate Product ===
-public record ActivateProductCommand(Guid Id) : IRequest<Unit>;
+// Moderators (Admin/Authority) may always toggle. An entrepreneur may toggle ONLY their own
+// product and ONLY once it has been approved.
+public record ActivateProductCommand(Guid Id, Guid ActorId, string ActorRole) : IRequest<Unit>;
 
 public class ActivateProductCommandHandler : IRequestHandler<ActivateProductCommand, Unit>
 {
@@ -145,6 +161,15 @@ public class ActivateProductCommandHandler : IRequestHandler<ActivateProductComm
     {
         var product = await _repo.GetByIdAsync(request.Id, ct)
             ?? throw new NotFoundException(nameof(Product), request.Id);
+
+        if (!ProductRoles.IsModerator(request.ActorRole))
+        {
+            if (product.EntrepreneurId != request.ActorId)
+                throw new ForbiddenException("You can only manage your own products.");
+            if (!product.IsApproved)
+                throw new ForbiddenException("This product has not been validated yet. Wait for approval before activating it.");
+        }
+
         product.Activate();
         await _uow.SaveChangesAsync(ct);
         await Task.WhenAll(
@@ -156,7 +181,7 @@ public class ActivateProductCommandHandler : IRequestHandler<ActivateProductComm
 }
 
 // === Deactivate Product ===
-public record DeactivateProductCommand(Guid Id) : IRequest<Unit>;
+public record DeactivateProductCommand(Guid Id, Guid ActorId, string ActorRole) : IRequest<Unit>;
 
 public class DeactivateProductCommandHandler : IRequestHandler<DeactivateProductCommand, Unit>
 {
@@ -171,7 +196,69 @@ public class DeactivateProductCommandHandler : IRequestHandler<DeactivateProduct
     {
         var product = await _repo.GetByIdAsync(request.Id, ct)
             ?? throw new NotFoundException(nameof(Product), request.Id);
+
+        if (!ProductRoles.IsModerator(request.ActorRole))
+        {
+            if (product.EntrepreneurId != request.ActorId)
+                throw new ForbiddenException("You can only manage your own products.");
+            if (!product.IsApproved)
+                throw new ForbiddenException("This product has not been validated yet.");
+        }
+
         product.Deactivate();
+        await _uow.SaveChangesAsync(ct);
+        await Task.WhenAll(
+            _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
+            _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct));
+        return Unit.Value;
+    }
+}
+
+// === Approve Product (Admin / Authority) ===
+public record ApproveProductCommand(Guid Id, Guid ApproverId) : IRequest<Unit>;
+
+public class ApproveProductCommandHandler : IRequestHandler<ApproveProductCommand, Unit>
+{
+    private readonly IProductRepository _repo;
+    private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
+
+    public ApproveProductCommandHandler(IProductRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
+
+    public async Task<Unit> Handle(ApproveProductCommand request, CancellationToken ct)
+    {
+        var product = await _repo.GetByIdAsync(request.Id, ct)
+            ?? throw new NotFoundException(nameof(Product), request.Id);
+        product.Approve(request.ApproverId);
+        await _uow.SaveChangesAsync(ct);
+        await Task.WhenAll(
+            _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
+            _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct),
+            _cache.RemoveAsync(CacheKeys.FilterMeta, ct));
+        return Unit.Value;
+    }
+}
+
+// === Reject Product (Admin / Authority) ===
+public record RejectProductCommand(Guid Id, Guid ApproverId, string Reason) : IRequest<Unit>;
+
+public class RejectProductCommandHandler : IRequestHandler<RejectProductCommand, Unit>
+{
+    private readonly IProductRepository _repo;
+    private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
+
+    public RejectProductCommandHandler(IProductRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
+
+    public async Task<Unit> Handle(RejectProductCommand request, CancellationToken ct)
+    {
+        var product = await _repo.GetByIdAsync(request.Id, ct)
+            ?? throw new NotFoundException(nameof(Product), request.Id);
+        product.Reject(request.ApproverId, request.Reason);
         await _uow.SaveChangesAsync(ct);
         await Task.WhenAll(
             _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),

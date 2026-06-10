@@ -38,3 +38,35 @@ public class GetCertificationByIdQueryHandler : IRequestHandler<GetCertification
         return CreateCertificationCommandHandler.MapToResponse(cert);
     }
 }
+
+// =============================================================================
+// MANAGED CERTIFICATIONS LIST (admin moderation / entrepreneur own)
+// =============================================================================
+
+public record GetManagedCertificationsQuery(
+    string? Status = null, Guid? EntrepreneurId = null, int Page = 1, int PageSize = 12)
+    : IRequest<PaginatedResult<CertificationManagedListItemDTO>>;
+
+public class GetManagedCertificationsQueryHandler
+    : IRequestHandler<GetManagedCertificationsQuery, PaginatedResult<CertificationManagedListItemDTO>>
+{
+    private readonly ICertificationRepository _repo;
+    public GetManagedCertificationsQueryHandler(ICertificationRepository repo) => _repo = repo;
+
+    public async Task<PaginatedResult<CertificationManagedListItemDTO>> Handle(
+        GetManagedCertificationsQuery request, CancellationToken ct)
+    {
+        var (items, total) = await _repo.GetManagedAsync(
+            request.Status, request.EntrepreneurId, request.Page, request.PageSize, ct);
+
+        var dtos = items.Select(c => new CertificationManagedListItemDTO(
+            c.Id, c.ProductId, c.Product?.Name ?? "", c.Product?.Slug ?? "",
+            c.Name, c.CertificationType, c.IssuingBody, c.Status,
+            c.IssuedAt, c.ExpiresAt,
+            c.Product?.EntrepreneurId ?? System.Guid.Empty, c.Product?.Entrepreneur?.FullName,
+            c.ApprovedById, c.ApprovedAt, c.RejectionReason,
+            c.DocumentUrl, c.CreatedAt)).ToList();
+
+        return PaginatedResult<CertificationManagedListItemDTO>.Create(dtos, total, request.Page, request.PageSize);
+    }
+}

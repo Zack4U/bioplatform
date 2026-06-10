@@ -149,10 +149,11 @@ var redisOptions = ConfigurationOptions.Parse(redisConnection);
 redisOptions.AbortOnConnectFail = false;
 builder.Services.AddSingleton<IConnectionMultiplexer>(
     ConnectionMultiplexer.Connect(redisOptions));
+var redisInstanceName = builder.Configuration["Redis:InstanceName"] ?? "bioplatform:";
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = redisConnection;
-    options.InstanceName = "bioplatform:";
+    options.InstanceName = redisInstanceName;
 });
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
 
