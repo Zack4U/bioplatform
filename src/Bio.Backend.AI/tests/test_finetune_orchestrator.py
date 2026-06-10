@@ -101,7 +101,9 @@ def test_run_dataset_organization():
         patch("pathlib.Path.exists", return_value=True),
         patch("subprocess.run", return_value=mock_completed_process) as mock_run,
     ):
-        _run_dataset_organization(replay_ratio=0.15, seed=42, manifest_path=Path("/tmp/manifest.json"))
+        _run_dataset_organization(
+            replay_ratio=0.15, seed=42, manifest_path=Path("/tmp/manifest.json")
+        )
         assert mock_run.called
 
     # If it fails
@@ -112,7 +114,9 @@ def test_run_dataset_organization():
         patch("subprocess.run", return_value=mock_completed_process),
     ):
         with pytest.raises(RuntimeError) as exc_info:
-            _run_dataset_organization(replay_ratio=0.15, seed=42, manifest_path=Path("/tmp/manifest.json"))
+            _run_dataset_organization(
+                replay_ratio=0.15, seed=42, manifest_path=Path("/tmp/manifest.json")
+            )
         assert "Dataset organization failed" in str(exc_info.value)
 
 
@@ -145,8 +149,14 @@ def test_get_classifier_active_checkpoint(mock_classifier):
     mock_classifier.is_loaded = True
     mock_classifier.active_version = "legacy"
     with (
-        patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier),
-        patch("app.services.training.finetune_orchestrator._get_flat_checkpoint", return_value=Path("/tmp/flat")),
+        patch(
+            "app.services.vision.classifier.get_classifier",
+            return_value=mock_classifier,
+        ),
+        patch(
+            "app.services.training.finetune_orchestrator._get_flat_checkpoint",
+            return_value=Path("/tmp/flat"),
+        ),
     ):
         assert _get_classifier_active_checkpoint() == Path("/tmp/flat")
 
@@ -157,11 +167,15 @@ def test_get_classifier_active_checkpoint(mock_classifier):
         return True
 
     with (
-        patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier),
+        patch(
+            "app.services.vision.classifier.get_classifier",
+            return_value=mock_classifier,
+        ),
         patch("pathlib.Path.exists", mock_exists_side_effect),
         patch("pathlib.Path.is_dir", return_value=True),
     ):
         from app.services.training.finetune_orchestrator import _WEIGHTS_DIR
+
         expected = _WEIGHTS_DIR / "v1.0.0" / "checkpoint.pth"
         assert _get_classifier_active_checkpoint() == expected
 
@@ -192,9 +206,18 @@ def test_get_flat_checkpoint():
 
 def test_find_active_checkpoint():
     with (
-        patch("app.services.training.finetune_orchestrator._get_classifier_active_checkpoint", return_value=None),
-        patch("app.services.training.finetune_orchestrator._find_latest_versioned_checkpoint", return_value=None),
-        patch("app.services.training.finetune_orchestrator._get_flat_checkpoint", return_value=Path("/tmp/flat")),
+        patch(
+            "app.services.training.finetune_orchestrator._get_classifier_active_checkpoint",
+            return_value=None,
+        ),
+        patch(
+            "app.services.training.finetune_orchestrator._find_latest_versioned_checkpoint",
+            return_value=None,
+        ),
+        patch(
+            "app.services.training.finetune_orchestrator._get_flat_checkpoint",
+            return_value=Path("/tmp/flat"),
+        ),
     ):
         assert _find_active_checkpoint() == Path("/tmp/flat")
 
@@ -203,7 +226,9 @@ def test_load_active_config(mock_classifier):
     # Running classifier config
     mock_classifier.is_loaded = True
     mock_classifier.config = {"epochs": 5}
-    with patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier):
+    with patch(
+        "app.services.vision.classifier.get_classifier", return_value=mock_classifier
+    ):
         cfg = _load_active_config(Path("/tmp/checkpoint.pth"))
         assert cfg == {"epochs": 5}
 
@@ -213,7 +238,10 @@ def test_load_active_config(mock_classifier):
     mock_file.__enter__.return_value = mock_file
     mock_file.read.return_value = json.dumps({"epochs": 10})
     with (
-        patch("app.services.vision.classifier.get_classifier", return_value=mock_classifier),
+        patch(
+            "app.services.vision.classifier.get_classifier",
+            return_value=mock_classifier,
+        ),
         patch("pathlib.Path.exists", return_value=True),
         patch("builtins.open", return_value=mock_file),
     ):
@@ -226,7 +254,10 @@ def test_step_download_delta():
     with (
         patch("app.services.training.finetune_orchestrator._notify_dotnet_sync"),
         patch("app.services.training.finetune_orchestrator._run_delta_download"),
-        patch("app.services.training.finetune_orchestrator._read_json_safe", return_value={"new_images": []}),
+        patch(
+            "app.services.training.finetune_orchestrator._read_json_safe",
+            return_value={"new_images": []},
+        ),
     ):
         assert _step_download_delta("job", "v1") is False
 
@@ -234,7 +265,10 @@ def test_step_download_delta():
     with (
         patch("app.services.training.finetune_orchestrator._notify_dotnet_sync"),
         patch("app.services.training.finetune_orchestrator._run_delta_download"),
-        patch("app.services.training.finetune_orchestrator._read_json_safe", return_value={"new_images": ["img.jpg"]}),
+        patch(
+            "app.services.training.finetune_orchestrator._read_json_safe",
+            return_value={"new_images": ["img.jpg"]},
+        ),
     ):
         assert _step_download_delta("job", "v1") is True
 
@@ -244,7 +278,13 @@ def test_execute_training():
     mock_run = MagicMock()
     mock_run.returncode = 0
     with patch("subprocess.run", return_value=mock_run):
-        _execute_training(Path("/tmp"), 5, 0.001, {"model_name": "efficientnet_b0"}, Path("/tmp/resume"))
+        _execute_training(
+            Path("/tmp"),
+            5,
+            0.001,
+            {"model_name": "efficientnet_b0"},
+            Path("/tmp/resume"),
+        )
 
     # Case 2: training failed
     mock_run.returncode = 1
@@ -285,16 +325,21 @@ def test_execute_dvc_push():
 def test_save_emergency_checkpoint():
     with (
         patch("torch.save") as mock_save,
-        patch("app.services.training.finetune_orchestrator._current_model", MagicMock()),
+        patch(
+            "app.services.training.finetune_orchestrator._current_model", MagicMock()
+        ),
     ):
         _save_emergency_checkpoint(Path("/tmp"))
         mock_save.assert_called_once()
 
 
 def test_sigterm_handler():
-    with patch("app.services.training.finetune_orchestrator._shutdown_requested", False):
+    with patch(
+        "app.services.training.finetune_orchestrator._shutdown_requested", False
+    ):
         _sigterm_handler(signal.SIGTERM, None)
         import app.services.training.finetune_orchestrator as f
+
         assert f._shutdown_requested is True
 
 
@@ -304,16 +349,32 @@ class TestRunFinetuneOrchestration:
     def test_run_finetune_success(self, mock_settings):
         with (
             patch("app.core.config.get_settings", return_value=mock_settings),
-            patch("app.services.training.finetune_orchestrator._step_download_delta", return_value=True),
-            patch("app.services.training.finetune_orchestrator._find_active_checkpoint", return_value=Path("ckpt")),
-            patch("app.services.training.finetune_orchestrator._run_dataset_organization"),
-            patch("app.services.training.finetune_orchestrator._load_active_config", return_value={"model_name": "resnet"}),
+            patch(
+                "app.services.training.finetune_orchestrator._step_download_delta",
+                return_value=True,
+            ),
+            patch(
+                "app.services.training.finetune_orchestrator._find_active_checkpoint",
+                return_value=Path("ckpt"),
+            ),
+            patch(
+                "app.services.training.finetune_orchestrator._run_dataset_organization"
+            ),
+            patch(
+                "app.services.training.finetune_orchestrator._load_active_config",
+                return_value={"model_name": "resnet"},
+            ),
             patch("app.services.training.finetune_orchestrator._execute_training"),
             patch("app.services.training.finetune_orchestrator._execute_evaluation"),
             patch("app.services.training.finetune_orchestrator._execute_onnx_export"),
             patch("app.services.training.finetune_orchestrator._execute_dvc_push"),
-            patch("app.services.training.finetune_orchestrator._read_json_safe", return_value={"best_val_accuracy": 0.92}),
-            patch("app.services.training.finetune_orchestrator._notify_dotnet_sync") as mock_notify,
+            patch(
+                "app.services.training.finetune_orchestrator._read_json_safe",
+                return_value={"best_val_accuracy": 0.92},
+            ),
+            patch(
+                "app.services.training.finetune_orchestrator._notify_dotnet_sync"
+            ) as mock_notify,
         ):
             run_finetune("job-123")
             # Verify completed notification is sent
@@ -331,8 +392,13 @@ class TestRunFinetuneOrchestration:
         # Stop early because delta images == 0
         with (
             patch("app.core.config.get_settings", return_value=mock_settings),
-            patch("app.services.training.finetune_orchestrator._step_download_delta", return_value=False),
-            patch("app.services.training.finetune_orchestrator._notify_dotnet_sync") as mock_notify,
+            patch(
+                "app.services.training.finetune_orchestrator._step_download_delta",
+                return_value=False,
+            ),
+            patch(
+                "app.services.training.finetune_orchestrator._notify_dotnet_sync"
+            ) as mock_notify,
         ):
             run_finetune("job-123")
             # Should have returned early, training scripts not called
@@ -342,13 +408,21 @@ class TestRunFinetuneOrchestration:
         # Crash in organization step
         with (
             patch("app.core.config.get_settings", return_value=mock_settings),
-            patch("app.services.training.finetune_orchestrator._step_download_delta", return_value=True),
-            patch("app.services.training.finetune_orchestrator._find_active_checkpoint", return_value=None),
+            patch(
+                "app.services.training.finetune_orchestrator._step_download_delta",
+                return_value=True,
+            ),
+            patch(
+                "app.services.training.finetune_orchestrator._find_active_checkpoint",
+                return_value=None,
+            ),
             patch(
                 "app.services.training.finetune_orchestrator._run_dataset_organization",
                 side_effect=RuntimeError("Zip failed"),
             ),
-            patch("app.services.training.finetune_orchestrator._notify_dotnet_sync") as mock_notify,
+            patch(
+                "app.services.training.finetune_orchestrator._notify_dotnet_sync"
+            ) as mock_notify,
         ):
             run_finetune("job-123")
             mock_notify.assert_any_call(

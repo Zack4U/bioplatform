@@ -41,7 +41,7 @@ from tqdm import tqdm
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 ANALYSIS_DIR = PROJECT_ROOT / "data" / "dataset_analysis"
 RAW_IMAGES_DIR = PROJECT_ROOT / "data" / "raw_images"
 SPECIES_JSON = ANALYSIS_DIR / "species_with_urls.json"
@@ -155,24 +155,31 @@ def main() -> None:
         description="Download biodiversity images from iNaturalist/GBIF dataset"
     )
     parser.add_argument(
-        "--min-images", type=int, default=50,
-        help="Minimum images a species must have to be included (default: 50)"
+        "--min-images",
+        type=int,
+        default=50,
+        help="Minimum images a species must have to be included (default: 50)",
     )
     parser.add_argument(
-        "--max-per-species", type=int, default=150,
-        help="Maximum images to download per species (default: 150)"
+        "--max-per-species",
+        type=int,
+        default=150,
+        help="Maximum images to download per species (default: 150)",
     )
     parser.add_argument(
-        "--workers", type=int, default=6,
-        help="Number of parallel download threads (default: 6)"
+        "--workers",
+        type=int,
+        default=6,
+        help="Number of parallel download threads (default: 6)",
     )
     parser.add_argument(
-        "--image-size", type=int, default=512,
-        help="Target image size in pixels (default: 512)"
+        "--image-size",
+        type=int,
+        default=512,
+        help="Target image size in pixels (default: 512)",
     )
     parser.add_argument(
-        "--resume", action="store_true",
-        help="Resume from previous download session"
+        "--resume", action="store_true", help="Resume from previous download session"
     )
     args = parser.parse_args()
 
@@ -189,15 +196,16 @@ def main() -> None:
 
     # Filtrar especies con suficientes imágenes
     eligible_species = [
-        sp for sp in all_species
-        if sp["image_count"] >= args.min_images
+        sp for sp in all_species if sp["image_count"] >= args.min_images
     ]
     print(f"[INFO] {len(eligible_species)} species have ≥{args.min_images} images.")
 
     # Cargar/crear manifest
-    manifest = load_manifest(MANIFEST_FILE) if args.resume else {
-        "downloaded": {}, "failed": {}, "skipped_species": []
-    }
+    manifest = (
+        load_manifest(MANIFEST_FILE)
+        if args.resume
+        else {"downloaded": {}, "failed": {}, "skipped_species": []}
+    )
 
     # Preparar tareas de descarga
     download_tasks: list[tuple[str, str, Path]] = []  # (species, url, path)
@@ -214,7 +222,7 @@ def main() -> None:
         species_dir = RAW_IMAGES_DIR / kingdom / phylum / cls / family / species_folder
 
         # Limit images per species
-        urls = sp.get("image_urls", [])[:args.max_per_species]
+        urls = sp.get("image_urls", [])[: args.max_per_species]
 
         for idx, url in enumerate(urls, start=1):
             # Generate filename from URL hash for uniqueness
@@ -266,11 +274,13 @@ def main() -> None:
                 else:
                     stats["failed"] += 1
                     manifest["failed"][url] = message
-                    failed_urls.append({
-                        "species": species_name,
-                        "url": url,
-                        "error": message,
-                    })
+                    failed_urls.append(
+                        {
+                            "species": species_name,
+                            "url": url,
+                            "error": message,
+                        }
+                    )
 
                 pbar.update(1)
 

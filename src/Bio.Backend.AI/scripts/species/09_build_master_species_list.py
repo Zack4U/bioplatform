@@ -57,10 +57,12 @@ def read_dataset_species(filepath: Path) -> list[dict[str, str]]:
             key = name.lower()
             if key not in seen:
                 seen.add(key)
-                species.append({
-                    "scientific_name": name,
-                    "source": "dataset",
-                })
+                species.append(
+                    {
+                        "scientific_name": name,
+                        "source": "dataset",
+                    }
+                )
     return species
 
 
@@ -105,13 +107,15 @@ def fetch_sib_caldas_species() -> list[dict[str, Any]]:
             if isinstance(image_info, dict):
                 main_image = image_info.get("mainImage", "") or ""
 
-            species.append({
-                "scientific_name": canonical,
-                "source": "sib_caldas",
-                "sib_id": record_id,
-                "threat_status": threat,
-                "thumbnail_url": main_image,
-            })
+            species.append(
+                {
+                    "scientific_name": canonical,
+                    "source": "sib_caldas",
+                    "sib_id": record_id,
+                    "threat_status": threat,
+                    "thumbnail_url": main_image,
+                }
+            )
         return species
 
     except requests.RequestException as e:
@@ -171,8 +175,12 @@ def merge_species(
 def save_csv(species: list[dict[str, Any]], output_path: Path) -> None:
     """Save master list as CSV (simple format for LLM processing)."""
     columns = [
-        "scientific_name", "sources", "in_cnn_dataset",
-        "sib_id", "threat_status", "thumbnail_url",
+        "scientific_name",
+        "sources",
+        "in_cnn_dataset",
+        "sib_id",
+        "threat_status",
+        "thumbnail_url",
     ]
     with open(output_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=columns)

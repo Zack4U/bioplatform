@@ -4,12 +4,11 @@ Shared fixtures and mocks for Bio.Backend.AI tests.
 
 from __future__ import annotations
 
+import sys
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from httpx import ASGITransport, AsyncClient
-
-import sys
 
 # Dynamic mock of torch if not installed, to prevent ModuleNotFoundError in test environment
 try:
@@ -111,8 +110,8 @@ def app_client(mock_classifier, mock_settings):
             return_value=True,
         ),
     ):
+        from app.core.auth import CurrentUser, get_current_user
         from app.main import app
-        from app.core.auth import get_current_user, CurrentUser
 
         app.dependency_overrides[get_current_user] = lambda: CurrentUser(
             user_id="test", email="test@ex.com", name="Test", role="Admin"

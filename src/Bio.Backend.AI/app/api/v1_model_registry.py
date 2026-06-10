@@ -134,18 +134,10 @@ async def _dvc_push_and_notify(version_dir: Path, version: str) -> None:
     "runs DVC push asynchronously. Returns 202 immediately.",
 )
 async def upload_model(
-    weights_file: Annotated[
-        UploadFile, File(description="Model weights file (.pth)")
-    ],
-    config_file: Annotated[
-        UploadFile, File(description="training_config.json")
-    ],
-    metrics_file: Annotated[
-        UploadFile, File(description="evaluation_metrics.json")
-    ],
-    notes: Annotated[
-        Optional[str], Form(description="Optional notes/comments")
-    ] = None,
+    weights_file: Annotated[UploadFile, File(description="Model weights file (.pth)")],
+    config_file: Annotated[UploadFile, File(description="training_config.json")],
+    metrics_file: Annotated[UploadFile, File(description="evaluation_metrics.json")],
+    notes: Annotated[Optional[str], Form(description="Optional notes/comments")] = None,
     background_tasks: BackgroundTasks = BackgroundTasks(),  # noqa: B008
 ) -> ModelUploadResponse:
     """Save uploaded model files and queue DVC push in background."""
@@ -353,6 +345,7 @@ async def validate_model(
 
     # Sample subset
     import random
+
     sample_size = min(50, len(test_images))
     sample = random.sample(test_images, sample_size)
 

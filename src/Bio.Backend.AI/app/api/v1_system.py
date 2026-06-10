@@ -166,10 +166,10 @@ async def health_legacy() -> dict[str, Any]:
     Legacy health check endpoint for Docker / load balancer probes.
     Reports CNN model status and PostgreSQL connectivity.
     """
+    import sqlalchemy as sa
+
     from app.core.database import check_db_connection, get_db_session
     from app.services.vision.classifier import get_classifier
-
-    import sqlalchemy as sa
 
     classifier = get_classifier()
     db_connected = await check_db_connection()
@@ -178,9 +178,7 @@ async def health_legacy() -> dict[str, Any]:
     if db_connected:
         try:
             async with get_db_session() as session:
-                result = await session.execute(
-                    sa.text("SELECT COUNT(*) FROM species")
-                )
+                result = await session.execute(sa.text("SELECT COUNT(*) FROM species"))
                 db_species_count = result.scalar() or 0
         except Exception:
             pass

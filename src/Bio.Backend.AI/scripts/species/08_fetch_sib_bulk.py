@@ -29,10 +29,10 @@ Salida:
 import argparse
 import csv
 import json
+import re
 import sys
 import time
 import unicodedata
-import re
 from collections import Counter
 from pathlib import Path
 from typing import Any, Optional
@@ -45,7 +45,7 @@ except ImportError:
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 METRICS_CSV = PROJECT_ROOT / "data" / "evaluation" / "per_class_metrics.csv"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "species_catalog"
 CHECKPOINT_FILE = OUTPUT_DIR / "_checkpoint_bulk.json"
@@ -60,9 +60,20 @@ REQUEST_TIMEOUT = 30  # seconds
 
 # ── CSV columns matching SpeciesCsvRecord.cs + Slug ────────────────
 CSV_COLUMNS = [
-    "Kingdom", "Phylum", "Class", "Order", "Family", "Genus",
-    "ScientificName", "CommonName", "Slug", "Description",
-    "ConservationStatus", "TraditionalUses", "IsSensitive", "ThumbnailUrl",
+    "Kingdom",
+    "Phylum",
+    "Class",
+    "Order",
+    "Family",
+    "Genus",
+    "ScientificName",
+    "CommonName",
+    "Slug",
+    "Description",
+    "ConservationStatus",
+    "TraditionalUses",
+    "IsSensitive",
+    "ThumbnailUrl",
 ]
 
 # Conservation statuses that mark a species as sensitive
@@ -70,6 +81,7 @@ SENSITIVE_STATUSES = {"CR", "EN", "PELIGRO CRÍTICO", "EN PELIGRO"}
 
 
 # ── Helper functions ───────────────────────────────────────────────
+
 
 def generate_slug(scientific_name: str) -> str:
     """Generate URL-friendly slug from scientific name.
@@ -108,6 +120,7 @@ def is_sensitive(conservation_status: str) -> bool:
 
 
 # ── API interaction ────────────────────────────────────────────────
+
 
 def fetch_caldas_catalog() -> dict[str, dict]:
     """Phase 1: Bulk fetch all species in Caldas from SIB catalog.
@@ -214,11 +227,16 @@ def fetch_full_record(record_id: str) -> Optional[dict]:
 
 # ── Data extraction ────────────────────────────────────────────────
 
+
 def extract_taxonomy(record: dict) -> dict[str, str]:
     """Extract taxonomy hierarchy from a full record."""
     taxonomy = {
-        "Kingdom": "", "Phylum": "", "Class": "",
-        "Order": "", "Family": "", "Genus": "",
+        "Kingdom": "",
+        "Phylum": "",
+        "Class": "",
+        "Order": "",
+        "Family": "",
+        "Genus": "",
     }
     hierarchy = record.get("hierarchy", [])
     if hierarchy and isinstance(hierarchy, list):
@@ -312,9 +330,7 @@ def extract_traditional_uses(record: dict) -> str:
     return "; ".join(uses_texts) if uses_texts else ""
 
 
-def extract_thumbnail(
-    record: dict, search_record: Optional[dict] = None
-) -> str:
+def extract_thumbnail(record: dict, search_record: Optional[dict] = None) -> str:
     """Extract thumbnail/main image URL."""
     ancillary = record.get("ancillaryData", [])
     for ad in ancillary:
@@ -362,6 +378,7 @@ def build_csv_row(
 
 # ── Checkpoint ─────────────────────────────────────────────────────
 
+
 def load_checkpoint() -> dict[str, dict]:
     """Load checkpoint from previous run."""
     if CHECKPOINT_FILE.exists():
@@ -382,6 +399,7 @@ def save_checkpoint(results: dict[str, dict]) -> None:
 
 
 # ── Output ─────────────────────────────────────────────────────────
+
 
 def save_csv(rows: list[dict], output_path: Path) -> None:
     """Save species data as CSV matching SpeciesCsvRecord.cs columns."""
@@ -432,8 +450,7 @@ def generate_report(
         f"Found in SIB catalog:         {found_count:,} ({found_pct:.1f}%)",
         f"  ├─ Phase 1 (Caldas bulk):   {phase1_count:,}",
         f"  └─ Phase 2 (individual):    {phase2_count:,}",
-        f"Not found:                    {not_found_count:,} "
-        f"({100 - found_pct:.1f}%)",
+        f"Not found:                    {not_found_count:,} ({100 - found_pct:.1f}%)",
         "",
         "─" * 40,
         "DATA COMPLETENESS (found species):",
@@ -465,16 +482,20 @@ def generate_report(
 
 # ── Main ───────────────────────────────────────────────────────────
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Bulk fetch species data from SIB Colombia API"
     )
     parser.add_argument(
-        "--limit", type=int, default=0,
+        "--limit",
+        type=int,
+        default=0,
         help="Limit number of species to process (0 = all)",
     )
     parser.add_argument(
-        "--no-checkpoint", action="store_true",
+        "--no-checkpoint",
+        action="store_true",
         help="Ignore checkpoint and start fresh",
     )
     args = parser.parse_args()
@@ -489,7 +510,7 @@ def main() -> None:
     print("\n[STEP 1/5] Reading species list...")
     species_list = read_species_list(METRICS_CSV)
     if args.limit > 0:
-        species_list = species_list[:args.limit]
+        species_list = species_list[: args.limit]
         print(f"[INFO] Limited to {args.limit} species (dry-run mode)")
 
     species_set = {s.lower(): s for s in species_list}  # lower -> original
@@ -556,7 +577,9 @@ def main() -> None:
         phase1_count += 1
 
         checkpoint[species_original] = {
-            "found": True, "phase": 1, "csv_row": csv_row,
+            "found": True,
+            "phase": 1,
+            "csv_row": csv_row,
         }
 
         common = csv_row.get("CommonName", "")
@@ -568,8 +591,10 @@ def main() -> None:
     save_checkpoint(checkpoint)
 
     # ── Step 4: Phase 2 — Individual search for unmatched ──────────
-    print(f"\n[STEP 4/5] Phase 2: Individual search for "
-          f"{len(phase1_unmatched)} unmatched species...")
+    print(
+        f"\n[STEP 4/5] Phase 2: Individual search for "
+        f"{len(phase1_unmatched)} unmatched species..."
+    )
 
     total_p2 = len(phase1_unmatched)
     for i, species_name in enumerate(sorted(phase1_unmatched), 1):
@@ -607,7 +632,9 @@ def main() -> None:
             phase2_count += 1
 
             checkpoint[species_name] = {
-                "found": True, "phase": 2, "csv_row": csv_row,
+                "found": True,
+                "phase": 2,
+                "csv_row": csv_row,
             }
 
             common = csv_row.get("CommonName", "")

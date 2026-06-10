@@ -1,12 +1,14 @@
 import os
-from google import genai
-from dotenv import load_dotenv
 from pathlib import Path
+
+from dotenv import load_dotenv
+from google import genai
 
 # Paths
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 ENV_PATH = PROJECT_ROOT / ".env"
+
 
 def main():
     if ENV_PATH.exists():
@@ -20,7 +22,7 @@ def main():
     client = genai.Client(api_key=api_key)
     print(f"Usando API Key: {api_key[:10]}...")
     print("Listando modelos disponibles para tu cuenta:\n")
-    
+
     try:
         models = client.models.list()
         for model in models:
@@ -30,6 +32,7 @@ def main():
             print(f"  Métodos: {methods}\n")
     except Exception as e:
         print(f"Error al listar modelos: {e}")
+
 
 if __name__ == "__main__":
     main()

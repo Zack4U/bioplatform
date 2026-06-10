@@ -88,17 +88,19 @@ def scan_raw_images() -> list[dict]:
                         if total == 0:
                             continue
 
-                        species_list.append({
-                            "species": species_dir.name.replace("_", " "),
-                            "kingdom": kingdom.replace("_", " "),
-                            "phylum": phylum.replace("_", " "),
-                            "class": cls.replace("_", " "),
-                            "family": family.replace("_", " "),
-                            "total_images": total,
-                            "original_images": total - augmented,
-                            "augmented_images": augmented,
-                            "path": str(species_dir.relative_to(RAW_IMAGES_DIR)),
-                        })
+                        species_list.append(
+                            {
+                                "species": species_dir.name.replace("_", " "),
+                                "kingdom": kingdom.replace("_", " "),
+                                "phylum": phylum.replace("_", " "),
+                                "class": cls.replace("_", " "),
+                                "family": family.replace("_", " "),
+                                "total_images": total,
+                                "original_images": total - augmented,
+                                "augmented_images": augmented,
+                                "path": str(species_dir.relative_to(RAW_IMAGES_DIR)),
+                            }
+                        )
 
     return species_list
 
@@ -122,16 +124,21 @@ def main() -> None:
         description="Analyze raw_images directory and generate summary report"
     )
     parser.add_argument(
-        "--min-images", type=int, default=50,
+        "--min-images",
+        type=int,
+        default=50,
         help="Highlight threshold for 'trainable' species (default: 50)",
     )
     parser.add_argument(
-        "--sort", choices=["name", "count_asc", "count_desc", "kingdom"],
+        "--sort",
+        choices=["name", "count_asc", "count_desc", "kingdom"],
         default="count_desc",
         help="Sort order for detailed species list (default: count_desc)",
     )
     parser.add_argument(
-        "--kingdom", type=str, default="",
+        "--kingdom",
+        type=str,
+        default="",
         help="Filter by kingdom name (e.g., Plantae, Animalia)",
     )
     args = parser.parse_args()
@@ -156,8 +163,7 @@ def main() -> None:
     # ── Optional kingdom filter ───────────────────────────────────
     if args.kingdom:
         all_species = [
-            sp for sp in all_species
-            if sp["kingdom"].lower() == args.kingdom.lower()
+            sp for sp in all_species if sp["kingdom"].lower() == args.kingdom.lower()
         ]
         if not all_species:
             print(f"[INFO] No species found for kingdom '{args.kingdom}'.")
@@ -191,8 +197,10 @@ def main() -> None:
         k = sp["kingdom"]
         if k not in kingdom_stats:
             kingdom_stats[k] = {
-                "species": 0, "total_images": 0,
-                "original": 0, "augmented": 0,
+                "species": 0,
+                "total_images": 0,
+                "original": 0,
+                "augmented": 0,
                 "above_threshold": 0,
             }
         kingdom_stats[k]["species"] += 1
@@ -202,7 +210,9 @@ def main() -> None:
         if sp["total_images"] >= args.min_images:
             kingdom_stats[k]["above_threshold"] += 1
 
-    above_threshold = sum(1 for sp in all_species if sp["total_images"] >= args.min_images)
+    above_threshold = sum(
+        1 for sp in all_species if sp["total_images"] >= args.min_images
+    )
     below_threshold = total_species - above_threshold
 
     # Top 10 species by count
@@ -239,13 +249,17 @@ def main() -> None:
 
     print("  Top 10 (más imágenes):")
     for sp in top_10:
-        aug_tag = f" ({sp['augmented_images']} aug)" if sp["augmented_images"] > 0 else ""
+        aug_tag = (
+            f" ({sp['augmented_images']} aug)" if sp["augmented_images"] > 0 else ""
+        )
         print(f"    {sp['species']:45s} │ {sp['total_images']:5d}{aug_tag}")
     print()
 
     print("  Bottom 10 (menos imágenes):")
     for sp in bottom_10:
-        aug_tag = f" ({sp['augmented_images']} aug)" if sp["augmented_images"] > 0 else ""
+        aug_tag = (
+            f" ({sp['augmented_images']} aug)" if sp["augmented_images"] > 0 else ""
+        )
         print(f"    {sp['species']:45s} │ {sp['total_images']:5d}{aug_tag}")
 
     # ── Build report ──────────────────────────────────────────────
@@ -266,15 +280,23 @@ def main() -> None:
         "distribution_by_range": ranges,
         "distribution_by_kingdom": kingdom_stats,
         "top_10": [
-            {"species": sp["species"], "kingdom": sp["kingdom"],
-             "total": sp["total_images"], "original": sp["original_images"],
-             "augmented": sp["augmented_images"]}
+            {
+                "species": sp["species"],
+                "kingdom": sp["kingdom"],
+                "total": sp["total_images"],
+                "original": sp["original_images"],
+                "augmented": sp["augmented_images"],
+            }
             for sp in top_10
         ],
         "bottom_10": [
-            {"species": sp["species"], "kingdom": sp["kingdom"],
-             "total": sp["total_images"], "original": sp["original_images"],
-             "augmented": sp["augmented_images"]}
+            {
+                "species": sp["species"],
+                "kingdom": sp["kingdom"],
+                "total": sp["total_images"],
+                "original": sp["original_images"],
+                "augmented": sp["augmented_images"],
+            }
             for sp in bottom_10
         ],
         "species_detail": all_species,
@@ -292,7 +314,9 @@ def main() -> None:
         f.write(f"Generated: {run_ts.strftime('%Y-%m-%d %H:%M:%S UTC')}\n")
         f.write(f"{'=' * 90}\n\n")
         f.write(f"Total especies:     {total_species:,}\n")
-        f.write(f"Total imágenes:     {total_images:,} (originales: {total_original:,}, augmentadas: {total_augmented:,})\n")
+        f.write(
+            f"Total imágenes:     {total_images:,} (originales: {total_original:,}, augmentadas: {total_augmented:,})\n"
+        )
         f.write(f"Umbral:             {args.min_images}\n")
         f.write(f"Aptas (≥{args.min_images}):       {above_threshold:,}\n")
         f.write(f"No aptas (<{args.min_images}):     {below_threshold:,}\n\n")
@@ -322,7 +346,9 @@ def main() -> None:
 
         f.write(f"DETALLE POR ESPECIE (ordenado por: {args.sort})\n")
         f.write(f"{'-' * 90}\n")
-        f.write(f"{'#':>5s} │ {'Especie':45s} │ {'Reino':12s} │ {'Total':>6s} │ {'Orig':>6s} │ {'Aug':>5s}\n")
+        f.write(
+            f"{'#':>5s} │ {'Especie':45s} │ {'Reino':12s} │ {'Total':>6s} │ {'Orig':>6s} │ {'Aug':>5s}\n"
+        )
         f.write(f"{'-' * 90}\n")
         for i, sp in enumerate(all_species, 1):
             marker = "✓" if sp["total_images"] >= args.min_images else "✗"

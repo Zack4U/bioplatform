@@ -16,7 +16,6 @@ from app.models.vision import (
     TaxonomyInfo,
 )
 
-
 # ── TaxonomyInfo ──────────────────────────────────────────────────
 
 

@@ -1,6 +1,7 @@
 """
 Limpia las claves de cache de productos de Redis para forzar una recarga fresca.
 """
+
 import redis
 
 try:

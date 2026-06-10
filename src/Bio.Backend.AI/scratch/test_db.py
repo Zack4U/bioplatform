@@ -1,6 +1,7 @@
 import os
-from sqlalchemy import create_engine, text
+
 from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
 
 load_dotenv("../../../.env")
 
@@ -14,5 +15,9 @@ dsn = f"postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_database}"
 engine = create_engine(dsn)
 
 with engine.connect() as conn:
-    res = conn.execute(text("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"))
+    res = conn.execute(
+        text(
+            "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'"
+        )
+    )
     print([row[0] for row in res])

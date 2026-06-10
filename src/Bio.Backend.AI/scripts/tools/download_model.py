@@ -64,7 +64,9 @@ def verify_model() -> bool:
     if expected_hash:
         actual_hash = sha256_file(TARGET_FILE)
         if actual_hash != expected_hash:
-            logger.error(f"Hash mismatch! Expected: {expected_hash[:16]}... Got: {actual_hash[:16]}...")
+            logger.error(
+                f"Hash mismatch! Expected: {expected_hash[:16]}... Got: {actual_hash[:16]}..."
+            )
             return False
         logger.info(f"Hash verified: {actual_hash[:16]}...")
     else:

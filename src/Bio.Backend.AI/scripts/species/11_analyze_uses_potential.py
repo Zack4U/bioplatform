@@ -45,6 +45,7 @@ def load_json(path: Path) -> list[dict]:
 def load_csv_kingdoms(path: Path) -> dict[str, str]:
     """Load species kingdom mapping from CSV."""
     import csv
+
     kingdoms: dict[str, str] = {}
     if not path.exists():
         return kingdoms
@@ -119,9 +120,7 @@ def analyze_economic_potential(
         "sector_market_value": {
             s: dict(mvc.most_common()) for s, mvc in sector_market_value.items()
         },
-        "species_per_sector": {
-            s: names for s, names in species_per_sector.items()
-        },
+        "species_per_sector": {s: names for s, names in species_per_sector.items()},
     }
 
 
@@ -177,9 +176,7 @@ def analyze_traditional_uses(
         "part_by_kingdom": {
             p: dict(kc.most_common()) for p, kc in part_by_kingdom.items()
         },
-        "species_per_use": {
-            u: names for u, names in species_per_use.items()
-        },
+        "species_per_use": {u: names for u, names in species_per_use.items()},
     }
 
 
@@ -216,18 +213,26 @@ def generate_report(
     lines.append("╚" + "═" * 58 + "╝")
     lines.append("")
     lines.append(f"  Total species in master list:         {master_total:,}")
-    lines.append(f"  With economic potential:               {econ['total_species']:,}"
-                 f" ({econ['total_species'] / max(master_total, 1) * 100:.1f}%)")
-    lines.append(f"  With traditional uses:                 {uses['total_species']:,}"
-                 f" ({uses['total_species'] / max(master_total, 1) * 100:.1f}%)")
+    lines.append(
+        f"  With economic potential:               {econ['total_species']:,}"
+        f" ({econ['total_species'] / max(master_total, 1) * 100:.1f}%)"
+    )
+    lines.append(
+        f"  With traditional uses:                 {uses['total_species']:,}"
+        f" ({uses['total_species'] / max(master_total, 1) * 100:.1f}%)"
+    )
 
     # ════════════════════════════════════════════════════════════
     # ECONOMIC POTENTIAL
     # ════════════════════════════════════════════════════════════
     section("POTENCIAL ECONÓMICO")
 
-    lines.append(f"  Total entries:                       {econ.get('total_entries', 0):,}")
-    lines.append(f"  Multi-sector species:                {econ.get('multi_sector_species', 0):,}")
+    lines.append(
+        f"  Total entries:                       {econ.get('total_entries', 0):,}"
+    )
+    lines.append(
+        f"  Multi-sector species:                {econ.get('multi_sector_species', 0):,}"
+    )
 
     subsection("Por Sector")
     total_entries = econ.get("total_entries", 1)
@@ -265,8 +270,12 @@ def generate_report(
     # ════════════════════════════════════════════════════════════
     section("USOS TRADICIONALES")
 
-    lines.append(f"  Total entries:                       {uses.get('total_entries', 0):,}")
-    lines.append(f"  Multi-use species:                   {uses.get('multi_use_species', 0):,}")
+    lines.append(
+        f"  Total entries:                       {uses.get('total_entries', 0):,}"
+    )
+    lines.append(
+        f"  Multi-use species:                   {uses.get('multi_use_species', 0):,}"
+    )
 
     subsection("Por Parte Utilizada")
     total_uses_entries = uses.get("total_entries", 1)
@@ -305,8 +314,10 @@ def generate_report(
     lines.append(f"  With both uses + potential:           {len(both):,}")
     lines.append(f"  Only traditional uses:                {len(only_uses):,}")
     lines.append(f"  Only economic potential:               {len(only_potential):,}")
-    lines.append(f"  Neither:                              "
-                 f"{master_total - len(uses_names | potential_names):,}")
+    lines.append(
+        f"  Neither:                              "
+        f"{master_total - len(uses_names | potential_names):,}"
+    )
 
     if both:
         subsection("Especies con Usos + Potencial (primeras 20)")
@@ -327,7 +338,11 @@ def main() -> None:
 
     # Load master list for total count
     master_data = load_json(MASTER_FILE)
-    master_total = master_data.get("total", 0) if isinstance(master_data, dict) else len(master_data)
+    master_total = (
+        master_data.get("total", 0)
+        if isinstance(master_data, dict)
+        else len(master_data)
+    )
 
     # Load kingdom mapping
     kingdoms = load_csv_kingdoms(CSV_FILE)

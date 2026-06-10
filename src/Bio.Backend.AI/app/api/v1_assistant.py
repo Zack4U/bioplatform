@@ -1,31 +1,37 @@
-import os
 import logging
+import os
+
+import chromadb
 import requests
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-import chromadb
 from google import genai
 from google.genai import types
+from pydantic import BaseModel
 
 from app.core.config import get_settings
 
 router = APIRouter(prefix="/api/v1/assistant", tags=["Assistant"])
 logger = logging.getLogger(__name__)
 
+
 class ChatMessage(BaseModel):
-    role: str # 'user' or 'model' (GenAI uses 'model' instead of 'assistant')
+    role: str  # 'user' or 'model' (GenAI uses 'model' instead of 'assistant')
     content: str
+
 
 class AskRequest(BaseModel):
     question: str
     history: list[ChatMessage] = []
 
+
 class AskResponse(BaseModel):
     answer: str
+
 
 def get_chroma_client():
     settings = get_settings()
     return chromadb.HttpClient(host=settings.chroma_host, port=settings.chroma_port)
+
 
 def execute_sql_query(query: str) -> str:
     """
@@ -34,29 +40,32 @@ def execute_sql_query(query: str) -> str:
     """
     try:
         from sqlalchemy import create_engine, text
+
         from app.core.config import get_settings
+
         settings = get_settings()
-        # Convertimos el DSN de asyncpg a psycopg2 o similar si es necesario, 
+        # Convertimos el DSN de asyncpg a psycopg2 o similar si es necesario,
         # pero para SQL Server/Postgres podemos usar el DSN directamente con el driver adecuado.
         # Simplificación: Usar el DSN de sincronización definido en config.py
         sync_dsn = settings.pg_dsn_sync
         engine = create_engine(sync_dsn)
-        
+
         with engine.connect() as conn:
             # Forzamos que sea solo lectura (SELECT)
             if not query.strip().lower().startswith("select"):
                 return "Error: Solo se permiten consultas de lectura (SELECT)."
-            
+
             result = conn.execute(text(query))
             rows = result.all()
             if not rows:
                 return "No se encontraron resultados."
-            
+
             return str([dict(row._mapping) for row in rows])
     except Exception as e:
         error_msg = f"Error ejecutando SQL: {str(e)}"
         logger.error(error_msg)
         return error_msg
+
 
 def get_table_schema(table_name: str) -> str:
     """
@@ -65,14 +74,16 @@ def get_table_schema(table_name: str) -> str:
     """
     try:
         from sqlalchemy import create_engine, text
+
         from app.core.config import get_settings
+
         settings = get_settings()
         engine = create_engine(settings.pg_dsn_sync)
-        
+
         with engine.connect() as conn:
             query = f"""
-                SELECT column_name, data_type 
-                FROM information_schema.columns 
+                SELECT column_name, data_type
+                FROM information_schema.columns
                 WHERE table_name = '{table_name}'
                 ORDER BY ordinal_position;
             """
@@ -80,10 +91,11 @@ def get_table_schema(table_name: str) -> str:
             rows = result.all()
             if not rows:
                 return f"No se encontró información para la tabla '{table_name}'."
-            
+
             return str([dict(row._mapping) for row in rows])
     except Exception as e:
         return f"Error obteniendo esquema: {str(e)}"
+
 
 def list_database_tables() -> str:
     """
@@ -92,10 +104,12 @@ def list_database_tables() -> str:
     """
     try:
         from sqlalchemy import create_engine, text
+
         from app.core.config import get_settings
+
         settings = get_settings()
         engine = create_engine(settings.pg_dsn_sync)
-        
+
         with engine.connect() as conn:
             query = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"
             result = conn.execute(text(query))
@@ -104,6 +118,7 @@ def list_database_tables() -> str:
     except Exception as e:
         return f"Error listando tablas: {str(e)}"
 
+
 def execute_transactional_sql_query(query: str) -> str:
     """
     Ejecuta una consulta SQL en la base de datos TRANSACCIONAL (SQL Server).
@@ -111,37 +126,43 @@ def execute_transactional_sql_query(query: str) -> str:
     """
     try:
         import pymssql
+
         from app.core.config import get_settings
+
         settings = get_settings()
-        
+
         conn = pymssql.connect(
             server=settings.mssql_host,
             port=str(settings.mssql_port),
             user=settings.mssql_user,
             password=settings.mssql_password,
-            database=settings.mssql_database
+            database=settings.mssql_database,
         )
         cursor = conn.cursor(as_dict=True)
-        
+
         if not query.strip().lower().startswith("select"):
             return "Error: Solo se permiten consultas de lectura (SELECT)."
-            
+
         cursor.execute(query)
         rows = cursor.fetchall()
         conn.close()
-        
+
         if not rows:
             return "No se encontraron resultados en la base de datos transaccional."
-            
+
         return str(rows)
     except Exception as e:
         return f"Error en SQL Transaccional: {str(e)}"
+
 
 def list_transactional_tables() -> str:
     """
     Devuelve las tablas de la base de datos TRANSACCIONAL (Productos, Permisos, etc).
     """
-    return execute_transactional_sql_query("SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'")
+    return execute_transactional_sql_query(
+        "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'"
+    )
+
 
 def get_transactional_table_schema(table_name: str) -> str:
     """
@@ -153,6 +174,7 @@ def get_transactional_table_schema(table_name: str) -> str:
         f"WHERE table_name = '{table_name}' ORDER BY ordinal_position"
     )
 
+
 @router.post("/ask", response_model=AskResponse)
 async def ask_assistant(request: AskRequest):
     if not request.question:
@@ -160,15 +182,17 @@ async def ask_assistant(request: AskRequest):
 
     settings = get_settings()
     gemini_api_key = settings.google_ai_api_key or os.getenv("GEMINI_API_KEY")
-    
+
     if not gemini_api_key:
         logger.error("GEMINI_API_KEY no está configurada.")
-        raise HTTPException(status_code=500, detail="GEMINI_API_KEY no está configurada.")
+        raise HTTPException(
+            status_code=500, detail="GEMINI_API_KEY no está configurada."
+        )
 
     try:
         # Inicializar clientes
         genai_client = genai.Client(api_key=gemini_api_key)
-        
+
         # 1. Recuperación de contexto profunda (RAG)
         chroma_client = get_chroma_client()
         collection_name = settings.chroma_collection_name
@@ -176,13 +200,22 @@ async def ask_assistant(request: AskRequest):
         try:
             collection = chroma_client.get_collection(name=collection_name)
             embed_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key={gemini_api_key}"
-            embed_payload = {"model": "models/gemini-embedding-001", "content": {"parts": [{"text": request.question}]}}
+            embed_payload = {
+                "model": "models/gemini-embedding-001",
+                "content": {"parts": [{"text": request.question}]},
+            }
             emb_res = requests.post(embed_url, json=embed_payload)
             if emb_res.status_code == 200:
                 query_embedding = emb_res.json()["embedding"]["values"]
                 # Mantenemos los 50 resultados para máxima "inteligencia"
-                search_results = collection.query(query_embeddings=[query_embedding], n_results=50)
-                documents = search_results["documents"][0] if search_results["documents"] else []
+                search_results = collection.query(
+                    query_embeddings=[query_embedding], n_results=50
+                )
+                documents = (
+                    search_results["documents"][0]
+                    if search_results["documents"]
+                    else []
+                )
                 context_text = "\n\n".join([f"- {doc}" for doc in documents])
         except Exception as ce:
             logger.warning(f"ChromaDB no disponible: {ce}")
@@ -226,10 +259,9 @@ async def ask_assistant(request: AskRequest):
         # Convertimos el historial al formato del SDK (Content)
         genai_history = []
         for msg in request.history:
-            genai_history.append(types.Content(
-                role=msg.role,
-                parts=[types.Part(text=msg.content)]
-            ))
+            genai_history.append(
+                types.Content(role=msg.role, parts=[types.Part(text=msg.content)])
+            )
 
         chat = genai_client.chats.create(
             model=settings.google_model_name,
@@ -237,19 +269,20 @@ async def ask_assistant(request: AskRequest):
             config=types.GenerateContentConfig(
                 system_instruction=system_prompt,
                 tools=[
-                    execute_sql_query, 
-                    get_table_schema, 
+                    execute_sql_query,
+                    get_table_schema,
                     list_database_tables,
                     execute_transactional_sql_query,
                     list_transactional_tables,
-                    get_transactional_table_schema
+                    get_transactional_table_schema,
                 ],
-                temperature=0.2
-            )
+                temperature=0.2,
+            ),
         )
 
         # Enviar mensaje con reintentos automáticos para errores transitorios (503, 429)
         import time as _time
+
         response = None
         last_error = None
         for attempt in range(3):
@@ -259,36 +292,45 @@ async def ask_assistant(request: AskRequest):
             except Exception as e:
                 last_error = e
                 err_str = str(e)
-                if "503" in err_str or "429" in err_str or "UNAVAILABLE" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                if (
+                    "503" in err_str
+                    or "429" in err_str
+                    or "UNAVAILABLE" in err_str
+                    or "RESOURCE_EXHAUSTED" in err_str
+                ):
                     wait_secs = (attempt + 1) * 10  # 10s, 20s, 30s
-                    logger.warning(f"Error transitorio en intento {attempt + 1}: {e}. Reintentando en {wait_secs}s...")
+                    logger.warning(
+                        f"Error transitorio en intento {attempt + 1}: {e}. Reintentando en {wait_secs}s..."
+                    )
                     _time.sleep(wait_secs)
                 else:
                     raise  # Error no transitorio, relanzar inmediatamente
-        
+
         if response is None:
             raise last_error
-        
+
         # Extraer texto de la respuesta final con manejo robusto de NoneType
         answer_text = None
         try:
             answer_text = response.text
         except Exception:
             pass
-        
+
         if not answer_text:
-            logger.warning("La IA devolvió una respuesta de texto vacía. Intentando recuperar partes...")
+            logger.warning(
+                "La IA devolvió una respuesta de texto vacía. Intentando recuperar partes..."
+            )
             parts = []
             candidates = getattr(response, "candidates", None)
             if candidates:
                 for candidate in candidates:
                     content = getattr(candidate, "content", None)
                     if content:
-                        for part in (getattr(content, "parts", None) or []):
+                        for part in getattr(content, "parts", None) or []:
                             text = getattr(part, "text", None)
                             if text:
                                 parts.append(text)
-            
+
             if parts:
                 answer_text = "\n".join(parts)
             else:
@@ -302,7 +344,10 @@ async def ask_assistant(request: AskRequest):
                     answer_text = followup.text
                 except Exception:
                     pass
-                answer_text = answer_text or "La consulta fue procesada pero no pudo generarse una respuesta de texto. Por favor, intenta reformular la pregunta."
+                answer_text = (
+                    answer_text
+                    or "La consulta fue procesada pero no pudo generarse una respuesta de texto. Por favor, intenta reformular la pregunta."
+                )
 
         return AskResponse(answer=answer_text)
 

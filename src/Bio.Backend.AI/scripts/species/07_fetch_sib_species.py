@@ -20,10 +20,10 @@ Salida:
 import argparse
 import csv
 import json
+import re
 import sys
 import time
 import unicodedata
-import re
 from collections import Counter
 from pathlib import Path
 from typing import Any, Optional
@@ -36,7 +36,7 @@ except ImportError:
 
 # ── Resolve paths ──────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent.parent                    # Bio.Backend.AI/
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # Bio.Backend.AI/
 METRICS_CSV = PROJECT_ROOT / "data" / "evaluation" / "per_class_metrics.csv"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "species_catalog"
 CHECKPOINT_FILE = OUTPUT_DIR / "_checkpoint.json"
@@ -50,9 +50,20 @@ REQUEST_TIMEOUT = 15  # seconds
 
 # ── CSV columns matching SpeciesCsvRecord.cs + Slug ────────────────
 CSV_COLUMNS = [
-    "Kingdom", "Phylum", "Class", "Order", "Family", "Genus",
-    "ScientificName", "CommonName", "Slug", "Description",
-    "ConservationStatus", "TraditionalUses", "IsSensitive", "ThumbnailUrl",
+    "Kingdom",
+    "Phylum",
+    "Class",
+    "Order",
+    "Family",
+    "Genus",
+    "ScientificName",
+    "CommonName",
+    "Slug",
+    "Description",
+    "ConservationStatus",
+    "TraditionalUses",
+    "IsSensitive",
+    "ThumbnailUrl",
 ]
 
 # Conservation statuses that mark a species as sensitive
@@ -250,9 +261,7 @@ def extract_traditional_uses(record: dict) -> str:
     return "; ".join(uses_texts) if uses_texts else ""
 
 
-def extract_thumbnail(
-    record: dict, search_record: Optional[dict] = None
-) -> str:
+def extract_thumbnail(record: dict, search_record: Optional[dict] = None) -> str:
     """Extract thumbnail/main image URL."""
     # Try from full record ancillaryData
     ancillary = record.get("ancillaryData", [])
@@ -400,18 +409,10 @@ def generate_report(
     kingdom_counts = Counter(row.get("Kingdom", "Unknown") for row in found)
     class_counts = Counter(row.get("Class", "Unknown") for row in found)
 
-    sensitive_count = sum(
-        1 for row in found if row.get("IsSensitive") == "True"
-    )
-    with_thumbnail = sum(
-        1 for row in found if row.get("ThumbnailUrl", "")
-    )
-    with_description = sum(
-        1 for row in found if row.get("Description", "")
-    )
-    with_common_name = sum(
-        1 for row in found if row.get("CommonName", "")
-    )
+    sensitive_count = sum(1 for row in found if row.get("IsSensitive") == "True")
+    with_thumbnail = sum(1 for row in found if row.get("ThumbnailUrl", ""))
+    with_description = sum(1 for row in found if row.get("Description", ""))
+    with_common_name = sum(1 for row in found if row.get("CommonName", ""))
 
     lines = [
         "=" * 60,
@@ -421,8 +422,7 @@ def generate_report(
         "",
         f"Total species in dataset:     {total:,}",
         f"Found in SIB catalog:         {found_count:,} ({found_pct:.1f}%)",
-        f"Not found:                    {not_found_count:,} "
-        f"({100 - found_pct:.1f}%)",
+        f"Not found:                    {not_found_count:,} ({100 - found_pct:.1f}%)",
         "",
         "─" * 40,
         "DATA COMPLETENESS (found species):",
@@ -481,7 +481,7 @@ def main() -> None:
     species_list = read_species_list(METRICS_CSV)
 
     if args.limit > 0:
-        species_list = species_list[:args.limit]
+        species_list = species_list[: args.limit]
         print(f"[INFO] Limited to {args.limit} species (dry-run mode)")
 
     # 2. Load checkpoint
