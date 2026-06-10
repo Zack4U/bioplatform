@@ -22,7 +22,11 @@ public record PlatformRequestDTO(
     string? ReferenceUrl,
     string? ReviewerNotes,
     DateTime CreatedAt,
-    DateTime? UpdatedAt);
+    DateTime? UpdatedAt,
+    /// <summary>For child references (e.g. SpeciesImage): the parent entity ID (e.g. SpeciesId).</summary>
+    string? ParentReferenceId = null,
+    /// <summary>For child references (e.g. SpeciesImage): the parent entity name (e.g. scientific name).</summary>
+    string? ParentReferenceName = null);
 
 public record PlatformRequestFilterParams
 {

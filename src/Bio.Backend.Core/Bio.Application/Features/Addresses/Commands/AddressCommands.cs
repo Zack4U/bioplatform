@@ -80,7 +80,7 @@ public class SetDefaultAddressCommandHandler : IRequestHandler<SetDefaultAddress
             throw new ForbiddenException("You can only set your own addresses as default.");
 
         await _repo.ClearDefaultsForUserAsync(request.UserId, address.AddressType, ct);
-        address.Update(null, null, null, null, null, null, null, null, isDefault: true);
+        address.SetDefault(true);
         await _uow.SaveChangesAsync(ct);
         return CreateAddressCommandHandler.MapToResponse(address);
     }

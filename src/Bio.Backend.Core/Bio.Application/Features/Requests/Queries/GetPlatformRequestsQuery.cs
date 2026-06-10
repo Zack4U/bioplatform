@@ -89,7 +89,8 @@ public class GetPlatformRequestsQueryHandler
                     ReferenceUrl: img.ImageUrl,
                     ReviewerNotes: null,
                     CreatedAt: img.CreatedAt,
-                    UpdatedAt: null));
+                    UpdatedAt: null,
+                    ParentReferenceId: img.SpeciesId.ToString()));
             }
         }
 

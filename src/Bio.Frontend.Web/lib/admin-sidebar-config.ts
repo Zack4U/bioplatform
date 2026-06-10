@@ -35,14 +35,14 @@ export const ADMIN_SIDEBAR_SECTIONS: AdminNavSection[] = [
                 labelKey: "Especies",
                 href: "/admin/species",
                 iconName: "Leaf",
-                roles: ["ADMIN", "RESEARCHER"],
+                roles: ["ADMIN", "RESEARCHER", "AUTHORITY"],
             },
             {
                 key: "images",
                 labelKey: "Imagenes",
                 href: "/admin/images",
                 iconName: "Image",
-                roles: ["ADMIN", "RESEARCHER"],
+                roles: ["ADMIN", "RESEARCHER", "AUTHORITY"],
             },
         ],
     },
@@ -191,8 +191,8 @@ export function getFilteredSidebarSections(
  */
 export const ROUTE_REQUIRED_ROLES: Record<string, import("@/types").UserRoleName[]> = {
     "/admin": ["ADMIN", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "COMMUNITY"],
-    "/admin/species": ["ADMIN", "RESEARCHER"],
-    "/admin/images": ["ADMIN", "RESEARCHER"],
+    "/admin/species": ["ADMIN", "RESEARCHER", "AUTHORITY"],
+    "/admin/images": ["ADMIN", "RESEARCHER", "AUTHORITY"],
     "/admin/products": ["ADMIN", "ENTREPRENEUR"],
     "/admin/orders": ["ADMIN", "ENTREPRENEUR"],
     "/admin/reviews": ["ADMIN", "ENTREPRENEUR"],

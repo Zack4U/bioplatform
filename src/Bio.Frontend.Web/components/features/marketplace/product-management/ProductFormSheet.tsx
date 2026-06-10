@@ -178,8 +178,18 @@ export function ProductFormSheet({
       form.setError("absPermitId", { message: "Permiso ABS requerido para especie con estado legal" });
       return;
     }
+    // Auto-generate slug from product name: lowercase, hyphens, remove special chars
+    const autoSlug = values.name
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove accents
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 120);
     const payload: CreateProductRequest | UpdateProductRequest = {
       name: values.name,
+      slug: autoSlug,
       description: values.description,
       sellPrice: values.price,
       basePrice: values.price,
@@ -188,7 +198,8 @@ export function ProductFormSheet({
       categoryId: values.categoryId ?? null,
       baseSpeciesId: values.baseSpeciesId || "",
       absPermitId: values.absPermitId || "",
-      isActive: values.isActive ?? false,
+      // New products are always inactive (pending approval). Editing keeps the user's choice.
+      isActive: isEditing ? (values.isActive ?? false) : false,
     };
     onSubmit(payload);
   }
@@ -508,16 +519,15 @@ export function ProductFormSheet({
             )}
           </div>
 
-          {/* ── Is Active ────────────────────────────────────────────── */}
+          {/* ── Is Active (only visible when editing an approved product) ── */}
+          {isEditing && (
           <div className="flex items-center justify-between rounded-md border p-3">
             <div className="space-y-0.5">
               <Label htmlFor="product-active" className="cursor-pointer">
-                {isEditing ? "Producto activo" : "Activar inmediatamente"}
+                Producto activo
               </Label>
               <p className="text-xs text-muted-foreground">
-                {isEditing
-                  ? "Los productos inactivos no son visibles en el marketplace."
-                  : "Por defecto queda inactivo pendiente de aprobación por un administrador."}
+                Los productos inactivos no son visibles en el marketplace.
               </p>
             </div>
             <Controller
@@ -526,13 +536,21 @@ export function ProductFormSheet({
               render={({ field }) => (
                 <Switch
                   id="product-active"
-                  checked={field.value ?? true}
+                  checked={field.value ?? false}
                   onCheckedChange={field.onChange}
                   aria-label="Publicar producto en el marketplace"
                 />
               )}
             />
           </div>
+          )}
+          {!isEditing && (
+          <div className="flex items-start gap-2 rounded-md border border-blue-200 bg-blue-50 p-3 dark:border-blue-900 dark:bg-blue-950/30">
+            <p className="text-xs text-blue-800 dark:text-blue-300">
+              El producto se creará en estado <strong>inactivo</strong> y quedará pendiente de aprobación por un administrador o autoridad. Una vez aprobado, podrás activarlo o desactivarlo.
+            </p>
+          </div>
+          )}
         </form>
 
         {/* ── Footer ──────────────────────────────────────────────────── */}

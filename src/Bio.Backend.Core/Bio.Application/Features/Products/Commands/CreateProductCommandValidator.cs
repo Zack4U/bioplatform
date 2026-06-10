@@ -7,7 +7,8 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     public CreateProductCommandValidator()
     {
         RuleFor(x => x.Dto.Name).NotEmpty().MaximumLength(200);
-        RuleFor(x => x.Dto.Slug).NotEmpty().MaximumLength(200);
+        // Slug is optional: the handler auto-generates it from the product name if empty.
+        RuleFor(x => x.Dto.Slug).MaximumLength(200).When(x => !string.IsNullOrEmpty(x.Dto.Slug));
         RuleFor(x => x.Dto.Description).NotEmpty().MaximumLength(4000);
         RuleFor(x => x.Dto.BasePrice).GreaterThan(0);
         RuleFor(x => x.Dto.SellPrice).GreaterThan(0);

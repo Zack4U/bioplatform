@@ -74,4 +74,14 @@ public class Address
         if (isDefault.HasValue) IsDefault = isDefault.Value;
         UpdatedAt = DateTime.UtcNow;
     }
+
+    /// <summary>
+    /// Sets or clears the default flag for this address.
+    /// Use this instead of calling Update with 8 nulls just to toggle IsDefault.
+    /// </summary>
+    public void SetDefault(bool value)
+    {
+        IsDefault = value;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

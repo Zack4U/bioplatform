@@ -3,7 +3,8 @@
  * PermitsManagement — ABS Permits admin. Connected to real API.
  * Includes create, detail view, revoke, and PDF document upload.
  */
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/store/auth-store";
 import { StatusBadge, getPermitStatusVariant } from "@/components/common";
 import { AdminDataTable, type ColumnDef, type RowAction } from "@/components/features/admin/shared/AdminDataTable";
@@ -46,6 +47,8 @@ export function PermitsManagement() {
     const { user } = useAuthStore();
     const isEntrepreneur = user?.roles?.includes("ENTREPRENEUR") ?? false;
 
+    const searchParams = useSearchParams();
+
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
     const [page, setPage] = useState(1);
@@ -58,6 +61,7 @@ export function PermitsManagement() {
     const [approveTarget, setApproveTarget] = useState<PermitAdminItem | null>(null);
     const [rejectTarget, setRejectTarget] = useState<PermitAdminItem | null>(null);
     const [rejectReason, setRejectReason] = useState("");
+    const [deepLinked, setDeepLinked] = useState(false);
 
     const statusParam = statusFilter && statusFilter !== "all" ? statusFilter : undefined;
 
@@ -77,6 +81,19 @@ export function PermitsManagement() {
     const isLoading = isEntrepreneur ? isEntrepreneurLoading : isAdminLoading;
     const items = isEntrepreneur ? (entrepreneurPermits ?? []) : (adminData?.items ?? []);
     const totalPages = isEntrepreneur ? 1 : (adminData?.totalPages ?? 1);
+
+    // Deep-link: if the URL contains ?permitId=, auto-open that permit's detail dialog.
+    useEffect(() => {
+        if (deepLinked || isLoading || items.length === 0) return;
+        const permitId = searchParams.get("permitId");
+        if (!permitId) return;
+        const found = items.find((p) => p.id === permitId);
+        if (found) {
+            setSelected(found);
+            setIsDetailOpen(true);
+            setDeepLinked(true);
+        }
+    }, [items, isLoading, searchParams, deepLinked]);
 
     const revokePermit = useRevokePermit();
     const cancelRequest = useCancelAbsPermitRequest();

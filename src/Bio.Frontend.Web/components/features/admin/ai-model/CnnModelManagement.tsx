@@ -22,6 +22,7 @@ import { useIsMobile } from "@/hooks/useMediaQuery";
 import { StatusBadge } from "@/components/common";
 import { AdminDataTable, type ColumnDef } from "@/components/features/admin/shared/AdminDataTable";
 import { useCnnModelManagementPage } from "@/hooks/features/admin/useCnnModelManagementPage";
+import { useAuthStore } from "@/store/auth-store";
 import type { CnnModelVersion } from "@/types";
 import { Brain, Upload, Activity, History, Power, Trash2, AlertTriangle, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
@@ -84,6 +85,9 @@ export function CnnModelManagement() {
     } = useCnnModelManagementPage();
 
     const isMobile = useIsMobile();
+    const { user } = useAuthStore();
+    // Researchers are read-only on this page: they can view but not modify models.
+    const isResearcher = user?.roles?.some((r) => r === "RESEARCHER") ?? false;
 
     // ─── Local Interactive States ────────────────────────────────────────────
     const [deletedModelIds, setDeletedModelIds] = useState<number[]>([]);
@@ -326,6 +330,7 @@ export function CnnModelManagement() {
                                 ? "text-destructive border-destructive/20 hover:bg-destructive/10" 
                                 : "text-emerald-500 border-emerald-500/20 hover:bg-emerald-500/10"
                         )}
+                        disabled={isResearcher}
                         onClick={() => {
                             if (m.isActive) {
                                 handleTriggerDeactivateClick(m);
@@ -333,7 +338,7 @@ export function CnnModelManagement() {
                                 handleTriggerActivateClick(m);
                             }
                         }}
-                        title={m.isActive ? "Apagar modelo" : "Activar modelo (Encender)"}
+                        title={isResearcher ? "Solo lectura" : (m.isActive ? "Apagar modelo" : "Activar modelo (Encender)")}
                     >
                         <Power className="h-4 w-4" />
                     </Button>
@@ -341,8 +346,9 @@ export function CnnModelManagement() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                        disabled={isResearcher}
                         onClick={() => handleTriggerDeleteClick(m)}
-                        title="Borrar modelo"
+                        title={isResearcher ? "Solo lectura" : "Borrar modelo"}
                     >
                         <Trash2 className="h-4 w-4" />
                     </Button>
@@ -497,6 +503,8 @@ export function CnnModelManagement() {
                             variant="outline"
                             className="w-full h-20 flex items-center justify-start gap-4 p-4 border rounded-lg transition-all hover:bg-accent hover:text-accent-foreground group"
                             onClick={() => setIsAutoOpen(true)}
+                            disabled={isResearcher}
+                            title={isResearcher ? "Solo lectura para investigadores" : undefined}
                         >
                             <div className="p-2.5 bg-primary/10 rounded-md text-primary group-hover:bg-primary/20 transition-colors shrink-0">
                                 <Brain className="h-5 w-5" />
@@ -512,6 +520,8 @@ export function CnnModelManagement() {
                             variant="outline"
                             className="w-full h-20 flex items-center justify-start gap-4 p-4 border rounded-lg transition-all hover:bg-accent hover:text-accent-foreground group"
                             onClick={() => setIsManualOpen(true)}
+                            disabled={isResearcher}
+                            title={isResearcher ? "Solo lectura para investigadores" : undefined}
                         >
                             <div className="p-2.5 bg-primary/10 rounded-md text-primary group-hover:bg-primary/20 transition-colors shrink-0">
                                 <Upload className="h-5 w-5" />

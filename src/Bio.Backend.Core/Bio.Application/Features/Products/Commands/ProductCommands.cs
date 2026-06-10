@@ -24,13 +24,18 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     {
         var dto = request.Dto;
 
+        // Auto-generate slug from name if not provided by the client
+        var slug = string.IsNullOrWhiteSpace(dto.Slug)
+            ? GenerateSlug(dto.Name)
+            : dto.Slug;
+
         // ABS compliance: validate active permit exists for this entrepreneur + species
         var permit = await _absRepo.GetActiveByEntrepreneurAndSpeciesAsync(request.EntrepreneurId, dto.BaseSpeciesId, ct);
         if (permit == null || !permit.IsActiveAndValid())
             throw new ForbiddenException("No active ABS permit found for this species. Product creation requires a valid permit under Nagoya Protocol / Decision 391.");
 
         var product = new Product(
-            request.EntrepreneurId, dto.BaseSpeciesId, dto.Name, dto.Slug,
+            request.EntrepreneurId, dto.BaseSpeciesId, dto.Name, slug,
             dto.Description, dto.BasePrice, dto.SellPrice, dto.StockQuantity,
             dto.CategoryId, dto.Sku, dto.Composition, dto.ThumbnailUrl);
 
@@ -44,6 +49,23 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         var created = await _repo.GetByIdWithDetailsAsync(product.Id, ct);
         return MapToDetail(created!);
+    }
+
+    /// <summary>Converts a name to a URL-safe slug (lowercase, hyphens, ASCII only).</summary>
+    private static string GenerateSlug(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return Guid.NewGuid().ToString("N")[..12];
+        var normalized = name.ToLowerInvariant()
+            .Normalize(System.Text.NormalizationForm.FormD);
+        var sb = new System.Text.StringBuilder();
+        foreach (var ch in normalized)
+        {
+            var cat = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(ch);
+            if (cat == System.Globalization.UnicodeCategory.NonSpacingMark) continue;
+            sb.Append(char.IsLetterOrDigit(ch) || ch == '-' ? ch : ' ');
+        }
+        return System.Text.RegularExpressions.Regex.Replace(sb.ToString().Trim(), @"\s+", "-")
+               .Trim('-')[..Math.Min(120, sb.Length)];
     }
 
     internal static ProductDetailDTO MapToDetail(Product p) => new(

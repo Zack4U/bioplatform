@@ -14,7 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import type { PlatformRequestItem } from "@/types/admin";
-import { Eye, FileText, Image as ImageIcon, RefreshCw, Shield } from "lucide-react";
+import { Award, Eye, FileText, Image as ImageIcon, RefreshCw, Shield } from "lucide-react";
 import { useRequestsList } from "@/hooks/features/admin/useRequestsManagement";
 import { translateLabel } from "@/lib/constants";
 import { useRouter } from "next/navigation";
@@ -51,6 +51,7 @@ const TYPE_ICONS: Record<string, React.ReactNode> = {
     abs_permit: <Shield className="h-4 w-4" />,
     image_validation: <ImageIcon className="h-4 w-4" />,
     product_approval: <FileText className="h-4 w-4" />,
+    certification: <Award className="h-4 w-4" />,
 };
 
 const columns: ColumnDef<PlatformRequestItem>[] = [
@@ -74,6 +75,7 @@ const columns: ColumnDef<PlatformRequestItem>[] = [
 export function RequestsManagement() {
     const { user } = useAuthStore();
     const isReviewer = user?.roles?.some((r) => r === "ADMIN" || r === "AUTHORITY") ?? false;
+    const isResearcher = user?.roles?.some((r) => r === "RESEARCHER") ?? false;
 
     const [search, setSearch] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
@@ -85,7 +87,10 @@ export function RequestsManagement() {
     const router = useRouter();
 
     const { data, isLoading, refetch } = useRequestsList({
-        type: typeFilter && typeFilter !== "all" ? typeFilter : undefined,
+        // Researchers can only see image_validation requests
+        type: typeFilter && typeFilter !== "all"
+            ? typeFilter
+            : (isReviewer ? undefined : user?.roles?.includes("RESEARCHER") ? "image_validation" : undefined),
         status: statusFilter && statusFilter !== "all" ? statusFilter : undefined,
         search: search || undefined,
         page,
@@ -99,7 +104,11 @@ export function RequestsManagement() {
         // Deep-link to the matching module, filtered/highlighted to this specific request.
         switch (item.referenceType) {
             case "SpeciesImage":
-                router.push(`/admin/images?speciesId=${item.referenceId ?? ""}&imageId=${item.referenceId ?? ""}`);
+                // parentReferenceId = speciesId, parentReferenceName = speciesName
+                router.push(
+                    `/admin/images?speciesId=${item.parentReferenceId ?? item.referenceId ?? ""}` +
+                    (item.parentReferenceName ? `&speciesName=${encodeURIComponent(item.parentReferenceName)}` : "")
+                );
                 break;
             case "AbsPermit":
                 router.push(`/admin/permits?permitId=${item.referenceId ?? ""}`);

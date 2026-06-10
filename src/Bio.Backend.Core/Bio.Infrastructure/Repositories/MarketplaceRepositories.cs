@@ -248,8 +248,10 @@ public class AddressRepository : IAddressRepository
 
     public async Task ClearDefaultsForUserAsync(Guid userId, string addressType, CancellationToken ct)
     {
-        var defaults = await _ctx.Addresses.Where(a => a.UserId == userId && a.AddressType == addressType && a.IsDefault).ToListAsync(ct);
-        foreach (var addr in defaults) addr.Update(null, null, null, null, null, null, null, null, false);
+        var defaults = await _ctx.Addresses
+            .Where(a => a.UserId == userId && a.AddressType == addressType && a.IsDefault)
+            .ToListAsync(ct);
+        foreach (var addr in defaults) addr.SetDefault(false);
     }
 }
 

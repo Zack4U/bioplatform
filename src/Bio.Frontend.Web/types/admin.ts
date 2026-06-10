@@ -723,6 +723,10 @@ export interface PlatformRequestItem {
     reviewerNotes?: string;
     createdAt: string;
     updatedAt?: string;
+    /** For SpeciesImage: the speciesId of the parent species. */
+    parentReferenceId?: string;
+    /** For SpeciesImage: the scientific name of the parent species. */
+    parentReferenceName?: string;
 }
 
 // --- Audit Log (matching ActivityLogResponseDTO) ---
