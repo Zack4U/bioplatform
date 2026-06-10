@@ -109,10 +109,16 @@ app.add_middleware(
 from app.api.v1_assistant import router as assistant_router  # noqa: E402
 from app.api.v1_classify import router as classify_router  # noqa: E402
 from app.api.v1_metrics import router as metrics_router  # noqa: E402
+from app.api.v1_model_registry import router as model_registry_router  # noqa: E402
+from app.api.v1_system import router as system_router  # noqa: E402
+from app.api.v1_training import router as training_router  # noqa: E402
 
 app.include_router(classify_router)
 app.include_router(metrics_router)
 app.include_router(assistant_router)
+app.include_router(model_registry_router)
+app.include_router(system_router)
+app.include_router(training_router)
 
 
 @app.get("/health", tags=["Infrastructure"])
