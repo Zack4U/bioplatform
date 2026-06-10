@@ -37,7 +37,9 @@ export const USER_ROLES = {
 
 /** ABS Permit statuses */
 export const ABS_PERMIT_STATUS = {
+    PENDING: "Pending",
     ACTIVE: "Active",
+    REJECTED: "Rejected",
     SUSPENDED: "Suspended",
     EXPIRED: "Expired",
     REVOKED: "Revoked",
@@ -171,7 +173,73 @@ export const CONSERVATION_STATUSES = {
     NE: "No Evaluada",
 } as const;
 
+/* ── Community & Networking ───────────────────────────────────────────────── */
+
+/** Maps backend English category values → Spanish display labels */
+export const CATEGORY_LABELS: Record<string, string> = {
+    General: 'General',
+    Tradition: 'Tradición',
+    Science: 'Investigación',
+    Conservation: 'Conservación',
+    Market: 'Emprendimiento',
+    Education: 'Educación',
+    Sighting: 'Avistamientos',
+    Event: 'Eventos',
+    Biodiversidad: 'Biodiversidad',
+};
+
+/** Maps Spanish display labels → backend English category values (reverse of CATEGORY_LABELS) */
+export const CATEGORY_KEYS: Record<string, string> = Object.fromEntries(
+    Object.entries(CATEGORY_LABELS).map(([k, v]) => [v, k])
+);
+
+/** Post categories for the community feed filter tabs */
+export const POST_CATEGORIES = [
+    'General',
+    'Tradición',
+    'Investigación',
+    'Emprendimiento',
+    'Conservación',
+    'Avistamientos',
+    'Educación',
+    'Eventos',
+] as const;
+
+export type PostCategoryKey = (typeof POST_CATEGORIES)[number];
+
+/** Post status → Spanish label */
+export const POST_STATUS_LABELS: Record<string, string> = {
+    Draft: "Borrador",
+    Published: "Publicado",
+    Archived: "Archivado",
+    Hidden: "Oculto",
+};
+
+/** Connection status → Spanish label */
+export const CONNECTION_STATUS_LABELS: Record<string, string> = {
+    Pending: "Pendiente",
+    Accepted: "Conectado",
+    Rejected: "Rechazado",
+    Blocked: "Bloqueado",
+};
+
+/** Polling intervals for real-time updates (ms) */
+export const POLLING_INTERVALS = {
+    MESSAGES: 30_000,
+    UNREAD_COUNT: 60_000,
+} as const;
+
+/** Max simultaneous floating chat popups on desktop */
+export const MAX_OPEN_CHATS = 3;
+
+/** Community feed page size */
+export const COMMUNITY_PAGE_SIZE = 10;
+
+/** Comments per page */
+export const COMMENTS_PAGE_SIZE = 20;
+
 /* ── Spanish Label Maps (i18n-ready) ──────────────────────────────────────── */
+
 
 /** Order status → Spanish label */
 export const ORDER_STATUS_LABELS: Record<string, string> = {
@@ -186,7 +254,9 @@ export const ORDER_STATUS_LABELS: Record<string, string> = {
 
 /** ABS Permit status → Spanish label */
 export const ABS_PERMIT_STATUS_LABELS: Record<string, string> = {
+    Pending: "Pendiente",
     Active: "Activo",
+    Rejected: "Rechazada",
     Suspended: "Suspendido",
     Expired: "Expirado",
     Revoked: "Revocado",
@@ -215,3 +285,57 @@ export function translateLabel(
 ): string {
     return map[key] ?? key;
 }
+
+/** User role name → Spanish label */
+export const USER_ROLE_LABELS: Record<string, string> = {
+    Admin: "Administrador",
+    Researcher: "Investigador",
+    Entrepreneur: "Emprendedor",
+    Community: "Comunidad",
+    Buyer: "Comprador",
+    EnvironmentalAuthority: "Autoridad Ambiental",
+};
+
+/** Audit actionType → Spanish label */
+export const AUDIT_ACTION_LABELS: Record<string, string> = {
+    Login: "Inicio de sesión",
+    Logout: "Cierre de sesión",
+    Create: "Crear",
+    Update: "Actualizar",
+    Delete: "Eliminar",
+    Activate: "Activar",
+    Deactivate: "Desactivar",
+    Validate: "Validar",
+    Reject: "Rechazar",
+    Upload: "Subir archivo",
+};
+
+/** Audit targetType → Spanish label */
+export const AUDIT_TARGET_LABELS: Record<string, string> = {
+    User: "Usuario",
+    Species: "Especie",
+    SpeciesImage: "Imagen de especie",
+    Product: "Producto",
+    Order: "Orden",
+    AbsPermit: "Permiso ABS",
+    Review: "Reseña",
+    CnnModel: "Modelo CNN",
+    Post: "Publicación",
+};
+
+/** Audit impactLevel → Spanish label */
+export const AUDIT_IMPACT_LABELS: Record<string, string> = {
+    Critical: "Crítico",
+    High: "Alto",
+    Medium: "Medio",
+    Low: "Bajo",
+    Info: "Informativo",
+};
+
+/** Audit actorType → Spanish label */
+export const AUDIT_ACTOR_LABELS: Record<string, string> = {
+    User: "Usuario",
+    System: "Sistema",
+    Admin: "Administrador",
+    Anonymous: "Anónimo",
+};

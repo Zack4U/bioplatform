@@ -120,7 +120,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ord
     }
 
     internal static OrderResponseDTO MapToResponse(Order o) => new(
-        o.Id, o.OrderNumber, o.BuyerId, o.Status,
+        o.Id, o.OrderNumber, o.BuyerId, o.Buyer?.FullName, o.Status,
         o.SubtotalAmount, o.TaxAmount, o.ShippingAmount, o.DiscountAmount, o.TotalAmount,
         o.PaymentMethod, o.TransactionRef,
         o.OrderItems.Select(i => new OrderItemResponseDTO(

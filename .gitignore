@@ -80,3 +80,7 @@ temp/
 
 .gemini
 .continue
+.graphify*
+/graphify*
+claude*
+.claude*

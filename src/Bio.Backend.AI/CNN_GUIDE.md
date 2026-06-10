@@ -109,19 +109,32 @@ print(f"Device: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else
 
 ## 3. Estructura del Pipeline
 
+> **IMPORTANTE — los scripts viven en subcarpetas.** Los ejemplos de las secciones
+> siguientes a veces usan rutas cortas (`scripts/04_train_cnn.py`) por legibilidad,
+> pero la ruta real lleva el subdirectorio: `scripts/cnn/04_train_cnn.py`. Mapa:
+> `scripts/dataset/` (01, 02, 02b–02e, 03), `scripts/cnn/` (04, 05, 05b, 06, 07),
+> `scripts/tools/` (model_auditor, download_model), `scripts/species/` (07–12).
+
 ```
 Bio.Backend.AI/
 ├── scripts/                          # Pipeline de entrenamiento
-│   ├── 01_analyze_dataset.py         # Analizar GBIF data
-│   ├── 02_download_images.py         # Descargar imágenes
-│   ├── 02b_supplement_images.py      # Descargar de iNaturalist API
-│   ├── 02c_raw_images_summary.py     # Reporte de raw_images descargadas
-│   ├── 02d_offline_augment.py        # Augmentation offline masiva
-│   ├── 02e_clean_augmented.py        # Eliminar imágenes augmentadas
-│   ├── 03_organize_dataset.py        # Split train/val/test
-│   ├── 04_train_cnn.py              # Entrenar modelo
-│   ├── 05_evaluate_model.py         # Evaluar métricas
-│   └── 06_export_onnx.py           # Exportar a ONNX (opcional)
+│   ├── dataset/
+│   │   ├── 01_analyze_dataset.py     # Analizar GBIF data
+│   │   ├── 02_download_images.py     # Descargar imágenes
+│   │   ├── 02b_supplement_images.py  # Descargar de iNaturalist API
+│   │   ├── 02c_raw_images_summary.py # Reporte de raw_images descargadas
+│   │   ├── 02d_offline_augment.py    # Augmentation offline masiva
+│   │   ├── 02e_clean_augmented.py    # Eliminar imágenes augmentadas
+│   │   └── 03_organize_dataset.py    # Split train/val/test
+│   ├── cnn/
+│   │   ├── 04_train_cnn.py           # Entrenar modelo
+│   │   ├── 05_evaluate_model.py      # Evaluar métricas
+│   │   ├── 05b_compare_models.py     # Comparar versiones
+│   │   ├── 06_export_onnx.py         # Exportar a ONNX (opcional)
+│   │   └── 07_local_finetune.py      # Fine-tuning local
+│   └── tools/
+│       ├── model_auditor.py          # Auditoría visual interactiva
+│       └── download_model.py         # Descarga de pesos (DVC/URL)
 │
 ├── app/                              # FastAPI Service
 │   ├── main.py                       # Entry point
@@ -938,18 +951,24 @@ python scripts/04_train_cnn.py \
 ## 10. Paso 5: Evaluación
 
 ```bash
-python scripts/05_evaluate_model.py --top-k 5
+# Auto-detecta de forma dinámica el modelo activo y guarda las métricas en su carpeta versionada:
+python scripts/cnn/05_evaluate_model.py --top-k 5
+
+# O puedes evaluar una carpeta versionada específica:
+# python scripts/cnn/05_evaluate_model.py --weights-dir data/weights/v1.0.20260518021229/ --top-k 5
 ```
 
 ### Métricas Generadas
 
+Todos estos archivos se guardan **directamente en el directorio del modelo versionado** (`data/weights/<version>/`) para mantener la independencia de cada versión:
+
 | Archivo | Contenido |
 |---|---|
-| `classification_report.txt` | Precision, Recall, F1 por clase + macro/weighted avg |
-| `evaluation_metrics.json` | Todas las métricas en formato JSON (para CI/CD) |
-| `confusion_matrix.png` | Heatmap de confusion matrix (o texto si >30 clases) |
-| `per_class_metrics.csv` | CSV con métricas por clase |
-| `misclassified_samples.json` | Top 50 errores con mayor confianza |
+| `classification_report.txt` | Precision, Recall, F1 por clase agrupados por desempeño |
+| `evaluation_metrics.json` | Todas las métricas en formato JSON (leído por FastAPI y el Auditor) |
+| `confusion_matrix.png` | Heatmap de confusion matrix (o lista de top confundidas en txt si >30 clases) |
+| `per_class_metrics.csv` | CSV con métricas detalladas por clase |
+| `misclassified_samples.json` | Top 50 errores de clasificación con mayor nivel de confianza |
 
 ### Interpretación
 
@@ -1051,7 +1070,11 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
-Al iniciar, el modelo se carga automáticamente en el evento `lifespan`.
+Al iniciar, el servicio consulta la tabla `ai_model_versions` (PostgreSQL) en el evento
+`lifespan` y carga **solo** la versión marcada como activa (`is_active = true`), desde
+`data/weights/<version>/best_model.pth`. Si no hay ninguna activa, el clasificador queda
+**suspendido** y `/api/v1/classify` devuelve 503 hasta que un admin active una versión
+(panel admin → hot-reload, o reinicio del servicio tras sembrar el registro).
 
 ### Endpoints Disponibles
 
@@ -1234,7 +1257,7 @@ Ver sección **9.9 Receta Avanzada** arriba. Resumen rápido:
 Causas probables:
 1. **Label smoothing muy alto**: Reducir `--label-smoothing 0.05` (default 0.1)
 2. **Pocas épocas**: Dejar que entrene completo con `--epochs 50 --patience 15`
-3. **Imágenes contaminadas**: Ejecutar `python scripts/filter_bad_images.py --mode report` para detectar waveforms/espectrogramas en el dataset
+3. **Imágenes contaminadas**: Revisar manualmente el dataset por imágenes no-fotográficas (waveforms/espectrogramas) y eliminarlas antes de re-organizar
 4. **Especies visualmente similares**: Normal si hay muchas del mismo género
 
 ### Modelo no carga en FastAPI
@@ -1258,14 +1281,13 @@ Los siguientes archivos se generan automáticamente para documentación:
 
 | Entregable | Archivo | Ubicación |
 |---|---|---|
-| Métricas del modelo | `evaluation_metrics.json` | `data/evaluation/` |
-| Classification Report | `classification_report.txt` | `data/evaluation/` |
-| Confusion Matrix | `confusion_matrix.png` | `data/evaluation/` |
-| Configuración de entrenamiento | `training_config.json` | `data/weights/` |
-| Historial de entrenamiento | `training_history.json` | `data/weights/` |
+| Métricas del modelo | `evaluation_metrics.json` | `data/weights/<version>/` *(o `data/evaluation/` en legacy)* |
+| Classification Report | `classification_report.txt` | `data/weights/<version>/` *(o `data/evaluation/` en legacy)* |
+| Confusion Matrix | `confusion_matrix.png` | `data/weights/<version>/` *(o `data/evaluation/` en legacy)* |
+| Configuración de entrenamiento | `training_config.json` | `data/weights/<version>/` *(o `data/weights/` en legacy)* |
+| Historial de entrenamiento | `training_history.json` | `data/weights/<version>/` *(o `data/weights/` en legacy)* |
 | Distribución del dataset | `dataset_stats.json` | `data/processed/` |
 | Análisis taxonómico | `species_summary.csv` | `data/dataset_analysis/` |
-| Reporte filtrado imágenes | `non_photo_suspects.json` | `data/dataset_analysis/` |
 | Reporte raw_images | `raw_images_summary.json/.txt` | `data/dataset_analysis/` |
 | Reporte augmentation | `augmentation_report.json` | `data/dataset_analysis/` |
 | Reporte suplementación | `supplement_report.json` | `data/dataset_analysis/` |
@@ -1294,49 +1316,46 @@ git commit -m "feat(vision): implement CNN species classification pipeline
 cd src/Bio.Backend.AI
 
 # 1. Analizar dataset
-python scripts/01_analyze_dataset.py
+python scripts/dataset/01_analyze_dataset.py
 
 # 2. Descargar imágenes (esto toma horas)
-python scripts/02_download_images.py --min-images 10 --max-per-species 150 --workers 6
-
-# 2.5 Filtrar imágenes no-fotográficas (waveforms, espectrogramas)
-python scripts/filter_bad_images.py --mode report
-python scripts/filter_bad_images.py --mode quarantine --target both
+python scripts/dataset/02_download_images.py --min-images 10 --max-per-species 150 --workers 6
 
 # 2.6 (Opcional) Suplementar especies con pocas imágenes
-python scripts/02b_supplement_images.py --dry-run               # ver preview
-python scripts/02b_supplement_images.py                         # ejecutar (target=20, max=50)
+python scripts/dataset/02b_supplement_images.py --dry-run               # ver preview
+python scripts/dataset/02b_supplement_images.py                         # ejecutar (target=20, max=50)
 
 # 2.7 Ver reporte de imágenes descargadas
-python scripts/02c_raw_images_summary.py                        # reporte completo
-python scripts/02c_raw_images_summary.py --sort count_asc       # ver las más escasas primero
+python scripts/dataset/02c_raw_images_summary.py                        # reporte completo
+python scripts/dataset/02c_raw_images_summary.py --sort count_asc       # ver las más escasas primero
 
 # 2.8 (Opcional) Augmentation offline masiva
-python scripts/02d_offline_augment.py --dry-run                 # preview
-python scripts/02d_offline_augment.py --target 50               # completar a 50 imgs/especie
+python scripts/dataset/02d_offline_augment.py --dry-run                 # preview
+python scripts/dataset/02d_offline_augment.py --target 50               # completar a 50 imgs/especie
 
 # 3. Organizar en train/val/test
-python scripts/03_organize_dataset.py --min-images 10
+python scripts/dataset/03_organize_dataset.py --min-images 10
 
 # 3.5 (Opcional) Prueba rápida con 10 especies antes de entrenar todo
-python scripts/03_organize_dataset.py --min-images 10 --max-species 10 --clean
-python scripts/04_train_cnn.py --epochs 10 --batch-size 32
-python scripts/05_evaluate_model.py
+python scripts/dataset/03_organize_dataset.py --min-images 10 --max-species 10 --clean
+python scripts/cnn/04_train_cnn.py --epochs 10 --batch-size 32
+python scripts/cnn/05_evaluate_model.py
 # Si todo funciona, reorganizar con todas las especies:
-python scripts/03_organize_dataset.py --min-images 10 --clean
+python scripts/dataset/03_organize_dataset.py --min-images 10 --clean
 
 # 4. Entrenar (GPU recomendada)
 # Estándar:
-python scripts/04_train_cnn.py --model efficientnet_b0 --epochs 50 --batch-size 32
+python scripts/cnn/04_train_cnn.py --model efficientnet_b0 --epochs 50 --batch-size 32
 # Avanzado (para >85% de accuracy):
-python scripts/04_train_cnn.py --model efficientnet_b2 --epochs 60 --batch-size 32 \
+python scripts/cnn/04_train_cnn.py --model efficientnet_b2 --epochs 60 --batch-size 32 \
   --image-size 260 --unfreeze-lr 5e-5 --mixup-alpha 0.2 --warmup-epochs 3 --patience 15
 
-# 5. Evaluar
-python scripts/05_evaluate_model.py
+# 5. Evaluar (se auto-detecta la versión del modelo activo si no se pasa --weights-dir)
+python scripts/cnn/05_evaluate_model.py
 
 # 5.5 (Opcional) Auditoría visual interactiva
-python scripts/model_auditor.py
+python scripts/tools/model_auditor.py
+
 
 # 6. Iniciar API
 uvicorn app.main:app --reload --port 8000

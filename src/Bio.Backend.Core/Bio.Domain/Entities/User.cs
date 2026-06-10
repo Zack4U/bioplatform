@@ -146,6 +146,15 @@ public class User
     }
 
     /// <summary>
+    /// Re-activates a previously deactivated user account.
+    /// </summary>
+    public void Activate()
+    {
+        IsActive = true;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
     /// Updates the secret for Two-Factor Authentication.
     /// </summary>
     public void SetTwoFactorSecret(string secret)

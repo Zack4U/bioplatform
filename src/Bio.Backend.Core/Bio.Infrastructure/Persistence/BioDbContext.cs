@@ -155,6 +155,7 @@ public class BioDbContext : DbContext
         modelBuilder.Entity<ProductReview>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.ReportReason).HasMaxLength(500);
             entity.HasOne(e => e.Product)
                   .WithMany(p => p.Reviews)
                   .HasForeignKey(e => e.ProductId)
@@ -162,6 +163,10 @@ public class BioDbContext : DbContext
             entity.HasOne(e => e.User)
                   .WithMany()
                   .HasForeignKey(e => e.UserId)
+                  .OnDelete(DeleteBehavior.NoAction);
+            entity.HasOne(e => e.ReportedBy)
+                  .WithMany()
+                  .HasForeignKey(e => e.ReportedById)
                   .OnDelete(DeleteBehavior.NoAction);
         });
 
@@ -244,11 +249,20 @@ public class BioDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.SpeciesId); // Logical FK
-            entity.HasIndex(e => e.ResolutionNumber).IsUnique();
+            // Pending requests carry an empty ResolutionNumber until approved — exclude them from uniqueness.
+            entity.HasIndex(e => e.ResolutionNumber)
+                  .IsUnique()
+                  .HasFilter("[ResolutionNumber] <> ''");
+            entity.Property(e => e.Justification).HasMaxLength(1000);
+            entity.Property(e => e.RejectionReason).HasMaxLength(500);
             entity.HasOne(e => e.Entrepreneur)
                   .WithMany()
                   .HasForeignKey(e => e.EntrepreneurId)
                   .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.ApprovedBy)
+                  .WithMany()
+                  .HasForeignKey(e => e.ApprovedById)
+                  .OnDelete(DeleteBehavior.NoAction);
         });
 
         modelBuilder.Entity<TraceabilityBatch>(entity =>

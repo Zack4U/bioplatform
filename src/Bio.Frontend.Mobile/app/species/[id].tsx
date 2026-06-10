@@ -8,11 +8,13 @@
  * - Taxonomy hierarchy card
  * - Info sections: description, ecology, traditional uses, economic potential
  * - Conservation status, altitude, legal/sensitive badges
- * - Image gallery placeholder (no images endpoint yet)
- * - Distribution map placeholder (no distributions endpoint yet)
+ * - Image gallery with zoom/pan lightbox (GET /species/{id}/images)
+ * - Distribution map (GET /species/{id}/distributions)
  */
 
 import { SmartImage } from "@/components/common/SmartImage";
+import { SpeciesDistributionMap } from "@/components/species/SpeciesDistributionMap";
+import { SpeciesImageGallery } from "@/components/species/SpeciesImageGallery";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
@@ -23,19 +25,20 @@ import {
 } from "@/lib/formatters";
 import { normalizeImageUrl } from "@/lib/image-url";
 import { THEME } from "@/lib/theme";
-import type { SpeciesSearchParams } from "@/types";
+import type {
+    SpeciesEconomicPotential,
+    SpeciesSearchParams,
+    SpeciesTraditionalUse,
+} from "@/types";
 import { router, useLocalSearchParams } from "expo-router";
 import {
     AlertTriangle,
     ArrowLeft,
-    Camera,
     ChevronRight,
     Globe,
     Leaf,
-    MapPin,
     Mountain,
     Scale,
-    Shield,
     Sparkles,
     TreePine,
 } from "lucide-react-native";
@@ -65,6 +68,130 @@ function InfoSection({ icon, title, content }: InfoSectionProps) {
                 <Text className="text-sm text-muted-foreground leading-6">
                     {content}
                 </Text>
+            </CardContent>
+        </Card>
+    );
+}
+
+// ─── TraditionalUsesSection ────────────────────────────────────────────────────
+
+function TraditionalUsesSection({
+    uses,
+    color,
+}: {
+    uses: SpeciesTraditionalUse[];
+    color: string;
+}) {
+    if (!uses?.length) return null;
+    return (
+        <Card className="border-0 shadow-sm mb-3">
+            <CardContent className="p-4">
+                <View className="flex-row items-center gap-2 mb-3">
+                    <Sparkles size={16} color={color} strokeWidth={1.5} />
+                    <Text className="text-sm font-bold text-foreground">
+                        Usos Tradicionales
+                    </Text>
+                </View>
+                {uses.map((use, index) => (
+                    <View
+                        key={use.id}
+                        className={
+                            index < uses.length - 1
+                                ? "mb-3 pb-3 border-b border-border"
+                                : ""
+                        }
+                    >
+                        <Text className="text-sm font-semibold text-foreground">
+                            {use.part}
+                            {use.category?.length
+                                ? ` · ${use.category.join(", ")}`
+                                : ""}
+                        </Text>
+                        {use.description && (
+                            <Text className="text-sm text-muted-foreground leading-6 mt-1">
+                                {use.description}
+                            </Text>
+                        )}
+                        {use.specificPurpose && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Propósito: {use.specificPurpose}
+                            </Text>
+                        )}
+                        {use.preparationMethod && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Preparación: {use.preparationMethod}
+                            </Text>
+                        )}
+                        {use.community && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Comunidad: {use.community}
+                            </Text>
+                        )}
+                        {use.traditionalWarnings && (
+                            <Text className="text-xs text-destructive mt-1">
+                                Advertencia: {use.traditionalWarnings}
+                            </Text>
+                        )}
+                    </View>
+                ))}
+            </CardContent>
+        </Card>
+    );
+}
+
+// ─── EconomicPotentialSection ──────────────────────────────────────────────────
+
+function EconomicPotentialSection({
+    potentials,
+    color,
+}: {
+    potentials: SpeciesEconomicPotential[];
+    color: string;
+}) {
+    if (!potentials?.length) return null;
+    return (
+        <Card className="border-0 shadow-sm mb-3">
+            <CardContent className="p-4">
+                <View className="flex-row items-center gap-2 mb-3">
+                    <Globe size={16} color={color} strokeWidth={1.5} />
+                    <Text className="text-sm font-bold text-foreground">
+                        Potencial Economico
+                    </Text>
+                </View>
+                {potentials.map((ep, index) => (
+                    <View
+                        key={ep.id}
+                        className={
+                            index < potentials.length - 1
+                                ? "mb-3 pb-3 border-b border-border"
+                                : ""
+                        }
+                    >
+                        <Text className="text-sm font-semibold text-foreground">
+                            {ep.sector}
+                        </Text>
+                        {ep.description && (
+                            <Text className="text-sm text-muted-foreground leading-6 mt-1">
+                                {ep.description}
+                            </Text>
+                        )}
+                        {ep.products?.length > 0 && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Productos: {ep.products.join(", ")}
+                            </Text>
+                        )}
+                        {ep.marketValue && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Valor de mercado: {ep.marketValue}
+                            </Text>
+                        )}
+                        {ep.sustainabilityLevel && (
+                            <Text className="text-xs text-muted-foreground mt-1">
+                                Sostenibilidad: {ep.sustainabilityLevel}
+                            </Text>
+                        )}
+                    </View>
+                ))}
             </CardContent>
         </Card>
     );
@@ -412,85 +539,22 @@ export default function SpeciesDetailScreen() {
                     content={species.ecologicalInfo}
                 />
 
-                <InfoSection
-                    icon={
-                        <Sparkles
-                            size={16}
-                            color={theme.warning}
-                            strokeWidth={1.5}
-                        />
-                    }
-                    title="Usos Tradicionales"
-                    content={species.traditionalUses}
+                <TraditionalUsesSection
+                    uses={species.traditionalUses}
+                    color={theme.warning}
                 />
 
-                <InfoSection
-                    icon={
-                        <Globe
-                            size={16}
-                            color={theme.accent}
-                            strokeWidth={1.5}
-                        />
-                    }
-                    title="Potencial Economico"
-                    content={species.economicPotential}
+                <EconomicPotentialSection
+                    potentials={species.economicPotentials}
+                    color={theme.accent}
                 />
             </View>
 
-            {/* ─── Image Gallery Placeholder ──────────────────── */}
-            <View className="px-5 mt-3">
-                <Text className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                    Galeria de Imagenes
-                </Text>
-                <Card className="border-0 shadow-sm">
-                    <CardContent className="items-center justify-center py-10">
-                        <Camera
-                            size={32}
-                            color={theme.mutedForeground}
-                            strokeWidth={1.2}
-                        />
-                        <Text className="text-sm text-muted-foreground mt-3 text-center">
-                            Sin imagenes disponibles
-                        </Text>
-                        <Text className="text-xs text-muted-foreground/60 mt-1 text-center">
-                            Las imagenes se mostraran cuando esten disponibles
-                            en el sistema.
-                        </Text>
-                    </CardContent>
-                </Card>
-            </View>
+            {/* ─── Image Gallery ──────────────────────────────── */}
+            <SpeciesImageGallery speciesId={species.id} />
 
-            {/* ─── Distribution Map Placeholder ──────────────── */}
-            <View className="px-5 mt-3">
-                <Text className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
-                    Mapa de Distribucion
-                </Text>
-                <Card className="border-0 shadow-sm">
-                    <CardContent className="items-center justify-center py-10">
-                        <View className="w-16 h-16 rounded-2xl bg-muted items-center justify-center mb-3">
-                            <MapPin
-                                size={28}
-                                color={theme.mutedForeground}
-                                strokeWidth={1.2}
-                            />
-                        </View>
-                        <View className="flex-row items-center gap-2 mb-2">
-                            <Shield
-                                size={14}
-                                color={theme.warning}
-                                strokeWidth={1.5}
-                            />
-                            <Text className="text-sm font-semibold text-foreground">
-                                Sin Datos
-                            </Text>
-                        </View>
-                        <Text className="text-xs text-muted-foreground text-center px-4">
-                            No hay datos de distribucion geografica disponibles
-                            para esta especie en este momento.
-                        </Text>
-                    </CardContent>
-                </Card>
-            </View>
+            {/* ─── Distribution Map ──────────────────────────── */}
+            <SpeciesDistributionMap speciesId={species.id} />
         </ScrollView>
     );
 }

@@ -40,7 +40,10 @@ export const CORE_ROUTES = {
         BY_ID: (id: string) => `/species/${id}` as const,
         BY_SLUG: (slug: string) => `/species/slug/${slug}` as const,
         FILTER_META: "/species/filter-meta",
+        EXPORT: "/species/export",
+        IMAGES_EXPORT: "/species/images/export",
         DISTRIBUTIONS: (id: string) => `/species/${id}/distributions` as const,
+        IMAGES: (id: string) => `/species/${id}/images` as const,
         OBSERVATIONS: (id: string) => `/species/${id}/observations` as const,
     },
 

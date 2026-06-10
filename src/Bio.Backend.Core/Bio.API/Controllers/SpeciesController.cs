@@ -2,10 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Bio.Application.DTOs;
 using Bio.Application.Features.Species.Commands;
+using Bio.Application.Features.Species.Commands.AddDistribution;
 using Bio.Application.Features.Species.Commands.CreateSpecies;
 using Bio.Application.Features.Species.Commands.DeleteSpecies;
 using Bio.Application.Features.Species.Commands.UpdateSpecies;
 using Bio.Application.Features.Species.Commands.UploadSpeciesObservation;
+using Bio.Application.Features.Species.Queries.ExportSpecies;
+using Bio.Application.Features.Species.Queries.ExportSpeciesImages;
 using Bio.Application.Features.Species.Queries.GetAllSpecies;
 using Bio.Application.Features.Species.Queries.GetSpeciesById;
 using Bio.Application.Features.Species.Queries.GetSpeciesBySlug;
@@ -15,6 +18,7 @@ using Bio.Application.Features.Species.Queries.GetSpeciesImages;
 using Bio.Domain.Constants;
 using MediatR;
 using System.Security.Claims;
+
 
 namespace Bio.API.Controllers;
 
@@ -110,6 +114,36 @@ public class SpeciesController : ControllerBase
         [FromQuery] int pageSize = 20)
     {
         var result = await _mediator.Send(new GetSpeciesImagesQuery(id, onlyValidatedByExpert, page, pageSize));
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Exporta el catálogo COMPLETO de especies con detalle total, paginado por lotes,
+    /// para sincronización offline. Coordenadas protegidas según rol.
+    /// </summary>
+    [HttpGet("export")]
+    [ProducesResponseType(typeof(PaginatedResult<SpeciesDetailDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Export(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 50)
+    {
+        var userRole = GetUserRole();
+        var result = await _mediator.Send(new ExportSpeciesQuery(page, pageSize, userRole));
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Exporta TODAS las imágenes del catálogo paginadas por lotes, para descarga offline.
+    /// </summary>
+    [HttpGet("images/export")]
+    [ProducesResponseType(typeof(PaginatedResult<SpeciesImageDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ExportImages(
+        [FromQuery] bool onlyValidatedByExpert = false,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 50)
+    {
+        var result = await _mediator.Send(
+            new ExportSpeciesImagesQuery(onlyValidatedByExpert, page, pageSize));
         return Ok(result);
     }
 
@@ -323,6 +357,85 @@ public class SpeciesController : ControllerBase
         });
     }
 
+    // ── IMAGE VALIDATION ──────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Validates a species image as an expert — marks IsValidatedByExpert = true.
+    /// Restricted to Admin and Researcher roles.
+    /// </summary>
+    [HttpPost("{speciesId:guid}/images/{imageId:guid}/validate")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ValidateImage(
+        Guid speciesId, Guid imageId, CancellationToken ct = default)
+    {
+        var validatorId = GetActorId();
+        var result = await _mediator.Send(new ValidateSpeciesImageCommand(imageId, validatorId), ct);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Rejects (unvalidates) a species image — sets IsValidatedByExpert = false.
+    /// Restricted to Admin and Researcher roles.
+    /// </summary>
+    [HttpPost("{speciesId:guid}/images/{imageId:guid}/reject")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> RejectImage(
+        Guid speciesId, Guid imageId, CancellationToken ct = default)
+    {
+        var result = await _mediator.Send(new RejectSpeciesImageCommand(imageId), ct);
+        return Ok(result);
+    }
+
+    // ── GEOGRAPHIC DISTRIBUTIONS ──────────────────────────────────────────────
+
+    /// <summary>
+    /// Adds a geographic distribution point (coordinate) for a species.
+    /// Restricted to Admin, Researcher, and EnvironmentalAuthority.
+    /// Duplicate coordinates for the same species are rejected.
+    /// Coordinates are masked in the response for sensitive species if caller lacks privileges.
+    /// </summary>
+    [HttpPost("{speciesId:guid}/distributions")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher},{RoleNames.EnvironmentalAuthority}")]
+    [ProducesResponseType(typeof(GeographicDistributionDTO), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> AddDistribution(
+        Guid speciesId,
+        [FromBody] GeographicDistributionCreateDTO dto,
+        CancellationToken ct = default)
+    {
+        var actorId = GetActorId();
+        var userRole = GetUserRole() ?? string.Empty;
+        var result = await _mediator.Send(
+            new AddGeographicDistributionCommand(speciesId, dto, actorId, userRole), ct);
+        return CreatedAtAction(nameof(GetDistributions), new { id = speciesId }, result);
+    }
+
+    /// <summary>
+    /// Deletes (hard-delete) a geographic distribution record.
+    /// Restricted to Admin, Researcher, and EnvironmentalAuthority.
+    /// </summary>
+    [HttpDelete("distributions/{distributionId:guid}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher},{RoleNames.EnvironmentalAuthority}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteDistribution(
+        Guid distributionId, CancellationToken ct = default)
+    {
+        var actorId = GetActorId();
+        var userRole = GetUserRole() ?? string.Empty;
+        await _mediator.Send(
+            new DeleteGeographicDistributionCommand(distributionId, actorId, userRole), ct);
+        return NoContent();
+    }
+
     /// <summary>
     /// Extrae el primer rol del usuario autenticado desde los claims JWT.
     /// Retorna null si no hay usuario autenticado.
@@ -330,7 +443,14 @@ public class SpeciesController : ControllerBase
     private string? GetUserRole()
     {
         if (User.Identity?.IsAuthenticated != true) return null;
-        return User.FindFirst(ClaimTypes.Role)?.Value
-            ?? User.FindFirst("role")?.Value;
+        return User.FindFirstValue("role") ?? User.FindFirst(ClaimTypes.Role)?.Value;
+    }
+
+    private Guid GetActorId()
+    {
+        var claim = User.FindFirstValue("sub")
+            ?? User.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? throw new UnauthorizedAccessException("User identity missing.");
+        return Guid.Parse(claim);
     }
 }

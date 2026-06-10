@@ -36,6 +36,7 @@ export interface RowAction<T> {
     icon?: ReactNode;
     onClick: (item: T) => void;
     variant?: "default" | "destructive";
+    className?: string;
     hidden?: (item: T) => boolean;
 }
 
@@ -170,7 +171,10 @@ export function AdminDataTable<T>({
                                                                 <DropdownMenuItem
                                                                     key={action.label}
                                                                     onClick={() => action.onClick(item)}
-                                                                    className={action.variant === "destructive" ? "text-destructive focus:text-destructive" : ""}
+                                                                    className={cn(
+                                                                        action.variant === "destructive" ? "text-destructive focus:text-destructive" : "",
+                                                                        action.className,
+                                                                    )}
                                                                 >
                                                                     {action.icon && <span className="mr-2">{action.icon}</span>}
                                                                     {action.label}
@@ -215,6 +219,10 @@ export function AdminDataTable<T>({
                                                             <DropdownMenuItem
                                                                 key={action.label}
                                                                 onClick={() => action.onClick(item)}
+                                                                className={cn(
+                                                                    action.variant === "destructive" ? "text-destructive focus:text-destructive" : "",
+                                                                    action.className,
+                                                                )}
                                                             >
                                                                 {action.icon && <span className="mr-2">{action.icon}</span>}
                                                                 {action.label}

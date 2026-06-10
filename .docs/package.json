@@ -1,0 +1,11 @@
+{
+  "name": "bioplatform-docs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Documentacion Mintlify de BioCommerce Caldas",
+  "scripts": {
+    "docs": "mint dev --port 3333",
+    "docs:check": "mint broken-links",
+    "docs:update": "mint update"
+  }
+}

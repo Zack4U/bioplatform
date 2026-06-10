@@ -29,20 +29,34 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Startup/Shutdown lifecycle: load CNN model and check DB on startup."""
     settings = get_settings()
 
-    # ── Startup ────────────────────────────────────────────────
+    # -- Startup --------------------------------------------------------
     logger.info("Starting BioPlatform AI Service...")
 
-    # Load CNN model
+    # Load CNN model dictated by the DB registry (ai_model_versions).
+    # The active version is the single source of truth: if no version is
+    # active, the CNN stays suspended (it must NOT load the newest weights
+    # on disk).
     try:
+        from app.services.model_registry_repository import get_active_model_version
         from app.services.vision.classifier import get_classifier
 
         classifier = get_classifier()
-        classifier.load_model()
-        logger.info(f"CNN model loaded: {classifier.num_classes} classes")
-    except FileNotFoundError:
+        active = await get_active_model_version()
+
+        if active is None:
+            logger.warning(
+                "No active model version in the registry. CNN suspended — "
+                "/api/v1/classify will return 503 until an admin activates a version."
+            )
+        else:
+            classifier.load_model(version=active["version"])
+            logger.info(
+                "CNN model loaded from registry: version=%s, %d classes",
+                active["version"], classifier.num_classes,
+            )
+    except FileNotFoundError as e:
         logger.warning(
-            "CNN model weights not found. /api/v1/classify will return 503. "
-            "Train the model first: python scripts/04_train_cnn.py"
+            f"Active model weights not found on disk: {e}. /api/v1/classify will return 503."
         )
     except Exception as e:
         logger.warning(f"Failed to load CNN model: {e}. Classify endpoint unavailable.")
@@ -61,7 +75,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     yield
 
-    # ── Shutdown ───────────────────────────────────────────────
+    # -- Shutdown -------------------------------------------------------
     logger.info("Shutting down BioPlatform AI Service.")
     try:
         from app.core.database import dispose_engine
@@ -75,7 +89,7 @@ settings = get_settings()
 
 app = FastAPI(
     title=settings.app_name,
-    description="Microservicio de IA para identificación de especies y biocomercio – Caldas, Colombia",
+    description="Microservicio de IA para identificacion de especies y biocomercio - Caldas, Colombia",
     version=settings.app_version,
     lifespan=lifespan,
 )
@@ -89,7 +103,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Register Routers ──────────────────────────────────────────
+# -- Register Routers ----------------------------------------------------------
 from app.api.v1_classify import router as classify_router  # noqa: E402
 from app.api.v1_metrics import router as metrics_router  # noqa: E402
 from app.api.v1_assistant import router as assistant_router  # noqa: E402
@@ -144,7 +158,15 @@ async def root() -> dict[str, Any]:
         "endpoints": {
             "classify": "POST /api/v1/classify",
             "model_info": "GET /api/v1/model-info",
+            "hardware": "GET /api/v1/system/hardware",
+            "finetune": "POST /api/v1/training/finetune",
+            "upload": "POST /api/v1/model/upload",
+            "reload": "POST /api/v1/model/reload",
+            "validate": "POST /api/v1/model/validate",
             "health": "GET /health",
+            "liveness": "GET /health/liveness",
+            "readiness": "GET /health/readiness",
+            "startup": "GET /health/startup",
         },
     }
 

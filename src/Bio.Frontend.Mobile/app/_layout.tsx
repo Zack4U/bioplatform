@@ -11,6 +11,8 @@
  * - test: component sandbox (dev only)
  */
 
+import { NetworkStatus } from "@/components/common/NetworkStatus";
+import { useOfflineConnectivity } from "@/hooks/useOfflineConnectivity";
 import { SPECIES_FILTER_META_QUERY_KEY } from "@/hooks/useSpecies";
 import { NAV_THEME } from "@/lib/theme";
 import * as speciesService from "@/services/species-service";
@@ -52,6 +54,9 @@ const queryClient = new QueryClient({
 export default function RootLayout() {
     const { colorScheme } = useColorScheme();
     const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
+
+    // Track connectivity → drives auto offline mode + flush on reconnect.
+    useOfflineConnectivity();
 
     useEffect(() => {
         setIsColorSchemeLoaded(true);
@@ -142,6 +147,7 @@ export default function RootLayout() {
                             }}
                         />
                     </Stack>
+                    <NetworkStatus />
                     <PortalHost />
                     <Toaster />
                 </ThemeProvider>

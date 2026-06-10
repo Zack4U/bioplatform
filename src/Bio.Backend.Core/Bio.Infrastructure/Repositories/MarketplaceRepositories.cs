@@ -77,8 +77,32 @@ public class ProductReviewRepository : IProductReviewRepository
         return (items, total);
     }
 
+    public async Task<(IReadOnlyList<ProductReview> Items, int TotalCount)> GetManagedAsync(
+        Guid? entrepreneurId, bool? isReported, int page, int pageSize, CancellationToken ct)
+    {
+        var q = _ctx.ProductReviews
+            .Include(r => r.Product)
+            .Include(r => r.User)
+            .Include(r => r.ReportedBy)
+            .AsQueryable();
+
+        if (entrepreneurId.HasValue)
+            q = q.Where(r => r.Product != null && r.Product.EntrepreneurId == entrepreneurId);
+        if (isReported.HasValue)
+            q = q.Where(r => r.IsReported == isReported);
+
+        q = q.OrderByDescending(r => r.CreatedAt);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
+
     public async Task<ProductReview?> GetByIdAsync(Guid id, CancellationToken ct)
-        => await _ctx.ProductReviews.FirstOrDefaultAsync(r => r.Id == id, ct);
+        => await _ctx.ProductReviews
+            .Include(r => r.Product)
+            .Include(r => r.User)
+            .Include(r => r.ReportedBy)
+            .FirstOrDefaultAsync(r => r.Id == id, ct);
 
     public async Task AddAsync(ProductReview review, CancellationToken ct)
         => await _ctx.ProductReviews.AddAsync(review, ct);
@@ -108,7 +132,7 @@ public class OrderRepository : IOrderRepository
     public OrderRepository(BioDbContext ctx) => _ctx = ctx;
 
     public async Task<Order?> GetByIdWithItemsAsync(Guid id, CancellationToken ct)
-        => await _ctx.Orders.Include(o => o.OrderItems).ThenInclude(i => i.Product).FirstOrDefaultAsync(o => o.Id == id, ct);
+        => await _ctx.Orders.Include(o => o.OrderItems).ThenInclude(i => i.Product).Include(o => o.Buyer).FirstOrDefaultAsync(o => o.Id == id, ct);
 
     public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetByBuyerIdAsync(Guid buyerId, int page, int pageSize, CancellationToken ct)
     {
@@ -120,7 +144,7 @@ public class OrderRepository : IOrderRepository
 
     public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetManagedAsync(string? status, int page, int pageSize, CancellationToken ct)
     {
-        var q = _ctx.Orders.Include(o => o.OrderItems).ThenInclude(i => i.Product).AsQueryable();
+        var q = _ctx.Orders.Include(o => o.OrderItems).ThenInclude(i => i.Product).Include(o => o.Buyer).AsQueryable();
         if (!string.IsNullOrWhiteSpace(status)) q = q.Where(o => o.Status == status);
         q = q.OrderByDescending(o => o.CreatedAt);
         var total = await q.CountAsync(ct);
@@ -180,6 +204,9 @@ public class FavoriteRepository : IFavoriteRepository
     public async Task<Favorite?> GetByIdAsync(Guid id, CancellationToken ct)
         => await _ctx.Favorites.FirstOrDefaultAsync(f => f.Id == id, ct);
 
+    public async Task<Favorite?> GetByUserAndTargetAsync(Guid userId, string targetType, Guid targetId, CancellationToken ct)
+        => await _ctx.Favorites.FirstOrDefaultAsync(f => f.UserId == userId && f.TargetType == targetType && f.TargetId == targetId, ct);
+
     public async Task AddAsync(Favorite favorite, CancellationToken ct)
         => await _ctx.Favorites.AddAsync(favorite, ct);
 
@@ -238,19 +265,38 @@ public class AbsPermitRepository : IAbsPermitRepository
     public AbsPermitRepository(BioDbContext ctx) => _ctx = ctx;
 
     public async Task<AbsPermit?> GetByIdAsync(Guid id, CancellationToken ct)
-        => await _ctx.AbsPermits.FirstOrDefaultAsync(p => p.Id == id, ct);
+        => await _ctx.AbsPermits.Include(p => p.Entrepreneur).Include(p => p.ApprovedBy).FirstOrDefaultAsync(p => p.Id == id, ct);
 
     public async Task<IReadOnlyList<AbsPermit>> GetByEntrepreneurIdAsync(Guid entrepreneurId, CancellationToken ct)
-        => await _ctx.AbsPermits.Where(p => p.EntrepreneurId == entrepreneurId).OrderByDescending(p => p.EmissionDate).ToListAsync(ct);
+        => await _ctx.AbsPermits.Include(p => p.Entrepreneur).Include(p => p.ApprovedBy)
+            .Where(p => p.EntrepreneurId == entrepreneurId).OrderByDescending(p => p.RequestedAt).ToListAsync(ct);
 
     public async Task<AbsPermit?> GetActiveByEntrepreneurAndSpeciesAsync(Guid entrepreneurId, Guid speciesId, CancellationToken ct)
         => await _ctx.AbsPermits.FirstOrDefaultAsync(p =>
             p.EntrepreneurId == entrepreneurId && p.SpeciesId == speciesId &&
             p.Status == "Active" && p.ExpirationDate > DateTime.UtcNow, ct);
 
+    public async Task<(IReadOnlyList<AbsPermit> Items, int TotalCount)> GetAllPagedAsync(
+        Guid? entrepreneurId, string? status, int page, int pageSize, CancellationToken ct)
+    {
+        var q = _ctx.AbsPermits.Include(p => p.Entrepreneur).Include(p => p.ApprovedBy).AsQueryable();
+        if (entrepreneurId.HasValue)
+            q = q.Where(p => p.EntrepreneurId == entrepreneurId.Value);
+        if (!string.IsNullOrWhiteSpace(status))
+            q = q.Where(p => p.Status == status);
+        q = q.OrderByDescending(p => p.RequestedAt);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
+
     public async Task AddAsync(AbsPermit permit, CancellationToken ct)
         => await _ctx.AbsPermits.AddAsync(permit, ct);
+
+    public async Task DeleteAsync(AbsPermit permit, CancellationToken ct)
+    { _ctx.AbsPermits.Remove(permit); await Task.CompletedTask; }
 }
+
 
 public class CartRepository : ICartRepository
 {

@@ -50,6 +50,23 @@ class Settings(BaseSettings):
     model_weights_path: str = "data/weights/best_model.pth"
     bio_min_f1_threshold: float = 0.65
 
+    # ── Fine-Tuning Pipeline ──────────────────────────────────
+    replay_buffer_ratio: float = 0.15
+    prefix_ai_version: str = "v1.0"
+    min_vram_gb: float = 4.0
+    finetune_default_epochs: int = 15
+    finetune_default_lr: float = 1e-5
+    validation_accuracy_drop_threshold: float = 0.05
+    dataset_split_seed: int = 42
+    s3_bucket_name: str = "bioplatform-public"
+
+    # ── .NET Backend Integration ──────────────────────────────
+    dotnet_webhook_url: str = "http://localhost:5070/api/webhooks/ai/training-completed"
+    dotnet_api_base_url: str = "http://localhost:5070"
+
+    # ── DVC ────────────────────────────────────────────────────
+    dvc_remote_name: str = "myremote"
+
     # ── JWT (shared with .NET backend) ─────────────────────────
     jwt_secret: str = ""
     jwt_issuer: str = "bioplatform-api"

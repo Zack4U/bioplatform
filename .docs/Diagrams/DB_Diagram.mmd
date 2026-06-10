@@ -17,6 +17,8 @@ graph TD
     OrderItems((OrderItems))
     Addresses((Addresses))
     Favorites((Favorites))
+    Carts((Carts))
+    CartItems((CartItems))
     Notifications((Notifications))
     ActivityLogs((ActivityLogs))
     CommunityPosts((CommunityPosts))
@@ -63,6 +65,9 @@ graph TD
   Addresses --> Orders
 
   Users --> Favorites
+  Users --> Carts
+  Carts --> CartItems
+  Products --> CartItems
   Users --> Notifications
   Users --> ActivityLogs
 
@@ -102,5 +107,5 @@ graph TD
   classDef sql fill:#e8f2ff,stroke:#3366cc,stroke-width:1px,color:#0b1f44;
   classDef pg fill:#ecfff2,stroke:#2d8a4d,stroke-width:1px,color:#0b2a16;
 
-  class Users,Roles,UserRoles,RefreshTokens,ProductCategories,Products,ProductImages,ProductReviews,Certifications,AbsPermits,TraceabilityBatches,Orders,OrderItems,Addresses,Favorites,Notifications,ActivityLogs,CommunityPosts,CommunityPostComments,CommunityReactions,UserConnections,DirectThreads,DirectThreadParticipants,DirectMessages,DirectMessageReads sql;
+  class Users,Roles,UserRoles,RefreshTokens,ProductCategories,Products,ProductImages,ProductReviews,Certifications,AbsPermits,TraceabilityBatches,Orders,OrderItems,Addresses,Favorites,Carts,CartItems,Notifications,ActivityLogs,CommunityPosts,CommunityPostComments,CommunityReactions,UserConnections,DirectThreads,DirectThreadParticipants,DirectMessages,DirectMessageReads sql;
   class taxonomy,species,geographic_distribution,species_images,prediction_logs,ai_model_versions,business_plans,rag_documents,chat_sessions,chat_messages pg;

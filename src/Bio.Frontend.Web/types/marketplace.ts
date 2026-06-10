@@ -92,14 +92,16 @@ export interface ProductDetailDTO {
  * ManageProductListItem — extends ProductListItem with entrepreneur-facing
  * fields shown in the dashboard product table.
  */
-export interface ManageProductListItem extends ProductListItem {
+export interface ManageProductListItem extends Omit<ProductListItem, "entrepreneurName"> {
   entrepreneurId: string;
+  entrepreneurName?: string | null;
   baseSpeciesId: string;
   categoryId: number | null;
   description: string;
+  createdAt: string;
   updatedAt: string | null;
-  /** ABS permit ID associated with this product (Nagoya Protocol) */
-  absPermitId: string | null;
+  /** ABS permit ID associated with this product (Nagoya Protocol) — not returned by managed list endpoint */
+  absPermitId?: string | null;
 }
 
 // ── Categories ───────────────────────────────────────────────────────────────
@@ -171,7 +173,7 @@ export interface AbsPermit {
   status: AbsPermitStatus;
 }
 
-export type AbsPermitStatus = "Active" | "Suspended" | "Expired" | "Revoked";
+export type AbsPermitStatus = "Pending" | "Active" | "Rejected" | "Suspended" | "Expired" | "Revoked";
 
 // ── Orders ───────────────────────────────────────────────────────────────────
 
@@ -180,6 +182,7 @@ export interface Order {
   id: string;
   orderNumber: string;
   buyerId: string;
+  buyerName?: string | null;
   totalAmount: number;
   subtotalAmount: number;
   taxAmount: number;

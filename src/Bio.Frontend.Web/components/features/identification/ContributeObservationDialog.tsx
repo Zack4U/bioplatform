@@ -30,7 +30,7 @@ import {
     type ObservationCoords,
     useContributeObservation,
 } from "@/hooks/features/identification/useContributeObservation";
-import { CheckCircle, Loader2, MapPin, MapPinOff, Upload } from "lucide-react";
+import { CheckCircle, Info, Loader2, MapPin, MapPinOff, Upload } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -91,13 +91,21 @@ function LocationStatusBadge({ status }: { status: LocationStatus }) {
         return (
             <span className="flex items-center gap-1.5 text-sm text-emerald-600 dark:text-emerald-400">
                 <MapPin className="h-4 w-4" aria-hidden="true" />
-                Ubicación obtenida
+                Ubicación GPS obtenida
             </span>
         );
+    if (status === "default")
+        return (
+            <span className="flex items-center gap-1.5 text-sm text-amber-600 dark:text-amber-400">
+                <Info className="h-4 w-4" aria-hidden="true" />
+                Usando ubicación por defecto (Manizales, CO)
+            </span>
+        );
+    // "denied" — shouldn't reach here anymore but kept as fallback
     return (
-        <span className="flex items-center gap-1.5 text-sm text-amber-600 dark:text-amber-400">
+        <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <MapPinOff className="h-4 w-4" aria-hidden="true" />
-            Sin ubicación — se enviará sin coordenadas
+            Sin ubicación GPS
         </span>
     );
 }
@@ -217,20 +225,6 @@ export function ContributeObservationDialog({
                         Ubicación
                     </p>
                     <LocationStatusBadge status={locationStatus} />
-                    {locationStatus === "denied" && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="w-fit px-0 text-xs underline underline-offset-4"
-                            onClick={() =>
-                                void requestGeolocation().then((c) =>
-                                    setResolvedCoords(c),
-                                )
-                            }
-                        >
-                            Intentar de nuevo
-                        </Button>
-                    )}
                 </div>
 
                 {/* License selector */}

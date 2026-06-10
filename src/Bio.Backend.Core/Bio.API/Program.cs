@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.RateLimiting;
 using StackExchange.Redis;
 using System.Text;
 using System.Threading.RateLimiting;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +91,15 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IScientificUnitOfWork, Bio.Back
 builder.Services.AddScoped<Bio.Domain.Interfaces.IGeographicDistributionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.GeographicDistributionRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesImageRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.SpeciesImageRepository>();
 builder.Services.AddScoped<Bio.Application.Interfaces.IRelatedProductsQuery, Bio.Backend.Core.Bio.Infrastructure.Services.RelatedProductsQuery>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IAiModelRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.AiModelRepository>();
+
+// AI Microservice HttpClient — used by AiModels CQRS handlers
+builder.Services.AddHttpClient("AiService", client =>
+{
+    var aiBaseUrl = builder.Configuration.GetValue<string>("AiService:BaseUrl") ?? "http://localhost:8000";
+    client.BaseAddress = new Uri(aiBaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
 
 // Marketplace context (SQL Server) — Product, Order, Favorite, Address, Certification, AbsPermit, Cart, Traceability
 builder.Services.AddScoped<Bio.Domain.Interfaces.IProductRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ProductRepository>();
@@ -103,6 +114,18 @@ builder.Services.AddScoped<Bio.Domain.Interfaces.IAbsPermitRepository, Bio.Backe
 builder.Services.AddScoped<Bio.Domain.Interfaces.ICartRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CartRepository>();
 builder.Services.AddScoped<Bio.Domain.Interfaces.ITraceabilityBatchRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.TraceabilityBatchRepository>();
 
+// Community context (SQL Server) — Posts, Comments, Reactions, Connections, Messaging
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICommunityPostRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CommunityPostRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICommunityPostCommentRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CommunityPostCommentRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.ICommunityReactionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.CommunityReactionRepository>();
+
+// Networking context (SQL Server) — User Connections, Direct Threads & Messages
+builder.Services.AddScoped<Bio.Domain.Interfaces.IUserConnectionRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.UserConnectionRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IDirectThreadRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.DirectThreadRepository>();
+
+// User Features context (SQL Server) — Notifications, ActivityLogs
+builder.Services.AddScoped<Bio.Domain.Interfaces.INotificationRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.NotificationRepository>();
+builder.Services.AddScoped<Bio.Domain.Interfaces.IActivityLogRepository, Bio.Backend.Core.Bio.Infrastructure.Repositories.ActivityLogRepository>();
 builder.Services.AddScoped<Bio.Application.Interfaces.IPaymentService, Bio.Infrastructure.Services.StripePaymentService>();
 
 // AWS S3 — Species observation image uploads
@@ -163,6 +186,7 @@ builder.Services.AddRateLimiter(options =>
 
 builder.Services.AddScoped<Bio.Domain.Interfaces.ISpeciesBulkImportJob, Bio.Infrastructure.Services.SpeciesImportJob>();
 builder.Services.AddScoped<Bio.Application.Common.Interfaces.IJobEnqueuer, Bio.Infrastructure.Services.JobEnqueuer>();
+builder.Services.AddScoped<Bio.Application.Common.Interfaces.IScientificDataSeeder, Bio.Infrastructure.Services.ScientificDataSeeder>();
 
 // CORS — allow configured frontend origins
 var corsOrigins = builder.Configuration
@@ -237,6 +261,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Force InvariantCulture for all requests so multipart/form-data numeric
+// fields (latitude, longitude, confidenceScore) are always parsed with '.' as
+// the decimal separator, regardless of the server's OS locale.
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(CultureInfo.InvariantCulture),
+    SupportedCultures = [CultureInfo.InvariantCulture],
+    SupportedUICultures = [CultureInfo.InvariantCulture],
+});
+
 // CORS must be before Authentication/Authorization
 app.UseCors();
 
@@ -249,5 +283,25 @@ app.UseAuthorization();
 app.UseHangfireDashboard("/hangfire");
 
 app.MapControllers();
+
+// Optional, idempotent seeding of the PostgreSQL scientific catalog (species, enrichment,
+// distributions). Enable with SeedSettings:SeedScientificOnStartup=true or the --seed-scientific arg.
+// Requires the scientific schema to already exist (migrations are applied manually).
+var seedScientific = app.Configuration.GetValue<bool>("SeedSettings:SeedScientificOnStartup")
+    || args.Contains("--seed-scientific");
+if (seedScientific)
+{
+    using var scope = app.Services.CreateScope();
+    try
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<Bio.Application.Common.Interfaces.IScientificDataSeeder>();
+        await seeder.SeedAsync();
+    }
+    catch (Exception ex)
+    {
+        scope.ServiceProvider.GetRequiredService<ILogger<Program>>()
+            .LogError(ex, "Scientific data seeding failed during startup.");
+    }
+}
 
 app.Run();

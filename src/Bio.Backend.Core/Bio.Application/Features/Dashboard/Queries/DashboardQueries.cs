@@ -26,19 +26,11 @@ public class GetSellerDashboardQueryHandler
         var now = DateTime.UtcNow;
         var monthStart = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        // Run all independent queries in parallel for performance
-        var productsTask = _productRepo.GetManagedFilteredAsync(
+        var (products, _) = await _productRepo.GetManagedFilteredAsync(
             request.EntrepreneurId, null, null, null, "name", "asc", 1, 1000, ct);
-        var allOrdersTask = _orderRepo.GetByEntrepreneurIdAsync(request.EntrepreneurId, null, 1, 10000, ct);
-        var monthOrdersTask = _orderRepo.GetByEntrepreneurIdAsync(request.EntrepreneurId, null, 1, 10000, ct, monthStart);
-        var reviewsTask = _reviewRepo.GetAggregateByEntrepreneurIdAsync(request.EntrepreneurId, ct);
-
-        await Task.WhenAll(productsTask, allOrdersTask, monthOrdersTask, reviewsTask);
-
-        var (products, _) = await productsTask;
-        var (allOrders, _) = await allOrdersTask;
-        var (monthOrders, _) = await monthOrdersTask;
-        var (avgRating, reviewCount) = await reviewsTask;
+        var (allOrders, _) = await _orderRepo.GetByEntrepreneurIdAsync(request.EntrepreneurId, null, 1, 10000, ct);
+        var (monthOrders, _) = await _orderRepo.GetByEntrepreneurIdAsync(request.EntrepreneurId, null, 1, 10000, ct, monthStart);
+        var (avgRating, reviewCount) = await _reviewRepo.GetAggregateByEntrepreneurIdAsync(request.EntrepreneurId, ct);
 
         // Compute metrics
         var allOrdersList = allOrders.ToList();

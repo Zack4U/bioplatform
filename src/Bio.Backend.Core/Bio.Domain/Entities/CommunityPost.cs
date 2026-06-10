@@ -45,6 +45,14 @@ public class CommunityPost
     public void Pin() { IsPinned = true; UpdatedAt = DateTime.UtcNow; }
     public void Unpin() { IsPinned = false; UpdatedAt = DateTime.UtcNow; }
 
+    /// <summary>Moderation: archive a post (author/admin self-service — no longer shown in active feeds).</summary>
+    public void Archive() { Status = "Archived"; UpdatedAt = DateTime.UtcNow; }
+    public void Unarchive() { Status = "Published"; UpdatedAt = DateTime.UtcNow; }
+
+    /// <summary>Moderation: hide a post (Admin/Community moderator — content violates guidelines).</summary>
+    public void Hide() { Status = "Hidden"; UpdatedAt = DateTime.UtcNow; }
+    public void Unhide() { Status = "Published"; UpdatedAt = DateTime.UtcNow; }
+
     public void IncrementLikes() => LikesCount++;
     public void DecrementLikes() { if (LikesCount > 0) LikesCount--; }
     public void IncrementDislikes() => DislikesCount++;

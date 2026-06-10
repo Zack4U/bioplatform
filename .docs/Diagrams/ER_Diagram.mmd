@@ -63,6 +63,7 @@ erDiagram
     nvarchar(max) ThumbnailUrl
     datetime2 CreatedAt
     datetime2 UpdatedAt
+    timestamp RowVersion
   }
   ProductImages {
     uniqueidentifier Id PK
@@ -136,6 +137,7 @@ erDiagram
     nvarchar(max) TransactionRef
     datetime2 CreatedAt
     datetime2 UpdatedAt
+    timestamp RowVersion
   }
   OrderItems {
     uniqueidentifier Id PK
@@ -168,6 +170,21 @@ erDiagram
     nvarchar(20) TargetType
     uniqueidentifier TargetId
     datetime2 CreatedAt
+  }
+  Carts {
+    uniqueidentifier Id PK
+    uniqueidentifier UserId UK, FK
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
+  }
+  CartItems {
+    uniqueidentifier Id PK
+    uniqueidentifier CartId FK
+    uniqueidentifier ProductId FK
+    int Quantity
+    bit IsActive
+    datetime2 CreatedAt
+    datetime2 UpdatedAt
   }
   Notifications {
     uniqueidentifier Id PK
@@ -248,11 +265,11 @@ erDiagram
     datetime2 UpdatedAt
   }
   DirectThreadParticipants {
-    uniqueidentifier ThreadId PK, FK
-    uniqueidentifier UserId PK, FK
+    uniqueidentifier Id PK
+    uniqueidentifier ThreadId FK
+    uniqueidentifier UserId FK
     datetime2 JoinedAt
-    datetime2 LeftAt
-    bit IsMuted
+    bit IsActive
   }
   DirectMessages {
     uniqueidentifier Id PK
@@ -263,8 +280,9 @@ erDiagram
     datetime2 CreatedAt
   }
   DirectMessageReads {
-    uniqueidentifier MessageId PK, FK
-    uniqueidentifier UserId PK, FK
+    uniqueidentifier Id PK
+    uniqueidentifier MessageId FK
+    uniqueidentifier UserId FK
     datetime2 ReadAt
   }
 
@@ -406,6 +424,10 @@ erDiagram
   Products ||--o{ OrderItems : line_item
   Users ||--o{ Addresses : has
   Addresses ||--o{ Orders : used_by
+
+  Users ||--o| Carts : owns
+  Carts ||--o{ CartItems : contains
+  Products ||--o{ CartItems : in_cart
 
   Users ||--o{ Favorites : favorites
   Users ||--o{ Notifications : receives

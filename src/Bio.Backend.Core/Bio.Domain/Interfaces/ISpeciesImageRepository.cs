@@ -24,4 +24,29 @@ public interface ISpeciesImageRepository
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The persisted entity with any DB-generated values populated.</returns>
     Task<SpeciesImage> AddAsync(SpeciesImage image, CancellationToken cancellationToken = default);
+
+    /// <summary>Returns all species images for dashboard aggregation (Researcher Dashboard).</summary>
+    Task<IReadOnlyList<SpeciesImage>> GetAllAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Página de imágenes de TODAS las especies (export / sincronización offline).
+    /// Filtro opcional de validación por experto. Retorna (items, totalCount).
+    /// </summary>
+    Task<(IReadOnlyList<SpeciesImage> Items, int TotalCount)> GetAllPagedAsync(
+        bool onlyValidatedByExpert = false,
+        int page = 1,
+        int pageSize = 50,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Returns the count of images uploaded after <paramref name="since"/> and the number
+    /// of distinct species those images belong to.
+    /// When <paramref name="since"/> is null, counts all images in the system.
+    /// </summary>
+    Task<(int ImageCount, int SpeciesCount)> CountNewObservationsSinceAsync(
+        DateTime? since,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>Gets a single species image by its ID. Returns null if not found.</summary>
+    Task<SpeciesImage?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default);
 }

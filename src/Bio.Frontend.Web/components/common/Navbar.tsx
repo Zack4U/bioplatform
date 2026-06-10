@@ -2,15 +2,23 @@
 
 /**
  * Navbar — main application navigation bar.
- * Built on Shadcn Button + Sheet + DropdownMenu + Avatar primitives.
- * Shows user avatar menu when authenticated, login button when guest.
+ *
+ * Profile/user button behavior:
+ *   - Desktop (md+) → DropdownMenu (floating popover, as before)
+ *   - Mobile        → Drawer (bottom sheet)
+ *
+ * Uses useIsMd() from the global useMediaQuery hook so the responsive
+ * behaviour is consistent with the rest of the application.
+ *
+ * Mobile hamburger uses a Sheet for page navigation (unchanged).
  * WCAG: skip navigation link, landmark nav, keyboard accessible.
- * Responsive: uses Sheet for mobile navigation drawer.
  */
 
 import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { NotificationBell } from "@/components/features/community/NotificationBell";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -31,6 +39,7 @@ import {
 } from "@/components/ui/sheet";
 import { useLogout } from "@/hooks/features/auth";
 import { useHydration } from "@/hooks/useHydration";
+import { useIsMd } from "@/hooks/useMediaQuery";
 import { ADMIN_ROLES } from "@/lib/constants";
 import { useAuthStore } from "@/store/auth-store";
 import { useCartStore } from "@/store/cart-store";
@@ -40,9 +49,11 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+
 const NAV_LINKS = [
     { label: "Catalogo", href: "/catalog" },
     { label: "Marketplace", href: "/marketplace" },
+    { label: "Comunidad", href: "/community" },
     { label: "Identificacion IA", href: "/identify" },
     { label: "Asesor IA", href: "/advisor" },
 ] as const;
@@ -63,20 +74,23 @@ export function Navbar() {
     const { isAuthenticated, user, isLoading } = useAuthStore();
     const logoutMutation = useLogout();
     const isHydrated = useHydration();
+    const isDesktop = useIsMd();
+
     const cartCountValue = useCartStore((s) =>
         s.items.reduce((sum, item) => sum + item.quantity, 0),
     );
     const cartCount = isHydrated ? cartCountValue : 0;
 
-    /** User has at least one admin-eligible role (not BUYER or COMMUNITY) */
     const hasAdminAccess =
         isAuthenticated &&
         user?.roles?.some((role) =>
             (ADMIN_ROLES as readonly string[]).includes(role),
         );
 
-    /** Hide the public Navbar inside the admin panel — it has its own header */
+    /** Hide the public Navbar inside the admin panel */
     if (pathname.startsWith("/admin")) return null;
+
+
 
     return (
         <>
@@ -93,27 +107,16 @@ export function Navbar() {
                         className="flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                         aria-label="BioCommerce Caldas - Inicio"
                     >
-                        <Leaf
-                            className="h-7 w-7 text-primary"
-                            aria-hidden="true"
-                        />
+                        <Leaf className="h-7 w-7 text-primary" aria-hidden="true" />
                         <span className="text-lg font-bold tracking-tight">
                             Bio<span className="text-primary">Commerce</span>
                         </span>
                     </Link>
 
-                    {/* Desktop nav */}
-                    <nav
-                        aria-label="Navegacion principal"
-                        className="hidden items-center gap-1 md:flex"
-                    >
+                    {/* Desktop nav links */}
+                    <nav aria-label="Navegacion principal" className="hidden items-center gap-1 md:flex">
                         {NAV_LINKS.map((link) => (
-                            <Button
-                                key={link.href}
-                                variant="ghost"
-                                size="sm"
-                                asChild
-                            >
+                            <Button key={link.href} variant="ghost" size="sm" asChild>
                                 <Link href={link.href}>{link.label}</Link>
                             </Button>
                         ))}
@@ -123,6 +126,10 @@ export function Navbar() {
                     <div className="flex items-center gap-2">
                         <ThemeToggle />
 
+                        {/* Notification Bell — only for authenticated users */}
+                        {!isLoading && isAuthenticated && (
+                            <NotificationBell />
+                        )}
                         <Button
                             variant="outline"
                             size="icon"
@@ -131,10 +138,7 @@ export function Navbar() {
                             className="relative"
                         >
                             <Link href="/cart">
-                                <ShoppingCart
-                                    className="h-4 w-4"
-                                    aria-hidden="true"
-                                />
+                                <ShoppingCart className="h-4 w-4" aria-hidden="true" />
                                 {cartCount > 0 && (
                                     <span className="absolute -top-1.5 -right-1.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                                         {cartCount > 99 ? "99+" : cartCount}
@@ -143,100 +147,73 @@ export function Navbar() {
                             </Link>
                         </Button>
 
-                        {/* Auth state — show user menu or login button */}
-                        {!isLoading && isAuthenticated && user ? (
+                        {/* ── Profile: DropdownMenu on desktop only ── */}
+                        {!isLoading && isAuthenticated && user && isDesktop && (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button
                                         id="user-menu-trigger"
-                                        variant="outline"
-                                        size="icon"
+                                        variant="ghost"
+                                        className="relative h-9 w-9 rounded-full"
                                         aria-label="Menu de usuario"
                                     >
-                                        <User
-                                            className="h-4 w-4"
-                                            aria-hidden="true"
-                                        />
+                                        <Avatar className="h-9 w-9">
+                                            <AvatarFallback className="bg-primary/10 text-primary text-sm font-semibold">
+                                                {getInitials(user.fullName)}
+                                            </AvatarFallback>
+                                        </Avatar>
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent
-                                    align="end"
-                                    className="w-56"
-                                >
-                                    <DropdownMenuLabel className="font-normal">
-                                        <div className="flex items-center gap-3">
-                                            <Avatar size="sm">
-                                                <AvatarFallback>
-                                                    {getInitials(user.fullName)}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <div className="flex flex-col space-y-1">
-                                                <p className="text-sm font-medium leading-none">
-                                                    {user.fullName}
-                                                </p>
-                                                <p className="text-xs leading-none text-muted-foreground">
-                                                    {user.email}
-                                                </p>
-                                            </div>
-                                        </div>
+                                <DropdownMenuContent align="end" className="w-56">
+                                    <DropdownMenuLabel className="flex flex-col gap-0.5">
+                                        <span className="font-medium text-sm">{user.fullName}</span>
+                                        <span className="text-xs text-muted-foreground font-normal">{user.email}</span>
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
-                                        <Link href="/profile">
-                                            <User
-                                                className="h-4 w-4"
-                                                aria-hidden="true"
-                                            />
+                                        <Link href="/profile" className="flex items-center gap-2 cursor-pointer">
+                                            <User className="h-4 w-4" aria-hidden="true" />
                                             Mi perfil
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
-                                        <Link href="/settings">
-                                            <Settings
-                                                className="h-4 w-4"
-                                                aria-hidden="true"
-                                            />
+                                        <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
+                                            <Settings className="h-4 w-4" aria-hidden="true" />
                                             Configuracion
                                         </Link>
                                     </DropdownMenuItem>
                                     {hasAdminAccess && (
-                                        <DropdownMenuItem asChild>
-                                            <Link href="/admin">
-                                                <LayoutDashboard
-                                                    className="h-4 w-4"
-                                                    aria-hidden="true"
-                                                />
-                                                Panel de Administracion
-                                            </Link>
-                                        </DropdownMenuItem>
+                                        <>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem asChild>
+                                                <Link href="/admin" className="flex items-center gap-2 cursor-pointer">
+                                                    <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
+                                                    Panel de Administracion
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        </>
                                     )}
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem
                                         id="logout-button"
-                                        variant="destructive"
+                                        className="text-destructive focus:text-destructive cursor-pointer gap-2"
                                         onClick={() => logoutMutation.mutate()}
                                         disabled={logoutMutation.isPending}
                                     >
-                                        <LogOut
-                                            className="h-4 w-4"
-                                            aria-hidden="true"
-                                        />
+                                        <LogOut className="h-4 w-4" aria-hidden="true" />
                                         Cerrar sesion
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                        ) : (
-                            <Button
-                                id="login-nav-button"
-                                size="sm"
-                                className="hidden sm:inline-flex"
-                                asChild
-                            >
+                        )}
+
+                        {!isLoading && (!isAuthenticated || !user) && (
+                            <Button id="login-nav-button" size="sm" className="hidden sm:inline-flex" asChild>
                                 <Link href="/login">Ingresar</Link>
                             </Button>
                         )}
 
-                        {/* Mobile menu — Sheet */}
+                        {/* Mobile hamburger — Sheet for page navigation */}
                         <Sheet>
                             <SheetTrigger asChild>
                                 <Button
@@ -245,114 +222,57 @@ export function Navbar() {
                                     className="md:hidden"
                                     aria-label="Abrir menu de navegacion"
                                 >
-                                    <Menu
-                                        className="h-4 w-4"
-                                        aria-hidden="true"
-                                    />
+                                    <Menu className="h-4 w-4" aria-hidden="true" />
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="left" className="w-72">
                                 <SheetHeader>
                                     <SheetTitle className="flex items-center gap-2">
-                                        <Leaf
-                                            className="h-5 w-5 text-primary"
-                                            aria-hidden="true"
-                                        />
+                                        <Leaf className="h-5 w-5 text-primary" aria-hidden="true" />
                                         BioCommerce
                                     </SheetTitle>
-                                    <SheetDescription>
-                                        Navegacion principal
-                                    </SheetDescription>
+                                    <SheetDescription>Navegacion principal</SheetDescription>
                                 </SheetHeader>
                                 <Separator />
-
-                                {/* User info in mobile menu */}
                                 {!isLoading && isAuthenticated && user && (
                                     <>
                                         <div className="flex items-center gap-3 px-2 py-3">
-                                            <Avatar size="default">
-                                                <AvatarFallback>
-                                                    {getInitials(user.fullName)}
-                                                </AvatarFallback>
+                                            <Avatar>
+                                                <AvatarFallback>{getInitials(user.fullName)}</AvatarFallback>
                                             </Avatar>
-                                            <div className="flex flex-col">
-                                                <p className="text-sm font-medium leading-none">
-                                                    {user.fullName}
-                                                </p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {user.email}
-                                                </p>
+                                            <div className="flex flex-col min-w-0">
+                                                <p className="text-sm font-medium leading-none truncate">{user.fullName}</p>
+                                                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                                             </div>
                                         </div>
                                         <Separator />
                                     </>
                                 )}
-
-                                <nav
-                                    aria-label="Navegacion movil"
-                                    className="flex flex-col gap-1 px-2"
-                                >
+                                <nav aria-label="Navegacion movil" className="flex flex-col gap-1 px-2 py-2">
                                     {NAV_LINKS.map((link) => (
                                         <SheetClose key={link.href} asChild>
-                                            <Button
-                                                variant="ghost"
-                                                className="w-full justify-start"
-                                                asChild
-                                            >
-                                                <Link href={link.href}>
-                                                    {link.label}
-                                                </Link>
+                                            <Button variant="ghost" className="w-full justify-start" asChild>
+                                                <Link href={link.href}>{link.label}</Link>
                                             </Button>
                                         </SheetClose>
                                     ))}
                                     <Separator className="my-2" />
-
                                     {!isLoading && isAuthenticated && user ? (
                                         <>
                                             <SheetClose asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    className="w-full justify-start"
-                                                    asChild
-                                                >
-                                                    <Link href="/profile">
-                                                        <User
-                                                            className="mr-2 h-4 w-4"
-                                                            aria-hidden="true"
-                                                        />
-                                                        Mi perfil
-                                                    </Link>
+                                                <Button variant="ghost" className="w-full justify-start" asChild>
+                                                    <Link href="/profile"><User className="mr-2 h-4 w-4" />Mi perfil</Link>
                                                 </Button>
                                             </SheetClose>
                                             <SheetClose asChild>
-                                                <Button
-                                                    variant="ghost"
-                                                    className="w-full justify-start"
-                                                    asChild
-                                                >
-                                                    <Link href="/settings">
-                                                        <Settings
-                                                            className="mr-2 h-4 w-4"
-                                                            aria-hidden="true"
-                                                        />
-                                                        Configuracion
-                                                    </Link>
+                                                <Button variant="ghost" className="w-full justify-start" asChild>
+                                                    <Link href="/settings"><Settings className="mr-2 h-4 w-4" />Configuracion</Link>
                                                 </Button>
                                             </SheetClose>
                                             {hasAdminAccess && (
                                                 <SheetClose asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        className="w-full justify-start"
-                                                        asChild
-                                                    >
-                                                        <Link href="/admin">
-                                                            <LayoutDashboard
-                                                                className="mr-2 h-4 w-4"
-                                                                aria-hidden="true"
-                                                            />
-                                                            Panel de Administracion
-                                                        </Link>
+                                                    <Button variant="ghost" className="w-full justify-start" asChild>
+                                                        <Link href="/admin"><LayoutDashboard className="mr-2 h-4 w-4" />Panel de Administracion</Link>
                                                     </Button>
                                                 </SheetClose>
                                             )}
@@ -361,27 +281,17 @@ export function Navbar() {
                                                 <Button
                                                     variant="destructive"
                                                     className="w-full justify-start"
-                                                    onClick={() =>
-                                                        logoutMutation.mutate()
-                                                    }
-                                                    disabled={
-                                                        logoutMutation.isPending
-                                                    }
+                                                    onClick={() => logoutMutation.mutate()}
+                                                    disabled={logoutMutation.isPending}
                                                 >
-                                                    <LogOut
-                                                        className="mr-2 h-4 w-4"
-                                                        aria-hidden="true"
-                                                    />
-                                                    Cerrar sesion
+                                                    <LogOut className="mr-2 h-4 w-4" />Cerrar sesion
                                                 </Button>
                                             </SheetClose>
                                         </>
                                     ) : (
                                         <SheetClose asChild>
                                             <Button className="w-full" asChild>
-                                                <Link href="/login">
-                                                    Ingresar
-                                                </Link>
+                                                <Link href="/login">Ingresar</Link>
                                             </Button>
                                         </SheetClose>
                                     )}

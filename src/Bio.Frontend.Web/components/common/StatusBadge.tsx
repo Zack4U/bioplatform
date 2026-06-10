@@ -84,7 +84,9 @@ export function getOrderStatusVariant(status: string): BadgeVariant {
 
 export function getPermitStatusVariant(status: string): BadgeVariant {
     const map: Record<string, BadgeVariant> = {
+        Pending: "info",
         Active: "success",
+        Rejected: "destructive",
         Suspended: "warning",
         Expired: "destructive",
         Revoked: "destructive",

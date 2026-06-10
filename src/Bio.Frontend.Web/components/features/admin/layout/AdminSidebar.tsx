@@ -17,9 +17,9 @@ import { cn } from "@/lib/utils";
 import { useAdminLayoutStore } from "@/store/admin-layout-store";
 import { useAuthStore } from "@/store/auth-store";
 import {
-    Brain, ChevronLeft, ChevronRight, ClipboardList, FileText, Image as ImageIcon, Leaf,
-    LayoutDashboard, MessageSquare, Package, Shield, ShoppingCart,
-    Star, Users,
+    Brain, ChevronLeft, ChevronRight, ClipboardList, FileText, House, Image as ImageIcon, Leaf,
+    LayoutDashboard, MessageCircle, MessageSquare, Package, Shield, ShoppingCart,
+    Star, UserPlus, Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -36,7 +36,9 @@ const ICON_MAP: Record<string, ReactNode> = {
     FileText: <FileText className="h-5 w-5" />,
     Brain: <Brain className="h-5 w-5" />,
     MessageSquare: <MessageSquare className="h-5 w-5" />,
+    MessageCircle: <MessageCircle className="h-5 w-5" />,
     Users: <Users className="h-5 w-5" />,
+    UserPlus: <UserPlus className="h-5 w-5" />,
     ClipboardList: <ClipboardList className="h-5 w-5" />,
 };
 
@@ -135,6 +137,37 @@ function SidebarContent({ collapsed }: { collapsed: boolean }) {
                     <p className="truncate text-xs text-muted-foreground">{user.email}</p>
                 </div>
             )}
+
+            {/* Back to storefront */}
+            <div className={cn(
+                "border-t px-2 py-2",
+                collapsed && "flex justify-center",
+            )}>
+                {collapsed ? (
+                    <Tooltip delayDuration={0}>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/"
+                                className="flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                                aria-label="Ir al comercio"
+                            >
+                                <House className="h-5 w-5" />
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent side="right" sideOffset={8}>
+                            Ir al comercio
+                        </TooltipContent>
+                    </Tooltip>
+                ) : (
+                    <Link
+                        href="/"
+                        className="flex items-center gap-3 rounded-md px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground w-full"
+                    >
+                        <House className="h-5 w-5 shrink-0" />
+                        <span className="truncate">Ir al comercio</span>
+                    </Link>
+                )}
+            </div>
         </div>
     );
 }

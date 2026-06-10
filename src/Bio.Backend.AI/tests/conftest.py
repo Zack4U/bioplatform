@@ -9,6 +9,18 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+import sys
+
+# Dynamic mock of torch if not installed, to prevent ModuleNotFoundError in test environment
+try:
+    import torch  # noqa: F401
+except ImportError:
+    mock_torch = MagicMock()
+    mock_torch_cuda = MagicMock()
+    mock_torch.cuda = mock_torch_cuda
+    sys.modules["torch"] = mock_torch
+    sys.modules["torch.cuda"] = mock_torch_cuda
+
 
 # ── Settings Fixture ──────────────────────────────────────────────
 

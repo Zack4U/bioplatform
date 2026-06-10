@@ -3,7 +3,7 @@
 ## Plataforma de Biodiversidad y Biocomercio con IA Generativa
 
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)]()
-[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)]()
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)]()
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)]()
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB)]()
 
@@ -16,7 +16,7 @@ Plataforma digital integral para la identificación, catalogación y aprovechami
 | Módulo                        | Descripción                                                          |
 | ----------------------------- | -------------------------------------------------------------------- |
 | **Catálogo de Biodiversidad** | Flora, fauna y hongos con información taxonómica y ecológica         |
-| **Identificación con IA**     | CNN (ResNet50/EfficientNet) con >85% de precisión para 300+ especies |
+| **Identificación con IA**     | CNN (EfficientNet-B2) con ~87% de precisión para 719 especies        |
 | **Marketplace**               | Conexión productores-compradores con trazabilidad y pagos integrados |
 | **RAG & Chatbot**             | Consultas especializadas y generación de planes de negocio           |
 | **Compliance**                | Gestión de permisos ABS según normativa colombiana                   |
@@ -29,8 +29,8 @@ Plataforma digital integral para la identificación, catalogación y aprovechami
 ```
 Backend:    .NET 8 (Clean Architecture) + FastAPI (Python)
 Frontend:   Next.js 14 + React Native (Expo)
-Databases:  PostgreSQL (PostGIS) | SQL Server | Redis | MongoDB
-AI/ML:      TensorFlow/PyTorch | LangChain | ChromaDB | OpenAI GPT-4
+Databases:  PostgreSQL (PostGIS) | SQL Server | Redis | ChromaDB (vector)
+AI/ML:      PyTorch (CNN) | LangChain | ChromaDB | OpenAI
 DevOps:     Docker | GitHub Actions | Nginx
 ```
 
@@ -79,71 +79,268 @@ DevOps:     Docker | GitHub Actions | Nginx
 - Node.js 18+
 - Python 3.11+
 
-### Instalación
+---
+
+## Despliegue en Producción (Docker)
+
+Despliegue completo del stack (bases de datos + backend .NET + servicio de IA + frontend web + Nginx) en un servidor **Linux** o **Windows Server** con Docker.
+
+> El **Frontend Mobile (Expo)** no se despliega en Docker; se distribuye como APK/AAB (ver sección siguiente).
+
+### Requisitos del servidor
+
+- Docker Engine 24+ con **contenedores Linux** y el plugin `docker compose`.
+- Puertos abiertos: `80`, `443` (Nginx). El resto son internos a la red de Docker.
+- No requiere instalar .NET/Node/Python en el host: todo se compila dentro de imágenes.
+
+### Paso a paso (script de instalación)
+
+El instalador es **idempotente** y **reanudable por secciones**: `env → infra → migrate → apps → verify`.
 
 ```bash
-# 1. Clonar repositorio
-git clone https://github.com/tu-organizacion/bioplatform.git
+# 1. Clonar y entrar al repositorio
+git clone https://github.com/Zack4U/bioplatform.git
 cd bioplatform
 
-# 2. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales (DB, OpenAI, Stripe, etc.)
+# 2. Crear el archivo de entorno (la 1ª corrida lo copia desde la plantilla y se detiene)
+cp .env.prod.example .env
+#    EDITA .env con secretos reales (contraseñas de BD, JWT, OpenAI, AWS, dominio).
 
-# 3. Setup inicial (restaurar dependencias)
-# Windows:
-.\setup.ps1
-
-# macOS/Linux:
-bash setup.sh
+# 3. Ejecutar el instalador completo
+#    Linux / macOS / WSL:
+bash install.sh
+#    Windows Server (PowerShell, con contenedores Linux):
+.\install.ps1
 ```
 
-### Ejecutar Servicios Locales
+Qué hace cada sección:
 
-**Recomendación:** Usa el script bash que abre una terminal por cada servicio.
+| Sección   | Acción                                                                                          |
+| --------- | ----------------------------------------------------------------------------------------------- |
+| `env`     | Verifica `.env` (lo crea desde `.env.prod.example` si falta y se detiene para que lo edites).    |
+| `infra`   | Levanta SQL Server, PostgreSQL (PostGIS), Redis y ChromaDB; espera a que estén `healthy`.        |
+| `migrate` | Aplica migraciones EF Core a **BioDbContext** (SQL Server) y **ScientificDbContext** (Postgres). Crea el esquema; los datos mock del marketplace vienen embebidos en la migración de BioDb. |
+| `weights` | `dvc pull` de los pesos del modelo CNN desde el remoto S3 (`s3://bioplatform-private/dvc-storage`). Salta si los pesos ya están presentes. Requiere `dvc[s3]` y credenciales AWS. |
+| `apps`    | Compila y levanta `backend-core`, `ai-service`, `frontend-web` y `nginx`. En el primer arranque el backend **puebla automáticamente el catálogo científico** (especies, imágenes, distribuciones, **registro del modelo de IA**) — idempotente. |
+| `verify`  | Muestra el estado de los contenedores.                                                          |
+
+### Reanudar desde una sección
 
 ```bash
-# macOS/Linux/Git Bash en Windows:
-bash run.sh           # Levanta todo (docker + core + ai + web)
-bash run.sh core ai   # Levanta solo backend y AI
+bash install.sh --from migrate   # corre migrate, apps, verify
+bash install.sh --only apps      # corre solo apps
+# PowerShell:
+.\install.ps1 -From migrate
+.\install.ps1 -Only apps
 ```
 
-**Servicios disponibles:** `docker`, `core`, `ai`, `web`, `mobile`, `all`
+### Poblado de la base científica (PostgreSQL)
 
-Ver [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) para más detalles.
+Lo realiza el backend al arrancar cuando `SEED_SCIENTIFIC_ON_STARTUP=true` (valor por defecto en producción). Es **idempotente** (no duplica) y usa los archivos montados desde `src/Bio.Backend.AI/data/species_catalog`:
 
-### Verificar Servicios (Alternativo)
+1. `species_import_llm.csv` — catálogo completo de especies (IDs deterministas UUIDv5 derivados del nombre científico).
+2. `species_economic_potential.json` — potencial económico.
+3. `species_traditional_uses.json` — usos tradicionales.
+4. `insert_species_images.sql` — galería de imágenes (por `scientific_name`).
+5. `seed_ai_metadata.sql` — registro del modelo de IA: primer `ai_model_versions` activo + `ai_training_jobs`.
+6. Distribuciones geográficas — 10 puntos por especie generados en municipios reales de Caldas.
 
-### Puertos
+Seguir el progreso del poblado:
 
-| Servicio                | Puerto                |
-| ----------------------- | --------------------- |
-| Frontend Web            | http://localhost:3000 |
-| Backend API             | http://localhost:5070 |
-| AI Service              | http://localhost:8000 |
-| ChromaDB (Vector Store) | http://localhost:8001 |
-| PostgreSQL              | localhost:5433        |
-| SQL Server              | localhost:1433        |
-| Redis                   | localhost:6379        |
-| Adminer (DB UI)         | http://localhost:8090 |
-| pgAdmin                 | http://localhost:5050 |
-| Seq (Logs)              | http://localhost:5341 |
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f backend-core
+```
+
+### PyTorch — CPU vs GPU
+
+El Dockerfile del servicio de IA instala PyTorch según la variable `TORCH_DEVICE` del `.env`:
+
+| Valor | Cuándo usar |
+|-------|-------------|
+| `cpu` | Sin GPU (default). Funciona en cualquier servidor. |
+| `cu121` | NVIDIA GPU con CUDA 12.1. Requiere `nvidia-container-toolkit` en el host. |
+| `cu124` | NVIDIA GPU con CUDA 12.4. |
+
+**Configuración en `.env`:**
+```env
+# cpu (default) — sin GPU
+TORCH_DEVICE=cpu
+
+# GPU NVIDIA
+TORCH_DEVICE=cu121
+```
+
+**Override puntual sin tocar `.env`:**
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml build \
+  --build-arg TORCH_DEVICE=cu121 ai-service
+```
+
+> Para GPU, instalar `nvidia-container-toolkit` en el host y agregar `deploy.resources.reservations.devices` al servicio `ai-service` en el compose.
+
+### Modelo de IA (pesos DVC + registro en BD)
+
+Los pesos del clasificador CNN **no** están en git; se versionan con **DVC** en S3 (`s3://bioplatform-private/dvc-storage`) y se descargan con `dvc pull` (sección `weights` del instalador).
+
+- **Fuente de verdad = la BD.** Al arrancar, el servicio de IA consulta `ai_model_versions` y carga **solo** la versión marcada como activa (`is_active = true`), desde `data/weights/<version>/best_model.pth`. Si **ninguna** versión está activa, el clasificador queda **suspendido** y `/api/v1/classify` devuelve 503 hasta que un admin active una versión. (Ya no autodetecta "la más nueva en disco".)
+- **Pesos**: `dvc pull` trae las carpetas versionadas (`v1.0.*`) a `data/weights/`. El Dockerfile del `ai-service` las copia a la imagen en el build (por eso la sección `weights` corre **antes** que `apps`).
+- **Registro en BD**: `seed_ai_metadata.sql` inserta el modelo activo (`efficientnet_b2`, `v1.0.20260518021229`) en `ai_model_versions` para el dashboard/backend.
+
+> **Primer arranque (importante):** el `ai-service` solo depende de Postgres, mientras que el registro del modelo (`ai_model_versions`) lo siembra `backend-core` durante su propio arranque en la sección `apps`. Si el `ai-service` arranca **antes** de que termine el seed, no encontrará modelo activo y quedará suspendido. Tras el primer despliegue, reinícialo para que cargue el modelo recién sembrado:
+> ```bash
+> docker compose -f docker-compose.yml -f docker-compose.prod.yml restart ai-service
+> ```
+> (Alternativa: activar la versión desde el panel admin → dispara hot-reload sin reinicio.)
+
+Requisitos del paso `weights` — instalar DVC con soporte S3 y configurar credenciales:
+
+```bash
+# 1. Instalar DVC con backend S3
+pip install 'dvc[s3]'
+
+# 2. Configurar credenciales del remoto (se guardan en .dvc/config.local, NO versionado)
+cd src/Bio.Backend.AI
+dvc remote modify --local s3-remote access_key_id  TU_ACCESS_KEY_AQUI
+dvc remote modify --local s3-remote secret_access_key TU_SECRET_KEY_AQUI
+
+# 3. Descargar los pesos
+dvc pull
+cd ../..
+```
+
+> Alternativa: el instalador (`install.sh` sección `weights`) también exporta
+> `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `AWS_REGION` desde `.env` antes de `dvc pull`,
+> así que si esas variables tienen valores reales no necesitas el paso 2.
+
+> Si no tienes acceso al bucket DVC, copia manualmente un `best_model.pth` en
+> `src/Bio.Backend.AI/data/weights/<version>/` antes de la sección `apps`; el instalador detecta los pesos presentes y salta `dvc pull`.
+
+### Verificación post-despliegue
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml ps   # estado
+curl http://localhost/api/health                                     # API vía Nginx
+```
+
+| Servicio (vía Nginx en `:80`) | Ruta        |
+| ----------------------------- | ----------- |
+| Frontend Web                  | `/`         |
+| Backend API                   | `/api/`     |
+| Servicio IA (FastAPI)         | `/ai/`      |
+| Dashboard Hangfire            | `/hangfire` |
+
+### HTTPS
+
+Coloca `fullchain.pem` y `privkey.pem` en `docker/nginx/ssl/`, descomenta el bloque `server { listen 443 ssl; ... }` de `docker/nginx/nginx.conf` y recarga Nginx:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml restart nginx
+```
+
+### Operación
+
+```bash
+# Detener todo
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+# Detener y BORRAR datos (¡destruye las BD!)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml down -v
+# Actualizar tras un git pull
+git pull && bash install.sh --from migrate
+```
+
+---
+
+## Aplicación Móvil (APK / AAB)
+
+La app móvil (React Native + Expo) se compila y publica con **EAS Build**, no con Docker.
+
+### Requisitos
+
+- Node.js 18+, cuenta de [Expo](https://expo.dev).
+- EAS CLI: `npm install -g eas-cli`
+- Para publicar en Google Play: cuenta de Google Play Console.
+
+### Configuración
+
+```bash
+cd src/Bio.Frontend.Mobile
+npm install
+
+# Apuntar la app al backend de producción (API pública / dominio)
+cp .env.example .env
+#    Edita EXPO_PUBLIC_API_BASE_URL y EXPO_PUBLIC_AI_API_BASE_URL con la URL pública del backend.
+
+# Autenticarse y vincular el proyecto EAS
+eas login
+eas build:configure
+```
+
+### Generar la APK (instalación directa / pruebas)
+
+```bash
+# APK lista para instalar en un dispositivo (perfil preview)
+eas build --platform android --profile preview
+```
+
+EAS devuelve una URL de descarga del `.apk`. Instálalo en el dispositivo (habilita "orígenes desconocidos").
+
+### Generar el AAB y subir a Google Play (producción)
+
+```bash
+# Android App Bundle firmado para la tienda
+eas build --platform android --profile production
+
+# Subir automáticamente a Google Play (requiere service account configurada)
+eas submit --platform android --latest
+```
+
+> El perfil de build (`preview`, `production`) y las credenciales de firma se definen en `eas.json`. Para la primera subida manual, descarga el `.aab` y súbelo desde Google Play Console → *Producción → Crear versión*.
 
 ---
 
 ## Documentación y Guías
 
+### Documentación Interactiva (Mintlify)
+
+Las guías y manuales se publican como un sitio navegable con **Mintlify**. La configuración vive en [`.docs/docs.json`](.docs/docs.json).
+
+> **Puerto:** la documentación corre en el puerto **3333** para no colisionar con el Frontend Web (Next.js usa `3000`) ni con el resto del stack.
+
+```bash
+# 1. Instalar la CLI de Mintlify (una sola vez, global)
+npm install -g mint
+
+# 2. Levantar el sitio de documentación en local
+cd .docs
+npm run docs          # equivale a: mint dev --port 3333
+```
+
+Abrir luego: **http://localhost:3333**
+
+Scripts disponibles (`.docs/package.json`):
+
+| Comando            | Acción                                              |
+| ------------------ | --------------------------------------------------- |
+| `npm run docs`     | Levanta el sitio en `http://localhost:3333`         |
+| `npm run docs:check` | Verifica enlaces rotos (`mint broken-links`)      |
+| `npm run docs:update` | Actualiza la CLI de Mintlify a la última versión |
+
+> **Producción:** Mintlify despliega vía su GitHub App (conectar el repo en `dashboard.mintlify.com`); el sitio se reconstruye automáticamente en cada `push`. No requiere build manual.
+
+### Índice de Documentos
+
 | Documento                                                  | Descripción                                    |
 | ---------------------------------------------------------- | ---------------------------------------------- |
 | [DEVELOPMENT.md](./DEVELOPMENT.md)                         | Guía completa para desarrollo local            |
 | [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md)                     | Uso de scripts de ejecución (run.sh / run.ps1) |
-| [SETUP_SUMMARY.md](./SETUP_SUMMARY.md)                     | Resumen visual del setup                       |
-| [CHANGELOG_DOCKER.md](./CHANGELOG_DOCKER.md)               | Cambios en estrategia Docker                   |
-| [Getting Started](.docs/GETTING_STARTED.md)                | Guía completa de configuración inicial         |
-| [Requirements](.docs/bioplatform/01-Requirements.md)       | Requerimientos funcionales y técnicos          |
-| [Guidelines](.docs/bioplatform/02-Guidelines%20.md)        | Lineamientos generales del proyecto            |
-| [Data Dictionary](.docs/bioplatform/03-Data_Dictionary.md) | Estructura de bases de datos                   |
-| [Dev Guidelines](.docs/bioplatform/05-Dev_Guidelines.md)   | Estándares de desarrollo                       |
+| [Quickstart](.docs/guides/quickstart.mdx)                  | Guía rápida de configuración inicial           |
+| [CNN_GUIDE](src/Bio.Backend.AI/CNN_GUIDE.md)               | Pipeline de entrenamiento de la CNN            |
+| [FINE_TUNING](src/Bio.Backend.AI/FINE_TUNING.md)           | Reentrenamiento / fine-tuning del modelo       |
+| [MODEL_VERSIONING](src/Bio.Backend.AI/MODEL_VERSIONING.md) | Versionado de pesos (DVC) y registro en BD     |
+| [Requirements](.docs/project/requirements.mdx)             | Requerimientos funcionales y técnicos          |
+| [Guidelines](.docs/project/guidelines.mdx)                 | Lineamientos generales del proyecto            |
+| [Data Dictionary](.docs/project/data-dictionary.mdx)       | Estructura de bases de datos                   |
+| [Dev Guidelines](.docs/project/dev-guidelines.mdx)         | Estándares de desarrollo                       |
 
 ---
 
@@ -153,20 +350,22 @@ Ver [SCRIPTS_GUIDE.md](./SCRIPTS_GUIDE.md) para más detalles.
 
 ```
 bioplatform/
-├── .docs/                    # Documentación
-├── .github/workflows/        # CI/CD
+├── .docs/                       # Documentación
+├── .github/workflows/           # CI/CD
 ├── docker/
-│   ├── nginx/               # Configuración reverse proxy
-│   ├── postgres/            # Scripts init PostgreSQL
-│   └── sqlserver/           # Scripts init SQL Server
+│   └── nginx/                   # Reverse proxy (nginx.conf + ssl/)
 ├── src/
-│   ├── Bio.Backend.Core/    # API .NET 8 (Clean Architecture)
-│   ├── Bio.Backend.AI/      # Microservicio Python (FastAPI)
-│   ├── Bio.Frontend.Web/    # Next.js 14
-│   └── Bio.Frontend.Mobile/ # React Native (Expo)
-├── .env.example
-├── docker-compose.yml
-└── docker-compose.override.yml
+│   ├── Bio.Backend.Core/        # API .NET 8 (Clean Architecture) + Dockerfile
+│   ├── Bio.Backend.AI/          # Microservicio Python (FastAPI) + Dockerfile
+│   │   └── data/species_catalog/# Datos de poblado (CSV/JSON/SQL de especies)
+│   ├── Bio.Frontend.Web/        # Next.js 14 + Dockerfile
+│   └── Bio.Frontend.Mobile/     # React Native (Expo) — APK vía EAS
+├── .env.example                 # Plantilla dev
+├── .env.prod.example            # Plantilla producción
+├── install.sh / install.ps1     # Instalador de producción (reanudable)
+├── docker-compose.yml           # Infraestructura (dev)
+├── docker-compose.override.yml  # Herramientas UI (dev)
+└── docker-compose.prod.yml      # Stack completo (producción)
 ```
 
 ---

@@ -1,21 +1,23 @@
 """
-Vision Service: Clasificación de Especies con CNN
+Vision Service: Clasificacion de Especies con CNN
 ===================================================
 Servicio de inferencia que carga el modelo entrenado y clasifica
-imágenes de especies. Se usa desde el endpoint de FastAPI.
+imagenes de especies. Se usa desde el endpoint de FastAPI.
 
-Sigue el patrón de la arquitectura del proyecto:
+Sigue el patron de la arquitectura del proyecto:
     app/services/vision/classifier.py
 
 Responsabilidades:
-    - Cargar modelo y configuración al iniciar
-    - Preprocesar imágenes recibidas
+    - Cargar modelo y configuracion al iniciar
+    - Preprocesar imagenes recibidas
     - Ejecutar inferencia y retornar Top-K predicciones
+    - Hot-Reload via Pointer Swap (zero-downtime, sin bloqueos HTTP)
     - Manejar errores de forma robusta
 """
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 from io import BytesIO
@@ -31,7 +33,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-# ── Resolve paths ──────────────────────────────────────────────────
+# -- Resolve paths ------------------------------------------------------------
 SERVICE_DIR = Path(__file__).resolve().parent
 APP_DIR = SERVICE_DIR.parent.parent          # app/
 PROJECT_ROOT = APP_DIR.parent                # Bio.Backend.AI/
@@ -43,7 +45,7 @@ class _DropoutLinear:
     """Factory that builds an nn.Linear subclass with preceding dropout at runtime."""
 
     @staticmethod
-    def build(in_features: int, out_features: int, dropout: float = 0.3) -> nn.Linear:
+    def build(in_features: int, out_features: int, dropout: float = 0.3) -> "nn.Linear":
         import torch.nn as nn
 
         class _Impl(nn.Linear):
@@ -51,7 +53,7 @@ class _DropoutLinear:
                 super().__init__(inf, outf)
                 self._drop = nn.Dropout(p=drop)
 
-            def forward(self, x: torch.Tensor) -> torch.Tensor:  # type: ignore[override]
+            def forward(self, x: "torch.Tensor") -> "torch.Tensor":  # type: ignore[override]
                 return super().forward(self._drop(x))
 
         return _Impl(in_features, out_features, dropout)
@@ -104,6 +106,10 @@ class SpeciesClassifier:
     """
     CNN-based species classifier for BioPlatform Caldas.
 
+    Uses the Pointer Swap pattern for zero-downtime model reloads:
+    new model is loaded in a background thread, then the reference
+    is atomically swapped so in-flight requests are never blocked.
+
     Usage:
         classifier = SpeciesClassifier()
         classifier.load_model()
@@ -118,6 +124,7 @@ class SpeciesClassifier:
         self.device: torch.device | None = None
         self.transform: Callable[..., torch.Tensor] | None = None
         self._loaded = False
+        self._active_version: str | None = None
 
     @property
     def is_loaded(self) -> bool:
@@ -127,65 +134,114 @@ class SpeciesClassifier:
     def num_classes(self) -> int:
         return len(self.class_names)
 
-    def load_model(self, weights_path: Optional[Path] = None) -> None:
-        """
-        Load model weights, config, and class mappings.
-        Called once at startup.
-        """
-        try:
-            import torch
-            from torchvision import transforms
-        except ImportError as e:
-            raise RuntimeError(
-                "PyTorch not installed. Run: pip install torch torchvision"
-            ) from e
+    @property
+    def active_version(self) -> str | None:
+        return self._active_version
 
-        # Determine device
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        logger.info(f"Using device: {self.device}")
+    # -- Synchronous model loading (runs in thread for reload) ----------------
+
+    def _load_model_sync(
+        self,
+        weights_path: Path,
+        config_path: Path,
+    ) -> tuple["nn.Module", dict[str, Any], list[str], "torch.device", Any]:
+        """
+        Load model weights and config synchronously.
+
+        This is the heavy I/O operation that runs in a ThreadPoolExecutor
+        during hot-reload so HTTP requests are never blocked.
+
+        Returns (model, config, class_names, device, transform).
+        """
+        import torch
+        from torchvision import transforms
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         # Load training config
-        config_path = WEIGHTS_DIR / "training_config.json"
         if not config_path.exists():
             raise FileNotFoundError(f"Training config not found: {config_path}")
-
         with open(config_path, encoding="utf-8") as f:
-            self.config = json.load(f)
+            config = json.load(f)
 
-        self.class_names = self.config.get("class_names", [])
-        num_classes = self.config["num_classes"]
-        model_name = self.config["model_name"]
-        image_size = self.config.get("image_size", 224)
+        class_names: list[str] = config.get("class_names", [])
+        num_classes: int = config["num_classes"]
+        model_name: str = config["model_name"]
+        image_size: int = config.get("image_size", 224)
 
-        logger.info(f"Loading model: {model_name} ({num_classes} classes)")
+        logger.info("Loading model: %s (%d classes) on %s", model_name, num_classes, device)
 
-        # Build model architecture
+        # Build architecture and load weights
         model = _build_model_arch(model_name, num_classes)
-
-        # Load weights
-        if weights_path is None:
-            weights_path = WEIGHTS_DIR / "best_model.pth"
 
         if not weights_path.exists():
             raise FileNotFoundError(f"Model weights not found: {weights_path}")
 
-        model.load_state_dict(
-            torch.load(weights_path, map_location=self.device, weights_only=True)
-        )
-        model = model.to(self.device)
+        # Support both full checkpoint and plain state_dict
+        checkpoint = torch.load(weights_path, map_location=device, weights_only=False)
+        if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
+            model.load_state_dict(checkpoint["model_state_dict"])
+        else:
+            model.load_state_dict(checkpoint)
+
+        model = model.to(device)
         model.eval()
-        self.model = model
 
         # Build inference transform
-        imagenet_mean = self.config.get("imagenet_mean", [0.485, 0.456, 0.406])
-        imagenet_std = self.config.get("imagenet_std", [0.229, 0.224, 0.225])
+        imagenet_mean = config.get("imagenet_mean", [0.485, 0.456, 0.406])
+        imagenet_std = config.get("imagenet_std", [0.229, 0.224, 0.225])
 
-        self.transform = transforms.Compose([
+        transform = transforms.Compose([
             transforms.Resize(int(image_size * 1.14)),
             transforms.CenterCrop(image_size),
             transforms.ToTensor(),
             transforms.Normalize(imagenet_mean, imagenet_std),
         ])
+
+        return model, config, class_names, device, transform
+
+    def load_model(
+        self,
+        weights_path: Optional[Path] = None,
+        version: Optional[str] = None,
+    ) -> None:
+        """
+        Load model weights, config, and class mappings.
+
+        The active version is dictated by the DB registry (ai_model_versions),
+        NOT by whatever is newest on disk. Callers must pass the version tag
+        resolved from the DB (``version``) or an explicit ``weights_path``
+        (used by pre-activation validation).
+
+        Resolution order:
+            1. explicit ``weights_path`` (validation flow)
+            2. ``WEIGHTS_DIR/{version}/best_model.pth`` when ``version`` is given
+            3. flat ``WEIGHTS_DIR/best_model.pth`` (legacy single-model layout)
+
+        There is intentionally NO "auto-detect newest version" fallback:
+        loading an unregistered/inactive model silently is exactly the bug
+        this avoids.
+        """
+        if weights_path is None:
+            if version:
+                weights_path = WEIGHTS_DIR / version / "best_model.pth"
+            else:
+                weights_path = WEIGHTS_DIR / "best_model.pth"
+
+        config_path = weights_path.parent / "training_config.json"
+        if not config_path.exists():
+            # Fallback to flat structure
+            config_path = WEIGHTS_DIR / "training_config.json"
+
+        model, config, class_names, device, transform = self._load_model_sync(
+            weights_path, config_path,
+        )
+
+        self.model = model
+        self.config = config
+        self.class_names = class_names
+        self.device = device
+        self.transform = transform
 
         # Load class info (taxonomy) if available
         class_info_path = PROCESSED_DIR / "class_info.json"
@@ -194,9 +250,94 @@ class SpeciesClassifier:
                 self.class_info = json.load(f)
 
         self._loaded = True
-        logger.info(f"Model loaded successfully. {num_classes} classes, device={self.device}")
+        self._active_version = weights_path.parent.name if weights_path.parent != WEIGHTS_DIR else "legacy"
+        logger.info(
+            "Model loaded successfully. %d classes, device=%s, version=%s",
+            len(class_names), device, self._active_version,
+        )
 
-    def preprocess_image(self, image_bytes: bytes) -> torch.Tensor:
+    async def reload_model(self, version_path: Path) -> None:
+        """
+        Hot-reload model via Pointer Swap pattern.
+
+        Loads the new model in a background thread (ThreadPoolExecutor)
+        so HTTP requests are never blocked. Once loaded, the reference
+        is swapped atomically in milliseconds.
+        """
+        import torch
+
+        weights_path = version_path / "best_model.pth"
+        config_path = version_path / "training_config.json"
+        if not config_path.exists():
+            config_path = WEIGHTS_DIR / "training_config.json"
+
+        logger.info("Hot-reload starting for version: %s", version_path.name)
+
+        loop = asyncio.get_event_loop()
+
+        # Load in background thread — zero blocking of HTTP requests
+        new_model, new_config, new_class_names, new_device, new_transform = (
+            await loop.run_in_executor(
+                None, self._load_model_sync, weights_path, config_path,
+            )
+        )
+
+        # Reload class info
+        class_info_path = PROCESSED_DIR / "class_info.json"
+        new_class_info = {}
+        if class_info_path.exists():
+            with open(class_info_path, encoding="utf-8") as f:
+                new_class_info = json.load(f)
+
+        # -- Pointer Swap (atomic reference swap, milliseconds) --
+        old_model = self.model
+        self.model = new_model
+        self.config = new_config
+        self.class_names = new_class_names
+        self.class_info = new_class_info
+        self.device = new_device
+        self.transform = new_transform
+        self._active_version = version_path.name
+
+        # Release old model from GPU/RAM
+        del old_model
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+        logger.info(
+            "Hot-reload complete. Version=%s, classes=%d, device=%s",
+            self._active_version, len(new_class_names), new_device,
+        )
+
+    def suspend(self) -> None:
+        """
+        Unload the active model and pause classification.
+
+        Used when an admin deactivates/deletes the active version and no
+        other model is active. After this, ``is_loaded`` is False and
+        /classify returns 503 until a model is activated again.
+        """
+        old_model = self.model
+        self.model = None
+        self.config = {}
+        self.class_names = []
+        self.class_info = {}
+        self.transform = None
+        self._loaded = False
+        self._active_version = None
+
+        del old_model
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except Exception:
+            pass
+
+        logger.info("Model suspended. Classification paused until a version is activated.")
+
+    def preprocess_image(self, image_bytes: bytes) -> "torch.Tensor":
         """Convert raw image bytes to a preprocessed tensor."""
 
         img = Image.open(BytesIO(image_bytes))
@@ -211,7 +352,7 @@ class SpeciesClassifier:
 
         tensor: torch.Tensor = self.transform(img)
 
-        # Add batch dimension: (C, H, W) → (1, C, H, W)
+        # Add batch dimension: (C, H, W) -> (1, C, H, W)
         return tensor.unsqueeze(0)
 
     def classify(
@@ -273,7 +414,7 @@ class SpeciesClassifier:
             # Display name: replace underscores with spaces
             species_name = raw_name.replace("_", " ")
 
-            # Get taxonomy info – try both "Name Name" and "Name_Name" keys
+            # Get taxonomy info - try both "Name Name" and "Name_Name" keys
             taxonomy = {}
             info = self.class_info.get(species_name) or self.class_info.get(raw_name) or {}
             if info:
@@ -302,7 +443,7 @@ class SpeciesClassifier:
         }
 
 
-# ── Singleton Instance ─────────────────────────────────────────────
+# -- Singleton Instance -------------------------------------------------------
 # Used by FastAPI dependency injection
 _classifier_instance: Optional[SpeciesClassifier] = None
 

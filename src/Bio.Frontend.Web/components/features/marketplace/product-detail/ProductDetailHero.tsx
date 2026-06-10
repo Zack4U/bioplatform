@@ -47,6 +47,16 @@ import { toast } from "sonner";
 
 interface ProductDetailHeroProps {
   product: ProductDetailDTO;
+  /**
+   * Base species summary resolved cross-DB (product lives in SQL Server,
+   * species in Postgres). Null while loading or if the species has no record.
+   */
+  baseSpecies?: {
+    id: string;
+    name: string;
+    scientificName: string;
+    slug: string;
+  } | null;
   /** Whether this product is in the current user's favorites. */
   isFavorite?: boolean;
   /** Called when the user clicks the heart/favorite button. */
@@ -57,6 +67,7 @@ interface ProductDetailHeroProps {
 
 export function ProductDetailHero({
   product,
+  baseSpecies = null,
   isFavorite = false,
   onToggleFavorite,
 }: ProductDetailHeroProps) {
@@ -364,7 +375,7 @@ export function ProductDetailHero({
           )}
 
           {/* Species link */}
-          {product.baseSpeciesName && product.baseSpeciesSlug && (
+          {baseSpecies && (
             <div className="mt-2 rounded-lg border border-dashed p-3 bg-muted/30">
               <div className="flex items-center gap-2 text-sm">
                 <Leaf
@@ -373,10 +384,10 @@ export function ProductDetailHero({
                 />
                 <span className="text-muted-foreground">Especie base: </span>
                 <Link
-                  href={`/catalog/${product.baseSpeciesSlug}`}
+                  href={`/catalog/${baseSpecies.slug}`}
                   className="font-medium text-primary hover:underline italic"
                 >
-                  {product.baseSpeciesName}
+                  {baseSpecies.name}
                 </Link>
               </div>
             </div>

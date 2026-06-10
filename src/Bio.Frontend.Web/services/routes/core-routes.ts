@@ -28,10 +28,10 @@ export const CORE_ROUTES = {
     BY_PHONE: (phone: string) => `/users/phone/${phone}` as const,
   },
 
-  /** UserRolesController — /api/userroles */
+  /** UserRolesController — /api/user-roles */
   USER_ROLES: {
-    BASE: "/userroles",
-    BY_ID: (id: string) => `/userroles/${id}` as const,
+    BASE: "/user-roles",
+    BY_ID: (id: string) => `/user-roles/${id}` as const,
   },
 
   /** SpeciesController — /api/species */
@@ -56,11 +56,11 @@ export const CORE_ROUTES = {
     BASE: "/products",
     BY_ID: (id: string) => `/products/${id}` as const,
     BY_SLUG: (slug: string) => `/products/slug/${slug}` as const,
-    CATEGORIES: "/products/categories",
+    CATEGORIES: "/product-categories",
     FILTER_META: "/products/filter-meta",
     REVIEWS: (productId: string) => `/products/${productId}/reviews` as const,
-    /** Paginated list of the authenticated entrepreneur's own products */
-    MY_PRODUCTS: "/products/my",
+    /** Paginated list of the authenticated user's managed products (admin sees all, entrepreneur sees own) */
+    MY_PRODUCTS: "/manage/products",
     /** Gallery images for a specific product */
     IMAGES: (productId: string) => `/products/${productId}/images` as const,
     /** Related products by category/species (GET) */
@@ -86,23 +86,25 @@ export const CORE_ROUTES = {
     DEFAULT: "/addresses/default",
   },
 
-  /** AbsPermitsController — /api/abspermits (Nagoya Protocol compliance) */
+  /** AbsPermitsController — /api/v1/abs-permits (Nagoya Protocol compliance) */
   ABS_PERMITS: {
-    BASE: "/abspermits",
-    BY_ID: (id: string) => `/abspermits/${id}` as const,
+    BASE: "/v1/abs-permits",
+    BY_ID: (id: string) => `/v1/abs-permits/${id}` as const,
+    BY_ENTREPRENEUR: (id: string) => `/v1/abs-permits/entrepreneur/${id}` as const,
   },
 
-  /** CertificationsController — /api/certifications */
+  /** CertificationsController — /api/v1/products/{productId}/certifications */
   CERTIFICATIONS: {
-    BASE: "/certifications",
-    BY_ID: (id: string) => `/certifications/${id}` as const,
+    BY_PRODUCT: (productId: string) =>
+      `/v1/products/${productId}/certifications` as const,
+    BY_ID: (certId: string) => `/v1/certifications/${certId}` as const,
   },
 
-  /** TraceabilityController — /api/traceability */
+  /** TraceabilityController — /api/v1/products/{productId}/traceability */
   TRACEABILITY: {
-    BASE: "/traceability",
     BY_PRODUCT: (productId: string) =>
-      `/traceability/product/${productId}` as const,
+      `/v1/products/${productId}/traceability` as const,
+    BY_BATCH: (batchId: string) => `/v1/traceability/${batchId}` as const,
   },
 
   /**
@@ -111,13 +113,14 @@ export const CORE_ROUTES = {
    */
   MANAGE_PRODUCTS: {
     /** Multipart upload endpoint for product gallery images */
-    UPLOAD_IMAGE: "/manage/products/images/upload",
+    UPLOAD_IMAGE: (productId: string) =>
+      `/manage/products/${productId}/images` as const,
     /** Soft-delete a single product image by its image ID */
     DELETE_IMAGE: (imageId: string) =>
       `/manage/products/images/${imageId}` as const,
     /** Promote a specific image to primary / cover */
     SET_IMAGE_PRIMARY: (imageId: string) =>
-      `/manage/products/images/${imageId}/primary` as const,
+      `/manage/products/images/${imageId}/set-primary` as const,
   },
 
   /** FavoritesController — /api/favorites */

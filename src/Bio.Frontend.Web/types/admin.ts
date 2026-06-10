@@ -208,12 +208,40 @@ export interface PermitAdminItem {
     entrepreneurId: string;
     entrepreneurName: string;
     speciesId: string;
-    speciesName: string;
+    speciesName?: string | null;
     grantingAuthority: string;
     status: AbsPermitStatus;
     emissionDate: string;
     expirationDate: string;
     legalFramework: string | null;
+    documentUrl?: string | null;
+    requestedAt: string;
+    justification?: string | null;
+    approvedById?: string | null;
+    approvedByName?: string | null;
+    approvedAt?: string | null;
+    rejectionReason?: string | null;
+}
+
+/** Payload to submit a genetic-resource access request (Entrepreneur) */
+export interface AbsPermitRequestPayload {
+    speciesId: string;
+    justification?: string | null;
+}
+
+/** Payload to approve a Pending request — fills official resolution data */
+export interface ApproveAbsPermitPayload {
+    resolutionNumber: string;
+    emissionDate: string;
+    expirationDate: string;
+    grantingAuthority: string;
+    legalFramework?: string | null;
+    documentUrl?: string | null;
+}
+
+/** Payload to reject a Pending request with a documented reason */
+export interface RejectAbsPermitPayload {
+    reason: string;
 }
 
 // ─── Request Management ─────────────────────────────────────────────────────
@@ -252,11 +280,92 @@ export interface CnnModelVersion {
     modelName: string;
     version: string;
     accuracyMetric: number;
+    validationAccuracy: number | null;
     deployedAt: string;
     isActive: boolean;
     notes: string | null;
     createdAt: string;
 }
+
+/** GPU/VRAM hardware status of the AI server */
+export interface AiHardwareStatus {
+    hasGpu: boolean;
+    gpuName: string | null;
+    vramTotalGb: number;
+    vramFreeGb: number;
+    canTrainModels: boolean;
+    cudaVersion?: string | null;
+    computeCapability?: string | null;
+    multiprocessors?: number | null;
+}
+
+/** Active AI model metrics summary */
+export interface ActiveModelMetrics {
+    hasActiveModel: boolean;
+    modelVersionId: number | null;
+    modelName: string | null;
+    version: string | null;
+    accuracyMetric: number | null;
+    validationAccuracy: number | null;
+    deployedAt: string | null;
+    notes: string | null;
+}
+
+/**
+ * Summary of new observation images accumulated since the last model deployment.
+ * Consumed by the admin metrics panel to quantify new available training data.
+ */
+export interface NewObservationsSummary {
+    /** Total number of species images uploaded after the active model's deployedAt date */
+    totalNewImages: number;
+    /** Number of distinct species represented in those new images */
+    affectedSpeciesCount: number;
+    /** ISO date of the active model's deployment (null = all-time) */
+    since: string | null;
+}
+
+/** AI model fine-tuning training job */
+export interface AiTrainingJob {
+    id: string;
+    startedAt: string;
+    completedAt: string | null;
+    status: "Pending" | "Running" | "Completed" | "Failed" | "Interrupted";
+    statusMessage: string | null;
+    triggeredByUserId: string;
+    resultingVersion: string | null;
+}
+
+/** Response shape for starting fine-tuning */
+export interface StartFineTuningResponse {
+    jobId: string;
+    status: string;
+    message: string;
+}
+
+/** Response shape for manual model upload */
+export interface ModelUploadResponse {
+    status: string;
+    version: string;
+    message: string;
+}
+
+/** Response shape for pre-activation validation */
+export interface ModelValidateResponse {
+    version: string;
+    accuracy: number;
+    currentActiveAccuracy: number | null;
+    accuracyDrop: number | null;
+    isSafeToActivate: boolean;
+    message: string;
+}
+
+/** Response shape for activating model version */
+export interface ActivateModelVersionResponse {
+    success: boolean;
+    message: string;
+    activatedVersion: string | null;
+}
+
 
 // ─── Chatbot Management ─────────────────────────────────────────────────────
 
@@ -304,6 +413,19 @@ export interface OrderAdminItem {
     updatedAt: string | null;
 }
 
+/** Full order detail with line items (from GET /orders/:id) */
+export interface OrderAdminDetail extends OrderAdminItem {
+    items?: {
+        id: string;
+        productId: string;
+        productName: string;
+        quantity: number;
+        unitPrice: number;
+        subtotal: number;
+    }[];
+    notes?: string | null;
+}
+
 // ─── Review Management ──────────────────────────────────────────────────────
 
 /** Review item for admin management table */
@@ -318,6 +440,25 @@ export interface ReviewAdminItem {
     title: string | null;
     comment: string | null;
     isFlagged: boolean;
+    createdAt: string;
+}
+
+/** Review item for moderation queue (Admin: all / Entrepreneur: own products) */
+export interface ReviewManagedItem {
+    id: string;
+    productId: string;
+    productName: string;
+    productSlug: string;
+    userId: string;
+    userName: string | null;
+    rating: number;
+    title: string | null;
+    comment: string | null;
+    isReported: boolean;
+    reportReason: string | null;
+    reportedById: string | null;
+    reportedByName: string | null;
+    reportedAt: string | null;
     createdAt: string;
 }
 // ─── Audit Log ──────────────────────────────────────────────────────────────
@@ -352,4 +493,205 @@ export interface AdminNavItem {
 export interface AdminNavSection {
     titleKey: string;
     items: AdminNavItem[];
+}
+
+// ─── Backend DTO Types (matching Bio.Application.DTOs) ───────────────────────
+
+// --- Dashboard ---
+
+export interface RoleCountDTO { role: string; count: number; }
+export interface CategoryCountDTO { categoryName: string; count: number; }
+export interface OrderStatusCountDTO { status: string; count: number; }
+export interface CertTypeCountDTO { type: string; count: number; }
+export interface TopEntrepreneurDTO { entrepreneurId: string; fullName: string; email: string; totalRevenue: number; totalOrders: number; }
+
+export interface AdminDashboardDTO {
+    users: { totalUsers: number; activeUsers: number; inactiveUsers: number; verifiedUsers: number; newUsersThisMonth: number; byRole: RoleCountDTO[]; };
+    marketplace: { totalProducts: number; activeProducts: number; inactiveProducts: number; lowStockProducts: number; byCategory: CategoryCountDTO[]; };
+    orders: { totalOrders: number; totalRevenue: number; revenueThisMonth: number; ordersThisMonth: number; byStatus: OrderStatusCountDTO[]; };
+    compliance: { totalAbsPermits: number; activeAbsPermits: number; expiredAbsPermits: number; suspendedAbsPermits: number; revokedAbsPermits: number; permitsExpiringIn30Days: number; totalCertifications: number; certificationsByType: CertTypeCountDTO[]; };
+    community: { totalPosts: number; publishedPosts: number; hiddenPosts: number; totalComments: number; totalConnections: number; };
+    topEntrepreneurs: TopEntrepreneurDTO[];
+    generatedAt: string;
+}
+
+export interface ResearcherDashboardDTO {
+    totalSpecies: number;
+    sensitiveSpecies: number;
+    legalStatusSpecies: number;
+    byConservationStatus: { status: string; count: number; }[];
+    byKingdom: { kingdom: string; count: number; }[];
+    topFamilies: { family: string; count: number; }[];
+    totalImages: number;
+    validatedImages: number;
+    pendingValidationImages: number;
+    imagesValidatedByMe: number;
+    imagesUploadedThisMonth: number;
+    geographicRecordsCount: number;
+    municipalitiesWithRecords: number;
+    speciesWithActiveAbsPermits: number;
+}
+
+export interface SellerDashboardEnhancedDTO {
+    totalSalesThisMonth: number;
+    totalSalesAllTime: number;
+    totalOrdersThisMonth: number;
+    totalOrdersAllTime: number;
+    ordersByStatus: OrderStatusCountDTO[];
+    topProducts: { productId: string; productName: string; totalRevenue: number; unitsSold: number; }[];
+    averageRating: number;
+    totalReviews: number;
+    totalProducts: number;
+    activeProducts: number;
+    lowStockProducts: { productId: string; productName: string; stockQuantity: number; }[];
+    revenueLastMonth: number;
+    revenueByCategory: { categoryName: string; revenue: number; unitsSold: number; }[];
+    ordersPendingShipment: number;
+    productsWithoutCertification: number;
+    absPermitsExpiringIn90Days: number;
+    traceabilityBatchCount: number;
+    ratingDistribution: { stars: number; count: number; }[];
+}
+
+export interface PermitExpiryAlertDTO { permitId: string; resolutionNumber: string; entrepreneurId: string; speciesId: string; expirationDate: string; daysUntilExpiry: number; }
+export interface CertExpiryAlertDTO { certId: string; certificateName: string; certificationType: string; productId: string; expiresAt: string; daysUntilExpiry: number; }
+
+export interface AuthorityDashboardDTO {
+    totalAbsPermits: number;
+    activePermits: number;
+    expiredPermits: number;
+    suspendedPermits: number;
+    revokedPermits: number;
+    expiringIn30Days: PermitExpiryAlertDTO[];
+    expiringIn90Days: PermitExpiryAlertDTO[];
+    entrepreneursWithActivePermits: number;
+    productsWithoutValidPermit: number;
+    totalCertifications: number;
+    certificationsByType: CertTypeCountDTO[];
+    certificationsExpiringSoon: CertExpiryAlertDTO[];
+    batchesWithBlockchainHash: number;
+    legalSpeciesCount: number;
+}
+
+// --- Users / Roles ---
+
+export interface UserAdminFilters {
+    search?: string;
+    roleName?: string;
+    isActive?: boolean;
+    isVerified?: boolean;
+    fromDate?: string;
+    toDate?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+export interface RoleItem { id: string; name: string; description?: string; }
+
+// --- Species ---
+
+export interface SpeciesCreatePayload {
+    scientificName: string;
+    commonName?: string;
+    slug: string;
+    kingdom?: string;
+    phylum?: string;
+    className?: string;
+    orderName?: string;
+    family?: string;
+    genus?: string;
+    conservationStatus?: string;
+    isSensitive: boolean;
+    legalStatus: boolean;
+    description?: string;
+}
+
+export type SpeciesUpdatePayload = Partial<SpeciesCreatePayload>;
+
+// --- ABS Permits ---
+
+export interface PermitCreatePayload {
+    entrepreneurId: string;
+    speciesId: string;
+    resolutionNumber: string;
+    emissionDate: string;
+    expirationDate: string;
+    grantingAuthority: string;
+    legalFramework?: string;
+    documentUrl?: string;
+}
+
+export interface PermitUpdatePayload {
+    expirationDate?: string;
+    grantingAuthority?: string;
+    legalFramework?: string;
+    status?: string;
+    documentUrl?: string;
+}
+
+// --- Filters ---
+
+export interface OrderAdminFilters {
+    status?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+export interface PlatformRequestFilters {
+    type?: string;
+    status?: string;
+    search?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+export interface AuditLogFilters {
+    actorUserId?: string;
+    actorType?: string;
+    actionType?: string;
+    impactLevel?: string;
+    targetType?: string;
+    targetId?: string;
+    fromDate?: string;
+    toDate?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+// --- Platform Requests ---
+
+export interface PlatformRequestItem {
+    id: string;
+    type: string;
+    typeLabel: string;
+    requesterId: string;
+    requesterName: string;
+    subject: string;
+    description?: string;
+    status: string;
+    referenceId?: string;
+    referenceType?: string;
+    referenceUrl?: string;
+    reviewerNotes?: string;
+    createdAt: string;
+    updatedAt?: string;
+}
+
+// --- Audit Log (matching ActivityLogResponseDTO) ---
+// Note: the AuditLogEntry interface above stays for backward compat.
+// These aliases provide the exact backend field names:
+export interface ActivityLogResponseDTO {
+    id: string;
+    actorUserId?: string;
+    actorType: string;
+    actionType: string;
+    impactLevel: string;
+    targetType: string;
+    targetId?: string;
+    summary: string;
+    changeSet?: string;
+    metadata?: string;
+    ipAddress?: string;
+    userAgent?: string;
+    createdAt: string;
 }

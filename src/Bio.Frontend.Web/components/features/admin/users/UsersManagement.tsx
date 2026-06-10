@@ -18,7 +18,7 @@ import {
     Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { USER_ROLES } from "@/lib/constants";
+import { USER_ROLES, USER_ROLE_LABELS, translateLabel } from "@/lib/constants";
 import { useUsersManagement } from "@/hooks/features/admin/useUsersManagement";
 import type { UserAdminItem } from "@/types";
 import { Eye, Power, Users } from "lucide-react";
@@ -37,7 +37,7 @@ const columns: ColumnDef<UserAdminItem>[] = [
         render: (u) => (
             <div className="flex flex-wrap gap-1">
                 {u.roles.map((r) => (
-                    <Badge key={r} variant="secondary" className="text-xs">{r}</Badge>
+                    <Badge key={r} variant="secondary" className="text-xs">{translateLabel(USER_ROLE_LABELS, r)}</Badge>
                 ))}
             </div>
         ),
@@ -115,7 +115,7 @@ export function UsersManagement() {
                             <SelectContent>
                                 <SelectItem value="all">Todos los roles</SelectItem>
                                 {Object.entries(USER_ROLES).map(([key, label]) => (
-                                    <SelectItem key={key} value={key}>{label}</SelectItem>
+                                    <SelectItem key={key} value={label}>{translateLabel(USER_ROLE_LABELS, label)}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
@@ -178,7 +178,7 @@ export function UsersManagement() {
                                 <p className="text-sm text-muted-foreground mb-2">Roles asignados</p>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedUser.roles.map((role) => (
-                                        <Badge key={role} variant="outline">{role}</Badge>
+                                        <Badge key={role} variant="outline">{translateLabel(USER_ROLE_LABELS, role)}</Badge>
                                     ))}
                                 </div>
                             </div>

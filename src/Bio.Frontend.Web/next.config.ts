@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
 
     /* Image optimization — allow external image domains for species/products */
     images: {
+        unoptimized: true,
         remotePatterns: [
             {
                 protocol: "https",
