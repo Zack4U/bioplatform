@@ -107,6 +107,34 @@ export function useFavorites() {
             };
           },
         );
+      } else {
+        // Optimistically add a placeholder so the heart fills immediately.
+        // onSuccess invalidates ["favorites"], replacing it with the real product data.
+        queryClient.setQueryData<PaginatedResponse<ProductListItem>>(
+          listKey,
+          (old) => {
+            if (!old) return old;
+            if (old.items.some((p) => p.id === productId)) return old;
+            const placeholder = {
+              id: productId,
+              slug: "",
+              name: "",
+              thumbnailUrl: null,
+              basePrice: 0,
+              sellPrice: 0,
+              stockQuantity: 0,
+              isActive: true,
+              categoryName: null,
+              averageRating: 0,
+              reviewCount: 0,
+            } as ProductListItem;
+            return {
+              ...old,
+              items: [placeholder, ...old.items],
+              totalCount: old.totalCount + 1,
+            };
+          },
+        );
       }
 
       // Optimistically flip the per-product check cache
@@ -140,10 +168,9 @@ export function useFavorites() {
         result,
       );
 
-      // If the product was added, invalidate the full list so it appears
-      if (result.isFavorite) {
-        queryClient.invalidateQueries({ queryKey: ["favorites"] });
-      }
+      // Refetch the authoritative list so placeholder rows get real product data
+      // (on add) and counts stay accurate (on remove).
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
 
       toast.success(
         result.isFavorite

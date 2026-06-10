@@ -84,13 +84,17 @@ export function ProductDetailHero({
   const isInCart = !!cartItem;
 
   const handleAddToCart = useCallback(() => {
+    if (!product.isActive) {
+      toast.error("Este producto no esta disponible.");
+      return;
+    }
     addItem({
       productId: product.id,
       slug: product.slug,
       name: product.name,
       sellPrice: product.sellPrice,
         basePrice: product.basePrice,
-      
+
       quantity,
       thumbnailUrl: product.images.find((i) => i.isPrimary)?.imageUrl ?? null,
       sku: product.sku,
@@ -366,7 +370,7 @@ export function ProductDetailHero({
                 className="flex-1 gap-2"
                 size="lg"
                 onClick={handleAddToCart}
-                disabled={product.stockQuantity === 0}
+                disabled={product.stockQuantity === 0 || !product.isActive}
               >
                 <ShoppingCart className="h-5 w-5" aria-hidden="true" />
                 Agregar al carrito

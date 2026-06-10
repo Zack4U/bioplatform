@@ -98,6 +98,9 @@ export interface ManageProductListItem extends Omit<ProductListItem, "entreprene
   baseSpeciesId: string;
   categoryId: number | null;
   description: string;
+  /** True once an Admin/Authority validated the product. Pending = false → "Solicitud". */
+  isApproved: boolean;
+  rejectionReason?: string | null;
   createdAt: string;
   updatedAt: string | null;
   /** ABS permit ID associated with this product (Nagoya Protocol) — not returned by managed list endpoint */

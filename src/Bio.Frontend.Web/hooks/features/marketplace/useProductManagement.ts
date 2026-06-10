@@ -26,7 +26,7 @@ import {
   updateProduct,
   uploadProductImage,
 } from "@/services/marketplace-service";
-import { activateProduct, deactivateProduct } from "@/services/admin-service";
+import { activateProduct, deactivateProduct, approveProduct, rejectProduct } from "@/services/admin-service";
 import type {
   CreateProductRequest,
   ManageProductListItem,
@@ -42,7 +42,7 @@ import { toast } from "sonner";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const MANAGE_DEFAULT_PAGE_SIZE = 10;
+const MANAGE_DEFAULT_PAGE_SIZE = 12;
 
 // ─── URL ↔ ProductSearchParams (management variant) ──────────────────────────
 
@@ -279,6 +279,38 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
     },
   });
 
+  // ── Approve / Reject (admin / authority only) ─────────────────────────
+
+  const { mutate: approveProductAction, isPending: isApproving } = useMutation<
+    void,
+    Error,
+    string
+  >({
+    mutationFn: (id) => approveProduct(id),
+    onSuccess: () => {
+      invalidateAll();
+      toast.success("Producto validado y publicado.");
+    },
+    onError: () => {
+      toast.error("No se pudo validar el producto. Intenta de nuevo.");
+    },
+  });
+
+  const { mutate: rejectProductAction, isPending: isRejecting } = useMutation<
+    void,
+    Error,
+    { id: string; reason: string }
+  >({
+    mutationFn: ({ id, reason }) => rejectProduct(id, reason),
+    onSuccess: () => {
+      invalidateAll();
+      toast.success("Producto rechazado.");
+    },
+    onError: () => {
+      toast.error("No se pudo rechazar el producto. Intenta de nuevo.");
+    },
+  });
+
   // ── Image upload ───────────────────────────────────────────────────────
 
   const uploadImage = useCallback(
@@ -436,5 +468,11 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
     isActivating,
     deactivateProduct: deactivateProductAction,
     isDeactivating,
+
+    // Approve / Reject (validation workflow)
+    approveProduct: approveProductAction,
+    isApproving,
+    rejectProduct: rejectProductAction,
+    isRejecting,
   };
 }

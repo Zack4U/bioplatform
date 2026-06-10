@@ -155,7 +155,7 @@ export async function createProduct(
   data: CreateProductRequest,
 ): Promise<ProductDetailDTO> {
   return apiPost<CreateProductRequest, ProductDetailDTO>(
-    CORE_ROUTES.PRODUCTS.BASE,
+    CORE_ROUTES.MANAGE_PRODUCTS.BASE,
     data,
   );
 }
@@ -169,7 +169,7 @@ export async function updateProduct(
   data: UpdateProductRequest,
 ): Promise<ProductDetailDTO> {
   return apiPut<UpdateProductRequest, ProductDetailDTO>(
-    CORE_ROUTES.PRODUCTS.BY_ID(id),
+    CORE_ROUTES.MANAGE_PRODUCTS.BY_ID(id),
     data,
   );
 }
@@ -179,7 +179,29 @@ export async function updateProduct(
  * DELETE /api/products/:id
  */
 export async function deleteProduct(id: string): Promise<void> {
-  await apiDelete<void>(CORE_ROUTES.PRODUCTS.BY_ID(id));
+  await apiDelete<void>(CORE_ROUTES.MANAGE_PRODUCTS.BY_ID(id));
+}
+
+/**
+ * Approve a pending product (Admin / Authority only).
+ * POST /manage/products/:id/approve
+ */
+export async function approveProduct(id: string): Promise<void> {
+  await apiPost<Record<string, never>, void>(
+    CORE_ROUTES.MANAGE_PRODUCTS.APPROVE(id),
+    {},
+  );
+}
+
+/**
+ * Reject a pending product (Admin / Authority only).
+ * POST /manage/products/:id/reject
+ */
+export async function rejectProduct(id: string, reason: string): Promise<void> {
+  await apiPost<{ reason: string }, void>(
+    CORE_ROUTES.MANAGE_PRODUCTS.REJECT(id),
+    { reason },
+  );
 }
 
 /**
