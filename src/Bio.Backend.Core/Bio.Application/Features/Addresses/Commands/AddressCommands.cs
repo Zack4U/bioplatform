@@ -62,6 +62,30 @@ public class UpdateAddressCommandHandler : IRequestHandler<UpdateAddressCommand,
     }
 }
 
+public record SetDefaultAddressCommand(Guid AddressId, Guid UserId) : IRequest<AddressResponseDTO>;
+
+public class SetDefaultAddressCommandHandler : IRequestHandler<SetDefaultAddressCommand, AddressResponseDTO>
+{
+    private readonly IAddressRepository _repo;
+    private readonly IUnitOfWork _uow;
+
+    public SetDefaultAddressCommandHandler(IAddressRepository repo, IUnitOfWork uow)
+    { _repo = repo; _uow = uow; }
+
+    public async Task<AddressResponseDTO> Handle(SetDefaultAddressCommand request, CancellationToken ct)
+    {
+        var address = await _repo.GetByIdAsync(request.AddressId, ct)
+            ?? throw new NotFoundException(nameof(Address), request.AddressId);
+        if (address.UserId != request.UserId)
+            throw new ForbiddenException("You can only set your own addresses as default.");
+
+        await _repo.ClearDefaultsForUserAsync(request.UserId, address.AddressType, ct);
+        address.Update(null, null, null, null, null, null, null, null, isDefault: true);
+        await _uow.SaveChangesAsync(ct);
+        return CreateAddressCommandHandler.MapToResponse(address);
+    }
+}
+
 public record DeleteAddressCommand(Guid AddressId, Guid UserId) : IRequest<Unit>;
 
 public class DeleteAddressCommandHandler : IRequestHandler<DeleteAddressCommand, Unit>

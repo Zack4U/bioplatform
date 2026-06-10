@@ -37,12 +37,12 @@ public class OrdersController : ControllerBase
         => Ok(await _mediator.Send(new GetMyOrdersQuery(GetUserId(), page, pageSize)));
 
     [HttpGet("manage")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Entrepreneur}")]
-    public async Task<IActionResult> GetManaged([FromQuery] OrderFilterParams filters)
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Entrepreneur}")]
+    public async Task<IActionResult> GetManaged([FromQuery(Name = "q")] string? q, [FromQuery] OrderFilterParams filters)
     {
         var role = GetUserRole();
         Guid? entrepreneurId = role == RoleNames.Entrepreneur ? GetUserId() : (Guid?)null;
-        return Ok(await _mediator.Send(new GetManagedOrdersQuery(filters.Status, filters.Page, filters.PageSize, entrepreneurId)));
+        return Ok(await _mediator.Send(new GetManagedOrdersQuery(filters.Status, filters.Page, filters.PageSize, entrepreneurId, q)));
     }
 
     [HttpPatch("{id:guid}/status")]
