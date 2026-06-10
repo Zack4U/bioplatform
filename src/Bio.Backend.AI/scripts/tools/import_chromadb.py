@@ -18,9 +18,16 @@ def main():
     port = int(os.getenv("CHROMA_PORT", 8001))
     collection_name = os.getenv("CHROMA_COLLECTION_NAME", "bioplatform_species_dev")
 
-    # Ruta del archivo de semilla
+    # Ruta del archivo de semilla (compatible con host y Docker container)
     default_seed_dir = PROJECT_ROOT / "src" / "Bio.Backend.AI" / "data" / "species_catalog"
     seed_file = default_seed_dir / f"chroma_seed_{collection_name}.json"
+
+    if not seed_file.exists():
+        # Intentar ruta alternativa (ej. en Docker)
+        alt_seed_dir = SCRIPT_DIR.parent.parent / "data" / "species_catalog"
+        alt_seed_file = alt_seed_dir / f"chroma_seed_{collection_name}.json"
+        if alt_seed_file.exists():
+            seed_file = alt_seed_file
 
     if not seed_file.exists():
         print(f"[ERROR] No se encontró el archivo de semilla: {seed_file}")

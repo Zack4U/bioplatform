@@ -165,9 +165,33 @@ function Section-apps {
     if (-not $seeded) {
         Log 'Warning: Seeding did not finish in 1 minutes. Proceeding anyway...'
     }
+
+    # Seeding ChromaDB from JSON seed file if it exists
+    Log "Checking for ChromaDB seed file..."
+    $collection_name = 'bioplatform_species_dev'
+    if (Test-Path .env) {
+        $envMap = @{}
+        foreach ($line in Get-Content .env) {
+            if ($line -match '^\s*([^#=]+)=(.*)$') { $envMap[$matches[1].Trim()] = $matches[2] }
+        }
+        if ($envMap['CHROMA_COLLECTION_NAME']) { $collection_name = $envMap['CHROMA_COLLECTION_NAME'].Trim() }
+    }
+    $seedFile = "src/Bio.Backend.AI/data/species_catalog/chroma_seed_$($collection_name).json"
+    if (Test-Path $seedFile) {
+        Log "Found ChromaDB seed file for '$collection_name'. Importing into ChromaDB..."
+        try {
+            docker exec bioplatform-ai-service-prod python scripts/tools/import_chromadb.py
+        } catch {
+            Log "Warning: ChromaDB import failed."
+        }
+    } else {
+        Log "No ChromaDB seed file found at '$seedFile'. Skipping."
+    }
+
     Log 'Restarting Backend AI service (ai-service)...'
     docker @Compose restart ai-service
 }
+
 
 
 function Section-verify {

@@ -185,9 +185,25 @@ section_apps() {
     if [[ $seeded -eq 0 ]]; then
         log "Warning: Seeding did not finish in 1 minutes. Proceeding anyway..."
     fi
+
+    # Seeding ChromaDB from JSON seed file if it exists
+    log "Checking for ChromaDB seed file..."
+    local collection_name
+    collection_name=$(grep -E '^CHROMA_COLLECTION_NAME=' .env | head -n1 | cut -d= -f2- || echo "bioplatform_species_dev")
+    collection_name=$(echo "$collection_name" | tr -d '\r\n"' | xargs)
+    if [[ -z "$collection_name" ]]; then collection_name="bioplatform_species_dev"; fi
+
+    if [[ -f "src/Bio.Backend.AI/data/species_catalog/chroma_seed_${collection_name}.json" ]]; then
+        log "Found ChromaDB seed file for '${collection_name}'. Importing into ChromaDB..."
+        docker exec bioplatform-ai-service-prod python scripts/tools/import_chromadb.py || log "Warning: ChromaDB import failed."
+    else
+        log "No ChromaDB seed file found at 'src/Bio.Backend.AI/data/species_catalog/chroma_seed_${collection_name}.json'. Skipping."
+    fi
+
     log "Restarting Backend AI service (ai-service)..."
     $COMPOSE restart ai-service
 }
+
 
 section_verify() {
     log "Section: verify"

@@ -58,8 +58,12 @@ def main():
         "embeddings": data.get("embeddings", [])
     }
 
-    # Ruta por defecto de exportación
+    # Ruta de exportación (compatible con host y Docker container)
     default_out_dir = PROJECT_ROOT / "src" / "Bio.Backend.AI" / "data" / "species_catalog"
+    if not default_out_dir.parent.exists():
+        # Estructura de producción dentro del contenedor
+        default_out_dir = SCRIPT_DIR.parent.parent / "data" / "species_catalog"
+
     default_out_dir.mkdir(parents=True, exist_ok=True)
     out_file = default_out_dir / f"chroma_seed_{collection_name}.json"
 
