@@ -112,6 +112,18 @@ export const CORE_ROUTES = {
    * Distinct from the public /products routes.
    */
   MANAGE_PRODUCTS: {
+    /** Create / list entrepreneur-managed products (POST create, GET list) */
+    BASE: "/manage/products",
+    /** Update (PUT) or soft-delete (DELETE) a managed product by ID */
+    BY_ID: (id: string) => `/manage/products/${id}` as const,
+    /** Approve a pending product (Admin / Authority) */
+    APPROVE: (id: string) => `/manage/products/${id}/approve` as const,
+    /** Reject a pending product (Admin / Authority) */
+    REJECT: (id: string) => `/manage/products/${id}/reject` as const,
+    /** Activate a product (owner if approved, or Admin / Authority) */
+    ACTIVATE: (id: string) => `/manage/products/${id}/activate` as const,
+    /** Deactivate a product (owner if approved, or Admin / Authority) */
+    DEACTIVATE: (id: string) => `/manage/products/${id}/deactivate` as const,
     /** Multipart upload endpoint for product gallery images */
     UPLOAD_IMAGE: (productId: string) =>
       `/manage/products/${productId}/images` as const,

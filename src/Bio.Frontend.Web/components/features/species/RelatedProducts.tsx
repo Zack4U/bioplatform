@@ -120,7 +120,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
 
                                 <CardFooter className="mt-1 flex items-center justify-between p-0">
                                     <span className="text-sm font-semibold text-primary">
-                                        {formatPrice(product.price)}
+                                        {formatPrice(product.sellPrice)}
                                     </span>
                                     <Badge
                                         variant={product.isActive ? "default" : "secondary"}

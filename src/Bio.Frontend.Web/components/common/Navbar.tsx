@@ -44,7 +44,7 @@ import { ADMIN_ROLES } from "@/lib/constants";
 import { useAuthStore } from "@/store/auth-store";
 import { useCartStore } from "@/store/cart-store";
 import {
-    LayoutDashboard, Leaf, LogOut, Menu, Settings, ShoppingCart, User,
+    Heart, LayoutDashboard, Leaf, LogOut, MapPin, Menu, Settings, ShoppingCart, User,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -177,7 +177,19 @@ export function Navbar() {
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
-                                        <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
+                                        <Link href="/profile?tab=addresses" className="flex items-center gap-2 cursor-pointer">
+                                            <MapPin className="h-4 w-4" aria-hidden="true" />
+                                            Direcciones
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/profile?tab=favorites" className="flex items-center gap-2 cursor-pointer">
+                                            <Heart className="h-4 w-4" aria-hidden="true" />
+                                            Favoritos
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link href="/profile?tab=settings" className="flex items-center gap-2 cursor-pointer">
                                             <Settings className="h-4 w-4" aria-hidden="true" />
                                             Configuracion
                                         </Link>
@@ -266,7 +278,17 @@ export function Navbar() {
                                             </SheetClose>
                                             <SheetClose asChild>
                                                 <Button variant="ghost" className="w-full justify-start" asChild>
-                                                    <Link href="/settings"><Settings className="mr-2 h-4 w-4" />Configuracion</Link>
+                                                    <Link href="/profile?tab=addresses"><MapPin className="mr-2 h-4 w-4" />Direcciones</Link>
+                                                </Button>
+                                            </SheetClose>
+                                            <SheetClose asChild>
+                                                <Button variant="ghost" className="w-full justify-start" asChild>
+                                                    <Link href="/profile?tab=favorites"><Heart className="mr-2 h-4 w-4" />Favoritos</Link>
+                                                </Button>
+                                            </SheetClose>
+                                            <SheetClose asChild>
+                                                <Button variant="ghost" className="w-full justify-start" asChild>
+                                                    <Link href="/profile?tab=settings"><Settings className="mr-2 h-4 w-4" />Configuracion</Link>
                                                 </Button>
                                             </SheetClose>
                                             {hasAdminAccess && (

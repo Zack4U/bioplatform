@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import type { PlatformRequestItem } from "@/types/admin";
 import { Eye, FileText, Image as ImageIcon, RefreshCw, Shield } from "lucide-react";
 import { useRequestsList } from "@/hooks/features/admin/useRequestsManagement";
+import { translateLabel } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -28,9 +29,22 @@ const TYPE_LABELS: Record<string, string> = {
 const STATUS_VARIANT: Record<string, "warning" | "success" | "destructive" | "info" | "default"> = {
     pending: "warning",
     active: "success",
+    approved: "success",
     rejected: "destructive",
     expired: "destructive",
+    suspended: "warning",
     in_review: "info",
+};
+
+/** Spanish labels for request statuses (case-insensitive lookup via translateLabel). */
+const STATUS_LABELS: Record<string, string> = {
+    pending: "Pendiente",
+    active: "Activo",
+    approved: "Aprobada",
+    rejected: "Rechazada",
+    expired: "Expirado",
+    suspended: "Suspendido",
+    in_review: "En Revisión",
 };
 
 const TYPE_ICONS: Record<string, React.ReactNode> = {
@@ -52,7 +66,7 @@ const columns: ColumnDef<PlatformRequestItem>[] = [
     { key: "subject", header: "Asunto", hideOnMobile: true, render: (r) => <span className="truncate max-w-[200px] inline-block">{r.subject}</span> },
     {
         key: "status", header: "Estado",
-        render: (r) => <StatusBadge label={r.status} variant={STATUS_VARIANT[r.status] ?? "default"} />,
+        render: (r) => <StatusBadge label={translateLabel(STATUS_LABELS, r.status)} variant={STATUS_VARIANT[r.status?.toLowerCase()] ?? "default"} />,
     },
     { key: "createdAt", header: "Fecha", hideOnMobile: true, render: (r) => new Date(r.createdAt).toLocaleDateString("es-CO") },
 ];
@@ -82,12 +96,25 @@ export function RequestsManagement() {
     const totalPages = data?.totalPages ?? 1;
 
     const handleNavigateToRef = useCallback((item: PlatformRequestItem) => {
-        if (item.referenceType === "SpeciesImage" && item.referenceId) {
-            router.push(`/admin/images?speciesId=${item.referenceId}`);
-        } else if (item.referenceType === "AbsPermit") {
-            router.push(`/admin/permits`);
+        // Deep-link to the matching module, filtered/highlighted to this specific request.
+        switch (item.referenceType) {
+            case "SpeciesImage":
+                router.push(`/admin/images?speciesId=${item.referenceId ?? ""}&imageId=${item.referenceId ?? ""}`);
+                break;
+            case "AbsPermit":
+                router.push(`/admin/permits?permitId=${item.referenceId ?? ""}`);
+                break;
+            case "Product":
+                router.push(`/admin/products?productId=${item.referenceId ?? ""}&filter=pending`);
+                break;
+            case "Certification":
+                router.push(`/admin/certifications?certId=${item.referenceId ?? ""}&filter=pending`);
+                break;
         }
     }, [router]);
+
+    const canNavigateToRef = (item: PlatformRequestItem) =>
+        ["SpeciesImage", "AbsPermit", "Product", "Certification"].includes(item.referenceType ?? "");
 
     const actions: RowAction<PlatformRequestItem>[] = [
         { label: "Ver detalle", icon: <Eye className="h-4 w-4" />, onClick: (r) => { setSelected(r); setIsDetailOpen(true); } },
@@ -179,7 +206,7 @@ export function RequestsManagement() {
                                     </Badge>
                                 </div>
                                 <div><p className="text-muted-foreground">Estado</p>
-                                    <StatusBadge label={selected.status} variant={STATUS_VARIANT[selected.status] ?? "default"} />
+                                    <StatusBadge label={translateLabel(STATUS_LABELS, selected.status)} variant={STATUS_VARIANT[selected.status?.toLowerCase()] ?? "default"} />
                                 </div>
                                 <div className="col-span-2"><p className="text-muted-foreground">Asunto</p><p className="font-medium">{selected.subject}</p></div>
                                 {selected.description && (
@@ -211,7 +238,7 @@ export function RequestsManagement() {
                             )}
 
                             <div className="flex justify-end gap-2">
-                                {(selected.referenceType === "SpeciesImage" || selected.referenceType === "AbsPermit") && (
+                                {canNavigateToRef(selected) && (
                                     <Button variant="outline" size="sm" onClick={() => { handleNavigateToRef(selected); setIsDetailOpen(false); }}>
                                         Ver en módulo →
                                     </Button>

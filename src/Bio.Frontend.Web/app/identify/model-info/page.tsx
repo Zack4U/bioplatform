@@ -23,6 +23,7 @@ import {
     ModelMetricsKpiCards,
     ModelMetricsSpeciesTable,
 } from "@/components/features/identification/model-metrics";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -105,12 +106,17 @@ export default function ModelInfoPage() {
                 description="Evaluacion completa del modelo CNN de clasificacion de especies. Metricas generadas sobre el conjunto de prueba."
                 breadcrumbs={BREADCRUMBS}
                 actions={
-                    <Button variant="outline" size="sm" asChild>
-                        <Link href="/identify">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            Volver
-                        </Link>
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="font-mono text-xs">
+                            Versión: {modelInfo?.version ?? "—"}
+                        </Badge>
+                        <Button variant="outline" size="sm" asChild>
+                            <Link href="/identify">
+                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                Volver
+                            </Link>
+                        </Button>
+                    </div>
                 }
             />
 

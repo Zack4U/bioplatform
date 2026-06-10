@@ -48,6 +48,7 @@ export function OrdersManagement() {
 
     const { data, isLoading, isError, error } = useOrdersList({
         status: statusFilter && statusFilter !== "all" ? statusFilter : undefined,
+        q: search || undefined,
         page,
         pageSize: 15,
     });
@@ -115,7 +116,7 @@ export function OrdersManagement() {
 
             {/* Detail + status update dialog */}
             <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-                <DialogContent className="max-w-lg">
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto sm:ml-auto sm:mr-4">
                     <DialogHeader>
                         <DialogTitle>Orden #{selected?.orderNumber}</DialogTitle>
                         <DialogDescription>Detalle y gestión del estado de la orden</DialogDescription>
@@ -146,7 +147,7 @@ export function OrdersManagement() {
                                                     <p className="font-medium">{item.productName}</p>
                                                     <p className="text-xs text-muted-foreground">x{item.quantity} · {formatCurrency(item.unitPrice)} c/u</p>
                                                 </div>
-                                                <p className="font-semibold">{formatCurrency(item.subtotal)}</p>
+                                                <p className="font-semibold">{formatCurrency(item.totalPrice)}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -161,6 +162,48 @@ export function OrdersManagement() {
                                 <div><p className="text-muted-foreground">Envío</p><p className="font-medium">{formatCurrency(selected.shippingAmount)}</p></div>
                                 <div><p className="text-muted-foreground">Total</p><p className="font-semibold text-base">{formatCurrency(selected.totalAmount)}</p></div>
                             </div>
+
+                            {/* Buyer + shipping / billing addresses */}
+                            {(orderDetail?.shippingAddress || orderDetail?.billingAddress) && (
+                                <>
+                                    <Separator />
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        {orderDetail?.shippingAddress && (
+                                            <div className="rounded-md border p-3">
+                                                <p className="text-muted-foreground font-medium mb-1">Dirección de envío</p>
+                                                <p className="font-medium">{orderDetail.shippingAddress.recipientName}</p>
+                                                <p className="text-xs text-muted-foreground">{orderDetail.shippingAddress.streetLine1}</p>
+                                                {orderDetail.shippingAddress.streetLine2 && (
+                                                    <p className="text-xs text-muted-foreground">{orderDetail.shippingAddress.streetLine2}</p>
+                                                )}
+                                                <p className="text-xs text-muted-foreground">
+                                                    {orderDetail.shippingAddress.city}, {orderDetail.shippingAddress.department} {orderDetail.shippingAddress.postalCode}
+                                                </p>
+                                                {orderDetail.shippingAddress.phoneNumber && (
+                                                    <p className="text-xs text-muted-foreground">Tel: {orderDetail.shippingAddress.phoneNumber}</p>
+                                                )}
+                                            </div>
+                                        )}
+                                        {orderDetail?.billingAddress && (
+                                            <div className="rounded-md border p-3">
+                                                <p className="text-muted-foreground font-medium mb-1">Dirección de facturación</p>
+                                                <p className="font-medium">{orderDetail.billingAddress.recipientName}</p>
+                                                <p className="text-xs text-muted-foreground">{orderDetail.billingAddress.streetLine1}</p>
+                                                {orderDetail.billingAddress.streetLine2 && (
+                                                    <p className="text-xs text-muted-foreground">{orderDetail.billingAddress.streetLine2}</p>
+                                                )}
+                                                <p className="text-xs text-muted-foreground">
+                                                    {orderDetail.billingAddress.city}, {orderDetail.billingAddress.department} {orderDetail.billingAddress.postalCode}
+                                                </p>
+                                                {orderDetail.billingAddress.phoneNumber && (
+                                                    <p className="text-xs text-muted-foreground">Tel: {orderDetail.billingAddress.phoneNumber}</p>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+
                             {isAdmin && (
                                 <>
                                     <Separator />

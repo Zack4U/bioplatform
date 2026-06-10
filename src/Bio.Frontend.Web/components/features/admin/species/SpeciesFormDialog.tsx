@@ -71,10 +71,14 @@ export function SpeciesFormDialog({ open, onOpenChange, species }: Props) {
                 commonName: species.commonName ?? "",
                 slug: species.slug,
                 kingdom: species.kingdom ?? "",
+                phylum: species.phylum ?? "",
+                className: species.className ?? "",
+                orderName: species.orderName ?? "",
                 family: species.family ?? "",
+                genus: species.genus ?? "",
                 conservationStatus: species.conservationStatus ?? "",
                 isSensitive: species.isSensitive,
-                legalStatus: species.legalStatus,
+                legalStatus: species.legalStatus ?? false,
             });
         } else if (open) {
             form.reset({ isSensitive: false, legalStatus: false });

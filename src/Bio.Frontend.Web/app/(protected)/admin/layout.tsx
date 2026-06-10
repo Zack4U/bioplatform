@@ -27,7 +27,6 @@ export default function AdminLayout({
                 "ENTREPRENEUR",
                 "AUTHORITY",
                 "COMMUNITY",
-                "BUYER",
             ]}
         >
             <TooltipProvider>

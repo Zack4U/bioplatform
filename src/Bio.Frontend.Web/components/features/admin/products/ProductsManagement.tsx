@@ -7,6 +7,8 @@ import {
     ProductManagementTable,
 } from "@/components/features/marketplace/product-management";
 import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/common/Pagination";
+import { SearchInput } from "@/components/common/SearchInput";
 import { useProductManagement } from "@/hooks/features/marketplace/useProductManagement";
 import {
     getCategories,
@@ -27,7 +29,10 @@ import { useState } from "react";
 
 export function ProductsManagement() {
     const { user } = useAuthStore();
-    const isAdmin = user?.roles?.includes("ADMIN") ?? false;
+    // Admin + Authority get the global moderation view (approve/reject pending products).
+    const isAdmin =
+        (user?.roles?.includes("ADMIN") ?? false) ||
+        (user?.roles?.includes("AUTHORITY") ?? false);
 
     // Queries for select options
     const { data: categories = [] } = useQuery<ProductCategory[]>({
@@ -48,6 +53,11 @@ export function ProductsManagement() {
         products,
         isLoading,
         isFetching,
+        searchParams,
+        setSearch,
+        setPage,
+        currentPage,
+        totalPages,
         createProduct,
         isCreating,
         updateProduct,
@@ -63,6 +73,8 @@ export function ProductsManagement() {
         isDeletingImage,
         activateProduct,
         deactivateProduct,
+        approveProduct,
+        rejectProduct,
     } = useProductManagement();
 
     // Local state for modals/sheets
@@ -131,6 +143,15 @@ export function ProductsManagement() {
                 )}
             </div>
 
+            {/* Search */}
+            <SearchInput
+                placeholder="Buscar por nombre o descripcion..."
+                value={searchParams.query ?? ""}
+                onChange={setSearch}
+                aria-label="Buscar productos"
+                className="max-w-md"
+            />
+
             <ProductManagementTable
                 products={products}
                 isLoading={isLoading}
@@ -141,7 +162,27 @@ export function ProductsManagement() {
                 onManageImages={handleOpenImages}
                 onActivate={isAdmin ? (id) => activateProduct(id) : undefined}
                 onDeactivate={isAdmin ? (id) => deactivateProduct(id) : undefined}
+                onApprove={isAdmin ? (id) => approveProduct(id) : undefined}
+                onReject={
+                    isAdmin
+                        ? (id) => {
+                              const reason = window.prompt("Motivo del rechazo:");
+                              if (reason && reason.trim()) {
+                                  rejectProduct({ id, reason: reason.trim() });
+                              }
+                          }
+                        : undefined
+                }
             />
+
+            {!isLoading && totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    className="mt-4"
+                />
+            )}
 
             {!isAdmin && (
                 <ProductFormSheet

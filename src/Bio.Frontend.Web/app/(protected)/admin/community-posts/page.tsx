@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Administracion de Posts" };
 
 export default function AdminCommunityPostsPage() {
     return (
-        <PageRoleGuard requiredRoles={["ADMIN", "COMMUNITY", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "BUYER"]}>
+        <PageRoleGuard requiredRoles={["ADMIN", "AUTHORITY", "COMMUNITY"]}>
             <CommunityPostsManagement />
         </PageRoleGuard>
     );

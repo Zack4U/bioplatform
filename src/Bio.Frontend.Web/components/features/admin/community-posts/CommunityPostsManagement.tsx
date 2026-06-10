@@ -37,6 +37,7 @@ import {
     useAdminTogglePin,
     useAdminChangePostStatus,
 } from "@/hooks/features/admin/useAdminCommunity";
+import { useAuthStore } from "@/store/auth-store";
 import type { CommunityPostListItem, PostStatus } from "@/types";
 import { Eye, FileText, Pin, PinOff, Trash2, Archive, EyeOff } from "lucide-react";
 import { useState } from "react";
@@ -138,9 +139,14 @@ export function CommunityPostsManagement() {
     const [selected, setSelected] = useState<CommunityPostListItem | null>(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
 
+    const hasRole = useAuthStore((s) => s.hasRole);
+    // Community moderators may pin/hide/archive but NOT delete (only Admin / Authority delete).
+    const canDelete = hasRole("ADMIN") || hasRole("AUTHORITY");
+
     const { posts, totalPages, isLoading } = useAdminPosts({
         category: categoryFilter && categoryFilter !== "all" ? categoryFilter : undefined,
         status: statusFilter && statusFilter !== "all" ? (statusFilter as PostStatus) : undefined,
+        query: search || undefined,
         page,
         pageSize: 15,
     });
@@ -194,12 +200,15 @@ export function CommunityPostsManagement() {
             icon: <EyeOff className="h-4 w-4" />,
             onClick: (p) => handleChangeStatus(p.id, "Hidden"),
         },
-        {
-            label: "Eliminar",
-            icon: <Trash2 className="h-4 w-4" />,
-            variant: "destructive" as const,
-            onClick: (p) => deletePost.mutate(p.id),
-        },
+        // Delete is restricted to Admin / Authority.
+        ...(canDelete
+            ? [{
+                label: "Eliminar",
+                icon: <Trash2 className="h-4 w-4" />,
+                variant: "destructive" as const,
+                onClick: (p: CommunityPostListItem) => deletePost.mutate(p.id),
+            }]
+            : []),
     ];
 
     return (
@@ -353,18 +362,20 @@ export function CommunityPostsManagement() {
                                         <EyeOff className="h-3.5 w-3.5 mr-1" />Ocultar
                                     </Button>
                                 )}
-                                <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() => {
-                                        deletePost.mutate(selected.id);
-                                        setIsDetailOpen(false);
-                                    }}
-                                    disabled={deletePost.isPending}
-                                >
-                                    <Trash2 className="h-3.5 w-3.5 mr-1" />
-                                    Eliminar
-                                </Button>
+                                {canDelete && (
+                                    <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={() => {
+                                            deletePost.mutate(selected.id);
+                                            setIsDetailOpen(false);
+                                        }}
+                                        disabled={deletePost.isPending}
+                                    >
+                                        <Trash2 className="h-3.5 w-3.5 mr-1" />
+                                        Eliminar
+                                    </Button>
+                                )}
                                 <Button variant="outline" onClick={() => setIsDetailOpen(false)}>
                                     Cerrar
                                 </Button>

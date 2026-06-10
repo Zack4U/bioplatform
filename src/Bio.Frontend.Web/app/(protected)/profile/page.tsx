@@ -10,7 +10,8 @@
  * 4. Direcciones (AddressBook)
  * 5. Favoritos (FavoritesGrid)
  * 6. Mis Reseñas (MyReviewsList)
- * 7. Permisos ABS (AbsPermitsSection — Entrepreneur/Authority only)
+ *
+ * ABS permits moved to the admin panel (/admin/permits).
  *
  * Protected: wrapped by (protected)/layout.tsx AuthGuard.
  *
@@ -33,6 +34,7 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs";
 import { useProfile } from "@/hooks/features/auth";
+import { USER_ROLE_LABELS, translateLabel } from "@/lib/constants";
 import { useAuthStore } from "@/store/auth-store";
 import { Loader2 } from "lucide-react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -48,20 +50,14 @@ function getInitials(fullName: string): string {
     );
 }
 
-const ENTREPRENEUR_ROLES = ["ENTREPRENEUR", "AUTHORITY", "ADMIN"];
-
 export default function ProfilePage() {
     const { user } = useAuthStore();
     const { isLoading: isProfileLoading } = useProfile();
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
-    
-    const currentTab = searchParams.get("tab") ?? "personal";
 
-    const isEntrepreneur = user?.roles?.some((r) =>
-        ENTREPRENEUR_ROLES.includes(r),
-    );
+    const currentTab = searchParams.get("tab") ?? "personal";
 
     const handleTabChange = (value: string) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -100,7 +96,7 @@ export default function ProfilePage() {
                         <div className="flex flex-wrap gap-1">
                             {user.roles.map((role) => (
                                 <Badge key={role} variant="secondary" className="text-xs">
-                                    {role}
+                                    {translateLabel(USER_ROLE_LABELS, role)}
                                 </Badge>
                             ))}
                         </div>
@@ -143,14 +139,6 @@ export default function ProfilePage() {
                     >
                         Mis Reseñas
                     </TabsTrigger>
-                    {isEntrepreneur && (
-                        <TabsTrigger
-                            value="permits"
-                            className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                        >
-                            Permisos ABS
-                        </TabsTrigger>
-                    )}
                     <TabsTrigger
                         value="settings"
                         className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
@@ -178,14 +166,6 @@ export default function ProfilePage() {
                 <TabsContent value="reviews" className="mt-6 focus-visible:outline-none">
                     <MyReviewsList />
                 </TabsContent>
-
-                {isEntrepreneur && (
-                    <TabsContent value="permits" className="mt-6 focus-visible:outline-none">
-                        <p className="text-sm text-muted-foreground">
-                            Seccion de permisos ABS disponible proxinamente.
-                        </p>
-                    </TabsContent>
-                )}
 
                 <TabsContent value="settings" className="mt-6 focus-visible:outline-none">
                     <SettingsSection />

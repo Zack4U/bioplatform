@@ -27,6 +27,7 @@ import type {
 export interface GetPostsParams {
     category?: string | null;
     status?: string | null;
+    search?: string | null;
     page?: number;
     pageSize?: number;
 }
@@ -37,6 +38,7 @@ export async function getPosts(
     return apiGetPaginated<CommunityPostListItem>(COMMUNITY_ROUTES.POSTS.BASE, {
         ...(params?.category && { category: params.category }),
         ...(params?.status && { status: params.status }),
+        ...(params?.search && { q: params.search }),
         page: params?.page ?? 1,
         pageSize: params?.pageSize ?? 10,
     });

@@ -29,6 +29,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useIsMd } from "@/hooks/useMediaQuery";
 import { useAdminLayoutStore } from "@/store/admin-layout-store";
 import { useAuthStore } from "@/store/auth-store";
@@ -121,6 +122,9 @@ export function AdminHeader() {
             </nav>
 
             <div className="flex-1" />
+
+            {/* Theme switcher — mirrors the public navbar toggle */}
+            <ThemeToggle />
 
             {/* ── Profile: DropdownMenu on desktop, Drawer on mobile ── */}
             {isDesktop ? (
