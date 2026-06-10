@@ -259,6 +259,7 @@ async def model_info() -> ModelInfoResponse:
 
     return ModelInfoResponse(
         model_name=classifier.config.get("model_name", "not_loaded"),
+        version=classifier.active_version,
         num_classes=classifier.num_classes,
         image_size=classifier.config.get("image_size", 224),
         is_loaded=classifier.is_loaded,
