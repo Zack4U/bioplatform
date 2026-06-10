@@ -63,7 +63,14 @@ public class GetAllSpeciesQueryHandler
             s.IsSensitive,
             s.Taxonomy?.Kingdom,
             s.Taxonomy?.Family,
-            s.CreatedAt
+            s.CreatedAt,
+            s.Images?.Count ?? 0,
+            s.GeographicDistributions?.Count ?? 0,
+            s.LegalStatus,
+            s.Taxonomy?.Phylum,
+            s.Taxonomy?.ClassName,
+            s.Taxonomy?.OrderName,
+            s.Taxonomy?.Genus
         )).ToList();
 
         return PaginatedResult<SpeciesListItemDTO>.Create(

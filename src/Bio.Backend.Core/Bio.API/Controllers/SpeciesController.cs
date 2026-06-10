@@ -109,7 +109,7 @@ public class SpeciesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetImages(
         Guid id,
-        [FromQuery] bool onlyValidatedByExpert = true,
+        [FromQuery] bool? onlyValidatedByExpert = null,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {
@@ -361,10 +361,10 @@ public class SpeciesController : ControllerBase
 
     /// <summary>
     /// Validates a species image as an expert — marks IsValidatedByExpert = true.
-    /// Restricted to Admin and Researcher roles.
+    /// Restricted to Admin and Environmental Authority. Researchers have read-only AI access.
     /// </summary>
     [HttpPost("{speciesId:guid}/images/{imageId:guid}/validate")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
     [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ValidateImage(
@@ -377,10 +377,10 @@ public class SpeciesController : ControllerBase
 
     /// <summary>
     /// Rejects (unvalidates) a species image — sets IsValidatedByExpert = false.
-    /// Restricted to Admin and Researcher roles.
+    /// Restricted to Admin and Environmental Authority. Researchers have read-only AI access.
     /// </summary>
     [HttpPost("{speciesId:guid}/images/{imageId:guid}/reject")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Researcher}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
     [ProducesResponseType(typeof(SpeciesImageDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> RejectImage(

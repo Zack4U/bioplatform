@@ -106,6 +106,9 @@ public class SpeciesRepository : ISpeciesRepository
     {
         var q = _context.Species
             .Include(s => s.Taxonomy)
+            .Include(s => s.Images)
+            .Include(s => s.GeographicDistributions)
+            .AsSplitQuery()
             .AsQueryable();
 
         // Text search (scientific name, common name, description)

@@ -12,7 +12,7 @@ public interface ISpeciesImageRepository
     /// </summary>
     Task<(IReadOnlyList<SpeciesImage> Items, int TotalCount)> GetBySpeciesIdAsync(
         Guid speciesId,
-        bool onlyValidatedByExpert = true,
+        bool? onlyValidatedByExpert = null,
         int page = 1,
         int pageSize = 20,
         CancellationToken cancellationToken = default);

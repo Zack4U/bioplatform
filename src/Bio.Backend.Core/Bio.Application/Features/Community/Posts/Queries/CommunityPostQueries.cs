@@ -14,7 +14,8 @@ public record GetCommunityPostsQuery(
     string? Category,
     string? Status,
     int Page,
-    int PageSize) : IRequest<PaginatedResult<CommunityPostListItemDTO>>;
+    int PageSize,
+    string? Search = null) : IRequest<PaginatedResult<CommunityPostListItemDTO>>;
 
 public class GetCommunityPostsQueryHandler
     : IRequestHandler<GetCommunityPostsQuery, PaginatedResult<CommunityPostListItemDTO>>
@@ -28,13 +29,18 @@ public class GetCommunityPostsQueryHandler
     public async Task<PaginatedResult<CommunityPostListItemDTO>> Handle(
         GetCommunityPostsQuery request, CancellationToken ct)
     {
-        // Cache public published posts (no category filter, page 1)
+        // Search results are not cached (high cardinality of free-text queries).
+        var useCache = string.IsNullOrWhiteSpace(request.Search);
         var cacheKey = $"community:posts:{request.Category ?? "all"}:{request.Status ?? "Published"}:{request.Page}:{request.PageSize}";
-        var cached = await _cache.GetAsync<PaginatedResult<CommunityPostListItemDTO>>(cacheKey, ct);
-        if (cached is not null) return cached;
+        if (useCache)
+        {
+            var cached = await _cache.GetAsync<PaginatedResult<CommunityPostListItemDTO>>(cacheKey, ct);
+            if (cached is not null) return cached;
+        }
 
         var (items, total) = await _repo.GetPagedAsync(
-            request.Category, request.Status ?? "Published", request.Page, request.PageSize, ct);
+            request.Category, request.Status ?? "Published", request.Page, request.PageSize, ct,
+            request.Search);
 
         var dtos = items.Select(p =>
             CommunityPostMapper.ToListItem(p, p.Comments.Count(c => !c.IsDeleted))
@@ -43,7 +49,8 @@ public class GetCommunityPostsQueryHandler
         var result = PaginatedResult<CommunityPostListItemDTO>.Create(
             dtos, total, request.Page, request.PageSize);
 
-        await _cache.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5), ct);
+        if (useCache)
+            await _cache.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5), ct);
         return result;
     }
 }
