@@ -1,76 +1,75 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "BioCommerce",
-  "logo": {
-    "light": "/images/logo-light.svg",
-    "dark": "/images/logo-dark.svg"
-  },
-  "colors": {
-    "primary": "#16a34a",
-    "light": "#22c55e",
-    "dark": "#15803d"
-  },
-  "navigation": {
-    "groups": [
-      {
-        "group": "Inicio",
-        "pages": [
-          "index"
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "mint",
+    "name": "BioCommerce",
+    "logo": {
+        "light": "/images/logo-light.svg",
+        "dark": "/images/logo-dark.svg"
+    },
+    "colors": {
+        "primary": "#16a34a",
+        "light": "#22c55e",
+        "dark": "#15803d"
+    },
+    "navigation": {
+        "groups": [
+            {
+                "group": "Inicio",
+                "pages": ["index"]
+            },
+            {
+                "group": "Guias",
+                "pages": [
+                    "guides/quickstart",
+                    "guides/development",
+                    "guides/scripts",
+                    "guides/background-jobs",
+                    "guides/pr-checklist"
+                ]
+            },
+            {
+                "group": "Manuales",
+                "pages": [
+                    "manuals/usuario",
+                    "manuals/tecnico",
+                    "manuals/instalacion",
+                    "manuals/mantenimiento"
+                ]
+            },
+            {
+                "group": "Inteligencia Artificial",
+                "pages": [
+                    "ai/cnn-training",
+                    "ai/fine-tuning",
+                    "ai/model-versioning"
+                ]
+            },
+            {
+                "group": "Proyecto",
+                "pages": [
+                    "project/vision",
+                    "project/requirements",
+                    "project/architecture",
+                    "project/data-dictionary",
+                    "project/database",
+                    "project/guidelines",
+                    "project/dev-guidelines",
+                    "project/todo-checklist"
+                ]
+            }
         ]
-      },
-      {
-        "group": "Guias",
-        "pages": [
-          "guides/quickstart",
-          "guides/development",
-          "guides/scripts",
-          "guides/background-jobs",
-          "guides/pr-checklist"
+    },
+    "navbar": {
+        "links": [
+            {
+                "label": "Plataforma Web",
+                "href": "http://localhost"
+            }
         ]
-      },
-      {
-        "group": "Manuales",
-        "pages": [
-          "manuals/usuario",
-          "manuals/tecnico",
-          "manuals/instalacion",
-          "manuals/mantenimiento"
-        ]
-      },
-      {
-        "group": "Inteligencia Artificial",
-        "pages": [
-          "ai/cnn-training",
-          "ai/fine-tuning",
-          "ai/model-versioning"
-        ]
-      },
-      {
-        "group": "Proyecto",
-        "pages": [
-          "project/vision",
-          "project/requirements",
-          "project/architecture",
-          "project/data-dictionary",
-          "project/guidelines",
-          "project/dev-guidelines",
-          "project/todo-checklist"
-        ]
-      }
-    ]
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Plataforma Web",
-        "href": "http://localhost:3000"
-      }
-    ]
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/Zack4U/bioplatform"
+    },
+    "footer": {
+        "socials": {
+            "github": "https://github.com/Zack4U/bioplatform"
+        }
     }
-  }
 }

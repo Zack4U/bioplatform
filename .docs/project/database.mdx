@@ -1,0 +1,212 @@
+---
+title: "Documento de Base de Datos"
+description: "Modelado, optimizacion, continuidad y privacidad de la capa de datos."
+icon: "database"
+---
+
+Este documento consolida el estado real de la capa de persistencia de BioCommerce Caldas: modelo relacional, indices, estrategia de respaldo/recuperacion y medidas de privacidad sobre datos sensibles. Toda la evidencia se basa en las migraciones de EF Core (`InitialCreate` / `InitialCreateScientific`), el codigo fuente de `Bio.Infrastructure` y los manuales tecnicos existentes.
+
+---
+
+# 1. Modelado: Diagrama ER y Modelo Relacional (3FN)
+
+## 1.1. Diagramas
+
+<Frame caption="Diagrama Entidad-Relacion completo (SQL Server + PostgreSQL)">
+  <img src="/images/ER_Diagram_V2.png" alt="Diagrama Entidad-Relacion de BioCommerce" />
+</Frame>
+
+<Frame caption="Distribucion de tablas por motor de base de datos">
+  <img src="/images/DB_Diagram_V2.png" alt="Distribucion de bases de datos de BioCommerce" />
+</Frame>
+
+<Note>
+  Fuente editable de los diagramas (Mermaid): `.docs/diagrams/ER_Diagram.mmd` y `.docs/diagrams/DB_Diagram.mmd`.
+</Note>
+
+## 1.2. Estrategia Multi-Motor
+
+| Base de Datos | Motor | Migracion fuente | Tablas |
+|---|---|---|---|
+| `BioCommerce_Transactional` | SQL Server | `20260608051053_InitialCreate.cs` | 27 tablas (Identity, Marketplace, Orders, Legal, Cart, Community, Notifications, Auditoria) |
+| `BioCommerce_Scientific` | PostgreSQL + PostGIS | `20260608051123_InitialCreateScientific.cs` | 13 tablas (Taxonomia, Species, Geolocalizacion, MLOps, RAG/GenAI) |
+
+No existe FK fisica entre motores. La integridad referencial entre `BaseSpeciesId` (SQL Server) y `species.id` (Postgres) se valida en la capa de Aplicacion (Commands/Queries de MediatR), tal como exige la regla de "Logical FKs" de la arquitectura.
+
+## 1.3. Cumplimiento de 3FN
+
+**SQL Server (`BioCommerce_Transactional`):**
+
+- Todas las tablas usan clave primaria `UNIQUEIDENTIFIER` (o `INT IDENTITY` para catalogos pequenos como `ProductCategories`).
+- Relaciones muchos-a-muchos resueltas con tablas de union dedicadas: `UserRoles`, `DirectThreadParticipants`.
+- Catalogos extraidos a tablas propias para evitar dependencias transitivas: `Roles`, `ProductCategories`.
+- La tabla `Certifications` unifica los antiguos modelos `SustainabilityCerts` / `ProductCerts` / `Certification` usando `CertificationType` como discriminador, eliminando tablas redundantes con la misma dependencia funcional.
+- No se identifican grupos repetitivos ni dependencias parciales/transitivas sobre la PK: cada atributo no clave depende unicamente de la PK de su tabla (3FN cumplida).
+
+**PostgreSQL (`BioCommerce_Scientific`):**
+
+- `species_economic_potentials` y `species_traditional_uses` son tablas normalizadas 1:N que **reemplazaron** los antiguos campos JSONB `economic_potential` y `traditional_uses` de `species`, eliminando la dependencia no atomica (1FN/3FN).
+- `taxonomy` esta separada de `species` (relacion 1:N via `taxonomy_id`) para evitar redundancia de la jerarquia taxonomica entre especies del mismo genero/familia.
+- `geographic_distribution` separa los registros de avistamiento de `species` (1:N), evitando repetir datos de la especie por cada punto geografico.
+
+**Excepcion documentada (denormalizacion intencional):** las columnas `JSONB` que persisten (`species_images.metadata`, `prediction_logs.raw_prediction_result`, `ai_model_versions.config_json` / `metrics_json`, `business_plans.market_analysis_data` / `financial_projections`, `rag_documents.metadata`) almacenan metadatos de IA/ML de forma "schema-on-read" (resultados de inferencia, hiperparametros, metricas). No forman parte del modelo relacional normalizado de negocio y se excluyen deliberadamente de la 3FN por ser datos semi-estructurados de telemetria/IA, consistentes con el uso de PostgreSQL+JSONB definido en el stack.
+
+---
+
+# 2. Diccionario de Datos
+
+El diccionario de datos completo (tablas, campos, tipos SQL/Postgres y restricciones por contexto) vive en un documento dedicado:
+
+<Card title="Diccionario de Datos" icon="table" href="/project/data-dictionary">
+  Estructura fisica completa: campos, tipos, restricciones, indices unicos y notas de implementacion por cada tabla de `BioCommerce_Transactional` y `BioCommerce_Scientific`.
+</Card>
+
+---
+
+# 3. Optimizacion: Indices, Stored Procedures, Funciones y Triggers
+
+## 3.1. Indices
+
+Generados via Fluent API de EF Core en ambas migraciones iniciales:
+
+| Motor | Total `CreateIndex` |
+|---|---|
+| SQL Server (`BioCommerce_Transactional`) | 58 |
+| PostgreSQL (`BioCommerce_Scientific`) | 20 |
+
+**Indices unicos (UK) — SQL Server:**
+
+| Indice | Tabla / Columnas |
+|---|---|
+| `IX_Users_Email` | `Users.Email` |
+| `IX_Users_PhoneNumber` | `Users.PhoneNumber` (filtrado: `WHERE PhoneNumber IS NOT NULL AND PhoneNumber <> ''`) |
+| `IX_Roles_Name` | `Roles.Name` |
+| `IX_Products_Slug` | `Products.Slug` |
+| `IX_ProductCategories_Name` | `ProductCategories.Name` |
+| `IX_Orders_OrderNumber` | `Orders.OrderNumber` |
+| `IX_AbsPermits_ResolutionNumber` | `AbsPermits.ResolutionNumber` (filtrado: `WHERE ResolutionNumber <> ''`) |
+| `IX_TraceabilityBatches_BatchCode` | `TraceabilityBatches.BatchCode` |
+| `IX_Carts_UserId` | `Carts.UserId` (1 carrito por usuario) |
+| `IX_CartItems_CartId_ProductId` | `(CartItems.CartId, CartItems.ProductId)` (sin duplicados por carrito) |
+| `IX_Favorites_UserId_TargetType_TargetId` | `(Favorites.UserId, TargetType, TargetId)` |
+| `IX_CommunityReactions_UserId_TargetType_TargetId` | `(CommunityReactions.UserId, TargetType, TargetId)` |
+
+**Indices unicos (UK) — PostgreSQL:**
+
+| Indice | Tabla / Columna |
+|---|---|
+| `IX_species_scientific_name` | `species.scientific_name` |
+| `IX_species_slug` | `species.slug` |
+| `IX_ai_model_versions_version` | `ai_model_versions.version` |
+
+**Indices de busqueda/FK destacados (no exhaustivo):** `IX_taxonomy_family`, `IX_taxonomy_genus`, `IX_species_taxonomy_id`, `IX_geographic_distribution_species_id`, `IX_species_images_species_id`, `IX_species_images_is_validated_by_expert`, `IX_species_economic_potentials_species_id`, `IX_species_economic_potentials_sector`, `IX_species_traditional_uses_species_id`, `IX_rag_documents_species_id`, `IX_chat_sessions_user_id`, `IX_chat_messages_session_id`, `IX_business_plans_entrepreneur_id`, `IX_ai_training_jobs_status`, `IX_ai_training_jobs_triggered_by_user_id`, `IX_ai_training_jobs_resulting_model_version_id`, `IX_prediction_logs_user_id`, junto con indices por `EntrepreneurId`, `ActorUserId`, `ActionType`, `ImpactLevel`, `TargetType`/`TargetId`, `IsRead`, `Status` (Orders/AbsPermits/CommunityPosts/UserConnections), etc.
+
+<Warning>
+  La tabla `geographic_distribution` usa la columna PostGIS `location_point GEOMETRY(Point, 4326)`, pero **no existe un indice espacial GiST** sobre esa columna en la migracion actual. Si se requieren consultas espaciales (`ST_DWithin`, `ST_Contains`, mapas de calor por radio), se recomienda agregar `CREATE INDEX ... USING GIST (location_point)` en una nueva migracion.
+</Warning>
+
+## 3.2. Concurrencia Optimista
+
+`Products` y `Orders` usan columna `RowVersion` (`rowversion`/`timestamp` de SQL Server, `nullable: true`, `IsRowVersion()`) para detectar conflictos de actualizacion concurrente (p. ej. stock al crear ordenes simultaneas).
+
+## 3.3. Cache de Aplicacion (Redis)
+
+No es un indice de base de datos, pero forma parte de la estrategia de optimizacion de lectura:
+
+- `ICacheService` / `RedisCacheService` (`Bio.Infrastructure/Services/RedisCacheService.cs`).
+- TTL por defecto: **10 minutos** (`DefaultExpiry = TimeSpan.FromMinutes(10)`).
+- Se usa en consultas publicas de productos (`GetPublicProducts`, `GetProductById`, `GetProductBySlug`, `GetFilterMeta`); la invalidacion ocurre automaticamente al mutar un producto (Update/Activate/Deactivate), segun la nota 15 del diccionario de datos.
+
+## 3.4. Stored Procedures, Funciones y Triggers
+
+**No se tiene.** El proyecto sigue un enfoque EF Core *Code-First* puro: no existen llamadas `migrationBuilder.Sql(...)` ni definiciones de `CREATE PROCEDURE` / `CREATE FUNCTION` / `CREATE TRIGGER` en ninguna de las dos migraciones (`InitialCreate.cs`, `InitialCreateScientific.cs`).
+
+La logica que normalmente residiria en triggers/SPs (validaciones, side-effects, calculo de totales, invalidacion de cache, maquina de estados de `Orders`, validacion de `AbsPermit` en `CreateProductCommand`) se implementa explicitamente en la **capa de Aplicacion** mediante:
+
+- Handlers CQRS de MediatR (Commands/Queries).
+- *Pipeline Behaviors* transversales: `HtmlSanitizationBehavior` (saneamiento de HTML/XSS) y validacion con FluentValidation.
+- Entidades de dominio que validan sus propias transiciones de estado (p. ej. `Orders`: `Pending -> Paid -> Shipped -> Delivered | Returned`).
+
+Esto es consistente con el principio de Clean Architecture del proyecto: la base de datos es un detalle de infraestructura, no un contenedor de logica de negocio.
+
+---
+
+# 4. Continuidad: Respaldo, Recuperacion y Migraciones Versionadas
+
+## 4.1. Migraciones de Base de Datos (versionadas)
+
+Las migraciones de EF Core son la fuente de verdad versionada del esquema y estan commiteadas en el repositorio:
+
+| Contexto | Migracion inicial | Ruta |
+|---|---|---|
+| `BioDbContext` (SQL Server) | `20260608051053_InitialCreate` | `src/Bio.Backend.Core/Bio.Infrastructure/Migrations/` |
+| `ScientificDbContext` (PostgreSQL) | `20260608051123_InitialCreateScientific` | `src/Bio.Backend.Core/Bio.Infrastructure/Migrations/ScientificDb/` |
+
+Aplicacion de migraciones:
+
+- **Desarrollo:** `migrate.sh` / `migrate.ps1` — script interactivo que pide el contexto (`BioDbContext`, `ScientificDbContext` o ambos) y el nombre de la migracion, y ejecuta `dotnet ef migrations add` + `dotnet ef database update`.
+- **Produccion:** `install.sh --from migrate` (o el flujo completo de `install.sh`) aplica las migraciones pendientes de forma idempotente como parte del despliegue. Ver `manuals/instalacion.mdx`.
+
+<Note>
+  Las migraciones de EF Core cubren el requisito de "scripts de migracion versionados" del checklist: cada cambio de esquema queda registrado como un archivo `.cs` versionado en control de codigo, con su `Up()`/`Down()` correspondiente.
+</Note>
+
+## 4.2. Politica de Respaldos y Recuperacion
+
+Existe una politica de respaldo **documentada** en `manuals/mantenimiento.mdx` (seccion "Backup y Restauracion de Datos"), que define:
+
+- Frecuencia y retencion por componente (SQL Server: backup completo diario + logs cada hora, retencion 30 dias; PostgreSQL: `pg_dump` diario + WAL continuo, retencion 30 dias; ChromaDB semanal/90 dias; Redis diario/7 dias; `.env` cifrados ante cada cambio).
+- Un script centralizado de ejemplo (`/usr/local/bin/bioplatform-backup.sh`) que respalda SQL Server (`BACKUP DATABASE ... WITH COMPRESSION`), PostgreSQL (`pg_dump -F c`) y MongoDB (`mongodump`), con limpieza automatica de backups antiguos via cron.
+- Procedimientos de restauracion para SQL Server (`RESTORE DATABASE ... WITH REPLACE` + `DBCC CHECKDB`), PostgreSQL (`pg_restore --no-owner`) y volumenes Docker, ademas de un procedimiento de recuperacion ante desastre.
+
+<Warning>
+  **Estado real:** esta politica esta documentada como guia operativa para el administrador de sistemas, pero **no se tiene** un script de backup automatizado incluido/commiteado en el repositorio (no existe `bioplatform-backup.sh` ni un `cron`/`systemd timer` versionado), ni un job de backup dentro de `docker-compose*.yml`. El script descrito en el manual debe crearse manualmente en el servidor de produccion siguiendo `manuals/mantenimiento.mdx`.
+</Warning>
+
+---
+
+# 5. Privacidad: Cifrado y Anonimizacion de Datos Sensibles
+
+## 5.1. Credenciales de Usuario
+
+- `PasswordHasher` (`Bio.Infrastructure/Services/PasswordHasher.cs`): hash de contrasenas con **PBKDF2-HMAC-SHA256**, 100,000 iteraciones, salt aleatorio de 128 bits (`RandomNumberGenerator`), clave derivada de 256 bits. Comparacion en tiempo constante (`CryptographicOperations.FixedTimeEquals`) para evitar timing attacks.
+- `Users.PasswordHash` y `Users.Salt` se almacenan como Base64 en columnas separadas; nunca se persiste la contrasena en texto plano.
+- 2FA (TOTP): `Users.TwoFactorEnabled` + `Users.TwoFactorSecret`. **No se tiene** cifrado a nivel de campo para `TwoFactorSecret` (se almacena en `NVARCHAR(100)` sin cifrar adicional mas alla del cifrado en reposo del motor de BD, si este estuviera habilitado).
+
+## 5.2. Enmascaramiento de Geolocalizacion (Bio-Safety)
+
+Implementado en `GetSpeciesDistributionsQueryHandler` (`Bio.Application/Features/Species/Queries/GetSpeciesDistributions/`):
+
+- Si `species.is_sensitive = true` y el rol del usuario solicitante **no** es `ADMIN`, `RESEARCHER` o `AUTHORITY` (`EnvironmentalAuthority`), las coordenadas `Latitude`/`Longitude` de `geographic_distribution` se devuelven como `null` y el DTO marca `IsMasked: true`.
+- Solo se expone `Municipality`, `Altitude` y `EcosystemType` para especies sensibles consultadas por roles no privilegiados — cumple la regla de Bio-Safety de no exponer ubicacion exacta de especies amenazadas.
+
+## 5.3. Sanitizacion de Contenido (XSS / Inyeccion HTML)
+
+`HtmlSanitizationBehavior` (Pipeline Behavior de MediatR en `Bio.Application/Behaviors/`) sanea HTML en campos de texto enriquecido (`Products.Description`, `CommunityPosts.Content`, `CommunityPostComments.Content`, `DirectMessages.Content`) antes de persistir, mitigando XSS almacenado.
+
+## 5.4. Cifrado en Transito y en Reposo
+
+- **HTTPS/TLS:** Nginx en produccion (`docker/nginx/nginx.conf`) termina TLS con certificados `fullchain.pem`/`privkey.pem`. Ver `manuals/instalacion.mdx`.
+- **Conexion a SQL Server:** `.env.prod.example` define `DB_CONNECTION_STRING_SQL` con `Encrypt=False` (y `TrustServerCertificate=True`). Esto significa que el trafico entre `backend-core` y `sqlserver` **no esta cifrado** a nivel de protocolo TDS. Dado que ambos contenedores comparten la red interna `bioplatform-network` de Docker (no expuesta directamente), el riesgo es menor, pero **no se tiene** cifrado de conexion habilitado por defecto. Se recomienda evaluar `Encrypt=True` con un certificado valido si la red interna deja de considerarse confiable.
+- **Cifrado de datos en reposo a nivel de columna (field-level encryption / AES / Always Encrypted):** **no se tiene**. Ningun campo (direcciones, telefonos, `TwoFactorSecret`, `TransactionRef`, etc.) esta cifrado a nivel de aplicacion o columna; la proteccion depende del cifrado de disco/volumen del host y del control de acceso a la base de datos.
+- **Anonimizacion de datos:** **no se tiene** un proceso formal de anonimizacion/pseudonimizacion (p. ej. para exportar datasets de IA o entornos de prueba). El unico mecanismo de "ocultamiento" de datos sensibles implementado es el enmascaramiento de coordenadas GPS descrito en 5.2.
+
+## 5.5. Gestion de Secretos
+
+Las credenciales (passwords de BD, `JWT_SECRET`, `OPENAI_API_KEY`, claves de AWS) se gestionan via archivos `.env` no commiteados (`.env`, `.env.local`, `.env.prod`), con plantillas `.env.example` / `.env.prod.example` versionadas sin valores reales. Ver `manuals/instalacion.mdx` seccion de Variables de Entorno.
+
+---
+
+# 6. Resumen del Checklist
+
+| Item | Estado |
+|---|---|
+| Modelado: Diagrama ER + modelo normalizado (3FN) | Cumplido — diagramas en `/images/`, normalizacion documentada en seccion 1.3 |
+| Diccionario de datos | Cumplido — ver [Diccionario de Datos](/project/data-dictionary) |
+| Optimizacion: Indices | Cumplido (58 + 20 indices via EF Core) |
+| Optimizacion: Stored Procedures / Funciones / Triggers | **No se tiene** (logica en capa de Aplicacion) |
+| Continuidad: Migraciones versionadas | Cumplido (EF Core Migrations + `migrate.sh`/`install.sh`) |
+| Continuidad: Politica de respaldos/recuperacion | Documentada en `manuals/mantenimiento.mdx`; **script automatizado no commiteado** |
+| Privacidad: Hash de contrasenas | Cumplido (PBKDF2-HMAC-SHA256) |
+| Privacidad: Enmascaramiento GPS de especies sensibles | Cumplido |
+| Privacidad: Cifrado de campos sensibles / anonimizacion | **No se tiene** |
