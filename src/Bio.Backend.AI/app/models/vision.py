@@ -167,6 +167,10 @@ class ModelInfoResponse(BaseModel):
     model_config = {"protected_namespaces": ()}
 
     model_name: str = Field(..., description="Model architecture name")
+    version: Optional[str] = Field(
+        default=None,
+        description="Active model version tag from the registry (e.g. v1.0.20250101120000)",
+    )
     num_classes: int = Field(..., description="Number of species classes")
     image_size: int = Field(..., description="Expected input image size (pixels)")
     is_loaded: bool = Field(..., description="Whether the model is loaded and ready")

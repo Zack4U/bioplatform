@@ -93,10 +93,11 @@ public class UpdateCommunityPostCommandHandler
         if (post.AuthorUserId != request.ActorId && request.ActorRole != RoleNames.Admin)
             throw new ForbiddenException("You can only edit your own posts.");
 
-        // Only admin can change status to Hidden/Archived
+        // Only moderators (Admin / Authority) can change status to Hidden/Archived
         var newStatus = request.Dto.Status;
-        if (newStatus is "Hidden" or "Archived" && request.ActorRole != RoleNames.Admin)
-            throw new ForbiddenException("Only admins can archive or hide posts.");
+        var isModerator = request.ActorRole == RoleNames.Admin || request.ActorRole == RoleNames.EnvironmentalAuthority;
+        if (newStatus is "Hidden" or "Archived" && !isModerator)
+            throw new ForbiddenException("Only moderators can archive or hide posts.");
 
         post.Update(request.Dto.Title, request.Dto.Content, request.Dto.Category, newStatus);
         await _uow.SaveChangesAsync(ct);
@@ -130,8 +131,13 @@ public class DeleteCommunityPostCommandHandler
         var post = await _repo.GetByIdAsync(request.PostId, ct)
             ?? throw new NotFoundException(nameof(CommunityPost), request.PostId);
 
-        if (post.AuthorUserId != request.ActorId && request.ActorRole != RoleNames.Admin)
-            throw new ForbiddenException("You can only delete your own posts.");
+        // Only the author, an Admin, or the Environmental Authority may delete a post.
+        // Community moderators can pin/hide/archive but NOT delete.
+        var canDelete = post.AuthorUserId == request.ActorId
+            || request.ActorRole == RoleNames.Admin
+            || request.ActorRole == RoleNames.EnvironmentalAuthority;
+        if (!canDelete)
+            throw new ForbiddenException("You do not have permission to delete this post.");
 
         await _repo.DeleteAsync(post, ct);
         await _uow.SaveChangesAsync(ct);
@@ -191,7 +197,9 @@ public class ArchiveCommunityPostCommandHandler
         var post = await _repo.GetByIdWithCommentsAsync(request.PostId, ct)
             ?? throw new NotFoundException(nameof(CommunityPost), request.PostId);
 
-        var isModerator = request.ActorRole == RoleNames.Admin || request.ActorRole == RoleNames.Community;
+        var isModerator = request.ActorRole == RoleNames.Admin
+            || request.ActorRole == RoleNames.EnvironmentalAuthority
+            || request.ActorRole == RoleNames.Community;
         if (post.AuthorUserId != request.ActorId && !isModerator)
             throw new ForbiddenException("You can only archive your own posts.");
 
@@ -222,8 +230,11 @@ public class HideCommunityPostCommandHandler
     public async Task<CommunityPostDetailDTO> Handle(
         HideCommunityPostCommand request, CancellationToken ct)
     {
-        if (request.ActorRole != RoleNames.Admin && request.ActorRole != RoleNames.Community)
-            throw new ForbiddenException("Only administrators and community moderators can hide posts.");
+        var canHide = request.ActorRole == RoleNames.Admin
+            || request.ActorRole == RoleNames.EnvironmentalAuthority
+            || request.ActorRole == RoleNames.Community;
+        if (!canHide)
+            throw new ForbiddenException("Only administrators, the authority, and community moderators can hide posts.");
 
         var post = await _repo.GetByIdWithCommentsAsync(request.PostId, ct)
             ?? throw new NotFoundException(nameof(CommunityPost), request.PostId);

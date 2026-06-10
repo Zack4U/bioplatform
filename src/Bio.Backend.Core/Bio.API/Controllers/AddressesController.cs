@@ -38,6 +38,10 @@ public class AddressesController : ControllerBase
         }
     }
 
+    [HttpPut("default")]
+    public async Task<IActionResult> SetDefault([FromBody] SetDefaultAddressDTO dto)
+        => Ok(await _mediator.Send(new SetDefaultAddressCommand(dto.Id, GetUserId())));
+
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] AddressUpdateDTO dto)
         => Ok(await _mediator.Send(new UpdateAddressCommand(id, dto, GetUserId())));

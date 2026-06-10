@@ -139,7 +139,13 @@ function start_service() {
             open_terminal "mobile" "src/Bio.Frontend.Mobile" "npx expo start"
             echo -e "${GREEN}✓ Frontend Mobile iniciando...${NC}"
         ;;
-        
+
+        docs)
+            echo -e "${YELLOW}📚 Documentación (Mintlify)${NC}"
+            open_terminal "docs" ".docs" "npm run docs"
+            echo -e "${GREEN}✓ Documentación iniciando...${NC}"
+        ;;
+
         *)
             echo -e "${RED}⚠️  Servicio desconocido: $SERVICE${NC}"
         ;;
@@ -161,7 +167,7 @@ if [ "$OS" == "linux" ] && [ "$USE_TMUX" = true ]; then
 fi
 
 # Loop principal
-VALID_SERVICES=("docker" "infra" "core" "ai" "web" "mobile" "all")
+VALID_SERVICES=("docker" "infra" "core" "ai" "web" "mobile" "docs" "all")
 
 for SERVICE in "${SERVICES[@]}"; do
     if [[ " ${VALID_SERVICES[@]} " =~ " ${SERVICE} " ]]; then
@@ -177,6 +183,7 @@ echo -e "${YELLOW}📍 URLs de Acceso:${NC}"
 echo -e "   Frontend Web:   http://localhost:3000"
 echo -e "   Backend API:    http://localhost:5070"
 echo -e "   AI Service:     http://localhost:8000"
+echo -e "   Documentación:  http://localhost:3333"
 echo ""
 
 if [ "$OS" == "git-bash-windows" ]; then

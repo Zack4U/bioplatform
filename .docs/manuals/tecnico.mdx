@@ -63,20 +63,26 @@ La comunicación entre dominios se realiza mediante UUIDs como claves foráneas 
 - npm/yarn 9+
 
 ### 3.4 Puertos Utilizados
-| Servicio | Puerto | Descripción |
-|----------|--------|-------------|
-| Frontend Web | 3000 | Interfaz de usuario Next.js |
-| Backend API | 5070 | API .NET Core con Swagger |
-| AI Service | 8000 | Microservicio Python FastAPI |
-| ChromaDB | 8001 | Base de datos vectorial |
-| PostgreSQL | 5433 | Base de datos científica |
-| SQL Server | 1433 | Base de datos transaccional |
-| Redis | 6379 | Caché y colas de trabajos |
-| MongoDB | 27017 | Almacenamiento de documentos no estructurados |
-| pgAdmin | 5050 | Interfaz web para PostgreSQL |
-| Adminer | 8090 | Interfaz web para múltiples BD |
-| Seq | 5341 | Sistema de logs estructurados |
-| Expo (Mobile) | 19000 | Servidor de desarrollo para React Native |
+
+| Servicio | Puerto | Entorno |
+|----------|--------|---------|
+| Nginx (HTTP) | 80 | Produccion |
+| Nginx (HTTPS) | 443 | Produccion |
+| SQL Server | 1433 | Ambos |
+| PostgreSQL (host → contenedor 5432) | 5433 | Ambos |
+| Redis | 6379 | Ambos |
+| ChromaDB | 8001 | Ambos |
+| AI Service (directo) | 8000 | Ambos |
+| Backend API (produccion, interno Docker) | 5000 | Produccion |
+| Backend API (desarrollo, directo) | 5070 | Solo desarrollo |
+| Frontend Web (desarrollo, directo) | 3000 | Solo desarrollo |
+| pgAdmin | 5050 | Solo desarrollo |
+| Adminer | 8090 | Solo desarrollo |
+| Seq (logs) | 5341 | Solo desarrollo |
+| MongoDB (logs, perfil `full`) | 27017 | Solo desarrollo |
+| Expo (Mobile dev) | 19000 | Solo desarrollo |
+
+En produccion, Frontend Web, Backend API y AI Service son accesibles unicamente a traves de Nginx en los puertos 80/443.
 
 ## 4. Instalación y Configuración
 
@@ -84,17 +90,17 @@ La comunicación entre dominios se realiza mediante UUIDs como claves foráneas 
 
 1. **Clonar el repositorio**:
    ```bash
-   git clone https://github.com/tu-organizacion/bioplatform.git
+   git clone https://github.com/Zack4U/bioplatform.git
    cd bioplatform
    ```
 
 2. **Configurar variables de entorno**:
    ```bash
+   # Produccion:
+   cp .env.prod.example .env
+   # Desarrollo:
    cp .env.example .env
-   # Editar .env con credenciales específicas:
-   # - Cadenas de conexión a bases de datos
-   # - API keys (OpenAI, Stripe, etc.)
-   # - Secretos de seguridad
+   # Editar .env con credenciales especificas (BD, JWT, AWS, OpenAI, Cloudinary)
    ```
 
 3. **Verificar dependencias**:
@@ -108,43 +114,73 @@ La comunicación entre dominios se realiza mediante UUIDs como claves foráneas 
 
 ### 4.2 Levantar la Infraestructura
 
-#### Opción 1: Uso del script automatizado (recomendado)
-```bash
-# Levantar todos los servicios
-bash run.sh
+#### Opcion 1: Produccion — script install.sh (recomendado)
 
-# Levantar servicios específicos
-bash run.sh docker        # Solo infraestructura
-bash run.sh core          # Solo Backend .NET
-bash run.sh ai            # Solo AI Service
-bash run.sh web           # Solo Frontend Web
-bash run.sh mobile        # Solo Frontend Mobile
-bash run.sh core ai web   # Combinación específica
+Instalador idempotente que compila y levanta todo el stack en Docker sin requerir .NET/Node/Python en el host. Ver [Manual de Instalacion](/manuals/instalacion#5-despliegue-en-produccion-con-installsh) para el detalle completo.
+
+```bash
+cp .env.prod.example .env
+# Editar .env con secretos reales
+bash install.sh          # Linux/macOS/WSL
+.\install.ps1            # Windows PowerShell
 ```
 
-#### Opción 2: Docker Compose manual
-```bash
-# Construir y levantar infraestructura
-docker-compose up -d --build
+Secciones: `env → infra → migrate → weights → apps → verify`
 
-# Verificar estado
-docker-compose ps
+#### Opcion 2: Desarrollo local — script run.sh
+
+`run.sh` / `run.ps1` es un orquestador para **desarrollo local** que levanta cada servicio en una terminal separada con hot-reload. No debe usarse en produccion.
+
+```bash
+bash run.sh              # Levanta backend + AI + web
+bash run.sh core         # Solo backend .NET
+bash run.sh ai           # Solo AI Service
+bash run.sh web          # Solo Frontend Web
+bash run.sh core ai web  # Combinacion especifica
+```
+
+La infraestructura (BD) se levanta con Docker Compose directamente:
+
+```bash
+# Desarrollo (carga docker-compose.override.yml automaticamente: pgAdmin, Adminer, Seq)
+docker compose up -d
+
+# Produccion
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# Ver estado
+docker compose ps
 
 # Ver logs
-docker-compose logs -f
+docker compose logs -f [servicio]
 
-# Detener servicios
-docker-compose down
+# Detener (sin borrar datos)
+docker compose down
 
-# Detener y eliminar volúmenes
-docker-compose down -v
+# Detener y eliminar volumenes (destruye las BD)
+docker compose down -v
 ```
 
 ### 4.3 Configuración Inicial Posterior al Levantamiento
 
 1. **Ejecutar migraciones de base de datos**:
-   - Las migraciones se ejecutan automáticamente al iniciar los servicios
-   - Verificar que las bases de datos estén en estado healthy
+
+   Las migraciones **NO se ejecutan automaticamente**; deben aplicarse explicitamente.
+
+   Produccion — via el instalador (seccion `migrate`):
+   ```bash
+   bash install.sh --from migrate
+   ```
+
+   Desarrollo — via script dedicado (requiere .NET SDK local):
+   ```bash
+   bash migrate.sh        # Linux/macOS/Git Bash
+   .\migrate.ps1          # Windows PowerShell
+   ```
+
+   El instalador de produccion corre las migraciones en un contenedor temporal del
+   SDK de .NET (no requiere SDK en el host). Verifica que las BD esten en estado
+   `healthy` antes de correr migraciones (`docker compose ps`).
 
 2. **Crear usuario administrador inicial**:
    - Acceder a la interfaz de Swagger en: http://localhost:5070/swagger
@@ -236,13 +272,13 @@ En caso de error:
 #### Verificar estado de servicios:
 ```bash
 # Estado de contenedores Docker
-docker-compose ps
+docker compose ps
 
 # Logs en tiempo real
-docker-compose logs -f [servicio]
+docker compose logs -f [servicio]
 
 # Estadísticas de recursos
-docker-compose stats
+docker compose stats
 ```
 
 #### Puntos de verificación clave:
@@ -300,10 +336,10 @@ pip install --upgrade [package-name]
 #### Actualización de imágenes Docker:
 ```bash
 # Reconstruir imágenes con cambios
-docker-compose build [servicio]
+docker compose build [servicio]
 
 # O actualizar desde registry si aplica
-docker-compose pull [servicio]
+docker compose pull [servicio]
 docker-compose up -d [servicio]
 ```
 
@@ -573,20 +609,20 @@ Se ejecuta al hacer merge a `main` (producción) o `develop` (staging):
 
 #### Servicios no responden:
 1. Verificar que Docker esté ejecutándose: `docker info`
-2. Verificar estado de contenedores: `docker-compose ps`
-3. Revisar logs de servicios específicos: `docker-compose logs [servicio]`
+2. Verificar estado de contenedores: `docker compose ps`
+3. Revisar logs de servicios específicos: `docker compose logs [servicio]`
 4. Verificar puertos expuestos y en uso: `netstat -ano | findstr :[puerto]`
-5. Reiniciar servicios problemáticos: `docker-compose restart [servicio]`
+5. Reiniciar servicios problemáticos: `docker compose restart [servicio]`
 
 #### Errores de base de datos:
-1. Verificar que contenedores de BD estén healthy: `docker-compose ps`
-2. Revisar logs de inicialización: `docker-compose logs [db-service]`
+1. Verificar que contenedores de BD estén healthy: `docker compose ps`
+2. Revisar logs de inicialización: `docker compose logs [db-service]`
 3. Verificar cadenas de conexión en .env
 4. Probar conexión directa con herramientas cliente (psql, sqlcmd)
 5. Verificar espacio en disco disponible
 
 #### Problemas de rendimiento:
-1. Monitorear uso de recursos: `docker-compose stats`
+1. Monitorear uso de recursos: `docker compose stats`
 2. Identificar cuellos de botella en logs y métricas
 3. Revisar consultas lentas en bases de datos
 4. Verificar configuración de cachés y timeouts
@@ -628,92 +664,126 @@ docker volume ls
 docker inspect [container-id]
 ```
 
-#### Base de Datos:
+#### Base de Datos (produccion):
 ```bash
-# Acceder a SQL Server
-docker exec -it bioplatform-sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "your_password"
+# SQL Server (contenedor prod: bioplatform-sqlserver-prod)
+docker exec -it bioplatform-sqlserver-prod /opt/mssql-tools18/bin/sqlcmd \
+  -S localhost -U sa -P "$DB_SQL_PASSWORD" -C
 
-# Acceder a PostgreSQL
-docker exec -it bioplatform-postgres psql -U postgres -d BioCommerce_Scientific
+# PostgreSQL (contenedor prod: bioplatform-postgres-prod, usuario: bioadmin)
+docker exec -it bioplatform-postgres-prod psql -U bioadmin -d BioCommerce_Scientific
 ```
 
 #### Logs y Debugging:
 ```bash
 # Seguir logs de un servicio específico
-docker-compose logs -f [service]
+docker compose logs -f [service]
 
 # Mostrar últimos N líneas
-docker-compose logs --tail=100 [service]
+docker compose logs --tail=100 [service]
 
 # Mostrar logs desde un tiempo específico
-docker-compose logs --since=1h [service]
+docker compose logs --since=1h [service]
 ```
 
-### 10.2 Configuración de Variables de Entorno (.env)
+### 10.2 Variables de Entorno — Referencia
 
-Variables críticas que deben configurarse en el archivo .env:
+El proyecto tiene **dos plantillas**: `.env.example` (desarrollo) y `.env.prod.example` (produccion). Copiar la que corresponda antes de levantar el stack.
 
-```
-# Base de Datos SQL Server
-SQL_SERVER_CONNECTION_STRING=Server=localhost,1433;Database=BioCommerce_Transactional;User=sa;Password=yourStrong(!)Password;TrustServerCertificate=True
+Variables del archivo de produccion (`.env.prod.example`):
 
-# Base de Datos PostgreSQL
-POSTGRES_CONNECTION_STRING=Host=localhost;Port=5433;Database=BioCommerce_Scientific;Username=postgres;Password=yourStrong(!)Password
+```env
+# SQL Server
+DB_SQL_PASSWORD=ChangeMeDbPass_123
+DB_CONNECTION_STRING_SQL=Server=sqlserver,1433;Database=BioCommerce_Transactional;User Id=sa;Password=...;TrustServerCertificate=True;Encrypt=False
+
+# PostgreSQL
+DB_PG_USER=bioadmin
+DB_PG_PASSWORD=ChangeMeDbPass_123
+DB_PG_DATABASE=BioCommerce_Scientific
+DB_CONNECTION_STRING_PG=Host=postgres;Port=5432;Database=BioCommerce_Scientific;Username=bioadmin;Password=...
 
 # Redis
-REDIS_CONNECTION_STRING=localhost:6379
+REDIS_PASSWORD=ChangeMeRedisPass_123
+REDIS_CONNECTION_STRING=redis:6379,password=ChangeMeRedisPass_123,abortConnect=false
 
-# JWT Security
-JWT_SECRET_KEY=your-super-secret-key-minimum-32-chars
-JWT_ISSUER=BioPlatformCaldas
-JWT_AUDIENCE=BioPlatformUsers
+# JWT (generar: openssl rand -base64 64)
+JWT_SECRET=REPLACE_WITH_64_CHAR_SECRET
+JWT_ISSUER=bioplatform-api
+JWT_AUDIENCE=bioplatform-clients
+JWT_EXPIRATION_MINUTES=60
+JWT_REFRESH_EXPIRATION_DAYS=7
 
-# AI Services
-OPENAI_API_KEY=sk-your-openai-key-here
-CHROMADB_HOST=localhost
-CHROMADB_PORT=8001
+# Poblado catalogo cientifico
+SEED_SCIENTIFIC_ON_STARTUP=true
 
-# Pagos (ejemplo)
-STRIPE_SECRET_KEY=sk_test_your-stripe-key
-STRIPE_WEBHOOK_SECRET=whsec_your-webhook-secret
+# AWS S3 (imagenes + DVC pesos CNN)
+S3_BUCKET_NAME=bioplatform-public
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=REPLACE_ME
+AWS_SECRET_ACCESS_KEY=REPLACE_ME
 
-# Email (para notificaciones)
-SMTP_HOST=smtp.yourprovider.com
-SMTP_PORT=587
-SMTP_USER=your-email@domain.com
-SMTP_PASS=your-email-password
+# PyTorch device (cpu | cu121 | cu124)
+TORCH_DEVICE=cpu
+
+# OpenAI (RAG / planes de negocio)
+OPENAI_API_KEY=sk-REPLACE_ME
+
+# CORS / URLs
+WEB_APP_URL=https://bioplatform.co
+CORS_ORIGINS=https://bioplatform.co
+
+# Frontend — variables de build (NEXT_PUBLIC_*)
+NEXT_PUBLIC_API_BASE_URL=/api
+NEXT_PUBLIC_AI_API_BASE_URL=/ai/api/v1
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+NEXT_PUBLIC_TAX_RATE=0
+NEXT_PUBLIC_SHIPPING_COST_COP=15000
+NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD=150000
 ```
+
+Para desarrollo, el `.env` raiz solo alimenta la infraestructura Docker (BD + herramientas UI). Cada servicio lee su propio archivo de entorno cuando corre localmente:
+
+| Servicio | Archivo de entorno |
+|----------|--------------------|
+| Backend .NET | `src/Bio.Backend.Core/Bio.API/appsettings.Development.json` |
+| AI Service | `src/Bio.Backend.AI/.env` |
+| Frontend Web | `src/Bio.Frontend.Web/.env.local` |
+| Frontend Mobile | `src/Bio.Frontend.Mobile/.env` |
 
 ### 10.3 Estructura de Directorios
 
 ```
 bioplatform/
-├── .docs/                    # Documentación del proyecto
-│   ├── Manuals/              # Manuales de usuario y técnico
-│   ├── Bioplatform/          # Especificaciones funcionales y técnicas
-│   │   ├── 01-Requirements.md
-│   │   ├── 02-Guidelines.md
-│   │   ├── 03-Data_Dictionary.md
-│   │   ├── 05-Dev_Guidelines.md
-│   │   └── Architecture.md
-│   ├── Users Guides/         # Guías específicas de funcionalidades
-│   │   └── Background_Jobs.md
-│   ├── QUICKSTART.md         # Guía de inicio rápido
-│   └── pr-checklist.md       # Checklist para pull requests
-├── src/                      # Código fuente
-│   ├── Bio.Backend.Core/     # API .NET 8 (Clean Architecture)
-│   ├── Bio.Backend.AI/       # Microservicio Python (FastAPI)
-│   ├── Bio.Frontend.Web/     # Next.js 14
-│   └── Bio.Frontend.Mobile/  # React Native (Expo)
-├── docker/                   # Configuración de infraestructura
-│   ├── nginx/                # Reverse proxy y SSL
-│   ├── postgres/             # Scripts inicialización PostgreSQL
-│   └── sqlserver/            # Scripts inicialización SQL Server
-├── docker-compose.yml        # Orquestación de servicios
-├── docker-compose.override.yml # Configuración local de desarrollo
-├── .env.example              # Plantilla de variables de entorno
-├── run.sh                    # Script de ejecución de servicios
-└── README.md                 # Vista general del proyecto
+├── .docs/                        # Documentacion Mintlify
+│   ├── guides/                   # Guias (quickstart, development, scripts, pr-checklist)
+│   ├── manuals/                  # Manuales (usuario, tecnico, instalacion, mantenimiento)
+│   ├── ai/                       # Guias de IA (cnn-training, fine-tuning, model-versioning)
+│   ├── project/                  # Documentacion de proyecto (vision, requirements, architecture...)
+│   ├── images/                   # Imagenes servidas por Mintlify
+│   └── docs.json                 # Navegacion y configuracion de Mintlify
+├── .github/workflows/            # CI/CD GitHub Actions
+├── docker/
+│   └── nginx/
+│       ├── nginx.conf            # Configuracion del reverse proxy (archivo unico)
+│       └── ssl/                  # Certificados SSL (fullchain.pem + privkey.pem)
+├── src/
+│   ├── Bio.Backend.Core/         # API .NET 8 (Clean Architecture + CQRS)
+│   ├── Bio.Backend.AI/           # Microservicio Python (FastAPI)
+│   │   └── data/
+│   │       ├── species_catalog/  # CSV/JSON/SQL de poblado
+│   │       └── weights/          # Pesos CNN (via DVC, no en git)
+│   ├── Bio.Frontend.Web/         # Next.js 14
+│   └── Bio.Frontend.Mobile/      # React Native (Expo) — APK via EAS
+├── .env.example                  # Variables para DESARROLLO (infra Docker)
+├── .env.prod.example             # Variables para PRODUCCION (stack completo)
+├── install.sh / install.ps1      # Instalador de produccion (idempotente)
+├── migrate.sh / migrate.ps1      # Migraciones EF Core (solo desarrollo)
+├── run.sh / run.ps1              # Orquestador de servicios locales (solo desarrollo)
+├── docker-compose.yml            # Infraestructura base (BD + cache)
+├── docker-compose.override.yml   # Herramientas UI de desarrollo (pgAdmin, Adminer, Seq)
+├── docker-compose.prod.yml       # Servicios de aplicacion compilados (produccion)
+└── README.md                     # Vista general del proyecto
 ```
 
 ## 11. Contribución al Proyecto

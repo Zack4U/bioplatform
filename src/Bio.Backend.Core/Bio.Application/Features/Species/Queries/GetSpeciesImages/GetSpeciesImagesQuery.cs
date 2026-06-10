@@ -10,7 +10,7 @@ namespace Bio.Application.Features.Species.Queries.GetSpeciesImages;
 /// </summary>
 public record GetSpeciesImagesQuery(
     Guid SpeciesId,
-    bool OnlyValidatedByExpert = true,
+    bool? OnlyValidatedByExpert = true,
     int Page = 1,
     int PageSize = 20
 ) : IRequest<PaginatedResult<SpeciesImageDTO>>;

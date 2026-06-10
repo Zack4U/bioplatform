@@ -40,80 +40,80 @@ usage() { sed -n '2,40p' "$0"; exit 0; }
 # ── arg parsing ──────────────────────────────────────────────────────────────
 FROM=""; ONLY=""
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --from)  FROM="${2:-}"; shift 2;;
-    --only)  ONLY="${2:-}"; shift 2;;
-    -h|--help) usage;;
-    *) die "Unknown arg: $1 (use --help)";;
-  esac
+    case "$1" in
+        --from)  FROM="${2:-}"; shift 2;;
+        --only)  ONLY="${2:-}"; shift 2;;
+        -h|--help) usage;;
+        *) die "Unknown arg: $1 (use --help)";;
+    esac
 done
 
 should_run() {
-  local s="$1"
-  if [[ -n "$ONLY" ]]; then [[ "$s" == "$ONLY" ]]; return; fi
-  if [[ -n "$FROM" ]]; then
-    local started=0
-    for x in "${SECTIONS[@]}"; do
-      [[ "$x" == "$FROM" ]] && started=1
-      [[ "$x" == "$s" && $started -eq 1 ]] && return 0
-    done
-    return 1
-  fi
-  return 0
+    local s="$1"
+    if [[ -n "$ONLY" ]]; then [[ "$s" == "$ONLY" ]]; return; fi
+    if [[ -n "$FROM" ]]; then
+        local started=0
+        for x in "${SECTIONS[@]}"; do
+            [[ "$x" == "$FROM" ]] && started=1
+            [[ "$x" == "$s" && $started -eq 1 ]] && return 0
+        done
+        return 1
+    fi
+    return 0
 }
 
 # ── sections ─────────────────────────────────────────────────────────────────
 section_env() {
-  log "Section: env"
-  if [[ ! -f .env ]]; then
-    [[ -f .env.prod.example ]] || die ".env.prod.example missing."
-    cp .env.prod.example .env
-    die ".env created from template. EDIT it with real secrets, then re-run --from infra."
-  fi
-  log ".env present."
+    log "Section: env"
+    if [[ ! -f .env ]]; then
+        [[ -f .env.prod.example ]] || die ".env.prod.example missing."
+        cp .env.prod.example .env
+        die ".env created from template. EDIT it with real secrets, then re-run --from infra."
+    fi
+    log ".env present."
 }
 
 wait_healthy() {
-  local name="$1" tries=60
-  log "Waiting for $name to be healthy ..."
-  for ((i=0;i<tries;i++)); do
-    local st
-    st=$(docker inspect -f '{{.State.Health.Status}}' "$name" 2>/dev/null || echo "starting")
-    [[ "$st" == "healthy" ]] && { log "$name healthy."; return 0; }
-    sleep 5
-  done
-  die "$name did not become healthy in time."
+    local name="$1" tries=60
+    log "Waiting for $name to be healthy ..."
+    for ((i=0;i<tries;i++)); do
+        local st
+        st=$(docker inspect -f '{{.State.Health.Status}}' "$name" 2>/dev/null || echo "starting")
+        [[ "$st" == "healthy" ]] && { log "$name healthy."; return 0; }
+        sleep 5
+    done
+    die "$name did not become healthy in time."
 }
 
 section_infra() {
-  log "Section: infra (databases)"
-  $COMPOSE up -d sqlserver postgres redis chromadb
-  wait_healthy bioplatform-sqlserver-prod
-  wait_healthy bioplatform-postgres-prod
-  wait_healthy bioplatform-redis-prod
+    log "Section: infra (databases)"
+    $COMPOSE up -d sqlserver postgres redis chromadb
+    wait_healthy bioplatform-sqlserver-prod
+    wait_healthy bioplatform-postgres-prod
+    wait_healthy bioplatform-redis-prod
 }
 
 docker_network() {
-  docker network ls --filter name=bioplatform-network --format '{{.Name}}' | head -n1
+    docker network ls --filter name=bioplatform-network --format '{{.Name}}' | head -n1
 }
 
 # Docker-friendly absolute path of the current dir.
 # Git Bash: cygpath -m → "E:/Projects/..." (Docker Desktop mounts this reliably).
 # Linux/macOS: plain $PWD.
 host_pwd() {
-  if command -v cygpath >/dev/null 2>&1; then cygpath -m "$PWD"; else printf '%s' "$PWD"; fi
+    if command -v cygpath >/dev/null 2>&1; then cygpath -m "$PWD"; else printf '%s' "$PWD"; fi
 }
 
 section_migrate() {
-  log "Section: migrate (EF Core)"
-  local net; net=$(docker_network)
-  [[ -n "$net" ]] || die "bioplatform network not found — run 'infra' first."
-
-  # docker --env-file parses .env LITERALLY (no shell eval), so connection strings
-  # with spaces/';' are safe. We remap DB_CONNECTION_STRING_* → the ConnectionStrings__*
-  # keys (that Program.cs / dotnet ef read) INSIDE the container.
-  # MSYS_NO_PATHCONV=1 stops Git Bash from mangling the container-side '/src' path.
-  MSYS_NO_PATHCONV=1 docker run --rm --network "$net" \
+    log "Section: migrate (EF Core)"
+    local net; net=$(docker_network)
+    [[ -n "$net" ]] || die "bioplatform network not found — run 'infra' first."
+    
+    # docker --env-file parses .env LITERALLY (no shell eval), so connection strings
+    # with spaces/';' are safe. We remap DB_CONNECTION_STRING_* → the ConnectionStrings__*
+    # keys (that Program.cs / dotnet ef read) INSIDE the container.
+    # MSYS_NO_PATHCONV=1 stops Git Bash from mangling the container-side '/src' path.
+    MSYS_NO_PATHCONV=1 docker run --rm --network "$net" \
     --env-file .env \
     -e ASPNETCORE_ENVIRONMENT=Production \
     -v "$(host_pwd)/$BACKEND_DIR:/src" -w /src \
@@ -141,46 +141,78 @@ section_migrate() {
       ensure_ctx BioDbContext        InitialCreate
       ensure_ctx ScientificDbContext InitialCreateScientific
     '
-  log "Migrations applied."
+    log "Migrations applied."
 }
 
 section_weights() {
-  log "Section: weights (DVC pull of CNN model)"
-  if compgen -G "$AI_DIR/data/weights/*/best_model.pth" >/dev/null 2>&1 \
-     || [[ -f "$AI_DIR/data/weights/best_model.pth" ]]; then
-    log "Model weights already present — skipping dvc pull."
-    return 0
-  fi
-  command -v dvc >/dev/null 2>&1 || die "dvc not installed. Run: pip install 'dvc[s3]'  (needed to fetch model weights from S3)."
-  # Read only the AWS keys we need, WITHOUT sourcing (.env values may contain ';'/spaces).
-  local ak sk rg
-  ak="$(grep -E '^AWS_ACCESS_KEY_ID=' .env | head -n1 | cut -d= -f2-)"
-  sk="$(grep -E '^AWS_SECRET_ACCESS_KEY=' .env | head -n1 | cut -d= -f2-)"
-  rg="$(grep -E '^AWS_REGION=' .env | head -n1 | cut -d= -f2-)"
-  ( cd "$AI_DIR" \
-      && AWS_ACCESS_KEY_ID="$ak" \
-         AWS_SECRET_ACCESS_KEY="$sk" \
-         AWS_DEFAULT_REGION="${rg:-us-east-1}" \
-         dvc pull ) \
+    log "Section: weights (DVC pull of CNN model)"
+    if compgen -G "$AI_DIR/data/weights/*/best_model.pth" >/dev/null 2>&1 \
+    || [[ -f "$AI_DIR/data/weights/best_model.pth" ]]; then
+        log "Model weights already present — skipping dvc pull."
+        return 0
+    fi
+    command -v dvc >/dev/null 2>&1 || die "dvc not installed. Run: pip install 'dvc[s3]'  (needed to fetch model weights from S3)."
+    # Read only the AWS keys we need, WITHOUT sourcing (.env values may contain ';'/spaces).
+    local ak sk rg
+    ak="$(grep -E '^AWS_ACCESS_KEY_ID=' .env | head -n1 | cut -d= -f2-)"
+    sk="$(grep -E '^AWS_SECRET_ACCESS_KEY=' .env | head -n1 | cut -d= -f2-)"
+    rg="$(grep -E '^AWS_REGION=' .env | head -n1 | cut -d= -f2-)"
+    ( cd "$AI_DIR" \
+        && AWS_ACCESS_KEY_ID="$ak" \
+        AWS_SECRET_ACCESS_KEY="$sk" \
+        AWS_DEFAULT_REGION="${rg:-us-east-1}" \
+    dvc pull ) \
     || die "dvc pull failed — check AWS credentials and access to the DVC S3 remote."
-  log "Model weights pulled."
+    log "Model weights pulled."
 }
 
 section_apps() {
-  log "Section: apps (backend, ai, web, nginx)"
-  $COMPOSE up -d --build backend-core ai-service frontend-web nginx
-  log "Backend is seeding the scientific catalog on first boot (idempotent)."
-  log "Follow progress:  $COMPOSE logs -f backend-core"
+    log "Section: apps (backend, ai, web, nginx)"
+    $COMPOSE up -d --build backend-core ai-service frontend-web nginx
+    log "Waiting for scientific catalog seeding to complete..."
+    local seeded=0
+    for ((i=0;i<60;i++)); do
+        if docker logs bioplatform-backend-core-prod 2>&1 | grep -q "Scientific seeding finished."; then
+            log "Scientific catalog seeding completed successfully."
+            seeded=1
+            break
+        fi
+        if docker logs bioplatform-backend-core-prod 2>&1 | grep -q "Scientific data seeding failed during startup."; then
+            die "Scientific catalog seeding failed. Check logs using: docker logs bioplatform-backend-core-prod"
+        fi
+        sleep 1
+    done
+    if [[ $seeded -eq 0 ]]; then
+        log "Warning: Seeding did not finish in 1 minutes. Proceeding anyway..."
+    fi
+
+    # Seeding ChromaDB from JSON seed file if it exists
+    log "Checking for ChromaDB seed file..."
+    local collection_name
+    collection_name=$(grep -E '^CHROMA_COLLECTION_NAME=' .env | head -n1 | cut -d= -f2- || echo "bioplatform_species_dev")
+    collection_name=$(echo "$collection_name" | tr -d '\r\n"' | xargs)
+    if [[ -z "$collection_name" ]]; then collection_name="bioplatform_species_dev"; fi
+
+    if [[ -f "src/Bio.Backend.AI/data/species_catalog/chroma_seed_${collection_name}.json" ]]; then
+        log "Found ChromaDB seed file for '${collection_name}'. Importing into ChromaDB..."
+        docker exec bioplatform-ai-service-prod python scripts/tools/import_chromadb.py || log "Warning: ChromaDB import failed."
+    else
+        log "No ChromaDB seed file found at 'src/Bio.Backend.AI/data/species_catalog/chroma_seed_${collection_name}.json'. Skipping."
+    fi
+
+    log "Restarting Backend AI service (ai-service)..."
+    $COMPOSE restart ai-service
 }
 
+
 section_verify() {
-  log "Section: verify"
-  $COMPOSE ps
+    log "Section: verify"
+    $COMPOSE ps
 }
 
 # ── run ──────────────────────────────────────────────────────────────────────
 [[ -f docker-compose.prod.yml ]] || die "Run from the repository root."
 for s in "${SECTIONS[@]}"; do
-  should_run "$s" && "section_$s"
+    should_run "$s" && "section_$s"
 done
 log "Done."

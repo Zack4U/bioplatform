@@ -1,35 +1,16 @@
 "use client";
 /**
- * ApprovePermitDialog — Admin/Authority approves a Pending ABS permit request,
- * filling in the official resolution data that activates the permit.
+ * ApprovePermitDialog — Admin/Authority reviews a Pending ABS permit request
+ * and approves it directly. The resolution data is read-only since it was filled in by the entrepreneur.
  */
-import { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import {
     Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
-import {
-    Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
-import { useApproveAbsPermit, useUploadPermitDocument } from "@/hooks/features/admin/usePermitsManagement";
+import { FileText, ExternalLink, ShieldCheck } from "lucide-react";
+import { useApproveAbsPermit } from "@/hooks/features/admin/usePermitsManagement";
 import type { PermitAdminItem } from "@/types/admin";
-
-const schema = z.object({
-    resolutionNumber: z.string().min(1, "Requerido"),
-    grantingAuthority: z.string().min(1, "Requerido"),
-    emissionDate: z.string().min(1, "Requerido"),
-    expirationDate: z.string().min(1, "Requerido"),
-    legalFramework: z.string().optional(),
-    documentUrl: z.string().optional(),
-});
-
-type FormValues = z.infer<typeof schema>;
 
 interface Props {
     permit: PermitAdminItem | null;
@@ -38,54 +19,18 @@ interface Props {
 
 export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
     const approve = useApproveAbsPermit();
-    const { mutateAsync: uploadDoc, uploadProgress, isPending: isUploading } = useUploadPermitDocument();
 
-    const form = useForm<FormValues>({
-        resolver: zodResolver(schema),
-        defaultValues: {
-            resolutionNumber: "",
-            grantingAuthority: "Ministerio de Ambiente y Desarrollo Sostenible",
-            emissionDate: "",
-            expirationDate: "",
-            legalFramework: "Decreto 1375 de 2013",
-            documentUrl: "",
-        },
-    });
-
-    // Derived from the form field — no separate state to sync.
-    const documentUrl = useWatch({ control: form.control, name: "documentUrl" });
-
-    useEffect(() => {
-        if (permit) {
-            form.reset({
-                resolutionNumber: "",
-                grantingAuthority: "Ministerio de Ambiente y Desarrollo Sostenible",
-                emissionDate: "",
-                expirationDate: "",
-                legalFramework: "Decreto 1375 de 2013",
-                documentUrl: "",
-            });
-        }
-    }, [permit, form]);
-
-    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const result = await uploadDoc(file);
-        form.setValue("documentUrl", result.documentUrl);
-    };
-
-    const onSubmit = async (values: FormValues) => {
+    const handleApprove = async () => {
         if (!permit) return;
         await approve.mutateAsync({
             id: permit.id,
             data: {
-                resolutionNumber: values.resolutionNumber,
-                grantingAuthority: values.grantingAuthority,
-                emissionDate: values.emissionDate,
-                expirationDate: values.expirationDate,
-                legalFramework: values.legalFramework || undefined,
-                documentUrl: values.documentUrl || undefined,
+                resolutionNumber: permit.resolutionNumber,
+                emissionDate: permit.emissionDate,
+                expirationDate: permit.expirationDate,
+                grantingAuthority: permit.grantingAuthority,
+                legalFramework: permit.legalFramework || undefined,
+                documentUrl: permit.documentUrl || undefined,
             },
         });
         onOpenChange(false);
@@ -93,72 +38,84 @@ export function ApprovePermitDialog({ permit, onOpenChange }: Props) {
 
     return (
         <Dialog open={!!permit} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Aprobar solicitud de permiso ABS</DialogTitle>
+                    <DialogTitle className="flex items-center gap-2">
+                        <ShieldCheck className="h-5 w-5 text-success" />
+                        Aprobar Permiso ABS
+                    </DialogTitle>
                     <DialogDescription>
-                        Asigna los datos oficiales de la resolución para activar el permiso de{" "}
-                        <span className="font-medium">{permit?.entrepreneurName}</span>.
+                        Revisa los datos del permiso proporcionados por el emprendedor. Al aprobar, el permiso cambiará a estado &quot;Activo&quot;.
                     </DialogDescription>
                 </DialogHeader>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField control={form.control} name="resolutionNumber" render={({ field }) => (
-                            <FormItem><FormLabel>Número de Resolución *</FormLabel>
-                                <FormControl><Input placeholder="Ej. RES-2024-001234" {...field} /></FormControl>
-                                <FormMessage /></FormItem>
-                        )} />
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <FormField control={form.control} name="emissionDate" render={({ field }) => (
-                                <FormItem><FormLabel>Fecha de Emisión *</FormLabel>
-                                    <FormControl><Input type="date" {...field} /></FormControl>
-                                    <FormMessage /></FormItem>
-                            )} />
-                            <FormField control={form.control} name="expirationDate" render={({ field }) => (
-                                <FormItem><FormLabel>Fecha de Vencimiento *</FormLabel>
-                                    <FormControl><Input type="date" {...field} /></FormControl>
-                                    <FormMessage /></FormItem>
-                            )} />
-                        </div>
-
-                        <FormField control={form.control} name="grantingAuthority" render={({ field }) => (
-                            <FormItem><FormLabel>Autoridad Otorgante *</FormLabel>
-                                <FormControl><Input {...field} /></FormControl>
-                                <FormMessage /></FormItem>
-                        )} />
-
-                        <FormField control={form.control} name="legalFramework" render={({ field }) => (
-                            <FormItem><FormLabel>Marco Legal</FormLabel>
-                                <FormControl><Input placeholder="Ej. Decreto 1375 de 2013" {...field} /></FormControl>
-                                <FormMessage /></FormItem>
-                        )} />
-
-                        <Separator />
-
-                        <div>
-                            <p className="text-sm font-medium mb-1">Documento PDF (opcional)</p>
-                            <input
-                                type="file"
-                                accept="application/pdf"
-                                disabled={isUploading}
-                                onChange={handleFileUpload}
-                                className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-md file:border file:border-input file:bg-background file:px-3 file:py-1.5 file:text-sm file:font-medium hover:file:bg-accent cursor-pointer"
-                            />
-                            {isUploading && <Progress value={uploadProgress} className="mt-2 h-2" />}
-                            {documentUrl && !isUploading && (
-                                <p className="text-xs text-success mt-1">PDF cargado correctamente</p>
+                {permit && (
+                    <div className="space-y-4 text-sm mt-2">
+                        <div className="grid grid-cols-2 gap-4 rounded-lg border bg-muted/20 p-3">
+                            <div className="col-span-2">
+                                <p className="text-xs text-muted-foreground">Emprendedor</p>
+                                <p className="font-semibold">{permit.entrepreneurName}</p>
+                            </div>
+                            <div className="col-span-2">
+                                <p className="text-xs text-muted-foreground">Especie</p>
+                                <p className="font-medium italic">{permit.speciesName ?? permit.speciesId}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs text-muted-foreground">Número de Resolución</p>
+                                <p className="font-mono font-medium">{permit.resolutionNumber}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs text-muted-foreground">Autoridad Otorgante</p>
+                                <p className="font-medium">{permit.grantingAuthority}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs text-muted-foreground">Fecha de Emisión</p>
+                                <p className="font-medium">{new Date(permit.emissionDate).toLocaleDateString("es-CO")}</p>
+                            </div>
+                            <div>
+                                <p className="text-xs text-muted-foreground">Fecha de Vencimiento</p>
+                                <p className="font-medium">{new Date(permit.expirationDate).toLocaleDateString("es-CO")}</p>
+                            </div>
+                            {permit.legalFramework && (
+                                <div className="col-span-2">
+                                    <p className="text-xs text-muted-foreground">Marco Legal</p>
+                                    <p className="font-medium">{permit.legalFramework}</p>
+                                </div>
                             )}
                         </div>
 
+                        {permit.justification && (
+                            <div>
+                                <p className="text-xs text-muted-foreground mb-1">Justificación del Emprendedor</p>
+                                <p className="rounded-md border bg-muted/40 p-2 text-xs italic">{permit.justification}</p>
+                            </div>
+                        )}
+
+                        {permit.documentUrl && (
+                            <div>
+                                <p className="text-xs text-muted-foreground mb-1.5">Documento PDF Adjunto</p>
+                                <a href={permit.documentUrl} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="outline" size="sm" className="w-full justify-start">
+                                        <FileText className="mr-2 h-4 w-4 text-destructive" />
+                                        Ver documento legal
+                                        <ExternalLink className="ml-auto h-3 w-3" />
+                                    </Button>
+                                </a>
+                            </div>
+                        )}
+
+                        <Separator />
+
                         <div className="flex justify-end gap-2 pt-2">
-                            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
-                            <Button type="submit" disabled={approve.isPending || isUploading}>
-                                {approve.isPending ? "Aprobando..." : "Aprobar y activar"}
+                            <Button variant="outline" onClick={() => onOpenChange(false)}>
+                                Cancelar
+                            </Button>
+                            <Button onClick={handleApprove} disabled={approve.isPending}>
+                                {approve.isPending ? "Aprobando..." : "Confirmar y Aprobar"}
                             </Button>
                         </div>
-                    </form>
-                </Form>
+                    </div>
+                )}
             </DialogContent>
         </Dialog>
     );

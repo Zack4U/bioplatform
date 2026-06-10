@@ -70,7 +70,7 @@ services:
     restart: always
 
   chromadb:
-    image: chromadb/chroma:latest
+    image: chromadb/chroma:0.5.0
     container_name: bioplatform-chromadb-prod
     ports:
       - "8001:8000"
@@ -112,6 +112,10 @@ services:
       - AwsSettings__SecretAccessKey=${AWS_SECRET_ACCESS_KEY}
       # AI microservice base URL (internal docker network)
       - AiService__BaseUrl=http://ai-service:8000
+      # Stripe (section: Stripe) — payment checkout
+      - Stripe__SecretKey=${STRIPE_SECRET_KEY}
+      - Stripe__PublicKey=${STRIPE_PUBLIC_KEY}
+      - Stripe__WebhookSecret=${STRIPE_WEBHOOK_SECRET}
       # CORS allowed origins
       - CorsSettings__AllowedOrigins__0=${WEB_APP_URL}
       # Scientific catalog auto-seeding (idempotent). Data mounted read-only below.
@@ -155,9 +159,18 @@ services:
       - JWT_AUDIENCE=${JWT_AUDIENCE}
       - CORS_ORIGINS=${CORS_ORIGINS}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY}
+      - GOOGLE_MODEL_NAME=${GOOGLE_MODEL_NAME:-gemini-2.5-flash}
       - DOTNET_API_BASE_URL=http://backend-core:5000
       - DOTNET_WEBHOOK_URL=http://backend-core:5000/api/webhooks/ai/training-completed
       - LOG_LEVEL=INFO
+      - CHROMA_HOST=${CHROMA_HOST:-chromadb}
+      - CHROMA_PORT=${CHROMA_PORT:-8000}
+      - CHROMA_COLLECTION_NAME=${CHROMA_COLLECTION_NAME:-bioplatform_species_dev}
+    volumes:
+      - ./src/Bio.Backend.AI/scripts:/app/scripts:ro
+      - ./src/Bio.Backend.AI/data/species_catalog:/app/data/species_catalog:ro
     ports:
       - "8000:8000"
     depends_on:
@@ -166,6 +179,7 @@ services:
     networks:
       - bioplatform-network
     restart: always
+
 
   # ===========================================
   # FRONTEND SERVICES (compilados)

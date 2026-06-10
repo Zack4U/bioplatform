@@ -29,7 +29,7 @@ public class AuthorityDashboardQueriesTests
 
         _absRepoMock.Setup(r => r.GetAllPagedAsync(null, null, 1, 10000, default))
             .ReturnsAsync((permits, 1));
-        _productRepoMock.Setup(r => r.GetManagedFilteredAsync(null, true, null, null, "createdAt", "desc", 1, 10000, default))
+        _productRepoMock.Setup(r => r.GetManagedFilteredAsync(null, true, null, null, "createdAt", "desc", 1, 10000, default, null))
             .ReturnsAsync((products, 1));
         _speciesRepoMock.Setup(r => r.GetAllAsync(null, null, default))
             .ReturnsAsync(speciesEnumerable);

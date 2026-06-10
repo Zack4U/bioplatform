@@ -52,6 +52,8 @@ export function SpeciesManagement() {
     const router = useRouter();
     const pageSize = 15;
     const isAdmin = useHasRole("ADMIN");
+    const isResearcher = useHasRole("RESEARCHER");
+    const canEdit = isAdmin || isResearcher;
 
     const { data, isLoading } = useSpeciesList({
         query: search || undefined,
@@ -87,16 +89,18 @@ export function SpeciesManagement() {
             icon: <Images className="h-4 w-4" />,
             onClick: (s) => router.push(`/admin/images?speciesId=${s.id}&speciesName=${encodeURIComponent(s.scientificName)}`),
         },
-        {
-            label: "Editar",
-            icon: <Pencil className="h-4 w-4" />,
-            onClick: (s) => { setEditTarget(s); setIsFormOpen(true); },
-        },
-        {
-            label: "Toggle sensibilidad",
-            icon: <Shield className="h-4 w-4" />,
-            onClick: handleToggleSensitive,
-        },
+        ...(canEdit ? [
+            {
+                label: "Editar",
+                icon: <Pencil className="h-4 w-4" />,
+                onClick: (s: SpeciesAdminItem) => { setEditTarget(s); setIsFormOpen(true); },
+            },
+            {
+                label: "Toggle sensibilidad",
+                icon: <Shield className="h-4 w-4" />,
+                onClick: handleToggleSensitive,
+            }
+        ] : []),
         ...(isAdmin ? [{
             label: "Eliminar",
             icon: <Trash2 className="h-4 w-4" />,
@@ -115,7 +119,7 @@ export function SpeciesManagement() {
                     <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Gestion de Especies</h1>
                     <p className="text-muted-foreground">Catalogo de biodiversidad de Caldas</p>
                 </div>
-                {isAdmin && (
+                {canEdit && (
                     <Button onClick={() => { setEditTarget(null); setIsFormOpen(true); }}>
                         <Plus className="mr-2 h-4 w-4" /> Nueva Especie
                     </Button>

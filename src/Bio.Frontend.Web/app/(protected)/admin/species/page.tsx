@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Gestion de Especies" };
 
 export default function SpeciesPage() {
     return (
-        <PageRoleGuard requiredRoles={["ADMIN", "RESEARCHER"]}>
+        <PageRoleGuard requiredRoles={["ADMIN", "RESEARCHER", "AUTHORITY"]}>
             <SpeciesManagement />
         </PageRoleGuard>
     );

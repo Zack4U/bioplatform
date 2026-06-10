@@ -9,9 +9,9 @@ export const APP_DESCRIPTION =
 
 /** API base URLs — sourced from .env */
 export const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5070/api";
+    process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5070/api";
 export const AI_API_BASE_URL =
-    process.env.NEXT_PUBLIC_AI_API_URL ?? "http://localhost:8000/api/v1";
+    process.env.NEXT_PUBLIC_AI_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 /** Pagination defaults */
 export const DEFAULT_PAGE_SIZE = 12;
@@ -109,12 +109,13 @@ export const MARKETPLACE_DEFAULT_PAGE_SIZE = 12;
 
 /* ── Administration Panel ─────────────────────────────────────────────────── */
 
-/** Roles with access to the admin panel (Buyers and Communities excluded) */
+/** Roles with access to the admin panel (Buyers excluded; Community can moderate posts) */
 export const ADMIN_ROLES = [
     "ADMIN",
     "RESEARCHER",
     "ENTREPRENEUR",
     "AUTHORITY",
+    "COMMUNITY",
 ] as const;
 
 /** Default pagination size for admin tables */
@@ -278,12 +279,22 @@ export const REQUEST_TYPE_LABELS: Record<string, string> = {
     account_verification: "Verificacion de Cuenta",
 };
 
-/** Generic translate helper — returns label or original key if not found */
+/**
+ * Generic translate helper — returns the Spanish label or the original key if not found.
+ * Case-insensitive: backend values arrive in varying cases (e.g. role "ADMIN" vs map key
+ * "Admin", status "Pending" vs key "pending"), so we fall back to a lower-cased match.
+ */
 export function translateLabel(
     map: Record<string, string>,
     key: string,
 ): string {
-    return map[key] ?? key;
+    if (key == null) return key;
+    if (map[key] !== undefined) return map[key];
+    const lower = key.toLowerCase();
+    for (const mapKey of Object.keys(map)) {
+        if (mapKey.toLowerCase() === lower) return map[mapKey];
+    }
+    return key;
 }
 
 /** User role name → Spanish label */

@@ -36,6 +36,20 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
+/**
+ * Returns the post-login redirect target.
+ * Reads ?returnUrl from the current URL and guards against open-redirects
+ * (must be a same-origin path starting with a single "/").
+ */
+function getReturnUrl(): string {
+    if (typeof window === "undefined") return "/";
+    const returnUrl = new URLSearchParams(window.location.search).get("returnUrl");
+    if (returnUrl && returnUrl.startsWith("/") && !returnUrl.startsWith("//")) {
+        return returnUrl;
+    }
+    return "/";
+}
+
 // ─── Login ───────────────────────────────────────────────────────────────────
 
 /** Handles login flow including 2FA challenge detection */
@@ -54,7 +68,7 @@ export function useLogin() {
             if (response.accessToken && response.refreshToken) {
                 setTokens(response.accessToken, response.refreshToken);
                 toast.success("Inicio de sesion exitoso");
-                router.push("/");
+                router.push(getReturnUrl());
             }
         },
         onError: () => {
@@ -108,7 +122,7 @@ export function useTwoFactorLogin() {
             if (response.accessToken && response.refreshToken) {
                 setTokens(response.accessToken, response.refreshToken);
                 toast.success("Autenticacion completada");
-                router.push("/");
+                router.push(getReturnUrl());
             }
         },
         onError: () => {

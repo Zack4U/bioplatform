@@ -164,7 +164,7 @@ public class AbsPermitsController : ControllerBase
     /// Admin and EnvironmentalAuthority only.
     /// </summary>
     [HttpPost("documents/upload")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Entrepreneur}")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

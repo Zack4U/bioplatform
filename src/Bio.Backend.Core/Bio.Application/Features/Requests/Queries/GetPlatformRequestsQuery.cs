@@ -1,4 +1,5 @@
 using Bio.Application.DTOs;
+using Bio.Domain.Constants;
 using Bio.Domain.Interfaces;
 using MediatR;
 
@@ -10,7 +11,7 @@ namespace Bio.Application.Features.Requests.Queries;
 /// Sources: ABS permits (pending/suspended), species images (unvalidated),
 /// user accounts (unverified), product certifications (active/review).
 /// </summary>
-public record GetPlatformRequestsQuery(PlatformRequestFilterParams Filters)
+public record GetPlatformRequestsQuery(PlatformRequestFilterParams Filters, string? UserRole = null)
     : IRequest<PaginatedResult<PlatformRequestDTO>>;
 
 public class GetPlatformRequestsQueryHandler
@@ -18,13 +19,19 @@ public class GetPlatformRequestsQueryHandler
 {
     private readonly IAbsPermitRepository _permitsRepo;
     private readonly ISpeciesImageRepository _imagesRepo;
+    private readonly ICertificationRepository _certRepo;
+    private readonly IProductRepository _productRepo;
 
     public GetPlatformRequestsQueryHandler(
         IAbsPermitRepository permitsRepo,
-        ISpeciesImageRepository imagesRepo)
+        ISpeciesImageRepository imagesRepo,
+        ICertificationRepository certRepo,
+        IProductRepository productRepo)
     {
         _permitsRepo = permitsRepo;
         _imagesRepo = imagesRepo;
+        _certRepo = certRepo;
+        _productRepo = productRepo;
     }
 
     public async Task<PaginatedResult<PlatformRequestDTO>> Handle(
@@ -89,15 +96,85 @@ public class GetPlatformRequestsQueryHandler
                     ReferenceUrl: img.ImageUrl,
                     ReviewerNotes: null,
                     CreatedAt: img.CreatedAt,
-                    UpdatedAt: null));
+                    UpdatedAt: null,
+                    ParentReferenceId: img.SpeciesId.ToString()));
             }
         }
 
-        // ── Scope to own requests (Entrepreneur/Researcher — set server-side) ─
+        // ── 3. Product Certifications ────────────────────────────────────────
+        if (filters.Type is null or "certification")
+        {
+            var (certs, _) = await _certRepo.GetManagedAsync(
+                status: null, entrepreneurId: null,
+                page: 1, pageSize: 500, ct);
+
+            foreach (var c in certs)
+            {
+                var mappedStatus = c.Status.ToLowerInvariant();
+                if (filters.Status != null && mappedStatus != filters.Status) continue;
+
+                var isPending = c.Status == "Pending";
+                allRequests.Add(new PlatformRequestDTO(
+                    Id: $"cert_{c.Id}",
+                    Type: "certification",
+                    TypeLabel: "Certificación",
+                    RequesterId: (c.Product?.EntrepreneurId ?? Guid.Empty).ToString(),
+                    RequesterName: c.Product?.Entrepreneur?.FullName ?? "Emprendedor",
+                    Subject: $"Solicitud de certificación: {c.Name}",
+                    Description: $"Producto: {c.Product?.Name ?? "—"} | Ente Emisor: {c.IssuingBody}",
+                    Status: mappedStatus,
+                    ReferenceId: c.Id.ToString(),
+                    ReferenceType: "Certification",
+                    ReferenceUrl: c.DocumentUrl,
+                    ReviewerNotes: c.RejectionReason,
+                    CreatedAt: c.CreatedAt,
+                    UpdatedAt: c.ApprovedAt));
+            }
+        }
+
+        // ── 4. Product approvals (unapproved products) ───────────────────────
+        if (filters.Type is null or "product_approval")
+        {
+            var (products, _) = await _productRepo.GetManagedFilteredAsync(
+                entrepreneurId: null, isActive: null, query: null, categoryId: null,
+                sortBy: "createdAt", sortOrder: "desc", page: 1, pageSize: 500, ct,
+                isApproved: false);
+
+            foreach (var p in products)
+            {
+                var mappedStatus = !string.IsNullOrEmpty(p.RejectionReason) ? "rejected" : "pending";
+                if (filters.Status != null && mappedStatus != filters.Status) continue;
+
+                allRequests.Add(new PlatformRequestDTO(
+                    Id: $"product_{p.Id}",
+                    Type: "product_approval",
+                    TypeLabel: "Aprobación de Producto",
+                    RequesterId: p.EntrepreneurId.ToString(),
+                    RequesterName: p.Entrepreneur?.FullName ?? "Emprendedor",
+                    Subject: $"Aprobación de producto: {p.Name}",
+                    Description: $"SKU: {p.Sku} | Precio: {p.SellPrice:C}",
+                    Status: mappedStatus,
+                    ReferenceId: p.Id.ToString(),
+                    ReferenceType: "Product",
+                    ReferenceUrl: p.ThumbnailUrl,
+                    ReviewerNotes: p.RejectionReason,
+                    CreatedAt: p.CreatedAt,
+                    UpdatedAt: p.UpdatedAt));
+            }
+        }
+
+        // ── Scope to own requests (Entrepreneur sees only own; Researcher sees own except they also see ALL pending image_validation) ─
         if (filters.RequesterId.HasValue)
         {
             var requesterId = filters.RequesterId.Value.ToString();
-            allRequests = allRequests.Where(r => r.RequesterId == requesterId).ToList();
+            if (request.UserRole == RoleNames.Researcher)
+            {
+                allRequests = allRequests.Where(r => r.Type == "image_validation" || r.RequesterId == requesterId).ToList();
+            }
+            else
+            {
+                allRequests = allRequests.Where(r => r.RequesterId == requesterId).ToList();
+            }
         }
 
         // ── Apply search filter ──────────────────────────────────────────────

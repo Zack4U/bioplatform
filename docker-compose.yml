@@ -80,7 +80,7 @@ services:
 
     # ChromaDB - Vector Store para RAG
     chromadb:
-        image: chromadb/chroma:latest
+        image: chromadb/chroma:0.5.0
         container_name: bioplatform-chromadb
         ports:
             - "8001:8000"

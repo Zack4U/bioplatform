@@ -16,7 +16,7 @@ public class SpeciesImageRepository : ISpeciesImageRepository
 
     public async Task<(IReadOnlyList<SpeciesImage> Items, int TotalCount)> GetBySpeciesIdAsync(
         Guid speciesId,
-        bool onlyValidatedByExpert = true,
+        bool? onlyValidatedByExpert = null,
         int page = 1,
         int pageSize = 20,
         CancellationToken cancellationToken = default)
@@ -25,9 +25,10 @@ public class SpeciesImageRepository : ISpeciesImageRepository
             .AsNoTracking()
             .Where(img => img.SpeciesId == speciesId);
 
-        if (onlyValidatedByExpert)
+        // Tri-state: null = all, true = validated only, false = pending (unvalidated) only.
+        if (onlyValidatedByExpert.HasValue)
         {
-            query = query.Where(img => img.IsValidatedByExpert);
+            query = query.Where(img => img.IsValidatedByExpert == onlyValidatedByExpert.Value);
         }
 
         var totalCount = await query.CountAsync(cancellationToken);

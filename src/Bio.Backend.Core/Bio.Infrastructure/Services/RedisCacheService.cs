@@ -1,5 +1,6 @@
 using Bio.Domain.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System.Text.Json;
@@ -18,6 +19,14 @@ public class RedisCacheService : ICacheService
     private readonly IConnectionMultiplexer _redis;
     private readonly ILogger<RedisCacheService> _logger;
 
+    /// <summary>
+    /// Must match the <c>InstanceName</c> configured on AddStackExchangeRedisCache in Program.cs.
+    /// IDistributedCache transparently prepends it to every key, so raw IConnectionMultiplexer
+    /// KEYS scans (prefix invalidation) must include it too — otherwise nothing matches and
+    /// caches go stale until TTL expiry.
+    /// </summary>
+    private readonly string _instanceName;
+
     private static readonly TimeSpan DefaultExpiry = TimeSpan.FromMinutes(10);
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -28,8 +37,14 @@ public class RedisCacheService : ICacheService
     public RedisCacheService(
         IDistributedCache cache,
         IConnectionMultiplexer redis,
+        IConfiguration configuration,
         ILogger<RedisCacheService> logger)
-    { _cache = cache; _redis = redis; _logger = logger; }
+    {
+        _cache = cache;
+        _redis = redis;
+        _logger = logger;
+        _instanceName = configuration["Redis:InstanceName"] ?? "bioplatform:";
+    }
 
     /// <inheritdoc/>
     public async Task<T?> GetAsync<T>(string key, CancellationToken ct = default) where T : class
@@ -87,8 +102,9 @@ public class RedisCacheService : ICacheService
             var server = _redis.GetServers().FirstOrDefault();
             if (server is null) return;
 
-            // Scan for all keys matching the prefix pattern
-            var pattern = $"{prefix}*";
+            // IDistributedCache stores keys as "{InstanceName}{key}"; the raw KEYS scan must
+            // include the instance name or it will match nothing.
+            var pattern = $"{_instanceName}{prefix}*";
             await foreach (var key in server.KeysAsync(pattern: pattern))
             {
                 await db.KeyDeleteAsync(key);

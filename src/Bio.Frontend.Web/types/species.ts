@@ -56,7 +56,10 @@ export interface RelatedProduct {
     name: string;
     slug: string | null;
     description: string;
-    price: number;
+    /** List/reference price before discount */
+    basePrice: number;
+    /** Actual selling price shown to buyers */
+    sellPrice: number;
     stockQuantity: number;
     thumbnailUrl: string | null;
     isActive: boolean;

@@ -178,8 +178,18 @@ export function ProductFormSheet({
       form.setError("absPermitId", { message: "Permiso ABS requerido para especie con estado legal" });
       return;
     }
+    // Auto-generate slug from product name: lowercase, hyphens, remove special chars
+    const autoSlug = values.name
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove accents
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 120);
     const payload: CreateProductRequest | UpdateProductRequest = {
       name: values.name,
+      slug: autoSlug,
       description: values.description,
       sellPrice: values.price,
       basePrice: values.price,
@@ -188,7 +198,8 @@ export function ProductFormSheet({
       categoryId: values.categoryId ?? null,
       baseSpeciesId: values.baseSpeciesId || "",
       absPermitId: values.absPermitId || "",
-      isActive: values.isActive ?? false,
+      // New products are always inactive (pending approval). Editing keeps the user's choice.
+      isActive: isEditing ? (values.isActive ?? false) : false,
     };
     onSubmit(payload);
   }
@@ -227,6 +238,21 @@ export function ProductFormSheet({
           noValidate
           className="flex flex-1 flex-col gap-5 px-4 py-2 overflow-y-auto"
         >
+          {isEditing && editingProduct && !editingProduct.isApproved && editingProduct.rejectionReason && (
+            <div className="flex flex-col gap-1.5 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-destructive">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span className="font-semibold text-xs uppercase tracking-wider">Producto Rechazado</span>
+              </div>
+              <p className="text-xs">
+                Este producto fue rechazado por un administrador o autoridad. Corrige los detalles señalados e inténtalo de nuevo.
+              </p>
+              <div className="mt-1 border-t border-destructive/20 pt-1.5">
+                <span className="text-xs font-semibold">Motivo del rechazo:</span>
+                <p className="text-xs italic mt-0.5">{editingProduct.rejectionReason}</p>
+              </div>
+            </div>
+          )}
           {/* ── Name ────────────────────────────────────────────────── */}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="product-name">
@@ -508,16 +534,17 @@ export function ProductFormSheet({
             )}
           </div>
 
-          {/* ── Is Active ────────────────────────────────────────────── */}
+          {/* ── Is Active (only visible when editing an approved product) ── */}
+          {isEditing && (
           <div className="flex items-center justify-between rounded-md border p-3">
             <div className="space-y-0.5">
               <Label htmlFor="product-active" className="cursor-pointer">
-                {isEditing ? "Producto activo" : "Activar inmediatamente"}
+                Producto activo
               </Label>
               <p className="text-xs text-muted-foreground">
-                {isEditing
+                {editingProduct?.isApproved
                   ? "Los productos inactivos no son visibles en el marketplace."
-                  : "Por defecto queda inactivo pendiente de aprobación por un administrador."}
+                  : "Este producto no ha sido aprobado por un administrador o autoridad. No se puede activar."}
               </p>
             </div>
             <Controller
@@ -526,13 +553,22 @@ export function ProductFormSheet({
               render={({ field }) => (
                 <Switch
                   id="product-active"
-                  checked={field.value ?? true}
+                  checked={field.value ?? false}
                   onCheckedChange={field.onChange}
+                  disabled={!editingProduct?.isApproved}
                   aria-label="Publicar producto en el marketplace"
                 />
               )}
             />
           </div>
+          )}
+          {!isEditing && (
+          <div className="flex items-start gap-2 rounded-md border border-blue-200 bg-blue-50 p-3 dark:border-blue-900 dark:bg-blue-950/30">
+            <p className="text-xs text-blue-800 dark:text-blue-300">
+              El producto se creará en estado <strong>inactivo</strong> y quedará pendiente de aprobación por un administrador o autoridad. Una vez aprobado, podrás activarlo o desactivarlo.
+            </p>
+          </div>
+          )}
         </form>
 
         {/* ── Footer ──────────────────────────────────────────────────── */}

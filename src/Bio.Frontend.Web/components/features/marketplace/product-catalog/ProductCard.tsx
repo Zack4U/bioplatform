@@ -177,6 +177,10 @@ export function ProductCard({
     (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
+      if (!product.isActive) {
+        toast.error("Este producto no esta disponible.");
+        return;
+      }
       addItem({
         productId: product.id,
         slug: product.slug,
@@ -414,7 +418,7 @@ export function ProductCard({
                 onClick={handleAddToCart}
                 aria-label={`Agregar ${product.name} al carrito`}
                 className="gap-1.5 shrink-0"
-                disabled={product.stockQuantity === 0}
+                disabled={product.stockQuantity === 0 || !product.isActive}
               >
                 <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />
                 <span className="hidden sm:inline">Agregar</span>

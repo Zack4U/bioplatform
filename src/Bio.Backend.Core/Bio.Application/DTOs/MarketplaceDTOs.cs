@@ -53,13 +53,19 @@ public record ProductDetailDTO(
 public record ProductManagedListItemDTO(
     Guid Id, string Slug, string Name, string? ThumbnailUrl,
     decimal BasePrice, decimal SellPrice, int StockQuantity, bool IsActive,
+    bool IsApproved, string? RejectionReason,
     string? Sku, string Description, Guid BaseSpeciesId, int? CategoryId,
     string? CategoryName, Guid EntrepreneurId, string? EntrepreneurName,
     DateTime CreatedAt, DateTime? UpdatedAt);
 
+/// <summary>Generic rejection body — carries the reason a moderator rejected a request.</summary>
+public record RejectReasonDTO
+{
+    public string Reason { get; init; } = string.Empty;
+}
+
 public record ProductFilterParams
 {
-    public string? Query { get; init; }
     public int? CategoryId { get; init; }
     public Guid? BaseSpeciesId { get; init; }
     public decimal? MinPrice { get; init; }
@@ -110,7 +116,10 @@ public record OrderResponseDTO(
     decimal SubtotalAmount, decimal TaxAmount, decimal ShippingAmount, decimal DiscountAmount, decimal TotalAmount,
     string PaymentMethod, string? TransactionRef,
     IReadOnlyList<OrderItemResponseDTO> Items,
-    DateTime CreatedAt, DateTime? UpdatedAt);
+    DateTime CreatedAt, DateTime? UpdatedAt,
+    int ItemCount,
+    AddressResponseDTO? ShippingAddress = null,
+    AddressResponseDTO? BillingAddress = null);
 public record OrderUpdateStatusDTO(string Status);
 public record OrderFilterParams
 {
@@ -160,6 +169,12 @@ public record AddressResponseDTO(
     string StreetLine1, string? StreetLine2, string City, string Department,
     string PostalCode, string Country, string? PhoneNumber, bool IsDefault, DateTime CreatedAt);
 
+/// <summary>Body for PUT /api/addresses/default — carries the address ID to promote.</summary>
+public record SetDefaultAddressDTO
+{
+    public Guid Id { get; init; }
+}
+
 // === Certifications ===
 
 public record CertificationCreateDTO
@@ -193,7 +208,17 @@ public record CertificationResponseDTO(
     string IssuingBody, string? CertificateNumber,
     DateTime IssuedAt, DateTime? ExpiresAt, string Status,
     string? DocumentUrl, string? LogoUrl, string? VerificationCode,
-    DateTime CreatedAt, DateTime? UpdatedAt);
+    DateTime CreatedAt, DateTime? UpdatedAt,
+    Guid? ApprovedById = null, DateTime? ApprovedAt = null, string? RejectionReason = null);
+
+/// <summary>Certification row for the admin moderation panel — includes product + entrepreneur context.</summary>
+public record CertificationManagedListItemDTO(
+    Guid Id, Guid ProductId, string ProductName, string ProductSlug,
+    string Name, string CertificationType, string IssuingBody, string Status,
+    DateTime IssuedAt, DateTime? ExpiresAt,
+    Guid EntrepreneurId, string? EntrepreneurName,
+    Guid? ApprovedById, DateTime? ApprovedAt, string? RejectionReason,
+    string? DocumentUrl, DateTime CreatedAt);
 
 // === ABS Permits ===
 
@@ -237,6 +262,12 @@ public record AbsPermitRequestDTO
     public Guid SpeciesId { get; init; }
     /// <summary>Entrepreneur's justification for requesting access to this species' genetic resources.</summary>
     public string? Justification { get; init; }
+    public string ResolutionNumber { get; init; } = string.Empty;
+    public DateTime EmissionDate { get; init; }
+    public DateTime ExpirationDate { get; init; }
+    public string GrantingAuthority { get; init; } = string.Empty;
+    public string? LegalFramework { get; init; }
+    public string? DocumentUrl { get; init; }
 }
 
 public record ApproveAbsPermitDTO

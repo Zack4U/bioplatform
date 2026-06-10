@@ -18,6 +18,7 @@ import { Image as ImageIcon, Check, Info, X, ArrowLeft } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { useSpeciesImagesList, useValidateImage, useRejectImage } from "@/hooks/features/admin/useImagesManagement";
+import { useHasRole } from "@/hooks/features/auth";
 import { SpeciesSearchCombobox } from "@/components/features/admin/shared/SpeciesSearchCombobox";
 import type { SpeciesImage } from "@/types/species";
 import type { SpeciesAdminItem } from "@/types/admin";
@@ -45,6 +46,12 @@ export function ImagesManagement() {
         page,
         pageSize,
     });
+
+    // Researchers, Admins, and Authorities can moderate images.
+    const isAdmin = useHasRole("ADMIN");
+    const isAuthority = useHasRole("AUTHORITY");
+    const isResearcher = useHasRole("RESEARCHER");
+    const canModerate = isAdmin || isAuthority || isResearcher;
 
     const validateImage = useValidateImage(speciesId ?? "");
     const rejectImage = useRejectImage(speciesId ?? "");
@@ -185,7 +192,7 @@ export function ImagesManagement() {
                                 <div><p className="text-muted-foreground">Principal</p><p className="font-medium">{selected.isPrimary ? "Sí" : "No"}</p></div>
                             </div>
                             <div className="flex justify-end gap-2">
-                                {!selected.isValidatedByExpert ? (
+                                {canModerate && !selected.isValidatedByExpert && (
                                     <Button
                                         onClick={async () => {
                                             await validateImage.mutateAsync(selected.id);
@@ -196,8 +203,10 @@ export function ImagesManagement() {
                                         <Check className="mr-2 h-4 w-4" />
                                         {validateImage.isPending ? "Validando..." : "Validar imagen"}
                                     </Button>
-                                ) : (
-                                    <Button variant="destructive"
+                                )}
+                                {/* Reject = un-validate (sets pending), never deletes the image. */}
+                                {canModerate && selected.isValidatedByExpert && (
+                                    <Button variant="outline"
                                         onClick={async () => {
                                             await rejectImage.mutateAsync(selected.id);
                                             setIsDetailOpen(false);
@@ -205,8 +214,13 @@ export function ImagesManagement() {
                                         disabled={rejectImage.isPending}
                                     >
                                         <X className="mr-2 h-4 w-4" />
-                                        {rejectImage.isPending ? "Rechazando..." : "Rechazar"}
+                                        {rejectImage.isPending ? "Rechazando..." : "Rechazar validación"}
                                     </Button>
+                                )}
+                                {!canModerate && (
+                                    <p className="text-xs text-muted-foreground italic self-center mr-auto">
+                                        Solo lectura — no tienes permisos para validar imágenes.
+                                    </p>
                                 )}
                                 <Button variant="outline" onClick={() => setIsDetailOpen(false)}>Cerrar</Button>
                             </div>

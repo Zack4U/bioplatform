@@ -7,6 +7,10 @@ import {
     ProductManagementTable,
 } from "@/components/features/marketplace/product-management";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Pagination } from "@/components/common/Pagination";
+import { SearchInput } from "@/components/common/SearchInput";
 import { useProductManagement } from "@/hooks/features/marketplace/useProductManagement";
 import {
     getCategories,
@@ -27,7 +31,10 @@ import { useState } from "react";
 
 export function ProductsManagement() {
     const { user } = useAuthStore();
-    const isAdmin = user?.roles?.includes("ADMIN") ?? false;
+    // Admin + Authority get the global moderation view (approve/reject pending products).
+    const isAdmin =
+        (user?.roles?.includes("ADMIN") ?? false) ||
+        (user?.roles?.includes("AUTHORITY") ?? false);
 
     // Queries for select options
     const { data: categories = [] } = useQuery<ProductCategory[]>({
@@ -48,6 +55,11 @@ export function ProductsManagement() {
         products,
         isLoading,
         isFetching,
+        searchParams,
+        setSearch,
+        setPage,
+        currentPage,
+        totalPages,
         createProduct,
         isCreating,
         updateProduct,
@@ -63,6 +75,9 @@ export function ProductsManagement() {
         isDeletingImage,
         activateProduct,
         deactivateProduct,
+        approveProduct,
+        rejectProduct,
+        unapproveProduct,
     } = useProductManagement();
 
     // Local state for modals/sheets
@@ -71,6 +86,9 @@ export function ProductsManagement() {
         useState<ManageProductListItem | null>(null);
     const [managingImagesProduct, setManagingImagesProduct] =
         useState<ManageProductListItem | null>(null);
+    const [rejectingProduct, setRejectingProduct] = useState<ManageProductListItem | null>(null);
+    const [rejectReason, setRejectReason] = useState("");
+    const [unapprovingProduct, setUnapprovingProduct] = useState<ManageProductListItem | null>(null);
 
     // Fetch full details of the product being image-managed to get its images
     const { data: productDetail, isLoading: isLoadingImages } =
@@ -96,7 +114,16 @@ export function ProductsManagement() {
             updateProduct(
                 { id: editingProduct.id, data },
                 {
-                    onSuccess: () => setIsFormOpen(false),
+                    onSuccess: () => {
+                        if (editingProduct.isActive !== data.isActive) {
+                            if (data.isActive) {
+                                activateProduct(editingProduct.id);
+                            } else {
+                                deactivateProduct(editingProduct.id);
+                            }
+                        }
+                        setIsFormOpen(false);
+                    },
                 },
             );
         } else {
@@ -131,6 +158,15 @@ export function ProductsManagement() {
                 )}
             </div>
 
+            {/* Search */}
+            <SearchInput
+                placeholder="Buscar por nombre o descripcion..."
+                value={searchParams.query ?? ""}
+                onChange={setSearch}
+                aria-label="Buscar productos"
+                className="max-w-md"
+            />
+
             <ProductManagementTable
                 products={products}
                 isLoading={isLoading}
@@ -141,7 +177,38 @@ export function ProductsManagement() {
                 onManageImages={handleOpenImages}
                 onActivate={isAdmin ? (id) => activateProduct(id) : undefined}
                 onDeactivate={isAdmin ? (id) => deactivateProduct(id) : undefined}
+                onApprove={isAdmin ? (id) => approveProduct(id) : undefined}
+                onReject={
+                    isAdmin
+                        ? (id) => {
+                              const prod = products.find((p) => p.id === id);
+                              if (prod) {
+                                  setRejectingProduct(prod);
+                                  setRejectReason("");
+                              }
+                          }
+                        : undefined
+                }
+                onUnapprove={
+                    isAdmin
+                        ? (id) => {
+                              const prod = products.find((p) => p.id === id);
+                              if (prod) {
+                                  setUnapprovingProduct(prod);
+                              }
+                          }
+                        : undefined
+                }
             />
+
+            {!isLoading && totalPages > 1 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    className="mt-4"
+                />
+            )}
 
             {!isAdmin && (
                 <ProductFormSheet
@@ -190,6 +257,72 @@ export function ProductsManagement() {
                     }
                 />
             )}
+
+            {/* Dialog to Reject Product */}
+            <Dialog open={!!rejectingProduct} onOpenChange={(open) => !open && setRejectingProduct(null)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Rechazar Producto</DialogTitle>
+                        <DialogDescription>
+                            Por favor, ingresa el motivo del rechazo para el producto{" "}
+                            <span className="font-semibold">{rejectingProduct?.name}</span>. El emprendedor podrá ver este motivo para realizar correcciones.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Textarea
+                        placeholder="Escribe el motivo del rechazo..."
+                        value={rejectReason}
+                        onChange={(e) => setRejectReason(e.target.value)}
+                        className="min-h-[100px]"
+                    />
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setRejectingProduct(null)}>
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            disabled={!rejectReason.trim()}
+                            onClick={() => {
+                                if (rejectingProduct && rejectReason.trim()) {
+                                    rejectProduct({ id: rejectingProduct.id, reason: rejectReason.trim() });
+                                    setRejectingProduct(null);
+                                    setRejectReason("");
+                                }
+                            }}
+                        >
+                            Rechazar Producto
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Dialog to Confirm Unapproval */}
+            <Dialog open={!!unapprovingProduct} onOpenChange={(open) => !open && setUnapprovingProduct(null)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Desaprobar Producto</DialogTitle>
+                        <DialogDescription>
+                            ¿Está seguro de que desea desaprobar el producto{" "}
+                            <span className="font-semibold">{unapprovingProduct?.name}</span>? Esto anulará su aprobación, borrará los registros de aprobación y lo desactivará del marketplace.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setUnapprovingProduct(null)}>
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={() => {
+                                if (unapprovingProduct) {
+                                    unapproveProduct(unapprovingProduct.id);
+                                    setUnapprovingProduct(null);
+                                }
+                            }}
+                        >
+                            Confirmar Desaprobación
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

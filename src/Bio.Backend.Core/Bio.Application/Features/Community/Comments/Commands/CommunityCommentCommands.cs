@@ -122,9 +122,13 @@ public class DeleteCommunityCommentCommandHandler
         var comment = await _repo.GetByIdAsync(request.CommentId, ct)
             ?? throw new NotFoundException(nameof(CommunityPostComment), request.CommentId);
 
-        var isModerator = request.ActorRole == RoleNames.Admin || request.ActorRole == RoleNames.Community;
-        if (comment.AuthorUserId != request.ActorId && !isModerator)
-            throw new ForbiddenException("You can only delete your own comments.");
+        // Community moderators may only REPORT comments, not delete them.
+        // Deletion is limited to the author, Admin, or the Environmental Authority.
+        var canDelete = comment.AuthorUserId == request.ActorId
+            || request.ActorRole == RoleNames.Admin
+            || request.ActorRole == RoleNames.EnvironmentalAuthority;
+        if (!canDelete)
+            throw new ForbiddenException("You do not have permission to delete this comment.");
 
         comment.SoftDelete();
         await _uow.SaveChangesAsync(ct);

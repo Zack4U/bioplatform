@@ -141,4 +141,227 @@ public class AbsPermitCommandsTests
         result.GrantingAuthority.Should().Be("MADS");
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
     }
+
+    // ── REQUEST ────────────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task RequestAbsPermit_ShouldCreatePendingRequest()
+    {
+        var handler = new RequestAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+        var dto = new AbsPermitRequestDTO
+        {
+            SpeciesId = Guid.NewGuid(),
+            Justification = "Investigación académica",
+            ResolutionNumber = "RES-2025-200",
+            EmissionDate = DateTime.UtcNow,
+            ExpirationDate = DateTime.UtcNow.AddYears(1),
+            GrantingAuthority = "ANLA"
+        };
+
+        var result = await handler.Handle(new RequestAbsPermitCommand(Guid.NewGuid(), dto), default);
+
+        result.Should().NotBeNull();
+        result.Status.Should().Be("Pending");
+        _repoMock.Verify(r => r.AddAsync(It.IsAny<AbsPermit>(), default), Times.Once);
+        _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
+    }
+
+    // ── CANCEL REQUEST ─────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task CancelAbsPermitRequest_WhenOwnerAndPending_ShouldDelete()
+    {
+        var entrepreneurId = Guid.NewGuid();
+        var permit = AbsPermit.CreateRequest(entrepreneurId, Guid.NewGuid(), "Justif", "RES", DateTime.UtcNow, DateTime.UtcNow.AddYears(1), "ANLA", null, null);
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var handler = new CancelAbsPermitRequestCommandHandler(_repoMock.Object, _uowMock.Object);
+        await handler.Handle(new CancelAbsPermitRequestCommand(permit.Id, entrepreneurId), default);
+
+        _repoMock.Verify(r => r.DeleteAsync(permit, default), Times.Once);
+        _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
+    }
+
+    [Fact]
+    public async Task CancelAbsPermitRequest_WhenNotOwner_ShouldThrowForbidden()
+    {
+        var permit = AbsPermit.CreateRequest(Guid.NewGuid(), Guid.NewGuid(), "Justif", "RES", DateTime.UtcNow, DateTime.UtcNow.AddYears(1), "ANLA", null, null);
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var handler = new CancelAbsPermitRequestCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new CancelAbsPermitRequestCommand(permit.Id, Guid.NewGuid()), default))
+            .Should().ThrowAsync<ForbiddenException>();
+    }
+
+    [Fact]
+    public async Task CancelAbsPermitRequest_WhenNotPending_ShouldThrowConflict()
+    {
+        var entrepreneurId = Guid.NewGuid();
+        var permit = MakePermit(); // Status = "Active"
+
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var handler = new CancelAbsPermitRequestCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new CancelAbsPermitRequestCommand(permit.Id, permit.EntrepreneurId), default))
+            .Should().ThrowAsync<ConflictException>();
+    }
+
+    [Fact]
+    public async Task CancelAbsPermitRequest_WhenNotFound_ShouldThrowNotFound()
+    {
+        var permitId = Guid.NewGuid();
+        _repoMock.Setup(r => r.GetByIdAsync(permitId, default)).ReturnsAsync((AbsPermit?)null);
+
+        var handler = new CancelAbsPermitRequestCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new CancelAbsPermitRequestCommand(permitId, Guid.NewGuid()), default))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    // ── APPROVE REQUEST ────────────────────────────────────────────────────────
+
+    private static AbsPermitRequestDTO MakeRequestDto() => new()
+    {
+        SpeciesId = Guid.NewGuid(),
+        Justification = "Justif",
+        ResolutionNumber = "RES",
+        EmissionDate = DateTime.UtcNow,
+        ExpirationDate = DateTime.UtcNow.AddYears(1),
+        GrantingAuthority = "ANLA"
+    };
+
+    [Fact]
+    public async Task ApproveAbsPermit_WhenValid_ShouldActivate()
+    {
+        var requestDto = MakeRequestDto();
+        var permit = AbsPermit.CreateRequest(Guid.NewGuid(), requestDto.SpeciesId, requestDto.Justification,
+            requestDto.ResolutionNumber, requestDto.EmissionDate, requestDto.ExpirationDate, requestDto.GrantingAuthority, null, null);
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var approveDto = new ApproveAbsPermitDTO
+        {
+            ResolutionNumber = "RES-FINAL",
+            EmissionDate = DateTime.UtcNow,
+            ExpirationDate = DateTime.UtcNow.AddYears(1),
+            GrantingAuthority = "ANLA"
+        };
+
+        var handler = new ApproveAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+        var result = await handler.Handle(new ApproveAbsPermitCommand(permit.Id, approveDto, Guid.NewGuid(), RoleNames.Admin), default);
+
+        result.Status.Should().Be("Active");
+        result.ResolutionNumber.Should().Be("RES-FINAL");
+        _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
+    }
+
+    [Fact]
+    public async Task ApproveAbsPermit_WhenUnprivileged_ShouldThrowForbidden()
+    {
+        var handler = new ApproveAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new ApproveAbsPermitCommand(Guid.NewGuid(), new ApproveAbsPermitDTO(), Guid.NewGuid(), RoleNames.Entrepreneur), default))
+            .Should().ThrowAsync<ForbiddenException>();
+    }
+
+    [Fact]
+    public async Task ApproveAbsPermit_WhenNotFound_ShouldThrowNotFound()
+    {
+        var permitId = Guid.NewGuid();
+        _repoMock.Setup(r => r.GetByIdAsync(permitId, default)).ReturnsAsync((AbsPermit?)null);
+
+        var handler = new ApproveAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new ApproveAbsPermitCommand(permitId, new ApproveAbsPermitDTO(), Guid.NewGuid(), RoleNames.Admin), default))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Fact]
+    public async Task ApproveAbsPermit_WhenNotPending_ShouldThrowConflict()
+    {
+        var permit = MakePermit(); // Status = "Active"
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var handler = new ApproveAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new ApproveAbsPermitCommand(permit.Id, new ApproveAbsPermitDTO(), Guid.NewGuid(), RoleNames.Admin), default))
+            .Should().ThrowAsync<ConflictException>();
+    }
+
+    // ── REJECT REQUEST ─────────────────────────────────────────────────────────
+
+    [Fact]
+    public async Task RejectAbsPermit_WhenValid_ShouldReject()
+    {
+        var requestDto = MakeRequestDto();
+        var permit = AbsPermit.CreateRequest(Guid.NewGuid(), requestDto.SpeciesId, requestDto.Justification,
+            requestDto.ResolutionNumber, requestDto.EmissionDate, requestDto.ExpirationDate, requestDto.GrantingAuthority, null, null);
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var handler = new RejectAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+        var result = await handler.Handle(
+            new RejectAbsPermitCommand(permit.Id, new RejectAbsPermitDTO { Reason = "Documentación incompleta" }, Guid.NewGuid(), RoleNames.EnvironmentalAuthority), default);
+
+        result.Status.Should().Be("Rejected");
+        result.RejectionReason.Should().Be("Documentación incompleta");
+        _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
+    }
+
+    [Fact]
+    public async Task RejectAbsPermit_WhenUnprivileged_ShouldThrowForbidden()
+    {
+        var handler = new RejectAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new RejectAbsPermitCommand(Guid.NewGuid(), new RejectAbsPermitDTO { Reason = "x" }, Guid.NewGuid(), RoleNames.Entrepreneur), default))
+            .Should().ThrowAsync<ForbiddenException>();
+    }
+
+    [Fact]
+    public async Task RejectAbsPermit_WhenNotFound_ShouldThrowNotFound()
+    {
+        var permitId = Guid.NewGuid();
+        _repoMock.Setup(r => r.GetByIdAsync(permitId, default)).ReturnsAsync((AbsPermit?)null);
+
+        var handler = new RejectAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new RejectAbsPermitCommand(permitId, new RejectAbsPermitDTO { Reason = "x" }, Guid.NewGuid(), RoleNames.Admin), default))
+            .Should().ThrowAsync<NotFoundException>();
+    }
+
+    [Fact]
+    public async Task RejectAbsPermit_WhenNotPending_ShouldThrowConflict()
+    {
+        var permit = MakePermit(); // Status = "Active"
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var handler = new RejectAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new RejectAbsPermitCommand(permit.Id, new RejectAbsPermitDTO { Reason = "x" }, Guid.NewGuid(), RoleNames.Admin), default))
+            .Should().ThrowAsync<ConflictException>();
+    }
+
+    [Fact]
+    public async Task RejectAbsPermit_WhenReasonEmpty_ShouldThrowValidation()
+    {
+        var requestDto = MakeRequestDto();
+        var permit = AbsPermit.CreateRequest(Guid.NewGuid(), requestDto.SpeciesId, requestDto.Justification,
+            requestDto.ResolutionNumber, requestDto.EmissionDate, requestDto.ExpirationDate, requestDto.GrantingAuthority, null, null);
+        _repoMock.Setup(r => r.GetByIdAsync(permit.Id, default)).ReturnsAsync(permit);
+
+        var handler = new RejectAbsPermitCommandHandler(_repoMock.Object, _uowMock.Object);
+
+        await FluentActions
+            .Awaiting(() => handler.Handle(new RejectAbsPermitCommand(permit.Id, new RejectAbsPermitDTO { Reason = "  " }, Guid.NewGuid(), RoleNames.Admin), default))
+            .Should().ThrowAsync<Bio.Domain.Exceptions.ValidationException>();
+    }
 }

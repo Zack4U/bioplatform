@@ -39,6 +39,7 @@ export function useAdminPosts(filters: AdminPostFilters = {}) {
             getPosts({
                 category: filters.category ?? null,
                 status: filters.status ?? null,
+                search: filters.query ?? null,
                 page: filters.page ?? 1,
                 pageSize: filters.pageSize ?? ADMIN_PAGE_SIZE,
             }),

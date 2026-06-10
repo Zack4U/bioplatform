@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { useAdminLayoutStore } from "@/store/admin-layout-store";
 import { useAuthStore } from "@/store/auth-store";
 import {
-    Brain, ChevronLeft, ChevronRight, ClipboardList, FileText, House, Image as ImageIcon, Leaf,
+    BadgeCheck, Brain, ChevronLeft, ChevronRight, ClipboardList, FileText, House, Image as ImageIcon, Leaf,
     LayoutDashboard, MessageCircle, MessageSquare, Package, Shield, ShoppingCart,
     Star, UserPlus, Users,
 } from "lucide-react";
@@ -40,6 +40,7 @@ const ICON_MAP: Record<string, ReactNode> = {
     Users: <Users className="h-5 w-5" />,
     UserPlus: <UserPlus className="h-5 w-5" />,
     ClipboardList: <ClipboardList className="h-5 w-5" />,
+    BadgeCheck: <BadgeCheck className="h-5 w-5" />,
 };
 
 function SidebarContent({ collapsed }: { collapsed: boolean }) {

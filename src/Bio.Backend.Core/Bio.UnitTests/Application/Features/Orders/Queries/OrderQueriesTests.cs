@@ -85,7 +85,7 @@ public class OrderQueriesTests
     {
         var orders = new List<Order> { CreateSampleOrder(Guid.NewGuid()) };
 
-        _repoMock.Setup(r => r.GetManagedAsync(null, 1, 10, default)).ReturnsAsync((orders, 1));
+        _repoMock.Setup(r => r.GetManagedAsync(null, 1, 10, default, null)).ReturnsAsync((orders, 1));
 
         var handler = new GetManagedOrdersQueryHandler(_repoMock.Object);
         var result = await handler.Handle(new GetManagedOrdersQuery(), default);

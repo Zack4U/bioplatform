@@ -125,7 +125,14 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Ord
         o.PaymentMethod, o.TransactionRef,
         o.OrderItems.Select(i => new OrderItemResponseDTO(
             i.Id, i.ProductId, i.Product?.Name ?? "", i.Quantity, i.UnitPrice, i.TotalPrice)).ToList(),
-        o.CreatedAt, o.UpdatedAt);
+        o.CreatedAt, o.UpdatedAt,
+        o.OrderItems.Count,
+        MapAddress(o.ShippingAddress),
+        MapAddress(o.BillingAddress));
+
+    private static AddressResponseDTO? MapAddress(Address? a) => a is null ? null : new(
+        a.Id, a.AddressType, a.RecipientName, a.StreetLine1, a.StreetLine2,
+        a.City, a.Department, a.PostalCode, a.Country, a.PhoneNumber, a.IsDefault, a.CreatedAt);
 }
 
 public record UpdateOrderStatusCommand(Guid OrderId, string Status) : IRequest<OrderResponseDTO>;

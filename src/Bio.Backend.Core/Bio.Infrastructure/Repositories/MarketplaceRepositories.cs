@@ -132,20 +132,32 @@ public class OrderRepository : IOrderRepository
     public OrderRepository(BioDbContext ctx) => _ctx = ctx;
 
     public async Task<Order?> GetByIdWithItemsAsync(Guid id, CancellationToken ct)
-        => await _ctx.Orders.Include(o => o.OrderItems).ThenInclude(i => i.Product).Include(o => o.Buyer).FirstOrDefaultAsync(o => o.Id == id, ct);
+        => await _ctx.Orders
+            .Include(o => o.OrderItems).ThenInclude(i => i.Product)
+            .Include(o => o.Buyer)
+            .Include(o => o.ShippingAddress)
+            .Include(o => o.BillingAddress)
+            .FirstOrDefaultAsync(o => o.Id == id, ct);
 
     public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetByBuyerIdAsync(Guid buyerId, int page, int pageSize, CancellationToken ct)
     {
-        var q = _ctx.Orders.Include(o => o.OrderItems).Where(o => o.BuyerId == buyerId).OrderByDescending(o => o.CreatedAt);
+        var q = _ctx.Orders
+            .Include(o => o.OrderItems).ThenInclude(i => i.Product)
+            .Include(o => o.ShippingAddress)
+            .Include(o => o.BillingAddress)
+            .Where(o => o.BuyerId == buyerId).OrderByDescending(o => o.CreatedAt);
         var total = await q.CountAsync(ct);
         var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
         return (items, total);
     }
 
-    public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetManagedAsync(string? status, int page, int pageSize, CancellationToken ct)
+    public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetManagedAsync(string? status, int page, int pageSize, CancellationToken ct, string? search = null)
     {
         var q = _ctx.Orders.Include(o => o.OrderItems).ThenInclude(i => i.Product).Include(o => o.Buyer).AsQueryable();
         if (!string.IsNullOrWhiteSpace(status)) q = q.Where(o => o.Status == status);
+        if (!string.IsNullOrWhiteSpace(search))
+            q = q.Where(o => o.OrderNumber.Contains(search)
+                || (o.Buyer != null && o.Buyer.FullName.Contains(search)));
         q = q.OrderByDescending(o => o.CreatedAt);
         var total = await q.CountAsync(ct);
         var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
@@ -163,15 +175,19 @@ public class OrderRepository : IOrderRepository
     }
 
     public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetByEntrepreneurIdAsync(
-        Guid entrepreneurId, string? status, int page, int pageSize, CancellationToken ct, DateTime? fromDate = null)
+        Guid entrepreneurId, string? status, int page, int pageSize, CancellationToken ct, DateTime? fromDate = null, string? search = null)
     {
         var q = _ctx.Orders
             .Include(o => o.OrderItems).ThenInclude(i => i.Product)
+            .Include(o => o.Buyer)
             .Where(o => o.OrderItems.Any(i => i.Product != null && i.Product.EntrepreneurId == entrepreneurId))
             .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(status)) q = q.Where(o => o.Status == status);
         if (fromDate.HasValue) q = q.Where(o => o.CreatedAt >= fromDate.Value);
+        if (!string.IsNullOrWhiteSpace(search))
+            q = q.Where(o => o.OrderNumber.Contains(search)
+                || (o.Buyer != null && o.Buyer.FullName.Contains(search)));
 
         q = q.OrderByDescending(o => o.CreatedAt);
         var total = await q.CountAsync(ct);
@@ -236,8 +252,10 @@ public class AddressRepository : IAddressRepository
 
     public async Task ClearDefaultsForUserAsync(Guid userId, string addressType, CancellationToken ct)
     {
-        var defaults = await _ctx.Addresses.Where(a => a.UserId == userId && a.AddressType == addressType && a.IsDefault).ToListAsync(ct);
-        foreach (var addr in defaults) addr.Update(null, null, null, null, null, null, null, null, false);
+        var defaults = await _ctx.Addresses
+            .Where(a => a.UserId == userId && a.AddressType == addressType && a.IsDefault)
+            .ToListAsync(ct);
+        foreach (var addr in defaults) addr.SetDefault(false);
     }
 }
 
@@ -257,6 +275,24 @@ public class CertificationRepository : ICertificationRepository
 
     public async Task DeleteAsync(Certification cert, CancellationToken ct)
     { _ctx.Certifications.Remove(cert); await Task.CompletedTask; }
+
+    public async Task<(IReadOnlyList<Certification> Items, int TotalCount)> GetManagedAsync(
+        string? status, Guid? entrepreneurId, int page, int pageSize, CancellationToken ct)
+    {
+        var q = _ctx.Certifications
+            .Include(c => c.Product).ThenInclude(p => p.Entrepreneur)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(status))
+            q = q.Where(c => c.Status == status);
+        if (entrepreneurId.HasValue)
+            q = q.Where(c => c.Product.EntrepreneurId == entrepreneurId.Value);
+
+        q = q.OrderByDescending(c => c.CreatedAt);
+        var total = await q.CountAsync(ct);
+        var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+        return (items, total);
+    }
 }
 
 public class AbsPermitRepository : IAbsPermitRepository

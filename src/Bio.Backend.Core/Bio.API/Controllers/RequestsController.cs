@@ -43,6 +43,6 @@ public class RequestsController : ControllerBase
         var isReviewer = role == RoleNames.Admin || role == RoleNames.EnvironmentalAuthority;
         var scopedFilters = isReviewer ? filters : filters with { RequesterId = GetUserId() };
 
-        return Ok(await _mediator.Send(new GetPlatformRequestsQuery(scopedFilters), ct));
+        return Ok(await _mediator.Send(new GetPlatformRequestsQuery(scopedFilters, role), ct));
     }
 }

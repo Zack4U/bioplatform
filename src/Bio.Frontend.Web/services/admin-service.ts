@@ -23,6 +23,8 @@ import type {
     OrderAdminItem,
     OrderAdminDetail,
     OrderAdminFilters,
+    CertificationAdminItem,
+    CertificationAdminFilters,
     ReviewAdminItem,
     ReviewManagedItem,
     PermitAdminItem,
@@ -127,6 +129,27 @@ export const activateProduct = (id: string) =>
 
 export const deactivateProduct = (id: string) =>
     apiPost<undefined, void>(ADMIN_ROUTES.PRODUCTS.DEACTIVATE(id), undefined);
+
+export const approveProduct = (id: string) =>
+    apiPost<undefined, void>(ADMIN_ROUTES.PRODUCTS.APPROVE(id), undefined);
+
+export const rejectProduct = (id: string, reason: string) =>
+    apiPost<{ reason: string }, void>(ADMIN_ROUTES.PRODUCTS.REJECT(id), { reason });
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CERTIFICATIONS (admin moderation)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const getManagedCertifications = (params: CertificationAdminFilters) =>
+    apiGetPaginated<CertificationAdminItem>(
+        ADMIN_ROUTES.CERTIFICATIONS.MANAGED, params as Record<string, unknown>);
+
+export const approveCertification = (id: string) =>
+    apiPost<undefined, CertificationAdminItem>(ADMIN_ROUTES.CERTIFICATIONS.APPROVE(id), undefined);
+
+export const rejectCertification = (id: string, reason: string) =>
+    apiPost<{ reason: string }, CertificationAdminItem>(
+        ADMIN_ROUTES.CERTIFICATIONS.REJECT(id), { reason });
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ORDERS

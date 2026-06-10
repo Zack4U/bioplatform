@@ -98,6 +98,9 @@ export interface ManageProductListItem extends Omit<ProductListItem, "entreprene
   baseSpeciesId: string;
   categoryId: number | null;
   description: string;
+  /** True once an Admin/Authority validated the product. Pending = false → "Solicitud". */
+  isApproved: boolean;
+  rejectionReason?: string | null;
   createdAt: string;
   updatedAt: string | null;
   /** ABS permit ID associated with this product (Nagoya Protocol) — not returned by managed list endpoint */
@@ -259,6 +262,8 @@ export interface ProductSearchParams {
   isActive?: boolean;
   /** Filter to only products that have at least one sustainability certification */
   hasCertification?: boolean;
+  isApproved?: boolean;
+  productId?: string;
 }
 
 // ── Checkout / Addresses ─────────────────────────────────────────────────────
@@ -315,6 +320,8 @@ export interface FavoriteStatus {
 /** Payload for creating a new product (entrepreneur only) */
 export interface CreateProductRequest {
   name: string;
+  /** URL-friendly slug auto-generated from name. If omitted, the backend generates it. */
+  slug?: string;
   description: string;
   basePrice: number;
   sellPrice: number;
@@ -331,6 +338,7 @@ export interface CreateProductRequest {
 /** Payload for updating an existing product (entrepreneur only) */
 export interface UpdateProductRequest {
   name: string;
+  slug?: string;
   description: string;
   basePrice: number;
   sellPrice: number;

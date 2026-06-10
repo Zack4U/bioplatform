@@ -28,7 +28,8 @@ public class CommunityPostRepository : ICommunityPostRepository
             .FirstOrDefaultAsync(p => p.Id == id, ct);
 
     public async Task<(IReadOnlyList<CommunityPost> Items, int TotalCount)> GetPagedAsync(
-        string? category, string? status, int page, int pageSize, CancellationToken ct)
+        string? category, string? status, int page, int pageSize, CancellationToken ct,
+        string? search = null)
     {
         var q = _ctx.CommunityPosts
             .Include(p => p.AuthorUser)
@@ -40,6 +41,11 @@ public class CommunityPostRepository : ICommunityPostRepository
 
         if (!string.IsNullOrWhiteSpace(status))
             q = q.Where(p => p.Status == status);
+
+        if (!string.IsNullOrWhiteSpace(search))
+            q = q.Where(p => p.Title.Contains(search)
+                || p.Content.Contains(search)
+                || p.AuthorUser.FullName.Contains(search));
 
         q = q.OrderByDescending(p => p.IsPinned)
               .ThenByDescending(p => p.CreatedAt);

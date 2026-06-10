@@ -75,6 +75,8 @@ export interface ClassificationResponse {
 /** Maps to ModelInfoResponse Pydantic model */
 export interface ModelInfoResponse {
     modelName: string;
+    /** Active model version tag from the registry (null when no version is active) */
+    version: string | null;
     numClasses: number;
     imageSize: number;
     isLoaded: boolean;

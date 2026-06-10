@@ -14,8 +14,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import type { PlatformRequestItem } from "@/types/admin";
-import { Eye, FileText, Image as ImageIcon, RefreshCw, Shield } from "lucide-react";
+import { Award, Eye, FileText, Image as ImageIcon, RefreshCw, Shield } from "lucide-react";
 import { useRequestsList } from "@/hooks/features/admin/useRequestsManagement";
+import { translateLabel } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -23,20 +24,35 @@ const TYPE_LABELS: Record<string, string> = {
     image_validation: "Validación de Imagen",
     product_approval: "Aprobación de Producto",
     account_verification: "Verificación de Cuenta",
+    certification: "Certificación",
 };
 
 const STATUS_VARIANT: Record<string, "warning" | "success" | "destructive" | "info" | "default"> = {
     pending: "warning",
     active: "success",
+    approved: "success",
     rejected: "destructive",
     expired: "destructive",
+    suspended: "warning",
     in_review: "info",
+};
+
+/** Spanish labels for request statuses (case-insensitive lookup via translateLabel). */
+const STATUS_LABELS: Record<string, string> = {
+    pending: "Pendiente",
+    active: "Activo",
+    approved: "Aprobada",
+    rejected: "Rechazada",
+    expired: "Expirado",
+    suspended: "Suspendido",
+    in_review: "En Revisión",
 };
 
 const TYPE_ICONS: Record<string, React.ReactNode> = {
     abs_permit: <Shield className="h-4 w-4" />,
     image_validation: <ImageIcon className="h-4 w-4" />,
     product_approval: <FileText className="h-4 w-4" />,
+    certification: <Award className="h-4 w-4" />,
 };
 
 const columns: ColumnDef<PlatformRequestItem>[] = [
@@ -52,7 +68,7 @@ const columns: ColumnDef<PlatformRequestItem>[] = [
     { key: "subject", header: "Asunto", hideOnMobile: true, render: (r) => <span className="truncate max-w-[200px] inline-block">{r.subject}</span> },
     {
         key: "status", header: "Estado",
-        render: (r) => <StatusBadge label={r.status} variant={STATUS_VARIANT[r.status] ?? "default"} />,
+        render: (r) => <StatusBadge label={translateLabel(STATUS_LABELS, r.status)} variant={STATUS_VARIANT[r.status?.toLowerCase()] ?? "default"} />,
     },
     { key: "createdAt", header: "Fecha", hideOnMobile: true, render: (r) => new Date(r.createdAt).toLocaleDateString("es-CO") },
 ];
@@ -60,6 +76,8 @@ const columns: ColumnDef<PlatformRequestItem>[] = [
 export function RequestsManagement() {
     const { user } = useAuthStore();
     const isReviewer = user?.roles?.some((r) => r === "ADMIN" || r === "AUTHORITY") ?? false;
+    const isResearcher = user?.roles?.some((r) => r === "RESEARCHER") ?? false;
+    const isReviewerOrResearcher = isReviewer || isResearcher;
 
     const [search, setSearch] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
@@ -71,7 +89,10 @@ export function RequestsManagement() {
     const router = useRouter();
 
     const { data, isLoading, refetch } = useRequestsList({
-        type: typeFilter && typeFilter !== "all" ? typeFilter : undefined,
+        // Researchers can only see image_validation requests
+        type: typeFilter && typeFilter !== "all"
+            ? typeFilter
+            : (isReviewer ? undefined : user?.roles?.includes("RESEARCHER") ? "image_validation" : undefined),
         status: statusFilter && statusFilter !== "all" ? statusFilter : undefined,
         search: search || undefined,
         page,
@@ -82,12 +103,29 @@ export function RequestsManagement() {
     const totalPages = data?.totalPages ?? 1;
 
     const handleNavigateToRef = useCallback((item: PlatformRequestItem) => {
-        if (item.referenceType === "SpeciesImage" && item.referenceId) {
-            router.push(`/admin/images?speciesId=${item.referenceId}`);
-        } else if (item.referenceType === "AbsPermit") {
-            router.push(`/admin/permits`);
+        // Deep-link to the matching module, filtered/highlighted to this specific request.
+        switch (item.referenceType) {
+            case "SpeciesImage":
+                // parentReferenceId = speciesId, parentReferenceName = speciesName
+                router.push(
+                    `/admin/images?speciesId=${item.parentReferenceId ?? item.referenceId ?? ""}` +
+                    (item.parentReferenceName ? `&speciesName=${encodeURIComponent(item.parentReferenceName)}` : "")
+                );
+                break;
+            case "AbsPermit":
+                router.push(`/admin/permits?permitId=${item.referenceId ?? ""}`);
+                break;
+            case "Product":
+                router.push(`/admin/products?productId=${item.referenceId ?? ""}&filter=pending`);
+                break;
+            case "Certification":
+                router.push(`/admin/certifications?certId=${item.referenceId ?? ""}&filter=pending`);
+                break;
         }
     }, [router]);
+
+    const canNavigateToRef = (item: PlatformRequestItem) =>
+        ["SpeciesImage", "AbsPermit", "Product", "Certification"].includes(item.referenceType ?? "");
 
     const actions: RowAction<PlatformRequestItem>[] = [
         { label: "Ver detalle", icon: <Eye className="h-4 w-4" />, onClick: (r) => { setSelected(r); setIsDetailOpen(true); } },
@@ -97,9 +135,9 @@ export function RequestsManagement() {
         <div className="space-y-6">
             <div className="flex items-start justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{isReviewer ? "Solicitudes" : "Mis Solicitudes"}</h1>
+                    <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{isReviewerOrResearcher ? "Solicitudes" : "Mis Solicitudes"}</h1>
                     <p className="text-muted-foreground">
-                        {isReviewer
+                        {isReviewerOrResearcher
                             ? "Centro de solicitudes pendientes de revisión en la plataforma"
                             : "Estado de tus solicitudes enviadas (permisos ABS, validación de imágenes, etc.)"}
                     </p>
@@ -110,11 +148,12 @@ export function RequestsManagement() {
             </div>
 
             {/* Summary stats */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
                 {[
                     { label: "Permisos ABS", type: "abs_permit" },
                     { label: "Imágenes", type: "image_validation" },
                     { label: "Productos", type: "product_approval" },
+                    { label: "Certificaciones", type: "certification" },
                     { label: "Verificaciones", type: "account_verification" },
                 ].map(({ label, type }) => {
                     const count = (data?.items ?? []).filter((r) => r.type === type).length;
@@ -137,7 +176,7 @@ export function RequestsManagement() {
                 onSearchChange={(v) => { setSearch(v); setPage(1); }}
                 searchPlaceholder="Buscar por solicitante o asunto..."
                 currentPage={page} totalPages={totalPages} onPageChange={setPage}
-                emptyTitle={isReviewer ? "No hay solicitudes pendientes" : "No has enviado solicitudes"} emptyIcon={<FileText className="h-6 w-6" />}
+                emptyTitle={isReviewerOrResearcher ? "No hay solicitudes pendientes" : "No has enviado solicitudes"} emptyIcon={<FileText className="h-6 w-6" />}
                 toolbar={
                     <div className="flex gap-2">
                         <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1); }}>
@@ -179,7 +218,7 @@ export function RequestsManagement() {
                                     </Badge>
                                 </div>
                                 <div><p className="text-muted-foreground">Estado</p>
-                                    <StatusBadge label={selected.status} variant={STATUS_VARIANT[selected.status] ?? "default"} />
+                                    <StatusBadge label={translateLabel(STATUS_LABELS, selected.status)} variant={STATUS_VARIANT[selected.status?.toLowerCase()] ?? "default"} />
                                 </div>
                                 <div className="col-span-2"><p className="text-muted-foreground">Asunto</p><p className="font-medium">{selected.subject}</p></div>
                                 {selected.description && (
@@ -211,7 +250,7 @@ export function RequestsManagement() {
                             )}
 
                             <div className="flex justify-end gap-2">
-                                {(selected.referenceType === "SpeciesImage" || selected.referenceType === "AbsPermit") && (
+                                {canNavigateToRef(selected) && (
                                     <Button variant="outline" size="sm" onClick={() => { handleNavigateToRef(selected); setIsDetailOpen(false); }}>
                                         Ver en módulo →
                                     </Button>

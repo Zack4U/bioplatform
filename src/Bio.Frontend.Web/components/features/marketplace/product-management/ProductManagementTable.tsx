@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import type { ManageProductListItem } from "@/types";
 import { cn } from "@/lib/utils";
-import { ExternalLink, ImageIcon, Package, Pencil, Power, PowerOff, Star, Trash2 } from "lucide-react";
+import { Check, ExternalLink, ImageIcon, Package, Pencil, Power, PowerOff, RotateCcw, Star, Trash2, X } from "lucide-react";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -29,6 +29,9 @@ export interface ProductManagementTableProps {
   onManageImages: (product: ManageProductListItem) => void;
   onActivate?: (productId: string) => void;
   onDeactivate?: (productId: string) => void;
+  onApprove?: (productId: string) => void;
+  onReject?: (productId: string) => void;
+  onUnapprove?: (productId: string) => void;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -80,7 +83,6 @@ function AdminSkeletonRow() {
       <TableCell><Skeleton className="h-4 w-36" /></TableCell>
       <TableCell><Skeleton className="h-4 w-20" /></TableCell>
       <TableCell><Skeleton className="h-4 w-20" /></TableCell>
-      <TableCell><Skeleton className="h-4 w-20" /></TableCell>
       <TableCell><Skeleton className="h-5 w-16 rounded-full" /></TableCell>
       <TableCell><Skeleton className="h-4 w-24" /></TableCell>
       <TableCell><Skeleton className="h-8 w-8 rounded-md" /></TableCell>
@@ -100,6 +102,9 @@ export function ProductManagementTable({
   onManageImages,
   onActivate,
   onDeactivate,
+  onApprove,
+  onReject,
+  onUnapprove,
 }: ProductManagementTableProps) {
   const showSkeleton = isLoading;
   const showEmpty = !isLoading && products.length === 0;
@@ -132,7 +137,6 @@ export function ProductManagementTable({
             <TableRow>
               <TableHead scope="col">Producto</TableHead>
               <TableHead scope="col" className="hidden md:table-cell">Emprendedor</TableHead>
-              <TableHead scope="col" className="hidden md:table-cell">Especie</TableHead>
               <TableHead scope="col" className="hidden lg:table-cell">Categoria</TableHead>
               <TableHead scope="col">Estado</TableHead>
               <TableHead scope="col" className="hidden lg:table-cell">Creado</TableHead>
@@ -164,6 +168,9 @@ export function ProductManagementTable({
                     product={product}
                     onActivate={onActivate}
                     onDeactivate={onDeactivate}
+                    onApprove={onApprove}
+                    onReject={onReject}
+                    onUnapprove={onUnapprove}
                   />
                 ) : (
                   <EntrepreneurProductRow
@@ -187,9 +194,14 @@ interface AdminProductRowProps {
   product: ManageProductListItem;
   onActivate?: (productId: string) => void;
   onDeactivate?: (productId: string) => void;
+  onApprove?: (productId: string) => void;
+  onReject?: (productId: string) => void;
+  onUnapprove?: (productId: string) => void;
 }
 
-function AdminProductRow({ product, onActivate, onDeactivate }: AdminProductRowProps) {
+function AdminProductRow({ product, onActivate, onDeactivate, onApprove, onReject, onUnapprove }: AdminProductRowProps) {
+  // A product not yet approved is a pending "Solicitud".
+  const pending = !product.isApproved;
   return (
     <TableRow>
       <TableCell>
@@ -211,12 +223,6 @@ function AdminProductRow({ product, onActivate, onDeactivate }: AdminProductRowP
         </span>
       </TableCell>
 
-      <TableCell className="hidden md:table-cell">
-        <span className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded text-muted-foreground">
-          {shortId(product.baseSpeciesId)}
-        </span>
-      </TableCell>
-
       <TableCell className="hidden lg:table-cell">
         <span className="text-sm text-muted-foreground">
           {product.categoryName ?? "-"}
@@ -224,10 +230,20 @@ function AdminProductRow({ product, onActivate, onDeactivate }: AdminProductRowP
       </TableCell>
 
       <TableCell>
-        <StatusBadge
-          label={product.isActive ? "Activo" : "Inactivo"}
-          variant={product.isActive ? "success" : "default"}
-        />
+        {pending ? (
+          product.rejectionReason ? (
+            <div title={product.rejectionReason}>
+              <StatusBadge label="Rechazado" variant="destructive" />
+            </div>
+          ) : (
+            <StatusBadge label="Pendiente" variant="warning" />
+          )
+        ) : (
+          <StatusBadge
+            label={product.isActive ? "Activo" : "Inactivo"}
+            variant={product.isActive ? "success" : "default"}
+          />
+        )}
       </TableCell>
 
       <TableCell className="hidden lg:table-cell">
@@ -238,26 +254,60 @@ function AdminProductRow({ product, onActivate, onDeactivate }: AdminProductRowP
 
       <TableCell className="text-right">
         <div className="flex items-center justify-end gap-1">
-          {product.isActive ? (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={`Desactivar ${product.name}`}
-              title="Desactivar"
-              onClick={() => onDeactivate?.(product.id)}
-            >
-              <PowerOff className="h-4 w-4 text-destructive" aria-hidden="true" />
-            </Button>
+          {pending ? (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Validar ${product.name}`}
+                title="Validar / Aprobar"
+                onClick={() => onApprove?.(product.id)}
+              >
+                <Check className="h-4 w-4 text-green-600" aria-hidden="true" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Rechazar ${product.name}`}
+                title="Rechazar"
+                onClick={() => onReject?.(product.id)}
+              >
+                <X className="h-4 w-4 text-destructive" aria-hidden="true" />
+              </Button>
+            </>
           ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={`Activar ${product.name}`}
-              title="Activar"
-              onClick={() => onActivate?.(product.id)}
-            >
-              <Power className="h-4 w-4 text-green-600" aria-hidden="true" />
-            </Button>
+            <>
+              {product.isActive ? (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Desactivar ${product.name}`}
+                  title="Desactivar"
+                  onClick={() => onDeactivate?.(product.id)}
+                >
+                  <PowerOff className="h-4 w-4 text-destructive" aria-hidden="true" />
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Activar ${product.name}`}
+                  title="Activar"
+                  onClick={() => onActivate?.(product.id)}
+                >
+                  <Power className="h-4 w-4 text-green-600" aria-hidden="true" />
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Desaprobar ${product.name}`}
+                title="Desaprobar (Anular Aprobación)"
+                onClick={() => onUnapprove?.(product.id)}
+              >
+                <RotateCcw className="h-4 w-4 text-amber-600" aria-hidden="true" />
+              </Button>
+            </>
           )}
           <Button
             variant="ghost"
@@ -363,10 +413,20 @@ function EntrepreneurProductRow({
       </TableCell>
 
       <TableCell>
-        <StatusBadge
-          label={product.isActive ? "Activo" : "Inactivo"}
-          variant={product.isActive ? "success" : "default"}
-        />
+        {!product.isApproved ? (
+          product.rejectionReason ? (
+            <div title={product.rejectionReason}>
+              <StatusBadge label="Rechazado" variant="destructive" />
+            </div>
+          ) : (
+            <StatusBadge label="Pendiente" variant="warning" />
+          )
+        ) : (
+          <StatusBadge
+            label={product.isActive ? "Activo" : "Inactivo"}
+            variant={product.isActive ? "success" : "default"}
+          />
+        )}
       </TableCell>
 
       <TableCell className="hidden lg:table-cell">

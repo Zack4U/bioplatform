@@ -84,6 +84,8 @@ public record GetManagedProductsQuery : IRequest<PaginatedResult<ProductManagedL
 {
     public Guid? EntrepreneurId { get; init; }
     public bool? IsActive { get; init; }
+    /// <summary>Filter by approval state. false = pending "Solicitudes" queue.</summary>
+    public bool? IsApproved { get; init; }
     public string? Query { get; init; }
     public int? CategoryId { get; init; }
     public string SortBy { get; init; } = "createdAt";
@@ -101,11 +103,12 @@ public class GetManagedProductsQueryHandler : IRequestHandler<GetManagedProducts
     {
         var (items, total) = await _repo.GetManagedFilteredAsync(
             q.EntrepreneurId, q.IsActive, q.Query, q.CategoryId,
-            q.SortBy, q.SortOrder, q.Page, q.PageSize, ct);
+            q.SortBy, q.SortOrder, q.Page, q.PageSize, ct, q.IsApproved);
 
         var dtos = items.Select(p => new ProductManagedListItemDTO(
             p.Id, p.Slug, p.Name, p.ThumbnailUrl,
             p.BasePrice, p.SellPrice, p.StockQuantity, p.IsActive,
+            p.IsApproved, p.RejectionReason,
             p.Sku, p.Description, p.BaseSpeciesId, p.CategoryId,
             p.Category?.Name, p.EntrepreneurId, p.Entrepreneur?.FullName,
             p.CreatedAt, p.UpdatedAt)).ToList();
@@ -133,8 +136,10 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
         var cached = await _cache.GetAsync<ProductDetailDTO>(cacheKey, ct);
         if (cached is not null) return cached;
 
-        var product = await _repo.GetByIdWithDetailsAsync(request.Id, ct)
-            ?? throw new NotFoundException("Product", request.Id);
+        var product = await _repo.GetByIdWithDetailsAsync(request.Id, ct);
+        // Public endpoint: inactive / soft-deleted products must not be reachable.
+        if (product is null || !product.IsActive)
+            throw new NotFoundException("Product", request.Id);
 
         var dto = CreateProductCommandHandler.MapToDetail(product);
         await _cache.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(10), ct);
@@ -161,8 +166,10 @@ public class GetProductBySlugQueryHandler : IRequestHandler<GetProductBySlugQuer
         var cached = await _cache.GetAsync<ProductDetailDTO>(cacheKey, ct);
         if (cached is not null) return cached;
 
-        var product = await _repo.GetBySlugWithDetailsAsync(request.Slug, ct)
-            ?? throw new NotFoundException("Product", request.Slug);
+        var product = await _repo.GetBySlugWithDetailsAsync(request.Slug, ct);
+        // Public endpoint: inactive / soft-deleted products must not be reachable.
+        if (product is null || !product.IsActive)
+            throw new NotFoundException("Product", request.Slug);
 
         var dto = CreateProductCommandHandler.MapToDetail(product);
         await _cache.SetAsync(cacheKey, dto, TimeSpan.FromMinutes(10), ct);

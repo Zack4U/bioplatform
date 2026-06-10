@@ -3,7 +3,8 @@
  * PermitsManagement — ABS Permits admin. Connected to real API.
  * Includes create, detail view, revoke, and PDF document upload.
  */
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/store/auth-store";
 import { StatusBadge, getPermitStatusVariant } from "@/components/common";
 import { AdminDataTable, type ColumnDef, type RowAction } from "@/components/features/admin/shared/AdminDataTable";
@@ -19,12 +20,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ABS_PERMIT_STATUS, ABS_PERMIT_STATUS_LABELS, translateLabel } from "@/lib/constants";
 import type { PermitAdminItem } from "@/types/admin";
-import { CheckCircle2, Eye, FileText, Plus, Send, Shield, XCircle, ExternalLink } from "lucide-react";
+import { CheckCircle2, Eye, FileText, Send, Shield, XCircle, ExternalLink } from "lucide-react";
 import {
     usePermitsList, useEntrepreneurPermitsList, useRevokePermit, useUploadPermitDocument,
     useCancelAbsPermitRequest, useRejectAbsPermit,
 } from "@/hooks/features/admin/usePermitsManagement";
-import { PermitFormDialog } from "./PermitFormDialog";
 import { PermitRequestDialog } from "./PermitRequestDialog";
 import { ApprovePermitDialog } from "./ApprovePermitDialog";
 
@@ -46,18 +46,20 @@ export function PermitsManagement() {
     const { user } = useAuthStore();
     const isEntrepreneur = user?.roles?.includes("ENTREPRENEUR") ?? false;
 
+    const searchParams = useSearchParams();
+
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
     const [page, setPage] = useState(1);
     const [selected, setSelected] = useState<PermitAdminItem | null>(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
-    const [isFormOpen, setIsFormOpen] = useState(false);
     const [isRequestOpen, setIsRequestOpen] = useState(false);
     const [revokeTarget, setRevokeTarget] = useState<PermitAdminItem | null>(null);
     const [cancelTarget, setCancelTarget] = useState<PermitAdminItem | null>(null);
     const [approveTarget, setApproveTarget] = useState<PermitAdminItem | null>(null);
     const [rejectTarget, setRejectTarget] = useState<PermitAdminItem | null>(null);
     const [rejectReason, setRejectReason] = useState("");
+    const [deepLinked, setDeepLinked] = useState(false);
 
     const statusParam = statusFilter && statusFilter !== "all" ? statusFilter : undefined;
 
@@ -75,8 +77,25 @@ export function PermitsManagement() {
     );
 
     const isLoading = isEntrepreneur ? isEntrepreneurLoading : isAdminLoading;
-    const items = isEntrepreneur ? (entrepreneurPermits ?? []) : (adminData?.items ?? []);
+    const items = useMemo(
+        () => (isEntrepreneur ? (entrepreneurPermits ?? []) : (adminData?.items ?? [])),
+        [isEntrepreneur, entrepreneurPermits, adminData]
+    );
     const totalPages = isEntrepreneur ? 1 : (adminData?.totalPages ?? 1);
+
+    // Deep-link: if the URL contains ?permitId=, auto-open that permit's detail dialog.
+    useEffect(() => {
+        if (deepLinked || isLoading || items.length === 0) return;
+        const permitId = searchParams.get("permitId");
+        if (!permitId) return;
+        const found = items.find((p) => p.id === permitId);
+        if (found) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setSelected(found);
+            setIsDetailOpen(true);
+            setDeepLinked(true);
+        }
+    }, [items, isLoading, searchParams, deepLinked]);
 
     const revokePermit = useRevokePermit();
     const cancelRequest = useCancelAbsPermitRequest();
@@ -108,13 +127,9 @@ export function PermitsManagement() {
                     <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Permisos ABS</h1>
                     <p className="text-muted-foreground">Acceso a recursos genéticos — Protocolo de Nagoya</p>
                 </div>
-                {isEntrepreneur ? (
+                {isEntrepreneur && (
                     <Button onClick={() => setIsRequestOpen(true)}>
                         <Send className="mr-2 h-4 w-4" /> Solicitar Permiso
-                    </Button>
-                ) : (
-                    <Button onClick={() => setIsFormOpen(true)}>
-                        <Plus className="mr-2 h-4 w-4" /> Nuevo Permiso
                     </Button>
                 )}
             </div>
@@ -248,14 +263,7 @@ export function PermitsManagement() {
                 </DialogContent>
             </Dialog>
 
-            {/* Create dialog — admin/authority only */}
-            {!isEntrepreneur && (
-                <PermitFormDialog
-                    open={isFormOpen}
-                    onOpenChange={setIsFormOpen}
-                    entrepreneurId={undefined}
-                />
-            )}
+
 
             {/* Request dialog — entrepreneur only */}
             {isEntrepreneur && (

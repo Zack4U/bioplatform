@@ -14,5 +14,12 @@ public record SpeciesListItemDTO(
     bool IsSensitive,
     string? Kingdom,
     string? Family,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    int ImageCount,
+    int DistributionCount,
+    bool LegalStatus,
+    string? Phylum,
+    string? ClassName,
+    string? OrderName,
+    string? Genus
 );

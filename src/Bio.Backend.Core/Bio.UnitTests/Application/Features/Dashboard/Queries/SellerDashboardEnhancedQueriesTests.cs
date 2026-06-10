@@ -28,11 +28,11 @@ public class SellerDashboardEnhancedQueriesTests
         var permit = new AbsPermit(entrepreneurId, Guid.NewGuid(), "RES1", DateTime.UtcNow, DateTime.UtcNow.AddDays(40), "Auth");
         var permits = new List<AbsPermit> { permit };
 
-        _productRepoMock.Setup(r => r.GetManagedFilteredAsync(entrepreneurId, null, null, null, "name", "asc", 1, 1000, default))
+        _productRepoMock.Setup(r => r.GetManagedFilteredAsync(entrepreneurId, null, null, null, "name", "asc", 1, 1000, default, null))
             .ReturnsAsync((products, 1));
-        _orderRepoMock.Setup(r => r.GetByEntrepreneurIdAsync(entrepreneurId, null, 1, 10000, default, null))
+        _orderRepoMock.Setup(r => r.GetByEntrepreneurIdAsync(entrepreneurId, null, 1, 10000, default, null, null))
             .ReturnsAsync((orders, 1));
-        _orderRepoMock.Setup(r => r.GetByEntrepreneurIdAsync(entrepreneurId, null, 1, 10000, default, It.IsAny<DateTime>()))
+        _orderRepoMock.Setup(r => r.GetByEntrepreneurIdAsync(entrepreneurId, null, 1, 10000, default, It.IsAny<DateTime>(), null))
             .ReturnsAsync((orders, 1));
         _reviewRepoMock.Setup(r => r.GetAggregateByEntrepreneurIdAsync(entrepreneurId, default))
             .ReturnsAsync((4.5d, 10));

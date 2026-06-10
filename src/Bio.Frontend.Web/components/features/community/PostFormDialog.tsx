@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/select";
 import { RichTextEditor } from "@/components/common/RichTextEditor";
 import { usePostForm } from "@/hooks/features/community";
-import { POST_CATEGORIES } from "@/lib/constants";
+import { CATEGORY_LABELS } from "@/lib/constants";
 import type { CommunityPostListItem } from "@/types";
 
 interface PostFormDialogProps {
@@ -92,9 +92,11 @@ export function PostFormDialog({ open, onOpenChange, editPost }: PostFormDialogP
                                 <SelectValue placeholder="Selecciona una categoria..." />
                             </SelectTrigger>
                             <SelectContent>
-                                {POST_CATEGORIES.map((cat) => (
-                                    <SelectItem key={cat} value={cat}>
-                                        {cat}
+                                {/* value = backend English key, label = Spanish — keeps
+                                    stored categories aligned with the feed filter keys. */}
+                                {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+                                    <SelectItem key={key} value={key}>
+                                        {label}
                                     </SelectItem>
                                 ))}
                             </SelectContent>

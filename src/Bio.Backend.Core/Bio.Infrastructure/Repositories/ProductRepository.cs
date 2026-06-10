@@ -57,12 +57,14 @@ public class ProductRepository : IProductRepository
 
     public async Task<(IReadOnlyList<Product> Items, int TotalCount)> GetManagedFilteredAsync(
         Guid? entrepreneurId, bool? isActive, string? query, int? categoryId,
-        string sortBy, string sortOrder, int page, int pageSize, CancellationToken ct)
+        string sortBy, string sortOrder, int page, int pageSize, CancellationToken ct,
+        bool? isApproved)
     {
         var q = _ctx.Products.Include(p => p.Category).Include(p => p.Entrepreneur).AsQueryable();
 
         if (entrepreneurId.HasValue) q = q.Where(p => p.EntrepreneurId == entrepreneurId);
         if (isActive.HasValue) q = q.Where(p => p.IsActive == isActive);
+        if (isApproved.HasValue) q = q.Where(p => p.IsApproved == isApproved);
         if (!string.IsNullOrWhiteSpace(query))
             q = q.Where(p => p.Name.Contains(query) || p.Description.Contains(query));
         if (categoryId.HasValue) q = q.Where(p => p.CategoryId == categoryId);
@@ -84,6 +86,15 @@ public class ProductRepository : IProductRepository
 
     public async Task<bool> ExistsBySlugExcludingIdAsync(string slug, Guid excludeId, CancellationToken ct)
         => await _ctx.Products.AnyAsync(p => p.Slug == slug && p.Id != excludeId, ct);
+
+    public async Task<IReadOnlyList<Product>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default)
+    {
+        var idList = ids.Distinct().ToList();
+        if (idList.Count == 0) return Array.Empty<Product>();
+        return await _ctx.Products.Include(p => p.Category).Include(p => p.Reviews)
+            .Where(p => idList.Contains(p.Id))
+            .ToListAsync(ct);
+    }
 
     public async Task<(IReadOnlyList<ProductCategory> Categories, decimal MinPrice, decimal MaxPrice, int TotalCount)> GetFilterMetaAsync(CancellationToken ct)
     {

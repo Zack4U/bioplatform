@@ -42,10 +42,11 @@ public class CommunityController : ControllerBase
     public async Task<IActionResult> GetPosts(
         [FromQuery] string? category,
         [FromQuery] string? status,
+        [FromQuery(Name = "q")] string? search,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
         CancellationToken ct = default)
-        => Ok(await _mediator.Send(new GetCommunityPostsQuery(category, status, page, pageSize), ct));
+        => Ok(await _mediator.Send(new GetCommunityPostsQuery(category, status, page, pageSize, search), ct));
 
     /// <summary>Returns a single community post with comment count. Public.</summary>
     [HttpGet("posts/{postId:guid}")]
@@ -94,9 +95,9 @@ public class CommunityController : ControllerBase
         return NoContent();
     }
 
-    /// <summary>Pins a community post. Admin only.</summary>
+    /// <summary>Pins a community post. Admin, Authority, or Community moderator.</summary>
     [HttpPost("posts/{postId:guid}/pin")]
-    [Authorize(Roles = RoleNames.Admin)]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Community}")]
     [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
     public async Task<IActionResult> PinPost(Guid postId, CancellationToken ct = default)
     {
@@ -105,9 +106,9 @@ public class CommunityController : ControllerBase
         return Ok(result);
     }
 
-    /// <summary>Unpins a community post. Admin only.</summary>
+    /// <summary>Unpins a community post. Admin, Authority, or Community moderator.</summary>
     [HttpDelete("posts/{postId:guid}/pin")]
-    [Authorize(Roles = RoleNames.Admin)]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Community}")]
     [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
     public async Task<IActionResult> UnpinPost(Guid postId, CancellationToken ct = default)
     {
@@ -144,7 +145,7 @@ public class CommunityController : ControllerBase
 
     /// <summary>Hides a post for violating community guidelines. Admin/Community moderator only.</summary>
     [HttpPost("posts/{postId:guid}/hide")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Community}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Community}")]
     [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -157,7 +158,7 @@ public class CommunityController : ControllerBase
 
     /// <summary>Unhides a post, restoring it to Published. Admin/Community moderator only.</summary>
     [HttpDelete("posts/{postId:guid}/hide")]
-    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Community}")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority},{RoleNames.Community}")]
     [ProducesResponseType(typeof(CommunityPostDetailDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

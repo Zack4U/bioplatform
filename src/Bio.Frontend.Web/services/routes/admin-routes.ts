@@ -58,6 +58,15 @@ export const ADMIN_ROUTES = {
         BY_ID:        (id: string) => `/manage/products/${id}` as const,
         ACTIVATE:     (id: string) => `/manage/products/${id}/activate` as const,
         DEACTIVATE:   (id: string) => `/manage/products/${id}/deactivate` as const,
+        APPROVE:      (id: string) => `/manage/products/${id}/approve` as const,
+        REJECT:       (id: string) => `/manage/products/${id}/reject` as const,
+    },
+
+    // ─── Certifications (admin/manage) ──────────────────────────────────────
+    CERTIFICATIONS: {
+        MANAGED:      "/v1/certifications/manage",
+        APPROVE:      (id: string) => `/v1/certifications/${id}/approve` as const,
+        REJECT:       (id: string) => `/v1/certifications/${id}/reject` as const,
     },
 
     // ─── Orders ─────────────────────────────────────────────────────────────
