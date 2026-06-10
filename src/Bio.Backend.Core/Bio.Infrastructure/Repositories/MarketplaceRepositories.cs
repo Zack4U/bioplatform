@@ -141,7 +141,11 @@ public class OrderRepository : IOrderRepository
 
     public async Task<(IReadOnlyList<Order> Items, int TotalCount)> GetByBuyerIdAsync(Guid buyerId, int page, int pageSize, CancellationToken ct)
     {
-        var q = _ctx.Orders.Include(o => o.OrderItems).Where(o => o.BuyerId == buyerId).OrderByDescending(o => o.CreatedAt);
+        var q = _ctx.Orders
+            .Include(o => o.OrderItems).ThenInclude(i => i.Product)
+            .Include(o => o.ShippingAddress)
+            .Include(o => o.BillingAddress)
+            .Where(o => o.BuyerId == buyerId).OrderByDescending(o => o.CreatedAt);
         var total = await q.CountAsync(ct);
         var items = await q.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
         return (items, total);

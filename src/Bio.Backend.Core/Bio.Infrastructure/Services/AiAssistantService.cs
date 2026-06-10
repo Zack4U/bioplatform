@@ -28,8 +28,8 @@ public class AiAssistantService : IAiAssistantService
     {
         try
         {
-            // El AiServiceSettings.BaseUrl debe estar configurado en appsettings.json (ej: http://localhost:8000)
-            var baseUrl = _configuration["AiServiceSettings:BaseUrl"] ?? "http://localhost:8000";
+            // El AiService.BaseUrl debe estar configurado en appsettings.json (ej: http://localhost:8000)
+            var baseUrl = _configuration["AiService:BaseUrl"] ?? "http://localhost:8000";
             var url = $"{baseUrl.TrimEnd('/')}/api/v1/assistant/ask";
 
             var requestBody = new

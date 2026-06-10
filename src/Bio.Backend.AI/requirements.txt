@@ -22,8 +22,8 @@ pillow==10.2.0
 
 # --- AI / Deep Learning (PyTorch Only) ---
 # Note: pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130
-torch==2.2.0
-torchvision==0.17.0
+# torch==2.2.0
+# torchvision==0.17.0
 
 # --- RAG & LLMs (LangChain Ecosystem) ---
 langchain==0.1.5

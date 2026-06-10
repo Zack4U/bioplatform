@@ -10,6 +10,7 @@
  * 4. Direcciones (AddressBook)
  * 5. Favoritos (FavoritesGrid)
  * 6. Mis Reseñas (MyReviewsList)
+ * 7. Mis Pedidos (MyOrdersList)
  *
  * ABS permits moved to the admin panel (/admin/permits).
  *
@@ -20,6 +21,7 @@
 
 import { AddressBook } from "@/components/features/profile/AddressBook";
 import { FavoritesGrid } from "@/components/features/profile/FavoritesGrid";
+import { MyOrdersList } from "@/components/features/profile/MyOrdersList";
 import { MyReviewsList } from "@/components/features/profile/MyReviewsList";
 import { ProfileInfoForm } from "@/components/features/profile/ProfileInfoForm";
 import { SecuritySection } from "@/components/features/profile/SecuritySection";
@@ -122,6 +124,12 @@ export default function ProfilePage() {
                         Seguridad
                     </TabsTrigger>
                     <TabsTrigger
+                        value="orders"
+                        className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                    >
+                        Mis Pedidos
+                    </TabsTrigger>
+                    <TabsTrigger
                         value="addresses"
                         className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                     >
@@ -153,6 +161,10 @@ export default function ProfilePage() {
 
                 <TabsContent value="security" className="mt-6 focus-visible:outline-none">
                     <SecuritySection />
+                </TabsContent>
+
+                <TabsContent value="orders" className="mt-6 focus-visible:outline-none">
+                    <MyOrdersList />
                 </TabsContent>
 
                 <TabsContent value="addresses" className="mt-6 focus-visible:outline-none">
