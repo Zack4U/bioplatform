@@ -55,7 +55,9 @@
           "project/data-dictionary",
           "project/guidelines",
           "project/dev-guidelines",
-          "project/todo-checklist"
+          "project/todo-checklist",
+          "project/marco-legal-abs"
+
         ]
       }
     ]

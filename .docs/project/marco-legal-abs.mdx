@@ -1,0 +1,560 @@
+---
+title: "Marco Legal ABS y Bioprospeccion"
+description: "Cumplimiento normativo, acceso a recursos geneticos y bioprospeccion."
+icon: "scale-balanced"
+---
+
+## 1. Introducción
+
+BioPlatform Caldas opera en un marco normativo complejo que regula el acceso a recursos genéticos, la protección del conocimiento ancestral y la bioprospección en Colombia. Este manual define las reglas de negocio que la plataforma debe validar automáticamente para asegurar que emprendedores, investigadores y comercializadores no incurran en delitos ambientales, biopiratería o incumplimientos legales.
+
+### 1.1 Glosario Legal
+
+| Término                      | Significado                                                          |
+| ---------------------------- | -------------------------------------------------------------------- |
+| **ABS**                      | Acceso y Participación en Beneficios (_Access and Benefit Sharing_)  |
+| **Recurso Biológico**        | El organismo físico (planta, animal, hongo) o parte de él            |
+| **Recurso Genético**         | El material genético de valor real o potencial (ADN, ARN, proteínas) |
+| **PIC**                      | Consentimiento Informado Previo (_Prior Informed Consent_)           |
+| **MAT**                      | Términos Mutuamente Acordados (_Mutually Agreed Terms_)              |
+| **Conocimiento Tradicional** | Saberes, innovaciones y prácticas de comunidades indígenas y locales |
+| **Bioprospección**           | Búsqueda sistemática de compuestos bioactivos en la biodiversidad    |
+| **CTeI**                     | Ciencia, Tecnología e Innovación                                     |
+| **ANLA**                     | Autoridad Nacional de Licencias Ambientales                          |
+| **SGR**                      | Sistema General de Regalías                                          |
+
+### 1.2 Principios Rectores
+
+1. **Soberanía Nacional**: Los recursos genéticos son patrimonio de la Nación (Decisión 391)
+2. **Consentimiento Previo**: Las comunidades tienen derecho a autorizar el uso de su conocimiento
+3. **Participación Justa**: Los beneficios derivados del uso de recursos genéticos deben compartirse
+4. **Trazabilidad**: Cada especie y producto debe tener un origen documentado y verificable
+5. **Precaución**: Ante la duda legal, el sistema debe restringir la transacción hasta su validación
+
+## 2. Decisión 391 de 1996 — Régimen Común de Acceso a Recursos Genéticos
+
+### 2.1 Descripción
+
+La **Decisión 391 de 1996** de la Comunidad Andina (CAN) es la norma marco para Colombia, Perú, Ecuador, Bolivia y Venezuela. Establece que los recursos genéticos de los países miembros son patrimonio de la Nación y su acceso requiere autorización expresa del Estado.
+
+### 2.2 Artículos Clave
+
+| Artículo   | Contenido                                                                            | Impacto en Plataforma                                                                 |
+| ---------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Art. 3     | Define recurso genético, biológico, derivado y conocimiento tradicional              | El sistema debe clasificar cada producto según estas definiciones                     |
+| Art. 5     | Recursos genéticos son patrimonio inalienable e imprescriptible de la Nación         | Ningún producto puede declararse como "propiedad privada" de su ADN                   |
+| Art. 6     | Excepciones para intercambio tradicional y cultivos nativos                          | Los emprendedores pueden vender artesanías (recurso biológico) sin contrato de acceso |
+| Art. 16    | Contrato de Acceso obligatorio para actividades con fines comerciales o industriales | El sistema debe exigir el contrato de acceso firmado con el Ministerio de Ambiente    |
+| Art. 18-27 | Procedimiento de solicitud, evaluación y aprobación del contrato                     | El sistema debe registrar el número de contrato, fecha y entidad emisora              |
+| Art. 37    | Plazo máximo 60 días para resolver solicitudes                                       | El sistema debe notificar vencimientos próximos                                       |
+
+### 2.3 Impacto en la Plataforma
+
+#### Clasificación de Productos
+
+El sistema debe diferenciar entre dos categorías principales:
+
+**Recurso Biológico** (sin contrato de acceso requerido):
+
+- Artesanías de fibras naturales, semillas, maderas
+- Plantas ornamentales o medicinales vendidas como especímenes completos
+- Alimentos tradicionales no procesados
+- **Validación**: El vendedor declara que usa el recurso físico, no el genético
+
+**Recurso Genético** (contrato de acceso obligatorio):
+
+- Extractos, aceites esenciales, compuestos purificados
+- Cosméticos, suplementos o fármacos basados en moléculas de la biodiversidad
+- Productos que requieren análisis de ADN, proteómica o metabolómica
+- **Validación**: El sistema exige subir el contrato de acceso firmado por el Ministerio de Ambiente y Desarrollo Sostenible
+
+#### Regla de Negocio
+
+```
+SI tipo_producto = "biológico" ENTONCES
+  → Permitir publicación sin contrato de acceso
+  → Marcar como "Categoría: Uso Tradicional / Artesanal"
+
+SI tipo_producto = "genético" O tipo_producto = "derivado" ENTONCES
+  → EXIGIR contrato de acceso vigente
+  → Validar número de resolución ANLA
+  → Bloquear publicación hasta verificación
+
+SI origen_conocimiento = "ancestral" ENTONCES
+  → EXIGIR adicionalmente PIC y MAT firmados
+```
+
+#### Campos Requeridos en Base de Datos
+
+```json
+{
+  "producto": {
+    "id": "uuid",
+    "tipo": "biologico | genetico | derivado",
+    "especie_id": "uuid",
+    "contrato_acceso": {
+      "requerido": true | false,
+      "numero_resolucion": "ANLA-2024-12345",
+      "fecha_expedicion": "2024-01-15",
+      "fecha_vencimiento": "2026-01-15",
+      "archivo_pdf": "url",
+      "entidad_emisora": "ANLA | MADS",
+      "estado": "vigente | vencido | pendiente"
+    },
+    "consentimiento_comunidad": {
+      "requerido": true | false,
+      "comunidad": "Resguardo Indígena Cañamomo-Lomaprieta",
+      "fecha_pic": "2024-03-20",
+      "archivo_pic": "url",
+      "mat_firmado": true | false,
+      "archivo_mat": "url"
+    }
+  }
+}
+```
+
+## 3. Protocolo de Nagoya — ABS (Access and Benefit Sharing)
+
+### 3.1 Descripción
+
+El **Protocolo de Nagoya sobre Acceso a Recursos Genéticos y Participación Justa y Equitativa en los Beneficios** es un tratado internacional adoptado en 2010, ratificado por Colombia mediante la **Ley 1768 de 2015**. Su objetivo es garantizar que los beneficios derivados del uso de recursos genéticos y conocimientos tradicionales sean compartidos de manera justa con las comunidades de origen.
+
+### 3.2 Principios Fundamentales
+
+| Principio                                 | Descripción                                                                             | Implementación en Plataforma                                             |
+| ----------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **PIC** (Consentimiento Informado Previo) | Las comunidades deben autorizar el acceso a su conocimiento antes de que ocurra         | El sistema debe almacenar y validar documentos PIC firmados              |
+| **MAT** (Términos Mutuamente Acordados)   | Las condiciones de uso y reparto de beneficios se acuerdan entre las partes             | El sistema debe registrar los términos y fechas de vigencia              |
+| **Benefit-Sharing**                       | Los beneficios monetarios y no monetarios se comparten según lo acordado                | El marketplace debe calcular y retener el porcentaje de beneficio        |
+| **Due Diligence**                         | El usuario debe demostrar que actuó con la debida diligencia en la obtención del acceso | El sistema mantiene un registro de auditoría de todas las verificaciones |
+
+### 3.3 Impacto en la Plataforma
+
+#### Registro de Consentimiento Comunitario
+
+```sql
+-- Tabla de Consentimientos Comunitarios
+CREATE TABLE consentimientos_comunitarios (
+    id UUID PRIMARY KEY,
+    producto_id UUID NOT NULL REFERENCES productos(id),
+    comunidad_id UUID NOT NULL REFERENCES comunidades(id),
+    tipo_consentimiento VARCHAR(20) NOT NULL CHECK (tipo IN ('pic', 'mat', 'ambos')),
+    fecha_firma DATE NOT NULL,
+    fecha_expiracion DATE,
+    archivo_url VARCHAR(500) NOT NULL,
+    estado VARCHAR(20) NOT NULL CHECK (estado IN ('vigente', 'expirado', 'revocado')),
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Tabla de Comunidades Registradas
+CREATE TABLE comunidades (
+    id UUID PRIMARY KEY,
+    nombre VARCHAR(200) NOT NULL,
+    tipo VARCHAR(50) NOT NULL CHECK (tipo IN (
+        'resguardo_indigena',
+        'consejo_comunitario',
+        'cabildo',
+        'vereda',
+        'asociacion'
+    )),
+    departamento VARCHAR(100),
+    municipio VARCHAR(100),
+    representante_legal VARCHAR(200),
+    contacto_email VARCHAR(200),
+    activo BOOLEAN DEFAULT TRUE
+);
+```
+
+#### Cálculo de Participación en Beneficios
+
+```
+SI producto.tipo = "genético" O producto.tipo = "derivado" ENTONCES
+  SI producto.tiene_conocimiento_ancestral = true ENTONCES
+    → Calcular beneficio_comunitario = venta_total * 0.05  (5% sugerido)
+    → Retener en cuenta de depósito
+    → Generar reporte trimestral para la comunidad
+  SINO
+    → Calcular beneficio_pais = venta_total * 0.01  (1% al Fondo Ambiental)
+    → Reportar al Ministerio de Ambiente
+```
+
+### 3.4 Protección del Conocimiento Ancestral
+
+La plataforma debe garantizar que el conocimiento tradicional de las comunidades de Caldas esté protegido:
+
+1. **Confidencialidad**: Los usos tradicionales registrados no se muestran públicamente sin autorización
+2. **Trazabilidad**: Cada dato etnobotánico está vinculado a una comunidad y un consentimiento
+3. **Atribución**: Los beneficios económicos y académicos se atribuyen a la comunidad de origen
+4. **Revocación**: La comunidad puede retirar su consentimiento en cualquier momento
+
+#### Comunidades Identificadas en Caldas
+
+| Comunidad                              | Municipio        | Tipo                    | Estado    |
+| -------------------------------------- | ---------------- | ----------------------- | --------- |
+| Resguardo Indígena Cañamomo-Lomaprieta | Supía / Riosucio | Indígena (Emberá Chamí) | Activo    |
+| Resguardo Indígena La Trina            | Riosucio         | Indígena (Emberá)       | Activo    |
+| Resguardo Indígena Escopetera-Pirza    | Riosucio         | Indígena (Emberá Chamí) | Activo    |
+| Comunidad Negra de San José            | Supía            | Consejo Comunitario     | Activo    |
+| Comunidad Negra de Belén               | Belén de Bajirá  | Consejo Comunitario     | Pendiente |
+
+## 4. Resolución 1348 de 2014 — Permisos de Recolección
+
+### 4.1 Descripción
+
+La **Resolución 1348 de 2014** del Ministerio de Ambiente y Desarrollo Sostenible regula los permisos para recolectar especímenes de especies silvestres con fines de investigación científica no comercial. Es el instrumento que habilita a los investigadores a tomar muestras de la biodiversidad sin incurrir en el delito de _aprovechamiento ilícito de recursos naturales_ (Art. 328 del Código Penal).
+
+### 4.2 Tipos de Permiso
+
+| Tipo               | Descripción                                            | Cobertura                   | Vigencia                  |
+| ------------------ | ------------------------------------------------------ | --------------------------- | ------------------------- |
+| Permiso Marco      | Instituciones científicas autorizadas globalmente      | Todo el territorio nacional | 5 años                    |
+| Permiso Específico | Por proyecto de investigación                          | Área delimitada             | Por duración del proyecto |
+| Permiso Menor      | Recolección de especímenes comunes sin valor comercial | Área restringida            | 1 año                     |
+
+### 4.3 Impacto en la Plataforma
+
+#### Validación para Investigadores
+
+El módulo de investigadores debe verificar que el usuario tenga un permiso de recolección válido antes de permitir:
+
+1. **Registro de nuevas especies** en el catálogo oficial
+2. **Subida de observaciones georreferenciadas** fuera de áreas públicas
+3. **Descarga de datos genéticos** de especies en la base de datos
+4. **Publicación de hallazgos** en la sección de ciencia ciudadana
+
+#### Flujo de Validación
+
+```
+INVESTIGADOR sube especie al catálogo
+  → ¿Tiene permiso de recolección cargado?
+    |--- NO → Bloquear: "Debe cargar permiso de recolección vigente"
+    |--- SÍ → Validar:
+              → ¿Permiso cubre la especie (taxón)?
+              → ¿Permiso cubre el municipio/departamento?
+              → ¿Permiso está vigente (fecha)?
+              → ¿Institución respalda al investigador?
+              → Todo OK → Publicar especie como "Pendiente de verificación"
+              → Algún error → Bloquear y notificar al investigador
+```
+
+#### Campos del Permiso en el Sistema
+
+```json
+{
+  "permiso_recoleccion": {
+    "id": "uuid",
+    "tipo": "marco | especifico | menor",
+    "numero_resolucion": "1348-2024-9876",
+    "entidad_emisora": "ANLA | Corpocaldas",
+    "investigador_principal": "Dr. María Pérez",
+    "institucion_respaldo": "Universidad de Caldas",
+    "taxones_autorizados": ["Orchidaceae", "Bromeliaceae", "Heliconia"],
+    "municipios_autorizados": ["Manizales", "Villamaría", "Chinchiná"],
+    "fecha_expedicion": "2024-06-01",
+    "fecha_vencimiento": "2027-06-01",
+    "archivo_pdf": "url",
+    "estado": "vigente | vencido | suspendido"
+  }
+}
+```
+
+## 5. Decreto 3016 de 2013 — Regalías y Bioprospección
+
+### 5.1 Descripción
+
+El **Decreto 3016 de 2013** reglamenta la ejecución de proyectos de ciencia, tecnología e innovación (CTeI) financiados con el **Sistema General de Regalías (SGR)**. Establece los requisitos que deben cumplir los proyectos para ser elegibles a financiación estatal.
+
+### 5.2 Relación con la Plataforma
+
+Los **planes de negocio de biocomercio** generados por la IA de BioPlatform Caldas deben ser elegibles para financiación del SGR. Esto significa que deben cumplir con los requisitos establecidos en el Decreto 3016.
+
+### 5.3 Requisitos de Elegibilidad para Planes de Negocio
+
+| Requisito           | Descripción                                                              | Implementación en la IA                                                          |
+| ------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Componente CTeI     | El proyecto debe incluir actividades de ciencia, tecnología e innovación | El plan debe incluir una sección de I+D con metodología, variables e indicadores |
+| Resultados Medibles | Debe definir indicadores de producto, resultado e impacto                | El generador de planes incluye KPIs alineados con el SGR                         |
+| Alineación Regional | Debe alinearse con las estrategias departamentales                       | Valida contra el Plan de Desarrollo Departamental de Caldas                      |
+| Sostenibilidad      | Debe demostrar viabilidad técnica, financiera y ambiental                | Incluye análisis de sostenibilidad en 3 dimensiones                              |
+| Contrapartida       | Debe incluir aportes del beneficiario                                    | Calcula el porcentaje de contrapartida requerido                                 |
+
+### 5.4 Validación Automática en la Plataforma
+
+```
+CUANDO IA genera plan de negocio:
+  1. ¿Plan tiene componente de investigación? (CTeI)
+     → NO → IA agrega automáticamente actividades de I+D
+  2. ¿Indicadores definidos?
+     → NO → IA genera KPIs: especies identificadas, productos desarrollados, empleos creados
+  3. ¿Alineación con Plan Departamental?
+     → Sí → Validar con metadatos de Corpocaldas
+  4. ¿Presupuesto con contrapartida?
+     → Calcular 20% mínimo de contrapartida del total
+  5. ¿Impacto ambiental positivo?
+     → Incluir métricas de conservación y huella de carbono
+
+RESULTADO: Plan elegible / No elegible
+  → Elegible: Mostrar sello "Elegible para financiación SGR"
+  → No elegible: Mostrar retroalimentación de qué ajustar
+```
+
+## 6. Normativa Complementaria
+
+### 6.1 Ley 99 de 1993 — Sistema Nacional Ambiental (SINA)
+
+Crea el Ministerio de Ambiente y las Corporaciones Autónomas Regionales (Corpocaldas en el departamento).
+
+**Impacto**: El sistema debe integrar datos de Corpocaldas sobre autorizaciones, vedas y áreas protegidas del departamento.
+
+### 6.2 Decreto 1076 de 2015 — Decreto Único Reglamentario del Sector Ambiente
+
+Compila toda la normativa ambiental colombiana.
+
+**Impacto**: El marco regulatorio del sistema referencia este decreto como fuente principal consolidada.
+
+### 6.3 CITES — Convención sobre el Comercio Internacional de Especies Amenazadas
+
+Regula el comercio internacional de especies en peligro.
+
+**Impacto**: Si un producto del marketplace contiene especies CITES (Apéndice I, II o III), el sistema debe:
+
+- Bloquear exportación si la especie está en Apéndice I
+- Exigir permiso CITES si está en Apéndice II
+- Notificar al comprador sobre restricciones internacionales
+
+### 6.4 Ley 1955 de 2019 — Plan Nacional de Desarrollo (Bioprospección)
+
+Incluye lineamientos para la bioeconomía y el uso sostenible de la biodiversidad.
+
+**Impacto**: Los planes de negocio generados por la IA deben alinearse con las metas nacionales de bioeconomía.
+
+### 6.5 Resolución 0319 de 2022 — Lineamientos de Bioprospección en Colombia
+
+Establece la hoja de ruta para proyectos de bioprospección en el país.
+
+**Impacto**: El sistema utiliza esta resolución para estructurar los planes de negocio con el formato estandarizado de bioprospección.
+
+## 7. Implementación Técnica en la Plataforma
+
+### 7.1 Arquitectura de Módulos
+
+```
+┌─────────────────────────────────────────────────────────┐
+│               Plataforma BioPlatform Caldas               │
+├─────────────────────────────────────────────────────────┤
+│  ┌─────────────┐ ┌──────────┐ ┌────────────┐ ┌──────┐  │
+│  │  Catálogo   │ │Market-   │ │IA Genera-  │ │App   │  │
+│  │  de Especies│ │place     │ │dora Planes │ │Móvil │  │
+│  └──────┬──────┘ └────┬─────┘ └─────┬──────┘ └──┬───┘  │
+│         │             │             │           │       │
+│  ┌──────▼─────────────▼─────────────▼───────────▼───┐   │
+│  │         Módulo de Cumplimiento Legal (ABS)        │   │
+│  │  ┌─────────────┐ ┌──────────┐ ┌──────────────┐   │   │
+│  │  │ Clasificador│ │Gestor de│ │Generador de  │   │   │
+│  │  │ de Productos│ │Permisos │ │Reportes ANLA │   │   │
+│  │  └─────────────┘ └──────────┘ └──────────────┘   │   │
+│  │  ┌─────────────┐ ┌──────────┐ ┌──────────────┐   │   │
+│  │  │ Validador   │ │Calculador│ │Repositorio   │   │   │
+│  │  │ PIC/MAT     │ │Beneficios│ │Comunidades   │   │   │
+│  │  └─────────────┘ └──────────┘ └──────────────┘   │   │
+│  └───────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 7.2 Tablas de Base de Datos
+
+```sql
+-- Tabla Principal de Productos con Clasificación ABS
+CREATE TABLE productos_abs (
+    id UUID PRIMARY KEY,
+    producto_id UUID NOT NULL REFERENCES productos(id) ON DELETE CASCADE,
+    tipo_acceso VARCHAR(20) NOT NULL CHECK (tipo_acceso IN (
+        'biologico', 'genetico', 'derivado', 'conocimiento_tradicional'
+    )),
+    requiere_contrato_acceso BOOLEAN NOT NULL DEFAULT FALSE,
+    requiere_pic_mat BOOLEAN NOT NULL DEFAULT FALSE,
+    requiere_permiso_cites BOOLEAN NOT NULL DEFAULT FALSE,
+    estado_legal VARCHAR(20) NOT NULL DEFAULT 'pendiente' CHECK (estado_legal IN (
+        'pendiente', 'en_revision', 'aprobado', 'rechazado', 'bloqueado'
+    )),
+    verificado_por VARCHAR(100),
+    fecha_verificacion TIMESTAMP,
+    notas_legales TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Tabla de Contratos de Acceso
+CREATE TABLE contratos_acceso (
+    id UUID PRIMARY KEY,
+    producto_abs_id UUID NOT NULL REFERENCES productos_abs(id),
+    numero_resolucion VARCHAR(50) NOT NULL UNIQUE,
+    entidad_emisora VARCHAR(100) NOT NULL,
+    fecha_expedicion DATE NOT NULL,
+    fecha_vencimiento DATE NOT NULL,
+    tipo_contrato VARCHAR(30) NOT NULL CHECK (tipo_contrato IN (
+        'comercial', 'investigacion', 'mixto'
+    )),
+    archivo_url VARCHAR(500) NOT NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'vigente' CHECK (estado IN (
+        'vigente', 'proximo_vencer', 'vencido', 'revocado'
+    )),
+    notificado_vencimiento BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Tabla de Auditoría Legal
+CREATE TABLE auditoria_legal (
+    id UUID PRIMARY KEY,
+    accion VARCHAR(50) NOT NULL,
+    entidad_tipo VARCHAR(50) NOT NULL,
+    entidad_id UUID NOT NULL,
+    usuario_id UUID NOT NULL,
+    datos_previos JSONB,
+    datos_nuevos JSONB,
+    ip_origen VARCHAR(45),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_auditoria_legal_entidad ON auditoria_legal(entidad_tipo, entidad_id);
+CREATE INDEX idx_auditoria_legal_usuario ON auditoria_legal(usuario_id);
+CREATE INDEX idx_productos_abs_estado ON productos_abs(estado_legal);
+CREATE INDEX idx_contratos_acceso_vencimiento ON contratos_acceso(fecha_vencimiento);
+```
+
+### 7.3 APIs de Cumplimiento Legal
+
+| Endpoint                              | Método | Descripción                               |
+| ------------------------------------- | ------ | ----------------------------------------- |
+| `/api/legal/productos/clasificar`     | POST   | Clasifica un producto según tipo ABS      |
+| `/api/legal/contratos/validar`        | POST   | Valida un número de resolución ANLA       |
+| `/api/legal/comunidades`              | GET    | Lista comunidades registradas             |
+| `/api/legal/comunidades/{id}`         | GET    | Detalle de comunidad con permisos         |
+| `/api/legal/consentimientos`          | POST   | Registra PIC/MAT firmado                  |
+| `/api/legal/consentimientos/{id}`     | GET    | Estado del consentimiento                 |
+| `/api/legal/reportes/anla`            | GET    | Genera reporte trimestral para ANLA       |
+| `/api/legal/alertas/vencimientos`     | GET    | Alertas de contratos próximos a vencer    |
+| `/api/legal/productos/{id}/historial` | GET    | Historial de cambios legales del producto |
+| `/api/legal/verificar-cites`          | POST   | Verifica si una especie está en CITES     |
+
+### 7.4 Alertas Automáticas del Sistema
+
+| Evento                                          | Alerta                                                                                                       | Destinatario            | Canal                              |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------- | ---------------------------------- |
+| Contrato de acceso próximo a vencer (< 30 días) | "Su contrato de acceso vence el {fecha}. Renueve antes de que su producto sea bloqueado."                    | Vendedor / Investigador | Email + Notificación en plataforma |
+| Producto sin clasificación ABS                  | "El producto {nombre} no tiene clasificación ABS. El sistema lo ha bloqueado."                               | Vendedor                | Email                              |
+| Consentimiento comunitario expirado             | "El PIC/MAT para {comunidad} ha expirado. Su producto {nombre} será despublicado."                           | Vendedor                | Email + SMS                        |
+| Nuevo reporte ANLA disponible                   | "El reporte trimestral de beneficios ({periodo}) está listo para descargar."                                 | Administrador           | Email                              |
+| Especie CITES detectada                         | "El producto {nombre} contiene {especie}, listada en CITES Apéndice {x}. Se requieren permisos adicionales." | Vendedor + Admin        | Email + Notificación               |
+
+## 8. Checklist de Cumplimiento para Desarrollo
+
+### 8.1 Funcionalidades Pendientes
+
+- [ ] Módulo clasificador automático de productos (biológico vs. genético)
+- [ ] Integración con base de datos CITES para validación de especies
+- [ ] Repositorio de documentos PIC y MAT firmados digitalmente
+- [ ] Calculador automático de beneficios comunitarios (5% sugerido)
+- [ ] Generador de reportes trimestrales para ANLA
+- [ ] Validador de números de resolución ANLA y Corpocaldas
+- [ ] API de consulta de comunidades indígenas y afrocolombianas de Caldas
+- [ ] Sistema de alertas de vencimiento de contratos y permisos
+- [ ] Registro de auditoría de todas las acciones legales (inmutable)
+- [ ] Interfaz de administración para gestionar casos legales
+
+### 8.2 Validaciones de Seguridad
+
+- [ ] Los documentos PIC/MAT deben almacenarse cifrados en reposo
+- [ ] Solo administradores pueden modificar estados legales
+- [ ] Los cambios de estado legal deben quedar registrados en auditoría
+- [ ] Las comunidades tienen acceso de solo lectura a sus propios consentimientos
+- [ ] Los contratos de acceso vencidos bloquean automáticamente la publicación
+
+## 9. Procedimientos ante la ANLA
+
+### 9.1 Solicitud de Contrato de Acceso
+
+La plataforma debe guiar al usuario en la solicitud del contrato de acceso ante la ANLA:
+
+1. Ingresar al portal de la ANLA (https://www.anla.gov.co)
+2. Diligenciar el Formulario Único de Solicitud de Acceso a Recursos Genéticos
+3. Adjuntar los soportes requeridos:
+   - Certificado de existencia y representación legal
+   - Documento de identidad del solicitante
+   - Descripción del proyecto de bioprospección
+   - PIC de la comunidad (si aplica)
+   - MAT propuesto
+   - Certificación de origen de los especímenes
+4. Esperar resolución (máximo 60 días hábiles según Decisión 391)
+5. Descargar la resolución y cargarla en la plataforma
+
+### 9.2 Reportes Trimestrales
+
+La plataforma genera automáticamente reportes trimestrales con:
+
+- Productos comercializados en el período
+- Ingresos generados por tipo de producto
+- Beneficios distribuidos a comunidades
+- Nuevos contratos de acceso suscritos
+- Renovaciones y vencimientos
+- Novedades legales y administrativas
+
+### 9.3 Integración con Entidades
+
+| Entidad                | Rol                                    | Tipo de Integración          |
+| ---------------------- | -------------------------------------- | ---------------------------- |
+| ANLA                   | Emisión contratos de acceso y permisos | Manual + API (futuro)        |
+| Corpocaldas            | Autoridad ambiental regional de Caldas | Consulta de áreas protegidas |
+| Ministerio de Ambiente | Política y regulación ABS              | Referencia normativa         |
+| Universidad de Caldas  | Respaldo académico e investigación     | Convenio institucional       |
+
+## 10. Sanciones y Riesgos Legales
+
+### 10.1 Delitos Ambientales (Código Penal Colombiano)
+
+| Delito                                                   | Artículo           | Pena                         | Cómo lo Previene la Plataforma                                    |
+| -------------------------------------------------------- | ------------------ | ---------------------------- | ----------------------------------------------------------------- |
+| Aprovechamiento ilícito de recursos naturales renovables | Art. 328           | 48-108 meses prisión + multa | Validación de permisos de recolección antes de registrar especies |
+| Violación de fronteras para explotación de recursos      | Art. 329           | 72-144 meses prisión         | Control de geolocalización en áreas protegidas                    |
+| Biopiratería (acceso no autorizado a recursos genéticos) | Art. 330 (Ley 599) | 48-108 meses prisión         | Clasificación automática y exigencia de contrato de acceso        |
+| Daños en los recursos naturales                          | Art. 331           | 60-120 meses prisión         | Verificación de impacto ambiental en planes de negocio            |
+
+### 10.2 Sanciones Administrativas
+
+| Infracción                                     | Sanción                                           | Base Legal                     |
+| ---------------------------------------------- | ------------------------------------------------- | ------------------------------ |
+| No tener contrato de acceso para uso comercial | Multa hasta 5.000 SMLV + suspensión de actividad  | Decisión 391 Art. 46           |
+| No compartir beneficios con comunidades        | Multa + revocación del permiso + indemnización    | Protocolo de Nagoya Art. 7     |
+| Recolectar especies sin permiso                | Multa hasta 10.000 SMLV + decomiso de especímenes | Resolución 1348                |
+| Incumplir MAT                                  | Acción legal por parte de la comunidad            | Código Civil / Consulta Previa |
+
+### 10.3 Protección para el Usuario de la Plataforma
+
+BioPlatform Caldas protege a sus usuarios mediante:
+
+1. **Validación automática**: El sistema bloquea publicaciones que incumplen la normativa
+2. **Registro de auditoría**: Todas las acciones quedan documentadas
+3. **Asesoría legal**: Enlaces a formatos oficiales y guías de la ANLA
+4. **Alertas proactivas**: Notificaciones antes de vencimientos
+5. **Trazabilidad completa**: Cada producto tiene un historial legal verificable
+
+## 11. Referencias Normativas
+
+| Norma           | Año  | Descripción                                           | Enlace                                              |
+| --------------- | ---- | ----------------------------------------------------- | --------------------------------------------------- |
+| Decisión 391    | 1996 | Régimen Común sobre Acceso a Recursos Genéticos (CAN) | [Comunidad Andina](https://www.comunidadandina.org) |
+| Ley 99          | 1993 | Sistema Nacional Ambiental (SINA)                     | [MinAmbiente](https://www.minambiente.gov.co)       |
+| Decreto 3016    | 2013 | Regalías y proyectos CTeI                             | [SGR](https://www.sgr.gov.co)                       |
+| Resolución 1348 | 2014 | Permisos de recolección científica                    | [ANLA](https://www.anla.gov.co)                     |
+| Ley 1768        | 2015 | Ratificación del Protocolo de Nagoya                  | [Congreso](https://www.camara.gov.co)               |
+| Decreto 1076    | 2015 | Decreto Único Reglamentario Ambiente                  | [MinAmbiente](https://www.minambiente.gov.co)       |
+| Ley 1955        | 2019 | Plan Nacional de Desarrollo (Bioeconomía)             | [DNP](https://www.dnp.gov.co)                       |
+| Resolución 0319 | 2022 | Lineamientos de Bioprospección                        | [MinCiencias](https://www.minciencias.gov.co)       |
+| CITES           | 1973 | Comercio internacional de especies amenazadas         | [CITES](https://cites.org)                          |
+
+---
+
+_Marco Legal ABS y Bioprospección - Versión 1.0_
+_Última actualización: Junio 2026_
+_Plataforma BioPlatform Caldas - Universidad de Caldas_
