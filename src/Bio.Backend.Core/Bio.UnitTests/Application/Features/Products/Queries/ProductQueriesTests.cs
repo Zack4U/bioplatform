@@ -16,7 +16,9 @@ public class ProductQueriesTests
 
     private Product CreateSampleProduct(Guid id, string name = "Test Product", string slug = "test-product")
     {
-        return new Product(Guid.NewGuid(), Guid.NewGuid(), name, slug, "Desc", 100, 150, 10, null, null, null, null);
+        var product = new Product(Guid.NewGuid(), Guid.NewGuid(), name, slug, "Desc", 100, 150, 10, null, null, null, null);
+        product.Approve(Guid.NewGuid());
+        return product;
     }
 
     [Fact]

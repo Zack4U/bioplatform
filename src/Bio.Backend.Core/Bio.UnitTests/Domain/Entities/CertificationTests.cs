@@ -37,7 +37,7 @@ public class CertificationTests
             certification.IssuingBody.Should().Be(IssuingBody);
             certification.IssuedAt.Should().Be(IssuedAt);
             certification.CertificateNumber.Should().Be("NV-2025-001");
-            certification.Status.Should().Be("Active");
+            certification.Status.Should().Be("Pending");
             certification.DocumentUrl.Should().Be("https://cdn.example.com/certs/nv.pdf");
             certification.LogoUrl.Should().Be("https://cdn.example.com/certs/nv-logo.png");
             certification.VerificationCode.Should().Be("NV-2025-00421");

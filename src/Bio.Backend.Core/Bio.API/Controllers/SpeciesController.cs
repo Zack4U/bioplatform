@@ -109,7 +109,7 @@ public class SpeciesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetImages(
         Guid id,
-        [FromQuery] bool? onlyValidatedByExpert = null,
+        [FromQuery] bool? onlyValidatedByExpert = true,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 20)
     {

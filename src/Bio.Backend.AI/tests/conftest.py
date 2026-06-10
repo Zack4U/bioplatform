@@ -53,6 +53,7 @@ def mock_classifier():
     """A MagicMock mimicking a loaded SpeciesClassifier."""
     clf = MagicMock()
     clf.is_loaded = True
+    clf.active_version = "1.0.0"
     clf.num_classes = 10
     clf.class_names = [f"Species_{i}" for i in range(10)]
     clf.config = {
