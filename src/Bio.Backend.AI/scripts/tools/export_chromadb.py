@@ -49,13 +49,22 @@ def main():
         print(f"[ERROR] Error al obtener los datos de la colección: {e}")
         sys.exit(1)
 
+    raw_embeddings = data.get("embeddings", [])
+    serializable_embeddings = []
+    if raw_embeddings is not None:
+        for emb in raw_embeddings:
+            if hasattr(emb, "tolist"):
+                serializable_embeddings.append(emb.tolist())
+            else:
+                serializable_embeddings.append(emb)
+
     export_data = {
         "collection_name": collection_name,
         "count": count,
         "ids": data.get("ids", []),
         "documents": data.get("documents", []),
         "metadatas": data.get("metadatas", []),
-        "embeddings": data.get("embeddings", [])
+        "embeddings": serializable_embeddings
     }
 
     # Ruta de exportación (compatible con host y Docker container)
