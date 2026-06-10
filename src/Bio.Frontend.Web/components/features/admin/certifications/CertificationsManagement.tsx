@@ -37,6 +37,14 @@ const CERT_STATUS_LABELS: Record<string, string> = {
     revoked: "Revocada",
 };
 
+const CERT_TYPE_LABELS: Record<string, string> = {
+    Sustainability: "Sostenibilidad",
+    Organic: "Orgánico",
+    Quality: "Calidad",
+    FairTrade: "Comercio Justo",
+    ABS: "Cumplimiento ABS",
+};
+
 type BadgeVariant = "warning" | "success" | "destructive" | "info" | "default";
 
 function statusVariant(status: string): BadgeVariant {
@@ -54,7 +62,7 @@ function statusVariant(status: string): BadgeVariant {
 const columns: ColumnDef<CertificationAdminItem>[] = [
     { key: "name", header: "Certificación", sortable: true, render: (c) => <span className="font-medium">{c.name}</span> },
     { key: "productName", header: "Producto", render: (c) => <span className="text-sm">{c.productName}</span> },
-    { key: "certificationType", header: "Tipo", hideOnMobile: true, render: (c) => <Badge variant="outline">{c.certificationType}</Badge> },
+    { key: "certificationType", header: "Tipo", hideOnMobile: true, render: (c) => <Badge variant="outline">{translateLabel(CERT_TYPE_LABELS, c.certificationType)}</Badge> },
     { key: "entrepreneurName", header: "Emprendedor", hideOnMobile: true, render: (c) => <span className="text-sm">{c.entrepreneurName ?? "—"}</span> },
     { key: "status", header: "Estado", render: (c) => <StatusBadge label={translateLabel(CERT_STATUS_LABELS, c.status)} variant={statusVariant(c.status)} /> },
     { key: "createdAt", header: "Solicitada", hideOnMobile: true, render: (c) => new Date(c.createdAt).toLocaleDateString("es-CO") },
@@ -133,7 +141,7 @@ export function CertificationsManagement() {
                         <div className="space-y-4 text-sm">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="col-span-2"><p className="text-muted-foreground">Certificación</p><p className="font-medium">{selected.name}</p></div>
-                                <div><p className="text-muted-foreground">Tipo</p><Badge variant="outline">{selected.certificationType}</Badge></div>
+                                <div><p className="text-muted-foreground">Tipo</p><Badge variant="outline">{translateLabel(CERT_TYPE_LABELS, selected.certificationType)}</Badge></div>
                                 <div><p className="text-muted-foreground">Estado</p><StatusBadge label={translateLabel(CERT_STATUS_LABELS, selected.status)} variant={statusVariant(selected.status)} /></div>
                                 <div><p className="text-muted-foreground">Producto</p><p className="font-medium">{selected.productName}</p></div>
                                 <div><p className="text-muted-foreground">Emprendedor</p><p className="font-medium">{selected.entrepreneurName ?? "—"}</p></div>

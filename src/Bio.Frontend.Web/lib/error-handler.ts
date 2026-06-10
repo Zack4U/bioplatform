@@ -90,9 +90,10 @@ export function handleApiError(error: unknown): ParsedError {
             "Sesión expirada. Por favor, inicia sesión de nuevo.",
         );
     } else if (parsed.status === 403) {
-        notificationService.error(
-            "No tienes permisos para realizar esta acción.",
-        );
+        const msg = (parsed.detail && !parsed.detail.includes("failed with status code"))
+            ? parsed.detail
+            : "No tienes permisos para realizar esta acción.";
+        notificationService.error(msg);
     } else if (parsed.status === 404) {
         notificationService.warning("El recurso solicitado no fue encontrado.");
     } else if (parsed.status === 422 && parsed.fieldErrors) {

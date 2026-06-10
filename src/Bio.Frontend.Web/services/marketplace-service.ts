@@ -205,6 +205,17 @@ export async function rejectProduct(id: string, reason: string): Promise<void> {
 }
 
 /**
+ * Unapprove an approved product (Admin / Authority only).
+ * POST /manage/products/:id/unapprove
+ */
+export async function unapproveProduct(id: string): Promise<void> {
+  await apiPost<Record<string, never>, void>(
+    CORE_ROUTES.MANAGE_PRODUCTS.UNAPPROVE(id),
+    {},
+  );
+}
+
+/**
  * Upload a new image to a product's gallery.
  * POST /manage/products/images/upload  (multipart/form-data)
  *

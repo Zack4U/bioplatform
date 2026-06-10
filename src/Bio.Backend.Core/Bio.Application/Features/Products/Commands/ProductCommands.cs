@@ -289,3 +289,30 @@ public class RejectProductCommandHandler : IRequestHandler<RejectProductCommand,
         return Unit.Value;
     }
 }
+
+// === Unapprove Product (Admin / Authority) ===
+public record UnapproveProductCommand(Guid Id) : IRequest<Unit>;
+
+public class UnapproveProductCommandHandler : IRequestHandler<UnapproveProductCommand, Unit>
+{
+    private readonly IProductRepository _repo;
+    private readonly IUnitOfWork _uow;
+    private readonly ICacheService _cache;
+
+    public UnapproveProductCommandHandler(IProductRepository repo, IUnitOfWork uow, ICacheService cache)
+    { _repo = repo; _uow = uow; _cache = cache; }
+
+    public async Task<Unit> Handle(UnapproveProductCommand request, CancellationToken ct)
+    {
+        var product = await _repo.GetByIdAsync(request.Id, ct)
+            ?? throw new NotFoundException(nameof(Product), request.Id);
+        product.Unapprove();
+        await _uow.SaveChangesAsync(ct);
+        await Task.WhenAll(
+            _cache.RemoveAsync(CacheKeys.ProductById(product.Id), ct),
+            _cache.RemoveAsync(CacheKeys.ProductBySlug(product.Slug), ct),
+            _cache.RemoveByPrefixAsync(CacheKeys.PublicProductsPrefix, ct),
+            _cache.RemoveAsync(CacheKeys.FilterMeta, ct));
+        return Unit.Value;
+    }
+}

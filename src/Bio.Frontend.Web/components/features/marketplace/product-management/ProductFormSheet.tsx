@@ -238,6 +238,21 @@ export function ProductFormSheet({
           noValidate
           className="flex flex-1 flex-col gap-5 px-4 py-2 overflow-y-auto"
         >
+          {isEditing && editingProduct && !editingProduct.isApproved && editingProduct.rejectionReason && (
+            <div className="flex flex-col gap-1.5 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-destructive">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span className="font-semibold text-xs uppercase tracking-wider">Producto Rechazado</span>
+              </div>
+              <p className="text-xs">
+                Este producto fue rechazado por un administrador o autoridad. Corrige los detalles señalados e inténtalo de nuevo.
+              </p>
+              <div className="mt-1 border-t border-destructive/20 pt-1.5">
+                <span className="text-xs font-semibold">Motivo del rechazo:</span>
+                <p className="text-xs italic mt-0.5">{editingProduct.rejectionReason}</p>
+              </div>
+            </div>
+          )}
           {/* ── Name ────────────────────────────────────────────────── */}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="product-name">
@@ -527,7 +542,9 @@ export function ProductFormSheet({
                 Producto activo
               </Label>
               <p className="text-xs text-muted-foreground">
-                Los productos inactivos no son visibles en el marketplace.
+                {editingProduct?.isApproved
+                  ? "Los productos inactivos no son visibles en el marketplace."
+                  : "Este producto no ha sido aprobado por un administrador o autoridad. No se puede activar."}
               </p>
             </div>
             <Controller
@@ -538,6 +555,7 @@ export function ProductFormSheet({
                   id="product-active"
                   checked={field.value ?? false}
                   onCheckedChange={field.onChange}
+                  disabled={!editingProduct?.isApproved}
                   aria-label="Publicar producto en el marketplace"
                 />
               )}

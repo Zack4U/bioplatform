@@ -75,6 +75,7 @@ export function ProductsManagement() {
         deactivateProduct,
         approveProduct,
         rejectProduct,
+        unapproveProduct,
     } = useProductManagement();
 
     // Local state for modals/sheets
@@ -108,7 +109,16 @@ export function ProductsManagement() {
             updateProduct(
                 { id: editingProduct.id, data },
                 {
-                    onSuccess: () => setIsFormOpen(false),
+                    onSuccess: () => {
+                        if (editingProduct.isActive !== data.isActive) {
+                            if (data.isActive) {
+                                activateProduct(editingProduct.id);
+                            } else {
+                                deactivateProduct(editingProduct.id);
+                            }
+                        }
+                        setIsFormOpen(false);
+                    },
                 },
             );
         } else {
@@ -173,6 +183,7 @@ export function ProductsManagement() {
                           }
                         : undefined
                 }
+                onUnapprove={isAdmin ? (id) => unapproveProduct(id) : undefined}
             />
 
             {!isLoading && totalPages > 1 && (

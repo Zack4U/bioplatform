@@ -107,6 +107,14 @@ public class ManageProductsController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("{id:guid}/unapprove")]
+    [Authorize(Roles = $"{RoleNames.Admin},{RoleNames.EnvironmentalAuthority}")]
+    public async Task<IActionResult> Unapprove(Guid id)
+    {
+        await _mediator.Send(new UnapproveProductCommand(id));
+        return NoContent();
+    }
+
     // --- Product Images ---
     [HttpGet("{productId:guid}/images")]
     public async Task<IActionResult> GetImages(Guid productId)

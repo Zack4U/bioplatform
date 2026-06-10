@@ -134,6 +134,19 @@ public class Product
     }
 
     /// <summary>
+    /// Revokes approval for this product (Desaprobar). Sets it unapproved and turns it off.
+    /// </summary>
+    public void Unapprove()
+    {
+        IsApproved = false;
+        ApprovedById = null;
+        ApprovedAt = null;
+        RejectionReason = null;
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    /// <summary>
     /// Soft-deletes the product: hidden from all listings but retained for audit/orders.
     /// </summary>
     public void SoftDelete()

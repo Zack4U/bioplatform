@@ -23,6 +23,7 @@ import {
   deleteProduct,
   deleteProductImage,
   getMyProducts,
+  unapproveProduct,
   updateProduct,
   uploadProductImage,
 } from "@/services/marketplace-service";
@@ -39,6 +40,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { parseError } from "@/lib/error-handler";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -195,9 +197,10 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
       invalidateAll();
       toast.success(`Producto "${created.name}" creado exitosamente.`);
     },
-    onError: () => {
+    onError: (error) => {
+      const parsed = parseError(error);
       toast.error(
-        "No se pudo crear el producto. Verifica los datos e intenta de nuevo.",
+        parsed.detail || "No se pudo crear el producto. Verifica los datos e intenta de nuevo.",
       );
     },
   });
@@ -218,8 +221,11 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
       });
       toast.success(`Producto "${updated.name}" actualizado exitosamente.`);
     },
-    onError: () => {
-      toast.error("No se pudo actualizar el producto. Intenta de nuevo.");
+    onError: (error) => {
+      const parsed = parseError(error);
+      toast.error(
+        parsed.detail || "No se pudo actualizar el producto. Intenta de nuevo.",
+      );
     },
   });
 
@@ -236,8 +242,11 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
       setProductToDelete(null);
       toast.success("Producto eliminado exitosamente.");
     },
-    onError: () => {
-      toast.error("No se pudo eliminar el producto. Intenta de nuevo.");
+    onError: (error) => {
+      const parsed = parseError(error);
+      toast.error(
+        parsed.detail || "No se pudo eliminar el producto. Intenta de nuevo.",
+      );
     },
   });
 
@@ -259,8 +268,11 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
       invalidateAll();
       toast.success("Producto activado exitosamente.");
     },
-    onError: () => {
-      toast.error("No se pudo activar el producto. Intenta de nuevo.");
+    onError: (error) => {
+      const parsed = parseError(error);
+      toast.error(
+        parsed.detail || "No se pudo activar el producto. Intenta de nuevo.",
+      );
     },
   });
 
@@ -274,8 +286,11 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
       invalidateAll();
       toast.success("Producto desactivado exitosamente.");
     },
-    onError: () => {
-      toast.error("No se pudo desactivar el producto. Intenta de nuevo.");
+    onError: (error) => {
+      const parsed = parseError(error);
+      toast.error(
+        parsed.detail || "No se pudo desactivar el producto. Intenta de nuevo.",
+      );
     },
   });
 
@@ -291,8 +306,11 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
       invalidateAll();
       toast.success("Producto validado y publicado.");
     },
-    onError: () => {
-      toast.error("No se pudo validar el producto. Intenta de nuevo.");
+    onError: (error) => {
+      const parsed = parseError(error);
+      toast.error(
+        parsed.detail || "No se pudo validar el producto. Intenta de nuevo.",
+      );
     },
   });
 
@@ -306,8 +324,29 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
       invalidateAll();
       toast.success("Producto rechazado.");
     },
-    onError: () => {
-      toast.error("No se pudo rechazar el producto. Intenta de nuevo.");
+    onError: (error) => {
+      const parsed = parseError(error);
+      toast.error(
+        parsed.detail || "No se pudo rechazar el producto. Intenta de nuevo.",
+      );
+    },
+  });
+
+  const { mutate: unapproveProductAction, isPending: isUnapproving } = useMutation<
+    void,
+    Error,
+    string
+  >({
+    mutationFn: (id) => unapproveProduct(id),
+    onSuccess: () => {
+      invalidateAll();
+      toast.success("Producto desaprobado exitosamente.");
+    },
+    onError: (error) => {
+      const parsed = parseError(error);
+      toast.error(
+        parsed.detail || "No se pudo desaprobar el producto. Intenta de nuevo.",
+      );
     },
   });
 
@@ -474,5 +513,7 @@ export function useProductManagement(initialParams?: ProductSearchParams) {
     isApproving,
     rejectProduct: rejectProductAction,
     isRejecting,
+    unapproveProduct: unapproveProductAction,
+    isUnapproving,
   };
 }

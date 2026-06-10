@@ -33,7 +33,7 @@ public class ProductCommandsTests
         _repoMock.Setup(r => r.GetByIdWithDetailsAsync(It.IsAny<Guid>(), default)).ReturnsAsync(CreateSampleProduct(Guid.NewGuid(), entrepreneurId));
         _uowMock.Setup(u => u.SaveChangesAsync(default)).ReturnsAsync(1);
 
-        var handler = new CreateProductCommandHandler(_repoMock.Object, _absRepoMock.Object, _uowMock.Object);
+        var handler = new CreateProductCommandHandler(_repoMock.Object, _absRepoMock.Object, _uowMock.Object, _cacheMock.Object);
         var cmd = new CreateProductCommand(dto, entrepreneurId);
 
         var result = await handler.Handle(cmd, default);
@@ -51,7 +51,7 @@ public class ProductCommandsTests
 
         _absRepoMock.Setup(r => r.GetActiveByEntrepreneurAndSpeciesAsync(entrepreneurId, speciesId, default)).ReturnsAsync((AbsPermit?)null);
 
-        var handler = new CreateProductCommandHandler(_repoMock.Object, _absRepoMock.Object, _uowMock.Object);
+        var handler = new CreateProductCommandHandler(_repoMock.Object, _absRepoMock.Object, _uowMock.Object, _cacheMock.Object);
         var cmd = new CreateProductCommand(dto, entrepreneurId);
 
         await FluentActions.Awaiting(() => handler.Handle(cmd, default))
@@ -122,7 +122,7 @@ public class ProductCommandsTests
 
         var handler = new ActivateProductCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
-        await handler.Handle(new ActivateProductCommand(id), default);
+        await handler.Handle(new ActivateProductCommand(id, Guid.NewGuid(), "ADMIN"), default);
 
         product.IsActive.Should().BeTrue();
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);
@@ -138,7 +138,7 @@ public class ProductCommandsTests
 
         var handler = new DeactivateProductCommandHandler(_repoMock.Object, _uowMock.Object, _cacheMock.Object);
 
-        await handler.Handle(new DeactivateProductCommand(id), default);
+        await handler.Handle(new DeactivateProductCommand(id, Guid.NewGuid(), "ADMIN"), default);
 
         product.IsActive.Should().BeFalse();
         _uowMock.Verify(u => u.SaveChangesAsync(default), Times.Once);

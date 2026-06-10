@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Gestion de Productos" };
 
 export default function ProductsPage() {
     return (
-        <PageRoleGuard requiredRoles={["ADMIN", "ENTREPRENEUR"]}>
+        <PageRoleGuard requiredRoles={["ADMIN", "ENTREPRENEUR", "AUTHORITY"]}>
             <ProductsManagement />
         </PageRoleGuard>
     );

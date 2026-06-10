@@ -120,6 +120,8 @@ export const CORE_ROUTES = {
     APPROVE: (id: string) => `/manage/products/${id}/approve` as const,
     /** Reject a pending product (Admin / Authority) */
     REJECT: (id: string) => `/manage/products/${id}/reject` as const,
+    /** Unapprove a product (Admin / Authority) */
+    UNAPPROVE: (id: string) => `/manage/products/${id}/unapprove` as const,
     /** Activate a product (owner if approved, or Admin / Authority) */
     ACTIVATE: (id: string) => `/manage/products/${id}/activate` as const,
     /** Deactivate a product (owner if approved, or Admin / Authority) */

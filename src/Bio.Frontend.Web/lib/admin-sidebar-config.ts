@@ -54,7 +54,7 @@ export const ADMIN_SIDEBAR_SECTIONS: AdminNavSection[] = [
                 labelKey: "Productos",
                 href: "/admin/products",
                 iconName: "Package",
-                roles: ["ADMIN", "ENTREPRENEUR"],
+                roles: ["ADMIN", "ENTREPRENEUR", "AUTHORITY"],
             },
             {
                 key: "orders",
@@ -193,7 +193,7 @@ export const ROUTE_REQUIRED_ROLES: Record<string, import("@/types").UserRoleName
     "/admin": ["ADMIN", "RESEARCHER", "ENTREPRENEUR", "AUTHORITY", "COMMUNITY"],
     "/admin/species": ["ADMIN", "RESEARCHER", "AUTHORITY"],
     "/admin/images": ["ADMIN", "RESEARCHER", "AUTHORITY"],
-    "/admin/products": ["ADMIN", "ENTREPRENEUR"],
+    "/admin/products": ["ADMIN", "ENTREPRENEUR", "AUTHORITY"],
     "/admin/orders": ["ADMIN", "ENTREPRENEUR"],
     "/admin/reviews": ["ADMIN", "ENTREPRENEUR"],
     "/admin/certifications": ["ADMIN", "AUTHORITY", "ENTREPRENEUR"],

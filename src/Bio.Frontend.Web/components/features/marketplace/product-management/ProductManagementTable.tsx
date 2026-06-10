@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import type { ManageProductListItem } from "@/types";
 import { cn } from "@/lib/utils";
-import { Check, ExternalLink, ImageIcon, Package, Pencil, Power, PowerOff, Star, Trash2, X } from "lucide-react";
+import { Check, ExternalLink, ImageIcon, Package, Pencil, Power, PowerOff, RotateCcw, Star, Trash2, X } from "lucide-react";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -31,6 +31,7 @@ export interface ProductManagementTableProps {
   onDeactivate?: (productId: string) => void;
   onApprove?: (productId: string) => void;
   onReject?: (productId: string) => void;
+  onUnapprove?: (productId: string) => void;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -103,6 +104,7 @@ export function ProductManagementTable({
   onDeactivate,
   onApprove,
   onReject,
+  onUnapprove,
 }: ProductManagementTableProps) {
   const showSkeleton = isLoading;
   const showEmpty = !isLoading && products.length === 0;
@@ -168,6 +170,7 @@ export function ProductManagementTable({
                     onDeactivate={onDeactivate}
                     onApprove={onApprove}
                     onReject={onReject}
+                    onUnapprove={onUnapprove}
                   />
                 ) : (
                   <EntrepreneurProductRow
@@ -193,9 +196,10 @@ interface AdminProductRowProps {
   onDeactivate?: (productId: string) => void;
   onApprove?: (productId: string) => void;
   onReject?: (productId: string) => void;
+  onUnapprove?: (productId: string) => void;
 }
 
-function AdminProductRow({ product, onActivate, onDeactivate, onApprove, onReject }: AdminProductRowProps) {
+function AdminProductRow({ product, onActivate, onDeactivate, onApprove, onReject, onUnapprove }: AdminProductRowProps) {
   // A product not yet approved is a pending "Solicitud".
   const pending = !product.isApproved;
   return (
@@ -227,7 +231,16 @@ function AdminProductRow({ product, onActivate, onDeactivate, onApprove, onRejec
 
       <TableCell>
         {pending ? (
-          <StatusBadge label="Pendiente" variant="warning" />
+          product.rejectionReason ? (
+            <div className="flex flex-col gap-1">
+              <StatusBadge label="Rechazado" variant="destructive" />
+              <span className="text-[10px] text-destructive max-w-[120px] truncate" title={product.rejectionReason}>
+                {product.rejectionReason}
+              </span>
+            </div>
+          ) : (
+            <StatusBadge label="Pendiente" variant="warning" />
+          )
         ) : (
           <StatusBadge
             label={product.isActive ? "Activo" : "Inactivo"}
@@ -265,26 +278,43 @@ function AdminProductRow({ product, onActivate, onDeactivate, onApprove, onRejec
                 <X className="h-4 w-4 text-destructive" aria-hidden="true" />
               </Button>
             </>
-          ) : product.isActive ? (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={`Desactivar ${product.name}`}
-              title="Desactivar"
-              onClick={() => onDeactivate?.(product.id)}
-            >
-              <PowerOff className="h-4 w-4 text-destructive" aria-hidden="true" />
-            </Button>
           ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={`Activar ${product.name}`}
-              title="Activar"
-              onClick={() => onActivate?.(product.id)}
-            >
-              <Power className="h-4 w-4 text-green-600" aria-hidden="true" />
-            </Button>
+            <>
+              {product.isActive ? (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Desactivar ${product.name}`}
+                  title="Desactivar"
+                  onClick={() => onDeactivate?.(product.id)}
+                >
+                  <PowerOff className="h-4 w-4 text-destructive" aria-hidden="true" />
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Activar ${product.name}`}
+                  title="Activar"
+                  onClick={() => onActivate?.(product.id)}
+                >
+                  <Power className="h-4 w-4 text-green-600" aria-hidden="true" />
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Desaprobar ${product.name}`}
+                title="Desaprobar (Anular Aprobación)"
+                onClick={() => {
+                  if (window.confirm("¿Está seguro de que desea desaprobar este producto? Esto anulará la aprobación y lo desactivará.")) {
+                    onUnapprove?.(product.id);
+                  }
+                }}
+              >
+                <RotateCcw className="h-4 w-4 text-amber-600" aria-hidden="true" />
+              </Button>
+            </>
           )}
           <Button
             variant="ghost"
@@ -390,10 +420,23 @@ function EntrepreneurProductRow({
       </TableCell>
 
       <TableCell>
-        <StatusBadge
-          label={product.isActive ? "Activo" : "Inactivo"}
-          variant={product.isActive ? "success" : "default"}
-        />
+        {!product.isApproved ? (
+          product.rejectionReason ? (
+            <div className="flex flex-col gap-1">
+              <StatusBadge label="Rechazado" variant="destructive" />
+              <span className="text-[10px] text-destructive max-w-[120px] truncate" title={product.rejectionReason}>
+                {product.rejectionReason}
+              </span>
+            </div>
+          ) : (
+            <StatusBadge label="Pendiente" variant="warning" />
+          )
+        ) : (
+          <StatusBadge
+            label={product.isActive ? "Activo" : "Inactivo"}
+            variant={product.isActive ? "success" : "default"}
+          />
+        )}
       </TableCell>
 
       <TableCell className="hidden lg:table-cell">

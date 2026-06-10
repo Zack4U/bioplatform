@@ -24,6 +24,7 @@ const TYPE_LABELS: Record<string, string> = {
     image_validation: "Validación de Imagen",
     product_approval: "Aprobación de Producto",
     account_verification: "Verificación de Cuenta",
+    certification: "Certificación",
 };
 
 const STATUS_VARIANT: Record<string, "warning" | "success" | "destructive" | "info" | "default"> = {
@@ -147,11 +148,12 @@ export function RequestsManagement() {
             </div>
 
             {/* Summary stats */}
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
                 {[
                     { label: "Permisos ABS", type: "abs_permit" },
                     { label: "Imágenes", type: "image_validation" },
                     { label: "Productos", type: "product_approval" },
+                    { label: "Certificaciones", type: "certification" },
                     { label: "Verificaciones", type: "account_verification" },
                 ].map(({ label, type }) => {
                     const count = (data?.items ?? []).filter((r) => r.type === type).length;
